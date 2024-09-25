@@ -5,7 +5,7 @@
             <view class="flex-row align-c news-box gap-8" :style="container_background_style + container_height">
                 <template v-if="form_content.title_type == 'img-icon'">
                     <view v-if="form_content.icon_class">
-                        <iconfont :name="form_content.icon_class" :size="form_style.icon_size + ''" :color="form_style.icon_color"></iconfont>
+                        <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
                     </view>
                     <view v-else>
                         <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
@@ -29,7 +29,7 @@
                 <view class="flex-row wh-auto jc-sb align-c">
                     <template v-if="form_content.title_type == 'img-icon'">
                         <template v-if="form_content.icon_class">
-                            <iconfont :name="form_content.icon_class" :size="form_style.icon_size + ''" :color="form_style.icon_color"></iconfont>
+                            <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
                         </template>
                         <template v-else>
                             <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>

@@ -86,9 +86,9 @@
                                         <template v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
-                                        <template v-else>
-                                            <iconfont class="round plr-6 ptb-5" :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></iconfont>
-                                        </template>
+                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient()">
+                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
                             </view>
@@ -149,9 +149,9 @@
                                         <template v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
-                                        <template v-else>
-                                            <iconfont class="round plr-6 ptb-5" :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></iconfont>
-                                        </template>
+                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient()">
+                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
                             </view>

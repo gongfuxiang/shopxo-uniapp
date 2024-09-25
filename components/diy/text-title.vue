@@ -8,7 +8,7 @@
                         {{ item.title }}
                     </view>
                 </template>
-                <view v-if="form.right_show == '1'" class="nowrap" :style="right_style" @click="url_open_event(form.right_link)">{{ form.right_title }}<iconfont name="icon-arrow-right" :size="right_size" :color="new_style.right_color || '#999'"></iconfont> </view>
+                <view v-if="form.right_show == '1'" class="nowrap" :style="right_style" @click="url_open_event(form.right_link)">{{ form.right_title }}<iconfont name="icon-arrow-right" :size="right_size * 2 + 'rpx'" :color="new_style.right_color || '#999'"></iconfont> </view>
             </view>
         </view>
     </view>

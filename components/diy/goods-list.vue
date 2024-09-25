@@ -29,7 +29,7 @@
                                     <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
                                 </view>
                             </view>
-                            <view v-if="!['3', '4', '5'].includes(form.theme)" class="flex-col gap-5 oh">
+                            <view v-if="!['3', '4', '5'].includes(form.theme)" class="flex-col gap-5">
                                 <view :class="[form.is_price_solo == '1' ? 'flex-row align-c nowrap' : 'flex-col gap-5']">
                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
                                         <span class="identifying">{{ item.show_price_symbol }}</span
@@ -54,13 +54,16 @@
                                             <!-- <view v-if="is_show('4')" class="pl-5" :style="score_style">评分0</view> -->
                                         </view>
                                     </view>
-                                    <view v-if="form.is_shop_show == '1'">
+                                    <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                         <block v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
-                                        <block v-else>
-                                            <icon class="round plr-6 ptb-5" :name="!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart'" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></icon>
-                                        </block>
+                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient()">
+                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                        </view>
+                                        <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
+                                            <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                        </view>
                                     </view>
                                 </view>
                             </view>
@@ -85,9 +88,12 @@
                                     <block v-if="form.shop_type == 'text'">
                                         <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                     </block>
-                                    <block v-else>
-                                        <icon class="round plr-6 ptb-5" :name="!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart'" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></icon>
-                                    </block>
+                                    <view v-else class="round plr-6 ptb-5" :style="button_gradient()">
+                                        <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                    </view>
+                                    <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
+                                        <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                    </view>
                                 </view>
                             </view>
                         </view>
@@ -134,9 +140,12 @@
                                         <block v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
-                                        <block v-else>
-                                            <icon class="round plr-6 ptb-5" :name="!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart'" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></icon>
-                                        </block>
+                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient()">
+                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                        </view>
+                                        <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
+                                            <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                        </view>
                                     </view>
                                 </view>
                             </view>
@@ -157,11 +166,13 @@
     const app = getApp();
     import { isEmpty, common_styles_computer, get_math, gradient_handle, padding_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    import componentBadge from '@/components/badge/badge';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
     export default {
         components: {
             imageEmpty,
+            componentBadge,
             componentGoodsBuy,
             componentCartParaCurve
         },
@@ -292,6 +303,7 @@
                     score_style: this.trends_config('score'),
                     button_style: this.trends_config('button', 'gradient'),
                     shop_content_list: this.get_shop_content_list(new_list),
+                    is_show_cart: this.form.shop_button_effect == '1',
                 });
             },
             get_shop_content_list(list) {
@@ -429,7 +441,12 @@
                 app.globalData.url_event(link);
             },
             goods_button_event(e) {
+                this.goods_cart_event(e);
+            },
+            // 加入购物车
+            goods_cart_event(e) {
                 let index = e.currentTarget.dataset.index || 0;
+                let split_index = 0;
                 let goods = this.list[index];
                 if (this.theme == '5') {
                     index = e.currentTarget.dataset.index || 0;
@@ -439,74 +456,50 @@
                 if (this.form.shop_button_effect == '0') {
                     app.globalData.url_event(goods.goods_url);
                 } else {
-                    this.goods_cart_event(goods);
-                }
-            },
-            // 加入购物车
-            goods_cart_event(e) {
-                if ((this.$refs.goods_buy || null) != null) {
-                    // 开启购物车抛物线效果则展示提示操作
-                    let is_success_tips = this.propIsCartParaCurve ? 0 : 1;
-                    this.$refs.goods_buy.init(
-                        goods,
-                        {
-                            buy_event_type: 'cart',
-                            is_direct_cart: 1,
-                            is_success_tips: is_success_tips,
-                        },
-                        {
-                            index: index,
-                            pos: e,
-                        }
-                    );
+                    if ((this.$refs.goods_buy || null) != null) {
+                        // 开启购物车抛物线效果则展示提示操作
+                        let is_success_tips = this.propIsCartParaCurve ? 0 : 1;
+                        this.$refs.goods_buy.init(
+                            goods,
+                            {
+                                buy_event_type: 'cart',
+                                is_direct_cart: 1,
+                                is_success_tips: is_success_tips,
+                            },
+                            {
+                                index: index,
+                                split_index: split_index,
+                                pos: e,
+                            }
+                        );
+                    }
                 }
             },
             // 加入购物车成功回调
             goods_cart_back_event(e) {
                 // 增加数量
-                var back = e.back_data;
-                var new_data = this.data;
-                var goods = new_data['goods_list'][back.index];
+                var { index, split_index } = e.back_data;
+                let new_data = this.list;
+                let goods = new_data[index];
+                if (this.theme == '5') {
+                    new_data = this.shop_content_list;
+                    goods = new_data[index][split_index];
+                }
                 goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0) + parseInt(e.stock);
                 if (goods['user_cart_count'] > 99) {
                     goods['user_cart_count'] = '99+';
                 }
-                new_data['goods_list'][back.index] = goods;
-                this.setData({
-                    data: new_data,
-                });
-            
-                // 抛物线
-                if (this.propIsCartParaCurve && (this.$refs.cart_para_curve || null) != null) {
-                    this.$refs.cart_para_curve.init(null, back.pos, goods.images);
+                if (this.theme == '5') {
+                    new_data[index] = goods;
+                    this.setData({
+                        list: new_data,
+                    });
+                } else {
+                    new_data[index][split_index] = goods;
+                    this.setData({
+                        shop_content_list: new_data,
+                    });
                 }
-            
-                // 导航购物车处理
-                if (this.propIsCartNumberTabBarBadgeSync) {
-                    var cart_total = e.cart_number || 0;
-                    if (cart_total <= 0) {
-                        app.globalData.set_tab_bar_badge(2, 0);
-                    } else {
-                        app.globalData.set_tab_bar_badge(2, 1, cart_total);
-                    }
-                }
-            
-                // 当前页面
-                var page = app.globalData.current_page().split('?');
-                switch (page[0]) {
-                    // 商品详情页面
-                    case 'pages/goods-detail/goods-detail':
-                    // 商品搜索
-                    case 'pages/goods-search/goods-search':
-                        var res = app.globalData.get_page_object(page[0]);
-                        if (res.length > 0) {
-                            for (var i in res) {
-                                res[i].$vm.goods_cart_count_handle(cart_total);
-                            }
-                        }
-                        break;
-                }
-                this.$emit('CartSuccessEvent', { ...e, ...{ goods_list: new_data.goods_list, goods: goods } });
             },
         },
     };
@@ -589,5 +582,9 @@
     }
     .br-b-e {
         border-bottom: 2rpx solid #eee;
+    }
+    .badge-style {
+        top: -20rpx;
+        right: 0;
     }
 </style>
