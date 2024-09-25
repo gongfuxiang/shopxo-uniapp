@@ -5,6 +5,7 @@
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
                     <componentDiy :value="data_list.config" :prop-home-id="data_list.id"></componentDiy>
+                    <componentDiyFooter key="" :value="app_tabber" @footer-click="footer_click_event"></componentDiyFooter>
                 </block>
             </block>
             <!-- 自动和手动模式 -->
@@ -270,14 +271,16 @@
             </block>
 
             <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            <block v-if="data_mode != 3">
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            </block>
 
             <!-- 版权信息 -->
-            <block v-if="load_status == 1">
+            <block v-if="load_status == 1 && data_mode != 3">
                 <component-copyright></component-copyright>
             </block>
         </view>
-        <block v-if="load_status == 1">
+        <block v-if="load_status == 1 && data_mode != 3">
             <!-- 在线客服 -->
             <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
 
@@ -316,6 +319,7 @@
     import componentMagicList from '@/components/magic-list/magic-list';
     import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentDiy from '@/components/diy/diy';
+    import componentDiyFooter from '@/components/diy/footer';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -343,6 +347,8 @@
                 cart_total: 0,
                 message_total: 0,
                 right_icon_list: [],
+                // 底部菜单
+                app_tabber: null,
                 // 首页数据模式
                 data_mode: 0,
                 // 增加随机数，避免无法监听数据列表内部数据更新
@@ -430,6 +436,7 @@
             componentMagicList,
             componentAppAdmin,
             componentDiy,
+            componentDiyFooter
         },
         props: {},
 
@@ -500,6 +507,7 @@
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
+                        app_tabber: app.globalData.get_config('app_tabber'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');

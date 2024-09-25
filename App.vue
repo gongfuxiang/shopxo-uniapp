@@ -48,9 +48,6 @@
                 // 2.去lang里面各个文件去新增语言翻译
                 default_language: 'zh',
 
-                // tabbar页面
-                tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
-
                 // 公共配置
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
                 is_share_use_image: 1,
@@ -874,7 +871,10 @@
                 return s_x;
             },
 
-            // url主要部分
+            /**
+             * url主要部分
+             * url url地址
+             */
             get_url_main_part(url) {
                 if (url.indexOf('?') == -1) {
                     var value = url;
@@ -886,6 +886,18 @@
             },
 
             /**
+             * 底部菜单页面数、tabbar
+             */
+            tabbar_pages_data() {
+                return [
+                    '/pages/index/index',
+                    '/pages/goods-category/goods-category',
+                    '/pages/cart/cart',
+                    '/pages/user/user'
+                ];
+            },
+
+            /**
              * 当前地址是否存在tabbar中
              */
             is_tabbar_pages(url) {
@@ -893,7 +905,7 @@
                 if ((value || null) == null) {
                     return false;
                 }
-                var temp_tabbar_pages = this.data.tabbar_pages;
+                var temp_tabbar_pages = this.tabbar_pages_data();
                 for (var i in temp_tabbar_pages) {
                     if (temp_tabbar_pages[i] == value) {
                         return true;
@@ -1926,7 +1938,7 @@
                 var result = {
                     title: data.title || share_config.title || this.get_application_title(),
                     desc: data.desc || share_config.desc || this.get_application_describe(),
-                    path: data.path || this.data.tabbar_pages[0],
+                    path: data.path || this.tabbar_pages_data()[0],
                     query: this.share_query_handle(data.query || ''),
                     img: data.img || share_config.pic || this.get_application_logo_square(),
                 };
@@ -2003,7 +2015,7 @@
                 var prev_page = this.prev_page();
                 if (prev_page == null) {
                     uni.switchTab({
-                        url: this.data.tabbar_pages[0],
+                        url: this.tabbar_pages_data()[0],
                     });
                 } else {
                     uni.navigateBack();
@@ -2306,7 +2318,7 @@
                     var self = this;
                     self.weixin_privacy_setting_timer = setInterval(function () {
                         var page = self.get_page_url(false);
-                        if ('/' + page == self.data.tabbar_pages[0]) {
+                        if ('/' + page == self.tabbar_pages_data()[0]) {
                             uni.getPrivacySetting({
                                 success: (res) => {
                                     if (res.needAuthorization) {
@@ -2760,7 +2772,7 @@
                         'pages/plugins/ask/index/index',
                     ];
                     // 当前tab页面
-                    if(this.data.tabbar_pages.indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {
+                    if(this.tabbar_pages_data().indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {
                         value = '';
                     }
                 }
@@ -2774,7 +2786,7 @@
                     // 读取语言
                     var value = i18n.t(key);
                     // 首页则读取当前应用名称
-                    if(this.data.tabbar_pages[0] == '/'+url) {
+                    if(this.tabbar_pages_data()[0] == '/'+url) {
                         value = this.get_application_title();
                     }
                 }
@@ -2804,7 +2816,10 @@
         },
 
         // 初始化完成时触发（全局只触发一次）
-        onLaunch(params) {},
+        onLaunch(params) {
+            //隐藏tabbar
+            uni.hideTabBar();
+        },
 
         // 启动，或从后台进入前台显示
         onShow(params) {
