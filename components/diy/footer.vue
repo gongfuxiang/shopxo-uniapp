@@ -5,12 +5,12 @@
             <view class="bottom-line-exclude">
                 <view class="flex-row jc-sa align-c wh padding-0">
                     <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page" @tap="url_event">
-                        <view v-if="nav_style !== 2" class="img pr">
+                        <view v-if="nav_style !== 2" class="img-content pr">
                             <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
-                                <img :src="item.img[0].url" class="wh-auto ht-auto" />
+                                <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
                             </view>
                             <view class="img-item pa border-radius-xs animate-linear" :class="is_active == index ? 'active' : ''">
-                                <img :src="item.img_checked[0].url" class="wh-auto ht-auto" />
+                                <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
                             </view>
                         </view>
                         <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</text>
@@ -106,15 +106,19 @@
         background-color: transparent;
         .footer-nav-content {
             min-height: 140rpx;
-            .img {
-                width: 40rpx;
-                height: 40rpx;
+            .img-content {
+                width: 44rpx;
+                height: 44rpx;
                 .img-item {
                     width: 44rpx;
                     height: 44rpx;
                     opacity: 0;
                     &.active {
                         opacity: 1;
+                    }
+                    .img {
+                        width: 44rpx;
+                        height: 44rpx;
                     }
                 }
             }

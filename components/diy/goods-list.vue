@@ -37,7 +37,7 @@
                                         <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                        <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
+                                        <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
                                         <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
@@ -75,7 +75,7 @@
                                         <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                        <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
+                                        <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
                                         <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
@@ -127,7 +127,7 @@
                                             <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
-                                            <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
+                                            <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
                                             <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
@@ -156,7 +156,7 @@
         </view>
         <!-- 商品购买 -->
         <component-goods-buy v-if="is_show_cart" ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
-        
+
         <!-- 购物车抛物线 -->
         <component-cart-para-curve v-if="is_show_cart" ref="cart_para_curve"></component-cart-para-curve>
     </view>
@@ -174,7 +174,7 @@
             imageEmpty,
             componentBadge,
             componentGoodsBuy,
-            componentCartParaCurve
+            componentCartParaCurve,
         },
         props: {
             value: {
@@ -280,7 +280,7 @@
                     }));
                 } else if (!isEmpty(this.form.data_auto_list) && this.form.data_type == '1') {
                     // 筛选商品并且筛选商品数组不为空
-                    new_list = this.form.data_auto_list
+                    new_list = this.form.data_auto_list;
                 } else {
                     // 为空的时候走默认数据
                     new_list = Array(4).fill(this.default_list);
