@@ -8,8 +8,8 @@
                         <template v-if="item.data_content.data_type == 'goods'">
                             <view class="wh-auto ht-auto flex-col gap-20" :style="[0, 1].includes(index) ? item.data_style.chunk_padding_data : ''">
                                 <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" class="flex-col gap-5 tl">
-                                    <p class="ma-0 wh-auto text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</p>
-                                    <p class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</p>
+                                    <view class="ma-0 wh-auto text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
+                                    <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                 </view>
                                 <view class="wh-auto ht-auto">
                                     <magic-carousel :value="item" :content-img-radius="content_img_radius" :actived="form.style_actived" type="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
@@ -22,7 +22,7 @@
                         <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{'bottom': item.data_style.indicator_bottom * 2 +'rpx'}">
                             <template v-if="item.data_style.indicator_style == 'num'">
                                 <view :style="item.data_style.indicator_styles" class="dot-item">
-                                    <span class="num-active" :style="{'color': item.data_style.actived_color }">{{ item.actived_index + 1 }}</span><span>/{{ item.data_content.list.length }}</span>
+                                    <text class="num-active" :style="{'color': item.data_style.actived_color }">{{ item.actived_index + 1 }}</text><text>/{{ item.data_content.list.length }}</text>
                                 </view>
                             </template>
                             <template v-else>
@@ -37,8 +37,8 @@
                     <template v-if="item.data_content.data_type == 'goods'">
                         <view :class="[spacing_processing(index) ? 'gap-20 wh-auto ht-auto flex-col' : 'gap-10 wh-auto ht-auto flex-col']" :style="item.data_style.chunk_padding_data">
                             <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" class="flex-col gap-5 tl">
-                                <p class="ma-0 wh-auto text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</p>
-                                <p class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</p>
+                                <view class="ma-0 wh-auto text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
+                                <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                             </view>
                             <view class="wh-auto ht-auto">
                                 <magic-carousel :value="item" :content-img-radius="content_img_radius" type="product" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
@@ -51,7 +51,7 @@
                     <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{'bottom': item.data_style.indicator_bottom * 2 +'rpx'}">
                         <template v-if="item.data_style.indicator_style == 'num'">
                             <view :style="item.data_style.indicator_styles" class="dot-item">
-                                <span class="num-active" :style="{'color': item.data_style.actived_color }">{{ item.actived_index + 1 }}</span><span>/{{ item.data_content.list.length }}</span>
+                                <text class="num-active" :style="{'color': item.data_style.actived_color }">{{ item.actived_index + 1 }}</text><text>/{{ item.data_content.list.length }}</text>
                             </view>
                         </template>
                         <template v-else>

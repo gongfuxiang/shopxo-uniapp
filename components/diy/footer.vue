@@ -13,7 +13,7 @@
                                 <img :src="item.img_checked[0].url" class="wh-auto ht-auto" />
                             </view>
                         </view>
-                        <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : defaviewt_text_color">{{ item.name }}</text>
+                        <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</text>
                     </view>
                 </view>
             </view>

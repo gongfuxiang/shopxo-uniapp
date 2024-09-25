@@ -7,7 +7,7 @@
                         <view v-if="['image_with_text', 'image'].includes(nav_style)" class="top-img flex-row align-c jc-c">
                             <image-empty :image-src="item1.img[0]" :style="img_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
                         </view>
-                        <p v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</p>
+                        <view v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</view>
                     </view>
                 </view>
             </swiper-item>
@@ -15,8 +15,8 @@
         <view v-if="form.display_style == 'slide' && new_style.is_show == '1'" :style="{ 'justify-content': new_style.indicator_location || 'center' }" class="dot flex-row">
             <block v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
-                    <span :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</span
-                    ><span>/{{ nav_content_list.length }}</span>
+                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text
+                    ><text>/{{ nav_content_list.length }}</text>
                 </view>
             </block>
             <block v-else>

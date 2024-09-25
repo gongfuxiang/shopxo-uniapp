@@ -13,7 +13,7 @@
                             <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="'28rpx'" :color="new_style.icon_color"></iconfont>
                         </template>
                     </template>
-                    <span v-if="form.is_tips_show == '1'" :class="[isPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</span>
+                    <text v-if="form.is_tips_show == '1'" :class="[isPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                 </view>
                 <view v-if="form.is_search_show == '1'" class="pa search-botton h flex-row align-c jc-c" :style="search_button">
                     <template v-if="form.search_type === 'text'">

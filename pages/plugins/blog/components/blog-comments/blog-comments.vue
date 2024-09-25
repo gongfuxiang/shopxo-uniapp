@@ -44,8 +44,8 @@
                         <image :src="item.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
                         <view class="right-content flex-1 flex-width" :class="data.comments_list.length > index + 1 ? 'br-b-e padding-bottom-main margin-bottom-main' : ''">
                             <view class="comments-base oh">
-                                <span class="username fw-b">{{ item.user.user_name_view }}</span>
-                                <span class="cr-grey-9 margin-left-main">{{ item.add_time }}</span>
+                                <text class="username fw-b">{{ item.user.user_name_view }}</text>
+                                <text class="cr-grey-9 margin-left-main">{{ item.add_time }}</text>
                             </view>
                             <view class="margin-top-sm comments-content">{{ item.content }}</view>
                             <view class="blog-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
@@ -65,8 +65,8 @@
                                             <image :src="comments.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
                                             <view class="right-content flex-1 flex-width">
                                                 <view class="comments-reply-base oh">
-                                                    <span class="username fw-b">{{ comments.user.user_name_view }}</span>
-                                                    <span class="cr-grey-9 margin-left-main">{{ comments.add_time }}</span>
+                                                    <text class="username fw-b">{{ comments.user.user_name_view }}</text>
+                                                    <text class="cr-grey-9 margin-left-main">{{ comments.add_time }}</text>
                                                 </view>
                                                 <view v-if="(comments.reply_comments_text || null) != null" class="margin-top-sm reply-content">{{ comments.reply_comments_text }}</view>
                                                 <view class="margin-top-sm">{{ comments.content }}</view>

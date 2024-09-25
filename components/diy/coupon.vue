@@ -9,9 +9,9 @@
                             <view class="coupon-theme-1-content tc" :style="'background-image: url(' + theme_bg_img.url_1 + ');background-size: 100% 100%;'">
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 <view class="price" :style="'color:' + theme_style.price_color">
-                                    <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                    <span class="number">{{ item.discount_value }}</span>
-                                    <span v-if="item.type == '1'" class="symbol">折</span>
+                                    <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                    <text class="number">{{ item.discount_value }}</text>
+                                    <text v-if="item.type == '1'" class="symbol">折</text>
                                 </view>
                             </view>
                             <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
@@ -23,9 +23,9 @@
                         <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background-image: url(' + theme_bg_img.url_2 + ');background-size: 100% 100%;'">
                             <view class="tc">
                                 <view class="price" :style="'color:' + theme_style.price_color">
-                                    <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                    <span class="number">{{ item.discount_value }}</span>
-                                    <span v-if="item.type == '1'" class="symbol">折</span>
+                                    <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                    <text class="number">{{ item.discount_value }}</text>
+                                    <text v-if="item.type == '1'" class="symbol">折</text>
                                 </view>
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 <view class="desc text-line-1" :style="'color:' + theme_style.desc_color">{{ item.desc }}</view>
@@ -40,9 +40,9 @@
                             <view class="left" :style="'background: ' + theme_style.background_inside">
                                 <div class="price-before" :style="'border-right: 2rpx dashed ' + theme_style.border_style">
                                     <view class="price" :style="'color:' + theme_style.price_color">
-                                        <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                        <span class="number">{{ item.discount_value }}</span>
-                                        <span v-if="item.type == '1'" class="symbol self-e">折</span>
+                                        <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                        <text class="number">{{ item.discount_value }}</text>
+                                        <text v-if="item.type == '1'" class="symbol self-e">折</text>
                                     </view>
                                 </div>
                                 <view class="text padding-left-xs padding-right-sm">
@@ -72,9 +72,9 @@
                                         <view class="type-after" :style="'background: ' + theme_style.type_background"></view>
                                     </view>
                                     <view class="price" :style="'color:' + theme_style.price_color">
-                                        <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                        <span class="number">{{ item.discount_value }}</span>
-                                        <span v-if="item.type == '1'" class="symbol">折</span>
+                                        <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                        <text class="number">{{ item.discount_value }}</text>
+                                        <text v-if="item.type == '1'" class="symbol">折</text>
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>
@@ -97,9 +97,9 @@
                         <view v-for="(item, index) in data_list" :key="index" class="item">
                             <view class="left" :style="'background-image: url(' + theme_bg_img.url_3 + ');background-size: 100% 100%;'">
                                 <view class="price" :style="'color:' + theme_style.price_color">
-                                    <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                    <span class="number">{{ item.discount_value }}</span>
-                                    <span v-if="item.type == '1'" class="symbol">折</span>
+                                    <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                    <text class="number">{{ item.discount_value }}</text>
+                                    <text v-if="item.type == '1'" class="symbol">折</text>
                                 </view>
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                             </view>
@@ -116,9 +116,9 @@
                                 <view class="top-before" :style="'background: ' + theme_style.background"></view>
                                 <view class="top" :style="'background: ' + theme_style.background_inside">
                                     <view class="price" :style="'color:' + theme_style.price_color">
-                                        <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                        <span class="number">{{ item.discount_value }}</span>
-                                        <span v-if="item.type == '1'" class="symbol">折</span>
+                                        <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                        <text class="number">{{ item.discount_value }}</text>
+                                        <text v-if="item.type == '1'" class="symbol">折</text>
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>
@@ -137,9 +137,9 @@
                             <view class="flex-row flex-1">
                                 <view class="left">
                                     <view class="price" :style="'color:' + theme_style.price_color">
-                                        <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
-                                        <span class="number">{{ item.discount_value }}</span>
-                                        <span v-if="item.type == '1'" class="symbol">折</span>
+                                        <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
+                                        <text class="number">{{ item.discount_value }}</text>
+                                        <text v-if="item.type == '1'" class="symbol">折</text>
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>

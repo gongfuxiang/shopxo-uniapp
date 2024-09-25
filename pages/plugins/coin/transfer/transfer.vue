@@ -31,7 +31,7 @@
                         <text class="text-size fw-b">{{$t('transfer.transfer.b4m5p3')}}</text>
                         <view class="margin-top-xxxxl">
                             <input type="digit" name="coin" :value="coin" class="text-size-xl tc" placeholder-class="cr-grey-9" :placeholder="$t('transfer.transfer.d15853')" @input="coin_change" />
-                            <view class="cr-grey-9 tc margin-top-main">{{$t('transfer.transfer.9xe2bl')}}<span class="cr-black fw-b">{{ accounts.platform_symbol }} {{ accounts.default_coin }}</span>
+                            <view class="cr-grey-9 tc margin-top-main">{{$t('transfer.transfer.9xe2bl')}}<text class="cr-black fw-b">{{ accounts.platform_symbol }} {{ accounts.default_coin }}</text>
                             </view>
                         </view>
                         <view class="note padding-main radius margin-top-xxxl">

@@ -5,31 +5,31 @@
                 <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
                     <view class="seckill-title">
                         <image-empty v-if="form.title_type == 'image'" :image-src="form.title_src[0]" img_fit="heightFix" error-style="width:42rpx; height: 20rpx;"></image-empty>
-                        <span v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</span>
+                        <text v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</text>
                     </view>
                     <view v-if="form.theme == '1'" class="plr-6 cr-white">|</view>
                     <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
-                        <span class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</span>
+                        <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</text>
                         <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
                             <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
                             <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
                                 <template v-if="form.theme == '4'">
                                     <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
-                                    <span v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</span>
+                                    <text v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</text>
                                 </template>
                                 <template v-else>
                                     <view class="time-config text-size-xs" :style="time_bg + 'color:' + new_style.countdown_color">{{ item.value }}</view>
-                                    <span v-if="[0, 1].includes(index)" class="colon" :style="icon_time_check">:</span>
+                                    <text v-if="[0, 1].includes(index)" class="colon" :style="icon_time_check">:</text>
                                 </template>
                             </view>
                         </view>
                     </view>
                     <view v-else class="flex-row align-c gap-4">
-                        <span class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</span>
+                        <text class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</text>
                     </view>
                 </view>
                 <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
-                    <span :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</span>
+                    <text :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</text>
                     <iconfont name="icon-arrow-right" :color="new_style.head_button_color"></iconfont>
                 </view>
             </view>
@@ -46,7 +46,7 @@
                                         <image-empty :image-src="item.images" :class="'flex-img' + form.shop_style_type" :type_style="content_img_radius" error-style="width:100rpx; height: 100rpx;"></image-empty>
                                     </template>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                        <span class="text-line-1">{{ form.subscript_text }}</span>
+                                        <text class="text-line-1">{{ form.subscript_text }}</text>
                                     </view>
                                 </view>
                             </template>
@@ -62,24 +62,24 @@
                                                         <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
                                                     </view>
                                                 </view>
-                                                <span class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</span>
+                                                <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</text>
                                             </view> -->
                                 </view>
                                 <view class="flex-row align-e gap-10 jc-sb">
                                     <view class="flex-col gap-5">
                                         <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                            <span v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</span>
-                                            <span class="identifying">{{ item.show_price_symbol }}</span
-                                            ><span :style="price_style">{{ item.min_price }}</span>
-                                            <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                            <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
+                                            <text class="identifying">{{ item.show_price_symbol }}</text
+                                            ><text :style="price_style">{{ item.min_price }}</text>
+                                            <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                            <span class="original-price text-line-1 flex-1"
+                                            <text class="original-price text-line-1 flex-1"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <template v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </template>
-                                            </span>
+                                            </text>
                                         </view>
                                     </view>
                                     <view v-if="form.is_shop_show == '1'">
@@ -109,7 +109,7 @@
                                         <image-empty :image-src="item.images" :class="'flex-img' + form.shop_style_type" :type_style="content_img_radius" error-style="width:100rpx; height: 100rpx;"></image-empty>
                                     </template>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                        <span class="text-line-1">{{ form.subscript_text }}</span>
+                                        <text class="text-line-1">{{ form.subscript_text }}</text>
                                     </view>
                                 </view>
                             </template>
@@ -125,24 +125,24 @@
                                                 <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
                                             </view>
                                         </view>
-                                        <span class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已抢51%</span>
+                                        <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已抢51%</text>
                                     </view> -->
                                 </view>
                                 <view class="flex-row align-e gap-10 jc-sb">
                                     <view class="flex-col gap-5">
                                         <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                            <span v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</span>
-                                            <span class="identifying">{{ item.show_price_symbol }}</span
-                                            ><span :style="price_style">{{ item.min_price }}</span>
-                                            <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                            <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
+                                            <text class="identifying">{{ item.show_price_symbol }}</text
+                                            ><text :style="price_style">{{ item.min_price }}</text>
+                                            <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                            <span class="original-price text-line-1 flex-1"
+                                            <text class="original-price text-line-1 flex-1"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <template v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </template>
-                                            </span>
+                                            </text>
                                         </view>
                                     </view>
                                     <view v-if="form.is_shop_show == '1'">

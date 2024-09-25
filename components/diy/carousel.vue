@@ -13,7 +13,7 @@
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</span>
+                        <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
                     </view>
                 </swiper-item>
             </block>
@@ -29,7 +29,7 @@
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</span>
+                        <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
                     </view>
                 </swiper-item>
             </block>
@@ -37,8 +37,8 @@
         <view v-if="new_style.is_show == '1'" :class="{ 'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
             <template v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
-                    <span :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</span
-                    ><span>/{{ form.carousel_list.length }}</span>
+                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text
+                    ><text>/{{ form.carousel_list.length }}</text>
                 </view>
             </template>
             <template v-else>

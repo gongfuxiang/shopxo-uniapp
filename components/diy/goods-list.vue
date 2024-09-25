@@ -7,9 +7,9 @@
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                             <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num nowrap" :style="'color:' + new_style.shop_price_color">
-                                <span class="identifying">{{ item.show_price_symbol }}</span
-                                ><span :style="price_style">{{ item.min_price }}</span>
-                                <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                <text class="identifying">{{ item.show_price_symbol }}</text
+                                ><text :style="price_style">{{ item.min_price }}</text>
+                                <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                             </view>
                         </view>
                     </block>
@@ -32,18 +32,18 @@
                             <view v-if="!['3', '4', '5'].includes(form.theme)" class="flex-col gap-5">
                                 <view :class="[form.is_price_solo == '1' ? 'flex-row align-c nowrap' : 'flex-col gap-5']">
                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                        <span class="identifying">{{ item.show_price_symbol }}</span
-                                        ><span :style="price_style">{{ item.min_price }}</span>
-                                        <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                        <text class="identifying">{{ item.show_price_symbol }}</text
+                                        ><text :style="price_style">{{ item.min_price }}</text>
+                                        <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
                                         <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
-                                        <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
                                             </block>
-                                        </span>
+                                        </text>
                                     </view>
                                 </view>
                                 <view class="flex-row jc-sb align-e">
@@ -70,18 +70,18 @@
                             <view v-else class="flex-row align-c jc-sb">
                                 <view class="flex-row align-c nowrap">
                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                        <span class="identifying">{{ item.show_price_symbol }}</span
-                                        ><span :style="price_style">{{ item.min_price }}</span>
-                                        <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                        <text class="identifying">{{ item.show_price_symbol }}</text
+                                        ><text :style="price_style">{{ item.min_price }}</text>
+                                        <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
                                         <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
-                                        <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
                                             </block>
-                                        </span>
+                                        </text>
                                     </view>
                                 </view>
                                 <view v-if="form.is_shop_show == '1'" :data-index="index" @tap.stop="goods_button_event">
@@ -122,18 +122,18 @@
                                 <view class="flex-row align-c jc-sb">
                                     <view class="flex-row align-c nowrap">
                                         <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                            <span class="identifying">{{ item.show_price_symbol }}</span
-                                            ><span :style="price_style">{{ item.min_price }}</span>
-                                            <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                            <text class="identifying">{{ item.show_price_symbol }}</text
+                                            ><text :style="price_style">{{ item.min_price }}</text>
+                                            <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
                                             <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
-                                            <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                            <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </block>
-                                            </span>
+                                            </text>
                                         </view>
                                     </view>
                                     <view v-if="form.is_shop_show == '1'" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">

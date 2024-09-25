@@ -22,7 +22,7 @@
                                 <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10">
                                     <view class="flex-row align-c gap-2">
                                         <iconfont name="icon-location" size="12" color="0"></iconfont>
-                                        <span class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</span>
+                                        <text class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</text>
                                         <iconfont v-if="form.content.is_arrows_show == '1'" name="icon-arrow-right" size="24rpx" color="#000"></iconfont>
                                     </view>
                                     <template v-if="['5'].includes(form.content.theme)">
