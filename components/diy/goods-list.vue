@@ -1,5 +1,5 @@
 <template>
-    <view class="oh" :style="style_container">
+    <view v-if="!isEmpty(list)" class="oh" :style="style_container">
         <view :class="outer_class" :style="onter_style">
             <block v-if="!['5'].includes(theme)">
                 <view v-for="(item, index) in list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
