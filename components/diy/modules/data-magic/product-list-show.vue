@@ -12,7 +12,7 @@
                     <view v-if="!isEmpty(isShow)" class="flex-col wh-auto ht-auto tl gap-10">
                         <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
                         <view v-if="isShow.includes('price')" class="identifying">
-                            <text class="num">{{ item.show_price_symbol }}</span
+                            <text class="num">{{ item.show_price_symbol }}</text
                             >{{ item.min_price }}
                             <template v-if="isShow.includes('price_unit')">
                                 <text class="num">{{ item.show_price_unit }}</text>
@@ -51,7 +51,7 @@
                     <view v-if="!isEmpty(isShow)" class="flex-col wh-auto tl gap-10" :style="img_padding_computer">
                         <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
                         <view v-if="isShow.includes('price')" class="identifying">
-                            <text class="num">{{ item.show_price_symbol }}</span
+                            <text class="num">{{ item.show_price_symbol }}</text
                             >{{ item.min_price }}
                             <template v-if="isShow.includes('price_unit')">
                                 <text class="num">{{ item.show_price_unit }}</text>
@@ -75,7 +75,7 @@
                     <view v-if="!isEmpty(isShow)" class="flex-col wh-auto ht-auto tl gap-20">
                         <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
                         <view v-if="isShow.includes('price')" class="identifying">
-                            <text class="num">{{ item.show_price_symbol }}</span
+                            <text class="num">{{ item.show_price_symbol }}</text
                             >{{ item.min_price }}
                             <template v-if="isShow.includes('price_unit')">
                                 <text class="num">{{ item.show_price_unit }}</text>
