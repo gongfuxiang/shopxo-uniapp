@@ -80,7 +80,7 @@
             // 获取数据
             get_data(params = {}) {
                 // 还没有数据则读取缓存
-                var cache_key = app.globalData.data.cache_design_data_key;
+                var cache_key = app.globalData.data.cache_design_page_data_key+(this.params.id || 0);
                 if (this.load_status == 0) {
                     // 本地缓存数据
                     var upd_data = uni.getStorageSync(cache_key) || null;
@@ -159,7 +159,6 @@
                             load_status: 1,
                             data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             }
