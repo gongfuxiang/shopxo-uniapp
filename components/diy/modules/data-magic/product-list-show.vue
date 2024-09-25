@@ -2,7 +2,7 @@
     <view v-if="outerflex == 'row'" class="wh-auto ht-auto">
         <view class="flex-row gap-10 align-c wh-auto ht-auto">
             <template v-if="flex === 'row'">
-                <view v-for="(item, index) in value" :key="index" class="flex-row gap-10 half-width ht-auto" @tap="url_event(item.goods_url)">
+                <view v-for="(item, index) in value" :key="index" class="flex-row gap-10 half-width ht-auto" :data-value="item.goods_url" @tap="url_event">
                     <template v-if="!isEmpty(item.new_cover)">
                         <image-empty :image-src="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
@@ -22,7 +22,7 @@
                 </view>
             </template>
             <template v-else-if="actived != 7 || num !== 1">
-                <view v-for="(item, index) in value" :key="index" :class="['flex-col gap-10 ht-auto', { 'half-width': num !== 1, 'wh-auto': num == 1 }]" @tap="url_event(item.goods_url)">
+                <view v-for="(item, index) in value" :key="index" :class="['flex-col gap-10 ht-auto', { 'half-width': num !== 1, 'wh-auto': num == 1 }]" :data-value="item.goods_url" @tap="url_event">
                     <view class="wh-auto ht-auto pr">
                         <template v-if="!isEmpty(item.new_cover)">
                             <image-empty :image-src="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
@@ -41,7 +41,7 @@
                 </view>
             </template>
             <template v-else>
-                <view v-for="(item, index) in value" :key="index" class="flex-col wh-auto ht-auto" @tap="url_event(item.goods_url)">
+                <view v-for="(item, index) in value" :key="index" class="flex-col wh-auto ht-auto" :data-value="item.goods_url" @tap="url_event">
                     <template v-if="!isEmpty(item.new_cover)">
                         <image-empty :image-src="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
@@ -65,7 +65,7 @@
     <view v-else class="wh-auto ht-auto">
         <view class="flex-col gap-20 align-c wh-auto ht-auto">
             <template v-if="flex === 'row'">
-                <view v-for="(item, index) in value" :key="index" class="flex-row gap-10 align-c wh-auto ht-auto shop-max-height" @tap="url_event(item.goods_url)">
+                <view v-for="(item, index) in value" :key="index" class="flex-row gap-10 align-c wh-auto ht-auto shop-max-height" :data-value="item.goods_url" @tap="url_event">
                     <template v-if="!isEmpty(item.new_cover)">
                         <image-empty :image-src="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>

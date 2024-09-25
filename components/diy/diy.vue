@@ -7,7 +7,7 @@
         <view class="pr" :style="diy_content_style">
             <view v-for="(item, index) in tabs_data" :key="index">
                 <componentDiyTabs v-if="item.key == 'tabs'" :value="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :value="item.com_data" :key="key + 'tabs-carousel'" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :value="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">

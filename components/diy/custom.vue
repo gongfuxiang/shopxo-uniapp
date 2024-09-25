@@ -78,9 +78,7 @@
                 });
             },
             url_open(link) {
-                if (!isEmpty(link)) {
-                    app.globalData.url_open(link);
-                }
+                app.globalData.url_event(link);
             },
         },
     };
