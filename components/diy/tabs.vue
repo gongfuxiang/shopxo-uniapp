@@ -51,7 +51,16 @@
 
                 // 是否滑动置顶
                 top_up: 0,
-                tabs_top: 'padding-top:' + bar_height + 34 + 'px',
+                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                tabs_top: 'padding-top:' + (bar_height + 34 + 5 + 12) + 'px;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                tabs_top: 'padding-top:' + (bar_height + 34 + 7 + 12) + 'px;',
+                // #endif
+                // #ifdef APP
+                tabs_top: 'padding-top:' + (bar_height + 34 + 0 + 12) + 'px;',
+                // #endif
             };
         },
         created() {

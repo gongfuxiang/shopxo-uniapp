@@ -1,7 +1,7 @@
 <template>
     <view class="header-container" :style="roll_style + position">
         <view class="bg-white pf top-0 left-0 right-0" :style="top_content_style">
-            <view class="header-content flex-row align-c">
+            <view class="header-content flex-row align-c padding-vertical-xs" style="height: 34px">
                 <view class="model-top flex-1">
                     <view class="roll pr z-i">
                         <view class="model-head tc pr padding-horizontal-sm flex-row align-c" :style="header_style">
