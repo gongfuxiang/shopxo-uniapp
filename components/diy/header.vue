@@ -20,7 +20,7 @@
                                     </template>
                                 </view>
                                 <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10">
-                                    <view class="flex-row align-c gap-2">
+                                    <view class="flex-row align-c gap-2" @tap="go_map_event">
                                         <iconfont name="icon-location" size="12" color="0"></iconfont>
                                         <text class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</text>
                                         <iconfont v-if="form.content.is_arrows_show == '1'" name="icon-arrow-right" size="24rpx" color="#000"></iconfont>
@@ -32,7 +32,7 @@
                                     </template>
                                 </view>
                                 <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'pa right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
-                                    <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }">
+                                    <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                         <image-empty v-if="item.img.length > 0" :image-src="item.img[0].url" :error-style="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
                                         <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
                                     </view>
@@ -122,6 +122,12 @@
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
                     header_style: menuButtonInfo,
                 });
+            },
+            go_map_event() {
+                console.log('地图方法');
+            },
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };

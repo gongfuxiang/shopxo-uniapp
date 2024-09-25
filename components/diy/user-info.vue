@@ -4,8 +4,8 @@
         <view class="pr padding-xxl" :style="style">
             <view class="flex-row jc-sb align-c margin-bottom-xxl">
                 <view class="flex-1 flex-row align-c gap-12">
-                    <image :src="(user_info.user || null) !== null ? user_info.user.avatar : user.avatar" class="circle" mode="widthFix" :style="'width:' + base_data.user_avatar_size * 2 + 'rpx;height:' + base_data.user_avatar_size * 2 + 'rpx;'" />
-                    <view class="flex-col gap-8">
+                    <image :src="(user_info.user || null) !== null ? user_info.user.avatar : user.avatar" class="circle" mode="widthFix" :style="'width:' + base_data.user_avatar_size * 2 + 'rpx;height:' + base_data.user_avatar_size * 2 + 'rpx;'" data-value="/pages/personal/personal" @tap="url_event" />
+                    <view class="flex-col gap-8" data-value="/pages/personal/personal" @tap="url_event">
                         <view class="text-size fw-b" :style="user_name_style">{{ (user_info.user || null) !== null ? user_info.user.user_name_view : user.user_name_view }}</view>
                         <view v-if="id_bool && (user_info.user || null) !== null" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="number_code_style">ID:{{ user_info.user.number_code }}</view>
                     </view>

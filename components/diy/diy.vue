@@ -11,7 +11,7 @@
             </view>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="{'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
+                    <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
                         <!-- 基础组件 -->
                         <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
                         <componentDiyCarousel v-else-if="item.key == 'carousel'" :value="item.com_data"></componentDiyCarousel>
@@ -55,7 +55,9 @@
                 </scroll-view>
             </view>
         </view>
-        <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        <block v-if="is_show_footer !== '0'">
+            <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        </block>
     </view>
 </template>
 
@@ -164,6 +166,7 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
+                is_show_footer: '0',
                 tabs_home_id: this.propHomeId,
                 // 商品列表
                 goods_list: [],
@@ -197,20 +200,21 @@
                 // tabs选项卡数据过滤
                 // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
+                    is_show_footer: this.value.header.com_data.content.bottom_navigation_show,
                     key: get_math(),
                     header_data: this.value.header,
                     footer_data: this.value.footer,
                     diy_data: this.value.diy_data,
                     tabs_data: this.value.tabs_data,
                 });
-                uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
+                uni.setStorageSync('diy-data-' + this.tabs_home_id, this.value.diy_data);
             },
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
             },
             // 选项卡回调更新数据
             tabs_click_event(tabs_id, bool, params = {}) {
-                let new_data = this.value.diy_data;
+                let new_data = [];
                 this.setData({
                     is_tabs_type: bool,
                 });
@@ -257,7 +261,9 @@
                         this.get_goods_list(1);
                     }
                 } else {
-                    new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
+                    if (tabs_id == '') {
+                        new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
+                    }
                     // 先使用缓存数据展示
                     this.setData({
                         diy_data: new_data,
