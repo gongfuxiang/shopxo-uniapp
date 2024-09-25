@@ -55,7 +55,7 @@
                 </scroll-view>
             </view>
         </view>
-        <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        <componentDiyFooter v-if="is_show_footer" :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
     </view>
 </template>
 
@@ -164,6 +164,7 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
+                is_show_footer: false,
                 tabs_home_id: this.propHomeId,
                 // 商品列表
                 goods_list: [],
@@ -202,6 +203,7 @@
                     footer_data: this.value.footer,
                     diy_data: this.value.diy_data,
                     tabs_data: this.value.tabs_data,
+                    is_show_footer: this.value.header.com_data.content.bottom_navigation_show || false,
                 });
                 uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
             },
