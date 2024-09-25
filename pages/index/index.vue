@@ -278,9 +278,6 @@
             <block v-if="load_status == 1 && data_mode != 3">
                 <component-copyright></component-copyright>
             </block>
-
-            <!-- 底部菜单 -->
-            <componentDiyFooter key="" :value="app_tabber" @footer-click="footer_click_event"></componentDiyFooter>
         </view>
         <block v-if="load_status == 1 && data_mode != 3">
             <!-- 在线客服 -->
@@ -295,11 +292,15 @@
             <!-- app管理 -->
             <component-app-admin ref="app_admin"></component-app-admin>
         </block>
+
+        <!-- 公共 -->
+        <componentCommon @footer-height="footer_height_value_event"></componentCommon>
     </view>
 </template>
 
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentSearch from '@/components/search/search';
     import componentQuickNav from '@/components/quick-nav/quick-nav';
     import componentIconNav from '@/components/icon-nav/icon-nav';
@@ -321,7 +322,6 @@
     import componentMagicList from '@/components/magic-list/magic-list';
     import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentDiy from '@/components/diy/diy';
-    import componentDiyFooter from '@/components/diy/footer';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -349,8 +349,6 @@
                 cart_total: 0,
                 message_total: 0,
                 right_icon_list: [],
-                // 底部菜单
-                app_tabber: null,
                 // 首页数据模式
                 data_mode: 0,
                 // 增加随机数，避免无法监听数据列表内部数据更新
@@ -417,6 +415,7 @@
         },
 
         components: {
+            componentCommon,
             componentSearch,
             componentQuickNav,
             componentIconNav,
@@ -437,8 +436,7 @@
             componentBindingList,
             componentMagicList,
             componentAppAdmin,
-            componentDiy,
-            componentDiyFooter,
+            componentDiy
         },
         props: {},
 
@@ -509,7 +507,6 @@
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
-                        app_tabber: app.globalData.get_config('app_tabber'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -741,6 +738,11 @@
             search_icon_event(e) {
                 app.globalData.scan_handle();
             },
+            
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                console.log(value)
+            }
         },
     };
 </script>

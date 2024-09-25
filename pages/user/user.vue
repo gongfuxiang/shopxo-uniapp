@@ -166,10 +166,14 @@
 
         <!-- app管理 -->
         <component-app-admin ref="app_admin"></component-app-admin>
+
+        <!-- 公共 -->
+        <componentCommon></componentCommon>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentQuickNav from '@/components/quick-nav/quick-nav';
     import componentBadge from '@/components/badge/badge';
     import componentCopyright from '@/components/copyright/copyright';
@@ -212,6 +216,7 @@
         },
 
         components: {
+            componentCommon,
             componentQuickNav,
             componentBadge,
             componentCopyright,

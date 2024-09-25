@@ -55,9 +55,6 @@
     background: #fff;
     font-weight: 500;
 }
-.left-content-actual-list {
-    height: calc(100% - 100rpx);
-}
 
 /**
 *  右侧内容
@@ -209,9 +206,6 @@
 .nav-list-more .item {
     width: 20%;
     padding: 20rpx 0;
-}
-.right-content-actual {
-    padding-bottom: 105rpx;
 }
 .goods-right-content {
     width: calc(100% - 200rpx);

@@ -329,13 +329,6 @@
     var common_static_url = app.globalData.get_static_url('common');
     var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     export default {
-        props: {
-            // 来源类型
-            propSourceType: {
-                type: String,
-                default: '', // 默认主页面。当传入page时为子页面
-            },
-        },
         data() {
             return {
                 status_bar_height: status_bar_height,
@@ -417,13 +410,21 @@
             };
         },
 
+        props: {
+            // 来源类型
+            propSourceType: {
+                type: String,
+                default: '', // 默认主页面。当传入page时为子页面
+            },
+        },
+
         components: {
             componentNoData,
             componentGoodsList,
             componentNavBack,
             componentRealstoreCart,
             componentBottomLine,
-            componentPopup,
+            componentPopup
         },
 
         // 属性值改变监听

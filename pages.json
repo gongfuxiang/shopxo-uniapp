@@ -1682,6 +1682,12 @@
                 "pagePath": "pages/index/index"
             },
             {
+                "pagePath": "pages/goods-category/goods-category"
+            },
+            {
+                "pagePath": "pages/cart/cart"
+            },
+            {
                 "pagePath": "pages/user/user"
             }
         ]

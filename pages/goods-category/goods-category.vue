@@ -74,7 +74,7 @@
                                         </component-nav-more>
                                     </view>
                                     <!-- 二级导航 -->
-                                    <view v-if="category_one_subset_count > 0" :class="'left-nav '+(category_goods_is_show_cart_nav == 1 ? 'left-content-actual-list' : '')">
+                                    <view v-if="category_one_subset_count > 0" class="left-nav" :style="left_content_actual_style">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto">
                                             <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                                 <text>{{ $t('common.all') }}</text>
@@ -91,7 +91,7 @@
                                     <!-- 商品列表 -->
                                     <view :class="'goods-right-content bg-white pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view :class="'padding-left-sm ' + ((category_goods_is_show_cart_nav == 1 && common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
+                                            <view class="padding-left-sm" :style="right_content_actual_style">
                                                 <!-- 操作导航 -->
                                                 <view class="goods-list-top-nav bg-white">
                                                     <!-- 排序 -->
@@ -178,7 +178,7 @@
                                     <view class="left-nav ht-auto">
                                         <scroll-view :scroll-y="true" class="ht-auto" :show-scrollbar="false">
                                             <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
-                                                <view class="left-content-actual-list ht-auto padding-0">
+                                                <view class="ht-auto padding-0" :style="left_content_actual_style">
                                                     <block v-for="(item, index) in category_list" :key="index">
                                                         <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
                                                             <text>{{ item.name }}</text>
@@ -366,12 +366,16 @@
                 </block>
             </view>
         </view>
+
+        <!-- 公共 -->
+        <componentCommon @footer-height="footer_height_value_event" :propIsFooterSeat="false"></componentCommon>
     </view>
 </template>
 
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentSearch from '@/components/search/search';
     import componentNoData from '@/components/no-data/no-data';
@@ -453,10 +457,15 @@
                 // #ifdef H5
                 window_bottom_height: uni.getWindowInfo().windowBottom || 50,
                 // #endif
+                // 样式
+                left_content_actual_style: '',
+                right_content_actual_style: '',
+                footer_height_value: 0,
             };
         },
 
         components: {
+            componentCommon,
             componentGoodsBuy,
             componentSearch,
             componentNoData,
@@ -650,6 +659,9 @@
                                 }, 500);
                             }
 
+                            // 内容大小处理
+                            this.content_actual_size_handle();
+
                             // 是否首次记录
                             this.setData({
                                 is_first: 0,
@@ -681,6 +693,24 @@
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
+                });
+            },
+
+            // 内容实际大小处理
+            content_actual_size_handle() {
+                // 左侧
+                var left_style = '';
+                if(this.category_goods_is_show_cart_nav == 1) {
+                    left_style = 'height: calc(100% - 100rpx - '+this.footer_height_value+'px);';
+                }
+                // 右侧
+                var right_style = '';
+                if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 1) {
+                    right_style = 'padding-bottom: calc(105rpx + '+this.footer_height_value+'px);';
+                }
+                this.setData({
+                    left_content_actual_style: left_style,
+                    right_content_actual_style: right_style
                 });
             },
 
@@ -1346,6 +1376,14 @@
                 this.reset_scroll();
                 this.get_goods_list(1);
             },
+
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                this.setData({
+                    footer_height_value: value
+                });
+                this.content_actual_size_handle();
+            }
         },
     };
 </script>

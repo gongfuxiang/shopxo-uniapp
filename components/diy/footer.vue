@@ -4,7 +4,7 @@
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <view class="bottom-line-exclude">
                 <view class="flex-row jc-sa align-c wh padding-0">
-                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page" @tap="url_event">
+                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page || ''" @tap="url_event">
                         <view v-if="nav_style !== 2" class="img-content pr">
                             <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
                                 <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
@@ -48,7 +48,7 @@
         },
         created() {
             //隐藏tabbar
-            uni.hideTabBar();
+           // uni.hideTabBar();
         },
         mounted() {
             if ((this.value || null) !== null) {
@@ -59,23 +59,31 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
+                let nav_content = new_content.nav_content || [];
+                let page = app.globalData.current_page() || null;
+                let is_active = this.footerActiveIndex;
+                if(page != null) {
+                    for(var i in nav_content) {
+                        console.log(page, nav_content[i]['link'])
+                        if((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null && nav_content[i]['link']['page'] == '/'+page) {
+                            is_active = i;
+                        }
+                    }
+                }
                 this.setData({
-                    nav_content: new_content.nav_content || [],
+                    nav_content: nav_content,
                     nav_style: new_content.nav_style || 0,
+                    is_active: is_active,
                     default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
                     text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
                     style_container: common_styles_computer(new_style.common_style),
                 });
-                let footer_height = new_style.common_style.padding_top + new_style.common_style.padding_bottom + new_style.common_style.margin_top + new_style.common_style.margin_bottom + 50;
+                let footer_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom) + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom) + 40;
                 // #ifndef APP
                 // 底部菜单距离底部的安全距离
-                footer_height = footer_height + uni.getSystemInfoSync().statusBarHeight - 40;
+                footer_height += parseInt(uni.getSystemInfoSync().statusBarHeight);
                 // #endif
-                if (footer_height >= 70) {
-                    footer_height = footer_height;
-                } else {
-                    footer_height = 70;
-                }
+                console.log(footer_height)
                 this.$emit('footer-height', footer_height);
             },
             // 跳转链接
@@ -85,8 +93,8 @@
                 this.setData({
                     is_active: index,
                 });
-                // app.globalData.url_event(e);
-                this.$emit('footer-click', index, list_item);
+                app.globalData.url_event(e);
+                this.$emit('footer-tap', index, list_item);
             },
         },
     };

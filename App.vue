@@ -48,6 +48,14 @@
                 // 2.去lang里面各个文件去新增语言翻译
                 default_language: 'zh',
 
+                // 系统tabbar
+                system_tabbar: [
+                    '/pages/index/index',
+                    '/pages/goods-category/goods-category',
+                    '/pages/cart/cart',
+                    '/pages/user/user'
+                ],
+
                 // 公共配置
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
                 is_share_use_image: 1,
@@ -888,13 +896,17 @@
             /**
              * 底部菜单页面数、tabbar
              */
-            tabbar_pages_data() {
-                return [
-                    '/pages/index/index',
-                    '/pages/goods-category/goods-category',
-                    '/pages/cart/cart',
-                    '/pages/user/user'
-                ];
+            app_tabbar_pages() {
+                var temp_tabbar = this.data.system_tabbar;
+                var app_tabber = this.get_config('app_tabber') || null;
+                if(app_tabber != null && (app_tabber.content || null) != null && (app_tabber.content.nav_content || null) != null) {
+                    temp_tabbar = app_tabber.content.nav_content.map(function(v) {
+                        if((v.link || null) != null && (v.link.page || null) != null) {
+                            return v.link.page;
+                        }
+                    });
+                }
+                return temp_tabbar;
             },
 
             /**
@@ -905,11 +917,8 @@
                 if ((value || null) == null) {
                     return false;
                 }
-                var temp_tabbar_pages = this.tabbar_pages_data();
-                for (var i in temp_tabbar_pages) {
-                    if (temp_tabbar_pages[i] == value) {
-                        return true;
-                    }
+                if(this.data.system_tabbar.indexOf(value) != -1) {
+                    return true;
                 }
                 return false;
             },
@@ -1528,6 +1537,15 @@
                 // 是否关闭当前页面
                 var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
 
+                // 如果是底部菜单，非系统内置菜单则关闭当前页面并打开
+                var tabbar = this.app_tabbar_pages();
+                if(tabbar.indexOf(value) != -1 && this.data.system_tabbar.indexOf(value) == -1) {
+                    var page = this.prev_page();
+                    if(page != null && this.data.system_tabbar.indexOf(page) == -1) {
+                        is_redirect = true;
+                    }
+                }
+
                 // 调用打开url方法
                 this.url_open(value, is_redirect);
             },
@@ -1938,7 +1956,7 @@
                 var result = {
                     title: data.title || share_config.title || this.get_application_title(),
                     desc: data.desc || share_config.desc || this.get_application_describe(),
-                    path: data.path || this.tabbar_pages_data()[0],
+                    path: data.path || this.app_tabbar_pages()[0],
                     query: this.share_query_handle(data.query || ''),
                     img: data.img || share_config.pic || this.get_application_logo_square(),
                 };
@@ -2015,7 +2033,7 @@
                 var prev_page = this.prev_page();
                 if (prev_page == null) {
                     uni.switchTab({
-                        url: this.tabbar_pages_data()[0],
+                        url: this.app_tabbar_pages()[0],
                     });
                 } else {
                     uni.navigateBack();
@@ -2318,7 +2336,7 @@
                     var self = this;
                     self.weixin_privacy_setting_timer = setInterval(function () {
                         var page = self.get_page_url(false);
-                        if ('/' + page == self.tabbar_pages_data()[0]) {
+                        if ('/' + page == self.app_tabbar_pages()[0]) {
                             uni.getPrivacySetting({
                                 success: (res) => {
                                     if (res.needAuthorization) {
@@ -2772,7 +2790,7 @@
                         'pages/plugins/ask/index/index',
                     ];
                     // 当前tab页面
-                    if(this.tabbar_pages_data().indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {
+                    if(this.is_tabbar_pages('/'+url) != -1 || pages_always.indexOf(url) != -1) {
                         value = '';
                     }
                 }
@@ -2786,7 +2804,7 @@
                     // 读取语言
                     var value = i18n.t(key);
                     // 首页则读取当前应用名称
-                    if(this.tabbar_pages_data()[0] == '/'+url) {
+                    if(this.app_tabbar_pages()[0] == '/'+url) {
                         value = this.get_application_title();
                     }
                 }
