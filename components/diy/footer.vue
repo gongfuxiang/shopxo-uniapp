@@ -3,8 +3,8 @@
     <view class="footer-nav flex-row jc-c align-c">
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <view class="bottom-line-exclude">
-                <ul class="flex-row jc-sa align-c wh padding-0">
-                    <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page" @tap="url_event">
+                <view class="flex-row jc-sa align-c wh padding-0">
+                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page" @tap="url_event">
                         <view v-if="nav_style !== 2" class="img pr">
                             <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
                                 <img :src="item.img[0].url" class="wh-auto ht-auto" />
@@ -13,9 +13,9 @@
                                 <img :src="item.img_checked[0].url" class="wh-auto ht-auto" />
                             </view>
                         </view>
-                        <span v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</span>
-                    </li>
-                </ul>
+                        <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : defaviewt_text_color">{{ item.name }}</text>
+                    </view>
+                </view>
             </view>
         </view>
     </view>
