@@ -58,7 +58,7 @@
                                         <block v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
-                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient()">
+                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                         <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
@@ -88,7 +88,7 @@
                                     <block v-if="form.shop_type == 'text'">
                                         <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                     </block>
-                                    <view v-else class="round plr-6 ptb-5" :style="button_gradient()">
+                                    <view v-else class="round plr-6 ptb-5" :style="button_gradient">
                                         <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                     </view>
                                     <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
@@ -140,7 +140,7 @@
                                         <block v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
-                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient()">
+                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                         <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
@@ -253,6 +253,12 @@
                 score_style: '',
                 button_style: '',
             };
+        },
+        computed: {
+            // 按钮渐变色处理
+            button_gradient() {
+                return gradient_handle(this.new_style.shop_button_color, '180deg');
+            }
         },
         created() {
             this.setData({
@@ -417,15 +423,11 @@
             style_config(typeface, size, color, type) {
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'gradient') {
-                    style += this.button_gradient();
+                    style += this.button_gradient;
                 } else {
                     style += `color: ${color};`;
                 }
                 return style;
-            },
-            // 按钮渐变色处理
-            button_gradient() {
-                return gradient_handle(this.new_style.shop_button_color, '180deg');
             },
             // icon标志显示样式
             icon_style(item) {
