@@ -676,7 +676,7 @@
                 nav_more_timer: null,
                 nav_more_list: [],
                 // 默认首页地址
-                default_home_url: app.globalData.data.tabbar_pages[0],
+                default_home_url: app.globalData.app_tabbar_pages()[0],
                 // 导航收藏按钮
                 nav_favor_button_info: {
                     text: this.$t('goods-detail.goods-detail.dco1sc'),
@@ -1053,7 +1053,7 @@
                 var pages = getCurrentPages();
                 if (pages.length <= 1) {
                     uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
+                        url: app.globalData.app_tabbar_pages()[0],
                     });
                 } else {
                     uni.navigateBack();
@@ -1482,7 +1482,7 @@
                     uni.navigateBack();
                 } else {
                     // 默认首页
-                    var url = app.globalData.data.tabbar_pages[0];
+                    var url = app.globalData.app_tabbar_pages()[0];
 
                     // 是否有参数定义
                     if (this.is_opt_back == 1) {

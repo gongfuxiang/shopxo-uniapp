@@ -60,7 +60,7 @@
                     uni.navigateBack();
                 } else {
                     uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0]
+                        url: app.globalData.app_tabbar_pages()[0]
                     });
                 }
             }

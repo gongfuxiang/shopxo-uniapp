@@ -89,7 +89,7 @@
                 var pages = getCurrentPages();
                 if (pages.length <= 1) {
                     uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
+                        url: app.globalData.app_tabbar_pages()[0],
                     });
                 } else {
                     uni.navigateBack();

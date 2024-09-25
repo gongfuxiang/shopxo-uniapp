@@ -124,7 +124,7 @@
                                 app.globalData.remove_user_cache_event();
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    uni.switchTab({ url: app.globalData.data.tabbar_pages[0] });
+                                    uni.switchTab({ url: app.globalData.app_tabbar_pages()[0] });
                                 }, 1500);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

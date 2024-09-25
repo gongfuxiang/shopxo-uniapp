@@ -139,7 +139,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 signin_static_url: signin_static_url,
                 // 首页地址
-                home_page_url: app.globalData.data.tabbar_pages[0],
+                home_page_url: app.globalData.app_tabbar_pages()[0],
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

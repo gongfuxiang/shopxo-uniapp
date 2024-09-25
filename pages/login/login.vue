@@ -1653,7 +1653,7 @@
 
             // 成功返回
             success_event(e) {
-                var url = this.prev_page == null ? app.globalData.data.tabbar_pages[0] : this.prev_page;
+                var url = this.prev_page == null ? app.globalData.app_tabbar_pages()[0] : this.prev_page;
                 app.globalData.url_open(url, true);
             },
 

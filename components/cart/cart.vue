@@ -374,7 +374,7 @@
                     },
                 ],
                 // 首页地址
-                home_page_url: app.globalData.data.tabbar_pages[0],
+                home_page_url: app.globalData.app_tabbar_pages()[0],
                 // 猜你喜欢 参数
                 goods_list: [],
                 goods_bottom_line_status: false,

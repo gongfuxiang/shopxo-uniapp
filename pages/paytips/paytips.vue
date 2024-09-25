@@ -80,7 +80,7 @@
             params['msg'] = msg;
             this.setData({
                 params: params,
-                default_to_url: params.page || app.globalData.data.tabbar_pages[0],
+                default_to_url: params.page || app.globalData.app_tabbar_pages()[0],
             });
         },
 

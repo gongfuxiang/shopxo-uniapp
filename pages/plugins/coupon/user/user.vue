@@ -73,7 +73,7 @@
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 // 首页地址
-                home_page_url: app.globalData.data.tabbar_pages[0],
+                home_page_url: app.globalData.app_tabbar_pages()[0],
             };
         },
 

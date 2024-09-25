@@ -53,7 +53,7 @@
                             // 默认购物车
                             default :
                                 // 无购物车菜单则结束执行
-                                var tabbar = app.globalData.data.tabbar_pages;
+                                var tabbar = app.globalData.app_tabbar_pages();
                                 if(tabbar_pos === null) {
                                     tabbar_pos = tabbar.indexOf('/pages/cart/cart');
                                     if(tabbar_pos == -1) {
