@@ -1,6 +1,6 @@
 <template>
     <view v-if="(value || null) !== null" class="header-container" :style="roll_style + position">
-        <view class="bg-white pf top-0 left-0 right-0" :style="top_content_style">
+        <view class="bg-white" :style="top_content_style">
             <view class="header-content flex-row align-c padding-vertical-xs" style="height: 34px">
                 <view class="model-top flex-1">
                     <view class="roll pr z-i">
@@ -117,7 +117,7 @@
                 // #endif
                 this.setData({
                     form: this.value,
-                    position: new_style.up_slide_display == '1' ? 'position:absolute;' : 'position:relative;',
+                    position: new_style.up_slide_display == '1' ? 'position:fixed;' : 'position:relative;',
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
                     header_style: menuButtonInfo,
@@ -130,6 +130,7 @@
 <style lang="scss" scoped>
     .header-container {
         z-index: 2;
+        width: 100%;
         .model-top {
             .roll {
                 width: 100%;
