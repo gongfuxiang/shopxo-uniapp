@@ -194,41 +194,6 @@
                 new_style: {},
                 is_show_cart: false,
                 propIsCartParaCurve: true,
-                default_list: {
-                    title: '测试商品标题',
-                    min_original_price: '41.2',
-                    show_original_price_symbol: '￥',
-                    show_original_price_unit: '/ 台',
-                    min_price: '51',
-                    show_price_symbol: '￥',
-                    show_price_unit: '/ 台',
-                    sales_count: '1000',
-                    images: '',
-                    new_cover: [],
-                    plugins_view_icon_data: [
-                        {
-                            name: '满减活动',
-                            bg_color: '#EA3323',
-                            br_color: '',
-                            color: '#fff',
-                            url: '',
-                        },
-                        {
-                            name: '包邮',
-                            bg_color: '',
-                            br_color: '#EA3323',
-                            color: '#EA3323',
-                            url: '',
-                        },
-                        {
-                            name: '领劵',
-                            bg_color: '',
-                            br_color: '#EA9223',
-                            color: '#EA9223',
-                            url: '',
-                        },
-                    ],
-                },
                 list: [],
                 content_radius: '', // 圆角设置
                 content_img_radius: '', // 图片圆角设置
@@ -281,9 +246,6 @@
                 } else if (!isEmpty(this.form.data_auto_list) && this.form.data_type == '1') {
                     // 筛选商品并且筛选商品数组不为空
                     new_list = this.form.data_auto_list;
-                } else {
-                    // 为空的时候走默认数据
-                    new_list = Array(4).fill(this.default_list);
                 }
                 // 最外层不同风格下的显示
                 this.set_outer_class();
