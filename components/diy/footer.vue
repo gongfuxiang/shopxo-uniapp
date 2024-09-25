@@ -1,6 +1,6 @@
 <template>
     <!-- 底部导航 -->
-    <view v-if="value" class="footer-nav flex-row jc-c align-c">
+    <view v-if="(value || null) !== null" class="footer-nav flex-row jc-c align-c">
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <view class="bottom-line-exclude">
                 <view class="flex-row jc-sa align-c wh padding-0">
@@ -51,32 +51,32 @@
             uni.hideTabBar();
         },
         mounted() {
-            this.init();
+            if ((this.value || null) !== null) {
+                this.init();
+            }
         },
         methods: {
             init() {
-                if (this.value) {
-                    const new_content = this.value.content || {};
-                    const new_style = this.value.style || {};
-                    this.setData({
-                        nav_content: new_content.nav_content || [],
-                        nav_style: new_content.nav_style || 0,
-                        default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
-                        text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
-                        style_container: common_styles_computer(new_style.common_style),
-                    });
-                    let footer_height = new_style.common_style.padding_top + new_style.common_style.padding_bottom + new_style.common_style.margin_top + new_style.common_style.margin_bottom + 50;
-                    // #ifndef APP
-                    // 底部菜单距离底部的安全距离
-                    footer_height = footer_height + uni.getSystemInfoSync().statusBarHeight - 40;
-                    // #endif
-                    if (footer_height >= 70) {
-                        footer_height = footer_height;
-                    } else {
-                        footer_height = 70;
-                    }
-                    this.$emit('footer-height', footer_height);
+                const new_content = this.value.content || {};
+                const new_style = this.value.style || {};
+                this.setData({
+                    nav_content: new_content.nav_content || [],
+                    nav_style: new_content.nav_style || 0,
+                    default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
+                    text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
+                    style_container: common_styles_computer(new_style.common_style),
+                });
+                let footer_height = new_style.common_style.padding_top + new_style.common_style.padding_bottom + new_style.common_style.margin_top + new_style.common_style.margin_bottom + 50;
+                // #ifndef APP
+                // 底部菜单距离底部的安全距离
+                footer_height = footer_height + uni.getSystemInfoSync().statusBarHeight - 40;
+                // #endif
+                if (footer_height >= 70) {
+                    footer_height = footer_height;
+                } else {
+                    footer_height = 70;
                 }
+                this.$emit('footer-height', footer_height);
             },
             // 跳转链接
             url_event(e) {
