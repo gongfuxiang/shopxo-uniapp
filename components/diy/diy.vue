@@ -56,7 +56,7 @@
             </view>
         </view>
         <block v-if="is_show_footer == 1">
-            <componentDiyFooter :key="key" :propValue="footer_data.com_data" @footer-height="footer_height_computer" @footer-tap="footer_click_event"></componentDiyFooter>
+            <componentDiyFooter :key="key" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
         </block>
     </view>
 </template>
@@ -143,7 +143,7 @@
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 // 底部菜单导航高度计算
-                padding_footer_computer: 140,
+                footer_height_value: 140,
                 // 是否有选项卡
                 is_tabs: false,
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
@@ -190,18 +190,36 @@
         },
         computed: {
             diy_content_style() {
-                return this.header_top + `padding-bottom:${this.padding_footer_computer}rpx;`;
+                return this.header_top + `padding-bottom:${this.footer_height_value}rpx;`;
             },
         },
         created() {
+            // 初始化配置
+            this.init_config();
+
+            // 初始化
             this.init();
         },
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    // 是否显示底部菜单，如果当前地址已经存在系统底部菜单中则不显示当前diy页面自定义的底部菜单
+                    var is_show_footer = this.propValue.header.com_data.content.bottom_navigation_show;
+                    var is_tabbar = app.globalData.is_tabbar_pages();
+                    this.setData({
+                        is_show_footer: is_show_footer && !is_tabbar
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 初始化
             init() {
                 // tabs选项卡数据过滤
                 this.setData({
                     key: Math.random(),
-                    is_show_footer: this.propValue.header.com_data.content.bottom_navigation_show,
                     header_data: this.propValue.header,
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
@@ -209,9 +227,14 @@
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
-            footer_height_computer(number) {
-                this.padding_footer_computer = number * 2;
+
+            // 底部菜单高度
+            footer_height_value_event(number) {
+                this.setData({
+                    footer_height_value: number * 2
+                });
             },
+
             // 选项卡回调更新数据
             tabs_click_event(tabs_id, bool, params = {}) {
                 let new_data = [];
@@ -270,10 +293,12 @@
                     });
                 }
             },
+
             // 滚动加载
             scroll_lower(e) {
                 this.get_goods_list();
             },
+
             // 查询商品
             get_goods_list(is_mandatory) {
                 // 分页是否还有数据
@@ -374,11 +399,7 @@
                         });
                     },
                 });
-            },
-            // 底部导航菜单
-            footer_click_event(data) {
-                console.log(data);
-            },
+            }
         },
     };
 </script>

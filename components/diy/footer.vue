@@ -63,7 +63,6 @@
         methods: {
             // 初始化
             init() {
-                console.log(this.propValue, 2)
                 if ((this.propValue || null) !== null) {
                     let new_content = this.propValue.content || {};
                     let new_style = this.propValue.style || {};

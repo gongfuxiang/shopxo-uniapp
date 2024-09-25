@@ -1,7 +1,9 @@
 <template>
     <view>
-        <componentDiyFooter :key="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></componentDiyFooter>
-        <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
+        <block v-if="is_tabbar">
+            <componentDiyFooter :key="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></componentDiyFooter>
+            <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
+        </block>
     </view>
 </template>
 <script>
@@ -11,6 +13,7 @@
         data() {
             return {
                 key: '',
+                is_tabbar: false,
                 app_tabber: null,
                 footer_height_value: 0,
             };
@@ -43,10 +46,21 @@
             // 初始化
             init() {
                 // 初始数据
-                this.setData({
-                    key: Math.random(),
-                    app_tabber: app.globalData.get_config('app_tabber')
-                });
+                var is_tabbar = app.globalData.is_tabbar_pages();
+                if(is_tabbar) {
+                    this.setData({
+                        is_tabbar: is_tabbar,
+                        key: Math.random(),
+                        app_tabber: app.globalData.get_config('app_tabber'),
+                        
+                    });
+                } else {
+                    this.setData({
+                        is_tabbar: is_tabbar
+                    });
+                }
+                
+                console.log(is_tabbar)
             },
 
             // 底部菜单高度

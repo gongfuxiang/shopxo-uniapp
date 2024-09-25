@@ -545,7 +545,7 @@
             login_confirm_tips_modal(self, object, method, params) {
                 // 是否tabbar页面
                 var page = self.current_page(false);
-                var is_tabbar = self.is_tabbar_pages('/'+page);
+                var is_tabbar = self.is_system_tabbar_pages('/'+page);
                 // 非初始化 并且 非tabbar页面则关闭当前页面并跳转登录页面
                 if(method == 'init' && !is_tabbar) {
                     uni.redirectTo({
@@ -913,14 +913,30 @@
             },
 
             /**
-             * 当前地址是否存在tabbar中
+             * 当前地址是否存在底部菜单tabbar中
              */
-            is_tabbar_pages(url) {
-                var value = this.get_url_main_part(url);
+            is_tabbar_pages(url = null) {
+                return this.is_tabbar_pages_handle(this.app_tabbar_pages(), url);
+            },
+            
+            /**
+             * 当前地址是否存在系统tabbar中
+             */
+            is_system_tabbar_pages(url = null) {
+                return this.is_tabbar_pages_handle(this.data.system_tabbar, url);
+            },
+            
+            /**
+             * 当前地址是否存在tabbar中
+             * pages  tabbar页面
+             * url    url地址
+             */
+            is_tabbar_pages_handle(pages, url = null) {
+                var value = this.get_url_main_part((url == null) ? '/'+this.current_page(false) : url);
                 if ((value || null) == null) {
                     return false;
                 }
-                if(this.data.system_tabbar.indexOf(value) != -1) {
+                if(pages.indexOf(value) != -1) {
                     return true;
                 }
                 return false;
@@ -940,7 +956,7 @@
                             break;
                         // 内部页面
                         case 1:
-                            if (this.is_tabbar_pages(value)) {
+                            if (this.is_system_tabbar_pages(value)) {
                                 var temp = value.split('?');
                                 if (temp.length > 1 && (temp[1] || null) != null) {
                                     value = temp[0];
@@ -1607,7 +1623,7 @@
                         // 默认切换或跳转页面
                     } else {
                         if (this.is_page(value)) {
-                            if (this.is_tabbar_pages(value)) {
+                            if (this.is_system_tabbar_pages(value)) {
                                 var temp = value.split('?');
                                 if (temp.length > 1 && (temp[1] || null) != null) {
                                     value = temp[0];
@@ -2795,7 +2811,7 @@
                         'pages/plugins/ask/index/index',
                     ];
                     // 当前tab页面
-                    if(this.is_tabbar_pages('/'+url) != -1 || pages_always.indexOf(url) != -1) {
+                    if(this.is_system_tabbar_pages('/'+url) != -1 || pages_always.indexOf(url) != -1) {
                         value = '';
                     }
                 }

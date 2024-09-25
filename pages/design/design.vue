@@ -21,10 +21,14 @@
         <view v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <componentCommon></componentCommon>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentLayout from "@/components/layout/layout";
     import componentSearch from "@/components/search/search";
     import componentNoData from "@/components/no-data/no-data";
@@ -46,6 +50,7 @@
         },
 
         components: {
+            componentCommon,
             componentLayout,
             componentSearch,
             componentNoData,
