@@ -182,6 +182,9 @@
                 // 商品数据缓存key
                 cache_goods_data_key: 'cache_goods_data_key',
 
+                // 页面设计数据缓存key
+                cache_design_data_key: 'cache_design_data_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 

@@ -138,25 +138,6 @@
                             });
                             uni.setNavigationBarTitle({ title: blog_main_name + this.$t('common.search') });
 
-                            // 基础自定义分享
-                            var info = this.data_base;
-                            if ((this.nav_active_value || 0) != 0 && this.category.length > 0) {
-                                for (var i in this.category) {
-                                    if (this.nav_active_value == this.category[i]['id']) {
-                                        info = this.category[i];
-                                        break;
-                                    }
-                                }
-                            }
-                            this.setData({
-                                share_info: {
-                                    title: info.seo_title || this.data_base.application_name,
-                                    desc: info.seo_desc,
-                                    path: '/pages/plugins/blog/search/search',
-                                    query: 'id=' + this.nav_active_value + '&keywords=' + this.search_keywords_value,
-                                },
-                            });
-
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
@@ -166,9 +147,6 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
-
-                        // 分享菜单处理
-                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
@@ -189,6 +167,9 @@
                         return false;
                     }
                 }
+
+                // 基础自定义分享
+                this.share_info_handle();
 
                 // 是否加载中
                 if (this.data_is_loading == 1) {
@@ -277,6 +258,31 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+
+            // 分享设置处理
+            share_info_handle() {
+                // 基础自定义分享
+                var info = this.data_base || {};
+                if ((this.nav_active_value || 0) != 0 && this.category.length > 0) {
+                    for (var i in this.category) {
+                        if (this.nav_active_value == this.category[i]['id']) {
+                            info = this.category[i];
+                            break;
+                        }
+                    }
+                }
+                this.setData({
+                    share_info: {
+                        title: info.seo_title || this.data_base.application_name,
+                        desc: info.seo_desc,
+                        path: '/pages/plugins/blog/search/search',
+                        query: 'id=' + this.nav_active_value + '&keywords=' + this.search_keywords_value,
+                    },
+                });
+
+                // 分享菜单处理
+                app.globalData.page_share_handle(this.share_info);
             },
 
             // 滚动加载

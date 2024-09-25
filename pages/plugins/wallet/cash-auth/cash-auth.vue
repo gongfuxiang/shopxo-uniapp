@@ -33,7 +33,7 @@
                 <view class="margin-top-lg cr-base">
                     <view class="fw-b text-size">{{$t('cash-auth.cash-auth.0j8388')}}</view>
                     <view class="text-size-xs">
-                        <view>{{$t('cash-auth.cash-auth.59iipw')}}<text class="cr-red">{{$t('cash-auth.cash-auth.8qcte7')}}</text>{{$t('cash-auth.cash-auth.t8y3r7')}}<text class="cr-red">{{$t('login.login.np9177')}}</text>{{$t('cash-auth.cash-auth.5wbuuy')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.59iipw')}}<text class="cr-red" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">{{$t('cash-auth.cash-auth.8qcte7')}}</text>{{$t('cash-auth.cash-auth.t8y3r7')}}<text class="cr-red" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">{{$t('login.login.np9177')}}</text>{{$t('cash-auth.cash-auth.5wbuuy')}}</view>
                         <view>{{$t('cash-auth.cash-auth.r569wz')}}</view>
                         <view>{{$t('cash-auth.cash-auth.35837l')}}</view>
                         <view>{{$t('cash-auth.cash-auth.q2a553')}}</view>

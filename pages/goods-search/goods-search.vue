@@ -392,20 +392,6 @@
                             });
                             app.globalData.is_login_check(res.data, this, 'get_data');
                         }
-
-                        // 基础自定义分享
-                        var category_id = this.params.category_id || 0;
-                        var brand = this.params.brand || 0;
-                        var keywords = this.params.keywords || '';
-                        this.setData({
-                            share_info: {
-                                path: '/pages/goods-search/goods-search',
-                                query: 'category_id=' + category_id + '&brand=' + brand + '&keywords=' + keywords
-                            }
-                        });
-
-                        // 分享菜单处理
-                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
@@ -426,6 +412,9 @@
                         return false;
                     }
                 }
+
+                // 基础自定义分享
+                this.share_info_handle();
 
                 // 是否加载中
                 if (this.data_is_loading == 1) {
@@ -563,6 +552,22 @@
                 post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
 
                 return post_data;
+            },
+
+            // 分享设置处理
+            share_info_handle() {
+                var category_id = this.params.category_id || 0;
+                var brand = this.params.brand || 0;
+                var keywords = this.post_data.wd || '';
+                this.setData({
+                    share_info: {
+                        path: '/pages/goods-search/goods-search',
+                        query: 'category_id=' + category_id + '&brand=' + brand + '&keywords=' + keywords
+                    }
+                });
+
+                // 分享菜单处理
+                app.globalData.page_share_handle(this.share_info);
             },
 
             // 滚动加载
