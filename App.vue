@@ -1529,28 +1529,30 @@
 
             // 链接地址事件
             url_event(e) {
-                // 需要打开的url地址
-                var value = e.currentTarget.dataset.value || null;
+                if((e.currentTarget || null) != null && (e.currentTarget.dataset || null) != null) {
+                    // 需要打开的url地址
+                    var value = e.currentTarget.dataset.value || null;
 
-                // 是否阻止商品页面打开
-                if (this.data.is_forbid_to_goods_detail == 1 && value.indexOf('/pages/goods-detail/goods-detail') != -1) {
-                    return false;
-                }
-
-                // 是否关闭当前页面
-                var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
-
-                // 如果是底部菜单，非系统内置菜单则关闭当前页面并打开
-                var tabbar = this.app_tabbar_pages();
-                if(tabbar.indexOf(value) != -1 && this.data.system_tabbar.indexOf(value) == -1) {
-                    var page = this.prev_page();
-                    if(page != null && this.data.system_tabbar.indexOf(page) == -1) {
-                        is_redirect = true;
+                    // 是否阻止商品页面打开
+                    if (this.data.is_forbid_to_goods_detail == 1 && value.indexOf('/pages/goods-detail/goods-detail') != -1) {
+                        return false;
                     }
-                }
 
-                // 调用打开url方法
-                this.url_open(value, is_redirect);
+                    // 是否关闭当前页面
+                    var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
+
+                    // 如果是底部菜单，非系统内置菜单则关闭当前页面并打开
+                    var tabbar = this.app_tabbar_pages();
+                    if(tabbar.indexOf(value) != -1 && this.data.system_tabbar.indexOf(value) == -1) {
+                        var page = this.prev_page();
+                        if(page != null && this.data.system_tabbar.indexOf(page) == -1) {
+                            is_redirect = true;
+                        }
+                    }
+
+                    // 调用打开url方法
+                    this.url_open(value, is_redirect);
+                }
             },
 
             // 是否为url地址

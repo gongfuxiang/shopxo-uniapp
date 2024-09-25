@@ -329,7 +329,7 @@
                                 </view>
                             </block>
                             <!-- 购物车底部导航 -->
-                            <view class="botton-nav round pa oh flex-row jc-sb align-c" :style="cart_status ? 'z-index:5;' : ''">
+                            <view class="botton-nav round pa oh flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
                                 <view class="flex-row align-c flex-1 flex-width">
                                     <view class="cart pr cp top-sm" @tap="cart_event">
                                         <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
@@ -460,6 +460,7 @@
                 // 样式
                 left_content_actual_style: '',
                 right_content_actual_style: '',
+                botton_nav_style: '',
                 footer_height_value: 0,
             };
         },
@@ -710,7 +711,8 @@
                 }
                 this.setData({
                     left_content_actual_style: left_style,
-                    right_content_actual_style: right_style
+                    right_content_actual_style: right_style,
+                    botton_nav_style: 'bottom: calc(20rpx + '+this.footer_height_value+'px);'
                 });
             },
 

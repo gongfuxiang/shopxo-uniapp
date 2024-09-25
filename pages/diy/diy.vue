@@ -75,6 +75,9 @@
                         // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
                         params['is_cache'] = 0;
                     }
+                } else {
+                    // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
+                    params['is_cache'] = 0;
                 }
                 uni.request({
                     url: app.globalData.get_request_url("index", "diy"),

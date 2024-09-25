@@ -26,13 +26,29 @@
         },
         // 页面被展示
         created: function () {
-            this.setData({
-                key: Math.random(),
-                app_tabber: app.globalData.get_config('app_tabber')
-            });
+            // 初始化配置
+            this.init_config();
         },
-        
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    // 初始化数据
+                    this.init();
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 初始化
+            init() {
+                // 初始数据
+                this.setData({
+                    key: Math.random(),
+                    app_tabber: app.globalData.get_config('app_tabber')
+                });
+            },
+
             // 底部菜单高度
             footer_height_value_event(value) {  
                 this.setData({
