@@ -438,7 +438,7 @@
             componentMagicList,
             componentAppAdmin,
             componentDiy,
-            componentDiyFooter
+            componentDiyFooter,
         },
         props: {},
 

@@ -86,7 +86,7 @@
                                         <template v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
-                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient()">
+                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                     </view>
@@ -149,7 +149,7 @@
                                         <template v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
-                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient()">
+                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                     </view>
@@ -237,6 +237,10 @@
             icon_time_check() {
                 return `${this.time_bg};line-height: 1;background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;`;
             },
+            // 按钮渐变色处理
+            button_gradient() {
+                return gradient_handle(this.new_style.shop_button_color, '180deg');
+            }
         },
         created() {
             this.setData({
@@ -444,15 +448,11 @@
             style_config(typeface, size, color, type) {
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'gradient') {
-                    style += this.button_gradient();
+                    style += this.button_gradient;
                 } else {
                     style += `color: ${color};`;
                 }
                 return style;
-            },
-            // 按钮渐变色处理
-            button_gradient() {
-                return gradient_handle(this.new_style.shop_button_color, '180deg');
             },
             get_multicolumn_columns_width() {
                 let model_number = this.form.carousel_col;
