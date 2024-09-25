@@ -55,7 +55,8 @@
                 </scroll-view>
             </view>
         </view>
-        <componentDiyFooter v-if="is_show_footer" :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        {{ is_show_footer }}
+        <componentDiyFooter :key="key" :is-show-footer="is_show_footer" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
     </view>
 </template>
 
@@ -164,7 +165,7 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
-                is_show_footer: false,
+                is_show_footer: '0',
                 tabs_home_id: this.propHomeId,
                 // 商品列表
                 goods_list: [],
@@ -198,12 +199,12 @@
                 // tabs选项卡数据过滤
                 // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
+                    is_show_footer: this.value.header.com_data.content.bottom_navigation_show,
                     key: get_math(),
                     header_data: this.value.header,
                     footer_data: this.value.footer,
                     diy_data: this.value.diy_data,
                     tabs_data: this.value.tabs_data,
-                    is_show_footer: this.value.header.com_data.content.bottom_navigation_show || false,
                 });
                 uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
             },
