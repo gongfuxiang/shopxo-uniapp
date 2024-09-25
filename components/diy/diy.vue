@@ -207,7 +207,7 @@
                     diy_data: this.value.diy_data,
                     tabs_data: this.value.tabs_data,
                 });
-                uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
+                uni.setStorageSync('diy-data-' + this.tabs_home_id, this.value.diy_data);
             },
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
