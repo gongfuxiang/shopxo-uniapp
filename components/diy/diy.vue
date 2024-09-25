@@ -55,8 +55,9 @@
                 </scroll-view>
             </view>
         </view>
-        {{ is_show_footer }}
-        <componentDiyFooter :key="key" :is-show-footer="is_show_footer" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        <block v-if="is_show_footer !== '0'">
+            <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        </block>
     </view>
 </template>
 

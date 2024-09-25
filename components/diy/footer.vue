@@ -1,21 +1,19 @@
 <template>
     <!-- 底部导航 -->
-    <view v-if="isShowFooter == '1'">
-        <view v-if="(value || null) !== null" class="footer-nav flex-row jc-c align-c">
-            <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
-                <view class="bottom-line-exclude">
-                    <view class="flex-row jc-sa align-c wh padding-0">
-                        <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page" @tap="url_event">
-                            <view v-if="nav_style !== 2" class="img-content pr">
-                                <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
-                                    <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
-                                </view>
-                                <view class="img-item pa border-radius-xs animate-linear" :class="is_active == index ? 'active' : ''">
-                                    <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
-                                </view>
+    <view v-if="(value || null) !== null" class="footer-nav flex-row jc-c align-c">
+        <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
+            <view class="bottom-line-exclude">
+                <view class="flex-row jc-sa align-c wh padding-0">
+                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page" @tap="url_event">
+                        <view v-if="nav_style !== 2" class="img-content pr">
+                            <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
+                                <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
                             </view>
-                            <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</text>
+                            <view class="img-item pa border-radius-xs animate-linear" :class="is_active == index ? 'active' : ''">
+                                <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                            </view>
                         </view>
+                        <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</text>
                     </view>
                 </view>
             </view>
@@ -35,10 +33,6 @@
             footerActiveIndex: {
                 type: Number,
                 default: 0,
-            },
-            isShowFooter: {
-                type: String,
-                default: '1',
             },
         },
         data() {
