@@ -1,5 +1,5 @@
 <template>
-    <view :style="style_container">
+    <view v-if="!isEmpty(list)" :style="style_container">
         <view class="flex-col gap-10">
             <view v-if="form.head_state == '1'" class="seckill-head flex-row align-c jc-sb oh" :style="seckill_head_style">
                 <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
@@ -183,18 +183,6 @@
             return {
                 form: {},
                 new_style: {},
-                default_list: {
-                    title: '测试商品标题',
-                    min_original_price: '41.2',
-                    show_original_price_symbol: '￥',
-                    show_original_price_unit: '/ 台',
-                    min_price: '51',
-                    show_price_symbol: '￥',
-                    show_price_unit: '/ 台',
-                    sales_count: '1000',
-                    images: '',
-                    new_cover: [],
-                },
                 time_bg: '',
                 slide_active_color: '',
                 seckill_head_style: '',
@@ -263,8 +251,6 @@
                 if (data && !isEmpty(data.current)) {
                     if (!isEmpty(data.current.goods)) {
                         new_list = data.current.goods;
-                    } else {
-                        new_list = Array(4).fill(this.default_list);
                     }
                     const { status, time_first_text } = data.current.time;
                     this.setData({
@@ -282,8 +268,6 @@
                     this.setData({
                         intervalId: setInterval(this.updateCountdown, 1000),
                     });
-                } else {
-                    new_list = Array(4).fill(this.default_list);
                 }
                 this.setData({
                     time_bg: this.get_time_bg(),

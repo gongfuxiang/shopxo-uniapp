@@ -50,7 +50,7 @@
                 tabs_data: {},
 
                 // 是否滑动置顶
-                top_up: 0,
+                top_up: '0',
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
                 tabs_top: 'padding-top:' + (bar_height + 34 + 5 + 12) + 'px;',

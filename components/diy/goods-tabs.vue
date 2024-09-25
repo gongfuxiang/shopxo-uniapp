@@ -1,7 +1,7 @@
 <template>
-    <view :style="style_container">
-        <componentDiyModulesTabsView :value="goods_tabs" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-        <view class="padding-top">
+    <view class="overflow-unset" :style="style_container">
+        <componentDiyModulesTabsView :value="goods_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <view class="padding-top oh">
             <componentGoodsList :key="key" :value="goods_tabs" :is-common-style="false"></componentGoodsList>
         </view>
     </view>
@@ -29,6 +29,7 @@
                 style_container: '',
                 goods_tabs: {},
                 key: 1,
+                top_up: '0',
             };
         },
         created() {
@@ -36,8 +37,10 @@
         },
         methods: {
             init() {
+                const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
                 let new_data = JSON.parse(JSON.stringify(this.value));
+                this.top_up = new_content.tabs_top_up;
                 // 产品的值
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
                 new_data.content.category = new_data.content.tabs_list[0].category;
@@ -71,4 +74,8 @@
     };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+    .overflow-unset {
+        overflow: unset !important;
+    }
+</style>
