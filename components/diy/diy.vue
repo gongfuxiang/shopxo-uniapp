@@ -148,7 +148,15 @@
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
                 is_tabs_type: true,
 
-                header_top: bar_height + 120,
+                // #ifdef MP
+                header_top: 'padding-top:' + (bar_height + 154) + 'rpx;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                header_top: 'padding-top:' + (bar_height + 158) + 'rpx;',
+                // #endif
+                // #ifdef APP
+                header_top: 'padding-top:' + (bar_height + 144) + 'rpx;',
+                // #endif
 
                 header_data: {},
                 footer_data: {},
@@ -177,7 +185,7 @@
         },
         computed: {
             diy_content_style() {
-                return `padding-top:${this.header_top}rpx;padding-bottom:${this.padding_footer_computer}rpx`;
+                return this.header_top + `padding-bottom:${this.padding_footer_computer}rpx;`;
             },
         },
         created() {

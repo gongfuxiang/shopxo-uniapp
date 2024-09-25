@@ -1,6 +1,6 @@
 <template>
     <view class="header-container" :style="roll_style + position">
-        <view class="bg-white pf top-0 left-0 right-0 margin-bottom-sm" :style="top_content_style">
+        <view class="bg-white pf top-0 left-0 right-0 padding-bottom" :style="top_content_style">
             <view class="header-content flex-row align-c">
                 <view class="model-top flex-1">
                     <view class="roll pr z-i">
@@ -111,7 +111,8 @@
 
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 const custom = uni.getMenuButtonBoundingClientRect();
-                menuButtonInfo = `max-width:calc(100% - ${custom.width + 130}rpx);`;
+                console.log(custom);
+                menuButtonInfo = `max-width:calc(100% - ${custom.width + 30}px);`;
                 // #endif
                 this.setData({
                     form: this.value,
