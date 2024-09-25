@@ -102,7 +102,7 @@
                 type: Object,
                 default: () => ({}),
             },
-            propHomeId: {
+            propDataId: {
                 type: [String, Number],
                 default: '',
             },
@@ -155,7 +155,6 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
-                tabs_home_id: this.propHomeId,
                 // 商品列表
                 goods_list: [],
                 goods_total: 0,
@@ -173,6 +172,8 @@
                 // 判断数据是否在加载中
                 data_is_loading: 0,
                 key: '',
+                // 缓存key
+                cache_key: app.globalData.data.cache_diy_data_key
             };
         },
         computed: {
@@ -186,7 +187,6 @@
         methods: {
             init() {
                 // tabs选项卡数据过滤
-                // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
                     key: get_math(),
                     header_data: this.value.header,
@@ -194,7 +194,7 @@
                     diy_data: this.value.diy_data,
                     tabs_data: this.value.tabs_data,
                 });
-                uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
+                uni.setStorageSync(this.cache_key + this.propDataId, this.value.diy_data);
             },
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
@@ -210,7 +210,7 @@
                     id: tabs_id,
                 };
                 if (tabs_id) {
-                    new_data = uni.getStorageSync('diy-data-' + tabs_id) || [];
+                    new_data = uni.getStorageSync(this.cache_key + tabs_id) || [];
                     if (new_data.length > 0) {
                         // 先使用缓存数据展示
                         this.setData({
@@ -231,7 +231,7 @@
                                 const data = res.data.data.data;
                                 if (res.data.code == 0) {
                                     new_data = data?.config.diy_data || [];
-                                    uni.setStorageSync('diy-data-' + tabs_id, new_data);
+                                    uni.setStorageSync(this.cache_key + tabs_id, new_data);
                                     this.setData({
                                         diy_data: new_data,
                                     });
@@ -248,7 +248,7 @@
                         this.get_goods_list(1);
                     }
                 } else {
-                    new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
+                    new_data = uni.getStorageSync(this.cache_key + this.propDataId) || [];
                     // 先使用缓存数据展示
                     this.setData({
                         diy_data: new_data,
