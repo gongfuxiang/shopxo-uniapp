@@ -159,10 +159,7 @@
 
 <script>
     const app = getApp();
-    import {
-        common_styles_computer,
-        gradient_computer
-    } from '@/common/js/common/common.js';
+    import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -189,7 +186,7 @@
                     url_3: '',
                 },
                 // 首页地址
-                home_page_url: app.globalData.data.tabbar_pages[0],
+                home_page_url: app.globalData.data.app_tabbar_pages()[0],
             };
         },
         created() {
@@ -201,18 +198,27 @@
                 const new_style = this.value.style || {};
                 const temp_theme = new_content.theme;
                 // 主题
-                const new_background = gradient_computer({
-                    color_list: new_style.background,
-                    direction: new_style.direction
-                }, false);
-                const new_background_inside = gradient_computer({
-                    color_list: new_style.background_inside,
-                    direction: new_style.direction_inside
-                }, false);
-                const new_btn_background = gradient_computer({
-                    color_list: new_style.btn_background,
-                    direction: new_style.btn_direction
-                }, false);
+                const new_background = gradient_computer(
+                    {
+                        color_list: new_style.background,
+                        direction: new_style.direction,
+                    },
+                    false
+                );
+                const new_background_inside = gradient_computer(
+                    {
+                        color_list: new_style.background_inside,
+                        direction: new_style.direction_inside,
+                    },
+                    false
+                );
+                const new_btn_background = gradient_computer(
+                    {
+                        color_list: new_style.btn_background,
+                        direction: new_style.btn_direction,
+                    },
+                    false
+                );
                 this.setData({
                     content_title: new_content.content_title || '',
                     content_desc: new_content.content_desc || '',
@@ -224,39 +230,39 @@
                         name_color: new_style.name_color,
                         // 判断是否向对象添加desc_color属性
                         ...(!['1', '5', '6', '7'].includes(temp_theme) && {
-                            desc_color: new_style.desc_color
+                            desc_color: new_style.desc_color,
                         }),
                         ...(!['1', '2', '4', '5', '6', '7'].includes(temp_theme) && {
-                            limit_send_count: new_style.limit_send_count
+                            limit_send_count: new_style.limit_send_count,
                         }),
                         ...(!['5', '6', '7'].includes(temp_theme) && {
-                            btn_background: new_btn_background
+                            btn_background: new_btn_background,
                         }),
                         btn_color: new_style.btn_color,
                         ...(!['2'].includes(temp_theme) && {
-                            background: new_background
+                            background: new_background,
                         }),
                         ...(!['1', '2', '5', '7'].includes(temp_theme) && {
-                            background_inside: new_background_inside
+                            background_inside: new_background_inside,
                         }),
                         spacing: new_style.spacing + 'px',
                         ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
-                            type_background: new_style.type_background
+                            type_background: new_style.type_background,
                         }),
                         ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
-                            type_color: new_style.type_color
+                            type_color: new_style.type_color,
                         }),
                         ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
-                            content_title_color: new_style.content_title_color
+                            content_title_color: new_style.content_title_color,
                         }),
                         ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
-                            content_desc_color: new_style.content_desc_color
+                            content_desc_color: new_style.content_desc_color,
                         }),
                         ...(['3'].includes(temp_theme) && {
-                            border_style: new_style.background[0].color
+                            border_style: new_style.background[0].color,
                         }),
                         ...(['7'].includes(temp_theme) && {
-                            theme_7_background: new_style.common_style.color_list[0].color
+                            theme_7_background: new_style.common_style.color_list[0].color,
                         }),
                     },
                     theme_bg_img: {
@@ -539,7 +545,8 @@
                 display: flex;
                 align-items: center;
 
-                &.long-name {}
+                &.long-name {
+                }
 
                 &.short-name {
                     height: 132rpx;
