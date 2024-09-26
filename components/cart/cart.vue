@@ -98,7 +98,7 @@
                                                     <!-- 数量 -->
                                                     <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="cart-number-content pa tc oh round br">
                                                         <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="0">-</view>
-                                                        <input @blur="goods_buy_number_blur" class="tc cr-grey fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
+                                                        <input @blur="goods_buy_number_blur" class="number-input tc cr-grey fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
                                                         <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="1">+</view>
                                                     </view>
                                                 </view>
@@ -112,7 +112,7 @@
 
                     <!-- 空购物车 -->
                     <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="cart-no-data-box tc">
-                        <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
+                        <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg image"></image>
                         <view class="cr-grey text-size-sm">{{ data_list_loding_msg || $t('cart.cart.j8on74') }}</view>
                         <view class="margin-top-xxl">
                             <button class="bg-main br-main cr-white text-size-md round" type="default" size="mini" hover-class="none" @tap="no_cart_data_btn_event">{{no_cart_data_btn_text}}</button>
@@ -143,7 +143,7 @@
                     <block v-if="data_list.length > 0">
                         <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')">
                             <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
-                                <button class="bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                                <button class="exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
                                         <uni-icons type="phone" size="14" color="#fff" />
                                     </view>
@@ -185,7 +185,7 @@
                                 </view>
                             </view>
                             <view class="cart-nav-submit">
-                                <button class="bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                                <button class="nav-btn bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
                                     {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
                                 </button>
                             </view>
@@ -1357,14 +1357,14 @@
         width: 60rpx;
         font-weight: bold;
     }
-    .cart-number-content input {
+    .cart-number-content .number-input {
         width: 30px;
         border-width: 0 1px;
         border-style: solid;
         border-color: #efefef;
     }
     .cart-number-content .number-submit,
-    .cart-number-content input {
+    .cart-number-content .number-input {
         padding: 0;
         height: 50rpx;
         line-height: 50rpx;
@@ -1376,7 +1376,7 @@
     .cart-no-data-box {
         padding: 140rpx 0 80rpx 0;
     }
-    .cart-no-data-box image {
+    .cart-no-data-box .image {
         width: 160rpx;
     }
 
@@ -1392,12 +1392,6 @@
         bottom: var(--window-bottom);
         /* #endif */
     }
-    .cart-nav-submit button {
-        font-size: 32rpx;
-        padding: 0 32rpx;
-        height: 70rpx;
-        line-height: 70rpx;
-    }
     .cart-nav-base {
         width: calc(75% - 20rpx);
     }
@@ -1405,7 +1399,11 @@
         padding: 20rpx 24rpx;
         white-space: nowrap;
     }
-    .cart-nav-submit button {
+    .cart-nav-submit .nav-btn {
+        font-size: 32rpx;
+        padding: 0 32rpx;
+        height: 70rpx;
+        line-height: 70rpx;
         border-radius: 0;
     }
     .cart-buy-nav .price {
@@ -1429,7 +1427,7 @@
     /*
     * 展示型
     */
-    .cart-exhibition-mode button {
+    .cart-exhibition-mode .exhibition-btn {
         line-height: 80rpx;
     }
     .cart-exhibition-mode-data .items {
