@@ -2,13 +2,13 @@
     <view class="overflow-unset" :style="style_container">
         <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
-            <componentGoodsList :key="key" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
+            <componentGoodsList v-if="hackReset" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer, get_math } from '@/common/js/common/common.js';
+    import { common_styles_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list';
     export default {
@@ -27,8 +27,8 @@
         data() {
             return {
                 style_container: '',
+                hackReset: true,
                 goods_tabs: {},
-                key: 1,
                 top_up: '0',
             };
         },
@@ -67,8 +67,13 @@
                 new_data.content.data_auto_list = new_data.content.tabs_list[index].data_auto_list;
                 this.setData({
                     goods_tabs: new_data,
-                    key: get_math(),
+                    hackReset: false,
                 });
+                this.$nextTick(() => {
+                    this.setData({
+                        hackReset: true
+                    });
+                })
             },
         },
     };

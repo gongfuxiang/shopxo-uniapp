@@ -32,7 +32,7 @@
                         <componentDiyCoupon v-else-if="item.key == 'coupon'" :propValue="item.com_data"></componentDiyCoupon>
                         <!-- 工具组件 -->
                         <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propValue="item.com_data"></componentDiyFloatWindow>
-                        <componentDiyTitle v-else-if="item.key == 'text-title'" :propValue="item.com_data"></componentDiyTitle>
+                        <componentDiyTitle v-else-if="item.key == 'title'" :propValue="item.com_data"></componentDiyTitle>
                         <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propValue="item.com_data"></componentDiyAuxiliaryLine>
                         <componentDiyRichText v-else-if="item.key == 'rich-text'" :propValue="item.com_data"></componentDiyRichText>
                         <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propValue="item.com_data"></componentDiyAuxiliaryBlank>

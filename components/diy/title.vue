@@ -2,9 +2,9 @@
     <view :style="style_container">
         <view class="flex-col gap-10">
             <view class="pr flex-row" :class="title_center">
-                <view class="z-i flex-row align-c gap-10 title-img">
-                    <template v-if="!isEmpty(form.img_src)">
-                        <imageEmpty :propImageSrc="form.img_src[0]"></imageEmpty>
+                <view class="z-i flex-row align-c gap-10">
+                    <template v-if="!isEmpty(form.img_src) && !isEmpty(form.img_src[0].url)">
+                        <image :src="form.img_src[0].url" class="title-img" mode="heightFix"></image>
                     </template>
                     <template v-else-if="!isEmpty(form.icon_class)">
                         <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color"></iconfont>
@@ -13,12 +13,12 @@
                 </view>
                 <view class="flex-row gap-10 align-c right-0 pa">
                     <template v-if="form.keyword_show == '1'">
-                        <view v-for="item in keyword_list" :key="item.id" :style="keyword_style">
+                        <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" :data-value="item.link.page" @tap="url_event">
                             {{ item.title }}
                         </view>
                     </template>
-                    <view v-if="form.right_show == '1'" class="nowrap" :style="right_style">{{ form.right_title }}
-                        <iconfont name="icon-arrow-right" :color="new_style.right_color || '#999'"></iconfont>
+                    <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="form.right_link.page" @tap="url_event">{{ form.right_title }}
+                        <iconfont name="icon-arrow-right" :color="new_style.right_color" :size="new_style.right_size * 2 + 'rpx'"></iconfont>
                     </view>
                 </view>
             </view>
@@ -29,7 +29,7 @@
 
 <script>
 const app = getApp();
-import { common_styles_computer, is_obj_empty } from '@/common/js/common/common.js';
+import { common_styles_computer, isEmpty } from '@/common/js/common/common.js';
 export default {
     props: {
         propValue: {
@@ -57,9 +57,12 @@ export default {
             form: this.propValue.content,
             new_style: this.propValue.style,
         });
+        console.log(this.propValue);
+        
         this.init();
     },
     methods: {
+        isEmpty,
         init() {
             // 是否居中
             this.setData({
@@ -96,17 +99,15 @@ export default {
         },
         get_subtitle_style() {
             let common_styles = '';
-            if (new_style.value.subtitle_weight == 'italic') {
+            if (this.new_style.subtitle_weight == 'italic') {
                 common_styles += `font-style: italic`;
-            } else if (new_style.value.subtitle_weight == '500') {
+            } else if (this.new_style.subtitle_weight == '500') {
                 common_styles += `font-weight: 500`;
             }
-            return `color:${new_style.value.subtitle_color}; font-size: ${new_style.value.subtitle_size * 2}rpx; ${common_styles}`;
+            return `color:${this.new_style.subtitle_color}; font-size: ${this.new_style.subtitle_size * 2}rpx; ${common_styles}`;
         },
-        url_open_event(link) {
-            if (!is_obj_empty(link)) {
-                app.globalData.url_open(link.page);
-            }
+        url_event(e) {
+            app.globalData.url_event(e);
         },
     },
 };
@@ -125,7 +126,7 @@ export default {
 }
 
 .title-img {
-    max-width: 6rem;
-    max-height: 3rem;
+    max-width: 120rpx;
+    max-height: 60rpx;
 }
 </style>
