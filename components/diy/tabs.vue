@@ -1,18 +1,7 @@
 <template>
     <!-- 选项卡 -->
-    <view class="pr">
-        <view v-if="top_up == '1'" class="tabs-top">
-            <view class="seize-seat" :style="tabs_top"></view>
-            <view :style="style_container">
-                <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-            </view>
-        </view>
-        <!-- 占位 -->
-        <view class="pr" :class="top_up == '1' ? 'vs-hide' : ''">
-            <view :style="style_container">
-                <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-            </view>
-        </view>
+    <view class="ou" :style="style_container">
+        <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabs="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
     </view>
 </template>
 
@@ -102,15 +91,5 @@
     .seize-seat {
         z-index: 101;
         position: relative;
-    }
-    .vs-hide {
-        visibility: hidden;
-    }
-    .tabs-top {
-        position: fixed;
-        z-index: 101;
-        left: 0;
-        right: 0;
-        top: 0;
     }
 </style>

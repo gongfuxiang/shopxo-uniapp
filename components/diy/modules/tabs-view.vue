@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
-    <view class="container" :class="propIsTop ? 'tabs-top' : ''" :style="'top:' + propTop + 'px;'">
-        <view class="flex-row gap-10 jc-sb align-c">
+    <view class="container" :class="propIsTop ? 'tabs-top' : ''" :style="'top:' + propTop">
+        <view class="flex-row gap-10 jc-sb align-c" :style="propStyle">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'rpx;'">
@@ -69,6 +69,11 @@
             propTop: {
                 type: String,
                 default: '0',
+            },
+            // 指定样式
+            propStyle: {
+                type: String,
+                default: '',
             },
         },
         components: {

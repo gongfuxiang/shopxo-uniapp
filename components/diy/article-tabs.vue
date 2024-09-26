@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
-    <view class="overflow-unset" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :isTop="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="ou" :style="style_container">
+        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="tabs_top" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
             <componentDiyArticleList :key="key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
@@ -9,9 +9,14 @@
 </template>
 
 <script>
+    const app = getApp();
     import { common_styles_computer, get_math } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
-    import componentDiyArticleList from '@/components/diy/article-list';
+    import componentDiyArticleList from '@/components/diy/article-list'; // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
+    // #endif
     export default {
         props: {
             propValue: {
@@ -33,11 +38,29 @@
                 style: '',
                 article_tabs: {},
                 key: 1,
+                // 是否滑动置顶
                 top_up: '0',
+                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                sticky_offset: bar_height + 5 + 12 + 33,
+                tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                sticky_offset: bar_height + 7 + 12 + 33,
+                tabs_top: 'calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
+                // #endif
+                // #ifdef APP
+                sticky_offset: bar_height + 0 + 12 + 33,
+                tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
+                // #endif
+                tabs_style: '',
             };
         },
         created() {
             this.init();
+        },
+        mounted() {
+            window.addEventListener('scroll', this.handle_scroll);
         },
         methods: {
             init() {
@@ -81,11 +104,16 @@
                     key: get_math(),
                 });
             },
+            handle_scroll() {
+                // 判断是否吸顶了
+                if (window.scrollY >= this.sticky_offset) {
+                    const new_style = this.propValue.style || {};
+                    this.setData({
+                        tabs_style: 'padding-top:' + new_style.common_style.padding_top * 2 + 'rpx;',
+                    });
+                }
+            },
         },
     };
 </script>
-<style lang="scss" scoped>
-    .overflow-unset {
-        overflow: unset !important;
-    }
-</style>
+<style lang="scss" scoped></style>
