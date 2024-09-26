@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data_base || null) != null">
+        <block v-if="(data_base || null) != null">
             <!-- 公告 -->
             <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="padding-horizontal-main padding-vertical-sm bg-white">
                 <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.signin_desc.join('')" background-color="transparent" color="#666" />
@@ -26,15 +26,19 @@
                     <component-user-qrcode :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-user-qrcode>
                 </view>
             </view>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentUserSignin from '../components/user-signin/user-signin';
     import componentUserQrcode from '../components/user-qrcode/user-qrcode';
@@ -57,6 +61,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentUserSignin,
             componentUserQrcode,

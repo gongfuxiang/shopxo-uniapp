@@ -35,7 +35,7 @@
         </view>
 
         <!-- 列表 -->
-        <view v-if="data_list.length > 0">
+        <block v-if="data_list.length > 0">
             <view class="padding-horizontal-main">
                 <!-- 导航 -->
                 <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
@@ -60,15 +60,19 @@
                     </view>
                 </view>
             </view>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSearch from '@/components/search/search';
@@ -106,6 +110,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine,
             componentSearch,

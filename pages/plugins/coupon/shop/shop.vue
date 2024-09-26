@@ -22,10 +22,14 @@
                 <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" :data-value="shop.url" @tap="shop_event">{{ $t('index.index.i78v36') }}</button>
             </view>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
@@ -51,6 +55,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine,
             componentCouponCard,

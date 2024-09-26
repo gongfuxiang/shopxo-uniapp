@@ -37,10 +37,14 @@
                 <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">{{$t('member-code.member-code.yj6g3a')}}</button>
             </view>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
 
     export default {
@@ -68,6 +72,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
         },
 

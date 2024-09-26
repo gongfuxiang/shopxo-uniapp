@@ -40,246 +40,254 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
 const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            common_static_url: common_static_url,
-            data_list_loding_status: 1,
-            data_bottom_line_status: false,
-            data_list: [],
-            params: null,
-            user_location: null,
-            is_first: 1,
-            home_extraction_address_position: 0,
-        };
-    },
+    var common_static_url = app.globalData.get_static_url("common");
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                common_static_url: common_static_url,
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_list: [],
+                params: null,
+                user_location: null,
+                is_first: 1,
+                home_extraction_address_position: 0,
+            };
+        },
 
-    components: {},
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine
+        },
 
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
 
-        // 设置参数
-        this.setData({
-            params: params,
-            home_extraction_address_position: app.globalData.get_config("config.home_extraction_address_position", 0),
-        });
+            // 设置参数
+            this.setData({
+                params: params,
+                home_extraction_address_position: app.globalData.get_config("config.home_extraction_address_position", 0),
+            });
 
-        // 清除位置缓存信息
-        app.globalData.choice_user_location_remove();
+            // 清除位置缓存信息
+            app.globalData.choice_user_location_remove();
 
-        // 是否获取位置
-        if (this.home_extraction_address_position == 1) {
-            app.globalData.choose_user_location_event();
-        }
-    },
+            // 是否获取位置
+            if (this.home_extraction_address_position == 1) {
+                app.globalData.choose_user_location_event();
+            }
+        },
 
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
 
-        // 是否需要选择地理位置
-        if (this.home_extraction_address_position == 1) {
-            // 首次不请求数据
-            if (this.is_first == 0) {
-                // 先解绑自定义事件
-                uni.$off('refresh');
-                // 监听自定义事件并进行页面刷新操作
-                uni.$on('refresh', (data) => {
-                    // 初始位置数据
-                    if((data.location_success || false) == true) {
-                        this.user_location_init();
-                    }
-                });
+            // 是否需要选择地理位置
+            if (this.home_extraction_address_position == 1) {
+                // 首次不请求数据
+                if (this.is_first == 0) {
+                    // 先解绑自定义事件
+                    uni.$off('refresh');
+                    // 监听自定义事件并进行页面刷新操作
+                    uni.$on('refresh', (data) => {
+                        // 初始位置数据
+                        if((data.location_success || false) == true) {
+                            this.user_location_init();
+                        }
+                    });
 
-                // 初始化数据
+                    // 初始化数据
+                    this.init();
+                }
+            } else {
                 this.init();
             }
-        } else {
-            this.init();
-        }
-        this.setData({
-            is_first: 0,
-        });
+            this.setData({
+                is_first: 0,
+            });
 
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
 
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data_list();
-    },
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data_list();
+        },
 
-    methods: {
-        // 初始化
-        init() {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                this.get_data_list();
-            } else {
+        methods: {
+            // 初始化
+            init() {
+                var user = app.globalData.get_user_info(this, "init");
+                if (user != false) {
+                    this.get_data_list();
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
+
+            // 地址信息初始化
+            user_location_init() {
                 this.setData({
-                    data_list_loding_status: 0,
-                    data_bottom_line_status: false,
+                    user_location: app.globalData.choice_user_location_init()
                 });
-            }
-        },
+            },
 
-        // 地址信息初始化
-        user_location_init() {
-            this.setData({
-                user_location: app.globalData.choice_user_location_init()
-            });
-        },
+            // 获取数据列表
+            get_data_list() {
+                // 加载loding
+                uni.showLoading({
+                    title: this.$t('common.loading_in_text'),
+                });
+                this.setData({
+                    data_list_loding_status: 1,
+                });
 
-        // 获取数据列表
-        get_data_list() {
-            // 加载loding
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
-            this.setData({
-                data_list_loding_status: 1,
-            });
+                // 获取数据
+                var data = {};
 
-            // 获取数据
-            var data = {};
+                // 是否有坐标
+                if ((this.user_location || null) != null) {
+                    data["lng"] = this.user_location.lng;
+                    data["lat"] = this.user_location.lat;
+                }
 
-            // 是否有坐标
-            if ((this.user_location || null) != null) {
-                data["lng"] = this.user_location.lng;
-                data["lat"] = this.user_location.lat;
-            }
-
-            // 请求接口
-            uni.request({
-                url: app.globalData.get_request_url("switchinfo", "extraction", "distribution"),
-                method: "POST",
-                data: data,
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        if (data.extraction_address.length > 0) {
-                            this.setData({
-                                data_list: data.extraction_address,
-                                data_list_loding_status: 3,
-                                data_bottom_line_status: true,
-                            });
+                // 请求接口
+                uni.request({
+                    url: app.globalData.get_request_url("switchinfo", "extraction", "distribution"),
+                    method: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            if (data.extraction_address.length > 0) {
+                                this.setData({
+                                    data_list: data.extraction_address,
+                                    data_list_loding_status: 3,
+                                    data_bottom_line_status: true,
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
                             });
+                            if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
                         }
-                    } else {
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 0,
+                            data_list_loding_status: 2,
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
-
-        // 地图查看
-        address_map_event(e) {
-            var index = e.currentTarget.dataset.index || 0;
-            var data = this.data_list[index] || null;
-            if (data == null) {
-                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
-                return false;
-            }
-
-            // 打开地图
-            var name = data.alias || data.name || "";
-            var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
-            app.globalData.open_location(data.lng, data.lat, name, address);
-        },
-
-        // 地址内容事件
-        address_conent_event(e) {
-            var index = e.currentTarget.dataset.index || 0;
-            var is_back = this.params.is_back || 0;
-            if (is_back == 1) {
-                uni.setStorage({
-                    key: app.globalData.data.cache_buy_user_address_select_key,
-                    data: this.data_list[index],
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
-                uni.navigateBack();
-            }
-        },
+            },
 
-        // 切换选择事件
-        address_switch_event(e) {
-            var index = e.currentTarget.dataset.index || 0;
-            var temp_data = this.data_list;
-            if ((temp_data[index] || null) == null) {
-                app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
-                return false;
-            }
+            // 地图查看
+            address_map_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var data = this.data_list[index] || null;
+                if (data == null) {
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    return false;
+                }
 
-            // 请求切换
-            uni.showLoading({
-                title: this.$t('common.processing_in_text'),
-            });
-            uni.request({
-                url: app.globalData.get_request_url("switchsave", "extraction", "distribution"),
-                method: "POST",
-                data: {
-                    id: temp_data[index]["id"],
-                    value: temp_data[index]["id_old"] || 0,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    if (res.data.code == 0) {
-                        app.globalData.showToast(res.data.msg, "success");
-                        var temp_data = this.data_list;
-                        for (var i in temp_data) {
-                            temp_data[i]["is_default"] = i == index ? 1 : 0;
-                        }
-                        this.setData({
-                            data_list: temp_data,
-                        });
-                    } else {
-                        if (app.globalData.is_login_check(res.data)) {
-                            app.globalData.showToast(res.data.msg);
+                // 打开地图
+                var name = data.alias || data.name || "";
+                var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
+                app.globalData.open_location(data.lng, data.lat, name, address);
+            },
+
+            // 地址内容事件
+            address_conent_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var is_back = this.params.is_back || 0;
+                if (is_back == 1) {
+                    uni.setStorage({
+                        key: app.globalData.data.cache_buy_user_address_select_key,
+                        data: this.data_list[index],
+                    });
+                    uni.navigateBack();
+                }
+            },
+
+            // 切换选择事件
+            address_switch_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var temp_data = this.data_list;
+                if ((temp_data[index] || null) == null) {
+                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    return false;
+                }
+
+                // 请求切换
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("switchsave", "extraction", "distribution"),
+                    method: "POST",
+                    data: {
+                        id: temp_data[index]["id"],
+                        value: temp_data[index]["id_old"] || 0,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, "success");
+                            var temp_data = this.data_list;
+                            for (var i in temp_data) {
+                                temp_data[i]["is_default"] = i == index ? 1 : 0;
+                            }
+                            this.setData({
+                                data_list: temp_data,
+                            });
                         } else {
-                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
                         }
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./extraction-switch.css";
+    @import "./extraction-switch.css";
 </style>

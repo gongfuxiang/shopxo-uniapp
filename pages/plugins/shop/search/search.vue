@@ -62,10 +62,14 @@
                 </view>
             </form>
         </component-popup>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentPopup from "@/components/popup/popup";
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
@@ -114,6 +118,7 @@
         },
 
         components: {
+            componentCommon,
             componentPopup,
             componentNoData,
             componentBottomLine,

@@ -99,10 +99,14 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
@@ -145,6 +149,7 @@
         },
 
         components: {
+            componentCommon,
             componentNavBack,
             componentNoData,
             componentPopup,

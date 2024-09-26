@@ -105,11 +105,15 @@
 
         <!-- 商品购买 -->
         <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
@@ -137,6 +141,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine,
             componentGoodsSpecChoice,

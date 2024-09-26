@@ -55,10 +55,14 @@
             :propNavDtatusIndex="nav_status_index"
             @reset-event="reset_event"
         ></component-payment>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPayment from '@/components/payment/payment';
@@ -129,6 +133,7 @@
             };
         },
         components: {
+            componentCommon,
             componentPayment,
             componentNoData,
             componentBottomLine,

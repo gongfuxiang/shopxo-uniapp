@@ -63,105 +63,110 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            data_base: null,
-            level_list: [],
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-        this.init();
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        init() {
-            this.setData({
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                params: null,
                 data_list_loding_status: 1,
+                data_list_loding_msg: "",
+                data_bottom_line_status: false,
+                data_base: null,
+                level_list: [],
+            };
+        },
+
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
             });
-            uni.request({
-                url: app.globalData.get_request_url("index", "introduce", "distribution"),
-                method: "POST",
-                data: {
-                    id: this.params.id,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        var data_base = data.base || null;
-                        var level_list = (data.level_list || null) != null && data.level_list.length > 0 ? data.level_list : [];
-                        this.setData({
-                            data_base: data_base,
-                            level_list: level_list,
-                            data_list_loding_status: data_base == null || level_list.length <= 0 ? 0 : 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
-                        });
-                    } else {
+            this.init();
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            init() {
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("index", "introduce", "distribution"),
+                    method: "POST",
+                    data: {
+                        id: this.params.id,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var data_base = data.base || null;
+                            var level_list = (data.level_list || null) != null && data.level_list.length > 0 ? data.level_list : [];
+                            this.setData({
+                                data_base: data_base,
+                                level_list: level_list,
+                                data_list_loding_status: data_base == null || level_list.length <= 0 ? 0 : 3,
+                                data_bottom_line_status: true,
+                                data_list_loding_msg: "",
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, "init")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        if (app.globalData.is_login_check(res.data, this, "init")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./introduce.css";
+    @import "./introduce.css";
 </style>

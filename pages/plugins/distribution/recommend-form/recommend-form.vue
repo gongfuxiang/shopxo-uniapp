@@ -118,11 +118,15 @@
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </block>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
@@ -150,6 +154,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentPopup,
             componentGoodsSpecChoice,

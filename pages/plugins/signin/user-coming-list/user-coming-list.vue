@@ -28,193 +28,198 @@
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
         </scroll-view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            data_list_loding_status: 1,
-            data_bottom_line_status: false,
-            data_is_loading: 0,
-            params: null,
-            data_list: [],
-            data_total: 0,
-            data_page_total: 0,
-            data_page: 1,
-            content_list: [
-                { name: this.$t('user-coming-list.user-coming-list.xkwnl8'), field: "integral" },
-                { name: this.$t('user-coming-list.user-coming-list.sq4379'), field: "add_time" },
-            ],
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-        this.init();
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.setData({
-            data_page: 1,
-        });
-        this.get_data_list(1);
-    },
-
-    methods: {
-        init() {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                this.get_data_list();
-            } else {
-                this.setData({
-                    data_list_loding_status: 0,
-                    data_bottom_line_status: false,
-                });
-            }
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_is_loading: 0,
+                params: null,
+                data_list: [],
+                data_total: 0,
+                data_page_total: 0,
+                data_page: 1,
+                content_list: [
+                    { name: this.$t('user-coming-list.user-coming-list.xkwnl8'), field: "integral" },
+                    { name: this.$t('user-coming-list.user-coming-list.sq4379'), field: "add_time" },
+                ],
+            };
         },
 
-        // 获取数据
-        get_data_list(is_mandatory) {
-            // 分页是否还有数据
-            if ((is_mandatory || 0) == 0) {
-                if (this.data_bottom_line_status == true) {
-                    uni.stopPullDownRefresh();
-                    return false;
-                }
-            }
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
 
-            // 是否加载中
-            if (this.data_is_loading == 1) {
-                return false;
-            }
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
-                data_is_loading: 1,
-                data_list_loding_status: 1,
+                params: params,
             });
+            this.init();
+        },
 
-            // 加载loding
-            if(this.data_page > 1) {
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
-            }
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
+        },
+
+        methods: {
+            init() {
+                var user = app.globalData.get_user_info(this, "init");
+                if (user != false) {
+                    this.get_data_list();
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
 
             // 获取数据
-            uni.request({
-                url: app.globalData.get_request_url("usercominglist", "userqrcode", "signin"),
-                method: "POST",
-                data: {
-                    id: this.params.id || 0,
-                    page: this.data_page,
-                },
-                dataType: "json",
-                success: (res) => {
-                    if(this.data_page > 1) {
-                        uni.hideLoading();
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
                     }
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        if (res.data.data.data.length > 0) {
-                            if (this.data_page <= 1) {
-                                var temp_data_list = res.data.data.data;
-                            } else {
-                                var temp_data_list = this.data_list || [];
-                                var temp_data = res.data.data.data;
-                                for (var i in temp_data) {
-                                    temp_data_list.push(temp_data[i]);
-                                }
-                            }
-                            this.setData({
-                                data_list: temp_data_list,
-                                data_total: res.data.data.total,
-                                data_page_total: res.data.data.page_total,
-                                data_list_loding_status: 3,
-                                data_page: this.data_page + 1,
-                                data_is_loading: 0,
-                            });
+                }
 
-                            // 是否还有数据
-                            this.setData({
-                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
-                            });
+                // 是否加载中
+                if (this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1,
+                });
+
+                // 加载loding
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
+
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url("usercominglist", "userqrcode", "signin"),
+                    method: "POST",
+                    data: {
+                        id: this.params.id || 0,
+                        page: this.data_page,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            if (res.data.data.data.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = res.data.data.data;
+                                } else {
+                                    var temp_data_list = this.data_list || [];
+                                    var temp_data = res.data.data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data_list,
+                                    data_total: res.data.data.total,
+                                    data_page_total: res.data.data.page_total,
+                                    data_list_loding_status: 3,
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0,
+                                });
+
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_list: [],
+                                    data_bottom_line_status: false,
+                                    data_is_loading: 0,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list: [],
-                                data_bottom_line_status: false,
                                 data_is_loading: 0,
                             });
+                            if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
                         }
-                    } else {
+                    },
+                    fail: () => {
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
+                        uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 0,
+                            data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    if(this.data_page > 1) {
-                        uni.hideLoading();
-                    }
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_is_loading: 0,
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
-
-        // 滚动加载
-        scroll_lower(e) {
-            this.get_data_list();
-        },
-
-        // 头像查看
-        avatar_event(e) {
-            var value = e.currentTarget.dataset.value || null;
-            if (value != null) {
-                uni.previewImage({
-                    current: value,
-                    urls: [value],
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
-            } else {
-                app.globalData.showToast(this.$t('order.order.p3scy0'));
-            }
+            },
+
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
+            },
+
+            // 头像查看
+            avatar_event(e) {
+                var value = e.currentTarget.dataset.value || null;
+                if (value != null) {
+                    uni.previewImage({
+                        current: value,
+                        urls: [value],
+                    });
+                } else {
+                    app.globalData.showToast(this.$t('order.order.p3scy0'));
+                }
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./user-coming-list.css";
+    @import "./user-coming-list.css";
 </style>

@@ -34,122 +34,127 @@
 
         <!-- 结尾 -->
         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            params: null,
-            express_info: null,
-            express_data: [],
-            data_status: false,
-        };
-    },
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_list_loding_status: 1,
+                data_list_loding_msg: "",
+                data_bottom_line_status: false,
+                params: null,
+                express_info: null,
+                express_data: [],
+                data_status: false,
+            };
+        },
 
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
 
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
 
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 数据加载
-        this.get_data();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-
-    methods: {
-        // 初始化
-        get_data() {
-            if (!this.data_status) {
-                this.setData({
-                    data_list_loding_status: 1,
-                    data_list_loding_msg: "",
-                });
-            }
-            uni.request({
-                url: app.globalData.get_request_url("index", "index", "express"),
-                method: "POST",
-                data: this.params,
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        var express_info = data.express_info || null;
-                        var status = express_info != null && ((express_info.msg || null) != null || ((express_info.data || null) != null && express_info.data.length > 0));
-                        this.setData({
-                            data_bottom_line_status: status,
-                            data_list_loding_status: status ? 3 : 0,
-                            data_list_loding_msg: status ? "" : this.$t('detail.detail.j5owf1'),
-                            data_status: status,
-                            express_info: express_info,
-                            express_data: data.express_data || [],
-                        });
-                    } else {
-                        this.setData({
-                            data_list_loding_status: 0,
-                            data_list_loding_msg: res.data.msg,
-                        });
-                        app.globalData.showToast(res.data.msg);
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
+            // 设置参数
+            this.setData({
+                params: params,
             });
         },
 
-        // 导航事件
-        nav_event(e) {
-            var temp = this.params;
-            temp['eid'] = e.currentTarget.dataset.index;
-            this.setData({
-                params: temp
-            });
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 数据加载
+            this.get_data();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
             this.get_data();
         },
 
-        // 文本事件
-        text_event(e) {
-            app.globalData.text_event_handle(e);
-        }
-    },
-};
+        methods: {
+            // 初始化
+            get_data() {
+                if (!this.data_status) {
+                    this.setData({
+                        data_list_loding_status: 1,
+                        data_list_loding_msg: "",
+                    });
+                }
+                uni.request({
+                    url: app.globalData.get_request_url("index", "index", "express"),
+                    method: "POST",
+                    data: this.params,
+                    dataType: "json",
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var express_info = data.express_info || null;
+                            var status = express_info != null && ((express_info.msg || null) != null || ((express_info.data || null) != null && express_info.data.length > 0));
+                            this.setData({
+                                data_bottom_line_status: status,
+                                data_list_loding_status: status ? 3 : 0,
+                                data_list_loding_msg: status ? "" : this.$t('detail.detail.j5owf1'),
+                                data_status: status,
+                                express_info: express_info,
+                                express_data: data.express_data || [],
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 导航事件
+            nav_event(e) {
+                var temp = this.params;
+                temp['eid'] = e.currentTarget.dataset.index;
+                this.setData({
+                    params: temp
+                });
+                this.get_data();
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
+            }
+        },
+    };
 </script>
 <style>
-@import "./detail.css";
+    @import "./detail.css";
 </style>
