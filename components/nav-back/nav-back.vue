@@ -88,9 +88,7 @@
             top_nav_left_back_event() {
                 var pages = getCurrentPages();
                 if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.app_tabbar_pages()[0],
-                    });
+                    app.globalData.url_open(app.globalData.app_tabbar_pages()[0]);
                 } else {
                     uni.navigateBack();
                 }

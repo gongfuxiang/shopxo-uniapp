@@ -964,11 +964,13 @@
                                     uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
                                 }
                                 uni.switchTab({
-                                    url: value,
+                                    url: value
                                 });
+                                //隐藏系统tabbar
+                                uni.hideTabBar();
                             } else {
                                 uni.navigateTo({
-                                    url: value,
+                                    url: value
                                 });
                             }
                             break;
@@ -1396,9 +1398,6 @@
                 // 主题设置
                 self.set_theme_value(data.plugins_themestyle_data);
 
-                // 设置底部菜单
-                self.set_tabbar(data.plugins_themestyle_data);
-
                 // 用户自动登录处理
                 self.user_auto_login_handle();
             },
@@ -1631,16 +1630,18 @@
                                     uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
                                 }
                                 uni.switchTab({
-                                    url: value,
+                                    url: value
                                 });
+                                //隐藏系统tabbar
+                                uni.hideTabBar();
                             } else {
                                 if (is_redirect) {
                                     uni.redirectTo({
-                                        url: value,
+                                        url: value
                                     });
                                 } else {
                                     uni.navigateTo({
-                                        url: value,
+                                        url: value
                                     });
                                 }
                             }
@@ -1985,7 +1986,7 @@
                 // #ifdef H5 || APP
                 // 是有效的url地址则通过#号分割处理参数
                 if(this.is_url(result['url'])) {
-                    result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path == null || result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
+                    result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + ((result.path || null) != null && result.path.substr(0, 1) == '/' ? '' : '/') + (result.path || '') + (result.query || ''));
                 }
                 // #endif
                 return result;
@@ -2053,9 +2054,7 @@
             page_back_prev_event() {
                 var prev_page = this.prev_page();
                 if (prev_page == null) {
-                    uni.switchTab({
-                        url: this.app_tabbar_pages()[0],
-                    });
+                    this.url_open(this.app_tabbar_pages()[0]);
                 } else {
                     uni.navigateBack();
                 }
@@ -2434,45 +2433,6 @@
                 uni.setStorageSync('theme', value || this.data.default_theme);
             },
 
-            // 底部菜单设置
-            set_tabbar(theme) {
-                // 当前主题
-                if ((theme || null) == null) {
-                    theme = this.get_theme_value();
-                }
-
-                // 整体样式
-                uni.setTabBarStyle({
-                    selectedColor: this.get_theme_color(theme),
-                });
-
-                // 菜单
-                uni.setTabBarItem({
-                    index: 0,
-                    iconPath: 'static/images/common/tabbar/home.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
-                    text: i18n.t('common.home'),
-                });
-                uni.setTabBarItem({
-                    index: 1,
-                    iconPath: 'static/images/common/tabbar/category.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
-                    text: i18n.t('common.category'),
-                });
-                uni.setTabBarItem({
-                    index: 2,
-                    iconPath: 'static/images/common/tabbar/cart.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
-                    text: i18n.t('common.cart'),
-                });
-                uni.setTabBarItem({
-                    index: 3,
-                    iconPath: 'static/images/common/tabbar/user.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
-                    text: i18n.t('common.my'),
-                });
-            },
-
             // 数组分组
             group_arry(arry, sub_group_length) {
                 let index = 0;
@@ -2837,18 +2797,12 @@
 
             // 页面加载事件处理
             page_event_onload_handle(params) {
-                // 设置底部菜单
-                this.set_tabbar();
-
                 // 获取用户当前位置
                 this.get_user_location();
             },
 
             // 页面展示事件处理
             page_event_onshow_handle() {
-                // 设置底部菜单
-                this.set_tabbar();
-
                 // 页面顶部导航标题设置
                 this.set_pages_navigation_bar_title();
             },
@@ -2856,7 +2810,7 @@
 
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {
-            //隐藏tabbar
+            //隐藏系统tabbar
             uni.hideTabBar();
         },
 

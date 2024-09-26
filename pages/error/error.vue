@@ -59,9 +59,7 @@
                 if(pages > 1) {
                     uni.navigateBack();
                 } else {
-                    uni.switchTab({
-                        url: app.globalData.app_tabbar_pages()[0]
-                    });
+                    app.globalData.url_open(app.globalData.app_tabbar_pages()[0]);
                 }
             }
         }
