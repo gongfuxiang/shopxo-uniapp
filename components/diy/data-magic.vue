@@ -52,8 +52,8 @@
                     <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                         <template v-if="item.data_style.indicator_style == 'num'">
                             <view :style="item.data_style.indicator_styles" class="dot-item">
-                                <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text
-                                ><text>/{{ item.data_content.list.length }}</text>
+                                <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text>
+                                <text>/{{ item.data_content.list.length }}</text>
                             </view>
                         </template>
                         <template v-else>

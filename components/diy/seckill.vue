@@ -40,10 +40,10 @@
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr" :class="'flex-img' + form.shop_style_type">
                                     <template v-if="!isEmpty(item.new_cover)">
-                                        <imageEmpty :propImageSrc="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <template v-else>
-                                        <imageEmpty :propImageSrc="item.images" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                        <imageEmpty :propImageSrc="item.images" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
                                         <text class="text-line-1">{{ form.subscript_text }}</text>
@@ -103,10 +103,10 @@
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr wh-auto ht-auto">
                                     <template v-if="!isEmpty(item.new_cover)">
-                                        <imageEmpty :propImageSrc="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <template v-else>
-                                        <imageEmpty :propImageSrc="item.images" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                        <imageEmpty :propImageSrc="item.images" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
                                         <text class="text-line-1">{{ form.subscript_text }}</text>
