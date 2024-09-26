@@ -702,12 +702,12 @@
                 // 左侧
                 var left_style = '';
                 if(this.category_goods_is_show_cart_nav == 1) {
-                    left_style = 'height: calc(100% - 100rpx - '+this.footer_height_value+'px);';
+                    left_style = 'height: calc(100% - 100rpx - '+(this.footer_height_value+10)+'px);';
                 }
                 // 右侧
                 var right_style = '';
                 if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 1) {
-                    right_style = 'padding-bottom: calc(105rpx + '+this.footer_height_value+'px);';
+                    right_style = 'padding-bottom: calc(105rpx + '+(this.footer_height_value+10)+'px);';
                 }
                 this.setData({
                     left_content_actual_style: left_style,
@@ -1382,7 +1382,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: value
+                    footer_height_value: value+10
                 });
                 this.content_actual_size_handle();
             }
