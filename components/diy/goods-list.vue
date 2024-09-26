@@ -7,8 +7,8 @@
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                             <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num nowrap" :style="'color:' + new_style.shop_price_color">
-                                <text class="identifying">{{ item.show_price_symbol }}</text
-                                ><text :style="price_style">{{ item.min_price }}</text>
+                                <text class="identifying">{{ item.show_price_symbol }}</text>
+                                <text :style="price_style">{{ item.min_price }}</text>
                                 <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                             </view>
                         </view>
@@ -16,10 +16,10 @@
                     <block v-else>
                         <block v-if="!isEmpty(item)">
                             <block v-if="!isEmpty(item.new_cover)">
-                                <image-empty :imageSrc="item.new_cover[0]" :class="'flex-img' + theme" :style="content_img_radius" errorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+                                <image-empty :propImageSrc="item.new_cover[0]" :class="'flex-img' + theme" :style="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                             </block>
                             <block v-else>
-                                <image-empty :imageSrc="item.images" :class="'flex-img' + theme" :style="content_img_radius" errorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+                                <image-empty :propImageSrc="item.images" :class="'flex-img' + theme" :style="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                             </block>
                         </block>
                         <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
@@ -32,14 +32,14 @@
                             <view v-if="!['3', '4', '5'].includes(form.theme)" class="flex-col gap-5">
                                 <view :class="[form.is_price_solo == '1' ? 'flex-row align-c nowrap' : 'flex-col gap-5']">
                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                        <text class="identifying">{{ item.show_price_symbol }}</text
-                                        ><text :style="price_style">{{ item.min_price }}</text>
+                                        <text class="identifying">{{ item.show_price_symbol }}</text>
+                                        <text :style="price_style">{{ item.min_price }}</text>
                                         <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
                                         <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
-                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
-                                            >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">
+                                            {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
                                             </block>
@@ -70,14 +70,14 @@
                             <view v-else class="flex-row align-c jc-sb">
                                 <view class="flex-row align-c nowrap">
                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                        <text class="identifying">{{ item.show_price_symbol }}</text
-                                        ><text :style="price_style">{{ item.min_price }}</text>
+                                        <text class="identifying">{{ item.show_price_symbol }}</text>
+                                        <text :style="price_style">{{ item.min_price }}</text>
                                         <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
                                         <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
-                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
-                                            >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">
+                                            {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
                                             </block>
@@ -106,10 +106,10 @@
                         <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
                             <block v-if="!isEmpty(item)">
                                 <block v-if="!isEmpty(item.new_cover)">
-                                    <image-empty :imageSrc="item.new_cover[0]" :class="'flex-img' + theme" :style="content_img_radius" errorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+                                    <image-empty :propImageSrc="item.new_cover[0]" :class="'flex-img' + theme" :style="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                                 </block>
                                 <block v-else>
-                                    <image-empty :imageSrc="item.images" :class="'flex-img' + theme" :style="content_img_radius" errorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+                                    <image-empty :propImageSrc="item.images" :class="'flex-img' + theme" :style="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                                 </block>
                             </block>
                             <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
@@ -122,14 +122,14 @@
                                 <view class="flex-row align-c jc-sb">
                                     <view class="flex-row align-c nowrap">
                                         <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                            <text class="identifying">{{ item.show_price_symbol }}</text
-                                            ><text :style="price_style">{{ item.min_price }}</text>
+                                            <text class="identifying">{{ item.show_price_symbol }}</text>
+                                            <text :style="price_style">{{ item.min_price }}</text>
                                             <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
                                             <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
-                                            <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
-                                                >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                            <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">
+                                                {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </block>
@@ -183,7 +183,7 @@
                     return {};
                 },
             },
-            isCommonStyle: {
+            propIsCommonStyle: {
                 type: Boolean,
                 default: true,
             },
@@ -223,7 +223,7 @@
             // 按钮渐变色处理
             button_gradient() {
                 return gradient_handle(this.new_style.shop_button_color, '180deg');
-            }
+            },
         },
         created() {
             this.setData({
@@ -263,7 +263,7 @@
                     content_style: this.get_content_style(), // 内容区域的样式
                     show_content: ['0', '1', '2'].includes(this.form.theme), // 显示除标题外的其他区域
                     text_line: this.get_text_line(), // 超过多少行隐藏
-                    style_container: this.isCommonStyle ? common_styles_computer(this.new_style.common_style) : '', // 公共样式
+                    style_container: this.propIsCommonStyle ? common_styles_computer(this.new_style.common_style) : '', // 公共样式
                     // 内容样式设置
                     title_style: this.trends_config('title'),
                     price_style: this.trends_config('price'),

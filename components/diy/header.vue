@@ -9,13 +9,13 @@
                                 <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                     <template v-if="['2', '3'].includes(form.content.theme)">
                                         <view class="logo-outer-style">
-                                            <image-empty :imageSrc="form.content.logo[0].url" class="logo-style" errorStyle="width:40rpx;height:40rpx;"></image-empty>
+                                            <imageEmpty :propImageSrc="form.content.logo[0].url" class="logo-style" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
                                         </view>
                                     </template>
                                     <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
                                     <template v-if="['3', '5'].includes(form.content.theme)">
                                         <view class="flex-1">
-                                            <componentDiySearch :propValue="form" :is-page-settings="true"></componentDiySearch>
+                                            <componentDiySearch :propValue="form" :isPageSettings="true"></componentDiySearch>
                                         </view>
                                     </template>
                                 </view>
@@ -27,13 +27,13 @@
                                     </view>
                                     <template v-if="['5'].includes(form.content.theme)">
                                         <view class="flex-1">
-                                            <componentDiySearch :propValue="form" :is-page-settings="true"></componentDiySearch>
+                                            <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                         </view>
                                     </template>
                                 </view>
                                 <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'pa right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                     <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
-                                        <image-empty v-if="item.img.length > 0" :imageSrc="item.img[0].url" :errorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
+                                        <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
                                         <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
                                     </view>
                                 </view>

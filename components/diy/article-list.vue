@@ -65,7 +65,7 @@
                 type: Object,
                 default: () => {},
             },
-            isCommonStyle: {
+            propIsCommonStyle: {
                 type: Boolean,
                 default: true,
             },
@@ -207,7 +207,7 @@
                         });
                     }
                 }
-                if (this.isCommonStyle) {
+                if (this.propIsCommonStyle) {
                     this.setData({
                         style_container: common_styles_computer(new_style.common_style),
                     });

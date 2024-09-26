@@ -15,7 +15,7 @@
                 },
                 required: true,
             },
-            sourceList: {
+            propSourceList: {
                 type: Object,
                 default: () => {
                     return {};

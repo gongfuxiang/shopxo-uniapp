@@ -22,7 +22,7 @@
                 },
                 required: true,
             },
-            sourceList: {
+            propSourceList: {
                 type: Object,
                 default: () => {
                     return {};
@@ -55,8 +55,8 @@
                 let text = '';
                 if (!isEmpty(this.form.text_title)) {
                     text = this.form.text_title;
-                } else if (!isEmpty(this.sourceList[this.form.data_source_id])) {
-                    text = this.sourceList[this.form.data_source_id];
+                } else if (!isEmpty(this.propSourceList[this.form.data_source_id])) {
+                    text = this.propSourceList[this.form.data_source_id];
                 }
                 return text;
             },

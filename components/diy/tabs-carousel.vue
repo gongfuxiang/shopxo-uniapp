@@ -1,7 +1,7 @@
 <template>
     <div class="flex-col oh" :style="style_container">
-        <componentDiyTabs :propValue="value" :isCommon="false" :spacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
-        <componentDiycarousel :propValue="value" :isCommon="false"></componentDiycarousel>
+        <componentDiyTabs :propValue="value" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
+        <componentDiycarousel :propValue="value" :propIsCommon="false"></componentDiycarousel>
     </div>
 </template>
 
@@ -12,7 +12,7 @@
     export default {
         components: {
             componentDiyTabs,
-            componentDiycarousel
+            componentDiycarousel,
         },
         props: {
             propValue: {
@@ -36,7 +36,7 @@
                     margin_bottom: 0,
                     margin_left: 0,
                     margin_right: 0,
-                }
+                },
             };
         },
         created() {
@@ -46,7 +46,7 @@
             init() {
                 const new_style = this.propValue.style || {};
                 this.setData({
-                    style_container: `${ common_styles_computer(new_style.common_style)};gap:${new_style.data_spacing * 2}rpx`,
+                    style_container: `${common_styles_computer(new_style.common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     spacing_common_style: {
                         padding: 0,
                         padding_top: new_style.common_style.padding_top,
@@ -58,15 +58,14 @@
                         margin_bottom: 0,
                         margin_left: new_style.common_style.margin_left,
                         margin_right: new_style.common_style.margin_right,
-                    }
-                })
+                    },
+                });
             },
             tabs_click_event(tabs_id, is_micro_page) {
                 this.$emit('tabs-click', tabs_id, is_micro_page);
-            }
+            },
         },
     };
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

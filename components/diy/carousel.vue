@@ -4,11 +4,11 @@
             <block v-if="form.carousel_type == 'card'">
                 <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
-                        <image-empty :imageSrc="item.carousel_img[0]" class="img" :style="img_style" :img_fit="img_fit" errorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.carousel_img[0]" class="img" :style="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
-                            <image-empty :imageSrc="new_style.video_img[0]" class="video_img" img_fit="aspectFill" errorStyle="width: 28rpx;height: 28rpx;"></image-empty>
+                            <image-empty :propImageSrc="new_style.video_img[0]" class="video_img" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></image-empty>
                         </block>
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
@@ -20,11 +20,11 @@
             <block v-else>
                 <swiper-item v-for="(item, index) in new_list" :key="index" :style="{ 'padding-right': new_style.image_spacing * 2 + 'rpx' }">
                     <view class="item-image flex-row jc-c align-c wh-auto ht-auto pr" :style="img_style">
-                        <image-empty :imageSrc="item.carousel_img[0]" class="img" :style="img_style" :img_fit="img_fit" errorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.carousel_img[0]" class="img" :style="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
-                            <image-empty :imageSrc="new_style.video_img[0]" class="video_img" img_fit="aspectFill" errorStyle="width: 28rpx;height: 28rpx;"></image-empty>
+                            <image-empty :propImageSrc="new_style.video_img[0]" class="video_img" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></image-empty>
                         </block>
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
@@ -37,8 +37,8 @@
         <view v-if="new_style.is_show == '1'" :class="{ 'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
             <template v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
-                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text
-                    ><text>/{{ form.carousel_list.length }}</text>
+                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
+                    <text>/{{ form.carousel_list.length }}</text>
                 </view>
             </template>
             <template v-else>
@@ -69,10 +69,10 @@
                     return {};
                 },
             },
-            isCommon: {
+            propIsCommon: {
                 type: Boolean,
                 default: true,
-            }
+            },
         },
         data() {
             return {
@@ -131,7 +131,7 @@
                     new_list: this.seat_list.concat(this.form.carousel_list),
                     popup_width: block * 16 * 2 + 'rpx',
                     popup_height: block * 9 * 2 + 'rpx',
-                    style_container: this.isCommon ? common_styles_computer(common_style) : '', // 用于样式显示
+                    style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
                     img_style: radius_computer(this.new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(), // 指示器的样式
                     dot_style: `bottom: ${common_style.padding_bottom * 2 + 12}rpx;`, // 指示器位置

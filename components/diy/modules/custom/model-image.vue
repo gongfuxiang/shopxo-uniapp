@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_open(form.link)">
-        <image-empty :imageSrc="img" :typeStyle="image_style" errorStyle="width: 60rpx;height: 60rpx;"></image-empty>
+        <image-empty :propImageSrc="img" :propTypeStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></image-empty>
     </view>
 </template>
 <script>
@@ -18,7 +18,7 @@
                 },
                 required: true,
             },
-            sourceList: {
+            propSourceList: {
                 type: Object,
                 default: () => {
                     return {};
@@ -51,8 +51,8 @@
                 if (!isEmpty(this.form.img[0])) {
                     return this.form.img[0];
                 } else {
-                    if (!isEmpty(this.sourceList)) {
-                        return this.sourceList[this.form.data_source_id];
+                    if (!isEmpty(this.propSourceList)) {
+                        return this.propSourceList[this.form.data_source_id];
                     } else {
                         return '';
                     }

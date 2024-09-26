@@ -31,11 +31,11 @@
                 type: Object,
                 default: () => ({}),
             },
-            isCommon: {
+            propIsCommon: {
                 type: Boolean,
                 default: true,
             },
-            spacingCommonStyle: {
+            propSpacingCommonStyle: {
                 type: Object,
                 default: () => ({}),
             },
@@ -74,7 +74,7 @@
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 this.setData({
                     tabs_data: new_tabs_data,
-                    style_container: this.isCommon ? common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? padding_computer(this.spacingCommonStyle) + margin_computer(this.spacingCommonStyle) : '',
+                    style_container: this.propIsCommon ? common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? padding_computer(this.propSpacingCommonStyle) + margin_computer(this.propSpacingCommonStyle) : '',
                     top_up: new_content.tabs_top_up,
                 });
             },

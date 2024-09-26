@@ -13,17 +13,17 @@
                             <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="'28rpx'" :color="new_style.icon_color"></iconfont>
                         </template>
                     </template>
-                    <text v-if="form.is_tips_show == '1'" :class="[isPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
+                    <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                 </view>
                 <view v-if="form.is_search_show == '1'" class="pa search-botton h flex-row align-c jc-c" :style="search_button">
                     <template v-if="form.search_type === 'text'">
-                        <view :class="['padding-vertical-xs text-size-xs', isPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
+                        <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
                     </template>
                     <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
                         <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="heightFix"></image>
                     </template>
                     <template v-else>
-                        <view :class="['padding-vertical-xs text-size-xs', isPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
+                        <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
                             <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="'28rpx'"></iconfont>
                         </view>
                     </template>
@@ -43,7 +43,7 @@
                     return {};
                 },
             },
-            isPageSettings: {
+            propIsPageSettings: {
                 type: Boolean,
                 default: false,
             },
@@ -72,7 +72,7 @@
                 const { search_button_radius, common_style } = this.new_style;
                 this.setData({
                     style: this.get_style(), // 内部样式
-                    style_container: this.isPageSettings ? '' : common_styles_computer(common_style), // 全局样式
+                    style_container: this.propIsPageSettings ? '' : common_styles_computer(common_style), // 全局样式
                     search_button_radius: radius_computer(search_button_radius), // 按钮圆角
                     box_style: this.get_box_style(), // 搜索框设置
                     search_button: this.get_search_button(), // 搜索按钮显示

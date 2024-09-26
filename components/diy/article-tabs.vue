@@ -3,7 +3,7 @@
     <view class="overflow-unset" :style="style_container">
         <componentDiyModulesTabsView :propValue="article_tabs" :isTop="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
-            <componentDiyArticleList :key="key" :propValue="article_tabs" :isCommonStyle="false"></componentDiyArticleList>
+            <componentDiyArticleList :key="key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
     </view>
 </template>
@@ -18,7 +18,7 @@
                 type: Object,
                 default: () => {},
             },
-            isCommonStyle: {
+            propIsCommonStyle: {
                 type: Boolean,
                 default: true,
             },

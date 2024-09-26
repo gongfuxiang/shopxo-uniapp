@@ -1,59 +1,59 @@
 <template>
-    <view v-if="outerflex == 'row'" class="wh-auto ht-auto">
+    <view v-if="propOuterflex == 'row'" class="wh-auto ht-auto">
         <view class="flex-row gap-10 align-c wh-auto ht-auto">
-            <template v-if="flex === 'row'">
+            <template v-if="propFlex === 'row'">
                 <view v-for="(item, index) in value" :key="index" class="flex-row gap-10 half-width ht-auto" :data-value="item.goods_url" @tap="url_event">
                     <template v-if="!isEmpty(item.new_cover)">
-                        <image-empty :imageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
                     <template v-else>
-                        <image-empty :imageSrc="item.images" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.images" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
-                    <view v-if="!isEmpty(isShow)" class="flex-col wh-auto ht-auto tl gap-10">
-                        <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
-                        <view v-if="isShow.includes('price')" class="identifying">
-                            <text class="num">{{ item.show_price_symbol }}</text
-                            >{{ item.min_price }}
-                            <template v-if="isShow.includes('price_unit')">
+                    <view v-if="!isEmpty(propIsShow)" class="flex-col wh-auto ht-auto tl gap-10">
+                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('price')" class="identifying">
+                            <text class="num">{{ item.show_price_symbol }}</text>
+                            {{ item.min_price }}
+                            <template v-if="propIsShow.includes('price_unit')">
                                 <text class="num">{{ item.show_price_unit }}</text>
                             </template>
                         </view>
                     </view>
                 </view>
             </template>
-            <template v-else-if="actived != 7 || num !== 1">
-                <view v-for="(item, index) in value" :key="index" :class="['flex-col gap-10 ht-auto', { 'half-width': num !== 1, 'wh-auto': num == 1 }]" :data-value="item.goods_url" @tap="url_event">
+            <template v-else-if="propActived != 7 || propNum !== 1">
+                <view v-for="(item, index) in value" :key="index" :class="['flex-col gap-10 ht-auto', { 'half-width': propNum !== 1, 'wh-auto': propNum == 1 }]" :data-value="item.goods_url" @tap="url_event">
                     <view class="wh-auto ht-auto pr">
                         <template v-if="!isEmpty(item.new_cover)">
-                            <image-empty :imageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                            <image-empty :propImageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                         </template>
                         <template v-else>
-                            <image-empty :imageSrc="item.images" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                            <image-empty :propImageSrc="item.images" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                         </template>
-                        <view v-if="isShow.includes('price')" class="price-suspension text-line-1">
+                        <view v-if="propIsShow.includes('price')" class="price-suspension text-line-1">
                             {{ item.show_price_symbol }}{{ item.min_price }}
-                            <template v-if="isShow.includes('price_unit')">
+                            <template v-if="propIsShow.includes('price_unit')">
                                 {{ item.show_price_unit }}
                             </template>
                         </view>
                     </view>
-                    <view v-if="isShow.includes('title')" class="text-line-1 text-size-md shop-title tl wh-auto" style="overflow: inherit">{{ item.title }}</view>
+                    <view v-if="propIsShow.includes('title')" class="text-line-1 text-size-md shop-title tl wh-auto" style="overflow: inherit">{{ item.title }}</view>
                 </view>
             </template>
             <template v-else>
                 <view v-for="(item, index) in value" :key="index" class="flex-col wh-auto ht-auto" :data-value="item.goods_url" @tap="url_event">
                     <template v-if="!isEmpty(item.new_cover)">
-                        <image-empty :imageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
                     <template v-else>
-                        <image-empty :imageSrc="item.images" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.images" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
-                    <view v-if="!isEmpty(isShow)" class="flex-col wh-auto tl gap-10" :style="img_padding_computer">
-                        <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
-                        <view v-if="isShow.includes('price')" class="identifying">
-                            <text class="num">{{ item.show_price_symbol }}</text
-                            >{{ item.min_price }}
-                            <template v-if="isShow.includes('price_unit')">
+                    <view v-if="!isEmpty(propIsShow)" class="flex-col wh-auto tl gap-10" :style="img_padding_computer">
+                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('price')" class="identifying">
+                            <text class="num">{{ item.show_price_symbol }}</text>
+                            {{ item.min_price }}
+                            <template v-if="propIsShow.includes('price_unit')">
                                 <text class="num">{{ item.show_price_unit }}</text>
                             </template>
                         </view>
@@ -64,20 +64,20 @@
     </view>
     <view v-else class="wh-auto ht-auto">
         <view class="flex-col gap-20 align-c wh-auto ht-auto">
-            <template v-if="flex === 'row'">
+            <template v-if="propFlex === 'row'">
                 <view v-for="(item, index) in value" :key="index" class="flex-row gap-10 align-c wh-auto ht-auto shop-max-height" :data-value="item.goods_url" @tap="url_event">
                     <template v-if="!isEmpty(item.new_cover)">
-                        <image-empty :imageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.new_cover[0]" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
                     <template v-else>
-                        <image-empty :imageSrc="item.images" class="wh-auto ht-auto" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                        <image-empty :propImageSrc="item.images" class="wh-auto ht-auto" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                     </template>
-                    <view v-if="!isEmpty(isShow)" class="flex-col wh-auto ht-auto tl gap-20">
-                        <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
-                        <view v-if="isShow.includes('price')" class="identifying">
+                    <view v-if="!isEmpty(propIsShow)" class="flex-col wh-auto ht-auto tl gap-20">
+                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('price')" class="identifying">
                             <text class="num">{{ item.show_price_symbol }}</text
                             >{{ item.min_price }}
-                            <template v-if="isShow.includes('price_unit')">
+                            <template v-if="propIsShow.includes('price_unit')">
                                 <text class="num">{{ item.show_price_unit }}</text>
                             </template>
                         </view>
@@ -100,39 +100,39 @@
                 type: Array,
                 default: () => [],
             },
-            outerflex: {
+            propOuterflex: {
                 type: String,
                 default: () => '',
             },
-            flex: {
+            propFlex: {
                 type: String,
                 default: () => '',
             },
-            contentImgRadius: {
+            propContentImgRadius: {
                 type: String,
                 default: () => '',
             },
-            num: {
+            propNum: {
                 type: Number,
                 default: () => 0,
             },
-            actived: {
+            propActived: {
                 type: Number,
                 default: () => 0,
             },
-            isShow: {
+            propIsShow: {
                 type: Array,
                 default: () => [],
             },
-            chunkPadding: {
+            propChunkPadding: {
                 type: Object,
                 default: () => {},
             },
         },
         computed: {
             img_padding_computer() {
-                if (!isEmpty(this.chunkPadding)) {
-                    return padding_computer(this.chunkPadding) + ';box-sizing: border-box;';
+                if (!isEmpty(this.propChunkPadding)) {
+                    return padding_computer(this.propChunkPadding) + ';box-sizing: border-box;';
                 } else {
                     return '';
                 }

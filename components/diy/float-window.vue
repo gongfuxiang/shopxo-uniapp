@@ -6,7 +6,7 @@
                     <view class="ring" :style="color"></view>
                     <view class="ring" :style="color"></view>
                 </block>
-                <image-empty :imageSrc="form.button_img[0]" class="img" :typeStyle="color" img_fit="aspectFill" errorStyle="width: 60rpx;height: 60rpx;"></image-empty>
+                <image-empty :propImageSrc="form.button_img[0]" class="img" :propTypeStyle="color" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></image-empty>
             </view>
         </view>
     </view>

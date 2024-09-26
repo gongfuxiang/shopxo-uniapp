@@ -4,7 +4,7 @@
             <view v-if="form.head_state == '1'" class="seckill-head flex-row align-c jc-sb oh" :style="seckill_head_style">
                 <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
                     <view class="seckill-title">
-                        <image-empty v-if="form.title_type == 'image'" :imageSrc="form.title_src[0]" img_fit="heightFix" errorStyle="width:42rpx; height: 20rpx;"></image-empty>
+                        <imageEmpty v-if="form.title_type == 'image'" :propImageSrc="form.title_src[0]" propImgFit="heightFix" propErrorStyle="width:42rpx; height: 20rpx;"></imageEmpty>
                         <text v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</text>
                     </view>
                     <view v-if="form.theme == '1'" class="padding-horizontal-sm cr-white">|</view>
@@ -40,10 +40,10 @@
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr" :class="'flex-img' + form.shop_style_type">
                                     <template v-if="!isEmpty(item.new_cover)">
-                                        <image-empty :imageSrc="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" errorStyle="width:100rpx; height: 100rpx;"></image-empty>
+                                        <imageEmpty :propImageSrc="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <template v-else>
-                                        <image-empty :imageSrc="item.images" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" errorStyle="width:100rpx; height: 100rpx;"></image-empty>
+                                        <imageEmpty :propImageSrc="item.images" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
                                         <text class="text-line-1">{{ form.subscript_text }}</text>
@@ -69,13 +69,13 @@
                                     <view class="flex-col gap-5">
                                         <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
                                             <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
-                                            <text class="identifying">{{ item.show_price_symbol }}</text
-                                            ><text :style="price_style">{{ item.min_price }}</text>
+                                            <text class="identifying">{{ item.show_price_symbol }}</text>
+                                            <text :style="price_style">{{ item.min_price }}</text>
                                             <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                            <text class="original-price text-line-1 flex-1"
-                                                >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                            <text class="original-price text-line-1 flex-1">
+                                                {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <template v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </template>
@@ -103,10 +103,10 @@
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr wh-auto ht-auto">
                                     <template v-if="!isEmpty(item.new_cover)">
-                                        <image-empty :imageSrc="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" errorStyle="width:100rpx; height: 100rpx;"></image-empty>
+                                        <imageEmpty :propImageSrc="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <template v-else>
-                                        <image-empty :imageSrc="item.images" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" errorStyle="width:100rpx; height: 100rpx;"></image-empty>
+                                        <imageEmpty :propImageSrc="item.images" :class="'flex-img' + form.shop_style_type" :typeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                     </template>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
                                         <text class="text-line-1">{{ form.subscript_text }}</text>
@@ -132,13 +132,13 @@
                                     <view class="flex-col gap-5">
                                         <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
                                             <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
-                                            <text class="identifying">{{ item.show_price_symbol }}</text
-                                            ><text :style="price_style">{{ item.min_price }}</text>
+                                            <text class="identifying">{{ item.show_price_symbol }}</text>
+                                            <text :style="price_style">{{ item.min_price }}</text>
                                             <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                         </view>
                                         <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                            <text class="original-price text-line-1 flex-1"
-                                                >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                            <text class="original-price text-line-1 flex-1">
+                                                {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <template v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </template>
@@ -228,7 +228,7 @@
             // 按钮渐变色处理
             button_gradient() {
                 return gradient_handle(this.new_style.shop_button_color, '180deg');
-            }
+            },
         },
         created() {
             this.setData({
