@@ -1,11 +1,14 @@
 <template>
     <view :class="theme_view">
         <web-view :src="web_url"></web-view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-
+    import componentCommon from '@/components/common/common';
     export default {
         data() {
             return {
@@ -14,8 +17,9 @@
             };
         },
 
-        components: {},
-        props: {},
+        components: {
+            componentCommon
+        },
 
         onLoad(params) {
             // 调用公共事件方法

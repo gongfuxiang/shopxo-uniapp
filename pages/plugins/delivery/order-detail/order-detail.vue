@@ -127,7 +127,6 @@
             componentNoData,
             componentBottomLine
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

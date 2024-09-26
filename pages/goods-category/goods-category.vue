@@ -368,7 +368,7 @@
         </view>
 
         <!-- 公共 -->
-        <componentCommon @footer-height="footer_height_value_event" :propIsFooterSeat="false"></componentCommon>
+        <component-common @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 
@@ -477,7 +477,6 @@
             componentNavMore,
             componentAppAdmin
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

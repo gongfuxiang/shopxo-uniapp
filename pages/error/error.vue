@@ -26,7 +26,6 @@
             };
         },
         components: {},
-        props: {},
 
         // 页面加载初始化
         onLoad(params) {

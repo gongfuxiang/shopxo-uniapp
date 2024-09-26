@@ -175,7 +175,6 @@
             componentSharePopup,
             componentGoodsList
         },
-        props: {},
         computed: {
             days_in_month() {
                 const date = new Date(this.year, this.month, 0);

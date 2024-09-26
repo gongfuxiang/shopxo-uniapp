@@ -117,11 +117,15 @@
             @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
         ></component-payment>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -176,12 +180,12 @@
         },
 
         components: {
+            componentCommon,
             componentPopup,
             componentNoData,
             componentBottomLine,
             componentPayment,
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

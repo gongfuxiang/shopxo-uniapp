@@ -295,7 +295,7 @@
         </block>
 
         <!-- 公共 -->
-        <componentCommon></componentCommon>
+        <component-common></component-common>
     </view>
 </template>
 
@@ -439,7 +439,6 @@
             componentAppAdmin,
             componentDiy
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

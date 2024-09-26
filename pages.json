@@ -1673,10 +1673,10 @@
         "backgroundColorBottom": "#f5f5f5"
     },
     "tabBar": {
-        "color": "#f5f5f5",
+        "color": "transparent",
         "borderStyle": "white",
-        "selectedColor": "#f5f5f5",
-        "backgroundColor": "#f5f5f5",
+        "selectedColor": "transparent",
+        "backgroundColor": "transparent",
         "list": [
             {
                 "pagePath": "pages/index/index"

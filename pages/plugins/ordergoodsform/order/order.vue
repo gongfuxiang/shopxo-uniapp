@@ -60,7 +60,6 @@ export default {
         componentBottomLine,
         componentBuyOrdergoodsform
     },
-    props: {},
 
     onLoad(params) {
         // 调用公共事件方法

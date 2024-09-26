@@ -10,7 +10,7 @@
         <component-app-admin ref="app_admin"></component-app-admin>
 
         <!-- 公共 -->
-        <componentCommon @footer-height="footer_height_value_event"></componentCommon>
+        <component-common @footer-height="footer_height_value_event"></component-common>
     </view>
 </template>
 <script>
