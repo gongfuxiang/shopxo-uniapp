@@ -1,7 +1,7 @@
 <template>
     <!-- 选项卡 -->
-    <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabs="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="ou tabs" :style="style_container">
+        <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propIsTop="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
     </view>
 </template>
 
@@ -42,13 +42,13 @@
                 top_up: '0',
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                tabs_top: 'padding-top:calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
+                tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                tabs_top: 'padding-top:calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
+                tabs_top: '0',
                 // #endif
                 // #ifdef APP
-                tabs_top: 'padding-top:calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
+                tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
                 // #endif
             };
         },
@@ -59,7 +59,7 @@
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
-                let new_tabs_data = this.propValue;
+                let new_tabs_data = JSON.parse(JSON.stringify(this.propValue));
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 this.setData({
                     tabs_data: new_tabs_data,
@@ -88,8 +88,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .seize-seat {
-        z-index: 101;
-        position: relative;
+    .tabs {
+        max-height: 100rpx;
     }
 </style>

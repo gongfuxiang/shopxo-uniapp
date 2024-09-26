@@ -4,12 +4,12 @@
         <view class="pr header">
             <componentDiyHeader :key="key" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
-        <view class="pr content" :style="header_top">
-            <view v-for="(item, index) in tabs_data" :key="index">
-                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
+        <view class="content flex-col" :style="header_top">
+            <block v-for="(item, index) in tabs_data">
+                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" @tabs-click="tabs_click_event"></componentDiyTabs>
                 <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
-            </view>
-            <view v-if="is_tabs_type" class="diy">
+            </block>
+            <block v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
                         <!-- 基础组件 -->
@@ -38,8 +38,8 @@
                         <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
                     </view>
                 </template>
-            </view>
-            <view v-else>
+            </block>
+            <block v-else>
                 <!-- goods九宫格数据 -->
                 <!-- 列表 -->
                 <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
@@ -53,7 +53,7 @@
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </scroll-view>
-            </view>
+            </block>
         </view>
         <view v-if="is_show_footer == 1" class="footer">
             <componentDiyFooter :key="key" :propValue="footer_data.com_data"></componentDiyFooter>

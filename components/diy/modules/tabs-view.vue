@@ -15,7 +15,7 @@
                     </view>
                 </scroll-view>
             </view>
-            <iconfont v-if="propIsTabs" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" @click="category_check_event"></iconfont>
+            <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" @click="category_check_event"></iconfont>
         </view>
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="tabs_top" @onclose="quick_close_event">
             <view class="padding-vertical-lg">
@@ -56,7 +56,7 @@
                 type: Object,
                 default: () => {},
             },
-            propIsTabs: {
+            propIsTabsIcon: {
                 type: Boolean,
                 default: false,
             },

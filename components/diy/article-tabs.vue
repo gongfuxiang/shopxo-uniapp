@@ -1,6 +1,6 @@
 <template>
     <!-- 文章列表 -->
-    <view class="ou" :style="style_container">
+    <view class="article-tabs ou" :style="style_container">
         <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="tabs_top" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
             <componentDiyArticleList :key="key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
@@ -42,18 +42,19 @@
                 top_up: '0',
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                sticky_offset: bar_height + 5 + 12 + 33,
+                sticky_offset_postion: bar_height + 5 + 12 + 33,
                 tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                sticky_offset: bar_height + 7 + 12 + 33,
+                sticky_offset_postion: bar_height + 7 + 12 + 33,
                 tabs_top: 'calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef APP
-                sticky_offset: bar_height + 0 + 12 + 33,
+                sticky_offset_postion: bar_height + 0 + 12 + 33,
                 tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
                 // #endif
                 tabs_style: '',
+                sticky_offset: 0,
             };
         },
         created() {
@@ -105,14 +106,34 @@
                 });
             },
             handle_scroll() {
-                // 判断是否吸顶了
-                if (window.scrollY >= this.sticky_offset) {
-                    const new_style = this.propValue.style || {};
-                    this.setData({
-                        tabs_style: 'padding-top:' + new_style.common_style.padding_top * 2 + 'rpx;',
-                    });
-                }
+                const query = uni.createSelectorQuery().in(this);
+                query
+                    .select('.goods-tabs')
+                    .boundingClientRect((data) => {
+                        if (data) {
+                            const new_style = this.propValue.style || {};
+                            this.setData({
+                                sticky_offset: data.top - new_style.common_style.padding_top,
+                            });
+                            // 判断是否吸顶了
+                            console.log(this.sticky_offset);
+                            if (window.scrollY >= this.sticky_offset) {
+                                const new_style = this.propValue.style || {};
+                                this.setData({
+                                    tabs_style: 'padding-top:' + new_style.common_style.padding_top * 2 + 'rpx;',
+                                });
+                            } else {
+                                this.setData({
+                                    tabs_style: '',
+                                });
+                            }
+                        }
+                    })
+                    .exec();
             },
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.handle_scroll);
         },
     };
 </script>
