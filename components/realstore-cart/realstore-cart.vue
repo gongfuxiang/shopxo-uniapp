@@ -88,8 +88,8 @@
                             </view>
                         </view>
                         <view class="padding-right-main padding-top-main padding-bottom-sm">
-                            <button v-if="params.source == 'goods'" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :loading="realstore_goods_data_cart_loading" :class="'text-size-md round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey-disabled cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
-                            <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :loading="settlement_btn_loading" :class="'text-size-md round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey-disabled cr-grey')">{{ settlement_btn_text }}</button>
+                            <button v-if="params.source == 'goods'" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :loading="realstore_goods_data_cart_loading" :class="'btn text-size-md round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey-disabled cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
+                            <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :loading="settlement_btn_loading" :class="'btn text-size-md round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey-disabled cr-grey')">{{ settlement_btn_text }}</button>
                         </view>
                     </view>
                 </view>
@@ -1030,7 +1030,7 @@
         top: -20rpx;
         right: -2rpx;
     }
-    .plugins-realstore-cart-botton-nav button {
+    .plugins-realstore-cart-botton-nav .btn {
         min-width: 160rpx;
         line-height: 70rpx;
         height: 70rpx;

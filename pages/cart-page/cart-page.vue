@@ -1,23 +1,29 @@
 <template>
     <view :class="theme_view">
         <!-- 购物车 -->
-        <component-cart ref="cart" propSourceType="page"></component-cart>
+        <component-cart ref="cart" :propCartNavBottomValue="footer_height_value" propSourceType="page"></component-cart>
 
         <!-- 快捷导航 -->
         <component-quick-nav :propIsBar="true"></component-quick-nav>
+
+        <!-- 公共 -->
+        <componentCommon @footer-height="footer_height_value_event"></componentCommon>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentQuickNav from '@/components/quick-nav/quick-nav';
     import componentCart from '@/components/cart/cart';
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                footer_height_value: 0
             };
         },
         components: {
+            componentCommon,
             componentQuickNav,
             componentCart,
         },
@@ -32,7 +38,14 @@
             app.globalData.page_event_onshow_handle();
         },
 
-        methods: {},
+        methods: {
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                this.setData({
+                    footer_height_value: value
+                });
+            }
+        },
     };
 </script>
 <style></style>
