@@ -1,17 +1,15 @@
 <template>
-    <view v-if="form.button_img.length > 0" class="pf float-window" :style="style">
-        <view class="flex-row align-c jc-c" @click="url_open">
-            <view class="float-window-spread flex-row align-c jc-c">
-                <block v-if="new_style.float_style == 'diffuse'">
-                    <view class="ring" :style="color"></view>
-                    <view class="ring" :style="color"></view>
-                </block>
-                <view class="img">
-                    <imageEmpty :propImageSrc="form.button_img[0]" :propStyle="color" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
-                </view>
+    <movable-area class="online-service-movable-container">
+        <movable-view :x="x" :y="y" direction="all" class="float-window-spread flex-row align-c jc-c">
+            <block v-if="new_style.float_style == 'diffuse'">
+                <view class="ring" :style="color"></view>
+                <view class="ring" :style="color"></view>
+            </block>
+            <view class="img">
+                <imageEmpty :propImageSrc="form.button_img[0]" :propStyle="color" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
             </view>
-        </view>
-    </view>
+        </movable-view>
+    </movable-area>
 </template>
 
 <script>
@@ -34,6 +32,8 @@
             return {
                 form: {},
                 new_style: {},
+                x: 0,
+                y: 0,
                 style: '',
                 color: '',
             };
@@ -47,15 +47,19 @@
         },
         methods: {
             init() {
-                const { float_style, float_style_color, display_location, offset_number } = this.propValue.style;
-                let location = `right: 20rpx;`;
+                const { float_style, float_style_color, display_location, offset_number_percentage } = this.propValue.style;
+
+                const { windowWidth, windowHeight } = uni.getSystemInfoSync();
+                let x = windowWidth - 10;
                 if (display_location == 'left') {
-                    location = `left: 20rpx;`;
+                    x = 10;
                 }
-                const { windowHeight } = uni.getSystemInfoSync();
+                // 计算出距离顶部的距离
+                const num = Math.ceil(windowHeight * (1 - Number(offset_number_percentage)));
                 this.setData({
                     color: float_style == 'shadow' ? `box-shadow: 0 10rpx 40rpx ${float_style_color};border-radius: 50%;` : `background-color: ${float_style_color};border-radius: 50%;`,
-                    style: `bottom: ${((offset_number / windowHeight) * 100).toFixed(4) + '%'};` + location,
+                    x: x,
+                    y: num
                 });
             },
             url_open() {
@@ -79,11 +83,22 @@
     .float-window {
         z-index: 103;
     }
+    .online-service-movable-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: transparent;
+        pointer-events: none;
+        z-index: 103;
+    }
     /**
     * 呼吸灯
     */
     .float-window-spread {
         position: relative;
+        pointer-events: auto;
         z-index: 1;
         width: 120rpx;
         height: 120rpx;
