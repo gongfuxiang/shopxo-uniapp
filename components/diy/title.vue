@@ -4,7 +4,7 @@
             <view class="pr flex-row" :class="title_center">
                 <view class="z-i flex-row align-c gap-10 title-img">
                     <template v-if="!isEmpty(form.img_src)">
-                        <image-empty v-model="form.img_src[0]"></image-empty>
+                        <imageEmpty v-model="form.img_src[0]"></imageEmpty>
                     </template>
                     <template v-else-if="!isEmpty(form.icon_class)">
                         <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color"></iconfont>

@@ -3,7 +3,7 @@
         <swiper-item v-for="(item1, index1) in value.data_content.list" :key="index1">
             <template v-if="propType === 'img'">
                 <view :data-value="item1.carousel_link.page" @tap="url_event">
-                    <image-empty :propImageSrc="item1.carousel_img[0]" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
+                    <imageEmpty :propImageSrc="item1.carousel_img[0]" :style="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
                 </view>
             </template>
             <template v-else>
