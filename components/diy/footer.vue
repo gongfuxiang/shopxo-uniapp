@@ -4,7 +4,7 @@
         <view class="footer-nav-content flex-row jc-c align-c wh-auto" :style="style_container">
             <view class="bottom-line-exclude flex-row jc-c align-c wh-auto">
                 <view class="flex-row jc-sa align-c wh padding-0">
-                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page || ''" @tap="url_event">
+                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-value="item.link.page || ''" @tap="url_event">
                         <view v-if="nav_style != 2" class="img-content pr">
                             <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
                                 <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
@@ -84,21 +84,12 @@
                         text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
                         style_container: common_styles_computer(new_style.common_style),
                     });
-                    let footer_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom) + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom) + 40;
-                    // #ifndef APP
-                    // 底部菜单距离底部的安全距离
-                    footer_height += parseInt(uni.getSystemInfoSync().statusBarHeight);
-                    // #endif
-                    this.$emit('footer-height', footer_height);
                 }
             },
 
             // 跳转链接
             url_event(e) {
-                let index = e.currentTarget.dataset.index;
-                let item = this.nav_content[index];
                 app.globalData.url_event(e);
-                this.$emit('footer-tap', index, item);
             },
         },
     };

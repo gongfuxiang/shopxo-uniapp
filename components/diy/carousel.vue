@@ -4,11 +4,13 @@
             <block v-if="form.carousel_type == 'card'">
                 <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
-                        <imageEmpty :propImageSrc="item.carousel_img[0]" class="img" :style="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                        <imageEmpty :propImageSrc="item.carousel_img[0]" :propTypeStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
-                            <imageEmpty :propImageSrc="new_style.video_img[0]" class="video_img" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            <view class="video_img">
+                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            </view>
                         </block>
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
@@ -20,11 +22,13 @@
             <block v-else>
                 <swiper-item v-for="(item, index) in new_list" :key="index" :style="{ 'padding-right': new_style.image_spacing * 2 + 'rpx' }">
                     <view class="item-image flex-row jc-c align-c wh-auto ht-auto pr" :style="img_style">
-                        <imageEmpty :propImageSrc="item.carousel_img[0]" class="img" :style="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                        <imageEmpty :propImageSrc="item.carousel_img[0]" :propTypeStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
-                            <imageEmpty :propImageSrc="new_style.video_img[0]" class="video_img" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            <view class="video_img">
+                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            </view>
                         </block>
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
@@ -290,11 +294,6 @@
         &.scale-1 {
             transform: scale(1.1);
         }
-    }
-
-    .img {
-        width: 100%;
-        height: 100%;
     }
     .video_img {
         max-width: 120rpx;
