@@ -54,7 +54,7 @@
             // 选中索引
             propFooterActiveIndex(value, old_value) {
                 this.init();
-            }
+            },
         },
         // 页面被展示
         created: function () {
@@ -69,9 +69,9 @@
                     let nav_content = new_content.nav_content || [];
                     let page = app.globalData.current_page() || null;
                     let active_index = this.propFooterActiveIndex;
-                    if(page != null) {
-                        for(var i in nav_content) {
-                            if((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null && nav_content[i]['link']['page'] == '/'+page) {
+                    if (page != null) {
+                        for (var i in nav_content) {
+                            if ((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null && nav_content[i]['link']['page'] == '/' + page) {
                                 active_index = i;
                             }
                         }
