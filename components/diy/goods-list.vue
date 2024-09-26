@@ -16,10 +16,10 @@
                     <block v-else>
                         <block v-if="!isEmpty(item)">
                             <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
-                                <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>
                             <view v-else :class="'flex-img' + theme">
-                                <imageEmpty :propImageSrc="item.images" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>
                         </block>
                         <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
@@ -106,10 +106,10 @@
                         <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
                             <block v-if="!isEmpty(item)">
                                 <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
-                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                 </view>
                                 <view v-else :class="'flex-img' + theme">
-                                    <imageEmpty :propImageSrc="item.images" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                    <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                 </view>
                             </block>
                             <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">

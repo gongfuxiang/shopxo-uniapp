@@ -1,13 +1,13 @@
 <template>
-    <swiper circular="true" :autoplay="value.data_style.is_roll == '1'" :interval="value.data_style.interval_time * 1000" :duration="500" :vertical="value.data_style.rotation_direction == 'vertical'" class="swiper" style="height: 100%" @change="carousel_change">
-        <swiper-item v-for="(item1, index1) in value.data_content.list" :key="index1">
+    <swiper circular="true" :autoplay="propValue.data_style.is_roll == '1'" :interval="propValue.data_style.interval_time * 1000" :duration="500" :vertical="propValue.data_style.rotation_direction == 'vertical'" class="swiper" style="height: 100%" @change="carousel_change">
+        <swiper-item v-for="(item1, index1) in propValue.data_content.list" :key="index1">
             <template v-if="propType === 'img'">
                 <view :data-value="item1.carousel_link.page" @tap="url_event">
-                    <imageEmpty :propImageSrc="item1.carousel_img[0]" :propTypeStyle="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
+                    <imageEmpty :propImageSrc="item1.carousel_img[0]" :propStyle="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
                 </view>
             </template>
             <template v-else>
-                <product-list-show :propOuterflex="value.outerflex" :propFlex="value.flex" :propNum="value.num" :propActived="propActived" :propIsShow="value.data_content.is_show" :propChunkPadding="value.data_style.chunk_padding" :propValue="item1.split_list" :propContentImgRadius="propContentImgRadius" @url_event="url_event"></product-list-show>
+                <product-list-show :propOuterflex="propValue.outerflex" :propFlex="propValue.flex" :propNum="propValue.num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propContentImgRadius="propContentImgRadius" @url_event="url_event"></product-list-show>
             </template>
         </swiper-item>
     </swiper>

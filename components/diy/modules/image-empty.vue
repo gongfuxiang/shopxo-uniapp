@@ -1,5 +1,5 @@
 <template>
-    <view :class="['oh img_wh', propTypeClass]" :style="empty_outer_style + propTypeStyle">
+    <view :class="['oh img_wh', propClass]" :style="empty_outer_style + propStyle">
         <image :src="imageUrl" @error="handleImageError" :mode="propImgFit" :style="empty_style" />
     </view>
 </template>
@@ -20,11 +20,11 @@
                 type: String,
                 default: () => 'aspectFill',
             },
-            propTypeStyle: {
+            propStyle: {
                 type: String,
                 default: () => '',
             },
-            propTypeClass: {
+            propClass: {
                 type: String,
                 default: () => '',
             },
