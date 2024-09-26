@@ -4,8 +4,10 @@
             <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c">
                 <view class="bannerImg flex-row flex-wrap wh-auto gap-x-10">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{ width: group_width }" :data-value="item1.link.page" @tap="url_open_event">
-                        <view v-if="['image_with_text', 'image'].includes(nav_style)" class="top-img flex-row align-c jc-c">
-                            <imageEmpty :propImageSrc="item1.img[0]" :propTypeStyle="img_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+                        <view v-if="['image_with_text', 'image'].includes(nav_style)" class="flex-row align-c jc-c">
+                            <view class="top-img">
+                                <imageEmpty :propImageSrc="item1.img[0]" :propStyle="img_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+                            </view>
                         </view>
                         <view v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</view>
                     </view>

@@ -1,13 +1,13 @@
 <template>
-    <view v-if="form.button_img.length > 0" class="pa" :style="style">
+    <view v-if="form.button_img.length > 0" class="pf float-window" :style="style">
         <view class="flex-row align-c jc-c" @click="url_open">
-            <view class="spread flex-row align-c jc-c">
+            <view class="float-window-spread flex-row align-c jc-c">
                 <block v-if="new_style.float_style == 'diffuse'">
                     <view class="ring" :style="color"></view>
                     <view class="ring" :style="color"></view>
                 </block>
                 <view class="img">
-                    <imageEmpty :propImageSrc="form.button_img[0]" :propTypeStyle="color" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+                    <imageEmpty :propImageSrc="form.button_img[0]" :propStyle="color" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
                 </view>
             </view>
         </view>
@@ -72,21 +72,24 @@
 
 <style scoped lang="scss">
     .img {
-        width: 100rpx;
-        height: 100rpx;
+        width: 90rpx;
+        height: 90rpx;
         border-radius: 50%;
+    }
+    .float-window {
+        z-index: 103;
     }
     /**
-* 呼吸灯
-*/
-    .spread {
+    * 呼吸灯
+    */
+    .float-window-spread {
         position: relative;
         z-index: 1;
-        width: 100rpx;
-        height: 100rpx;
+        width: 120rpx;
+        height: 120rpx;
         border-radius: 50%;
     }
-    .spread .ring {
+    .float-window-spread .ring {
         /* 速度为1.5 * 层数 = 实际运行速度，速度修改则 animation-delay 属性也修改相同速度 */
         animation: pulsing 1.5s ease-out infinite;
         border-radius: 100%;
@@ -95,13 +98,13 @@
         position: absolute;
     }
     /* 速度为1*层数 */
-    .spread .ring:nth-of-type(1) {
+    .float-window-spread .ring:nth-of-type(1) {
         -webkit-animation-delay: -1.5s;
         animation-delay: -1.5s;
     }
 
     /* 速度为1*层数 */
-    .spread .ring:nth-of-type(2) {
+    .float-window-spread .ring:nth-of-type(2) {
         -webkit-animation-delay: -2s;
         animation-delay: -2s;
     }

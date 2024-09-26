@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_open(form.link)">
-        <imageEmpty :propImageSrc="img" :propTypeStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+        <imageEmpty :propImageSrc="img" :propStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
     </view>
 </template>
 <script>
