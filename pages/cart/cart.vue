@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 购物车 -->
-        <component-cart ref="cart"></component-cart>
+        <component-cart ref="cart" :propCartNavBottomValue="footer_height_value"></component-cart>
 
         <!-- 用户基础 -->
         <component-user-base ref="user_base"></component-user-base>
@@ -10,7 +10,7 @@
         <component-app-admin ref="app_admin"></component-app-admin>
 
         <!-- 公共 -->
-        <componentCommon></componentCommon>
+        <componentCommon @footer-height="footer_height_value_event"></componentCommon>
     </view>
 </template>
 <script>
@@ -22,7 +22,8 @@
     export default {
         data() {
             return {
-                theme_view: app.globalData.get_theme_value_view()
+                theme_view: app.globalData.get_theme_value_view(),
+                footer_height_value: 0
             };
         },
         components: {
@@ -57,7 +58,15 @@
             }
         },
 
-        methods: {},
+        methods: {
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                this.setData({
+                    footer_height_value: value
+                });
+                console.log(value)
+            }
+        }
     };
 </script>
 <style>

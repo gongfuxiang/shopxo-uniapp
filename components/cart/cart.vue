@@ -141,7 +141,7 @@
                     <!-- 操作导航 -->
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
-                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')">
+                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')" :style="cart_buy_nav_style">
                             <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
                                 <button class="exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
@@ -152,7 +152,7 @@
                             </view>
                         </view>
                         <!-- 销售,自提,虚拟销售 -->
-                        <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(propSourceType == 'page' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')">
+                        <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(propSourceType == 'page' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="cart_buy_nav_style">
                             <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                                 <view class="cart-selected flex-row align-c">
                                     <view @tap="selected_event" data-type="all">
@@ -407,6 +407,8 @@
                 window_bottom: '100rpx',
                 window_top: '100rpx',
                 // #endif
+                // 底部购买导航样式
+                cart_buy_nav_style: ''
             };
         },
 
@@ -416,6 +418,11 @@
                 type: String,
                 default: '', // 默认主页面。当传入page时为子页面
             },
+            // 来源类型
+            propCartNavBottomValue: {
+                type: Number,
+                default: 0
+            }
         },
 
         components: {
@@ -434,6 +441,11 @@
                 // 数据加载
                 this.init();
             },
+            // 底部购买导航距离
+            propCartNavBottomValue(value, old_value) {
+                // 底部导航样式处理
+                this.cart_buy_nav_style_handle();
+            }
         },
 
         created: function () {
@@ -504,6 +516,9 @@
                     // 猜你喜欢
                     this.get_data_list(1);
                 }
+
+                // 底部导航样式处理
+                this.cart_buy_nav_style_handle();
 
                 // 分享菜单处理
                 app.globalData.page_share_handle();
@@ -1286,6 +1301,15 @@
             no_cart_data_btn_event(e) {
                 var url = ((this.user || null) == null) ? '/pages/login/login?event_callback=init' : this.home_page_url;
                 app.globalData.url_open(url);
+            },
+
+            // 底部导航样式处理
+            cart_buy_nav_style_handle() {
+                this.setData({
+                    cart_buy_nav_style: ((this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 0)+'rpx'
+                });
+                
+                console.log(this.cart_buy_nav_style)
             }
         },
     };
