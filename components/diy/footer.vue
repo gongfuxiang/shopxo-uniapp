@@ -84,14 +84,25 @@
                         text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
                         style_container: common_styles_computer(new_style.common_style),
                     });
+
+                    // 高度计算回调
+                    let footer_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom) + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom) + 40;
+                    // #ifndef APP
+                    // 底部菜单距离底部的安全距离
+                    footer_height += parseInt(uni.getSystemInfoSync().statusBarHeight);
+                    // #endif
+                    this.$emit('footer-height', footer_height);
                 }
             },
 
             // 跳转链接
             url_event(e) {
+                let index = e.currentTarget.dataset.index;
+                let item = this.nav_content[index];
                 app.globalData.url_event(e);
-            },
-        },
+                this.$emit('footer-tap', index, item);
+            }
+        }
     };
 </script>
 <style lang="scss" scoped>

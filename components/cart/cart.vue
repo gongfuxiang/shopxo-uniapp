@@ -141,7 +141,7 @@
                     <!-- 操作导航 -->
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
-                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')" :style="cart_buy_nav_style">
+                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh round ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')" :style="cart_buy_nav_style">
                             <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
                                 <button class="exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
@@ -152,7 +152,7 @@
                             </view>
                         </view>
                         <!-- 销售,自提,虚拟销售 -->
-                        <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(propSourceType == 'page' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="cart_buy_nav_style">
+                        <view v-else class="cart-buy-nav oh round flex-row jc-sb align-c br-top-shadow bg-white" :class="(propSourceType == 'page' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="cart_buy_nav_style">
                             <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                                 <view class="cart-selected flex-row align-c">
                                     <view @tap="selected_event" data-type="all">
@@ -265,11 +265,17 @@
                                     </view>
                                 </view>
                             </view>
+
+                            <!-- 底部占位 -->
+                            <view v-if="(footer_seat_style || null) != null" :style="footer_seat_style"></view>
                         </view>
                     </component-popup>
 
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+
+                    <!-- 底部占位 -->
+                    <view v-if="(footer_seat_style || null) != null" :style="footer_seat_style"></view>
                 </view>
             </scroll-view>
         </block>
@@ -308,6 +314,9 @@
                     <block v-else>
                         <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{ $t('cart.cart.h63814') }}</view>
                     </block>
+
+                    <!-- 底部占位 -->
+                    <view v-if="(footer_seat_style || null) != null" :style="footer_seat_style"></view>
                 </view>
             </view>
         </component-popup>
@@ -408,7 +417,8 @@
                 window_top: '100rpx',
                 // #endif
                 // 底部购买导航样式
-                cart_buy_nav_style: ''
+                cart_buy_nav_style: '',
+                footer_seat_style: ''
             };
         },
 
@@ -443,8 +453,8 @@
             },
             // 底部购买导航距离
             propCartNavBottomValue(value, old_value) {
-                // 底部导航样式处理
-                this.cart_buy_nav_style_handle();
+                // 页面样式处理
+                this.page_style_handle();
             }
         },
 
@@ -517,8 +527,8 @@
                     this.get_data_list(1);
                 }
 
-                // 底部导航样式处理
-                this.cart_buy_nav_style_handle();
+                // 页面样式处理
+                this.page_style_handle();
 
                 // 分享菜单处理
                 app.globalData.page_share_handle();
@@ -1303,13 +1313,13 @@
                 app.globalData.url_open(url);
             },
 
-            // 底部导航样式处理
-            cart_buy_nav_style_handle() {
+            // 页面样式处理
+            page_style_handle() {
+                var value = (this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+40) : 0;
                 this.setData({
-                    cart_buy_nav_style: ((this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 0)+'rpx'
+                    cart_buy_nav_style: 'bottom:'+value+'rpx;',
+                    footer_seat_style: (value > 0) ? 'height:'+value+'rpx;' : '',
                 });
-                
-                console.log(this.cart_buy_nav_style)
             }
         },
     };
@@ -1320,9 +1330,6 @@
     */
     .scroll-box {
         height: 100vh;
-    }
-    .scroll-box .content {
-        padding-bottom: 160rpx;
     }
     .scroll-box .content,
     .scroll-box.realstore .content {
@@ -1410,11 +1417,12 @@
     .cart-buy-nav {
         position: fixed;
         z-index: 1;
-        left: 0;
-        bottom: 0rpx;
-        /* #ifdef H5 || APP */
-        bottom: var(--window-bottom);
-        /* #endif */
+        left: auto;
+        bottom: 20rpx;
+        margin-left: 20rpx;
+        width: calc(100% - 40rpx);
+        max-width: calc(800px - 40rpx);
+        box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
     }
     .cart-nav-base {
         width: calc(75% - 20rpx);

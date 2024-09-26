@@ -64,7 +64,6 @@
                 this.setData({
                     footer_height_value: value
                 });
-                console.log(value)
             }
         }
     };
