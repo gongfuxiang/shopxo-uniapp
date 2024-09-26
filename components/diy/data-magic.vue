@@ -12,12 +12,12 @@
                                     <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                 </view>
                                 <view class="wh-auto ht-auto">
-                                    <magic-carousel :value="item" :content-img-radius="content_img_radius" :actived="form.style_actived" type="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                    <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" :actived="form.style_actived" type="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
                                 </view>
                             </view>
                         </template>
                         <template v-else>
-                            <magic-carousel :value="item" :content-img-radius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                            <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                         </template>
                         <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{'bottom': item.data_style.indicator_bottom * 2 +'rpx'}">
                             <template v-if="item.data_style.indicator_style == 'num'">
@@ -41,12 +41,12 @@
                                 <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                             </view>
                             <view class="wh-auto ht-auto">
-                                <magic-carousel :value="item" :content-img-radius="content_img_radius" type="product" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" type="product" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                             </view>
                         </view>
                     </template>
                     <template v-else>
-                        <magic-carousel :value="item" :content-img-radius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                        <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                     </template>
                     <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{'bottom': item.data_style.indicator_bottom * 2 +'rpx'}">
                         <template v-if="item.data_style.indicator_style == 'num'">
@@ -75,7 +75,7 @@
             magicCarousel,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -84,42 +84,6 @@
             return {
                 form: {},
                 new_style: {},
-                // 设置默认值
-                default_list: {
-                    title: '测试商品标题',
-                    min_original_price: '41.2',
-                    show_original_price_symbol: '￥',
-                    show_original_price_unit: '/ 台',
-                    min_price: '51',
-                    show_price_symbol: '￥',
-                    show_price_unit: '/ 台',
-                    sales_count: '1000',
-                    images: '',
-                    new_cover: [],
-                    plugins_view_icon_data: [
-                        {
-                            name: '满减活动',
-                            bg_color: '#EA3323',
-                            br_color: '',
-                            color: '#fff',
-                            url: '',
-                        },
-                        {
-                            name: '包邮',
-                            bg_color: '',
-                            br_color: '#EA3323',
-                            color: '#EA3323',
-                            url: '',
-                        },
-                        {
-                            name: '领劵',
-                            bg_color: '',
-                            br_color: '#EA9223',
-                            color: '#EA9223',
-                            url: '',
-                        },
-                    ],
-                },
                 outer_spacing: '',
                 // 图片间距设置
                 spacing: '',
@@ -148,8 +112,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },
@@ -213,7 +177,7 @@
                     }
                     return nav_list;
                 } else {
-                    return [{ split_list: Array(num).fill(this.default_list)}];
+                    return [];
                 }
             },
             background_style(item) {

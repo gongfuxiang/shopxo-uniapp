@@ -5,7 +5,7 @@
                 <view class="bannerImg flex-row flex-wrap wh-auto gap-x-10">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{ width: group_width }" :data-value="item1.link.page" @tap="url_open_event">
                         <view v-if="['image_with_text', 'image'].includes(nav_style)" class="top-img flex-row align-c jc-c">
-                            <image-empty :image-src="item1.img[0]" :style="img_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
+                            <image-empty :imageSrc="item1.img[0]" :style="img_style" errorStyle="width: 60rpx;height: 60rpx;"></image-empty>
                         </view>
                         <view v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</view>
                     </view>
@@ -35,7 +35,7 @@
             imageEmpty,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -58,8 +58,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
         },
         mounted() {

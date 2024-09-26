@@ -59,7 +59,7 @@
     import { background_computer, common_styles_computer, get_math, gradient_computer, gradient_handle, radius_computer } from '@/common/js/common/common.js';
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -99,8 +99,8 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 // 容器背景
                 const { container_color_list, container_direction, container_background_img_style, container_background_img } = new_style;
                 const temp_obj = {

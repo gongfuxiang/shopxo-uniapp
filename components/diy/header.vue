@@ -9,7 +9,7 @@
                                 <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                     <template v-if="['2', '3'].includes(form.content.theme)">
                                         <view class="logo-outer-style">
-                                            <image-empty :image-src="form.content.logo[0].url" class="logo-style" error-style="width:40rpx;height:40rpx;"></image-empty>
+                                            <image-empty :imageSrc="form.content.logo[0].url" class="logo-style" errorStyle="width:40rpx;height:40rpx;"></image-empty>
                                         </view>
                                     </template>
                                     <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
@@ -33,7 +33,7 @@
                                 </view>
                                 <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'pa right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                     <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
-                                        <image-empty v-if="item.img.length > 0" :image-src="item.img[0].url" :error-style="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
+                                        <image-empty v-if="item.img.length > 0" :imageSrc="item.img[0].url" :errorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
                                         <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
                                     </view>
                                 </view>
@@ -58,7 +58,7 @@
     // #endif
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -88,15 +88,15 @@
             };
         },
         created() {
-            if ((this.value || null) !== null) {
+            if ((this.propValue || null) !== null) {
                 this.init();
             }
         },
         methods: {
             isEmpty,
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 let new_roll_style = '';
                 const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type } = new_style;
                 if (header_background_type === 'color_image') {
@@ -116,7 +116,7 @@
                 menuButtonInfo = `max-width:calc(100% - ${custom.width + 30}px);`;
                 // #endif
                 this.setData({
-                    form: this.value,
+                    form: this.propValue,
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : 'position:relative;',
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,

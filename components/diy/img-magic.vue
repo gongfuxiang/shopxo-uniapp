@@ -34,7 +34,7 @@
     // var height = app.globalData.window_height_handle(system);
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -60,8 +60,8 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 // 外部样式
                 const outer_spacing = `calc(100% + ${new_style.image_spacing * 2}rpx)`;
                 const outer_sx = `-${new_style.image_spacing}rpx`;
@@ -69,7 +69,7 @@
                 const spacing = `${new_style.image_spacing}rpx`;
                 const density = 4;
                 this.setData({
-                    form: this.value.content,
+                    form: this.propValue.content,
                     outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx}`,
                     img_spacing: `padding:${spacing}`,
                     content_img_radius: radius_computer(new_style),

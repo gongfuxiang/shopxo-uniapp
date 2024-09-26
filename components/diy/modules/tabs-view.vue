@@ -52,7 +52,7 @@
     // #endif
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {},
             },
@@ -111,8 +111,8 @@
         methods: {
             isEmpty,
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 const new_tabs_check = this.tabs_check_computer(new_style);
                 const new_icon = {
                     more_icon_class: new_style.more_icon_class,

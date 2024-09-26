@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_open(form.link)">
-        <image-empty :image-src="img" :type_style="image_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
+        <image-empty :imageSrc="img" :typeStyle="image_style" errorStyle="width: 60rpx;height: 60rpx;"></image-empty>
     </view>
 </template>
 <script>
@@ -11,7 +11,7 @@
             imageEmpty,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -35,7 +35,7 @@
         },
         created() {
             this.setData({
-                form: this.value,
+                form: this.propValue,
             });
             this.init();
         },

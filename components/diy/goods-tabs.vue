@@ -1,8 +1,8 @@
 <template>
     <view class="overflow-unset" :style="style_container">
-        <componentDiyModulesTabsView :value="goods_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="goods_tabs" :isTop="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
-            <componentGoodsList :key="key" :value="goods_tabs" :is-common-style="false"></componentGoodsList>
+            <componentGoodsList :key="key" :propValue="goods_tabs" :isCommonStyle="false"></componentGoodsList>
         </view>
     </view>
 </template>
@@ -17,7 +17,7 @@
             componentGoodsList,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -37,9 +37,9 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
-                let new_data = JSON.parse(JSON.stringify(this.value));
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
+                let new_data = JSON.parse(JSON.stringify(this.propValue));
                 this.top_up = new_content.tabs_top_up;
                 // 产品的值
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
@@ -56,7 +56,7 @@
                 });
             },
             tabs_click_event(index) {
-                let new_data = JSON.parse(JSON.stringify(this.value));
+                let new_data = JSON.parse(JSON.stringify(this.propValue));
                 new_data.content.data_type = new_data.content.tabs_list[index].data_type;
                 new_data.content.category = new_data.content.tabs_list[index].category;
                 new_data.content.brand = new_data.content.tabs_list[index].brand;

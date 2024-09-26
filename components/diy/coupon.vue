@@ -163,7 +163,7 @@
     import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -195,8 +195,8 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 const temp_theme = new_content.theme;
                 // 主题
                 const new_background = gradient_computer(

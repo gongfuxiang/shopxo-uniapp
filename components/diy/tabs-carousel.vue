@@ -1,7 +1,7 @@
 <template>
     <div class="flex-col oh" :style="style_container">
-        <componentDiyTabs :value="value" :is-common="false" :spacing-common-style="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
-        <componentDiycarousel :value="value" :is-common="false"></componentDiycarousel>
+        <componentDiyTabs :value="value" :isCommon="false" :spacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
+        <componentDiycarousel :value="value" :isCommon="false"></componentDiycarousel>
     </div>
 </template>
 
@@ -15,7 +15,7 @@
             componentDiycarousel
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -44,7 +44,7 @@
         },
         methods: {
             init() {
-                const new_style = this.value.style || {};
+                const new_style = this.propValue.style || {};
                 this.setData({
                     style_container: `${ common_styles_computer(new_style.common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     spacing_common_style: {

@@ -948,7 +948,9 @@
 .gap-2 {
     gap: 4rpx;
 }
-
+.gap-3 {
+    gap: 6rpx;
+}
 .gap-4 {
     gap: 8rpx;
 }
@@ -972,7 +974,35 @@
 .gap-16 {
     gap: 32rpx;
 }
+.gap-20 {
+    gap: 40rpx;
+}
 
+.pr-4 {
+    padding: 8rpx;
+}
+.pr-15 {
+    padding-right: 30rpx;
+}
+.plr-11 {
+    padding-left: 22rpx;
+    padding-right: 22rpx;
+}
+
+.ptb-5 {
+    padding-top: 10rpx;
+    padding-bottom: 10rpx;
+}
+
+.ptb-15 {
+    padding-top: 30rpx;
+    padding-bottom: 30rpx;
+}
+
+.mlr-10 {
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+}
 /**
  * font-size 字体大小
  */
