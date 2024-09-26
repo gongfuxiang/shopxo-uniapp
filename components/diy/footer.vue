@@ -116,6 +116,7 @@
         /* #endif */
         margin: 0 auto;
         background-color: transparent;
+        z-index: 102;
         .footer-nav-content {
             min-height: 140rpx;
             box-sizing: border-box;

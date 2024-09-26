@@ -1,6 +1,6 @@
 <template>
     <!-- 文章列表 -->
-    <view class="container" :class="propIsTop ? 'ps z-i-deep-must bg-white' : ''" :style="'top:' + propTop + 'px;'">
+    <view class="container" :class="propIsTop ? 'tabs-top' : ''" :style="'top:' + propTop + 'px;'">
         <view class="flex-row gap-10 jc-sb align-c">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
@@ -189,6 +189,11 @@
     };
 </script>
 <style lang="scss" scoped>
+    .tabs-top {
+        position: sticky;
+        z-index: 101;
+        background-color: #fff;
+    }
     .tabs {
         .item {
             padding: 0 0 10rpx 0;

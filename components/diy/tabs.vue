@@ -1,7 +1,7 @@
 <template>
     <!-- 选项卡 -->
     <view class="pr">
-        <view v-if="top_up == '1'" class="pf z-i-deep-must left-0 right-0 top-0">
+        <view v-if="top_up == '1'" class="tabs-top">
             <view class="seize-seat" :style="tabs_top"></view>
             <view :style="style_container">
                 <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
@@ -105,5 +105,12 @@
     }
     .vs-hide {
         visibility: hidden;
+    }
+    .tabs-top {
+        position: fixed;
+        z-index: 101;
+        left: 0;
+        right: 0;
+        top: 0;
     }
 </style>
