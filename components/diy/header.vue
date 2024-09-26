@@ -9,7 +9,7 @@
                                 <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                     <template v-if="['2', '3'].includes(form.content.theme)">
                                         <view class="logo-outer-style">
-                                            <imageEmpty :propImageSrc="form.content.logo[0].url" class="logo-style" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
+                                            <imageEmpty :propImageSrc="form.content.logo[0].url" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
                                         </view>
                                     </template>
                                     <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
