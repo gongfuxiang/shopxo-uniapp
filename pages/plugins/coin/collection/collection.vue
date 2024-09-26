@@ -44,7 +44,7 @@
         },
 
         components: {
-            componentCommon
+            componentCommon,
             componentNoData,
         },
 
