@@ -2,7 +2,7 @@
     <view class="ht-auto min-ht">
         <!-- 头部小程序兼容 -->
         <view class="pr header">
-            <componentDiyHeader :key="key" :propValue="header_data.com_data"></componentDiyHeader>
+            <componentDiyHeader v-if="hackReset" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + header_top">
             <view v-for="(item, index) in tabs_data" :key="index">
@@ -11,7 +11,7 @@
             </view>
             <block v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
+                    <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': ['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
                         <!-- 基础组件 -->
                         <componentDiySearch v-if="item.key == 'search'" :propValue="item.com_data"></componentDiySearch>
                         <componentDiyCarousel v-else-if="item.key == 'carousel'" :propValue="item.com_data"></componentDiyCarousel>
@@ -56,7 +56,7 @@
             </block>
         </view>
         <view v-if="is_show_footer == 1" class="footer">
-            <componentDiyFooter :key="key" :propValue="footer_data.com_data"></componentDiyFooter>
+            <componentDiyFooter v-if="hackReset" :propValue="footer_data.com_data"></componentDiyFooter>
         </view>
     </view>
 </template>
@@ -184,9 +184,9 @@
                 goods_bottom_line_status: false,
                 // 判断数据是否在加载中
                 data_is_loading: 0,
-                key: '',
                 // 缓存key
                 cache_key: app.globalData.data.cache_diy_data_key,
+                hackReset: false,
             };
         },
         created() {
@@ -215,7 +215,7 @@
             init() {
                 // tabs选项卡数据过滤
                 this.setData({
-                    key: Math.random(),
+                    hackReset: true,
                     header_data: this.propValue.header,
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
