@@ -3,7 +3,7 @@
         <swiper-item v-for="(item1, index1) in value.data_content.list" :key="index1">
             <template v-if="type === 'img'">
                 <view :data-value="item1.carousel_link.page" @tap="url_event">
-                    <image-empty :image-src="item1.carousel_img[0]" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
+                    <image-empty :imageSrc="item1.carousel_img[0]" :style="contentImgRadius" errorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                 </view>
             </template>
             <template v-else>
@@ -17,7 +17,6 @@
     const app = getApp();
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import productListShow from '@/components/diy/modules/data-magic/product-list-show.vue';
-    import { isEmpty } from '@/common/js/common/common.js';
     export default {
         components: {
             imageEmpty,

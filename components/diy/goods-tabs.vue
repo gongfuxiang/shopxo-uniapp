@@ -1,8 +1,8 @@
 <template>
     <view class="overflow-unset" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="goods_tabs" :isTop="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
-            <componentGoodsList :key="key" :propValue="goods_tabs" :is-common-style="false"></componentGoodsList>
+            <componentGoodsList :key="key" :propValue="goods_tabs" :isCommonStyle="false"></componentGoodsList>
         </view>
     </view>
 </template>

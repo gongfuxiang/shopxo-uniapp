@@ -1,9 +1,9 @@
 <template>
     <!-- 文章列表 -->
     <view class="overflow-unset" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="article_tabs" :isTop="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
-            <componentDiyArticleList :key="key" :propValue="article_tabs" :is-common-style="false"></componentDiyArticleList>
+            <componentDiyArticleList :key="key" :propValue="article_tabs" :isCommonStyle="false"></componentDiyArticleList>
         </view>
     </view>
 </template>

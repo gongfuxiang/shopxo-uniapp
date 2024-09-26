@@ -43,6 +43,7 @@
                 new_style: {},
                 style_container: '',
                 title_center: '',
+                subtitle_style: '',
                 keyword_list: [],
                 keyword_style: '',
                 right_style: '',

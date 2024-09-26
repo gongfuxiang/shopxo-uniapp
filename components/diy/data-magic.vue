@@ -84,42 +84,6 @@
             return {
                 form: {},
                 new_style: {},
-                // 设置默认值
-                default_list: {
-                    title: '测试商品标题',
-                    min_original_price: '41.2',
-                    show_original_price_symbol: '￥',
-                    show_original_price_unit: '/ 台',
-                    min_price: '51',
-                    show_price_symbol: '￥',
-                    show_price_unit: '/ 台',
-                    sales_count: '1000',
-                    images: '',
-                    new_cover: [],
-                    plugins_view_icon_data: [
-                        {
-                            name: '满减活动',
-                            bg_color: '#EA3323',
-                            br_color: '',
-                            color: '#fff',
-                            url: '',
-                        },
-                        {
-                            name: '包邮',
-                            bg_color: '',
-                            br_color: '#EA3323',
-                            color: '#EA3323',
-                            url: '',
-                        },
-                        {
-                            name: '领劵',
-                            bg_color: '',
-                            br_color: '#EA9223',
-                            color: '#EA9223',
-                            url: '',
-                        },
-                    ],
-                },
                 outer_spacing: '',
                 // 图片间距设置
                 spacing: '',
@@ -213,7 +177,7 @@
                     }
                     return nav_list;
                 } else {
-                    return [{ split_list: Array(num).fill(this.default_list)}];
+                    return [];
                 }
             },
             background_style(item) {

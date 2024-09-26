@@ -5,7 +5,6 @@
 </template>
 
 <script>
-    const app = getApp();
     import {
         common_styles_computer
     } from '@/common/js/common/common.js';

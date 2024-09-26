@@ -1,7 +1,7 @@
 <template>
     <div class="flex-col oh" :style="style_container">
-        <componentDiyTabs :value="value" :is-common="false" :spacing-common-style="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
-        <componentDiycarousel :value="value" :is-common="false"></componentDiycarousel>
+        <componentDiyTabs :value="value" :isCommon="false" :spacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
+        <componentDiycarousel :value="value" :isCommon="false"></componentDiycarousel>
     </div>
 </template>
 
