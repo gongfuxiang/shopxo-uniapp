@@ -265,9 +265,6 @@
                                     </view>
                                 </view>
                             </view>
-
-                            <!-- 底部占位 -->
-                            <view v-if="(footer_seat_style || null) != null" :style="footer_seat_style"></view>
                         </view>
                     </component-popup>
 
@@ -314,9 +311,6 @@
                     <block v-else>
                         <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{ $t('cart.cart.h63814') }}</view>
                     </block>
-
-                    <!-- 底部占位 -->
-                    <view v-if="(footer_seat_style || null) != null" :style="footer_seat_style"></view>
                 </view>
             </view>
         </component-popup>

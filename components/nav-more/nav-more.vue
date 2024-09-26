@@ -6,7 +6,7 @@
         </view>
         <!-- 弹窗 -->
         <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
-            <view class="padding-vertical-lg">
+            <view class="padding-top-lg">
                 <view class="padding-left-main padding-bottom-main">{{ $t('recommend-form.recommend-form.7gc30l') }}</view>
                 <view class="divider-b">
                     <slot></slot>
