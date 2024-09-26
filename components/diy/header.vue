@@ -15,7 +15,7 @@
                                     <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
                                     <template v-if="['3', '5'].includes(form.content.theme)">
                                         <view class="flex-1">
-                                            <componentDiySearch :value="form" :is-page-settings="true"></componentDiySearch>
+                                            <componentDiySearch :propValue="form" :is-page-settings="true"></componentDiySearch>
                                         </view>
                                     </template>
                                 </view>
@@ -27,7 +27,7 @@
                                     </view>
                                     <template v-if="['5'].includes(form.content.theme)">
                                         <view class="flex-1">
-                                            <componentDiySearch :value="form" :is-page-settings="true"></componentDiySearch>
+                                            <componentDiySearch :propValue="form" :is-page-settings="true"></componentDiySearch>
                                         </view>
                                     </template>
                                 </view>

@@ -7,7 +7,7 @@
                 </view>
             </template>
             <template v-else>
-                <product-list-show :outerflex="value.outerflex" :flex="value.flex" :num="value.num" :actived="actived" :is-show="value.data_content.is_show" :chunk-padding="value.data_style.chunk_padding" :value="item1.split_list" :content-img-radius="contentImgRadius" @url_event="url_event"></product-list-show>
+                <product-list-show :outerflex="value.outerflex" :flex="value.flex" :num="value.num" :actived="actived" :is-show="value.data_content.is_show" :chunk-padding="value.data_style.chunk_padding" :propValue="item1.split_list" :content-img-radius="contentImgRadius" @url_event="url_event"></product-list-show>
             </template>
         </swiper-item>
     </swiper>
