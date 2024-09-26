@@ -1381,7 +1381,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: (parseInt(value)*2)+20
+                    footer_height_value: parseInt(value)*2
                 });
                 this.content_actual_size_handle();
             }
