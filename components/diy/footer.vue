@@ -118,6 +118,7 @@
         background-color: transparent;
         .footer-nav-content {
             min-height: 140rpx;
+            box-sizing: border-box;
             .img-content {
                 width: 44rpx;
                 height: 44rpx;
