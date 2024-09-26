@@ -4,11 +4,11 @@
         <view class="pr header">
             <componentDiyHeader :key="key" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
-        <view class="content flex-col" :style="header_top">
-            <block v-for="(item, index) in tabs_data">
-                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
-            </block>
+        <view class="content flex-col" :style="'padding-top:' + header_top">
+            <view v-for="(item, index) in tabs_data" :key="index">
+                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propStickyTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+            </view>
             <block v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
@@ -20,8 +20,8 @@
                         <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data"></componentDiyGoodsTabs>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propStickyTop="sticky_top"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propStickyTop="sticky_top"></componentDiyGoodsTabs>
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
                         <componentDiyCustom v-else-if="item.key == 'custom'" :propValue="item.com_data"></componentDiyCustom>
@@ -149,13 +149,16 @@
 
                 // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                header_top: 'padding-top:calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
+                sticky_top: bar_height + 5 + 12,
+                header_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                header_top: 'padding-top:calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
+                sticky_top: bar_height + 7 + 12,
+                header_top: 'calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef APP
-                header_top: 'padding-top:calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
+                sticky_top: bar_height + 0 + 12,
+                header_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
                 // #endif
 
                 header_data: {},

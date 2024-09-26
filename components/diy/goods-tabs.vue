@@ -1,6 +1,6 @@
 <template>
     <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
             <componentGoodsList v-if="hackReset" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
@@ -9,7 +9,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, padding_computer, margin_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -28,6 +28,10 @@
                     return {};
                 },
             },
+            propStickyTop: {
+                type: Number,
+                default: 0,
+            },
         },
         data() {
             return {
@@ -36,16 +40,6 @@
                 hackReset: true,
                 // 是否滑动置顶
                 top_up: '0',
-                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
-                // #ifdef MP
-                tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
-                // #endif
-                // #ifdef H5 || MP-TOUTIAO
-                tabs_top: 'calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
-                // #endif
-                // #ifdef APP
-                tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
-                // #endif
             };
         },
         created() {
@@ -66,9 +60,23 @@
                 new_data.content.sort_rules = new_data.content.tabs_list[0].sort_rules;
                 new_data.content.data_list = new_data.content.tabs_list[0].data_list;
                 new_data.content.data_auto_list = new_data.content.tabs_list[0].data_auto_list;
+                let tabs_style_obj = {
+                    padding_top: new_style.common_style.padding_top,
+                    padding_left: new_style.common_style.padding_left,
+                    padding_right: new_style.common_style.padding_right,
+                    margin_top: new_style.common_style.margin_top,
+                    margin_left: new_style.common_style.margin_left,
+                    margin_right: new_style.common_style.margin_right,
+                };
+                let new_tabs_style = padding_computer(tabs_style_obj) + margin_computer(tabs_style_obj) + `position:relative;left: -${tabs_style_obj.padding_left * 2}rpx;right: -${tabs_style_obj.padding_right * 2}rpx;width:100%;`;
+                let common_style = Object.assign({}, new_style.common_style, {
+                    padding_top: 0,
+                    margin_top: 0,
+                });
                 this.setData({
                     goods_tabs: new_data,
-                    style_container: common_styles_computer(new_style.common_style),
+                    style_container: common_styles_computer(common_style),
+                    tabs_style: new_tabs_style,
                 });
             },
             tabs_click_event(index) {

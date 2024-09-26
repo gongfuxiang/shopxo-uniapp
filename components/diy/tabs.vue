@@ -1,8 +1,6 @@
 <template>
     <!-- 选项卡 -->
-    <view class="ou tabs" :style="style_container">
-        <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propIsTop="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-    </view>
+    <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="style_container" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
 </template>
 
 <script>
@@ -28,6 +26,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propStickyTop: {
+                type: Number,
+                default: 0,
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -40,16 +42,6 @@
 
                 // 是否滑动置顶
                 top_up: '0',
-                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
-                // #ifdef MP
-                tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
-                // #endif
-                // #ifdef H5 || MP-TOUTIAO
-                tabs_top: '0',
-                // #endif
-                // #ifdef APP
-                tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
-                // #endif
             };
         },
         created() {

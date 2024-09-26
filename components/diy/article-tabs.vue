@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
     <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
             <componentDiyArticleList v-if="hackReset" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
@@ -10,7 +10,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, get_math } from '@/common/js/common/common.js';
+    import { common_styles_computer, padding_computer, margin_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentDiyArticleList from '@/components/diy/article-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -23,9 +23,9 @@
                 type: Object,
                 default: () => {},
             },
-            propIsCommonStyle: {
-                type: Boolean,
-                default: true,
+            propStickyTop: {
+                type: Number,
+                default: 0,
             },
         },
         components: {
@@ -40,16 +40,7 @@
                 hackReset: true,
                 // 是否滑动置顶
                 top_up: '0',
-                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
-                // #ifdef MP
-                tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
-                // #endif
-                // #ifdef H5 || MP-TOUTIAO
-                tabs_top: 'calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
-                // #endif
-                // #ifdef APP
-                tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
-                // #endif
+                tabs_style: '',
             };
         },
         created() {
@@ -57,8 +48,8 @@
         },
         methods: {
             init() {
-                const new_content = this.propValue.content || {};
-                const new_style = this.propValue.style || {};
+                let new_content = this.propValue.content || {};
+                let new_style = this.propValue.style || {};
                 let new_data = JSON.parse(JSON.stringify(this.propValue));
                 this.top_up = new_content.tabs_top_up;
                 new_data.content.theme = new_data.content.article_theme;
@@ -73,9 +64,23 @@
                 new_data.content.sort_rules = new_data.content.tabs_list[0].sort_rules;
                 new_data.content.field_show = new_data.content.field_show;
                 new_data.content.is_cover = new_data.content.tabs_list[0].is_cover;
+                let tabs_style_obj = {
+                    padding_top: new_style.common_style.padding_top,
+                    padding_left: new_style.common_style.padding_left,
+                    padding_right: new_style.common_style.padding_right,
+                    margin_top: new_style.common_style.margin_top,
+                    margin_left: new_style.common_style.margin_left,
+                    margin_right: new_style.common_style.margin_right,
+                };
+                let new_tabs_style = padding_computer(tabs_style_obj) + margin_computer(tabs_style_obj) + `position:relative;left: -${tabs_style_obj.padding_left * 2}rpx;right: -${tabs_style_obj.padding_right * 2}rpx;width:100%;`;
+                let common_style = Object.assign({}, new_style.common_style, {
+                    padding_top: 0,
+                    margin_top: 0,
+                });
                 this.setData({
                     article_tabs: new_data,
-                    style_container: common_styles_computer(new_style.common_style),
+                    style_container: common_styles_computer(common_style),
+                    tabs_style: new_tabs_style,
                 });
             },
             tabs_click_event(index) {
@@ -105,4 +110,11 @@
         },
     };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .tabs-container {
+        position: relative;
+        width: 100%;
+        left: 0;
+        right: 0;
+    }
+</style>
