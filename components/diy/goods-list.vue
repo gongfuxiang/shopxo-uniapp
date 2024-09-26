@@ -15,12 +15,12 @@
                     </block>
                     <block v-else>
                         <block v-if="!isEmpty(item)">
-                            <block v-if="!isEmpty(item.new_cover)">
-                                <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeClass="'flex-img' + theme" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                            </block>
-                            <block v-else>
-                                <imageEmpty :propImageSrc="item.images" :propTypeClass="'flex-img' + theme" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                            </block>
+                            <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
+                                <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                            </view>
+                            <view v-else :class="'flex-img' + theme">
+                                <imageEmpty :propImageSrc="item.images" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                            </view>
                         </block>
                         <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                             <view class="flex-col gap-10 top-title">
@@ -105,12 +105,12 @@
                     <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1" class="flex-row" :style="onter_style">
                         <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
                             <block v-if="!isEmpty(item)">
-                                <block v-if="!isEmpty(item.new_cover)">
-                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeClass="'flex-img' + theme" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                </block>
-                                <block v-else>
-                                    <imageEmpty :propImageSrc="item.images" :propTypeClass="'flex-img' + theme" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                </block>
+                                <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
+                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                </view>
+                                <view v-else :class="'flex-img' + theme">
+                                    <imageEmpty :propImageSrc="item.images" :propTypeStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                </view>
                             </block>
                             <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                 <view class="flex-col gap-10 top-title">

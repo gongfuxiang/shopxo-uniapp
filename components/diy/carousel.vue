@@ -8,7 +8,9 @@
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
-                            <imageEmpty :propImageSrc="new_style.video_img[0]" propTypeClass="video_img" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            <view class="video_img">
+                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            </view>
                         </block>
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
@@ -24,7 +26,9 @@
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
-                            <imageEmpty :propImageSrc="new_style.video_img[0]" propTypeClass="video_img" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            <view class="video_img">
+                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                            </view>
                         </block>
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>

@@ -39,12 +39,12 @@
                         <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" :data-value="item.goods_url" @tap="url_event">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr" :class="'flex-img' + form.shop_style_type">
-                                    <template v-if="!isEmpty(item.new_cover)">
-                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                    </template>
-                                    <template v-else>
-                                        <imageEmpty :propImageSrc="item.images" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                    </template>
+                                    <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + form.shop_style_type">
+                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                    </view>
+                                    <view v-else :class="'flex-img' + form.shop_style_type">
+                                        <imageEmpty :propImageSrc="item.images" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                    </view>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
                                         <text class="text-line-1">{{ form.subscript_text }}</text>
                                     </view>
@@ -102,12 +102,12 @@
                         <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" :data-value="item.goods_url" @tap="url_event">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr wh-auto ht-auto">
-                                    <template v-if="!isEmpty(item.new_cover)">
-                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                    </template>
-                                    <template v-else>
-                                        <imageEmpty :propImageSrc="item.images" :propTypeClass="'flex-img' + form.shop_style_type" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                    </template>
+                                    <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + form.shop_style_type">
+                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                    </view>
+                                    <view v-else :class="'flex-img' + form.shop_style_type">
+                                        <imageEmpty :propImageSrc="item.images" :propTypeStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                    </view>
                                     <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
                                         <text class="text-line-1">{{ form.subscript_text }}</text>
                                     </view>
@@ -476,12 +476,6 @@
 </script>
 
 <style scoped lang="scss">
-    :deep(.el-image) {
-        .image-slot img {
-            width: 5rem;
-            height: 5rem;
-        }
-    }
     .identifying {
         font-size: 18rpx;
     }
