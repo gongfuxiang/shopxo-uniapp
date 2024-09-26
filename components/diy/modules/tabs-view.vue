@@ -97,13 +97,13 @@
                 propIsBar: false,
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                tabs_top: bar_height + 34 + 5 + 12 + 'px;',
+                tabs_top: 'calc(' + bar_height + 5 + 12 + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                tabs_top: bar_height + 34 + 7 + 12 + 'px;',
+                tabs_top: 'calc(' + bar_height + 7 + 12 + 'px+ 66rpx);',
                 // #endif
                 // #ifdef APP
-                tabs_top: bar_height + 34 + 0 + 12 + 'px;',
+                tabs_top: 'calc(' + bar_height + 0 + 12 + 'px+ 66rpx);',
                 // #endif
             };
         },

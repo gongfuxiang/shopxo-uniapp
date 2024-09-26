@@ -1,15 +1,15 @@
 <template>
     <view class="ht-auto min-ht">
         <!-- 头部小程序兼容 -->
-        <view class="pr header-content">
+        <view class="pr header">
             <componentDiyHeader :key="key" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
-        <view class="pr" :style="diy_content_style">
+        <view class="pr content" :style="header_top">
             <view v-for="(item, index) in tabs_data" :key="index">
                 <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
                 <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
-            <view v-if="is_tabs_type" class="diy-content">
+            <view v-if="is_tabs_type" class="diy">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
                         <!-- 基础组件 -->
@@ -55,9 +55,9 @@
                 </scroll-view>
             </view>
         </view>
-        <block v-if="is_show_footer == 1">
-            <componentDiyFooter :key="key" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
-        </block>
+        <view v-if="is_show_footer == 1" class="footer">
+            <componentDiyFooter :key="key" :propValue="footer_data.com_data"></componentDiyFooter>
+        </view>
     </view>
 </template>
 
@@ -142,22 +142,20 @@
             return {
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
-                // 底部菜单导航高度计算
-                footer_height_value: 140,
                 // 是否有选项卡
                 is_tabs: false,
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
                 is_tabs_type: true,
 
-                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                header_top: 'padding-top:' + (bar_height + 34 + 5 + 12) + 'px;',
+                header_top: 'padding-top:calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                header_top: 'padding-top:' + (bar_height + 34 + 7 + 12) + 'px;',
+                header_top: 'padding-top:calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef APP
-                header_top: 'padding-top:' + (bar_height + 34 + 0 + 12) + 'px;',
+                header_top: 'padding-top:calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
                 // #endif
 
                 header_data: {},
@@ -188,11 +186,6 @@
                 cache_key: app.globalData.data.cache_diy_data_key,
             };
         },
-        computed: {
-            diy_content_style() {
-                return this.header_top + `padding-bottom:${this.footer_height_value}rpx;`;
-            },
-        },
         created() {
             // 初始化配置
             this.init_config();
@@ -208,7 +201,7 @@
                     var is_show_footer = this.propValue.header.com_data.content.bottom_navigation_show;
                     var is_tabbar = app.globalData.is_tabbar_pages();
                     this.setData({
-                        is_show_footer: is_show_footer && !is_tabbar
+                        is_show_footer: is_show_footer && !is_tabbar,
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -226,13 +219,6 @@
                     tabs_data: this.propValue.tabs_data,
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
-            },
-
-            // 底部菜单高度
-            footer_height_value_event(number) {
-                this.setData({
-                    footer_height_value: number * 2
-                });
             },
 
             // 选项卡回调更新数据
@@ -399,13 +385,9 @@
                         });
                     },
                 });
-            }
+            },
         },
     };
 </script>
 
-<style lang="scss" scoped>
-    .header-content {
-        z-index: 101;
-    }
-</style>
+<style lang="scss" scoped></style>
