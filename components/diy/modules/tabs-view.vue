@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
-    <view class="container" :class="propIsTop ? 'ps z-i-deep-must bg-white' : ''" :style="'top:' + propTop + 'px;'">
-        <view class="flex-row gap-10 jc-sb align-c">
+    <view class="container" :class="propIsTop ? 'tabs-top' : ''" :style="'top:' + propTop">
+        <view class="flex-row gap-10 jc-sb align-c" :style="propStyle">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'rpx;'">
@@ -70,6 +70,11 @@
                 type: String,
                 default: '0',
             },
+            // 指定样式
+            propStyle: {
+                type: String,
+                default: '',
+            },
         },
         components: {
             componentPopup,
@@ -97,13 +102,13 @@
                 propIsBar: false,
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                tabs_top: bar_height + 34 + 5 + 12 + 'px;',
+                tabs_top: 'calc(' + bar_height + 5 + 12 + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                tabs_top: bar_height + 34 + 7 + 12 + 'px;',
+                tabs_top: 'calc(' + bar_height + 7 + 12 + 'px+ 66rpx);',
                 // #endif
                 // #ifdef APP
-                tabs_top: bar_height + 34 + 0 + 12 + 'px;',
+                tabs_top: 'calc(' + bar_height + 0 + 12 + 'px+ 66rpx);',
                 // #endif
             };
         },
@@ -189,6 +194,11 @@
     };
 </script>
 <style lang="scss" scoped>
+    .tabs-top {
+        position: sticky;
+        z-index: 101;
+        background-color: #fff;
+    }
     .tabs {
         .item {
             padding: 0 0 10rpx 0;

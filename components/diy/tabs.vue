@@ -1,18 +1,7 @@
 <template>
     <!-- 选项卡 -->
-    <view class="pr">
-        <view v-if="top_up == '1'" class="pf z-i-deep-must left-0 right-0 top-0">
-            <view class="seize-seat" :style="tabs_top"></view>
-            <view :style="style_container">
-                <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-            </view>
-        </view>
-        <!-- 占位 -->
-        <view class="pr" :class="top_up == '1' ? 'vs-hide' : ''">
-            <view :style="style_container">
-                <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-            </view>
-        </view>
+    <view class="ou" :style="style_container">
+        <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabs="top_up == '1'" :propTop="tabs_top" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
     </view>
 </template>
 
@@ -53,13 +42,13 @@
                 top_up: '0',
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                tabs_top: 'padding-top:' + (bar_height + 34 + 5 + 12) + 'px;',
+                tabs_top: 'padding-top:calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                tabs_top: 'padding-top:' + (bar_height + 34 + 7 + 12) + 'px;',
+                tabs_top: 'padding-top:calc(' + (bar_height + 7 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef APP
-                tabs_top: 'padding-top:' + (bar_height + 34 + 0 + 12) + 'px;',
+                tabs_top: 'padding-top:calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
                 // #endif
             };
         },
@@ -102,8 +91,5 @@
     .seize-seat {
         z-index: 101;
         position: relative;
-    }
-    .vs-hide {
-        visibility: hidden;
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <view v-if="(propValue || null) !== null" class="header-container" :style="roll_style + position">
         <view class="bg-white" :style="top_content_style">
-            <view class="header-content flex-row align-c padding-vertical-xs" style="height: 34px">
+            <view class="header-content flex-row align-c">
                 <view class="model-top flex-1">
                     <view class="roll pr z-i">
                         <view class="model-head tc pr padding-horizontal-sm flex-row align-c" :style="header_style">
@@ -135,8 +135,11 @@
 
 <style lang="scss" scoped>
     .header-container {
-        z-index: 2;
+        z-index: 102;
         width: 100%;
+        .header-content {
+            height: 66rpx;
+        }
         .model-top {
             .roll {
                 width: 100%;
