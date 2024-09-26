@@ -7,7 +7,7 @@
                         <image-empty v-if="form.title_type == 'image'" :image-src="form.title_src[0]" img_fit="heightFix" error-style="width:42rpx; height: 20rpx;"></image-empty>
                         <text v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</text>
                     </view>
-                    <view v-if="form.theme == '1'" class="plr-6 cr-white">|</view>
+                    <view v-if="form.theme == '1'" class="padding-horizontal-sm cr-white">|</view>
                     <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
                         <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</text>
                         <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
@@ -84,9 +84,9 @@
                                     </view>
                                     <view v-if="form.is_shop_show == '1'">
                                         <template v-if="form.shop_type == 'text'">
-                                            <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
+                                            <view class="plr-11 padding-vertical-xs round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
-                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient">
+                                        <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                     </view>
@@ -147,9 +147,9 @@
                                     </view>
                                     <view v-if="form.is_shop_show == '1'">
                                         <template v-if="form.shop_type == 'text'">
-                                            <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
+                                            <view class="plr-11 padding-vertical-xs round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
-                                        <view v-else class="round plr-6 ptb-5" :styles="button_gradient">
+                                        <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                     </view>
@@ -172,7 +172,7 @@
             imageEmpty,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -232,8 +232,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },
@@ -548,41 +548,8 @@
     .original-price {
         text-decoration-line: line-through;
     }
-    .plr-11 {
-        padding-left: 22rpx;
-        padding-right: 22rpx;
-    }
-    .ptb-3 {
-        padding-top: 6rpx;
-        padding-bottom: 6rpx;
-    }
-    .plr-6 {
-        padding-left: 12rpx;
-        padding-right: 12rpx;
-    }
-    .ptb-5 {
-        padding-top: 10rpx;
-        padding-bottom: 10rpx;
-    }
-    .ptb-15 {
-        padding-top: 30rpx;
-        padding-bottom: 30rpx;
-    }
-    .mlr-10 {
-        margin-left: 20rpx;
-        margin-right: 20rpx;
-    }
-    .pr-4 {
-        margin-right: 8rpx;
-    }
     .size-11 {
         font-size: 22rpx;
-    }
-    .gap-20 {
-        gap: 40rpx;
-    }
-    .gap-3 {
-        gap: 6rpx;
     }
     .corner-marker {
         position: absolute;

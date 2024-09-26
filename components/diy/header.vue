@@ -58,7 +58,7 @@
     // #endif
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -88,15 +88,15 @@
             };
         },
         created() {
-            if ((this.value || null) !== null) {
+            if ((this.propValue || null) !== null) {
                 this.init();
             }
         },
         methods: {
             isEmpty,
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 let new_roll_style = '';
                 const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type } = new_style;
                 if (header_background_type === 'color_image') {
@@ -116,7 +116,7 @@
                 menuButtonInfo = `max-width:calc(100% - ${custom.width + 30}px);`;
                 // #endif
                 this.setData({
-                    form: this.value,
+                    form: this.propValue,
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : 'position:relative;',
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,

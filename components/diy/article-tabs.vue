@@ -1,9 +1,9 @@
 <template>
     <!-- 文章列表 -->
     <view class="overflow-unset" :style="style_container">
-        <componentDiyModulesTabsView :value="article_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="article_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="padding-top oh">
-            <componentDiyArticleList :key="key" :value="article_tabs" :is-common-style="false"></componentDiyArticleList>
+            <componentDiyArticleList :key="key" :propValue="article_tabs" :is-common-style="false"></componentDiyArticleList>
         </view>
     </view>
 </template>
@@ -14,7 +14,7 @@
     import componentDiyArticleList from '@/components/diy/article-list';
     export default {
         props: {
-            value: {
+            proppropValue: {
                 type: Object,
                 default: () => {},
             },
@@ -41,9 +41,9 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
-                let new_data = JSON.parse(JSON.stringify(this.value));
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
+                let new_data = JSON.parse(JSON.stringify(this.propValue));
                 this.top_up = new_content.tabs_top_up;
                 new_data.content.theme = new_data.content.article_theme;
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
@@ -63,7 +63,7 @@
                 });
             },
             tabs_click_event(index) {
-                let new_data = JSON.parse(JSON.stringify(this.value));
+                let new_data = JSON.parse(JSON.stringify(this.propValue));
                 new_data.content.theme = new_data.content.article_theme;
                 new_data.content.data_type = new_data.content.tabs_list[index].data_type;
                 new_data.content.category = new_data.content.tabs_list[index].category;

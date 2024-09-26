@@ -2,40 +2,40 @@
     <view class="ht-auto min-ht">
         <!-- 头部小程序兼容 -->
         <view class="pr header-content">
-            <componentDiyHeader :key="key" :value="header_data.com_data"></componentDiyHeader>
+            <componentDiyHeader :key="key" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="pr" :style="diy_content_style">
             <view v-for="(item, index) in tabs_data" :key="index">
-                <componentDiyTabs v-if="item.key == 'tabs'" :value="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :value="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
                         <!-- 基础组件 -->
-                        <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
-                        <componentDiyCarousel v-else-if="item.key == 'carousel'" :value="item.com_data"></componentDiyCarousel>
-                        <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :value="item.com_data"></componentDiyNavGroup>
-                        <componentDiyUserInfo v-else-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
-                        <componentDiyNotice v-else-if="item.key == 'notice'" :value="item.com_data"></componentDiyNotice>
-                        <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>
-                        <componentDiyArticleList v-else-if="item.key == 'article-list'" :value="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :value="item.com_data"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :value="item.com_data"></componentDiyGoodsTabs>
-                        <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :value="item.com_data"></componentDiyGoodsList>
-                        <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :value="item.com_data"></componentDiyDataMagic>
-                        <componentDiyCustom v-else-if="item.key == 'custom'" :value="item.com_data"></componentDiyCustom>
-                        <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :value="item.com_data"></componentDiyImgMagic>
-                        <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
-                        <componentDiySeckill v-else-if="item.key == 'seckill'" :value="item.com_data"></componentDiySeckill>
+                        <componentDiySearch v-if="item.key == 'search'" :propValue="item.com_data"></componentDiySearch>
+                        <componentDiyCarousel v-else-if="item.key == 'carousel'" :propValue="item.com_data"></componentDiyCarousel>
+                        <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propValue="item.com_data"></componentDiyNavGroup>
+                        <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propValue="item.com_data"></componentDiyUserInfo>
+                        <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
+                        <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
+                        <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data"></componentDiyGoodsTabs>
+                        <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
+                        <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
+                        <componentDiyCustom v-else-if="item.key == 'custom'" :propValue="item.com_data"></componentDiyCustom>
+                        <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propValue="item.com_data"></componentDiyImgMagic>
+                        <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propValue="item.com_data"></componentDiyHotZone>
+                        <componentDiySeckill v-else-if="item.key == 'seckill'" :propValue="item.com_data"></componentDiySeckill>
                         <!-- 插件 -->
-                        <componentDiyCoupon v-else-if="item.key == 'coupon'" :value="item.com_data"></componentDiyCoupon>
+                        <componentDiyCoupon v-else-if="item.key == 'coupon'" :propValue="item.com_data"></componentDiyCoupon>
                         <!-- 工具组件 -->
-                        <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :value="item.com_data"></componentDiyFloatWindow>
-                        <componentDiyTitle v-else-if="item.key == 'text-title'" :value="item.com_data"></componentDiyTitle>
-                        <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
-                        <componentDiyRichText v-else-if="item.key == 'rich-text'" :value="item.com_data"></componentDiyRichText>
-                        <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :value="item.com_data"></componentDiyAuxiliaryBlank>
+                        <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propValue="item.com_data"></componentDiyFloatWindow>
+                        <componentDiyTitle v-else-if="item.key == 'text-title'" :propValue="item.com_data"></componentDiyTitle>
+                        <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propValue="item.com_data"></componentDiyAuxiliaryLine>
+                        <componentDiyRichText v-else-if="item.key == 'rich-text'" :propValue="item.com_data"></componentDiyRichText>
+                        <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
                     </view>
                 </template>
             </view>

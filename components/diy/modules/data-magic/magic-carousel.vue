@@ -24,7 +24,7 @@
             productListShow,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },

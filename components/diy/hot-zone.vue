@@ -13,7 +13,7 @@
     import { common_styles_computer } from '@/common/js/common/common.js';
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -40,8 +40,8 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 this.setData({
                     img: new_content.img[0].url,
                     img_width: new_content.hot.img_width || 1,

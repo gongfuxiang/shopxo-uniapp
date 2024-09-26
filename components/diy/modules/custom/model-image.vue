@@ -11,7 +11,7 @@
             imageEmpty,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -35,7 +35,7 @@
         },
         created() {
             this.setData({
-                form: this.value,
+                form: this.propValue,
             });
             this.init();
         },

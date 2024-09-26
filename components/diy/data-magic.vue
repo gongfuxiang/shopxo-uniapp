@@ -12,12 +12,12 @@
                                     <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                 </view>
                                 <view class="wh-auto ht-auto">
-                                    <magic-carousel :value="item" :content-img-radius="content_img_radius" :actived="form.style_actived" type="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                    <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" :actived="form.style_actived" type="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
                                 </view>
                             </view>
                         </template>
                         <template v-else>
-                            <magic-carousel :value="item" :content-img-radius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                            <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                         </template>
                         <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{'bottom': item.data_style.indicator_bottom * 2 +'rpx'}">
                             <template v-if="item.data_style.indicator_style == 'num'">
@@ -41,12 +41,12 @@
                                 <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                             </view>
                             <view class="wh-auto ht-auto">
-                                <magic-carousel :value="item" :content-img-radius="content_img_radius" type="product" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" type="product" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                             </view>
                         </view>
                     </template>
                     <template v-else>
-                        <magic-carousel :value="item" :content-img-radius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                        <magic-carousel :propValue="item" :contentImgRadius="content_img_radius" type="img" :actived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                     </template>
                     <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{'bottom': item.data_style.indicator_bottom * 2 +'rpx'}">
                         <template v-if="item.data_style.indicator_style == 'num'">
@@ -75,7 +75,7 @@
             magicCarousel,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -148,8 +148,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },

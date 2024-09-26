@@ -15,7 +15,7 @@
             componentDiycarousel
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -44,7 +44,7 @@
         },
         methods: {
             init() {
-                const new_style = this.value.style || {};
+                const new_style = this.propValue.style || {};
                 this.setData({
                     style_container: `${ common_styles_computer(new_style.common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     spacing_common_style: {

@@ -3,16 +3,16 @@
         <view class="wh-auto ht-auto pr">
             <view v-for="item in form.custom_list" :key="item.id" class="main-content" :style="{'left': get_percentage_count(item.location.x, div_width) , 'top': get_percentage_count(item.location.y, div_height), 'width': get_percentage_count(item.com_data.com_width, div_width), 'height': get_percentage_count(item.com_data.com_height, div_height)}">
                 <template v-if="item.key == 'text'">
-                    <model-text :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content" @url_open="url_open"></model-text>
+                    <model-text :key="item.com_data" :propValue="item.com_data" :sourceList="form.data_source_content" @url_open="url_open"></model-text>
                 </template>
                 <template v-else-if="item.key == 'img'">
-                    <model-image :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content" @url_open="url_open"></model-image>
+                    <model-image :key="item.com_data" :propValue="item.com_data" :sourceList="form.data_source_content" @url_open="url_open"></model-image>
                 </template>
                 <template v-else-if="item.key == 'auxiliary-line'">
-                    <model-lines :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content"></model-lines>
+                    <model-lines :key="item.com_data" :propValue="item.com_data" :sourceList="form.data_source_content"></model-lines>
                 </template>
                 <template v-else-if="item.key == 'icon'">
-                    <model-icon :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content" @url_open="url_open"></model-icon>
+                    <model-icon :key="item.com_data" :propValue="item.com_data" :sourceList="form.data_source_content" @url_open="url_open"></model-icon>
                 </template>
             </view>
         </view>
@@ -37,7 +37,7 @@
             modelIcon
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -63,8 +63,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },

@@ -37,7 +37,7 @@
     import { background_computer, common_styles_computer, gradient_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -61,8 +61,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },

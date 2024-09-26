@@ -56,9 +56,9 @@
                                     </view>
                                     <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                         <block v-if="form.shop_type == 'text'">
-                                            <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                            <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
-                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient">
+                                        <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                         <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
@@ -86,9 +86,9 @@
                                 </view>
                                 <view v-if="form.is_shop_show == '1'" :data-index="index" @tap.stop="goods_button_event">
                                     <block v-if="form.shop_type == 'text'">
-                                        <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                        <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                     </block>
-                                    <view v-else class="round plr-6 ptb-5" :style="button_gradient">
+                                    <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
                                         <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                     </view>
                                     <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
@@ -138,9 +138,9 @@
                                     </view>
                                     <view v-if="form.is_shop_show == '1'" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
                                         <block v-if="form.shop_type == 'text'">
-                                            <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                            <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
-                                        <view v-else class="round plr-6 ptb-5" :style="button_gradient">
+                                        <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
                                         </view>
                                         <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
@@ -177,7 +177,7 @@
             componentCartParaCurve,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -227,8 +227,8 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },
@@ -512,33 +512,6 @@
         width: 100%;
         min-height: 208rpx;
         height: 100%;
-    }
-    .plr-11 {
-        padding-left: 22rpx;
-        padding-right: 22rpx;
-    }
-    .ptb-3 {
-        padding-top: 6rpx;
-        padding-bottom: 6rpx;
-    }
-    .plr-6 {
-        padding-left: 12rpx;
-        padding-right: 12rpx;
-    }
-    .ptb-5 {
-        padding-top: 10rpx;
-        padding-bottom: 10rpx;
-    }
-    .ptb-15 {
-        padding-top: 30rpx;
-        padding-bottom: 30rpx;
-    }
-    .mlr-10 {
-        margin-left: 20rpx;
-        margin-right: 20rpx;
-    }
-    .gap-20 {
-        gap: 40rpx;
     }
     .original-price-left {
         width: 20rpx;

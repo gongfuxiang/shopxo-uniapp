@@ -11,7 +11,7 @@
     } from '@/common/js/common/common.js';
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -31,11 +31,11 @@
             init() {
                 const {
                     height
-                } = this.value.content;
+                } = this.propValue.content;
                 const {
                     line_color,
                     common_style
-                } = this.value.style;
+                } = this.propValue.style;
                 this.setData({
                     style: `height: ${height * 2 }rpx;background: ${line_color || 'transparent'};`,
                     style_container: common_styles_computer(common_style)

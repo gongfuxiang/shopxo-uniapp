@@ -96,7 +96,7 @@
             imageEmpty,
         },
         props: {
-            value: {
+            propValue: {
                 type: Array,
                 default: () => [],
             },

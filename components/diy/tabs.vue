@@ -27,7 +27,7 @@
     // #endif
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
@@ -68,9 +68,9 @@
         },
         methods: {
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
-                let new_tabs_data = this.value;
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
+                let new_tabs_data = this.propValue;
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 this.setData({
                     tabs_data: new_tabs_data,

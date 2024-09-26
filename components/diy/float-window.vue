@@ -21,7 +21,7 @@
             imageEmpty,
         },
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => {
                     return {};
@@ -38,14 +38,14 @@
         },
         created() {
             this.setData({
-                form: this.value.content,
-                new_style: this.value.style,
+                form: this.propValue.content,
+                new_style: this.propValue.style,
             });
             this.init();
         },
         methods: {
             init() {
-                const { float_style, float_style_color, display_location, offset_number } = this.value.style;
+                const { float_style, float_style_color, display_location, offset_number } = this.propValue.style;
                 let location = `right: 20rpx;`;
                 if (display_location == 'left') {
                     location = `left: 20rpx;`;
