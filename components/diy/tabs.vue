@@ -4,13 +4,13 @@
         <view v-if="top_up == '1'" class="pf z-i-deep-must left-0 right-0 top-0">
             <view class="seize-seat" :style="tabs_top"></view>
             <view :style="style_container">
-                <componentDiyModulesTabsView :value="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+                <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
         <!-- 占位 -->
         <view class="pr" :class="top_up == '1' ? 'vs-hide' : ''">
             <view :style="style_container">
-                <componentDiyModulesTabsView :value="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+                <componentDiyModulesTabsView :propValue="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
     </view>

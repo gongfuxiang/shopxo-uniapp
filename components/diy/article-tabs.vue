@@ -14,7 +14,7 @@
     import componentDiyArticleList from '@/components/diy/article-list';
     export default {
         props: {
-            proppropValue: {
+            propValue: {
                 type: Object,
                 default: () => {},
             },
