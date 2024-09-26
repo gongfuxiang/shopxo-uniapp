@@ -1,8 +1,8 @@
 <template>
     <!-- 文章列表 -->
     <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-        <view class="padding-top oh">
+        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <view class="oh">
             <componentDiyArticleList v-if="hackReset" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
     </view>

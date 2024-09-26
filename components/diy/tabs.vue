@@ -18,14 +18,6 @@
                 type: Object,
                 default: () => ({}),
             },
-            propIsCommon: {
-                type: Boolean,
-                default: true,
-            },
-            propSpacingCommonStyle: {
-                type: Object,
-                default: () => ({}),
-            },
             propStickyTop: {
                 type: Number,
                 default: 0,
@@ -55,7 +47,7 @@
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 this.setData({
                     tabs_data: new_tabs_data,
-                    style_container: this.propIsCommon ? common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? padding_computer(this.propSpacingCommonStyle) + margin_computer(this.propSpacingCommonStyle) : '',
+                    style_container: common_styles_computer(new_style.common_style),
                     top_up: new_content.tabs_top_up,
                 });
             },
