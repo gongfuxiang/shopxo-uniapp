@@ -197,6 +197,9 @@
                 cache_diy_data_key: 'cache_diy_data_key',
                 // diy页面数据缓存key
                 cache_diy_page_data_key: 'cache_diy_page_data_key',
+                
+                // apptabbar底部菜单高度
+                cache_app_tabbar_height_key: 'cache_app_tabbar_height_key',
 
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
@@ -894,6 +897,21 @@
                     var value = temp_str[0];
                 }
                 return value;
+            },
+            
+            /**
+             * 底部菜单高度数据存储
+             * value  高度
+             */
+            app_tabbar_height_save(value) {
+                uni.setStorageSync(this.data.cache_app_tabbar_height_key, value);
+            },
+            
+            /**
+             * 底部菜单高度数据读取
+             */
+            app_tabbar_height_value() {
+                return parseInt(uni.getStorageSync(this.data.cache_app_tabbar_height_key) || 0);
             },
 
             /**

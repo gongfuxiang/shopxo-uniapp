@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view" class="z-i-deep">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
-            <view class="goods-spec-choice-container padding-main bg-white pr">
+            <view class="goods-spec-choice-container padding-main bg-white pr" :style="goods_spec_choice_content_style">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
@@ -81,6 +81,7 @@
                 params: {},
                 back_data: {},
                 popup_status: false,
+                goods_spec_choice_content_style: '',
                 goods_spec_base_price: 0,
                 goods_spec_base_original_price: 0,
                 goods_spec_base_inventory: 0,
@@ -164,12 +165,16 @@
                     }
                 }
 
+                // 底部菜单高度
+                var tabbar_height = app.globalData.is_tabbar_pages() ? app.globalData.app_tabbar_height_value() : 0;
+
                 // 设置数据
                 this.setData({
                     popup_status: status,
                     params: params || {},
                     back_data: back_data,
                     goods: goods || {},
+                    goods_spec_choice_content_style: 'padding-bottom:'+((tabbar_height*2)+40)+'rpx',
                     goods_spec_choose: goods_spec_choose,
                     goods_spec_base_price: goods.price,
                     goods_spec_base_original_price: goods.original_price || 0,

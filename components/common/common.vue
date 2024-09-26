@@ -67,6 +67,9 @@
                     footer_height_value: (value*2)+40
                 });
                 this.$emit('footer-height', value);
+
+                // 存储底部菜单高度
+                app.globalData.app_tabbar_height_save(value);
             }
         }
     };
