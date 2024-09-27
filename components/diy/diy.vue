@@ -412,25 +412,23 @@
                     scroll_top: e.detail.scrollTop,
                 });
                 // 判断顶部导航是否置顶
+                // #ifdef H5 || MP-TOUTIAO
                 if (!this.is_header_top) {
                     if (e.detail.scrollTop >= this.sticky_top + 33) {
-                        // #ifdef H5 || MP-TOUTIAO
                         this.setData({
                             temp_sticky_top: 0,
                             temp_header_top: this.tabs_height + 'px',
                             temp_is_header_top: true,
                         });
-                        // #endif
                     } else {
-                        // #ifdef H5 || MP-TOUTIAO,
                         this.setData({
                             temp_header_top: this.header_top,
                             temp_sticky_top: this.sticky_top,
                             temp_is_header_top: false,
                         });
-                        // #endif
                     }
                 }
+                // #endif
             },
         },
     };
