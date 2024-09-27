@@ -4,7 +4,18 @@
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
-                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id"></componentDiy>
+                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id">
+                        <template slot="diy-bottom">
+                            <!-- 结尾 -->
+                            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+                            <!-- 版权信息 -->
+                            <component-copyright></component-copyright>
+
+                            <!-- 公共 -->
+                            <component-common></component-common>
+                        </template>
+                    </componentDiy>
                 </block>
             </block>
             <!-- 自动和手动模式 -->
@@ -264,41 +275,38 @@
                     </view>
                 </view>
             </block>
+
             <!-- 提示信息 -->
             <block v-if="load_status == 0">
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="home" :propIsHeader="true"></component-no-data>
             </block>
         </view>
 
-        <!-- 页面已加载 -->
-        <block v-if="load_status == 1">
-            <!-- 非diy模式 -->
-            <block v-if="data_mode != 3">
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-                
-                <!-- 版权信息 -->
-                <component-copyright></component-copyright>
+        <!-- 页面已加载、模式 -->
+        <block v-if="load_status == 1 && data_mode != 3">
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-                <!-- 在线客服 -->
-                <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
-            
-                <!-- 快捷导航 -->
-                <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-            
-                <!-- 用户基础 -->
-                <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
-            
-                <!-- app管理 -->
-                <component-app-admin ref="app_admin"></component-app-admin>
-            </block>
+            <!-- 版权信息 -->
+            <component-copyright></component-copyright>
+
+            <!-- 在线客服 -->
+            <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
+
+            <!-- 快捷导航 -->
+            <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
+
+            <!-- 用户基础 -->
+            <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+
+            <!-- app管理 -->
+            <component-app-admin ref="app_admin"></component-app-admin>
+
+            <!-- 公共 -->
+            <component-common></component-common>
         </block>
-
-        <!-- 公共 -->
-        <component-common :propIsFooterSeat="false"></component-common>
     </view>
 </template>
-
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
