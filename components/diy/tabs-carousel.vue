@@ -1,6 +1,6 @@
 <template>
     <view class="flex-col ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="propValue" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="propValue" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <componentDiycarousel :propValue="propValue" :propIsCommon="false"></componentDiycarousel>
     </view>
 </template>
@@ -21,7 +21,7 @@
                     return {};
                 },
             },
-            propStickyTop: {
+            propTop: {
                 type: Number,
                 default: 0,
             },

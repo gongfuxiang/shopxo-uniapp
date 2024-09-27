@@ -1,11 +1,11 @@
 <template>
     <!-- 选项卡 -->
-    <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="style_container" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="style_container" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer, padding_computer, margin_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -18,7 +18,7 @@
                 type: Object,
                 default: () => ({}),
             },
-            propStickyTop: {
+            propTop: {
                 type: Number,
                 default: 0,
             },

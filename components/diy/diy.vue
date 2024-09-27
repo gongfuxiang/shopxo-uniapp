@@ -6,8 +6,8 @@
         </view>
         <view class="content flex-col" :style="'padding-top:' + header_top">
             <template v-for="(item, index) in tabs_data">
-                <componentDiyTabs v-if="item.key == 'tabs'" :key="index" :propValue="item.com_data" :propStickyTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propStickyTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                <componentDiyTabs v-if="item.key == 'tabs'" :key="index" :propValue="item.com_data" :propTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </template>
             <template v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
@@ -21,8 +21,8 @@
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
 
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propStickyTop="sticky_top"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propStickyTop="sticky_top"></componentDiyGoodsTabs>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="sticky_top"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="sticky_top"></componentDiyGoodsTabs>
 
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>

@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
     <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
             <componentDiyArticleList v-if="hackReset" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
@@ -23,7 +23,7 @@
                 type: Object,
                 default: () => {},
             },
-            propStickyTop: {
+            propTop: {
                 type: Number,
                 default: 0,
             },
