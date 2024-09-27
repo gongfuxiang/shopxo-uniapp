@@ -76,6 +76,14 @@
                 return this.zIndex ? this.zIndex : 970;
             },
         },
+        watch: {
+            offsetTop(val) {
+                this.getStickyTop();
+            },
+            customNavHeight(val) {
+                this.getStickyTop();
+            },
+        },
         created() {
             this.elId = this.$uv.guid();
         },
