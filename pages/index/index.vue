@@ -272,16 +272,14 @@
 
         <!-- 页面已加载 -->
         <block v-if="load_status == 1">
+            <!-- 非diy模式 -->
             <block v-if="data_mode != 3">
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
+                
                 <!-- 版权信息 -->
                 <component-copyright></component-copyright>
-            </block>
 
-            <!-- 非diy模式 -->
-            <block v-if="data_mode != 3">
                 <!-- 在线客服 -->
                 <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
             
