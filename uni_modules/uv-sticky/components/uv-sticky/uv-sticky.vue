@@ -185,7 +185,7 @@
                         });
                 });
                 // #endif
-            },
+            }, 
             // H5通过创建元素的形式嗅探是否支持css sticky
             // 判断浏览器是否支持sticky属性
             checkCssStickyForH5() {
