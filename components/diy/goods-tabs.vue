@@ -1,7 +1,7 @@
 <template>
     <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propStickyTop" :propStyle="tabs_style" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-        <view class="padding-top oh">
+        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <view class="oh">
             <componentGoodsList v-if="hackReset" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
     </view>
@@ -28,7 +28,7 @@
                     return {};
                 },
             },
-            propStickyTop: {
+            propTop: {
                 type: Number,
                 default: 0,
             },

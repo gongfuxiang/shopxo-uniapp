@@ -5,13 +5,13 @@
             <componentDiyHeader v-if="hackReset" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + header_top">
-            <view v-for="(item, index) in tabs_data" :key="index">
-                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propStickyTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
-            </view>
-            <block v-if="is_tabs_type">
+            <template v-for="(item, index) in tabs_data">
+                <componentDiyTabs v-if="item.key == 'tabs'" :key="index" :propValue="item.com_data" :propTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+            </template>
+            <template v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': ['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
+                    <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': ['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;' }">
                         <!-- 基础组件 -->
                         <componentDiySearch v-if="item.key == 'search'" :propValue="item.com_data"></componentDiySearch>
                         <componentDiyCarousel v-else-if="item.key == 'carousel'" :propValue="item.com_data"></componentDiyCarousel>
@@ -20,8 +20,10 @@
                         <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propStickyTop="sticky_top"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propStickyTop="sticky_top"></componentDiyGoodsTabs>
+
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="sticky_top"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="sticky_top"></componentDiyGoodsTabs>
+
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
                         <componentDiyCustom v-else-if="item.key == 'custom'" :propValue="item.com_data"></componentDiyCustom>
@@ -38,8 +40,8 @@
                         <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
                     </view>
                 </template>
-            </block>
-            <block v-else>
+            </template>
+            <template v-else>
                 <!-- goods九宫格数据 -->
                 <!-- 列表 -->
                 <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
@@ -53,7 +55,7 @@
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </scroll-view>
-            </block>
+            </template>
         </view>
         <view v-if="is_show_footer == 1" class="footer">
             <componentDiyFooter v-if="hackReset" :propValue="footer_data.com_data"></componentDiyFooter>
