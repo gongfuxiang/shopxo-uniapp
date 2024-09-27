@@ -1,6 +1,6 @@
 <template>
     <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
             <componentGoodsList v-if="hackReset" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
@@ -31,6 +31,10 @@
             propTop: {
                 type: Number,
                 default: 0,
+            },
+            propCustomNavHeight: {
+                type: String,
+                default: '66rpx',
             },
         },
         data() {

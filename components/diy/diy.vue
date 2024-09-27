@@ -1,14 +1,14 @@
 <template>
-    <view class="ht-auto min-ht">
+    <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
         <!-- 头部小程序兼容 -->
         <view class="pr header">
             <componentDiyHeader v-if="hackReset" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
-        <view class="content flex-col" :style="'padding-top:' + header_top">
-            <template v-for="(item, index) in tabs_data">
-                <componentDiyTabs v-if="item.key == 'tabs'" :key="index" :propValue="item.com_data" :propTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="sticky_top" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
-            </template>
+        <view class="content flex-col" :style="'padding-top:' + temp_is_header_top ? temp_header_top : '0'">
+            <view v-for="(item, index) in tabs_data" :key="item.key">
+                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+            </view>
             <template v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index" :style="['margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')]">
@@ -20,9 +20,8 @@
                         <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
-
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="sticky_top"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="sticky_top"></componentDiyGoodsTabs>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyGoodsTabs>
 
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
@@ -60,7 +59,7 @@
         <view v-if="is_show_footer == 1" class="footer">
             <componentDiyFooter v-if="hackReset" :propValue="footer_data.com_data"></componentDiyFooter>
         </view>
-    </view>
+    </scroll-view>
 </template>
 
 <script>
@@ -152,7 +151,7 @@
                 // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
                 sticky_top: bar_height + 5 + 12,
-                header_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
+                header_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66px);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
                 sticky_top: bar_height + 7 + 12,
@@ -162,6 +161,12 @@
                 sticky_top: bar_height + 0 + 12,
                 header_top: 'calc(' + (bar_height + 0 + 12) + 'px + 66rpx);',
                 // #endif
+                temp_sticky_top: 0,
+                temp_header_top: '0px',
+                is_header_top: false,
+                temp_is_header_top: false,
+                // 选项卡高度
+                tabs_height: 0,
 
                 header_data: {},
                 footer_data: {},
@@ -222,6 +227,10 @@
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
                     tabs_data: this.propValue.tabs_data,
+                    // 判断顶部导航是否置顶
+                    is_header_top: this.propValue.header.com_data.style.up_slide_display == '1' ? true : false,
+                    temp_sticky_top: this.sticky_top,
+                    temp_header_top: this.header_top,
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
@@ -283,6 +292,13 @@
                         diy_data: new_data,
                     });
                 }
+            },
+            // 选项卡高度
+            tabs_height_event(height) {
+                console.log(height);
+                this.setData({
+                    tabs_height: height,
+                });
             },
 
             // 滚动加载
@@ -390,6 +406,28 @@
                         });
                     },
                 });
+            },
+            on_scroll_event(e) {
+                // 判断顶部导航是否置顶
+                if (!this.is_header_top) {
+                    if (e.detail.scrollTop >= this.sticky_top + 33) {
+                        // #ifdef H5 || MP-TOUTIAO
+                        this.setData({
+                            temp_sticky_top: 0,
+                            temp_header_top: this.tabs_height + 'px',
+                            temp_is_header_top: true,
+                        });
+                        // #endif
+                    } else {
+                        // #ifdef H5 || MP-TOUTIAO
+                        this.setData({
+                            temp_header_top: this.header_top,
+                            temp_sticky_top: this.sticky_top,
+                            temp_is_header_top: false,
+                        });
+                        // #endif
+                    }
+                }
             },
         },
     };

@@ -1,6 +1,11 @@
 <template>
     <!-- 选项卡 -->
-    <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="style_container" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="tabs pr" :style="'padding-top:' + tabs_padding_top">
+        <view :class="top_up == '1' ? 'tabs-top bg-white' : ''" :style="style_container">
+            <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        </view>
+        <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px'"></view>
+    </view>
 </template>
 
 <script>
@@ -18,9 +23,24 @@
                 type: Object,
                 default: () => ({}),
             },
+            // 置顶距离顶部高度
             propTop: {
                 type: Number,
                 default: 0,
+            },
+            // 是否导航栏置顶
+            propNavIsTop: {
+                type: Boolean,
+                default: true,
+            },
+            // 是否选项卡置顶
+            propTabsIsTop: {
+                type: Boolean,
+                default: false,
+            },
+            propStyle: {
+                type: String,
+                default: '',
             },
         },
         components: {
@@ -34,10 +54,27 @@
 
                 // 是否滑动置顶
                 top_up: '0',
+                // 置顶时，选项卡高度
+                tabs_seat_height: 0,
+                // 置顶时，选项卡距离顶部高度
+                tabs_padding_top: 0,
             };
         },
         created() {
             this.init();
+            this.$nextTick(() => {
+                this.get_tabs_height();
+            });
+        },
+        // 属性值改变监听
+        watch: {
+            // 数据
+            propTabsIsTop(value, old_value) {
+                this.init();
+                this.$nextTick(() => {
+                    this.get_tabs_height();
+                });
+            },
         },
         methods: {
             init() {
@@ -45,11 +82,45 @@
                 const new_style = this.propValue.style || {};
                 let new_tabs_data = JSON.parse(JSON.stringify(this.propValue));
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
+                // 判断选项卡是否置顶
+                let other_style = '';
+                if (new_content.tabs_top_up == '1') {
+                    other_style = 'calc(' + this.propTop + 'px' + ' + 66rpx)';
+                    // #ifdef H5 || MP-TOUTIAO
+                    if (this.propTabsIsTop) {
+                        other_style = '0';
+                    }
+                    // #endif
+                }
                 this.setData({
                     tabs_data: new_tabs_data,
-                    style_container: common_styles_computer(new_style.common_style),
-                    top_up: new_content.tabs_top_up,
+                    style_container: common_styles_computer(new_style.common_style) + 'top:' + other_style + ';z-index:3;',
+                    // 判断是否置顶
+                    top_up: this.propNavIsTop || this.propTabsIsTop ? new_content.tabs_top_up : '0',
+                    tabs_padding_top: this.propNavIsTop || this.propTabsIsTop ? other_style : '0',
                 });
+            },
+            // 获取选项卡高度
+            get_tabs_height() {
+                if (this.top_up == '1') {
+                    const query = uni.createSelectorQuery();
+                    // 选择我们想要的元素
+                    query
+                        .in(this)
+                        .select('.tabs-top')
+                        .boundingClientRect((res) => {
+                            if ((res || null) != null) {
+                                // data包含元素的宽度、高度等信息
+                                this.setData({
+                                    tabs_seat_height: res.height,
+                                });
+                                this.$emit('computer-height', this.tabs_seat_height);
+                            }
+                        })
+                        .exec(); // 执行查询
+                } else {
+                    this.$emit('computer-height', 0);
+                }
             },
             // 选项卡回调
             tabs_click_event(index, item) {
@@ -73,6 +144,11 @@
 
 <style lang="scss" scoped>
     .tabs {
-        max-height: 100rpx;
+        .tabs-top {
+            position: fixed;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+        }
     }
 </style>
