@@ -18,7 +18,7 @@
                         </template>
                         <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                     </view>
-                    <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button">
+                    <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="url_event">
                         <template v-if="form.search_type === 'text'">
                             <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
                         </template>
@@ -143,16 +143,21 @@
             },
             search_tap() {
                 if (this.propIsPageSettings) {
+                    this.setData({
+                        search_content: '',
+                    })
                     this.$emit('search_tap', true);
                 } else {
                     this.setData({
                         is_click: true,
+                        search_content: '',
                     })
                 }
             },
             search_hot_close() {
                 this.setData({
-                    is_click: false
+                    is_click: false,
+                    search_content: '',
                 })
             },
             get_search_button() {
@@ -181,14 +186,22 @@
             },
             url_event() {
                 if (!isEmpty(this.search_content)) {
+                    const content = this.search_content;
+                    
                     if (this.propIsPageSettings) {
+                        this.setData({
+                            search_content: '',
+                        })
                         this.$emit('search_tap', false);
                     } else {
                         this.setData({
                             is_click: false,
+                            search_content: '',
                         })
                     }
-                    app.globalData.url_open('/pages/goods-search/goods-search?keywords=' + this.search_content);
+                    app.globalData.url_open('/pages/goods-search/goods-search?keywords=' + content);
+                } else {
+                    app.globalData.showToast('请输入搜索关键字', 'error');
                 }
             }
         },
