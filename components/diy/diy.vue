@@ -11,7 +11,7 @@
             </view>
             <template v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="['margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')]">
+                    <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
                         <!-- 基础组件 -->
                         <componentDiySearch v-if="item.key == 'search'" :propValue="item.com_data"></componentDiySearch>
                         <componentDiyCarousel v-else-if="item.key == 'carousel'" :propValue="item.com_data"></componentDiyCarousel>
