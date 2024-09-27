@@ -38,6 +38,7 @@ export default {
             },
             url_event(e) {
                 if (!isEmpty(e.currentTarget.dataset.value)) {
+                    this.$emit('search_hot_close');
                     app.globalData.url_open('/pages/goods-search/goods-search?keywords=' + e.currentTarget.dataset.value);
                 }
             }

@@ -18,7 +18,7 @@
                         </template>
                         <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                     </view>
-                    <view v-if="form.is_search_show == '1'" class="pa search-botton h flex-row align-c jc-c" :style="search_button">
+                    <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button">
                         <template v-if="form.search_type === 'text'">
                             <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
                         </template>
@@ -38,7 +38,7 @@
                     <view class="box oh flex-row align-c gap-10 bg-white" :style="box_style">
                         <input :focus="is_click" type="text" name="title" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :placeholder="form.tips" @input="search_input" />
                     </view>
-                    <view v-if="form.is_search_show == '1'" class="pa search-botton h flex-row align-c jc-c" :style="search_button" @tap.stop="url_event">
+                    <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="url_event">
                         <template v-if="form.search_type === 'text'">
                             <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
                         </template>
