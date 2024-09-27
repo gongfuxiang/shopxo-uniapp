@@ -11,7 +11,7 @@
             </view>
             <template v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="['margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')]">
+                    <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
                         <!-- 基础组件 -->
                         <componentDiySearch v-if="item.key == 'search'" :propValue="item.com_data"></componentDiySearch>
                         <componentDiyCarousel v-else-if="item.key == 'carousel'" :propValue="item.com_data"></componentDiyCarousel>
@@ -412,25 +412,23 @@
                     scroll_top: e.detail.scrollTop,
                 });
                 // 判断顶部导航是否置顶
+                // #ifdef H5 || MP-TOUTIAO
                 if (!this.is_header_top) {
                     if (e.detail.scrollTop >= this.sticky_top + 33) {
-                        // #ifdef H5 || MP-TOUTIAO
                         this.setData({
                             temp_sticky_top: 0,
                             temp_header_top: this.tabs_height + 'px',
                             temp_is_header_top: true,
                         });
-                        // #endif
                     } else {
-                        // #ifdef H5 || MP-TOUTIAO,
                         this.setData({
                             temp_header_top: this.header_top,
                             temp_sticky_top: this.sticky_top,
                             temp_is_header_top: false,
                         });
-                        // #endif
                     }
                 }
+                // #endif
             },
         },
     };
