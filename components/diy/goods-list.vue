@@ -418,7 +418,7 @@
                     goods = this.shop_content_list[index][split_index];
                 }
                 if (this.form.shop_button_effect == '0') {
-                    app.globalData.url_event(goods.goods_url);
+                    app.globalData.url_open(goods.goods_url);
                 } else {
                     if ((this.$refs.goods_buy || null) != null) {
                         // 开启购物车抛物线效果则展示提示操作
@@ -441,6 +441,7 @@
             },
             // 加入购物车成功回调
             goods_cart_back_event(e) {
+                app.globalData.showToast('加入成功', 'success');
                 // 增加数量
                 var { index, split_index } = e.back_data;
                 let new_data = this.list;
