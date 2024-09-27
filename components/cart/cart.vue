@@ -203,7 +203,7 @@
                             <view class="oh border-radius-main bg-white padding-sm discount_detail-popup-goods-list">
                                 <!-- 购物车商品列表 -->
                                 <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
-                                    <view class="content flex-row flex-warp">
+                                    <view class="content flex-row flex-wrap">
                                         <!-- 数据列表 -->
                                         <view v-for="(item, index) in data_list" :key="index" class="item">
                                             <view class="padding-sm pr">
