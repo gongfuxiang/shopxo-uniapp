@@ -272,11 +272,13 @@
 
         <!-- 页面已加载 -->
         <block v-if="load_status == 1">
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            <block v-if="data_mode != 3">
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-            <!-- 版权信息 -->
-            <component-copyright></component-copyright>
+                <!-- 版权信息 -->
+                <component-copyright></component-copyright>
+            </block>
 
             <!-- 非diy模式 -->
             <block v-if="data_mode != 3">
@@ -295,7 +297,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 
