@@ -35,7 +35,7 @@
             </template>
             <template v-else>
                 <view class="search wh-auto pr">
-                    <view class="box oh flex-row align-c gap-10 bg-white" :style="box_style">
+                    <view class="box oh flex-row align-c gap-10 bg-white" :style="box_style + search_box_style">
                         <input :focus="is_click" type="text" name="title" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :placeholder="form.tips" @input="search_input" />
                     </view>
                     <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="url_event">
@@ -121,6 +121,7 @@
                     style_container: this.propIsPageSettings ? '' : common_styles_computer(common_style), // 全局样式
                     search_button_radius: radius_computer(search_button_radius), // 按钮圆角
                     box_style: this.get_box_style(), // 搜索框设置
+                    search_box_style: `border: 1px solid ${this.new_style.search_border == '#fff' ? '#eee' : this.new_style.search_border};`,
                     search_button: this.get_search_button(), // 搜索按钮显示
                 });
             },
