@@ -13,12 +13,15 @@
                 <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" data-redirect="1" :data-value="default_to_url" @tap="url_event">{{ params.title || $t('paytips.paytips.jifuu8') }}</button>
             </view>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
-
+    import componentCommon from '@/components/common/common';
     export default {
         data() {
             return {
@@ -28,6 +31,9 @@
                 default_round_error_icon: app.globalData.data.default_round_error_icon,
                 default_to_url: '',
             };
+        },
+        components: {
+            componentCommon
         },
 
         /**

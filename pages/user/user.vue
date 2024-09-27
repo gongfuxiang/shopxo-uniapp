@@ -168,7 +168,7 @@
         <component-app-admin ref="app_admin"></component-app-admin>
 
         <!-- 公共 -->
-        <componentCommon></componentCommon>
+        <component-common></component-common>
     </view>
 </template>
 <script>
@@ -224,7 +224,6 @@
             componentUserBase,
             componentAppAdmin
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

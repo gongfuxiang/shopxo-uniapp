@@ -1,8 +1,8 @@
 <template>
     <!-- 底部导航 -->
-    <view v-if="(propValue || null) !== null" class="footer-nav flex-row jc-c align-c">
+    <view v-if="(propValue || null) !== null" class="footer-nav flex-row jc-c align-c" :class="nav_type == 1 ? 'bottom-line-exclude' : ''">
         <view class="footer-nav-content flex-row jc-c align-c wh-auto" :style="style_container">
-            <view class="bottom-line-exclude flex-row jc-c align-c wh-auto">
+            <view class="flex-row jc-c align-c wh-auto" :class="nav_type == 0 ? 'bottom-line-exclude' : ''">
                 <view class="flex-row jc-sa align-c wh padding-0">
                     <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-value="item.link.page || ''" @tap="url_event">
                         <view v-if="nav_style != 2" class="img-content pr">
@@ -39,6 +39,7 @@
                 style_container: '',
                 style: '',
                 nav_content: [],
+                nav_type: 0,
                 nav_style: 0,
                 default_text_color: '',
                 text_color_checked: '',
@@ -78,6 +79,7 @@
                     }
                     this.setData({
                         nav_content: nav_content,
+                        nav_type: new_content.nav_type || 0,
                         nav_style: new_content.nav_style || 0,
                         active_index: active_index,
                         default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
@@ -85,12 +87,22 @@
                         style_container: common_styles_computer(new_style.common_style),
                     });
 
-                    // 高度计算回调
-                    let footer_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom) + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom) + 40;
-                    // #ifndef APP
-                    // 底部菜单距离底部的安全距离
-                    footer_height += parseInt(uni.getSystemInfoSync().statusBarHeight);
-                    // #endif
+                    // 高度计算
+                    let nav_min_height = 70;
+                    var nav_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom)+44;
+                    if(nav_height < nav_min_height) {
+                        nav_height = nav_min_height;
+                    }
+                    let footer_height = nav_height + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom);
+
+                    // 底部菜单距离底部的安全距离，减去20、默认的安全距离太高了
+                    var safe_area_insets_bottom = parseInt(uni.getSystemInfoSync().safeAreaInsets.bottom);
+                    if(safe_area_insets_bottom > 0) {
+                        safe_area_insets_bottom -= 20;
+                    }
+                    footer_height += safe_area_insets_bottom;
+
+                    // 回调高度
                     this.$emit('footer-height', footer_height);
                 }
             },

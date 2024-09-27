@@ -97,136 +97,140 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
 const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            data_bottom_line_status: false,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_base: null,
-            extraction: null,
-            statistical: null,
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 加载数据
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-
-    methods: {
-        init() {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                this.get_data();
-            } else {
-                this.setData({
-                    data_list_loding_status: 0,
-                    data_bottom_line_status: false,
-                });
-            }
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_bottom_line_status: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: "",
+                data_base: null,
+                extraction: null,
+                statistical: null,
+            };
         },
 
-        // 获取数据
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("index", "extraction", "distribution"),
-                method: "POST",
-                data: {},
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            data_base: data.base || null,
-                            extraction: data.extraction || null,
-                            statistical: data.statistical || null,
-                            data_list_loding_msg: "",
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: true,
-                        });
-                    } else {
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
+        methods: {
+            init() {
+                var user = app.globalData.get_user_info(this, "init");
+                if (user != false) {
+                    this.get_data();
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
+
+            // 获取数据
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url("index", "extraction", "distribution"),
+                    method: "POST",
+                    data: {},
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                extraction: data.extraction || null,
+                                statistical: data.statistical || null,
+                                data_list_loding_msg: "",
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: true,
+                            });
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, "get_data")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
-        // 地图查看
-        address_map_event(e) {
-            if ((this.extraction || null) == null) {
-                return false;
+            // 地图查看
+            address_map_event(e) {
+                if ((this.extraction || null) == null) {
+                    return false;
+                }
+                var data = this.extraction;
+
+                // 打开地图
+                var name = data.alias || data.name || "";
+                var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
+                app.globalData.open_location(data.lng, data.lat, name, address);
+            },
+
+            // 进入取货订单管理
+            order_event(e) {
+                var value = e.currentTarget.dataset.value || 0;
+                app.globalData.url_open('/pages/plugins/distribution/extraction-order/extraction-order?status=' + value);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
-            var data = this.extraction;
-
-            // 打开地图
-            var name = data.alias || data.name || "";
-            var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
-            app.globalData.open_location(data.lng, data.lat, name, address);
         },
-
-        // 进入取货订单管理
-        order_event(e) {
-            var value = e.currentTarget.dataset.value || 0;
-            app.globalData.url_open('/pages/plugins/distribution/extraction-order/extraction-order?status=' + value);
-        },
-
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        }
-    },
-};
+    };
 </script>
 <style>
-@import "./extraction.css";
+    @import "./extraction.css";
 </style>

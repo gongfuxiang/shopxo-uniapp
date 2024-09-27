@@ -334,11 +334,15 @@
             </component-popup>
             <component-payment ref="payment" :propIsRedirectTo="true" :propPayUrl="pay_url" :propQrcodeUrl="qrcode_url" :propToAppointPage="to_appoint_page" propPayDataKey="ids" :propPaymentList="payment_list" :propToPageBack="to_page_back" :propToFailPage="to_fail_page"></component-payment>
         </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentTimeSelect from '@/components/time-select/time-select';
@@ -420,13 +424,13 @@
         },
 
         components: {
+            componentCommon,
             componentPopup,
             componentNoData,
             componentTimeSelect,
             componentPayment,
             componentBuyOrdergoodsform,
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

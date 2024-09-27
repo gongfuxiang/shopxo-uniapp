@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) != null">
+        <block v-if="(data || null) != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 推荐商品 -->
                 <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0">
@@ -20,15 +20,19 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
@@ -51,11 +55,11 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine,
             componentGoodsList,
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

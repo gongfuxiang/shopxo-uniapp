@@ -74,11 +74,15 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSharePopup from '@/components/share-popup/share-popup';
@@ -101,6 +105,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine,
             componentSharePopup,

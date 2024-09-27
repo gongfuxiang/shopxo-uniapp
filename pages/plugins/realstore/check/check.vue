@@ -20,10 +20,14 @@
                 </view>
             </form>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     export default {
         data() {
             return {
@@ -34,7 +38,9 @@
                 success_msg: ''
             };
         },
-        components: {},
+        components: {
+            componentCommon
+        },
 
         onLoad(params) {
             // 调用公共事件方法

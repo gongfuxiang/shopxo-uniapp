@@ -2,7 +2,7 @@
     <view :class="theme_view + ' ' + propMostClass">
         <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : 'popup-hide') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
             <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
-            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="position_style">
+            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="popup_content_style+this.propStyle">
                 <slot></slot>
             </view>
         </view>
@@ -14,7 +14,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                popup_content_left_value: 'auto',
+                popup_content_style: '',
             };
         },
         components: {},
@@ -80,18 +80,12 @@
         watch: {
             // 监听状态
             propShow(value, old_value) {
-                this.left_handle();
-            },
-        },
-        computed: {
-            position_style() {
-                let style = 'left:' + this.popup_content_left_value + ';' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';' + this.propStyle;
-                return style;
+                this.init_handle();
             },
         },
         // 组建创建
         created: function () {
-            this.left_handle();
+            this.init_handle();
         },
         methods: {
             // 事件处理
@@ -104,8 +98,12 @@
                     {}
                 );
             },
-            // 左边距位置处理
-            left_handle() {
+            // 初初始化处理
+            init_handle() {
+                // 弹窗从底部弹出，获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
+                var tabbar_height = (this.propPosition == 'bottom' && app.globalData.is_tabbar_pages()) ? ((app.globalData.app_tabbar_height_value()*2)+20) : 0;
+
+                // 左边距位置处理
                 var left = 0;
                 // #ifdef H5
                 // 处理内容左边距、避免父级设置内边距影响
@@ -114,7 +112,9 @@
                     left = (width - 800) / 2;
                 }
                 // #endif
-                this.popup_content_left_value = left + 'px';
+                this.setData({
+                    popup_content_style: 'left:' + left + ';' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:'+tabbar_height+'rpx;',
+                });
             },
         },
     };

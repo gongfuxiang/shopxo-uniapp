@@ -20,10 +20,14 @@
             </view>
             <view class="margin-top cr-grey-c">Copyright 2018-{{year}} by {{title}}</view>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentAppAdmin from '@/components/app-admin/app-admin';
     export default {
         data() {
@@ -37,6 +41,7 @@
         },
 
         components: {
+            componentCommon,
             componentAppAdmin
         },
         onLoad(params) {

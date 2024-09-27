@@ -108,12 +108,15 @@
                 </view>
             </component-popup>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
-
     export default {
         data() {
             return {
@@ -142,6 +145,7 @@
         },
 
         components: {
+            componentCommon,
             componentPopup
         },
         onLoad(params) {

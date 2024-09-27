@@ -404,11 +404,15 @@
                 </view>
             </view>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     let login_static_url = app.globalData.get_static_url('thirdpartylogin', true) + 'icon/';
 
@@ -478,6 +482,7 @@
         },
 
         components: {
+            componentCommon,
             componentPopup,
         },
 

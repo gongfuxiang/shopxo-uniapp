@@ -236,577 +236,581 @@
                 </view>
             </view>
         </component-popup>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentPopup from "@/components/popup/popup";
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentPopup from "@/components/popup/popup";
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            common_static_url: common_static_url,
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            popup_delivery_status: false,
-            // 接口数据
-            editor_path_type: "",
-            order_data: null,
-            new_aftersale_data: null,
-            step_data: null,
-            returned_data: null,
-            return_only_money_reason: [],
-            return_money_goods_reason: [],
-            aftersale_type_list: [],
-            reason_data_list: [],
-            return_goods_address: null,
-            // 售后基础信息
-            panel_base_data_list: [
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.50cm8m'),
-                    field: "type_text",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.17j4cy'),
-                    field: "status_text",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.r2oy43'),
-                    field: "reason",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c53k23'),
-                    field: "number",
-                },
-                {
-                    name: this.$t('order-detail.order-detail.v52n5r'),
-                    field: "price",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y'),
-                    field: "msg",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.5t586p'),
-                    field: "refundment_text",
-                },
-                {
-                    name: this.$t('invoice-detail.invoice-detail.rpdwd3'),
-                    field: "refuse_reason",
-                },
-                {
-                    name: this.$t('common.apply_time'),
-                    field: "apply_time",
-                },
-                {
-                    name: this.$t('user-order-detail.user-order-detail.9vivhl'),
-                    field: "confirm_time",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
-                    field: "delivery_time",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.8n414b'),
-                    field: "audit_time",
-                },
-                {
-                    name: this.$t('user-order-detail.user-order-detail.1jpv4n'),
-                    field: "cancel_time",
-                },
-                {
-                    name: this.$t('common.add_time'),
-                    field: "add_time",
-                },
-                {
-                    name: this.$t('common.upd_time'),
-                    field: "upd_time",
-                },
-            ],
-            // 快递信息
-            panel_express_data_list: [
-                {
-                    name: this.$t('invoice-detail.invoice-detail.2000a0'),
-                    field: "express_name",
-                },
-                {
-                    name: this.$t('user-order-detail.user-order-detail.2byl8l'),
-                    field: "express_number",
-                },
-                {
-                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
-                    field: "delivery_time",
-                },
-            ],
-            // 表单数据
-            form_button_disabled: false,
-            form_type: null,
-            form_reason_index: null,
-            form_price: "",
-            form_msg: "",
-            form_number: 0,
-            form_images_list: [],
-            form_express_name: "",
-            form_express_number: "",
-            // 智能工具插件、客服信息展示
-            plugins_intellectstools_data: null,
-            plugins_intellectstools_service_status: false,
-        };
-    },
-
-    components: {
-        componentPopup,
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-            popup_delivery_status: (params.is_delivery_popup || 0) == 1,
-        });
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 数据加载
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        // 获取数据
-        init() {
-            this.setData({
+    var common_static_url = app.globalData.get_static_url("common");
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                common_static_url: common_static_url,
+                params: null,
                 data_list_loding_status: 1,
-            });
-            uni.request({
-                url: app.globalData.get_request_url("aftersale", "orderaftersale"),
-                method: "POST",
-                data: {
-                    oid: this.params.oid,
-                    did: this.params.did,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            data_list_loding_status: 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
-                            editor_path_type: data.editor_path_type || "",
-                            order_data: data.order_data || null,
-                            new_aftersale_data: (data.new_aftersale_data || null) == null || data.new_aftersale_data.length <= 0 ? null : data.new_aftersale_data,
-                            step_data: data.step_data || null,
-                            returned_data: data.returned_data || null,
-                            return_only_money_reason: data.return_only_money_reason || [],
-                            return_money_goods_reason: data.return_money_goods_reason || [],
-                            aftersale_type_list: data.aftersale_type_list || [],
-                            return_goods_address: data.return_goods_address || null,
-                            form_price: data.returned_data || null != null ? data.returned_data.refund_price : '',
-                            plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                        });
-                    } else {
-                        this.setData({
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
-                        });
-                        if (app.globalData.is_login_check(res.data, this, "init")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
-
-        // 类型选择
-        form_type_event(e) {
-            var value = e.currentTarget.dataset.value;
-            this.setData({
-                form_type: value,
-                form_reason_index: this.form_type == value ? this.form_reason_index : null,
-                reason_data_list: value == 0 ? this.return_only_money_reason : this.return_money_goods_reason,
-                form_number: value == 0 ? 0 : this.returned_data.returned_quantity,
-            });
-        },
-
-        // 原因选择
-        form_reason_event(e) {
-            this.setData({
-                form_reason_index: e.detail.value,
-            });
-        },
-
-        // 商品件数
-        form_number_event(e) {
-            this.setData({
-                form_number: e.detail.value,
-            });
-        },
-
-        // 退款金额
-        form_price_event(e) {
-            this.setData({
-                form_price: e.detail.value,
-            });
-        },
-
-        // 退款说明
-        form_msg_event(e) {
-            this.setData({
-                form_msg: e.detail.value,
-            });
-        },
-
-        // 快递名称
-        form_express_name_event(e) {
-            this.setData({
-                form_express_name: e.detail.value,
-            });
-        },
-
-        // 快递单号
-        form_express_number_event(e) {
-            this.setData({
-                form_express_number: e.detail.value,
-            });
-        },
-
-        // 上传图片预览
-        upload_show_event(e) {
-            uni.previewImage({
-                current: this.form_images_list[e.currentTarget.dataset.index],
-                urls: this.form_images_list,
-            });
-        },
-
-        // 图片删除
-        upload_delete_event(e) {
-            var self = this;
-            uni.showModal({
-                title: this.$t('common.warm_tips'),
-                content: this.$t('order.order.psi67g'),
-                success(res) {
-                    if (res.confirm) {
-                        var list = self.form_images_list;
-                        list.splice(e.currentTarget.dataset.index, 1);
-                        self.setData({
-                            form_images_list: list,
-                        });
-                    }
-                },
-            });
-        },
-
-        // 文件上传
-        file_upload_event(e) {
-            var self = this;
-            uni.chooseImage({
-                count: 3,
-                success(res) {
-                    var success = 0;
-                    var fail = 0;
-                    var length = res.tempFilePaths.length;
-                    var count = 0;
-                    self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                },
-            });
-        },
-
-        // 采用递归的方式上传多张
-        upload_one_by_one(img_paths, success, fail, count, length) {
-            var self = this;
-            if (self.form_images_list.length < 3) {
-                uni.uploadFile({
-                    url: app.globalData.get_request_url("index", "ueditor"),
-                    filePath: img_paths[count],
-                    name: "upfile",
-                    formData: {
-                        action: "uploadimage",
-                        path_type: self.editor_path_type,
+                data_list_loding_msg: "",
+                data_bottom_line_status: false,
+                popup_delivery_status: false,
+                // 接口数据
+                editor_path_type: "",
+                order_data: null,
+                new_aftersale_data: null,
+                step_data: null,
+                returned_data: null,
+                return_only_money_reason: [],
+                return_money_goods_reason: [],
+                aftersale_type_list: [],
+                reason_data_list: [],
+                return_goods_address: null,
+                // 售后基础信息
+                panel_base_data_list: [
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.50cm8m'),
+                        field: "type_text",
                     },
-                    success: function (res) {
-                        success++;
-                        if (res.statusCode == 200) {
-                            var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
-                            if (data.code == 0 && (data.data.url || null) != null) {
-                                var list = self.form_images_list;
-                                list.push(data.data.url);
-                                self.setData({
-                                    form_images_list: list,
-                                });
-                            } else {
-                                app.globalData.showToast(data.msg);
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.17j4cy'),
+                        field: "status_text",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.r2oy43'),
+                        field: "reason",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c53k23'),
+                        field: "number",
+                    },
+                    {
+                        name: this.$t('order-detail.order-detail.v52n5r'),
+                        field: "price",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y'),
+                        field: "msg",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.5t586p'),
+                        field: "refundment_text",
+                    },
+                    {
+                        name: this.$t('invoice-detail.invoice-detail.rpdwd3'),
+                        field: "refuse_reason",
+                    },
+                    {
+                        name: this.$t('common.apply_time'),
+                        field: "apply_time",
+                    },
+                    {
+                        name: this.$t('user-order-detail.user-order-detail.9vivhl'),
+                        field: "confirm_time",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
+                        field: "delivery_time",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.8n414b'),
+                        field: "audit_time",
+                    },
+                    {
+                        name: this.$t('user-order-detail.user-order-detail.1jpv4n'),
+                        field: "cancel_time",
+                    },
+                    {
+                        name: this.$t('common.add_time'),
+                        field: "add_time",
+                    },
+                    {
+                        name: this.$t('common.upd_time'),
+                        field: "upd_time",
+                    },
+                ],
+                // 快递信息
+                panel_express_data_list: [
+                    {
+                        name: this.$t('invoice-detail.invoice-detail.2000a0'),
+                        field: "express_name",
+                    },
+                    {
+                        name: this.$t('user-order-detail.user-order-detail.2byl8l'),
+                        field: "express_number",
+                    },
+                    {
+                        name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
+                        field: "delivery_time",
+                    },
+                ],
+                // 表单数据
+                form_button_disabled: false,
+                form_type: null,
+                form_reason_index: null,
+                form_price: "",
+                form_msg: "",
+                form_number: 0,
+                form_images_list: [],
+                form_express_name: "",
+                form_express_number: "",
+                // 智能工具插件、客服信息展示
+                plugins_intellectstools_data: null,
+                plugins_intellectstools_service_status: false,
+            };
+        },
+
+        components: {
+            componentCommon,
+            componentPopup,
+            componentNoData,
+            componentBottomLine,
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
+                popup_delivery_status: (params.is_delivery_popup || 0) == 1,
+            });
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 数据加载
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            // 获取数据
+            init() {
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("aftersale", "orderaftersale"),
+                    method: "POST",
+                    data: {
+                        oid: this.params.oid,
+                        did: this.params.did,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                                data_list_loding_msg: "",
+                                editor_path_type: data.editor_path_type || "",
+                                order_data: data.order_data || null,
+                                new_aftersale_data: (data.new_aftersale_data || null) == null || data.new_aftersale_data.length <= 0 ? null : data.new_aftersale_data,
+                                step_data: data.step_data || null,
+                                returned_data: data.returned_data || null,
+                                return_only_money_reason: data.return_only_money_reason || [],
+                                return_money_goods_reason: data.return_money_goods_reason || [],
+                                aftersale_type_list: data.aftersale_type_list || [],
+                                return_goods_address: data.return_goods_address || null,
+                                form_price: data.returned_data || null != null ? data.returned_data.refund_price : '',
+                                plugins_intellectstools_data: data.plugins_intellectstools_data || null,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, "init")) {
+                                app.globalData.showToast(res.data.msg);
                             }
                         }
                     },
-                    fail: function (e) {
-                        fail++;
-                    },
-                    complete: function (e) {
-                        count++;
-
-                        // 下一张
-                        if (count >= length) {
-                            // 上传完毕，作一下提示
-                            //app.showToast('上传成功' + success +'张', 'success');
-                        } else {
-                            // 递归调用，上传下一张
-                            self.upload_one_by_one(img_paths, success, fail, count, length);
-                        }
-                    },
-                });
-            }
-        },
-
-        // 售后表单提交
-        form_submit_event(e) {
-            // 表单数据
-            var form_data = {
-                order_id: this.params.oid,
-                order_detail_id: this.params.did,
-                type: this.form_type,
-                reason: this.reason_data_list[this.form_reason_index],
-                number: this.form_type == 0 ? 0 : this.form_number,
-                price: this.form_price,
-                msg: this.form_msg,
-                images: this.form_images_list.length > 0 ? JSON.stringify(this.form_images_list) : "",
-            };
-
-            // 防止金额大于计算的金额
-            var refund_price = parseFloat(this.returned_data["refund_price"]);
-            if (form_data["price"] > refund_price) {
-                form_data["price"] =refund_price;
-            }
-
-            // 防止数量大于计算的数量
-            var returned_quantity = parseInt(this.returned_data["returned_quantity"]);
-            if (form_data["number"] > returned_quantity) {
-                form_data["number"] = returned_quantity;
-            }
-
-            // 数据校验
-            var validation = [
-                {
-                    fields: "type",
-                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.23v6rp'),
-                    is_can_zero: 1,
-                },
-                {
-                    fields: "reason",
-                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.21icul'),
-                },
-            ];
-            if (form_data["type"] == 1) {
-                validation.push({
-                    fields: "number",
-                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.dn3423'),
-                });
-            }
-
-            // 校验参数并提交
-            if (app.globalData.fields_check(form_data, validation)) {
-                var self = this;
-                uni.showLoading({
-                    title: this.$t('common.processing_in_text'),
-                });
-                self.setData({
-                    form_button_disabled: true,
-                });
-                uni.request({
-                    url: app.globalData.get_request_url("create", "orderaftersale"),
-                    method: "POST",
-                    data: form_data,
-                    dataType: "json",
-                    success: (res) => {
-                        uni.hideLoading();
-                        if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg, "success");
-                            setTimeout(function () {
-                                self.setData({
-                                    form_button_disabled: false,
-                                });
-                                self.init();
-                            }, 1000);
-                        } else {
-                            self.setData({
-                                form_button_disabled: false,
-                            });
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
                     fail: () => {
-                        uni.hideLoading();
-                        self.setData({
-                            form_button_disabled: false,
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_bottom_line_status: false,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
-            }
-        },
+            },
 
-        // 退货开启弹层
-        delivery_submit_event(e) {
-            this.setData({
-                popup_delivery_status: true,
-            });
-        },
+            // 类型选择
+            form_type_event(e) {
+                var value = e.currentTarget.dataset.value;
+                this.setData({
+                    form_type: value,
+                    form_reason_index: this.form_type == value ? this.form_reason_index : null,
+                    reason_data_list: value == 0 ? this.return_only_money_reason : this.return_money_goods_reason,
+                    form_number: value == 0 ? 0 : this.returned_data.returned_quantity,
+                });
+            },
 
-        // 退货弹层关闭
-        popup_delivery_close_event(e) {
-            this.setData({
-                popup_delivery_status: false,
-            });
-        },
+            // 原因选择
+            form_reason_event(e) {
+                this.setData({
+                    form_reason_index: e.detail.value,
+                });
+            },
 
-        // 退货表单
-        form_delivery_submit_event(e) {
-            // 表单数据
-            var form_data = {
-                id: this.new_aftersale_data.id,
-                express_name: this.form_express_name,
-                express_number: this.form_express_number,
-            };
+            // 商品件数
+            form_number_event(e) {
+                this.setData({
+                    form_number: e.detail.value,
+                });
+            },
 
-            // 数据校验
-            var validation = [
-                {
-                    fields: "express_name",
-                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c9e2ms'),
-                },
-                {
-                    fields: "express_number",
-                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.ld10pm'),
-                },
-            ];
+            // 退款金额
+            form_price_event(e) {
+                this.setData({
+                    form_price: e.detail.value,
+                });
+            },
 
-            // 校验参数并提交
-            if (app.globalData.fields_check(form_data, validation)) {
+            // 退款说明
+            form_msg_event(e) {
+                this.setData({
+                    form_msg: e.detail.value,
+                });
+            },
+
+            // 快递名称
+            form_express_name_event(e) {
+                this.setData({
+                    form_express_name: e.detail.value,
+                });
+            },
+
+            // 快递单号
+            form_express_number_event(e) {
+                this.setData({
+                    form_express_number: e.detail.value,
+                });
+            },
+
+            // 上传图片预览
+            upload_show_event(e) {
+                uni.previewImage({
+                    current: this.form_images_list[e.currentTarget.dataset.index],
+                    urls: this.form_images_list,
+                });
+            },
+
+            // 图片删除
+            upload_delete_event(e) {
                 var self = this;
-                uni.showLoading({
-                    title: this.$t('common.processing_in_text'),
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
+                    success(res) {
+                        if (res.confirm) {
+                            var list = self.form_images_list;
+                            list.splice(e.currentTarget.dataset.index, 1);
+                            self.setData({
+                                form_images_list: list,
+                            });
+                        }
+                    },
                 });
-                self.setData({
-                    form_button_disabled: true,
+            },
+
+            // 文件上传
+            file_upload_event(e) {
+                var self = this;
+                uni.chooseImage({
+                    count: 3,
+                    success(res) {
+                        var success = 0;
+                        var fail = 0;
+                        var length = res.tempFilePaths.length;
+                        var count = 0;
+                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
+                    },
                 });
-                uni.request({
-                    url: app.globalData.get_request_url("delivery", "orderaftersale"),
-                    method: "POST",
-                    data: form_data,
-                    dataType: "json",
-                    success: (res) => {
-                        uni.hideLoading();
-                        self.setData({
-                            popup_delivery_status: false,
-                        });
-                        if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg, "success");
-                            setTimeout(function () {
+            },
+
+            // 采用递归的方式上传多张
+            upload_one_by_one(img_paths, success, fail, count, length) {
+                var self = this;
+                if (self.form_images_list.length < 3) {
+                    uni.uploadFile({
+                        url: app.globalData.get_request_url("index", "ueditor"),
+                        filePath: img_paths[count],
+                        name: "upfile",
+                        formData: {
+                            action: "uploadimage",
+                            path_type: self.editor_path_type,
+                        },
+                        success: function (res) {
+                            success++;
+                            if (res.statusCode == 200) {
+                                var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
+                                if (data.code == 0 && (data.data.url || null) != null) {
+                                    var list = self.form_images_list;
+                                    list.push(data.data.url);
+                                    self.setData({
+                                        form_images_list: list,
+                                    });
+                                } else {
+                                    app.globalData.showToast(data.msg);
+                                }
+                            }
+                        },
+                        fail: function (e) {
+                            fail++;
+                        },
+                        complete: function (e) {
+                            count++;
+
+                            // 下一张
+                            if (count >= length) {
+                                // 上传完毕，作一下提示
+                                //app.showToast('上传成功' + success +'张', 'success');
+                            } else {
+                                // 递归调用，上传下一张
+                                self.upload_one_by_one(img_paths, success, fail, count, length);
+                            }
+                        },
+                    });
+                }
+            },
+
+            // 售后表单提交
+            form_submit_event(e) {
+                // 表单数据
+                var form_data = {
+                    order_id: this.params.oid,
+                    order_detail_id: this.params.did,
+                    type: this.form_type,
+                    reason: this.reason_data_list[this.form_reason_index],
+                    number: this.form_type == 0 ? 0 : this.form_number,
+                    price: this.form_price,
+                    msg: this.form_msg,
+                    images: this.form_images_list.length > 0 ? JSON.stringify(this.form_images_list) : "",
+                };
+
+                // 防止金额大于计算的金额
+                var refund_price = parseFloat(this.returned_data["refund_price"]);
+                if (form_data["price"] > refund_price) {
+                    form_data["price"] =refund_price;
+                }
+
+                // 防止数量大于计算的数量
+                var returned_quantity = parseInt(this.returned_data["returned_quantity"]);
+                if (form_data["number"] > returned_quantity) {
+                    form_data["number"] = returned_quantity;
+                }
+
+                // 数据校验
+                var validation = [
+                    {
+                        fields: "type",
+                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.23v6rp'),
+                        is_can_zero: 1,
+                    },
+                    {
+                        fields: "reason",
+                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.21icul'),
+                    },
+                ];
+                if (form_data["type"] == 1) {
+                    validation.push({
+                        fields: "number",
+                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.dn3423'),
+                    });
+                }
+
+                // 校验参数并提交
+                if (app.globalData.fields_check(form_data, validation)) {
+                    var self = this;
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    self.setData({
+                        form_button_disabled: true,
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url("create", "orderaftersale"),
+                        method: "POST",
+                        data: form_data,
+                        dataType: "json",
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, "success");
+                                setTimeout(function () {
+                                    self.setData({
+                                        form_button_disabled: false,
+                                    });
+                                    self.init();
+                                }, 1000);
+                            } else {
                                 self.setData({
                                     form_button_disabled: false,
                                 });
-                                self.init();
-                            }, 1000);
-                        } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
                             self.setData({
                                 form_button_disabled: false,
                             });
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        uni.hideLoading();
-                        self.setData({
-                            form_button_disabled: false,
-                        });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
+            },
+
+            // 退货开启弹层
+            delivery_submit_event(e) {
+                this.setData({
+                    popup_delivery_status: true,
                 });
+            },
+
+            // 退货弹层关闭
+            popup_delivery_close_event(e) {
+                this.setData({
+                    popup_delivery_status: false,
+                });
+            },
+
+            // 退货表单
+            form_delivery_submit_event(e) {
+                // 表单数据
+                var form_data = {
+                    id: this.new_aftersale_data.id,
+                    express_name: this.form_express_name,
+                    express_number: this.form_express_number,
+                };
+
+                // 数据校验
+                var validation = [
+                    {
+                        fields: "express_name",
+                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c9e2ms'),
+                    },
+                    {
+                        fields: "express_number",
+                        msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.ld10pm'),
+                    },
+                ];
+
+                // 校验参数并提交
+                if (app.globalData.fields_check(form_data, validation)) {
+                    var self = this;
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    self.setData({
+                        form_button_disabled: true,
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url("delivery", "orderaftersale"),
+                        method: "POST",
+                        data: form_data,
+                        dataType: "json",
+                        success: (res) => {
+                            uni.hideLoading();
+                            self.setData({
+                                popup_delivery_status: false,
+                            });
+                            if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, "success");
+                                setTimeout(function () {
+                                    self.setData({
+                                        form_button_disabled: false,
+                                    });
+                                    self.init();
+                                }, 1000);
+                            } else {
+                                self.setData({
+                                    form_button_disabled: false,
+                                });
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            self.setData({
+                                form_button_disabled: false,
+                            });
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
+            },
+
+            // 凭证图片预览
+            images_view_event(e) {
+                uni.previewImage({
+                    current: this.new_aftersale_data.images[e.currentTarget.dataset.index],
+                    urls: this.new_aftersale_data.images,
+                });
+            },
+
+            // 查看售后数据
+            show_aftersale_event(e) {
+                app.globalData.url_open('/pages/user-orderaftersale/user-orderaftersale?keywords=' + this.new_aftersale_data.order_no);
+            },
+
+            // 开启客服弹层
+            plugins_intellectstools_service_open_event(e) {
+                this.setData({
+                    plugins_intellectstools_service_status: true,
+                });
+            },
+            
+            // 关闭客服弹层
+            plugins_intellectstools_service_close_event(e) {
+                this.setData({
+                    plugins_intellectstools_service_status: false,
+                });
+            },
+
+            // 图片预览
+            image_show_event(e) {
+                app.globalData.image_show_event(e);
+            },
+
+            // 进入客服系统
+            chat_event() {
+                app.globalData.chat_entry_handle(this.plugins_intellectstools_data.chat.chat_url);
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         },
-
-        // 凭证图片预览
-        images_view_event(e) {
-            uni.previewImage({
-                current: this.new_aftersale_data.images[e.currentTarget.dataset.index],
-                urls: this.new_aftersale_data.images,
-            });
-        },
-
-        // 查看售后数据
-        show_aftersale_event(e) {
-            app.globalData.url_open('/pages/user-orderaftersale/user-orderaftersale?keywords=' + this.new_aftersale_data.order_no);
-        },
-
-        // 开启客服弹层
-        plugins_intellectstools_service_open_event(e) {
-            this.setData({
-                plugins_intellectstools_service_status: true,
-            });
-        },
-        
-        // 关闭客服弹层
-        plugins_intellectstools_service_close_event(e) {
-            this.setData({
-                plugins_intellectstools_service_status: false,
-            });
-        },
-
-        // 图片预览
-        image_show_event(e) {
-            app.globalData.image_show_event(e);
-        },
-
-        // 进入客服系统
-        chat_event() {
-            app.globalData.chat_entry_handle(this.plugins_intellectstools_data.chat.chat_url);
-        },
-
-        // 文本事件
-        text_event(e) {
-            app.globalData.text_event_handle(e);
-        },
-
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        }
-    },
-};
+    };
 </script>
 <style>
-@import "./user-orderaftersale-detail.css";
+    @import "./user-orderaftersale-detail.css";
 </style>

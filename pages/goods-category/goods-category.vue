@@ -274,7 +274,7 @@
                             <!-- 购物车列表 -->
                             <block v-if="cart_status">
                                 <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
-                                <view class="cart-content bg-white border-radius-main pa oh">
+                                <view class="cart-content bg-white border-radius-main pa oh" :style="cart_content_style">
                                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                                         <view class="oh br-b padding-vertical-main padding-horizontal-main">
                                             <text class="va-m text-size-xs cr-base">{{ $t('goods-category.goods-category.ico62g') }}</text>
@@ -368,7 +368,7 @@
         </view>
 
         <!-- 公共 -->
-        <componentCommon @footer-height="footer_height_value_event" :propIsFooterSeat="false"></componentCommon>
+        <component-common @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 
@@ -461,6 +461,7 @@
                 left_content_actual_style: '',
                 right_content_actual_style: '',
                 botton_nav_style: '',
+                cart_content_style: '',
                 footer_height_value: 0,
             };
         },
@@ -477,7 +478,6 @@
             componentNavMore,
             componentAppAdmin
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法
@@ -712,7 +712,8 @@
                 this.setData({
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
-                    botton_nav_style: 'bottom: calc(20rpx + '+this.footer_height_value+'rpx);'
+                    botton_nav_style: 'bottom: calc(20rpx + '+this.footer_height_value+'rpx);',
+                    cart_content_style: 'bottom: calc(130rpx + '+this.footer_height_value+'rpx);',
                 });
             },
 
@@ -1382,7 +1383,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: (parseInt(value)*2)+20
+                    footer_height_value: parseInt(value)*2
                 });
                 this.content_actual_size_handle();
             }

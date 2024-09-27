@@ -282,10 +282,14 @@
 
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentNoData from '@/components/no-data/no-data';
@@ -397,6 +401,7 @@
         },
 
         components: {
+            componentCommon,
             componentNavBack,
             componentGoodsBuy,
             componentNoData,
@@ -406,7 +411,6 @@
             componentRealstoreCart,
             componentSharePopup
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

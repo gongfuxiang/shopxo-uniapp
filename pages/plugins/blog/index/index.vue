@@ -120,10 +120,14 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentSearch from '@/components/search/search';
     import componentBanner from '@/components/slider/slider';
     import componentCountdown from '@/components/countdown/countdown';
@@ -153,6 +157,7 @@
         },
 
         components: {
+            componentCommon,
             componentSearch,
             componentBanner,
             componentCountdown,
@@ -160,7 +165,6 @@
             componentBottomLine,
             componentGoodsList,
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

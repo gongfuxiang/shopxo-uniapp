@@ -40,14 +40,17 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
-
     export default {
         data() {
             return {
@@ -66,11 +69,11 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine,
             componentGoodsList,
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

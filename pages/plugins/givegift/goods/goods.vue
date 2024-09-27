@@ -83,10 +83,14 @@
             :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
         ></component-payment>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
     import componentSharePopup from '@/components/share-popup/share-popup';
@@ -126,6 +130,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentPayment,
             componentSharePopup

@@ -111,148 +111,152 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            common_static_url: common_static_url,
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            detail: null,
-            detail_list: [],
-            site_fictitious: null,
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 数据加载
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        // 获取数据
-        init() {
-            this.setData({
+    var common_static_url = app.globalData.get_static_url("common");
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                common_static_url: common_static_url,
+                params: null,
                 data_list_loding_status: 1,
+                data_list_loding_msg: "",
+                data_bottom_line_status: false,
+                detail: null,
+                detail_list: [],
+                site_fictitious: null,
+            };
+        },
+
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
             });
-            uni.request({
-                url: app.globalData.get_request_url("detail", "orderallot", "realstore"),
-                method: "POST",
-                data: {
-                    id: this.params.id,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            detail: data.data,
-                            detail_list: [
-                                { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                { name: this.$t('common.add_time'), value: data.data.add_time || "" },
-                                { name: this.$t('common.receive_time'), value: data.data.receive_time || "" },
-                                { name: this.$t('common.service_time'), value: data.data.service_time || "" },
-                                { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || "" },
-                            ],
-                            site_fictitious: data.site_fictitious || null,
-                            data_list_loding_status: 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
-                        });
-                    } else {
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 数据加载
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            // 获取数据
+            init() {
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("detail", "orderallot", "realstore"),
+                    method: "POST",
+                    data: {
+                        id: this.params.id,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                detail: data.data,
+                                detail_list: [
+                                    { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                    { name: this.$t('common.add_time'), value: data.data.add_time || "" },
+                                    { name: this.$t('common.receive_time'), value: data.data.receive_time || "" },
+                                    { name: this.$t('common.service_time'), value: data.data.service_time || "" },
+                                    { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || "" },
+                                ],
+                                site_fictitious: data.site_fictitious || null,
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                                data_list_loding_msg: "",
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, "init")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        if (app.globalData.is_login_check(res.data, this, "init")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
-        // 地图查看
-        address_map_event(e) {
-            if ((this.detail.address_data || null) == null) {
-                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
-                return false;
+            // 地图查看
+            address_map_event(e) {
+                if ((this.detail.address_data || null) == null) {
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
+                    return false;
+                }
+
+                // 打开地图
+                var data = this.detail.address_data;
+                var name = data.alias || data.name || "";
+                var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
+                app.globalData.open_location(data.lng, data.lat, name, address);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+
+            // 文本复制
+            text_copy_event(e) {
+                if((e.currentTarget.dataset.value || null) != null) {
+                    app.globalData.text_copy_event(e);
+                }
             }
-
-            // 打开地图
-            var data = this.detail.address_data;
-            var name = data.alias || data.name || "";
-            var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
-            app.globalData.open_location(data.lng, data.lat, name, address);
         },
-
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        },
-
-        // 文本复制
-        text_copy_event(e) {
-            if((e.currentTarget.dataset.value || null) != null) {
-                app.globalData.text_copy_event(e);
-            }
-        }
-    },
-};
+    };
 </script>
 <style>
-@import "./orderallot-detail.css";
+    @import "./orderallot-detail.css";
 </style>
