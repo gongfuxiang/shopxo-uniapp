@@ -13,6 +13,7 @@
         data() {
             return {
                 key: '',
+                load_status: 0,
                 is_tabbar: false,
                 app_tabber: null,
                 footer_height_value: 0,
@@ -45,20 +46,22 @@
 
             // 初始化
             init() {
+                // 首次则调用实际的接口再回调
+                if(this.load_status == 0) {
+                    app.globalData.init_config_back(this, 'init');
+                }
+
                 // 初始数据
                 var is_tabbar = app.globalData.is_tabbar_pages();
-                if(is_tabbar) {
-                    this.setData({
-                        is_tabbar: is_tabbar,
-                        key: Math.random(),
-                        app_tabber: app.globalData.get_config('app_tabber'),
-                        
-                    });
-                } else {
-                    this.setData({
-                        is_tabbar: is_tabbar
-                    });
+                var upd_data = {
+                    is_tabbar: is_tabbar,
+                    load_status: 1,
                 }
+                if(is_tabbar) {
+                    upd_data['key'] = Math.random();
+                    upd_data['app_tabber'] = app.globalData.get_config('app_tabber');
+                }
+                this.setData(upd_data);
             },
 
             // 底部菜单高度

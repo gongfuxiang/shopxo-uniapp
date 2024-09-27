@@ -214,6 +214,7 @@
                 // 公共数是否已初始化成功
                 common_data_init_status: 0,
                 common_data_init_timer: null,
+                common_data_init_back_timer: null,
                 // 网络状态检查
                 network_type_page_record_timer: null,
                 // 位置监听更新页面临时记录数据
@@ -1424,15 +1425,16 @@
              * 配置是否有效(100毫秒检验一次、最多检验100次)
              * object     回调操作对象
              * method     回调操作对象的函数
+             * params     回调操请求参数
              */
-            is_config(object, method) {
+            is_config(object, method, params) {
                 var self = this;
                 var count = 0;
                 var timer = setInterval(function () {
                     if (self.get_config('status') == 1) {
                         clearInterval(timer);
                         if (typeof object === 'object' && (method || null) != null) {
-                            object[method](true);
+                            object[method](true, params);
                         }
                     }
                     count++;
@@ -1440,6 +1442,24 @@
                         clearInterval(timer);
                     }
                 }, 100);
+            },
+
+            /**
+             * 初始化 配置信息后回调
+             * object     回调操作对象
+             * method     回调操作对象的函数
+             * params     回调操请求参数
+             */
+            init_config_back(object, method, params) {
+                var self = this;
+                self.data.common_data_init_back_timer = setInterval(function () {
+                    if (self.data.common_data_init_status == 1) {
+                        clearInterval(self.data.common_data_init_back_timer);
+                        if (typeof object === 'object' && (method || null) != null) {
+                            object[method](params);
+                        }
+                    }
+                }, 1000);
             },
 
             /**
@@ -1618,27 +1638,30 @@
                     }
                     // #endif
 
-                    // web地址
                     if (this.is_url(value)) {
+                        // web地址
                         this.open_web_view(value, is_redirect);
-                        // 打开外部小程序协议
                     } else if (value.substr(0, 8) == 'appid://') {
+                        // 打开外部小程序协议
                         uni.navigateToMiniProgram({
                             appId: value.substr(8),
                         });
-                        // 地图协议
                     } else if (value.substr(0, 6) == 'map://') {
+                        // 地图协议（名称|地址|lng|lat）
                         var values = value.substr(6).split('|');
                         if (values.length != 4) {
                             this.showToast(i18n.t('shopxo-uniapp.app.5y1c52'));
                             return false;
                         }
                         this.open_location(values[2], values[3], values[0], values[1]);
-                        // 电话协议
                     } else if (value.substr(0, 6) == 'tel://') {
+                        // 电话协议
                         this.call_tel(value.substr(6));
-                        // 默认切换或跳转页面
+                    } else if (value.substr(0, 7) == 'scan://') {
+                        // 扫码协议
+                        this.scan_handle();
                     } else {
+                        // 默认切换或跳转页面
                         if (this.is_page(value)) {
                             if (this.is_system_tabbar_pages(value)) {
                                 var temp = value.split('?');
@@ -2741,6 +2764,8 @@
             clear_interval_handle() {
                 // 清除初始化公共数据方法定时任务
                 clearInterval(this.data.common_data_init_timer);
+                // 清除初始化公共数据回调方法定时任务
+                clearInterval(this.data.common_data_init_back_timer);
                 // 清除网络状态检查方法定时任务
                 var network = this.data.network_type_page_record_timer || null;
                 if (network != null) {
