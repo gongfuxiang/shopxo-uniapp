@@ -114,10 +114,14 @@
                 </view>
             </component-popup>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -166,11 +170,11 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentPopup,
             componentBottomLine,
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

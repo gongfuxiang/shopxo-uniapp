@@ -48,10 +48,10 @@
                 </view>
             </view>
         </view>
-        <view v-else>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
         <!-- 支付弹窗 -->
         <component-payment
             :propCurrencySymbol="currency_symbol"
@@ -68,10 +68,14 @@
             :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
         ></component-payment>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
@@ -88,7 +92,6 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 recharge_money_value: '',
-                // recharge_money_value: '',
                 form_submit_disabled_status: false,
                 preset_data: [],
                 recharge_desc: '',
@@ -110,12 +113,11 @@
         },
 
         components: {
+            componentCommon,
             componentNavBack,
             componentPayment,
             componentNoData,
         },
-
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

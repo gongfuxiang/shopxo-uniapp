@@ -1,9 +1,9 @@
 <template>
     <view :class="theme_view">
 		<!-- 轮播 -->
-		<view v-if="banner_list.length > 0">
+		<block v-if="banner_list.length > 0">
 			<component-banner :propData="banner_list" propMode="round" propRadius=""></component-banner>
-		</view>
+		</block>
 
 		<view class="spacing-mt" v-if="data_list.length > 0">
 			<view class="padding-horizontal-main">
@@ -65,16 +65,20 @@
 			<!-- 结尾 -->
 			<component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 		</view>
-		<view v-else>
+		<block v-else>
 			<!-- 提示信息 -->
 			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-		</view>
+		</block>
+
+		<!-- 公共 -->
+        <component-common></component-common>
 	</view>
 </template>
 <script>
 	const app = getApp();
-	import componentBanner from "@/components/slider/slider";
+	import componentCommon from '@/components/common/common';
 	import componentNoData from "@/components/no-data/no-data";
+	import componentBanner from "@/components/slider/slider";
 	import componentBottomLine from "@/components/bottom-line/bottom-line";
 	var weixinliveplayer_static_url = app.globalData.get_static_url('weixinliveplayer', true);
 
@@ -95,8 +99,9 @@
 		},
 
 		components: {
-			componentBanner,
+			componentCommon,
 			componentNoData,
+			componentBanner,
 			componentBottomLine
 		},
 		

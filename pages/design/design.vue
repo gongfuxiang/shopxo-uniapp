@@ -23,7 +23,7 @@
         </view>
 
         <!-- 公共 -->
-        <componentCommon></componentCommon>
+        <component-common></component-common>
     </view>
 </template>
 <script>
@@ -56,7 +56,6 @@
             componentNoData,
             componentBottomLine
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

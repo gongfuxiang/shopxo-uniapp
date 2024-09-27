@@ -76,11 +76,14 @@
                 </view>
             </form>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-
+    import componentCommon from '@/components/common/common';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
@@ -109,8 +112,9 @@
             };
         },
 
-        components: {},
-        props: {},
+        components: {
+            componentCommon
+        },
 
         onLoad(params) {
             // 调用公共事件方法

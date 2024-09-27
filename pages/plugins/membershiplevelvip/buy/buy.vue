@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data_base || null) != null">
+        <block v-if="(data_base || null) != null">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="page-bottom-fixed">
                 <!-- 导航 -->
                 <scroll-view class="nav scroll-view-horizontal bg-white oh tc" :class="data_list.length < 4 ? 'average-' + data_list.length : ''" scroll-x="true">
@@ -58,11 +58,11 @@
                 <!-- 提示信息 -->
                 <component-no-data propStatus="0" :propMsg="$t('buy.buy.5x86n3')"></component-no-data>
             </view>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
         <!-- 支付组件 -->
         <component-payment
             :propPayUrl="pay_url"
@@ -80,10 +80,14 @@
             :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
         ></component-payment>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
     export default {
@@ -117,10 +121,10 @@
             };
         },
         components: {
+            componentCommon,
             componentNoData,
             componentPayment
         },
-        props: {},
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);

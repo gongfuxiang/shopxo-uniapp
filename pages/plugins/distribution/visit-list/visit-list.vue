@@ -41,250 +41,254 @@
 
         <!-- 新增入口 -->
         <view data-value="/pages/plugins/distribution/visit-form/visit-form" @tap="url_event" class="buttom-right-submit bg-main cr-white round tc">+</view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            data_list: [],
-            data_total: 0,
-            data_page_total: 0,
-            data_page: 1,
-            data_list_loding_status: 1,
-            data_bottom_line_status: false,
-            data_is_loading: 0,
-            params: null,
-            content_list: [
-                { name: this.$t('visit-list.visit-list.q76du4'), field: "content" },
-                { name: this.$t('visit-list.visit-list.4z367h'), field: "images"},
-                { name: this.$t('common.upd_time'), field: "upd_time" },
-            ],
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-
-        // 初始数据
-        this.init();
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 先解绑自定义事件
-        uni.$off('refresh');
-        // 监听自定义事件并进行页面刷新操作
-        uni.$on('refresh', (data) => {
-            // 重新请求数据
-            this.init();
-        });
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.setData({
-            data_page: 1,
-        });
-        this.get_data_list(1);
-    },
-
-    methods: {
-        init() {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                // 获取数据
-                this.setData({
-                    data_page: 1,
-                });
-                this.get_data_list(1);
-            } else {
-                this.setData({
-                    data_list_loding_status: 0,
-                    data_bottom_line_status: false,
-                });
-            }
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_list: [],
+                data_total: 0,
+                data_page_total: 0,
+                data_page: 1,
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_is_loading: 0,
+                params: null,
+                content_list: [
+                    { name: this.$t('visit-list.visit-list.q76du4'), field: "content" },
+                    { name: this.$t('visit-list.visit-list.4z367h'), field: "images"},
+                    { name: this.$t('common.upd_time'), field: "upd_time" },
+                ],
+            };
         },
 
-        // 获取数据
-        get_data_list(is_mandatory) {
-            // 分页是否还有数据
-            if ((is_mandatory || 0) == 0) {
-                if (this.data_bottom_line_status == true) {
-                    uni.stopPullDownRefresh();
-                    return false;
-                }
-            }
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
 
-            // 是否加载中
-            if (this.data_is_loading == 1) {
-                return false;
-            }
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
-                data_is_loading: 1,
-                data_list_loding_status: 1,
+                params: params,
             });
 
-            // 获取数据
-            uni.request({
-                url: app.globalData.get_request_url("index", "visit", "distribution"),
-                method: "POST",
-                data: {
-                    page: this.data_page
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        if (res.data.data.data.length > 0) {
-                            if (this.data_page <= 1) {
-                                var temp_data_list = res.data.data.data;
-                            } else {
-                                var temp_data_list = this.data_list || [];
-                                var temp_data = res.data.data.data;
-                                for (var i in temp_data) {
-                                    temp_data_list.push(temp_data[i]);
-                                }
-                            }
-                            this.setData({
-                                data_list: temp_data_list,
-                                data_total: res.data.data.total,
-                                data_page_total: res.data.data.page_total,
-                                data_list_loding_status: 3,
-                                data_page: this.data_page + 1,
-                                data_is_loading: 0,
-                            });
+            // 初始数据
+            this.init();
+        },
 
-                            // 是否还有数据
-                            this.setData({
-                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
-                            });
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 先解绑自定义事件
+            uni.$off('refresh');
+            // 监听自定义事件并进行页面刷新操作
+            uni.$on('refresh', (data) => {
+                // 重新请求数据
+                this.init();
+            });
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
+        },
+
+        methods: {
+            init() {
+                var user = app.globalData.get_user_info(this, "init");
+                if (user != false) {
+                    // 获取数据
+                    this.setData({
+                        data_page: 1,
+                    });
+                    this.get_data_list(1);
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
+
+            // 获取数据
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
+                    }
+                }
+
+                // 是否加载中
+                if (this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1,
+                });
+
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url("index", "visit", "distribution"),
+                    method: "POST",
+                    data: {
+                        page: this.data_page
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            if (res.data.data.data.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = res.data.data.data;
+                                } else {
+                                    var temp_data_list = this.data_list || [];
+                                    var temp_data = res.data.data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data_list,
+                                    data_total: res.data.data.total,
+                                    data_page_total: res.data.data.page_total,
+                                    data_list_loding_status: 3,
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0,
+                                });
+
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_list: [],
+                                    data_bottom_line_status: false,
+                                    data_is_loading: 0,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list: [],
-                                data_bottom_line_status: false,
                                 data_is_loading: 0,
                             });
+                            if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
                         }
-                    } else {
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 0,
+                            data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_is_loading: 0,
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
-        // 滚动加载
-        scroll_lower(e) {
-            this.get_data_list();
-        },
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
+            },
 
-        // 图片预览
-        images_event(e) {
-            var index = e.currentTarget.dataset.index;
-            var ix = e.currentTarget.dataset.ix;
-            uni.previewImage({
-                current: this.data_list[index]['images'][ix],
-                urls: this.data_list[index]['images'],
-            });
-        },
+            // 图片预览
+            images_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var ix = e.currentTarget.dataset.ix;
+                uni.previewImage({
+                    current: this.data_list[index]['images'][ix],
+                    urls: this.data_list[index]['images'],
+                });
+            },
 
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        },
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
 
-        // 删除事件
-        delete_event(e) {
-            var index = e.currentTarget.dataset.index || 0;
-            var temp_data = this.data_list;
-            var data = temp_data[index] || null;
-            if (data == null) {
-                app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
-                return false;
-            }
-            uni.showModal({
-                title: this.$t('common.warm_tips'),
-                content: this.$t('recommend-list.recommend-list.54d418'),
-                confirmText: this.$t('common.confirm'),
-                cancelText: this.$t('recommend-list.recommend-list.w9460o'),
-                success: (result) => {
-                    if (result.confirm) {
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url("delete", "visit", "distribution"),
-                            method: "POST",
-                            data: { ids: data.id },
-                            dataType: "json",
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    temp_data.splice(index, 1);
-                                    this.setData({
-                                        data_list: temp_data
-                                    });
-
-                                    // 是否还存在数据
-                                    if(temp_data.length == 0) {
+            // 删除事件
+            delete_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var temp_data = this.data_list;
+                var data = temp_data[index] || null;
+                if (data == null) {
+                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
+                    return false;
+                }
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url("delete", "visit", "distribution"),
+                                method: "POST",
+                                data: { ids: data.id },
+                                dataType: "json",
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        temp_data.splice(index, 1);
                                         this.setData({
-                                            data_list_loding_status: 0,
-                                            data_bottom_line_status: false
+                                            data_list: temp_data
                                         });
+
+                                        // 是否还存在数据
+                                        if(temp_data.length == 0) {
+                                            this.setData({
+                                                data_list_loding_status: 0,
+                                                data_bottom_line_status: false
+                                            });
+                                        }
+                                        app.globalData.showToast(res.data.msg, "success");
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
                                     }
-                                    app.globalData.showToast(res.data.msg, "success");
-                                } else {
-                                    app.globalData.showToast(res.data.msg);
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
-                },
-            });
-        }
-    },
-};
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            }
+        },
+    };
 </script>
 <style>
     @import "./visit-list.css";

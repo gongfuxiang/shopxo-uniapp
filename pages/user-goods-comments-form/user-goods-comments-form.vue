@@ -34,10 +34,14 @@
             <!-- 提示信息 -->
             <component-no-data propStatus="0"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     const theme_color = app.globalData.get_theme_color();
     export default {
@@ -59,6 +63,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
         },
 

@@ -1,5 +1,5 @@
 <template>
-    <!-- 文章列表 -->
+    <!-- 文章列表  66rpx是自定义顶部导航栏的高度-->
     <uv-sticky :disabled="!propIsTop" :offset-top="propTop" zIndex="101" customNavHeight="66rpx">
         <view class="flex-row gap-10 jc-sb align-c" :style="propStyle">
             <view class="tabs flex-1 flex-width">

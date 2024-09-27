@@ -32,10 +32,14 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentPanelContent from "@/components/panel-content/panel-content";
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -55,11 +59,11 @@
             };
         },
         components: {
+            componentCommon,
             componentPanelContent,
             componentNoData,
             componentBottomLine
         },
-        props: {},
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);

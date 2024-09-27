@@ -34,14 +34,18 @@
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
         </view>
-        <view v-else>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data propStatus="0"></component-no-data>
-        </view>
+        </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentUpload from '@/components/upload/upload';
     const theme_color = app.globalData.get_theme_color();
@@ -64,6 +68,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentUpload,
         },

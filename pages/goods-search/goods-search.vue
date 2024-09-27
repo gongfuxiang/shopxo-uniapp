@@ -164,7 +164,7 @@
         <component-quick-nav></component-quick-nav>
 
         <!-- 公共 -->
-        <componentCommon></componentCommon>
+        <component-common></component-common>
     </view>
 </template>
 <script>
@@ -291,7 +291,6 @@
             componentSearch,
             componentBadge
         },
-        props: {},
 
         onLoad(params) {
             // 调用公共事件方法

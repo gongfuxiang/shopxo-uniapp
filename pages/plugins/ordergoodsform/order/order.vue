@@ -33,114 +33,118 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
-import componentBuyOrdergoodsform from '@/components/buy-ordergoodsform/buy-ordergoodsform';
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentBuyOrdergoodsform from '@/components/buy-ordergoodsform/buy-ordergoodsform';
 
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            common_static_url: common_static_url,
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            data: [],
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-        componentBuyOrdergoodsform
-    },
-    props: {},
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 数据加载
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        // 获取数据
-        init() {
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
-            this.setData({
+    var common_static_url = app.globalData.get_static_url("common");
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                common_static_url: common_static_url,
+                params: null,
                 data_list_loding_status: 1,
-            });
-            uni.request({
-                url: app.globalData.get_request_url("order", "goods", "ordergoodsform"),
-                method: "POST",
-                data: this.params,
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data || [];
-                        this.setData({
-                            data: data,
-                            data_list_loding_status: data.length == 0 ? 0 : 3,
-                        });
-                    } else {
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
-                        });
-                        if (app.globalData.is_login_check(res.data, this, "init")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
+                data_list_loding_msg: "",
+                data_bottom_line_status: false,
+                data: [],
+            };
+        },
+
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+            componentBuyOrdergoodsform
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
             });
         },
 
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        }
-    },
-};
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 数据加载
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            // 获取数据
+            init() {
+                uni.showLoading({
+                    title: this.$t('common.loading_in_text'),
+                });
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("order", "goods", "ordergoodsform"),
+                    method: "POST",
+                    data: this.params,
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data || [];
+                            this.setData({
+                                data: data,
+                                data_list_loding_status: data.length == 0 ? 0 : 3,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, "init")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_bottom_line_status: false,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
+        },
+    };
 </script>
 <style>
     @import "./order.css";

@@ -70,336 +70,340 @@
                 </view>
             </view>
         </component-popup>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
 const app = getApp();
-import componentPopup from "@/components/popup/popup";
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentPopup from "@/components/popup/popup";
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            data_list: [],
-            data_total: 0,
-            data_page_total: 0,
-            data_page: 1,
-            data_list_loding_status: 1,
-            data_bottom_line_status: false,
-            data_is_loading: 0,
-            params: null,
-            nav_status_list: [
-                { name: this.$t('common.all'), value: "-1" },
-                { name: this.$t('extraction.extraction.53h4fj'), value: "0" },
-                { name: this.$t('extraction.extraction.wq25fk'), value: "1" },
-            ],
-            nav_status_index: 0,
-            is_show_take_popup: false,
-            extraction_value: null,
-            extraction_code: "",
-            form_submit_disabled_status: false,
-            is_show_search_popup: false,
-            search_keywords_value: "",
-            content_list: [
-                { name: this.$t('order-detail.order-detail.36op8f'), field: "order_no" },
-                { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: "pay_price" },
-            ],
-        };
-    },
-
-    components: {
-        componentPopup,
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 是否指定状态
-        var nav_status_index = 0;
-        if (params.status != undefined) {
-            for (var i in this.nav_status_list) {
-                if (this.nav_status_list[i]["value"] == params.status) {
-                    nav_status_index = i;
-                    break;
-                }
-            }
-        }
-        this.setData({
-            params: params,
-            nav_status_index: nav_status_index,
-        });
-        this.init();
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.setData({
-            data_page: 1,
-        });
-        this.get_data_list(1);
-    },
-
-    methods: {
-        init() {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                this.get_data_list();
-            } else {
-                this.setData({
-                    data_list_loding_status: 0,
-                    data_bottom_line_status: false,
-                });
-            }
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_list: [],
+                data_total: 0,
+                data_page_total: 0,
+                data_page: 1,
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_is_loading: 0,
+                params: null,
+                nav_status_list: [
+                    { name: this.$t('common.all'), value: "-1" },
+                    { name: this.$t('extraction.extraction.53h4fj'), value: "0" },
+                    { name: this.$t('extraction.extraction.wq25fk'), value: "1" },
+                ],
+                nav_status_index: 0,
+                is_show_take_popup: false,
+                extraction_value: null,
+                extraction_code: "",
+                form_submit_disabled_status: false,
+                is_show_search_popup: false,
+                search_keywords_value: "",
+                content_list: [
+                    { name: this.$t('order-detail.order-detail.36op8f'), field: "order_no" },
+                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: "pay_price" },
+                ],
+            };
         },
 
-        // 获取数据
-        get_data_list(is_mandatory) {
-            // 分页是否还有数据
-            if ((is_mandatory || 0) == 0) {
-                if (this.data_bottom_line_status == true) {
-                    uni.stopPullDownRefresh();
-                    return false;
+        components: {
+            componentCommon,
+            componentPopup,
+            componentNoData,
+            componentBottomLine,
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 是否指定状态
+            var nav_status_index = 0;
+            if (params.status != undefined) {
+                for (var i in this.nav_status_list) {
+                    if (this.nav_status_list[i]["value"] == params.status) {
+                        nav_status_index = i;
+                        break;
+                    }
                 }
             }
-
-            // 是否加载中
-            if (this.data_is_loading == 1) {
-                return false;
-            }
             this.setData({
-                data_is_loading: 1,
-                data_list_loding_status: 1,
+                params: params,
+                nav_status_index: nav_status_index,
             });
+            this.init();
+        },
 
-            // 加载loding
-            if(this.data_page > 1) {
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
-            }
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
 
-            // 参数
-            var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
+        },
+
+        methods: {
+            init() {
+                var user = app.globalData.get_user_info(this, "init");
+                if (user != false) {
+                    this.get_data_list();
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
 
             // 获取数据
-            uni.request({
-                url: app.globalData.get_request_url("order", "extraction", "distribution"),
-                method: "POST",
-                data: {
-                    page: this.data_page,
-                    status: status || 0,
-                    keywords: this.search_keywords_value || "",
-                },
-                dataType: "json",
-                success: (res) => {
-                    if(this.data_page > 1) {
-                        uni.hideLoading();
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
                     }
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        if (res.data.data.data.length > 0) {
-                            if (this.data_page <= 1) {
-                                var temp_data_list = res.data.data.data;
-                            } else {
-                                var temp_data_list = this.data_list || [];
-                                var temp_data = res.data.data.data;
-                                for (var i in temp_data) {
-                                    temp_data_list.push(temp_data[i]);
-                                }
-                            }
-                            this.setData({
-                                data_list: temp_data_list,
-                                data_total: res.data.data.total,
-                                data_page_total: res.data.data.page_total,
-                                data_list_loding_status: 3,
-                                data_page: this.data_page + 1,
-                                data_is_loading: 0,
-                            });
+                }
 
-                            // 是否还有数据
-                            this.setData({
-                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
-                            });
+                // 是否加载中
+                if (this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1,
+                });
+
+                // 加载loding
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
+
+                // 参数
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
+
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url("order", "extraction", "distribution"),
+                    method: "POST",
+                    data: {
+                        page: this.data_page,
+                        status: status || 0,
+                        keywords: this.search_keywords_value || "",
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            if (res.data.data.data.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = res.data.data.data;
+                                } else {
+                                    var temp_data_list = this.data_list || [];
+                                    var temp_data = res.data.data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data_list,
+                                    data_total: res.data.data.total,
+                                    data_page_total: res.data.data.page_total,
+                                    data_list_loding_status: 3,
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0,
+                                });
+
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_list: [],
+                                    data_bottom_line_status: false,
+                                    data_is_loading: 0,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list: [],
-                                data_bottom_line_status: false,
                                 data_is_loading: 0,
                             });
+                            if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
                         }
-                    } else {
+                    },
+                    fail: () => {
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
+                        uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 0,
+                            data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
+            },
+
+            // 导航事件
+            nav_event(e) {
+                this.setData({
+                    nav_status_index: e.currentTarget.dataset.index || 0,
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
+                });
+                this.get_data_list(1);
+            },
+
+            // 取件码弹层-开启
+            list_submit_take_event(e) {
+                this.setData({
+                    is_show_take_popup: true,
+                    extraction_code: "",
+                    extraction_value: {
+                        index: e.currentTarget.dataset.index,
+                        oid: e.currentTarget.dataset.oid,
+                        uid: e.currentTarget.dataset.uid,
+                    },
+                });
+            },
+
+            // 取件码弹层-关闭
+            take_popup_event_close() {
+                this.setData({
+                    is_show_take_popup: false,
+                });
+            },
+
+            // 取件码输入事件
+            extraction_code_input_event(e) {
+                this.setData({
+                    extraction_code: e.detail.value || "",
+                });
+            },
+
+            // 取件提交
+            form_submit_take_event(e) {
+                // 参数
+                if ((this.extraction_code || null) == null) {
+                    app.globalData.showToast(this.$t('extraction-order.extraction-order.znufs8'));
+                    return false;
+                }
+                if ((this.extraction_value || null) == null) {
+                    app.globalData.showToast(this.$t('extraction-order.extraction-order.hbj4y7'));
+                    return false;
+                }
+
+                // 提交表单
+                var data = {
+                    id: this.extraction_value.oid,
+                    user_id: this.extraction_value.uid,
+                    extraction_code: this.extraction_code,
+                };
+                this.setData({
+                    form_submit_disabled_status: true,
+                });
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("take", "extraction", "distribution"),
+                    method: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: (res) => {
+                        this.setData({
+                            form_submit_disabled_status: false,
+                        });
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var temp_data_list = this.data_list;
+                            var index = this.extraction_value.index;
+                            temp_data_list[index]["status"] = 1;
+                            temp_data_list[index]["status_name"] = this.$t('extraction.extraction.wq25fk');
+                            this.setData({
+                                is_show_take_popup: false,
+                                data_list: temp_data_list,
+                            });
+                            app.globalData.showToast(res.data.msg, "success");
+                        } else {
                             app.globalData.showToast(res.data.msg);
                         }
-                    }
-                },
-                fail: () => {
-                    if(this.data_page > 1) {
-                        uni.hideLoading();
-                    }
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_is_loading: 0,
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
-
-        // 滚动加载
-        scroll_lower(e) {
-            this.get_data_list();
-        },
-
-        // 导航事件
-        nav_event(e) {
-            this.setData({
-                nav_status_index: e.currentTarget.dataset.index || 0,
-                data_page: 1,
-                data_list: [],
-                data_list_loding_status: 1,
-                data_bottom_line_status: false
-            });
-            this.get_data_list(1);
-        },
-
-        // 取件码弹层-开启
-        list_submit_take_event(e) {
-            this.setData({
-                is_show_take_popup: true,
-                extraction_code: "",
-                extraction_value: {
-                    index: e.currentTarget.dataset.index,
-                    oid: e.currentTarget.dataset.oid,
-                    uid: e.currentTarget.dataset.uid,
-                },
-            });
-        },
-
-        // 取件码弹层-关闭
-        take_popup_event_close() {
-            this.setData({
-                is_show_take_popup: false,
-            });
-        },
-
-        // 取件码输入事件
-        extraction_code_input_event(e) {
-            this.setData({
-                extraction_code: e.detail.value || "",
-            });
-        },
-
-        // 取件提交
-        form_submit_take_event(e) {
-            // 参数
-            if ((this.extraction_code || null) == null) {
-                app.globalData.showToast(this.$t('extraction-order.extraction-order.znufs8'));
-                return false;
-            }
-            if ((this.extraction_value || null) == null) {
-                app.globalData.showToast(this.$t('extraction-order.extraction-order.hbj4y7'));
-                return false;
-            }
-
-            // 提交表单
-            var data = {
-                id: this.extraction_value.oid,
-                user_id: this.extraction_value.uid,
-                extraction_code: this.extraction_code,
-            };
-            this.setData({
-                form_submit_disabled_status: true,
-            });
-            uni.showLoading({
-                title: this.$t('common.processing_in_text'),
-            });
-            uni.request({
-                url: app.globalData.get_request_url("take", "extraction", "distribution"),
-                method: "POST",
-                data: data,
-                dataType: "json",
-                success: (res) => {
-                    this.setData({
-                        form_submit_disabled_status: false,
-                    });
-                    uni.hideLoading();
-                    if (res.data.code == 0) {
-                        var temp_data_list = this.data_list;
-                        var index = this.extraction_value.index;
-                        temp_data_list[index]["status"] = 1;
-                        temp_data_list[index]["status_name"] = this.$t('extraction.extraction.wq25fk');
+                    },
+                    fail: () => {
                         this.setData({
-                            is_show_take_popup: false,
-                            data_list: temp_data_list,
+                            form_submit_disabled_status: false,
                         });
-                        app.globalData.showToast(res.data.msg, "success");
-                    } else {
-                        app.globalData.showToast(res.data.msg);
-                    }
-                },
-                fail: () => {
-                    this.setData({
-                        form_submit_disabled_status: false,
-                    });
-                    uni.hideLoading();
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
-        },
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
-        // 搜索弹层-开启
-        drag_event(e) {
-            this.setData({
-                is_show_search_popup: true,
-            });
-        },
+            // 搜索弹层-开启
+            drag_event(e) {
+                this.setData({
+                    is_show_search_popup: true,
+                });
+            },
 
-        // 搜索弹层-关闭
-        search_popup_event_close() {
-            this.setData({
-                is_show_search_popup: false,
-            });
-        },
+            // 搜索弹层-关闭
+            search_popup_event_close() {
+                this.setData({
+                    is_show_search_popup: false,
+                });
+            },
 
-        // 搜索关键字输入事件
-        search_input_keywords_event(e) {
-            this.setData({
-                search_keywords_value: e.detail.value || "",
-            });
-        },
+            // 搜索关键字输入事件
+            search_input_keywords_event(e) {
+                this.setData({
+                    search_keywords_value: e.detail.value || "",
+                });
+            },
 
-        // 搜索确认事件
-        search_submit_event(e) {
-            this.setData({
-                is_show_search_popup: false,
-                data_page: 1,
-            });
-            this.get_data_list(1);
+            // 搜索确认事件
+            search_submit_event(e) {
+                this.setData({
+                    is_show_search_popup: false,
+                    data_page: 1,
+                });
+                this.get_data_list(1);
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./extraction-order.css";
+    @import "./extraction-order.css";
 </style>

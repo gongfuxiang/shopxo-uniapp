@@ -121,10 +121,14 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
     import componentNoData from '@/components/no-data/no-data';
@@ -159,6 +163,7 @@
             };
         },
         components: {
+            componentCommon,
             componentPopup,
             componentUpload,
             componentNoData,

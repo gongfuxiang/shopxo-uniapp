@@ -48,11 +48,15 @@
 
         <!-- 规格选择 -->
         <component-goods-spec-choice ref="goods_spec_choice" v-on:specConfirmEvent="spec_confirm_event"></component-goods-spec-choice>
+
+        <!-- 公共 -->
+        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
     import componentSharePopup from '@/components/share-popup/share-popup';
@@ -72,6 +76,7 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentGoodsSpecChoice,
             componentSharePopup
