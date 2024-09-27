@@ -20,8 +20,8 @@
                         <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyGoodsTabs>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyGoodsTabs>
 
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
@@ -165,6 +165,7 @@
                 temp_header_top: '0px',
                 is_header_top: false,
                 temp_is_header_top: false,
+                scroll_top: 0,
                 // 选项卡高度
                 tabs_height: 0,
 
@@ -295,7 +296,6 @@
             },
             // 选项卡高度
             tabs_height_event(height) {
-                console.log(height);
                 this.setData({
                     tabs_height: height,
                 });
@@ -408,6 +408,9 @@
                 });
             },
             on_scroll_event(e) {
+                this.setData({
+                    scroll_top: e.detail.scrollTop,
+                });
                 // 判断顶部导航是否置顶
                 if (!this.is_header_top) {
                     if (e.detail.scrollTop >= this.sticky_top + 33) {
@@ -419,7 +422,7 @@
                         });
                         // #endif
                     } else {
-                        // #ifdef H5 || MP-TOUTIAO
+                        // #ifdef H5 || MP-TOUTIAO,
                         this.setData({
                             temp_header_top: this.header_top,
                             temp_sticky_top: this.sticky_top,
