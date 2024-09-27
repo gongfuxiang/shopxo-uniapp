@@ -16,7 +16,7 @@
                     <view class="recharge-content bg-white spacing-mt">
                         <block v-if="preset_data.length > 0">
                             <view class="padding-horizontal-sm spacing-mb">{{$t('recharge.recharge.60k2v3')}}</view>
-                            <view class="flex-row flex-warp tc spacing-mb">
+                            <view class="flex-row flex-wrap tc spacing-mb">
                                 <view v-for="(item, index) in preset_data" :key="index" class="recharge-price-list" :data-index="index" :data-value="item.value" @tap="change_price_event">
                                     <view class="recharge-price-content border-radius-main pr" :class="select_index === index ? 'active' : ''">
                                         <view v-if="item.tips" class="tips cr-white dis-inline-block pa left-0 text-size-xss">{{ item.tips }}</view>

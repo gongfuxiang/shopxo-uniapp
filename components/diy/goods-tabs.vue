@@ -1,6 +1,6 @@
 <template>
-    <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="goods-tabs ou" :style="style_container">
+        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
             <componentGoodsList v-if="hackReset" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
@@ -36,6 +36,10 @@
                 type: String,
                 default: '66rpx',
             },
+            propScrollTop: {
+                type: Number,
+                default: 0,
+            },
         },
         data() {
             return {
@@ -44,10 +48,24 @@
                 hackReset: true,
                 // 是否滑动置顶
                 top_up: '0',
+                tabs_top: 0,
+                tabs_background: 'transparent',
             };
+        },
+        watch: {
+            propScrollTop(newVal) {
+                if (newVal >= this.tabs_top) {
+                    this.tabs_background = 'rgba(255,255,255,1)';
+                } else {
+                    this.tabs_background = 'transparent';
+                }
+            },
         },
         created() {
             this.init();
+        },
+        mounted() {
+            this.getTop();
         },
         methods: {
             init() {
@@ -102,6 +120,21 @@
                         hackReset: true,
                     });
                 });
+            },
+            // 获取商品距离顶部的距离
+            getTop() {
+                const query = uni.createSelectorQuery().in(this);
+                query
+                    .select('.goods-tabs')
+                    .boundingClientRect((res) => {
+                        if ((res || null) != null) {
+                            this.setData({
+                                tabs_top: res.top,
+                            });
+                        }
+                        console.log('goods', res);
+                    })
+                    .exec();
             },
         },
     };

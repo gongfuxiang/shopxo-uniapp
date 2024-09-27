@@ -454,7 +454,7 @@
                 if (goods['user_cart_count'] > 99) {
                     goods['user_cart_count'] = '99+';
                 }
-                if (this.theme == '5') {
+                if (this.theme != '5') {
                     new_data[index] = goods;
                     this.setData({
                         list: new_data,

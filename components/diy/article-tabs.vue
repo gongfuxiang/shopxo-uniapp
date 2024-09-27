@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
-    <view class="ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="article-tabs ou" :style="style_container">
+        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
             <componentDiyArticleList v-if="hackReset" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
@@ -31,6 +31,10 @@
                 type: String,
                 default: '66rpx',
             },
+            propScrollTop: {
+                type: Number,
+                default: 0,
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -45,10 +49,24 @@
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_style: '',
+                tabs_top: 0,
+                tabs_background: 'transparent',
             };
+        },
+        watch: {
+            propScrollTop(newVal) {
+                if (newVal >= this.tabs_top) {
+                    this.tabs_background = 'rgba(255,255,255,1)';
+                } else {
+                    this.tabs_background = 'transparent';
+                }
+            },
         },
         created() {
             this.init();
+        },
+        mounted() {
+            this.getTop();
         },
         methods: {
             init() {
@@ -110,6 +128,20 @@
                         hackReset: true,
                     });
                 });
+            }, // 获取商品距离顶部的距离
+            getTop() {
+                const query = uni.createSelectorQuery().in(this);
+                query
+                    .select('.article-tabs')
+                    .boundingClientRect((res) => {
+                        if ((res || null) != null) {
+                            this.setData({
+                                tabs_top: res.top,
+                            });
+                            console.log('article', res);
+                        }
+                    })
+                    .exec();
             },
         },
     };

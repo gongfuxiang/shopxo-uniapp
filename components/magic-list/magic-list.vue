@@ -4,7 +4,7 @@
             <view v-for="(item, index) in data_goods_list" :key="index" class="plugins-magic-content border-radius-main oh spacing-mb">
                 <view v-if="(item.data || null) != null && item.data.length > 0" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : (((item.is_text_white || 0) == 1) ? 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 80%);' : 'background: #fff;')">
                     <!-- 上下滚动 -->
-                    <view v-if="item.show_style == 0" :class="'hot-list flex-row flex-warp padding-vertical-main '+(((item.is_text_white || 0) == 1) ? 'is-text-white' : '')">
+                    <view v-if="item.show_style == 0" :class="'hot-list flex-row flex-wrap padding-vertical-main '+(((item.is_text_white || 0) == 1) ? 'is-text-white' : '')">
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <block v-if="(items.data || null) != null && items.data.length > 0">
                                 <view :class="'group-item '+(item.data.length%2 != 0 && item.data.length-1 === indexs ? 'wh-auto' : 'flex-width-half')">
