@@ -32,16 +32,16 @@
         </view>
 
         <!-- 底部操作 -->
-        <view class="bottom-fixed btn-bottom bg-white">
+        <view class="bottom-fixed btn-bottom bg-white" :style="bottom_fixed_style">
             <view class="oh bottom-line-exclude">
                 <block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
                     <view class="submit-list flex-row jc-sb align-c">
-                        <button class="cr-white round text-size" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
-                        <button class="br-main cr-main bg-white round text-size" type="default" hover-class="none" @tap="choose_system_address_event">{{$t('user-address.user-address.1rwt3l')}}</button>
+                        <button class="btn cr-white round text-size" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
+                        <button class="btn br-main cr-main bg-white round text-size" type="default" hover-class="none" @tap="choose_system_address_event">{{$t('user-address.user-address.1rwt3l')}}</button>
                     </view>
                 </block>
                 <block v-else>
-                    <button class="cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
+                    <button class="btn cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
                 </block>
             </view>
         </view>
@@ -58,7 +58,6 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     const theme_color = app.globalData.get_theme_color();
     const theme_color_light = app.globalData.get_theme_color(null, true);
-
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
@@ -68,6 +67,7 @@
                 theme_color_light: theme_color_light,
                 btn_bg_color: 'background:linear-gradient(107deg, ' + theme_color_light + ' 0%, ' + theme_color + ' 100%)',
                 common_static_url: common_static_url,
+                bottom_fixed_style: '',
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 common_user_address_platform_import_list: [],

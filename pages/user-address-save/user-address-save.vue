@@ -38,8 +38,8 @@
                                                 <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
-                                                <input type="text" :value="address_data.address_last_code || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
-                                                <button type="default" size="mini" class="bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.user-address-save.mb7cjx')}}</button>
+                                                <input type="text" :value="address_data.address_last_code || ''" maxlength="30" placeholder-class="cr-grey-9" class="code-input cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
+                                                <button type="default" size="mini" class="btn bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.user-address-save.mb7cjx')}}</button>
                                             </view>
                                         </view>
                                     </block>
@@ -62,8 +62,8 @@
                                     <view class="bg-base border-radius-main padding-main oh">
                                         <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" :placeholder="$t('user-address-save.user-address-save.b32r6v')" placeholder-class="cr-grey" />
                                         <view class="padding-top-sm tr" :class="identfication_show ? '' : 'dis-none'">
-                                            <button type="default" size="mini" class="round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">{{$t('goods-search.goods-search.pxk051')}}</button>
-                                            <button type="default" size="mini" class="round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">{{$t('user-address-save.user-address-save.s3o1p5')}}</button>
+                                            <button type="default" size="mini" class="btn round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">{{$t('goods-search.goods-search.pxk051')}}</button>
+                                            <button type="default" size="mini" class="btn round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">{{$t('user-address-save.user-address-save.s3o1p5')}}</button>
                                         </view>
                                     </view>
                                 </view>
@@ -85,14 +85,14 @@
                                     </view>
                                     <view class="padding-top-lg label-edit-right">
                                         <view v-if="alias_eidt_bool" class="flex-row align-c alias-add pr">
-                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.l6vjlm')" />
-                                            <button type="default" size="mini" class="round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">{{$t('index.index.7w75zb')}}</button>
+                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="input-alias cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.l6vjlm')" />
+                                            <button type="default" size="mini" class="btn round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">{{$t('index.index.7w75zb')}}</button>
                                         </view>
                                         <view v-else>
                                             <view v-if="alias_eidt_text">
                                                 <view class="flex-row align-c alias-edit">
-                                                    <button type="default" size="mini" class="text-size-xs" :class="alias_eidt_text === (address_data.alias || '') ? 'bg-main cr-white br-main' : 'bg-white cr-black br-grey-d'" @tap="alias_checked_change">{{ alias_eidt_text }}</button>
-                                                    <button type="default" size="mini" class="bg-main-pair cr-white br-main-pair text-size-xs" @tap="alias_edit_submit_event">{{$t('common.edit')}}</button>
+                                                    <button type="default" size="mini" class="btn text-size-xs" :class="alias_eidt_text === (address_data.alias || '') ? 'bg-main cr-white br-main' : 'bg-white cr-black br-grey-d'" @tap="alias_checked_change">{{ alias_eidt_text }}</button>
+                                                    <button type="default" size="mini" class="btn bg-main-pair cr-white br-main-pair text-size-xs" @tap="alias_edit_submit_event">{{$t('common.edit')}}</button>
                                                 </view>
                                             </view>
                                             <view v-else class="alias-btn bg-white cr-black br-grey-d" @tap="alias_add">
@@ -130,13 +130,13 @@
                                     <view v-if="(idcard_images_data.idcard_front || null) != null" class="pa top-0 right-0 z-i padding-right-main" @tap="upload_delete_event" data-value="idcard_front">
                                         <iconfont name="icon-bjdz-guanbi" size="28rpx" color="cr-grey-d"></iconfont>
                                     </view>
-                                    <image class="wh-auto" :src="(idcard_images_data.idcard_front || null) != null ? idcard_images_data.idcard_front : common_static_url + 'idcard-front.jpg'" data-value="idcard_front" mode="widthFix" @tap="file_upload_event"></image>
+                                    <image class="image wh-auto" :src="(idcard_images_data.idcard_front || null) != null ? idcard_images_data.idcard_front : common_static_url + 'idcard-front.jpg'" data-value="idcard_front" mode="widthFix" @tap="file_upload_event"></image>
                                 </view>
                                 <view class="flex-width-half oh padding-left-main pr">
                                     <view v-if="(idcard_images_data.idcard_back || null) != null" class="pa top-0 right-0 z-i" @tap="upload_delete_event" data-value="idcard_back">
                                         <iconfont name="icon-bjdz-guanbi" size="28rpx" color="cr-grey-d"></iconfont>
                                     </view>
-                                    <image class="wh-auto" :src="(idcard_images_data.idcard_back || null) != null ? idcard_images_data.idcard_back : common_static_url + 'idcard-back.jpg'" data-value="idcard_back" mode="widthFix" @tap="file_upload_event"></image>
+                                    <image class="image wh-auto" :src="(idcard_images_data.idcard_back || null) != null ? idcard_images_data.idcard_back : common_static_url + 'idcard-back.jpg'" data-value="idcard_back" mode="widthFix" @tap="file_upload_event"></image>
                                 </view>
                             </view>
                         </view>
@@ -144,8 +144,8 @@
 
                     <view class="padding-vertical-main margin-top-sm spacing-mb">
                         <view class="bottom-line-exclude oh">
-                            <button class="cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status" :style="btn_bg_color">{{$t('common.save')}}</button>
-                            <button v-if="params && (params.id || null) !== null && params.id !== '0'" class="round bg-white cr-main br-main spacing-mt" type="default" @tap="address_delete_event" hover-class="none">{{$t('common.del')}}</button>
+                            <button class="btn cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status" :style="btn_bg_color">{{$t('common.save')}}</button>
+                            <button v-if="params && (params.id || null) !== null && params.id !== '0'" class="btn round bg-white cr-main br-main spacing-mt" type="default" @tap="address_delete_event" hover-class="none">{{$t('common.del')}}</button>
                         </view>
                     </view>
                 </view>

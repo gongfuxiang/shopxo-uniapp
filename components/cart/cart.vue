@@ -47,7 +47,7 @@
         </block>
         <block v-else>
             <!-- 购物车商品列表 -->
-            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - ' + window_top + ' - ' + window_bottom + (cart_type_value == 'realstore' ? ' - 140rpx' : '0rpx') + ' - ' + (status_bar_height + 5) + 'px);'">
+            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - ' + window_top + ' - ' + window_bottom + ' - '+(cart_type_value == 'realstore' ? '180rpx' : '0rpx') + ' - ' + (status_bar_height + 5) + 'px);'">
                 <view class="content">
                     <!-- 数据列表 -->
                     <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss ' + (propSourceType == 'page' ? 'bottom-line-exclude ' : '') + (cart_type_value == 'realstore' ? '' : 'padding-top-main')">
@@ -270,9 +270,6 @@
 
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
-
-                    <!-- 底部占位 -->
-                    <view v-if="(footer_seat_style || null) != null" :style="footer_seat_style"></view>
                 </view>
             </scroll-view>
         </block>
@@ -411,8 +408,7 @@
                 window_top: '100rpx',
                 // #endif
                 // 底部购买导航样式
-                cart_buy_nav_style: '',
-                footer_seat_style: ''
+                cart_buy_nav_style: ''
             };
         },
 
@@ -1311,8 +1307,7 @@
             page_style_handle() {
                 var value = (this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 0;
                 this.setData({
-                    cart_buy_nav_style: 'bottom:'+value+'rpx;',
-                    footer_seat_style: (value > 0) ? 'height:'+value+'rpx;' : '',
+                    cart_buy_nav_style: 'bottom:'+value+'rpx;'
                 });
             }
         },
@@ -1325,15 +1320,29 @@
     .scroll-box {
         height: 100vh;
     }
-    .scroll-box .content,
-    .scroll-box.realstore .content {
-        padding-bottom: 40rpx;
+    .scroll-box .content {
+        padding-bottom: 160rpx;
+        /* #ifdef H5 */
+        padding-bottom: 60rpx;
+        /* #endif */
     }
     .scroll-box.cart .content {
-        padding-bottom: 260rpx;
+        padding-bottom: 300rpx;
+        /* #ifdef H5 */
+        padding-bottom: 200rpx;
+        /* #endif */
+    }
+    .scroll-box.realstore .content {
+        padding-bottom: 120rpx;
+        /* #ifdef H5 */
+        padding-bottom: 40rpx;
+        /* #endif */
     }
     .scroll-box.cart.realstore .content {
-        padding-bottom: 120rpx;
+        padding-bottom: 260rpx;
+        /* #ifdef H5 */
+        padding-bottom: 160rpx;
+        /* #endif */
     }
     .cart-goods-title {
         line-height: 44rpx;

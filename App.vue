@@ -2064,15 +2064,19 @@
             },
 
             // 调用页面方法
-            get_page_object(page) {
-                var result = [];
+            get_page_object(page = null) {
                 var pages = getCurrentPages();
-                for (var i = 0; i < pages.length; i++) {
-                    if (pages[i]['route'] == page) {
-                        result.push(pages[i]);
+                if(page == null) {
+                    return pages[pages.length - 1];
+                } else {
+                    var result = [];
+                    for (var i = 0; i < pages.length; i++) {
+                        if (pages[i]['route'] == page) {
+                            result.push(pages[i]);
+                        }
                     }
+                    return result;
                 }
-                return result;
             },
 
             // 当前页面地址
@@ -2115,8 +2119,26 @@
                 if ((page || null) == null) {
                     return '';
                 }
-                var full_path = page.$page.fullPath;
-                return full_path.substr(0, 1) == '/' ? full_path.substr(1) : full_path;
+
+                // 直接获取页面全的路径地址
+                if((page.$page || null) != null && (page.$page.fullPath || null) != null) {
+                    var path = page.$page.fullPath;
+                    return path.substr(0, 1) == '/' ? path.substr(1) : path;
+                }
+
+                // 拼接地址和参数
+                var route = page.route;
+                var options = page.options || {};
+                var query = '';
+                if (JSON.stringify(options) != '{}') {
+                    for (var i in options) {
+                        query += '&' + i + '=' + options[i];
+                    }
+                }
+                if ((query || null) != null) {
+                    route += '?' + query.substr(1);
+                }
+                return route;
             },
 
             // 进入客服
@@ -2858,6 +2880,21 @@
                 });
             },
 
+            // 底部浮动按钮样式处理
+            bottom_fixed_style_handle() {
+                var obj = this.get_page_object();
+                if(obj != null) {
+                    // undefined值表示未定义则不处理
+                    var temp = obj.bottom_fixed_style == undefined ? ((obj.data || null) == null ? undefined : obj.data.bottom_fixed_style) : '';
+                    if(temp !== undefined && this.is_tabbar_pages()) {
+                        obj.$vm.setData(
+                        {
+                            bottom_fixed_style: 'bottom:'+(this.app_tabbar_height_value()*2)+'rpx'
+                        });
+                    }
+                }
+            },
+
             // 页面加载事件处理
             page_event_onload_handle(params) {
                 // 获取用户当前位置
@@ -2866,6 +2903,9 @@
 
             // 页面展示事件处理
             page_event_onshow_handle() {
+                // 底部浮动按钮样式处理
+                this.bottom_fixed_style_handle();
+
                 // 页面顶部导航标题设置
                 this.set_pages_navigation_bar_title();
             },

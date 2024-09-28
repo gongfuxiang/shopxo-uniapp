@@ -17,11 +17,11 @@
 /**
  * 底部按钮 
  */
-.btn-bottom button {
+.btn-bottom .btn {
     height: 88rpx;
     line-height: 88rpx;
 }
 
-.submit-list button {
+.submit-list .btn {
     width: calc(50% - 10rpx);
 }

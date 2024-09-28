@@ -170,8 +170,8 @@
                 top: top_h,
                 height_dec: top_h,
                 // #ifdef H5 || APP
-                top: 250,
-                height_dec: this.propIsBar ? 350 : 250,
+                top: 210,
+                height_dec: this.propIsBar ? 310 : 210,
                 // #endif
                 // 是否灰度
                 common_ent: this.propIsGrayscale ? 'grayscale' : ''

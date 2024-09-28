@@ -88,8 +88,8 @@
             this.top = value;
             this.height_dec = value;
             // #ifdef H5 || APP
-            this.top = 180;
-            this.height_dec = this.propIsBar ? 280 : 180;
+            this.top = 140;
+            this.height_dec = this.propIsBar ? 280 : 140;
             // #endif
 
             // 非首次进入则重新初始化配置接口
