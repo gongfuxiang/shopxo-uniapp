@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表  66rpx是自定义顶部导航栏的高度-->
-    <uv-sticky :disabled="!propIsTop" :offset-top="propTop" :zIndex="propZIndex" :customNavHeight="propCustomNavHeight" :bgColor="propTabsBackground" :style="propStyle">
-        <view class="flex-row gap-10 jc-sb align-c">
+    <uv-sticky :disabled="!propIsTop" :offset-top="propTop" :zIndex="propZIndex" :customNavHeight="propCustomNavHeight">
+        <view class="flex-row gap-10 jc-sb align-c" :style="propStyle + 'background:' + propTabsBackground">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'rpx;'">
