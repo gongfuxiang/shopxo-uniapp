@@ -14,8 +14,6 @@
 }
 .home-top-nav-location {
     max-width: calc(100% - 200rpx);
-    height: 56rpx;
-    line-height: 56rpx;
 }
 .home-top-nav-logo {
     text-align: left;

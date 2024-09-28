@@ -108,7 +108,7 @@
                 is_home_logo_use_text: 0,
 
                 // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
-                is_home_location_choice: 0,
+                is_home_location_choice: 1,
 
                 // 门店详情顶部导航返回按钮（0否, 1是）
                 is_realstore_top_nav_back: 1,
@@ -2583,6 +2583,10 @@
 
             // 扫码解析处理
             scan_handle() {
+                // #ifdef H5
+                this.showToast(i18n.t('common.not_supported_scan_tips'));
+                // #endif
+                // #ifndef H5
                 var self = this;
                 uni.scanCode({
                     success: function (res) {
@@ -2653,6 +2657,7 @@
                         }
                     },
                 });
+                // #endif
             },
 
             // 获取当前语言
@@ -2662,6 +2667,15 @@
 
             // 选择用户地理位置
             choose_user_location_event() {
+                // 存在数据则改变状态值
+                var key = this.data.cache_userlocation_key;
+                var result = uni.getStorageSync(key) || null;
+                if(result != null) {
+                    result['status'] = 2;
+                    uni.setStorageSync(key, result);
+                }
+
+                // 进入页面选择位置
                 uni.navigateTo({
                     url: '/pages/common/open-setting-location/open-setting-location',
                 });
@@ -2674,6 +2688,7 @@
 
             // 地址信息初始化
             choice_user_location_init() {
+                // status 0未选择，1已选择，2选择中，3选择失败
                 var result = uni.getStorageSync(this.data.cache_userlocation_key) || null;
                 var user_location = { status: 0 };
                 if (result != null) {
@@ -2684,11 +2699,11 @@
                             address: result.address || null,
                             lat: result.latitude || null,
                             lng: result.longitude || null,
-                            status: 1,
+                            status: result.status || 1,
                         },
                     };
                 }
-                user_location['text'] = user_location.status == 0 ? i18n.t('shopxo-uniapp.app.4v6q86') : (user_location.name || user_location.address || '');
+                user_location['text'] = user_location.name || user_location.address || i18n.t('shopxo-uniapp.app.4v6q86');
                 return user_location;
             },
 

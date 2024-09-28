@@ -72,7 +72,7 @@ uni-page-head {
 .uni-page-head-btn {
     position: fixed;
     left: auto;
-    bottom: 140rpx;
+    bottom: 180rpx;
     background: rgba(0, 0, 0, 0.6);
     box-shadow: 0 0 20rpx rgb(0 0 0 / 30%);
     margin: 0 0 0 20rpx;

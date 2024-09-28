@@ -63,7 +63,8 @@
 		"service_time": "服务时间",
 		"apply_time": "申请时间",
         "verification_text": "核销码",
-        "verification_message": "请输入核销码"
+        "verification_message": "请输入核销码",
+        "not_supported_scan_tips": "H5网页不支持扫码"
 	},
 	"pages": {
 		"goods-category": "商品分类",

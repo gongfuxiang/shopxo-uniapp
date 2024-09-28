@@ -103,7 +103,8 @@ export default {
             // 调用位置选择组件
             uni.chooseLocation({
                 success: (res) => {
-                    // 位置数据存储缓存中
+                    // 位置数据存储缓存中，改变状态值（成功）
+                    res['status'] = 1;
                     uni.setStorageSync(this.cache_key, res);
 
                     // 触发自定义事件并传递参数给上一页
@@ -117,6 +118,10 @@ export default {
                     // #endif
                 },
                 fail: (res) => {
+                    // 存在数据则改变状态值（失败）
+                    var result = {...(uni.getStorageSync(this.cache_key) || {}), ...{status: 3}};
+                    uni.setStorageSync(this.cache_key, result);
+
                     // 取消则自动返回、则显示错误
                     // error=11 支付宝取消、msg包含cancel则其他平台
                     var msg = res.errorMessage || res.chooseLocation || res.errMsg || this.$t('open-setting-location.open-setting-location.hwn386');
