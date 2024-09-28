@@ -473,12 +473,15 @@
                             </view>
                         </view>
                         <!-- 右侧主操作 -->
-                        <view v-if="(buy_button.data || null) != null && buy_button.data.length > 0" :class="'btn-items flex-row jc-sa align-c flex-width-half goods-buy-nav-btn-number-' + (buy_button.count || 0)">
-                            <block v-for="(item, index) in buy_button.data" :key="index">
-                                <block v-if="(item.name || null) != null && (item.type || null) != null">
-                                    <button :class="'item fl cr-white text-size-md round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{ item.name }}</button>
+                        <view :class="'btn-items flex-row jc-sa align-c flex-width-half goods-buy-nav-btn-number-' + (buy_button.count || 0)">
+                            <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
+                                <block v-for="(item, index) in buy_button.data" :key="index">
+                                    <block v-if="(item.name || null) != null && (item.type || null) != null">
+                                        <button :class="'item fl cr-white text-size-md round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{ item.name }}</button>
+                                    </block>
                                 </block>
                             </block>
+                            <button v-else class="item fl round text-size-md cr-grey" type="default" hover-class="none" disabled>{{ buy_button.error }}</button>
                         </view>
                     </view>
                 </block>
