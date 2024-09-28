@@ -1,6 +1,6 @@
 <template>
     <!-- 文章列表  66rpx是自定义顶部导航栏的高度-->
-    <uv-sticky :disabled="!propIsTop" :offset-top="propTop" :zIndex="propZIndex" :customNavHeight="propCustomNavHeight">
+    <uv-sticky :disabled="!propIsTop" :offset-top="propTop" :zIndex="propZIndex" :customNavHeight="custom_nav_height">
         <view class="flex-row gap-10 jc-sb align-c" :style="propStyle + 'background:' + propTabsBackground">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
@@ -122,10 +122,18 @@
                 // #ifdef APP
                 tabs_top: 'calc(' + bar_height + 0 + 12 + 'px+ 66rpx);',
                 // #endif
+                custom_nav_height: '66rpx',
             };
         },
         mounted() {
             this.init();
+            this.$nextTick(() => {
+                // #ifdef H5 || MP-TOUTIAO
+                this.setData({
+                    custom_nav_height: this.propCustomNavHeight,
+                });
+                // #endif
+            });
         },
         methods: {
             isEmpty,

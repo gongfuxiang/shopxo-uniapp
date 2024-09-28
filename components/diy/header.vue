@@ -4,9 +4,9 @@
             <view class="header-content flex-row align-c">
                 <view class="model-top flex-1">
                     <view class="roll pr z-i">
-                        <view class="model-head pr padding-horizontal-sm flex-row align-c" :style="header_style">
-                            <view class="flex-row align-c jc-sb gap-16 wh-auto padding-horizontal-main pr">
-                                <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
+                        <view class="model-head pr flex-row align-c" :style="header_style">
+                            <view class="flex-row align-c jc-sb gap-16 wh-auto">
+                                <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16 padding-left-main" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                     <template v-if="['2', '3'].includes(form.content.theme)">
                                         <view class="logo-outer-style">
                                             <imageEmpty :propImageSrc="form.content.logo[0]" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
@@ -19,7 +19,7 @@
                                         </view>
                                     </template>
                                 </view>
-                                <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10">
+                                <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
                                     <view class="flex-row align-c gap-2" @tap="go_map_event">
                                         <iconfont name="icon-location" size="12" color="0"></iconfont>
                                         <text class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</text>
@@ -117,7 +117,7 @@
 
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 const custom = uni.getMenuButtonBoundingClientRect();
-                menuButtonInfo = `max-width:calc(100% - ${custom.width + 30}px);`;
+                menuButtonInfo = `max-width:calc(100% - ${custom.width + 10}px);`;
                 // #endif
                 this.setData({
                     form: this.propValue,
@@ -132,13 +132,13 @@
             },
             search_tap(value) {
                 this.setData({
-                    is_click: value
-                })
+                    is_click: value,
+                });
             },
             search_hot_close() {
                 this.setData({
-                    is_click: false
-                })
+                    is_click: false,
+                });
             },
             url_event(e) {
                 app.globalData.url_event(e);

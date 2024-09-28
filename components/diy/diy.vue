@@ -4,10 +4,10 @@
         <view class="pr header">
             <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
-        <view class="content flex-col" :style="'padding-top:' + temp_is_header_top ? temp_header_top : '0'">
+        <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
             <view v-for="(item, index) in tabs_data" :key="item.key">
-                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
             <template v-if="is_tabs_type">
                 <template v-if="diy_data.length > 0">
@@ -62,7 +62,7 @@
         <!-- 当前diy页面底部菜单（非公共底部菜单） -->
         <block v-if="is_show_footer == 1">
             <componentDiyFooter v-if="hack_reset" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
-            <view v-if="footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
+            <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
         </block>
 
         <!-- 底部卡槽 -->
@@ -115,7 +115,7 @@
             propDataId: {
                 type: [String, Number],
                 default: '',
-            }
+            },
         },
         components: {
             componentDiyHeader,
@@ -310,6 +310,7 @@
                 this.setData({
                     tabs_height: height,
                 });
+                console.log(this.temp_sticky_top, this.tabs_height);
             },
 
             // 滚动加载
@@ -430,7 +431,7 @@
                     if (e.detail.scrollTop >= this.sticky_top + 33) {
                         this.setData({
                             temp_sticky_top: 0,
-                            temp_header_top: this.tabs_height + 'px',
+                            temp_header_top: 0,
                             temp_is_header_top: true,
                         });
                     } else {
@@ -445,11 +446,11 @@
             },
 
             // 底部菜单高度
-            footer_height_value_event(value) {  
+            footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: (value*2)+20
+                    footer_height_value: value * 2 + 20,
                 });
-            }
+            },
         },
     };
 </script>

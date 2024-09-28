@@ -138,7 +138,6 @@
                             this.setData({
                                 tabs_top: res.top,
                             });
-                            console.log('article', res);
                         }
                     })
                     .exec();

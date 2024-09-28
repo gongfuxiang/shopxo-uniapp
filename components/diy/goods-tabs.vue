@@ -132,7 +132,6 @@
                                 tabs_top: res.top,
                             });
                         }
-                        console.log('goods', res);
                     })
                     .exec();
             },
