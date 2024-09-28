@@ -1,6 +1,6 @@
 <template>
     <view class="goods-tabs ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
             <componentGoodsList v-if="hackReset" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
@@ -9,7 +9,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, padding_computer, margin_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -33,8 +33,8 @@
                 default: 0,
             },
             propCustomNavHeight: {
-                type: String,
-                default: '66rpx',
+                type: Number,
+                default: 33,
             },
             propScrollTop: {
                 type: Number,
@@ -49,15 +49,28 @@
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_top: 0,
-                tabs_background: 'transparent',
+                tabs_background: 'background:transparent',
+                custom_nav_height: 33,
             };
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal >= this.tabs_top) {
-                    this.tabs_background = 'rgba(255,255,255,1)';
+                if (newVal + this.propTop + this.custom_nav_height >= this.tabs_top) {
+                    let new_style = this.propValue.style || {};
+                    let tabs_bg = new_style.common_style.color_list;
+                    let new_tabs_background = '';
+                    if (tabs_bg.length > 0 && tabs_bg[0].color !== '') {
+                        new_tabs_background = gradient_computer(new_style.common_style);
+                    }
+                    let new_tabs_background_img = background_computer(new_style.common_style);
+                    if (new_tabs_background_img.length > 0) {
+                        new_tabs_background_img += 'background-position: top left;';
+                    }
+                    this.setData({
+                        tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
+                    });
                 } else {
-                    this.tabs_background = 'transparent';
+                    this.tabs_background = 'background:transparent';
                 }
             },
         },
@@ -65,7 +78,18 @@
             this.init();
         },
         mounted() {
-            this.getTop();
+            this.$nextTick(() => {
+                const self = this;
+                setTimeout(() => {
+                    self.getTop();
+                });
+                // #ifdef H5 || MP-TOUTIAO
+                // 获取自定义导航栏高度
+                this.setData({
+                    custom_nav_height: this.propCustomNavHeight,
+                });
+                // #endif
+            });
         },
         methods: {
             init() {
@@ -132,7 +156,6 @@
                                 tabs_top: res.top,
                             });
                         }
-                        console.log('goods', res);
                     })
                     .exec();
             },

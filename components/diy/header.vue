@@ -1,40 +1,42 @@
 <template>
-    <view v-if="(propValue || null) !== null" class="header-container" :style="roll_style + position">
-        <view class="bg-white" :style="top_content_style">
-            <view class="header-content flex-row align-c">
-                <view class="model-top flex-1">
-                    <view class="roll pr z-i">
-                        <view class="model-head pr padding-horizontal-sm flex-row align-c" :style="header_style">
-                            <view class="flex-row align-c jc-sb gap-16 wh-auto padding-horizontal-main pr">
-                                <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
-                                    <template v-if="['2', '3'].includes(form.content.theme)">
-                                        <view class="logo-outer-style">
-                                            <imageEmpty :propImageSrc="form.content.logo[0]" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
-                                        </view>
-                                    </template>
-                                    <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
-                                    <template v-if="['3', '5'].includes(form.content.theme)">
-                                        <view class="flex-1">
-                                            <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
-                                        </view>
-                                    </template>
-                                </view>
-                                <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10">
-                                    <view class="flex-row align-c gap-2" @tap="go_map_event">
-                                        <iconfont name="icon-location" size="12" color="0"></iconfont>
-                                        <text class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</text>
-                                        <iconfont v-if="form.content.is_arrows_show == '1'" name="icon-arrow-right" size="24rpx" color="#000"></iconfont>
+    <view v-if="(propValue || null) !== null" class="header-container">
+        <view class="wh-auto header-z-3" :style="roll_style + position">
+            <view class="bg-white" :style="top_content_style">
+                <view class="header-content flex-row align-c">
+                    <view class="model-top flex-1">
+                        <view class="roll pr z-i">
+                            <view class="model-head pr flex-row align-c" :style="header_style">
+                                <view class="flex-row align-c jc-sb gap-16 wh-auto">
+                                    <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16 padding-left-main" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
+                                        <template v-if="['2', '3'].includes(form.content.theme)">
+                                            <view class="logo-outer-style">
+                                                <imageEmpty :propImageSrc="form.content.logo[0]" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
+                                            </view>
+                                        </template>
+                                        <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
+                                        <template v-if="['3', '5'].includes(form.content.theme)">
+                                            <view class="flex-1">
+                                                <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
+                                            </view>
+                                        </template>
                                     </view>
-                                    <template v-if="['5'].includes(form.content.theme)">
-                                        <view class="flex-1">
-                                            <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
+                                    <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
+                                        <view class="flex-row align-c gap-2" @tap="go_map_event">
+                                            <iconfont name="icon-location" size="12" color="0"></iconfont>
+                                            <text class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</text>
+                                            <iconfont v-if="form.content.is_arrows_show == '1'" name="icon-arrow-right" size="24rpx" color="#000"></iconfont>
                                         </view>
-                                    </template>
-                                </view>
-                                <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
-                                    <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
-                                        <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
-                                        <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
+                                        <template v-if="['5'].includes(form.content.theme)">
+                                            <view class="flex-1">
+                                                <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
+                                            </view>
+                                        </template>
+                                    </view>
+                                    <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
+                                        <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
+                                            <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
+                                            <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
                             </view>
@@ -42,8 +44,15 @@
                     </view>
                 </view>
             </view>
+            <hotWordList v-if="is_click" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
         </view>
-        <hotWordList v-if="is_click" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
+        <!-- #ifndef H5 || MP-TOUTIAO -->
+        <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
+            <view class="bg-white" :style="top_content_style">
+                <view style="height: 66rpx"></view>
+            </view>
+        </view>
+        <!-- #endif -->
     </view>
 </template>
 
@@ -89,6 +98,7 @@
                 // #ifdef APP
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:12px;',
                 // #endif
+                is_positon_realative: false,
             };
         },
         created() {
@@ -117,11 +127,12 @@
 
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 const custom = uni.getMenuButtonBoundingClientRect();
-                menuButtonInfo = `max-width:calc(100% - ${custom.width + 30}px);`;
+                menuButtonInfo = `max-width:calc(100% - ${custom.width + 10}px);`;
                 // #endif
                 this.setData({
                     form: this.propValue,
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : 'position:relative;',
+                    is_positon_realative: new_style.up_slide_display == '1' ? false : true,
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
                     header_style: menuButtonInfo,
@@ -132,13 +143,13 @@
             },
             search_tap(value) {
                 this.setData({
-                    is_click: value
-                })
+                    is_click: value,
+                });
             },
             search_hot_close() {
                 this.setData({
-                    is_click: false
-                })
+                    is_click: false,
+                });
             },
             url_event(e) {
                 app.globalData.url_event(e);
@@ -149,8 +160,12 @@
 
 <style lang="scss" scoped>
     .header-container {
-        z-index: 102;
+        position: relative;
+        z-index: 4;
         width: 100%;
+        .header-z-3 {
+            z-index: 3;
+        }
         .header-content {
             height: 66rpx;
         }
