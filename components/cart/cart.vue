@@ -1411,11 +1411,9 @@
     .cart-buy-nav {
         position: fixed;
         z-index: 1;
-        left: auto;
+        left: 20rpx;
         bottom: 20rpx;
-        margin-left: 20rpx;
         width: calc(100% - 40rpx);
-        max-width: calc(800px - 40rpx);
         box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
     }
     .cart-nav-base {

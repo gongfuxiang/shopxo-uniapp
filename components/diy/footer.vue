@@ -119,7 +119,7 @@
 </script>
 <style lang="scss" scoped>
     .footer-nav {
-        z-index: 9;
+        z-index: 102;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -130,7 +130,6 @@
         /* #endif */
         margin: 0 auto;
         background-color: transparent;
-        z-index: 102;
         .footer-nav-content {
             min-height: 140rpx;
             box-sizing: border-box;

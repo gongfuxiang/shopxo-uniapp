@@ -45,7 +45,6 @@ iframe,
 .quick-movable-container,
 .online-service-movable-container,
 .buy-nav,
-.cart-buy-nav,
 .plugins-realstore-cart-content {
     left: auto !important;
 }
@@ -56,6 +55,12 @@ iframe,
 .web-html-content iframe {
     width: 100% !important;
     max-height: 500rpx !important;
+}
+@media only screen and (min-width: 1600rpx) {
+    .cart-buy-nav {
+        left: calc(50% - 780rpx) !important;
+        width: 1560rpx !important;
+    }
 }
 
 /**

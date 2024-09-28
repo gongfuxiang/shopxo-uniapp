@@ -153,11 +153,11 @@
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :propIsShowAddressChoice="false" :propStatus="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
         </view>
 
         <!-- 位置选择 -->
-        <component-choice-location ref="choice_location" @onback="user_back_choice_location"></component-choice-location>
+        <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
 
         <!-- 公共 -->
         <component-common></component-common>
