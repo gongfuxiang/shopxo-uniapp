@@ -63,8 +63,12 @@
                     if (tabs_bg.length > 0 && tabs_bg[0].color !== '') {
                         new_tabs_background = gradient_computer(new_style.common_style);
                     }
+                    let new_tabs_background_img = background_computer(new_style.common_style);
+                    if (new_tabs_background_img.length > 0) {
+                        new_tabs_background_img += 'background-position: top left;';
+                    }
                     this.setData({
-                        tabs_background: background_computer(new_style.common_style) + (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff'),
+                        tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
                     });
                 } else {
                     this.tabs_background = 'background:transparent';
