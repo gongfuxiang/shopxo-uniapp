@@ -690,7 +690,7 @@
                     value = (this.is_base_mode_show_type == 0) ? 58 : 92;
                 }
                 // 内容高度
-                value += (this.client_type == 'h5') ? 370 : 358;
+                value += (this.client_type == 'h5') ? 370 : 328;
                 // 桌码
                 if(this.tablecode != null) {
                     value += 44;

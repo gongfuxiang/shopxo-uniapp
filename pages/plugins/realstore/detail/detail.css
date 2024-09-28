@@ -72,7 +72,7 @@ page {
 * 左侧导航
 */
 .left-content-actual {
-    padding-bottom: 120rpx;
+    padding-bottom: 160rpx;
 }
 .left-content {
     width: 186rpx;
@@ -92,10 +92,10 @@ page {
 *  右侧内容
 */
 .right-content-actual {
-    padding-bottom: calc(105rpx + env(safe-area-inset-bottom));
+    padding-bottom: calc(145rpx + env(safe-area-inset-bottom));
 }
 .right-content-actual.base-mode-goods {
-    padding-bottom: calc(126rpx + env(safe-area-inset-bottom));
+    padding-bottom: calc(166rpx + env(safe-area-inset-bottom));
 }
 .goods-list-top-nav {
     position: sticky;

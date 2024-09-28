@@ -98,7 +98,7 @@
                     // 底部菜单距离底部的安全距离，减去20、默认的安全距离太高了
                     var safe_area_insets_bottom = parseInt(uni.getSystemInfoSync().safeAreaInsets.bottom);
                     if(safe_area_insets_bottom > 0) {
-                        safe_area_insets_bottom -= 20;
+                        safe_area_insets_bottom -= 24;
                     }
                     footer_height += safe_area_insets_bottom;
 

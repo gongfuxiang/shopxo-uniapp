@@ -2889,7 +2889,7 @@
                     if(temp !== undefined && this.is_tabbar_pages()) {
                         obj.$vm.setData(
                         {
-                            bottom_fixed_style: 'bottom:'+this.app_tabbar_height_value()+'px'
+                            bottom_fixed_style: 'bottom:'+((this.app_tabbar_height_value()-8)*2)+'rpx'
                         });
                     }
                 }
