@@ -36,6 +36,7 @@
     .iconfont-container {
         display: flex;
         height: inherit;
+        justify-content: center;
     }
     .iconfont {
         display: flex;
