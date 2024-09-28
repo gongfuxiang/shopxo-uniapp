@@ -284,7 +284,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 <script>
@@ -397,6 +397,8 @@
                 is_realstore_top_nav_back : 0,
                 // #endif
                 is_realstore_top_search_scan: app.globalData.data.is_realstore_top_search_scan || 0,
+                // 底部菜单高度
+                footer_height_value: 0,
             };
         },
 
@@ -482,34 +484,21 @@
                             var data = res.data.data;
                             // 基础配置
                             var data_base = data.base || {};
-                            // 是否开启在线客服
-                            var is_service_info = parseInt(data_base.is_service_info || 0);
-                            // 是否基础模式
-                            var is_base_mode = parseInt(data.is_base_mode || 0);
-                            // 基础模式下是否展示类型
-                            var is_base_mode_show_type = parseInt(data.is_base_mode_show_type || 0);
-                            // 桌码
-                            var tablecode = data.tablecode || null;
-                            // 基础模式内容高度处理
-                            var base_mode_style = '0rpx';
-                            if(is_base_mode == 1 && (is_base_mode_show_type == 0 || is_base_mode_show_type == 2)) {
-                                base_mode_style = (is_base_mode_show_type == 0) ? '58rpx' : '92rpx';
-                            }
-                            // 内容高度
-                            var content_style = 'height: calc(100vh - '+(this.client_type == 'h5' ? '386rpx' : '374rpx')+' - '+this.status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+ ' - '+base_mode_style+');';
 
                             this.setData({
-                                is_service_info: is_service_info,
-                                is_base_mode: is_base_mode,
-                                is_base_mode_show_type: is_base_mode_show_type,
+                                is_service_info: parseInt(data_base.is_service_info || 0),
+                                is_base_mode: parseInt(data.is_base_mode || 0),
+                                is_base_mode_show_type: parseInt(data.is_base_mode_show_type || 0),
                                 is_cart_nav: true,
                                 data_base: data_base,
                                 info: data.info || null,
                                 goods_category: data.goods_category || [],
                                 favor_user: data.favor_user || [],
-                                tablecode: tablecode,
-                                content_style: content_style,
+                                tablecode: data.tablecode || null
                             });
+                            
+                            // 样式处理
+                            this.content_actual_size_handle();
 
                             // 收藏处理
                             if ((this.info || null) != null) {
@@ -690,6 +679,30 @@
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
+                });
+            },
+
+            // 样式处理
+            content_actual_size_handle() {
+                // 基础模式内容高度处理
+                var value = 0;
+                if(this.is_base_mode == 1 && (this.is_base_mode_show_type == 0 || this.is_base_mode_show_type == 2)) {
+                    value = (this.is_base_mode_show_type == 0) ? 58 : 92;
+                }
+                // 内容高度
+                value += (this.client_type == 'h5') ? 386 : 374;
+                // 桌码
+                if(this.tablecode != null) {
+                    value += 44;
+                }
+                // 底部菜单高度
+                if(this.footer_height_value > 0) {
+                    value += this.footer_height_value;
+                }
+
+                // 减去内容高度
+                this.setData({
+                    content_style: 'height: calc(100vh - '+value+'rpx - '+this.status_bar_height+'px);',
                 });
             },
 
@@ -1025,6 +1038,14 @@
                 this.setData({
                     nav_base_index: e.currentTarget.dataset.index,
                 });
+            },
+
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                this.setData({
+                    footer_height_value: parseInt(value)*2
+                });
+                this.content_actual_size_handle();
             }
         },
     };

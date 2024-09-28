@@ -937,21 +937,21 @@
             is_tabbar_pages(url = null) {
                 return this.is_tabbar_pages_handle(this.app_tabbar_pages(), url);
             },
-            
+
             /**
              * 当前地址是否存在系统tabbar中
              */
             is_system_tabbar_pages(url = null) {
                 return this.is_tabbar_pages_handle(this.data.system_tabbar, url);
             },
-            
+
             /**
              * 当前地址是否存在tabbar中
              * pages  tabbar页面
              * url    url地址
              */
             is_tabbar_pages_handle(pages, url = null) {
-                var value = this.get_url_main_part((url == null) ? '/'+this.current_page(false) : url);
+                var value = (url == null) ? '/'+this.current_page() : url;
                 if ((value || null) == null) {
                     return false;
                 }
@@ -2115,18 +2115,8 @@
                 if ((page || null) == null) {
                     return '';
                 }
-                var route = page.route;
-                var options = page.options || {};
-                var query = '';
-                if (JSON.stringify(options) != '{}') {
-                    for (var i in options) {
-                        query += '&' + i + '=' + options[i];
-                    }
-                }
-                if ((query || null) != null) {
-                    route += '?' + query.substr(1);
-                }
-                return route;
+                var full_path = page.$page.fullPath;
+                return full_path.substr(0, 1) == '/' ? full_path.substr(1) : full_path;
             },
 
             // 进入客服

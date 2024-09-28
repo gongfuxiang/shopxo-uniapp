@@ -1,5 +1,5 @@
 .page {
-    padding-bottom: 110rpx;
+    padding-bottom: 130rpx;
 }
 
 /**
@@ -95,10 +95,12 @@
  */
 .goods-buy-nav {
     position: fixed;
-    left: 0;
-    bottom: 0;
+    left: 20rpx;
+    bottom: 20rpx;
     height: 100rpx;
     z-index: 2;
+    width: calc(100% - 40rpx);
+    box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
 }
 .goods-buy-nav .btn-items {
     padding: 15rpx 0;

@@ -4,8 +4,8 @@
             <!-- 购物车弹层背景 -->
             <view v-if="cart_status" class="plugins-realstore-cart-mask wh-auto ht-auto pf" @tap="cart_switch_event"></view>
             <!-- 购物车列表 -->
-            <view class="plugins-realstore-cart-content pf wh-auto">
-                <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main">
+            <view class="plugins-realstore-cart-content pf wh-auto" :style="realstore_cart_content_style">
+                <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main margin-bottom-xxxl">
                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                         <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
                             <text class="va-m cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
@@ -40,7 +40,7 @@
                                                     </block>
                                                 </view>
                                             </view>
-                                            <view class="margin-top-sm oh">
+                                            <view class="margin-top-sm">
                                                 <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
                                                 <view class="tc fr flex-row align-c">
                                                     <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
@@ -73,9 +73,9 @@
                 </view>
 
                 <!-- 购物车底部导航 -->
-                <view class="plugins-realstore-cart-botton-nav pr oh bg-white br-top-shadow">
+                <view class="plugins-realstore-cart-botton-nav pr round oh bg-white">
                     <view class="wh-auto flex-row jc-sb align-c bottom-line-exclude">
-                        <view class="flex-row align-c flex-1 flex-width padding-bottom-sm">
+                        <view class="flex-row align-c flex-1 flex-width padding-bottom-xs">
                             <view class="cart-icon-total pr cp top-sm padding-left-main" @tap="cart_switch_event">
                                 <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
                                 <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
@@ -178,6 +178,8 @@
                 realstore_goods_data_cart_type: null,
                 realstore_goods_data_cart_value: null,
                 realstore_goods_data_cart_text: this.$t('realstore-cart.realstore-cart.50lf68'),
+                // 样式
+                realstore_cart_content_style: ''
             };
         },
 
@@ -208,6 +210,8 @@
         methods: {
             // 获取数据
             init(params) {
+                // 获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
+                var tabbar_height = app.globalData.is_tabbar_pages() ? (app.globalData.app_tabbar_height_value()*2) : 0;
                 // 门店信息
                 var info = params.info || null;
                 if(info != null && (params.source || null) != null) {
@@ -215,7 +219,8 @@
                         params: params,
                         info: info,
                         base: params.base || null,
-                        source: params.source
+                        source: params.source,
+                        realstore_cart_content_style: 'bottom: '+tabbar_height+'rpx',
                     });
 
                     // 商品来源
@@ -1026,6 +1031,14 @@
     /**
      * 底部导航
      */
+    .plugins-realstore-cart-botton-nav {
+        width: calc(100% - 40rpx);
+        left: auto;
+        bottom: 20rpx;
+        z-index: 2;
+        margin-left: 20rpx;
+        box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
+    }
     .plugins-realstore-cart-botton-nav .cart-icon-total .badge-icon {
         top: -20rpx;
         right: -2rpx;

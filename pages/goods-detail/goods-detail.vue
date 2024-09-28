@@ -414,72 +414,74 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 底部操作先展示加载 -->
-            <view v-if="plugins_realstore_cart_nav_status || data_loading_status == 0" class="goods-buy-nav oh wh-auto bg-white br-top-shadow bottom-line-exclude flex-row jc-sb align-c">
-                <button class="bg-white br-white round tc text-size-md wh-auto margin-horizontal-main cr-grey" type="default" :loading="true">{{ $t('realstore-cart.realstore-cart.50lf68') }}</button>
-            </view>
-            <block v-else>
-                <!-- 底部操作 -->
-                <view v-if="goods_bottom_opt_nav_status" class="goods-buy-nav oh wh-auto bg-white br-top-shadow bottom-line-exclude flex-row jc-sb align-c">
-                    <!-- 左侧集合操作 -->
-                    <view class="bus-items tc flex-row jc-sa align-c flex-width-half padding-right-sm">
-                        <!-- 是否指定返回操作 -->
-                        <view v-if="is_opt_back == 1" class="item cp" @tap="bottom_nav_back_event">
-                            <image :src="common_static_url + 'back-icon.png'" mode="scaleToFill"></image>
-                            <text class="dis-block text-size-xs cr-grey">{{$t('common.return')}}</text>
-                        </view>
-                        <!-- 左侧购买导航列表 -->
-                        <block v-if="buy_left_nav.length > 0">
-                            <block v-for="(item, index) in buy_left_nav">
-                                <!-- 不展示收藏 -->
-                                <block v-if="item.type != 'favor'">
-                                    <!-- 客服 -->
-                                    <block v-if="item.type == 'plugins-chat'">
-                                        <component-online-service
-                                            v-if="common_app_is_online_service == 1"
-                                            :propIsGoods="true"
-                                            :propIsNav="true"
-                                            :propCard="true"
-                                            :propTitle="goods.title"
-                                            :propImg="goods.images"
-                                            :propPath="'/pages/goods-detail/goods-detail?id=' + goods.id"
-                                            :propChatUrl="item.url"
-                                        ></component-online-service>
-                                    </block>
-                                    <!-- 首页 -->
-                                    <block v-else-if="item.type == 'home'">
-                                        <view v-if="is_opt_back != 1" class="item cp" :data-value="item.url || default_home_url" :data-type="item.type" @tap="buy_left_nav_event">
-                                            <image :src="item.icon" mode="scaleToFill"></image>
-                                            <text class="dis-block text-size-xs cr-grey">{{ item.name }}</text>
-                                        </view>
-                                    </block>
-                                    <!-- 其他通用的 -->
-                                    <block v-else>
-                                        <view class="item cp" :data-value="item.url" :data-type="item.type" @tap="buy_left_nav_event">
-                                            <image :src="item.icon" mode="scaleToFill"></image>
-                                            <text class="dis-block text-size-xs cr-grey">{{ item.name }}</text>
-                                        </view>
+            <block v-if="goods_bottom_nav_status">
+                <view v-if="plugins_realstore_cart_nav_status || data_loading_status == 0" class="goods-buy-nav oh round bg-white bottom-line-exclude flex-row jc-sb align-c" :style="goods_buy_nav_style">
+                    <button class="bg-white br-white round tc text-size-md wh-auto margin-horizontal-main cr-grey" type="default" :loading="true">{{ $t('realstore-cart.realstore-cart.50lf68') }}</button>
+                </view>
+                <block v-else>
+                    <!-- 底部操作 -->
+                    <view v-if="goods_bottom_opt_nav_status" class="goods-buy-nav oh round bg-white bottom-line-exclude flex-row jc-sb align-c" :style="goods_buy_nav_style">
+                        <!-- 左侧集合操作 -->
+                        <view class="bus-items tc flex-row jc-sa align-c flex-width-half padding-right-sm">
+                            <!-- 是否指定返回操作 -->
+                            <view v-if="is_opt_back == 1" class="item cp" @tap="bottom_nav_back_event">
+                                <image :src="common_static_url + 'back-icon.png'" mode="scaleToFill"></image>
+                                <text class="dis-block text-size-xs cr-grey">{{$t('common.return')}}</text>
+                            </view>
+                            <!-- 左侧购买导航列表 -->
+                            <block v-if="buy_left_nav.length > 0">
+                                <block v-for="(item, index) in buy_left_nav">
+                                    <!-- 不展示收藏 -->
+                                    <block v-if="item.type != 'favor'">
+                                        <!-- 客服 -->
+                                        <block v-if="item.type == 'plugins-chat'">
+                                            <component-online-service
+                                                v-if="common_app_is_online_service == 1"
+                                                :propIsGoods="true"
+                                                :propIsNav="true"
+                                                :propCard="true"
+                                                :propTitle="goods.title"
+                                                :propImg="goods.images"
+                                                :propPath="'/pages/goods-detail/goods-detail?id=' + goods.id"
+                                                :propChatUrl="item.url"
+                                            ></component-online-service>
+                                        </block>
+                                        <!-- 首页 -->
+                                        <block v-else-if="item.type == 'home'">
+                                            <view v-if="is_opt_back != 1" class="item cp" :data-value="item.url || default_home_url" :data-type="item.type" @tap="buy_left_nav_event">
+                                                <image :src="item.icon" mode="scaleToFill"></image>
+                                                <text class="dis-block text-size-xs cr-grey">{{ item.name }}</text>
+                                            </view>
+                                        </block>
+                                        <!-- 其他通用的 -->
+                                        <block v-else>
+                                            <view class="item cp" :data-value="item.url" :data-type="item.type" @tap="buy_left_nav_event">
+                                                <image :src="item.icon" mode="scaleToFill"></image>
+                                                <text class="dis-block text-size-xs cr-grey">{{ item.name }}</text>
+                                            </view>
+                                        </block>
                                     </block>
                                 </block>
                             </block>
-                        </block>
-                        <!-- 购物车 -->
-                        <view v-if="is_opt_cart == 1" class="item cp pr" data-value="/pages/cart-page/cart-page" @tap="url_event">
-                            <view class="badge-icon">
-                                <component-badge :propNumber="quick_nav_cart_count"></component-badge>
+                            <!-- 购物车 -->
+                            <view v-if="is_opt_cart == 1" class="item cp pr" data-value="/pages/cart-page/cart-page" @tap="url_event">
+                                <view class="badge-icon">
+                                    <component-badge :propNumber="quick_nav_cart_count"></component-badge>
+                                </view>
+                                <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill"></image>
+                                <text class="dis-block text-size-xs cr-grey">{{$t('common.cart')}}</text>
                             </view>
-                            <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill"></image>
-                            <text class="dis-block text-size-xs cr-grey">{{$t('common.cart')}}</text>
+                        </view>
+                        <!-- 右侧主操作 -->
+                        <view v-if="(buy_button.data || null) != null && buy_button.data.length > 0" :class="'btn-items flex-row jc-sa align-c flex-width-half goods-buy-nav-btn-number-' + (buy_button.count || 0)">
+                            <block v-for="(item, index) in buy_button.data" :key="index">
+                                <block v-if="(item.name || null) != null && (item.type || null) != null">
+                                    <button :class="'item fl cr-white text-size-md round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{ item.name }}</button>
+                                </block>
+                            </block>
                         </view>
                     </view>
-                    <!-- 右侧主操作 -->
-                    <view v-if="(buy_button.data || null) != null && buy_button.data.length > 0" :class="'btn-items flex-row jc-sa align-c flex-width-half goods-buy-nav-btn-number-' + (buy_button.count || 0)">
-                        <block v-for="(item, index) in buy_button.data" :key="index">
-                            <block v-if="(item.name || null) != null && (item.type || null) != null">
-                                <button :class="'item fl cr-white text-size-md round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{ item.name }}</button>
-                            </block>
-                        </block>
-                    </view>
-                </view>
+                </block>
             </block>
 
             <!-- 商品参数弹窗 -->
@@ -604,10 +606,14 @@
         <block v-if="(plugins_categorylimit_data || null) != null">
             <component-categorylimit-warm-tips :propData="plugins_categorylimit_data"></component-categorylimit-warm-tips>
         </block>
+        
+        <!-- 公共 -->
+        <component-common @footer-height="footer_height_value_event"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentGoodsBatchBuy from '@/components/goods-batch-buy/goods-batch-buy';
     import componentPopup from '@/components/popup/popup';
@@ -669,6 +675,8 @@
                 goods_video_is_autoplay: false,
                 // 增加随机数，避免无法监听数据列表内部数据更新
                 random_value: 0,
+                // 是否显示底部购买导航
+                goods_bottom_nav_status: true,
                 // 底部导航展示状态、如果已开启多门店默认展示、则先展示加载
                 goods_bottom_opt_nav_status: app.globalData.get_config('plugins_base.realstore', null) == null,
                 // 更多导航
@@ -719,6 +727,10 @@
                 top_nav_title_scroll: true,
                 top_nav_title_timer: null,
                 top_nav_title_data: [],
+                // 底部购买导航样式
+                goods_buy_nav_style: '',
+                // 底部菜单高度
+                footer_height_value: 0,
                 // 详情参数弹窗
                 popup_params_status: false,
                 popup_params_type_field: 'base',
@@ -766,6 +778,7 @@
         },
 
         components: {
+            componentCommon,
             componentGoodsBuy,
             componentGoodsBatchBuy,
             componentPopup,
@@ -892,6 +905,9 @@
 
             // 获取数据
             init() {
+                // 底部购买导航样式处理
+                this.goods_buy_nav_style_handle();
+
                 // 缓存数据
                 if((this.goods || null) == null) {
                     var goods = app.globalData.goods_data_cache_handle(this.params.id);
@@ -920,6 +936,7 @@
                             var upd_data = {
                                 random_value: Math.random(),
                                 data_loading_status: 1,
+                                goods_bottom_nav_status: true,
                                 goods_bottom_opt_nav_status: true,
                                 guess_you_like: data.guess_you_like || [],
                                 nav_more_list: data.nav_more_list || [],
@@ -958,6 +975,7 @@
                                 if((this.plugins_realstore_data.info || null) != null) {
                                     this.setData({
                                         plugins_realstore_cart_nav_status: true,
+                                        goods_bottom_nav_status: false,
                                         goods_bottom_opt_nav_status: false,
                                     });
                                     this.$refs.realstore_cart.init({...{source: 'goods', base: this.plugins_realstore_data.base, info: this.plugins_realstore_data.info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
@@ -1502,6 +1520,21 @@
             refresh_loading_event(params) {
                 this.setData({params: {...this.params, ...params}});
                 this.init();
+            },
+
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                this.setData({
+                    footer_height_value: parseInt(value)*2
+                });
+                this.goods_buy_nav_style_handle();
+            },
+            
+            // 底部购买导航样式处理
+            goods_buy_nav_style_handle() {
+                this.setData({
+                    goods_buy_nav_style: 'bottom: '+(this.footer_height_value+20)+'rpx;',
+                });
             }
         }
     };
