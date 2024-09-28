@@ -67,7 +67,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {  
                 this.setData({
-                    footer_height_value: (value*2)+40
+                    footer_height_value: (value*2)+20
                 });
                 this.$emit('footer-height', value);
 

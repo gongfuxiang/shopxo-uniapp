@@ -2,7 +2,7 @@
     <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
         <!-- 头部小程序兼容 -->
         <view class="pr header">
-            <componentDiyHeader v-if="hackReset" :propValue="header_data.com_data"></componentDiyHeader>
+            <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + temp_is_header_top ? temp_header_top : '0'">
             <view v-for="(item, index) in tabs_data" :key="item.key">
@@ -39,26 +39,34 @@
                         <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
                     </view>
                 </template>
+
+                <!-- diy底部卡槽 -->
+                <slot name="diy-bottom"></slot>
             </template>
             <template v-else>
-                <!-- goods九宫格数据 -->
-                <!-- 列表 -->
+                <!-- 商品九宫格列表 -->
                 <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                     <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-main oh">
                         <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
                     </view>
-                    <view v-else>
+                    <template v-else>
                         <!-- 提示信息 -->
                         <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg"></component-no-data>
-                    </view>
+                    </template>
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </scroll-view>
             </template>
         </view>
-        <view v-if="is_show_footer == 1" class="footer">
-            <componentDiyFooter v-if="hackReset" :propValue="footer_data.com_data"></componentDiyFooter>
-        </view>
+
+        <!-- 当前diy页面底部菜单（非公共底部菜单） -->
+        <block v-if="is_show_footer == 1">
+            <componentDiyFooter v-if="hack_reset" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
+            <view v-if="footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
+        </block>
+
+        <!-- 底部卡槽 -->
+        <slot name="bottom"></slot>
     </scroll-view>
 </template>
 
@@ -107,7 +115,7 @@
             propDataId: {
                 type: [String, Number],
                 default: '',
-            },
+            }
         },
         components: {
             componentDiyHeader,
@@ -194,7 +202,10 @@
                 data_is_loading: 0,
                 // 缓存key
                 cache_key: app.globalData.data.cache_diy_data_key,
-                hackReset: false,
+                // 重置
+                hack_reset: false,
+                // 底部导航高度
+                footer_height_value: 0,
             };
         },
         created() {
@@ -209,7 +220,7 @@
             init_config(status) {
                 if ((status || false) == true) {
                     // 是否显示底部菜单，如果当前地址已经存在系统底部菜单中则不显示当前diy页面自定义的底部菜单
-                    var is_show_footer = this.propValue.header.com_data.content.bottom_navigation_show;
+                    var is_show_footer = parseInt(this.propValue.header.com_data.content.bottom_navigation_show || 0) == 1;
                     var is_tabbar = app.globalData.is_tabbar_pages();
                     this.setData({
                         is_show_footer: is_show_footer && !is_tabbar,
@@ -223,7 +234,7 @@
             init() {
                 // tabs选项卡数据过滤
                 this.setData({
-                    hackReset: true,
+                    hack_reset: true,
                     header_data: this.propValue.header,
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
@@ -242,7 +253,7 @@
                 this.setData({
                     is_tabs_type: bool,
                 });
-                const new_params = {
+                let new_params = {
                     ...params,
                     id: tabs_id,
                 };
@@ -265,7 +276,7 @@
                             dataType: 'json',
                             success: (res) => {
                                 // 数据处理
-                                const data = res.data.data.data;
+                                let data = res.data.data.data;
                                 if (res.data.code == 0) {
                                     new_data = data?.config.diy_data || [];
                                     uni.setStorageSync(this.cache_key + tabs_id, new_data);
@@ -329,7 +340,7 @@
                         title: this.$t('common.loading_in_text'),
                     });
                 }
-                const new_data = {
+                let new_data = {
                     category_id: this.tabs_id,
                     page: this.goods_page,
                 };
@@ -407,6 +418,8 @@
                     },
                 });
             },
+
+            // 页面滚动事件
             on_scroll_event(e) {
                 this.setData({
                     scroll_top: e.detail.scrollTop,
@@ -430,6 +443,13 @@
                 }
                 // #endif
             },
+
+            // 底部菜单高度
+            footer_height_value_event(value) {  
+                this.setData({
+                    footer_height_value: (value*2)+20
+                });
+            }
         },
     };
 </script>

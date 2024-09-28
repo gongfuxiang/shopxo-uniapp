@@ -22,7 +22,7 @@
                     </block>
                     <view class="category-container">
                         <!-- 分类内容 -->
-                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + (search_height + window_bottom_height) + 'px);'">
+                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + search_height + 'px);'">
                             <block v-if="category_show_level == 1">
                                 <!-- 一级模式 -->
                                 <scroll-view scroll-y class="ht-auto" :show-scrollbar="false">
@@ -452,11 +452,6 @@
                 popup_status: false,
                 // 获取搜索框高度
                 search_height: 0,
-                // 底部tab高度 - 只有H5下有值
-                window_bottom_height: 0,
-                // #ifdef H5
-                window_bottom_height: uni.getWindowInfo().windowBottom || 50,
-                // #endif
                 // 样式
                 left_content_actual_style: '',
                 right_content_actual_style: '',

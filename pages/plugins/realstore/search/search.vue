@@ -4,14 +4,11 @@
             <!-- 顶部 -->
             <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey">
                 <!-- 位置 -->
-                <view class="nav-location flex-row align-c margin-right-sm" @tap="choose_user_location_event">
-                    <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" propClass="lh-md"></iconfont>
-                    </view>
-                    <text class="va-m margin-left-xs text-size-md single-text">{{user_location.text || ''}}</text>
+                <view class="nav-location flex-row align-c single-text margin-right-sm">
+                    <component-choice-location ref="choice_location" propIconLocationColor="#999" propIconArrowColor="#999" propTextMaxWidth="180rpx" @onback="user_back_choice_location"></component-choice-location>
                 </view>
                 <!-- 搜索 -->
-                <view class="nav-search wh-auto">
+                <view class="nav-search">
                     <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
             </view>
@@ -50,7 +47,7 @@
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentSearch from "@/components/search/search";
     import componentRealstoreList from "@/components/realstore-list/realstore-list";
-
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     export default {
         data() {
             return {
@@ -83,6 +80,7 @@
             componentBottomLine,
             componentSearch,
             componentRealstoreList,
+            componentChoiceLocation
         },
 
         onLoad(params) {
@@ -107,23 +105,6 @@
 
             // 用户位置初始化
             this.user_location_init();
-
-            // 先解绑自定义事件
-            uni.$off('refresh');
-            // 监听自定义事件并进行页面刷新操作
-            uni.$on('refresh', (data) => {
-                // 初始位置数据
-                if((data.location_success || false) == true) {
-                    // 用户位置初始化
-                    this.user_location_init();
-
-                    // 重新请求数据
-                    this.setData({
-                        data_page: 1,
-                    });
-                    this.get_data_list(1);
-                }
-            });
         },
 
         // 下拉刷新
@@ -328,9 +309,14 @@
                 this.get_data_list(1);
             },
 
-            // 选择地理位置
-            choose_user_location_event(e) {
-                app.globalData.choose_user_location_event();
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e,
+                    data_page: 1,
+                });
+                // 重新请求数据
+                this.get_data_list(1);
             },
 
             // 地址信息初始化

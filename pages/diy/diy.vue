@@ -1,18 +1,20 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) != null">
+        <block v-if="(data || null) != null">
             <!-- diy模块 -->
-            <componentDiy :propValue="data.config" :propDataId="data.id"></componentDiy>
+            <componentDiy :propValue="data.config" :propDataId="data.id">
+                <template slot="diy-bottom">
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-        </view>
-        <view v-else>
+                    <!-- 公共 -->
+                    <component-common></component-common>
+                </template>
+            </componentDiy>
+        </block>
+        <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
-
-        <!-- 公共 -->
-        <component-common></component-common>
+        </block>
     </view>
 </template>
 <script>

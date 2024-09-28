@@ -62,8 +62,8 @@
                     <view class="form-gorup bg-white">
                         <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.47v7m0')}}<text class="form-group-tips-must">*</text></view>
                         <view @tap="choose_location_event" class="form-gorup-text">
-                            <view v-if="(user_location.status || 0) == 0" class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
-                            <view v-else class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
+                            <view v-if="(user_location.status || 0) == 1" class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
+                            <view v-else class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
                         </view>
                     </view>
 
@@ -77,6 +77,9 @@
             </form>
         </view>
 
+        <!-- 位置选择 -->
+        <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
+
         <!-- 公共 -->
         <component-common></component-common>
     </view>
@@ -84,6 +87,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
@@ -113,7 +117,8 @@
         },
 
         components: {
-            componentCommon
+            componentCommon,
+            componentChoiceLocation
         },
 
         onLoad(params) {
@@ -136,15 +141,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 先解绑自定义事件
-            uni.$off('refresh');
-            // 监听自定义事件并进行页面刷新操作
-            uni.$on('refresh', (data) => {
-                // 初始位置数据
-                if((data.location_success || false) == true) {
-                    this.user_location_init();
-                }
-            });
+            // 用户位置初始化
+            this.user_location_init();
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -383,7 +381,16 @@
 
             // 选择地理位置
             choose_location_event(e) {
-                app.globalData.choose_user_location_event();
+                if ((this.$refs.choice_location || null) != null) {
+                    this.$refs.choice_location.choose_user_location();
+                }
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e
+                });
             },
 
             // 地址信息初始化

@@ -6,6 +6,9 @@
     height: 60rpx;
     line-height: 60rpx;
 }
+.nav-search {
+    width: calc(100% - 260rpx);
+}
 
 /**
 * 数据列表

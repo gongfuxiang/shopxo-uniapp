@@ -6,14 +6,8 @@
             <!-- 顶部 -->
             <view class="spacing-mb pr z-i cr-white">
                 <!-- 位置 -->
-                <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xxxxl" @tap="choose_user_location_event">
-                    <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" propClass="lh-il"></iconfont>
-                    </view>
-                    <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
-                    <view class="icon-arrow-down lh pa right-xxxxxl">
-                        <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-il" color="#fff"></iconfont>
-                    </view>
+                <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xl margin-top">
+                    <component-choice-location ref="choice_location" @onback="user_back_choice_location"></component-choice-location>
                 </view>
             </view>
             <!-- 搜索 -->
@@ -80,7 +74,7 @@
     import componentIconNav from '@/components/icon-nav/icon-nav';
     import componentRealstoreList from '@/components/realstore-list/realstore-list';
     import componentTitle from '@/components/title/title';
-
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     var realstore_static_url = app.globalData.get_static_url('realstore', true);
     export default {
         data() {
@@ -118,6 +112,7 @@
             componentIconNav,
             componentRealstoreList,
             componentTitle,
+            componentChoiceLocation
         },
 
         onLoad(params) {
@@ -141,20 +136,6 @@
 
             // 用户位置初始化
             this.user_location_init();
-            // 先解绑自定义事件
-            uni.$off('refresh');
-            // 监听自定义事件并进行页面刷新操作
-            uni.$on('refresh', (data) => {
-                // 初始位置数据
-                if((data.location_success || false) == true) {
-                    // 用户位置初始化
-                    this.user_location_init();
-                    // 重新请求数据
-                    // #ifdef APP
-                    this.get_data();
-                    // #endif
-                }
-            });
 
             // 数据加载
             this.get_data();
@@ -262,7 +243,18 @@
 
             // 选择地理位置
             choose_user_location_event(e) {
-                app.globalData.choose_user_location_event();
+                if ((this.$refs.choice_location || null) != null) {
+                    this.$refs.choice_location.choose_user_location();
+                }
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e,
+                    location_tips_close_status: e.status != 1
+                });
+                this.get_data();
             },
 
             // 地址信息初始化

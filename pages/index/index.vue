@@ -4,7 +4,18 @@
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
-                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id"></componentDiy>
+                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id">
+                        <template slot="diy-bottom">
+                            <!-- 结尾 -->
+                            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+                            <!-- 版权信息 -->
+                            <component-copyright></component-copyright>
+
+                            <!-- 公共 -->
+                            <component-common></component-common>
+                        </template>
+                    </componentDiy>
                 </block>
             </block>
             <!-- 自动和手动模式 -->
@@ -22,14 +33,8 @@
                         <view :class="'search-content-fixed-content ' + (common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 ? top_content_search_content_style : '')">
                             <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                                 <!-- 定位 -->
-                                <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" @tap="choose_user_location_event">
-                                    <view class="dis-inline-block va-m lh">
-                                        <iconfont name="icon-location" size="32rpx" propClass="lh" color="#fff"></iconfont>
-                                    </view>
-                                    <text class="va-m margin-left-xs text-size-md">{{ user_location.text || '' }}</text>
-                                    <view class="lh pa right-0 top-xxxl">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-xs" color="#fff"></iconfont>
-                                    </view>
+                                <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" >
+                                    <component-choice-location @onback="user_back_choice_location"></component-choice-location>
                                 </view>
                                 <block v-else>
                                     <!-- logo/标题 -->
@@ -264,41 +269,38 @@
                     </view>
                 </view>
             </block>
+
             <!-- 提示信息 -->
             <block v-if="load_status == 0">
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="home" :propIsHeader="true"></component-no-data>
             </block>
         </view>
 
-        <!-- 页面已加载 -->
-        <block v-if="load_status == 1">
+        <!-- 页面已加载、模式 -->
+        <block v-if="load_status == 1 && data_mode != 3">
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 版权信息 -->
             <component-copyright></component-copyright>
 
-            <!-- 非diy模式 -->
-            <block v-if="data_mode != 3">
-                <!-- 在线客服 -->
-                <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
-            
-                <!-- 快捷导航 -->
-                <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-            
-                <!-- 用户基础 -->
-                <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
-            
-                <!-- app管理 -->
-                <component-app-admin ref="app_admin"></component-app-admin>
-            </block>
-        </block>
+            <!-- 在线客服 -->
+            <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
 
-        <!-- 公共 -->
-        <component-common></component-common>
+            <!-- 快捷导航 -->
+            <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
+
+            <!-- 用户基础 -->
+            <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+
+            <!-- app管理 -->
+            <component-app-admin ref="app_admin"></component-app-admin>
+
+            <!-- 公共 -->
+            <component-common></component-common>
+        </block>
     </view>
 </template>
-
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
@@ -323,6 +325,7 @@
     import componentMagicList from '@/components/magic-list/magic-list';
     import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentDiy from '@/components/diy/diy';
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -437,7 +440,8 @@
             componentBindingList,
             componentMagicList,
             componentAppAdmin,
-            componentDiy
+            componentDiy,
+            componentChoiceLocation
         },
 
         onLoad(params) {
@@ -453,20 +457,6 @@
             if (this.is_home_location_choice == 1) {
                 // 用户位置初始化
                 this.user_location_init();
-                // 先解绑自定义事件
-                uni.$off('refresh');
-                // 监听自定义事件并进行页面刷新操作
-                uni.$on('refresh', (data) => {
-                    // 初始位置数据
-                    if ((data.location_success || false) == true) {
-                        // 用户位置初始化
-                        this.user_location_init();
-                        // 重新请求数据
-                        // #ifdef APP
-                        this.init();
-                        // #endif
-                    }
-                });
             }
 
             // 数据加载
@@ -667,15 +657,17 @@
                 }, 3000);
             },
 
-            // 选择用户地理位置
-            choose_user_location_event(e) {
-                app.globalData.choose_user_location_event();
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e
+                });
             },
 
             // 用户地理位置初始化
             user_location_init() {
                 this.setData({
-                    user_location: app.globalData.choice_user_location_init(),
+                    user_location: app.globalData.choice_user_location_init()
                 });
             },
 

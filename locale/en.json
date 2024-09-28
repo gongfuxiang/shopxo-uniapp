@@ -63,7 +63,8 @@
 		"service_time": "service time ",
 		"apply_time": "Application time",
         "verification_text": "Verification code",
-        "verification_message": "Please enter the verification code"
+        "verification_message": "Please enter the verification code",
+        "not_supported_scan_tips": "H5 webpage does not support scanning codes"
 	},
 	"pages": {
 		"goods-category": "Product classification",
