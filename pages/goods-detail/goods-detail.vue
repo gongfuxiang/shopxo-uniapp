@@ -425,7 +425,7 @@
                         <view class="bus-items tc flex-row jc-sa align-c flex-width-half padding-right-sm">
                             <!-- 是否指定返回操作 -->
                             <view v-if="is_opt_back == 1" class="item cp" @tap="bottom_nav_back_event">
-                                <image :src="common_static_url + 'back-icon.png'" mode="scaleToFill"></image>
+                                <image :src="common_static_url + 'back-icon.png'" mode="scaleToFill" class="image"></image>
                                 <text class="dis-block text-size-xs cr-grey">{{$t('common.return')}}</text>
                             </view>
                             <!-- 左侧购买导航列表 -->
@@ -449,14 +449,14 @@
                                         <!-- 首页 -->
                                         <block v-else-if="item.type == 'home'">
                                             <view v-if="is_opt_back != 1" class="item cp" :data-value="item.url || default_home_url" :data-type="item.type" @tap="buy_left_nav_event">
-                                                <image :src="item.icon" mode="scaleToFill"></image>
+                                                <image :src="item.icon" mode="scaleToFill" class="image"></image>
                                                 <text class="dis-block text-size-xs cr-grey">{{ item.name }}</text>
                                             </view>
                                         </block>
                                         <!-- 其他通用的 -->
                                         <block v-else>
                                             <view class="item cp" :data-value="item.url" :data-type="item.type" @tap="buy_left_nav_event">
-                                                <image :src="item.icon" mode="scaleToFill"></image>
+                                                <image :src="item.icon" mode="scaleToFill" class="image"></image>
                                                 <text class="dis-block text-size-xs cr-grey">{{ item.name }}</text>
                                             </view>
                                         </block>
@@ -468,7 +468,7 @@
                                 <view class="badge-icon">
                                     <component-badge :propNumber="quick_nav_cart_count"></component-badge>
                                 </view>
-                                <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill"></image>
+                                <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill" class="image"></image>
                                 <text class="dis-block text-size-xs cr-grey">{{$t('common.cart')}}</text>
                             </view>
                         </view>
