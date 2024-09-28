@@ -1305,7 +1305,7 @@
 
             // 页面样式处理
             page_style_handle() {
-                var value = (this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 0;
+                var value = (this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 20;
                 this.setData({
                     cart_buy_nav_style: 'bottom:'+value+'rpx;'
                 });
