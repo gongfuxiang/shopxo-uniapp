@@ -62,7 +62,6 @@
                     if (tabs_bg.length > 0 && tabs_bg[0].color !== '') {
                         new_tabs_background = gradient_computer(new_style.common_style);
                     }
-                    console.log(new_tabs_background.length);
                     this.setData({
                         tabs_background: background_computer(new_style.common_style) + (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff'),
                     });
