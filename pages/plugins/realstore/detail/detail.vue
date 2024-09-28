@@ -690,19 +690,15 @@
                     value = (this.is_base_mode_show_type == 0) ? 58 : 92;
                 }
                 // 内容高度
-                value += (this.client_type == 'h5') ? 386 : 374;
+                value += (this.client_type == 'h5') ? 370 : 358;
                 // 桌码
                 if(this.tablecode != null) {
                     value += 44;
                 }
-                // 底部菜单高度
-                if(this.footer_height_value > 0) {
-                    value += this.footer_height_value;
-                }
 
-                // 减去内容高度
+                // 减去内容高度、底部菜单高度
                 this.setData({
-                    content_style: 'height: calc(100vh - '+value+'rpx - '+this.status_bar_height+'px);',
+                    content_style: 'height: calc(100vh - '+value+'rpx - '+(this.status_bar_height+this.footer_height_value)+'px);',
                 });
             },
 
@@ -1043,7 +1039,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: parseInt(value)*2
+                    footer_height_value: value
                 });
                 this.content_actual_size_handle();
             }

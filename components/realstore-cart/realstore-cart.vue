@@ -74,7 +74,7 @@
 
                 <!-- 购物车底部导航 -->
                 <view class="plugins-realstore-cart-botton-nav pr round oh bg-white">
-                    <view class="wh-auto flex-row jc-sb align-c bottom-line-exclude">
+                    <view class="wh-auto flex-row jc-sb align-c">
                         <view class="flex-row align-c flex-1 flex-width padding-bottom-xs">
                             <view class="cart-icon-total pr cp top-sm padding-left-main" @tap="cart_switch_event">
                                 <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>

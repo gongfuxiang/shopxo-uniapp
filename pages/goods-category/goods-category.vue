@@ -329,7 +329,7 @@
                                 </view>
                             </block>
                             <!-- 购物车底部导航 -->
-                            <view class="botton-nav round pa br-top-shadow oh flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
+                            <view class="botton-nav round pa oh flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
                                 <view class="flex-row align-c flex-1 flex-width">
                                     <view class="cart pr cp top-sm" @tap="cart_event">
                                         <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>

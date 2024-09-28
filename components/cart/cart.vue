@@ -141,7 +141,7 @@
                     <!-- 操作导航 -->
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
-                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh round ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')" :style="cart_buy_nav_style">
+                        <view v-if="common_site_type == 1" class="cart-buy-nav oh round" :style="cart_buy_nav_style">
                             <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
                                 <button class="exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
@@ -152,7 +152,7 @@
                             </view>
                         </view>
                         <!-- 销售,自提,虚拟销售 -->
-                        <view v-else class="cart-buy-nav oh round flex-row jc-sb align-c br-top-shadow bg-white" :class="(propSourceType == 'page' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="cart_buy_nav_style">
+                        <view v-else class="cart-buy-nav oh round flex-row jc-sb align-c br-top-shadow bg-white" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="cart_buy_nav_style">
                             <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                                 <view class="cart-selected flex-row align-c">
                                     <view @tap="selected_event" data-type="all">
@@ -1429,7 +1429,7 @@
         width: calc(75% - 20rpx);
     }
     .cart-nav-submit {
-        padding: 20rpx 24rpx;
+        padding-right: 24rpx;
         white-space: nowrap;
     }
     .cart-nav-submit .nav-btn {

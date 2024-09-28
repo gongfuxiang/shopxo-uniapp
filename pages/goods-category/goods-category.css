@@ -273,6 +273,7 @@
     z-index: 2;
     margin-left: 20rpx;
     background: linear-gradient(132deg, #EBEBEB 0%, #F7F7F7 100%);
+    box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
 }
 .botton-nav .cart .badge-icon {
     top: -20rpx;
