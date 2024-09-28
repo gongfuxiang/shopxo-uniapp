@@ -34,14 +34,6 @@
                             <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                                 <!-- 定位 -->
                                 <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" >
-                                    <!-- <view class="dis-inline-block va-m lh">
-                                        <iconfont name="icon-location" size="32rpx" propClass="lh" color="#fff"></iconfont>
-                                    </view>
-                                    <text class="va-m margin-left-xs text-size-md">{{ user_location.text || '' }}</text>
-                                    <view class="lh pa right-0 top-xxxl">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-xs" color="#fff"></iconfont>
-                                    </view> -->
-                                    
                                     <component-choice-location @onback="user_back_choice_location"></component-choice-location>
                                 </view>
                                 <block v-else>

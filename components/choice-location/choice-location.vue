@@ -66,7 +66,6 @@
                 var self = this;
                 var timer = setInterval(function () {
                     var result = app.globalData.choice_user_location_init() || null;
-                    console.log(result);
                     if(result != null && (result.status == 1 || result.status == 3)) {
                         self.setData({
                             location: result
