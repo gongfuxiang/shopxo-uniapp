@@ -20,8 +20,8 @@
                         <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? '66rpx' : '0rpx'"></componentDiyGoodsTabs>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? 33 : 0"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? 33 : 0"></componentDiyGoodsTabs>
 
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
@@ -310,7 +310,6 @@
                 this.setData({
                     tabs_height: height,
                 });
-                console.log(this.temp_sticky_top, this.tabs_height);
             },
 
             // 滚动加载

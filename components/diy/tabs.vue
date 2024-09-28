@@ -154,6 +154,7 @@
 
 <style lang="scss" scoped>
     .tabs {
+        z-index: 4;
         .tabs-top {
             position: fixed;
             left: 0;
