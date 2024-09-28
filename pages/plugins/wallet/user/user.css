@@ -63,17 +63,8 @@
 /*
 * 底部按钮
 */
-.submit-container {
-    padding: 42rpx 46rpx;
-}
-
-.submit-container .sub-btn {
+.bottom-fixed .btn {
     width: calc(50% - 20rpx);
-}
-
-.submit-container button {
-    height: 88rpx;
-    line-height: 88rpx;
 }
 
 /**

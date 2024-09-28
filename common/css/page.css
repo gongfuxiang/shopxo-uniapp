@@ -299,14 +299,11 @@ button:before {
 .bottom-fixed {
     position: fixed;
     left: 0;
-    border: none;
     bottom: 0;
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
-    padding: 40rpx;
-    background-color: #fff;
-    box-shadow: inset 0rpx 2rpx 6rpx 0rpx rgba(0, 0, 0, 0.08);
+    padding: 20rpx;
 }
 
 /**
@@ -336,7 +333,7 @@ button:before {
  * 页面底部浮动、增加底部边距
  */
 .page-bottom-fixed {
-    padding-bottom: 172rpx !important;
+    padding-bottom: 120rpx !important;
 }
 
 /**

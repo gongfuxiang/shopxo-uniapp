@@ -197,7 +197,7 @@
                                                 <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
                                             </view>
                                         </view>
-                                        <view class="bottom-fixed br-0">
+                                        <view class="bottom-fixed">
                                             <view class="bottom-line-exclude">
                                                 <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('user.user.25f97u')}}</button>
                                             </view>
@@ -249,7 +249,7 @@
                                                 </view>
                                             </view>
                                         </view>
-                                        <view class="bottom-fixed br-0">
+                                        <view class="bottom-fixed">
                                             <view class="bottom-line-exclude">
                                                 <button type="default" class="bg-main br-main cr-white round text-size" :disabled="form_submit_disabled_status" @tap="modify_superior_submit_event">{{$t('form.form.4yd066')}}</button>
                                             </view>

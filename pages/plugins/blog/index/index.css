@@ -40,8 +40,3 @@
 .nav-blog-category .item .right-base {
     width: calc(100% - 84rpx);
 }
-
-.btn-content {
-    padding-top: 54rpx;
-    padding-bottom: 54rpx;
-}

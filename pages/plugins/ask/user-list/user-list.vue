@@ -26,7 +26,7 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-            <view class="bottom-fixed question-btn bg-white">
+            <view class="bottom-fixed">
                 <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="bottom-line-exclude cp">
                     <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
                 </view>

@@ -93,7 +93,7 @@
                     </view>
                 </view>
                 <!-- 底部操作 -->
-                <view class="bottom-fixed btn-bottom bg-white">
+                <view class="bottom-fixed">
                     <view class="oh bottom-line-exclude">
                         <button class="cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                     </view>

@@ -80,19 +80,12 @@
     min-width: 140rpx;
 }
 
-.bottom-fixed {
-    background-color: transparent;
-    box-shadow: none;
-    padding: 40rpx 26rpx;
-}
-
 .cancel-btn,
 .submit-btn {
     width: 50%;
     height: 88rpx;
     line-height: 88rpx;
     font-size: 32rpx;
-    margin: 0 20rpx;
 }
 
 .cancel-btn:active,

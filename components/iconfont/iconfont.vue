@@ -34,9 +34,7 @@
     /* @import url('https://at.alicdn.com/t/c/font_4227145_kbr2f9jt68b.css'); */
 
     .iconfont-container {
-        display: flex;
-        height: inherit;
-        justify-content: center;
+        display: inline-block;
     }
     .iconfont {
         display: flex;

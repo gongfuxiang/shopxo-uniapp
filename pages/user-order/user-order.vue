@@ -94,9 +94,9 @@
         </scroll-view>
 
         <!-- 合并支付 -->
-        <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed tc">
+        <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed">
             <view class="bottom-line-exclude">
-                <button class="pay-merge-submit bg-green cr-white round text-size" hover-class="none" @tap="pay_merge_event">{{$t('user-order.user-order.7571p2')}}</button>
+                <button class="pay-merge-submit bg-main cr-white round text-size" hover-class="none" @tap="pay_merge_event">{{$t('user-order.user-order.7571p2')}}</button>
             </view>
         </view>
 

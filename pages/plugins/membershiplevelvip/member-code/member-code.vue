@@ -18,11 +18,11 @@
                 <view class="cr-grey tc margin-top-xxxl">{{$t('member-code.member-code.oc4x18')}}</view>
 
                 <!-- 导航 -->
-                <view v-if="(plugins_wallet || null) != null" class="bottom-fixed padding-main br-0">
+                <view v-if="(plugins_wallet || null) != null" class="bottom-fixed">
                     <view class="bottom-line-exclude oh">
                         <view class="bg-white br-grey-d round oh">
-                            <button type="default" class="bg-main cr-white round text-size fl br-0" size="mini">{{$t('member-code.member-code.26bu38')}}</button>
-                            <button type="default" class="bg-white round text-size fr br-0" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.x58gqu')}}</button>
+                            <button type="default" class="btn bg-main cr-white round text-size fl br-0" size="mini">{{$t('member-code.member-code.26bu38')}}</button>
+                            <button type="default" class="btn bg-white round text-size fr br-0" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.x58gqu')}}</button>
                         </view>
                     </view>
                 </view>

@@ -41,7 +41,7 @@
                             <view class="recharge-desc-title padding-bottom-sm">{{$t('recharge.recharge.4fm61g')}}</view>
                             <view v-for="(item, index) in recharge_desc" :key="index" class="recharge-desc-content cr-grey-9 flex-row align-c">
                                 <text class="dis-inline-block circle bg-main circle-poiont margin-right-sm"></text>
-                                <text class="flex-1 flex-width text-size-xs">{{ item }}</text>
+                                <text class="text-size-xs">{{ item }}</text>
                             </view>
                         </view>
                     </view>

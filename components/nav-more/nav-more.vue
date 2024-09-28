@@ -11,7 +11,7 @@
                 <view class="divider-b">
                     <slot></slot>
                 </view>
-                <view class="tc padding-top-lg" @tap="quick_close_event">
+                <view class="tc padding-vertical-lg" @tap="quick_close_event">
                     <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                 </view>
