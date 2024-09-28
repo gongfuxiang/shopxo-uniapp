@@ -153,8 +153,11 @@
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            <component-no-data :propIsShowAddressChoice="false" :propStatus="data_list_loding_status"></component-no-data>
         </view>
+
+        <!-- 位置选择 -->
+        <component-choice-location ref="choice_location" @onback="user_back_choice_location"></component-choice-location>
 
         <!-- 公共 -->
         <component-common></component-common>
@@ -165,7 +168,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentRegionPicker from '@/components/region-picker/region-picker';
-
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     var common_static_url = app.globalData.get_static_url('common');
     const theme_color = app.globalData.get_theme_color();
     const theme_color_light = app.globalData.get_theme_color(null, true);
@@ -214,7 +217,8 @@
         components: {
             componentCommon,
             componentNoData,
-            componentRegionPicker
+            componentRegionPicker,
+            componentChoiceLocation
         },
 
         onLoad(params) {
@@ -245,15 +249,8 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 先解绑自定义事件
-            uni.$off('refresh');
-            // 监听自定义事件并进行页面刷新操作
-            uni.$on('refresh', (data) => {
-                // 初始位置数据
-                if((data.location_success || false) == true) {
-                    this.user_location_init();
-                }
-            });
+            // 用户位置初始化
+            this.user_location_init();
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -353,12 +350,26 @@
 
             // 选择地理位置
             choose_user_location_event(e) {
-                app.globalData.choose_user_location_event();
+                if ((this.$refs.choice_location || null) != null) {
+                    this.$refs.choice_location.choose_user_location();
+                }
             },
 
             // 清除位置缓存信息
             choose_user_location_remove() {
                 app.globalData.choice_user_location_remove();
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e
+                });
+
+                // 是否开启地理位置选择后自动识别
+                if (this.user_location.status == 1 && this.is_user_address_location_discern == 1) {
+                    this.address_discern_handle(this.user_location, 0, 1);
+                }
             },
 
             // 地址信息初始化

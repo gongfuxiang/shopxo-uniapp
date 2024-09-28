@@ -1,12 +1,12 @@
 <template>
     <view :class="theme_view">
-        <view class="choice-location single-text padding-right pr" @tap="choose_user_location_event">
+        <view v-if="propIsShowAddressChoice" class="choice-location padding-right-xxxl pr" @tap="choose_user_location">
             <view class="dis-inline-block va-m lh">
-                <iconfont name="icon-location" size="32rpx" propClass="lh" color="#fff"></iconfont>
+                <iconfont name="icon-location" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor"></iconfont>
             </view>
-            <text class="va-m margin-left-xs text-size-md">{{ location.text || '' }}</text>
-            <view class="lh pa right-0 top-xxxl">
-                <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-xs" color="#fff"></iconfont>
+            <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:'+propTextMaxWidth+';'">{{ location.text || '' }}</view>
+            <view class="va-m lh dis-inline-block margin-left-xs">
+                <iconfont name="icon-arrow-bottom" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor"></iconfont>
             </view>
         </view>
     </view>
@@ -21,7 +21,32 @@
                 cloice_location_timer: null
             };
         },
-        props: {},
+        props: {
+            propIsShowAddressChoice: {
+                type: Boolean,
+                default: true,
+            },
+            propTextMaxWidth: {
+                type: String,
+                default: '100%',
+            },
+            propIconLocationColor: {
+                type: String,
+                default: '#fff',
+            },
+            propIconLocationSize: {
+                type: String,
+                default: '32rpx',
+            },
+            propIconArrowColor: {
+                type: String,
+                default: '#fff',
+            },
+            propIconArrowSize: {
+                type: String,
+                default: '24rpx',
+            },
+        },
         // 页面被展示
         created: function () {
             this.init();
@@ -32,11 +57,10 @@
                 this.setData({
                     location: app.globalData.choice_user_location_init()
                 });
-                console.log(this.location)
             },
 
             // 选择位置监听
-            choose_user_location_event(e) {
+            choose_user_location(e) {
                 // 定时任务
                 clearInterval(this.cloice_location_timer);
                 var self = this;

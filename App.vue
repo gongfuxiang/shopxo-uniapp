@@ -1642,9 +1642,18 @@
                         // web地址
                         this.open_web_view(value, is_redirect);
                     } else if (value.substr(0, 8) == 'appid://') {
-                        // 打开外部小程序协议
+                        // 打开外部小程序协议（appid|/pages/index/index?pv=hello|extraData|envVersion）
+                        var values = value.substr(8).split('|');
                         uni.navigateToMiniProgram({
-                            appId: value.substr(8),
+                            appId: values[0],
+                            path: values[1] || '',
+                            extraData: values[2] || '',
+                            envVersion: values[3] || 'release'
+                        });
+                    } else if (value.substr(0, 12) == 'shortlink://') {
+                        // 小程序分享链接
+                        uni.navigateToMiniProgram({
+                            shortLink: value.substr(12)
                         });
                     } else if (value.substr(0, 6) == 'map://') {
                         // 地图协议（名称|地址|lng|lat）
@@ -2703,7 +2712,13 @@
                         },
                     };
                 }
-                user_location['text'] = user_location.name || user_location.address || i18n.t('shopxo-uniapp.app.4v6q86');
+                // 默认名称
+                var default_name = i18n.t('shopxo-uniapp.app.4v6q86');
+                // 位置选择失败的状态，名称和默认名称不一致则认为是成功的
+                if(user_location.status == 3 && user_location.name != default_name) {
+                    user_location.status = 1;
+                }
+                user_location['text'] = user_location.name || user_location.address || default_name;
                 return user_location;
             },
 

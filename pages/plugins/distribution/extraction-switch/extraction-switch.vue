@@ -41,6 +41,9 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
 
+        <!-- 位置选择 -->
+        <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
+
         <!-- 公共 -->
         <component-common></component-common>
     </view>
@@ -50,7 +53,7 @@ const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     var common_static_url = app.globalData.get_static_url("common");
     export default {
         data() {
@@ -70,7 +73,8 @@ const app = getApp();
         components: {
             componentCommon,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentChoiceLocation
         },
 
         onLoad(params) {
@@ -85,11 +89,6 @@ const app = getApp();
 
             // 清除位置缓存信息
             app.globalData.choice_user_location_remove();
-
-            // 是否获取位置
-            if (this.home_extraction_address_position == 1) {
-                app.globalData.choose_user_location_event();
-            }
         },
 
         onShow() {
@@ -98,27 +97,21 @@ const app = getApp();
 
             // 是否需要选择地理位置
             if (this.home_extraction_address_position == 1) {
-                // 首次不请求数据
-                if (this.is_first == 0) {
-                    // 先解绑自定义事件
-                    uni.$off('refresh');
-                    // 监听自定义事件并进行页面刷新操作
-                    uni.$on('refresh', (data) => {
-                        // 初始位置数据
-                        if((data.location_success || false) == true) {
-                            this.user_location_init();
-                        }
-                    });
-
-                    // 初始化数据
-                    this.init();
-                }
+                // 用户位置初始化
+                this.user_location_init();
             } else {
                 this.init();
             }
             this.setData({
                 is_first: 0,
             });
+
+            // 是否获取位置
+            if (this.home_extraction_address_position == 1) {
+                if((this.user_location || null) == null || this.user_location.status != 1) {
+                    this.$refs.choice_location.choose_user_location();
+                }
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -141,6 +134,14 @@ const app = getApp();
                         data_bottom_line_status: false,
                     });
                 }
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e
+                });
+                this.init();
             },
 
             // 地址信息初始化
