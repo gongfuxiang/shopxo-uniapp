@@ -22,9 +22,7 @@
                                     </view>
                                     <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
                                         <view class="flex-row align-c gap-2" @tap="go_map_event">
-                                            <iconfont name="icon-location" size="12" color="0"></iconfont>
-                                            <text class="size-14 cr-3 text-line-1">{{ form.content.positioning_name }}</text>
-                                            <iconfont v-if="form.content.is_arrows_show == '1'" name="icon-arrow-right" size="24rpx" color="#000"></iconfont>
+                                            <component-choice-location propBaseColor="#666" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" @onback="user_back_choice_location"></component-choice-location>
                                         </view>
                                         <template v-if="['5'].includes(form.content.theme)">
                                             <view class="flex-1">
@@ -66,6 +64,7 @@
     import componentDiySearch from '@/components/diy/search';
     import imageEmpty from '@/components/diy/modules/image-empty';
     import hotWordList from '@/components/diy/modules/hot-word-list';
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     import { isEmpty, background_computer, gradient_computer } from '@/common/js/common/common.js';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -87,6 +86,7 @@
             componentDiySearch,
             imageEmpty,
             hotWordList,
+            componentChoiceLocation,
         },
         data() {
             return {
