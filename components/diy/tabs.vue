@@ -1,18 +1,19 @@
 <template>
     <!-- 选项卡 -->
-    <view class="tabs pr" :style="'padding-top:' + tabs_padding_top">
-        <view :class="top_up == '1' ? 'tabs-top bg-white' : ''" :style="tabs_top_style">
+    <view class="tabs pr">
+        <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
             <view class="max-w tabs-content" :style="style_container">
                 <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
-        <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px'"></view>
+        <!-- <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px;padding-top:' + tabs_padding_top"></view> -->
+        <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px;'"></view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -59,7 +60,7 @@
                 // 置顶时，选项卡高度
                 tabs_seat_height: 0,
                 // 置顶时，选项卡距离顶部高度
-                tabs_padding_top: 0,
+                // tabs_padding_top: 0,
                 // 置顶时，选项卡样式
                 tabs_top_style: '',
             };
@@ -100,14 +101,19 @@
                 new_tabs_top_style = 'top:' + other_style + ';z-index:3;';
                 new_top_up = this.propNavIsTop || this.propTabsIsTop ? new_content.tabs_top_up : '0';
                 // #endif
+                let tabs_bg = new_style.common_style.color_list;
+                let new_tabs_background = '';
+                if (!Array.isArray(tabs_bg) || tabs_bg.length === 0 || !tabs_bg[0] || !tabs_bg[0].color) {
+                    new_tabs_background = 'background:#fff;';
+                }
 
                 this.setData({
                     tabs_data: new_tabs_data,
-                    style_container: common_styles_computer(new_style.common_style),
+                    style_container: common_styles_computer(new_style.common_style) + new_tabs_background,
                     tabs_top_style: new_tabs_top_style,
                     // 判断是否置顶
                     top_up: new_top_up,
-                    tabs_padding_top: this.propNavIsTop || this.propTabsIsTop ? other_style : '0',
+                    // tabs_padding_top: this.propNavIsTop || this.propTabsIsTop ? other_style : '0',
                 });
             },
             // 获取选项卡高度
@@ -154,7 +160,7 @@
 
 <style lang="scss" scoped>
     .tabs {
-        z-index: 4;
+        z-index: 3;
         .tabs-top {
             position: fixed;
             left: 0;
