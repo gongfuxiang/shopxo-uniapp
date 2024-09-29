@@ -20,7 +20,7 @@
                 </swiper-item>
             </block>
             <block v-else>
-                <swiper-item v-for="(item, index) in new_list" :key="index" :style="{ 'padding-right': new_style.image_spacing * 2 + 'rpx' }" :data-value="item.carousel_link.page" @tap="url_open">
+                <swiper-item v-for="(item, index) in new_list" :key="index" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? { 'padding-right': new_style.image_spacing * 2 + 'rpx' } : ''" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="wh-auto ht-auto pr" :style="img_style">
                         <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
