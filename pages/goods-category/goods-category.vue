@@ -357,18 +357,12 @@
 
                     <!-- 商品购买 -->
                     <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
-
-                    <!-- 用户基础 -->
-                    <component-user-base ref="user_base"></component-user-base>
-
-                    <!-- app管理 -->
-                    <component-app-admin ref="app_admin"></component-app-admin>
                 </block>
             </view>
         </view>
 
         <!-- 公共 -->
-        <component-common @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
+        <component-common ref="common" @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 
@@ -382,9 +376,7 @@
     import componentPopup from '@/components/popup/popup';
     import componentBadge from '@/components/badge/badge';
     import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
-    import componentUserBase from '@/components/user-base/user-base';
     import componentNavMore from '@/components/nav-more/nav-more';
-    import componentAppAdmin from '@/components/app-admin/app-admin';
 
     var theme_static_url = app.globalData.get_static_url('goods-category');
     var common_static_url = app.globalData.get_static_url('common');
@@ -469,9 +461,7 @@
             componentPopup,
             componentBadge,
             componentCartParaCurve,
-            componentUserBase,
-            componentNavMore,
-            componentAppAdmin
+            componentNavMore
         },
 
         onLoad(params) {
@@ -506,14 +496,9 @@
             // 清除tab参数
             app.globalData.remove_page_tabbar_switch_params();
 
-            // app管理
-            if ((this.$refs.app_admin || null) != null) {
-                this.$refs.app_admin.init();
-            }
-
-            // 用户头像和昵称设置提示
-            if ((this.$refs.user_base || null) != null) {
-                this.$refs.user_base.init('goods-category');
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
             }
         },
 

@@ -288,14 +288,8 @@
             <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
         </block>
 
-        <!-- 用户基础 -->
-        <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
-
-        <!-- app管理 -->
-        <component-app-admin ref="app_admin"></component-app-admin>
-        
         <!-- 公共 -->
-        <component-common ref="common"></component-common>
+        <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
     </view>
 </template>
 <script>
@@ -317,10 +311,8 @@
     import componentRealstoreList from '@/components/realstore-list/realstore-list';
     import componentShopList from '@/components/shop-list/shop-list';
     import componentGoodsList from '@/components/goods-list/goods-list';
-    import componentUserBase from '@/components/user-base/user-base';
     import componentBindingList from '@/components/binding-list/binding-list';
     import componentMagicList from '@/components/magic-list/magic-list';
-    import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentDiy from '@/components/diy/diy';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
 
@@ -379,8 +371,6 @@
                 // #endif
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
-                // 用户位置信息
-                user_location: {},
                 // 轮播滚动时，背景色替换
                 slider_bg: null,
                 // 插件顺序列表
@@ -433,10 +423,8 @@
             componentRealstoreList,
             componentShopList,
             componentGoodsList,
-            componentUserBase,
             componentBindingList,
             componentMagicList,
-            componentAppAdmin,
             componentDiy,
             componentChoiceLocation
         },
@@ -450,12 +438,6 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 加载数据
-            if (this.is_home_location_choice == 1) {
-                // 用户位置初始化
-                this.user_location_init();
-            }
-
             // 数据加载
             this.init();
 
@@ -465,16 +447,6 @@
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
-            }
-
-            // app管理
-            if ((this.$refs.app_admin || null) != null) {
-                this.$refs.app_admin.init();
-            }
-
-            // 用户头像和昵称设置提示
-            if ((this.$refs.user_base || null) != null) {
-                this.$refs.user_base.init('index');
             }
         },
 
@@ -661,16 +633,8 @@
 
             // 选择用户地理位置回调
             user_back_choice_location(e) {
-                this.setData({
-                    user_location: e
-                });
-            },
-
-            // 用户地理位置初始化
-            user_location_init() {
-                this.setData({
-                    user_location: app.globalData.choice_user_location_init()
-                });
+                // 重新刷新数据
+                this.init();
             },
 
             // url事件

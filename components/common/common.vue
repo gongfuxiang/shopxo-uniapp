@@ -1,14 +1,23 @@
 <template>
     <view>
+        <!-- 底部菜单 -->
         <block v-if="is_tabbar">
-            <componentDiyFooter :key="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></componentDiyFooter>
+            <component-diy-footer :key="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></component-diy-footer>
             <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
         </block>
+
+        <!-- app管理 -->
+        <component-app-admin ref="app_admin"></component-app-admin>
+
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base" :propIsGrayscale="propIsGrayscale"></component-user-base>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentDiyFooter from '@/components/diy/footer';
+    import componentAppAdmin from '@/components/app-admin/app-admin';
+    import componentUserBase from '@/components/user-base/user-base';
     export default {
         data() {
             return {
@@ -20,13 +29,31 @@
             };
         },
         props: {
+            // 是否灰度
+            propIsGrayscale: {
+                type: Boolean,
+                default: false,
+            },
+            // 是否显示底部菜单占位
             propIsFooterSeat: {
                 type: Boolean,
                 default: true,
-            }
+            },
+            // 是否引入app管理
+            propIsAppAdmin: {
+                type: Boolean,
+                default: true,
+            },
+            // 是否引入用户基础信息提示
+            propIsUserBase: {
+                type: Boolean,
+                default: true,
+            },
         },
         components: {
-            componentDiyFooter
+            componentDiyFooter,
+            componentAppAdmin,
+            componentUserBase
         },
         // 页面被展示
         created: function () {
@@ -66,7 +93,15 @@
 
             // 显示响应方法
             on_show() {
-                console.log('on show');
+                // app管理
+                if (this.propIsAppAdmin && (this.$refs.app_admin || null) != null) {
+                    this.$refs.app_admin.init();
+                }
+
+                // 用户头像和昵称设置提示
+                if (this.propIsUserBase && (this.$refs.user_base || null) != null) {
+                    this.$refs.user_base.init();
+                }
             },
 
             // 底部菜单高度

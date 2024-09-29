@@ -161,12 +161,6 @@
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
 
-        <!-- 用户基础 -->
-        <component-user-base ref="user_base"></component-user-base>
-
-        <!-- app管理 -->
-        <component-app-admin ref="app_admin"></component-app-admin>
-
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -178,8 +172,6 @@
     import componentBadge from '@/components/badge/badge';
     import componentCopyright from '@/components/copyright/copyright';
     import componentOnlineService from '@/components/online-service/online-service';
-    import componentUserBase from '@/components/user-base/user-base';
-    import componentAppAdmin from '@/components/app-admin/app-admin';
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
@@ -220,9 +212,7 @@
             componentQuickNav,
             componentBadge,
             componentCopyright,
-            componentOnlineService,
-            componentUserBase,
-            componentAppAdmin
+            componentOnlineService
         },
 
         onLoad(params) {
@@ -246,16 +236,6 @@
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
-            }
-
-            // app管理
-            if ((this.$refs.app_admin || null) != null) {
-                this.$refs.app_admin.init();
-            }
-
-            // 用户头像和昵称设置提示
-            if ((this.$refs.user_base || null) != null) {
-                this.$refs.user_base.init('user');
             }
         },
 

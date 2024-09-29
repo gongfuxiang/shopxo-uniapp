@@ -3,22 +3,14 @@
         <!-- 购物车 -->
         <component-cart ref="cart" :propCartNavBottomValue="footer_height_value"></component-cart>
 
-        <!-- 用户基础 -->
-        <component-user-base ref="user_base"></component-user-base>
-
-        <!-- app管理 -->
-        <component-app-admin ref="app_admin"></component-app-admin>
-
         <!-- 公共 -->
-        <component-common @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
+        <component-common ref="common" @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentCart from "@/components/cart/cart";
-    import componentUserBase from '@/components/user-base/user-base';
-    import componentAppAdmin from '@/components/app-admin/app-admin';
     export default {
         data() {
             return {
@@ -28,9 +20,7 @@
         },
         components: {
             componentCommon,
-            componentCart,
-            componentUserBase,
-            componentAppAdmin
+            componentCart
         },
 
         onLoad(params) {
@@ -47,14 +37,9 @@
                 this.$refs.cart.init();
             }
 
-            // app管理
-            if ((this.$refs.app_admin || null) != null) {
-                this.$refs.app_admin.init();
-            }
-
-            // 用户头像和昵称设置提示
-            if ((this.$refs.user_base || null) != null) {
-                this.$refs.user_base.init('cart');
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
             }
         },
 
