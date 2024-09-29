@@ -351,20 +351,6 @@
             ]
         },
         {
-            "root": "pages/common/agreement",
-            "pages": [
-                {
-                    "path": "agreement",
-                    "style": {
-                        // #ifndef MP-TOUTIAO
-                        "navigationStyle": "custom",
-                        // #endif
-                        "enablePullDownRefresh": false
-                    }
-                }
-            ]
-        },
-        {
             "root": "pages/customview",
             "pages": [
                 {

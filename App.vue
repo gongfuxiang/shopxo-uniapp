@@ -90,9 +90,8 @@
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,
 
-                // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
+                // 是否开启微信隐私弹窗授权提示、仅微信小程序有效（0否, 1是）
                 is_weixin_privacy_setting: 1,
-                weixin_privacy_setting_timer: null,
                 
                 // 弹出获取用户当前位置（0否, 1是）
                 get_user_location_status: 0,
@@ -2412,30 +2411,6 @@
                 }
             },
 
-            // 微信隐私弹窗提示
-            weixin_privacy_setting() {
-                if (this.data.is_weixin_privacy_setting == 1) {
-                    var self = this;
-                    self.weixin_privacy_setting_timer = setInterval(function () {
-                        var page = self.get_page_url(false);
-                        if ('/' + page == self.app_tabbar_pages()[0]) {
-                            uni.getPrivacySetting({
-                                success: (res) => {
-                                    if (res.needAuthorization) {
-                                        // 需要弹出隐私协议
-                                        uni.navigateTo({
-                                            url: '/pages/common/agreement/agreement',
-                                        });
-                                    }
-                                },
-                            });
-                            // 已执行隐私方法清除定时任务
-                            clearInterval(self.weixin_privacy_setting_timer);
-                        }
-                    }, 100);
-                }
-            },
-
             // 获取主题色值
             // is_light 是否获取浅主色（false, true）
             get_theme_color(theme, is_light = false) {
@@ -2818,8 +2793,6 @@
                     }
                 }
                 this.data.network_type_page_record_timer = null;
-                // 清除微信隐私方法定时任务
-                clearInterval(this.data.weixin_privacy_setting_timer);
                 // 清除弹出位置权限提示定时任务
                 clearInterval(this.data.get_user_location_timer);
             },
@@ -2933,11 +2906,6 @@
 
             // 公共数据初始化处理
             this.globalData.common_data_init_handle();
-
-            // #ifdef MP-WEIXIN
-            // 协议验证处理
-            this.globalData.weixin_privacy_setting();
-            // #endif
         },
 
         // 从前台进入后台
