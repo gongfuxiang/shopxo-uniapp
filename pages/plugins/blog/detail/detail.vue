@@ -134,7 +134,7 @@
 
             // 设置参数
             this.setData({
-                params: params,
+                params: app.globalData.launch_params_handle(params),
             });
 
             // 初始化配置

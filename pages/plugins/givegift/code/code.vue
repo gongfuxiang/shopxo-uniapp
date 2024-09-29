@@ -68,6 +68,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
+            // 参数处理
+            params = app.globalData.launch_params_handle(params);
+
             // 是否指定状态
             var nav_status_index = 0;
             if ((params.status || null) != null) {

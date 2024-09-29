@@ -125,11 +125,11 @@
             app.globalData.page_event_onload_handle(params);
 
             // 设置参数
-            if (params) {
-                this.setData({
-                    params: params.id,
-                });
-            }
+            this.setData({
+                params: app.globalData.launch_params_handle(params),
+            });
+
+            // 获取数据
             this.get_data();
         },
 

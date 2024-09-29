@@ -1424,6 +1424,7 @@
         bottom: 20rpx;
         width: calc(100% - 40rpx);
         box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
+        height: 116rpx;
     }
     .cart-nav-base {
         width: calc(75% - 20rpx);
@@ -1553,6 +1554,9 @@
     .scroll-box-popup.close {
         transition: all 0.3s ease;
         height: 234rpx;
+    }
+    .scroll-box-popup .content {
+        padding-bottom: 0 !important;
     }
     .scroll-box-popup .content .item {
         width: 25%;

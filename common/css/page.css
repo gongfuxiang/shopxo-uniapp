@@ -263,7 +263,7 @@ button:before {
     border-radius: 32rpx !important;
 }
 .round {
-    border-radius: 50rpx !important;
+    border-radius: 100rpx !important;
 }
 .circle {
     border-radius: 50% !important;
