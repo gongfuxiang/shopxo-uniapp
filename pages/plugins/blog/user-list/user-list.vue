@@ -33,11 +33,13 @@
 
         <!-- 底部操作 -->
         <view class="bottom-fixed">
-            <view class="oh bottom-line-exclude">
-                <button class="cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
+            <view class="bottom-line-exclude">
+                <button class="item cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
                     <view class="add-icon">
                         <iconfont name="icon-xzdz-tianjiabiaoq" size="32rpx"></iconfont>
-                    </view>{{$t('common.add')}}</button>
+                    </view>
+                    <text>{{$t('common.add')}}</text>
+                </button>
             </view>
         </view>
         <block v-if="data.length == 0 && data_list_loding_status != 3">

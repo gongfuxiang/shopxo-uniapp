@@ -8,8 +8,10 @@
                             <mp-html :content="agreement_data.value" />
                         </view>
                         <view class="bottom-fixed oh">
-                            <button class="bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">{{$t('logout.logout.u10002')}}</button>
-                            <button class="bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">{{$t('common.cancel')}}</button>
+                            <view class="bottom-line-exclude">
+                                <button class="item bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">{{$t('logout.logout.u10002')}}</button>
+                                <button class="item bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">{{$t('common.cancel')}}</button>
+                            </view>
                         </view>
                     </view>
                 </block>

@@ -960,6 +960,11 @@
                 return false;
             },
 
+            // 系统底部菜单隐藏
+            system_hide_tabbar() {
+                uni.hideTabBar();
+            },
+
             /**
              * 事件操作
              */
@@ -985,7 +990,7 @@
                                     url: value
                                 });
                                 //隐藏系统tabbar
-                                uni.hideTabBar();
+                                this.system_hide_tabbar();
                             } else {
                                 uni.navigateTo({
                                     url: value
@@ -1682,7 +1687,7 @@
                                     url: value
                                 });
                                 //隐藏系统tabbar
-                                uni.hideTabBar();
+                                this.system_hide_tabbar();
                             } else {
                                 if (is_redirect) {
                                     uni.redirectTo({
@@ -2887,11 +2892,14 @@
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {
             //隐藏系统tabbar
-            uni.hideTabBar();
+            this.globalData.system_hide_tabbar();
         },
 
         // 启动，或从后台进入前台显示
         onShow(params) {
+            //隐藏系统tabbar
+            this.globalData.system_hide_tabbar();
+
             // 初始化配置
             this.globalData.init_config();
 

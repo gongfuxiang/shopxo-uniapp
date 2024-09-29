@@ -68,7 +68,7 @@
                 <!-- 兑换卡密 -->
                 <view class="bottom-fixed">
                     <view class="bottom-line-exclude">
-                        <button data-value="/pages/plugins/giftcard/form/form" @tap="url_event" class="round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none" data-value="/pages/plugins/giftcard/form/form" @tap="url_event">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
                     </view>
                 </view>
             </view>

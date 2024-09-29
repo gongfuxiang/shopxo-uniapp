@@ -30,7 +30,7 @@
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed">
                         <view class="bottom-line-exclude">
-                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
+                            <button class="item cr-white bg-green br-green text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
                         </view>
                     </view>
                 </view>

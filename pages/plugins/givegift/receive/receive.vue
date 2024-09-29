@@ -33,7 +33,7 @@
                 </view>
                 <view class="bottom-fixed">
                     <view class="bottom-line-exclude">
-                        <button type="default" form-type="submit" class="bg-main br-main cr-white text-size round wh-auto">我要领取</button>
+                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto">我要领取</button>
                     </view>
                 </view>
             </form>

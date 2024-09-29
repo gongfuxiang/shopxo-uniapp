@@ -8,7 +8,7 @@
 /*
 * 发票内容
 */
-.item-operation button {
+.item-operation .btn {
     padding: 0 48rpx;
     height: 60rpx;
     line-height: 60rpx;

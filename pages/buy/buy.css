@@ -48,22 +48,15 @@
 /**
 * 导航
 */
-.buy-nav {
-    position: fixed;
-    left: 0;
-    bottom: 0;
+.bottom-fixed .nav-base {
+    width: 60%;
 }
-.buy-nav,
-.nav-base {
-    height: 114rpx;
-    line-height: 114rpx;
+.bottom-fixed .nav-submit {
+    width: 40%;
 }
-.nav-submit button {
+.bottom-fixed .nav-submit .btn {
     height: 70rpx;
     line-height: 70rpx;
-}
-.nav-submit {
-    width: calc(40% - 48rpx);
 }
 
 /**

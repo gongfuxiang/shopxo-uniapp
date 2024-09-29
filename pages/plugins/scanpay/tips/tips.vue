@@ -38,7 +38,7 @@
             </view>
             <view class="bottom-fixed">
                 <view class="bottom-line-exclude">
-                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
+                    <button class="item bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
                 </view>
             </view>
         </view>

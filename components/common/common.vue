@@ -141,6 +141,9 @@
 
             // 显示响应方法
             on_show() {
+                //隐藏系统tabbar
+                app.globalData.system_hide_tabbar();
+
                 // app管理
                 if (this.propIsAppAdmin && (this.$refs.app_admin || null) != null) {
                     this.$refs.app_admin.init();

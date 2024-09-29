@@ -44,7 +44,6 @@ iframe,
 .nav-more-view,
 .quick-movable-container,
 .online-service-movable-container,
-.buy-nav,
 .plugins-realstore-cart-content {
     left: auto !important;
 }
@@ -304,6 +303,9 @@ button:before {
     box-sizing: border-box;
     z-index: 2;
     padding: 20rpx;
+}
+.bottom-fixed .item {
+    box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
 }
 
 /**

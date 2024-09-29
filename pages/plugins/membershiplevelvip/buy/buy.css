@@ -47,26 +47,18 @@
     width: calc((100% / 3) - 24rpx);
 }
 
-.data-list .item {
+.data-list .list .item {
     background: #F7F7F7;
     border-radius: 8px 40px 8px 8px;
     padding: 50rpx 32rpx 20rpx 32rpx;
     border: 1px solid #F7F7F7;
 }
 
-.data-list .item.active {
+.data-list .list .item.active {
     border-color: #F1513C;
     background-color: #FEF0E8;
 }
 
-.data-list .item .price {
+.data-list .list .item .price {
     margin-top: 16rpx;
-}
-
-/**
- * 开通支付
- */
-.sub-pay button {
-    height: 88rpx;
-    line-height: 88rpx;
 }

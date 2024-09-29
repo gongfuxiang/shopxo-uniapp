@@ -53,7 +53,7 @@
                 </view>
                 <view class="bottom-fixed">
                     <view class="bottom-line-exclude">
-                        <button type="default" form-type="submit" class="bg-main br-main cr-white text-size round wh-auto" :disabled="form_submit_disabled_status">提交支付</button>
+                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto" :disabled="form_submit_disabled_status">提交支付</button>
                     </view>
                 </view>
             </form>

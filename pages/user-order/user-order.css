@@ -48,12 +48,3 @@
     width: 50rpx;
     height: 50rpx !important;
 }
-
-/**
-* 合并支付按钮
-*/
-.pay-merge-submit {
-    width: 100%;
-    height: 88rpx !important;
-    line-height: 88rpx !important;
-}

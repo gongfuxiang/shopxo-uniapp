@@ -35,7 +35,7 @@
             <!-- 合并开票 -->
             <view v-if="select_ids.length > 0" class="bottom-fixed">
                 <view class="bottom-line-exclude">
-                    <button class="bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
+                    <button class="item bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
                 </view>
             </view>
         </view>

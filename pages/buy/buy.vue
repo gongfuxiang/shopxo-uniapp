@@ -248,13 +248,17 @@
                 </view>
 
                 <!-- 导航 -->
-                <view class="buy-nav oh wh-auto bg-white br-top-shadow bottom-line-exclude flex-row jc-sb align-c">
-                    <view class="nav-base single-text padding-left-main flex-1 flex-width">
-                        <text>{{ $t('buy.buy.wx78ju') }}</text>
-                        <text class="sales-price">{{ currency_symbol }}{{ total_price }}</text>
-                    </view>
-                    <view class="nav-submit padding-vertical-main padding-horizontal-main">
-                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ $t('buy.buy.4884hk') }}</button>
+                <view class="bottom-fixed">
+                    <view class="bottom-line-exclude">
+                        <view class="item oh round flex-row jc-sb align-c br-top-shadow bg-white padding-vertical-sm">
+                            <view class="nav-base single-text padding-left-main fl">
+                                <text>{{ $t('buy.buy.wx78ju') }}</text>
+                                <text class="sales-price">{{ currency_symbol }}{{ total_price }}</text>
+                            </view>
+                            <view class="nav-submit padding-horizontal-main fr">
+                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ $t('buy.buy.4884hk') }}</button>
+                            </view>
+                        </view>
                     </view>
                 </view>
             </view>

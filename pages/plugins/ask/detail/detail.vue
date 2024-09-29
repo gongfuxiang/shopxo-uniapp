@@ -58,18 +58,20 @@
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
             <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed">
-                <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude br bg-white round padding-vertical">
-                    <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                        <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
-                    </view>
-                    <view data-value="/pages/plugins/ask/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
-                        <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
+                <view class="bottom-line-exclude">
+                    <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
+                        <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
+                            <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
+                        </view>
+                        <view data-value="/pages/plugins/ask/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
+                            <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
+                        </view>
                     </view>
                 </view>
             </view>
         </view>
         <view v-else>
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
 
         <!-- 公共 -->
@@ -89,6 +91,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 logo_square: app.globalData.get_application_logo_square(),
+                data_list_loding_msg: '',
                 data_list_loding_status: 1,
                 data_bottom_line_status: true,
                 info: null,
@@ -182,7 +185,8 @@
                                 data_base: data.base || null,
                                 emoji_list: data.emoji_list || [],
                                 goods_list: data.goods,
-                                data_list_loding_status: 3,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
                                 goods_is_loading: 0,
                             });
 
@@ -202,21 +206,19 @@
                             }
                         } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                                data_list_loding_status: 0,
                                 goods_is_loading: 0,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
                         }
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
                         this.setData({
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_list_loding_status: 2,
                             goods_is_loading: 0,
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
