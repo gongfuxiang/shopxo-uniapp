@@ -1,12 +1,12 @@
 <template>
     <view :class="theme_view">
-        <view v-if="propIsShowAddressChoice" class="choice-location padding-right-xxxl pr" @tap="choose_user_location">
+        <view v-if="propIsShowAddressChoice" class="choice-location pr" @tap="choose_user_location">
             <view class="dis-inline-block va-m lh">
-                <iconfont name="icon-location" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor"></iconfont>
+                <iconfont name="icon-location" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
             </view>
-            <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:'+propTextMaxWidth+';'">{{ location.text || '' }}</view>
+            <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
             <view class="va-m lh dis-inline-block margin-left-xs">
-                <iconfont name="icon-arrow-bottom" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor"></iconfont>
+                <iconfont name="icon-arrow-bottom" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
             </view>
         </view>
     </view>
@@ -18,7 +18,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 location: {},
-                cloice_location_timer: null
+                cloice_location_timer: null,
             };
         },
         props: {
@@ -26,25 +26,41 @@
                 type: Boolean,
                 default: true,
             },
+            propBaseColor: {
+                type: String,
+                default: '#fff',
+            },
+            propTextDefaultName: {
+                type: String,
+                default: '',
+            },
+            propTextColor: {
+                type: String,
+                default: '',
+            },
             propTextMaxWidth: {
                 type: String,
                 default: '100%',
             },
             propIconLocationColor: {
                 type: String,
-                default: '#fff',
+                default: '',
             },
             propIconLocationSize: {
                 type: String,
-                default: '32rpx',
+                default: '28rpx',
             },
             propIconArrowColor: {
                 type: String,
-                default: '#fff',
+                default: '',
             },
             propIconArrowSize: {
                 type: String,
                 default: '24rpx',
+            },
+            propIsIconArrow: {
+                type: Boolean,
+                default: true,
             },
         },
         // 页面被展示
@@ -54,8 +70,15 @@
         methods: {
             // 初始化
             init() {
+                let location = app.globalData.choice_user_location_init();
+                if ((this.propTextDefaultName || null) != null) {
+                    var default_name = this.$t('shopxo-uniapp.app.4v6q86');
+                    if (location.text == default_name) {
+                        location.text = this.propTextDefaultName;
+                    }
+                }
                 this.setData({
-                    location: app.globalData.choice_user_location_init()
+                    location: location,
                 });
             },
 
@@ -66,9 +89,9 @@
                 var self = this;
                 var timer = setInterval(function () {
                     var result = app.globalData.choice_user_location_init() || null;
-                    if(result != null && (result.status == 1 || result.status == 3)) {
+                    if (result != null && (result.status == 1 || result.status == 3)) {
                         self.setData({
-                            location: result
+                            location: result,
                         });
                         clearInterval(self.cloice_location_timer);
 
@@ -77,13 +100,13 @@
                     }
                 }, 1000);
                 this.setData({
-                    cloice_location_timer: timer
+                    cloice_location_timer: timer,
                 });
 
                 // 进入位置选择
                 app.globalData.choose_user_location_event();
-            }
-        }
+            },
+        },
     };
 </script>
 <style scoped>
