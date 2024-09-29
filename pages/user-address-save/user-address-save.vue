@@ -160,7 +160,7 @@
         <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -243,6 +243,11 @@
 
             // 初始化
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         onShow() {

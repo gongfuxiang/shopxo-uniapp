@@ -37,7 +37,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 
@@ -122,9 +122,15 @@ const app = getApp();
             this.init();
             // #endif
 
+            // 首次状态
             this.setData({
                 is_first: 0,
             });
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

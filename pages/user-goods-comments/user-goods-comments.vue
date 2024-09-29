@@ -41,7 +41,7 @@
         </scroll-view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -102,6 +102,11 @@
                 // 重新请求数据
                 this.init();
             });
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

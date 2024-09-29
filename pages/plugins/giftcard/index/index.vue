@@ -75,7 +75,7 @@
         </scroll-view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -125,11 +125,16 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 分享菜单处理
-            app.globalData.page_share_handle();
-
             // 初始化配置
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
 
         // 下拉刷新

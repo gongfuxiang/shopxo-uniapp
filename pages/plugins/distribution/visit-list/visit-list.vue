@@ -43,7 +43,7 @@
         <view data-value="/pages/plugins/distribution/visit-form/visit-form" @tap="url_event" class="buttom-right-submit bg-main cr-white round tc">+</view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -102,6 +102,11 @@
                 // 重新请求数据
                 this.init();
             });
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

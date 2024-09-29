@@ -81,7 +81,7 @@
         <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -143,6 +143,11 @@
 
             // 用户位置初始化
             this.user_location_init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

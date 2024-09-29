@@ -85,7 +85,7 @@
         ></component-payment>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -152,6 +152,11 @@
 
             // 加载数据
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

@@ -39,7 +39,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -99,10 +99,15 @@
             // 先解绑自定义事件
             uni.$off('refresh');
             // 监听自定义事件并进行页面刷新操作
-            uni.$on('refresh', (data) => {
+            uni.$on('refresh', (data) => {
                 // 重新请求数据
                 this.init();
-            });
+            });
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

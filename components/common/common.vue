@@ -64,6 +64,11 @@
                 this.setData(upd_data);
             },
 
+            // 显示响应方法
+            on_show() {
+                console.log('on show');
+            },
+
             // 底部菜单高度
             footer_height_value_event(value) {  
                 this.setData({

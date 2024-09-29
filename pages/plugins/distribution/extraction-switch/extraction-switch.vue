@@ -45,7 +45,7 @@
         <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -111,6 +111,11 @@ const app = getApp();
                 if((this.user_location || null) == null || this.user_location.status != 1) {
                     this.$refs.choice_location.choose_user_location();
                 }
+            }
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
             }
 
             // 分享菜单处理

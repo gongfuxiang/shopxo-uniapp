@@ -42,7 +42,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -94,6 +94,11 @@
 
             // 获取数据
             this.get_data();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

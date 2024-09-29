@@ -11,9 +11,6 @@
 
                             <!-- 版权信息 -->
                             <component-copyright></component-copyright>
-
-                            <!-- 公共 -->
-                            <component-common></component-common>
                         </template>
                     </componentDiy>
                 </block>
@@ -289,16 +286,16 @@
 
             <!-- 快捷导航 -->
             <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-
-            <!-- 用户基础 -->
-            <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
-
-            <!-- app管理 -->
-            <component-app-admin ref="app_admin"></component-app-admin>
-
-            <!-- 公共 -->
-            <component-common></component-common>
         </block>
+
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+
+        <!-- app管理 -->
+        <component-app-admin ref="app_admin"></component-app-admin>
+        
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -464,6 +461,11 @@
 
             // 初始化配置
             this.init_config();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // app管理
             if ((this.$refs.app_admin || null) != null) {

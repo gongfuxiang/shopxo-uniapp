@@ -21,112 +21,117 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
-const app = getApp();
-import componentCommon from '@/components/common/common';
-import componentNoData from "@/components/no-data/no-data";
-import componentBottomLine from "@/components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
-export default {
-    data() {
-        return {
-            theme_view: app.globalData.get_theme_value_view(),
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            detail: null,
-            detail_list: [],
-        };
-    },
-
-    components: {
-        componentCommon,
-        componentNoData,
-        componentBottomLine,
-    },
-
-    onLoad(params) {
-        // 调用公共事件方法
-        app.globalData.page_event_onload_handle(params);
-
-        // 设置参数
-        this.setData({
-            params: params,
-        });
-        this.init();
-    },
-
-    onShow() {
-        // 调用公共事件方法
-        app.globalData.page_event_onshow_handle();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        init() {
-            this.setData({
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                params: null,
                 data_list_loding_status: 1,
+                data_list_loding_msg: "",
+                data_bottom_line_status: false,
+                detail: null,
+                detail_list: [],
+            };
+        },
+
+        components: {
+            componentCommon,
+            componentNoData,
+            componentBottomLine,
+        },
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
             });
-            uni.request({
-                url: app.globalData.get_request_url("detail", "recharge", "wallet"),
-                method: "POST",
-                data: {
-                    id: this.params.id,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            detail: data.data,
-                            detail_list: [
-                                { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), value: data.data.recharge_no || "" },
-                                { name: this.$t('user-recharge-detail.user-recharge-detail.dq5v2u'), value: data.data.status_name || "" },
-                                { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), value: data.data.money || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || "" },
-                            ],
-                            data_list_loding_status: 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
-                        });
-                    } else {
+            this.init();
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            init() {
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("detail", "recharge", "wallet"),
+                    method: "POST",
+                    data: {
+                        id: this.params.id,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                detail: data.data,
+                                detail_list: [
+                                    { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), value: data.data.recharge_no || "" },
+                                    { name: this.$t('user-recharge-detail.user-recharge-detail.dq5v2u'), value: data.data.status_name || "" },
+                                    { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), value: data.data.money || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || "" },
+                                ],
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                                data_list_loding_msg: "",
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, "init")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        if (app.globalData.is_login_check(res.data, this, "init")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: this.$t('common.internet_error_tips'),
-                    });
-                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                },
-            });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
         },
-    },
-};
+    };
 </script>
 <style></style>
