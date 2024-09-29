@@ -206,6 +206,9 @@
                     is_click: false,
                 });
             },
+            user_back_choice_location(e) {
+                console.log('选择位置', e);
+            },
             url_event(e) {
                 app.globalData.url_event(e);
             },
