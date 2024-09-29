@@ -19,7 +19,7 @@
             </view>
             <view class="flex-row jc-sa align-c">
                 <template v-for="(item, index) in stats_list">
-                    <view v-if="config.includes(item.id)" :key="index" class="tc">
+                    <view v-if="config.includes(item.id)" :key="index" class="tc" :data-value="'/pages/' + item.url + '/' + item.url" @tap="url_event">
                         <view class="text-size fw-b margin-bottom-sm" :style="stats_number_style">{{ item.value }}</view>
                         <view class="text-size-xs" :style="stats_name_style">{{ item.name }}</view>
                     </view>
@@ -45,10 +45,10 @@
                 style: '',
                 id_bool: true,
                 stats_list: [
-                    { id: 'order_count', name: '订单总数', value: '100' },
-                    { id: 'goods_favor_count', name: '商品收藏', value: '10' },
-                    { id: 'goods_browse_count', name: '我的足迹', value: '1000' },
-                    { id: 'integral_number', name: '我的积分', value: '10000' },
+                    { id: 'order_count', name: '订单总数', value: '100', url: 'user-order' },
+                    { id: 'goods_favor_count', name: '商品收藏', value: '10', url: 'user-favor' },
+                    { id: 'goods_browse_count', name: '我的足迹', value: '1000', url: 'user-goods-browse' },
+                    { id: 'integral_number', name: '我的积分', value: '10000', url: 'user-integral' },
                 ],
                 config: ['order_count', 'goods_favor_count', 'goods_browse_count', 'integral_number'],
                 icon_setting: [
