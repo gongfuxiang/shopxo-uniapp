@@ -50,7 +50,7 @@
             </view>
         </scroll-view>
         <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed">
-            <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude br bg-white round padding-sm">
+            <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude br bg-white round padding-vertical">
                 <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                     <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
                 </view>

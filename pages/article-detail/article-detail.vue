@@ -72,7 +72,7 @@ export default {
 
         // 设置参数
         this.setData({
-            params: params,
+            params: app.globalData.launch_params_handle(params),
         });
 
         // 数据加载
