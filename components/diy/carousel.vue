@@ -20,7 +20,7 @@
                 </swiper-item>
             </block>
             <block v-else>
-                <swiper-item v-for="(item, index) in new_list" :key="index" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? { 'padding-right': new_style.image_spacing * 2 + 'rpx' } : ''" :data-value="item.carousel_link.page" @tap="url_open">
+                <swiper-item v-for="(item, index) in new_list" :key="index" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="wh-auto ht-auto pr" :style="img_style">
                         <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
@@ -138,7 +138,7 @@
                     style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
                     img_style: radius_computer(this.new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(), // 指示器的样式
-                    dot_style: `bottom: ${common_style.padding_bottom * 2 + 12}rpx;`, // 指示器位置
+                    dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置
                     img_fit: fit,
                     video_style: this.get_video_style(), // 视频播放按钮显示逻辑
                 });
@@ -264,6 +264,8 @@
     }
     .dot {
         z-index: 1;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
         .dot-item {
             margin: 0 6rpx;
         }
