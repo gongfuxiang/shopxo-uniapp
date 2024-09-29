@@ -1,7 +1,7 @@
 <template>
     <view v-if="(propValue || null) !== null" class="header-container">
         <view class="wh-auto header-z-3" :style="roll_style + position">
-            <view class="bg-white" :style="top_content_style">
+            <view :style="top_content_style">
                 <view class="header-content flex-row align-c">
                     <view class="model-top flex-1">
                         <view class="roll pr z-i">
@@ -32,7 +32,7 @@
                                             </view>
                                         </template>
                                     </view>
-                                    <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
+                                    <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c padding-right-main" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                         <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                             <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
                                             <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
@@ -46,9 +46,14 @@
             </view>
             <hotWordList v-if="is_click" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
         </view>
+        <block v-if="!is_immersion_model">
+            <view v-if="!is_positon_realative" class="nav-seat" :style="top_content_style">
+                <view style="height: 66rpx"></view>
+            </view>
+        </block>
         <!-- #ifndef H5 || MP-TOUTIAO -->
         <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
-            <view class="bg-white" :style="top_content_style">
+            <view :style="top_content_style">
                 <view style="height: 66rpx"></view>
             </view>
         </view>
@@ -72,6 +77,10 @@
             propValue: {
                 type: Object,
                 default: () => ({}),
+            },
+            propScrollTop: {
+                type: Number,
+                default: 0,
             },
         },
         components: {
@@ -99,7 +108,36 @@
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:12px;',
                 // #endif
                 is_positon_realative: false,
+                // 顶部背景样式类别
+                header_background_type: 'color_image',
+                // #ifdef MP
+                header_top: bar_height + 5 + 12 + 33,
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                header_top: bar_height + 7 + 12 + 33,
+                // #endif
+                // #ifdef APP
+                header_top: bar_height + 0 + 12 + 33,
+                // #endif
+                // 判断是否是沉浸模式
+                is_immersion_model: false,
             };
+        },
+        watch: {
+            propScrollTop(newVal) {
+                if (this.header_background_type != 'color_image') {
+                    if (newVal < this.header_top) {
+                        this.setData({
+                            // 20是大小误差
+                            roll_style: this.roll_style + 'background: rgba(255,255,255,' + (newVal + 20 < this.header_top ? 0 : (newVal / this.header_top).toFixed(2)) + ');',
+                        });
+                    } else {
+                        this.setData({
+                            roll_style: this.roll_style + 'background: rgba(255,255,255,1);',
+                        });
+                    }
+                }
+            },
         },
         created() {
             if ((this.propValue || null) !== null) {
@@ -112,7 +150,7 @@
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
                 let new_roll_style = '';
-                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type } = new_style;
+                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type, immersive_style } = new_style;
                 if (header_background_type === 'color_image') {
                     // 渐变
                     const gradient = { color_list: header_background_color_list, direction: header_background_direction };
@@ -136,7 +174,24 @@
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
                     header_style: menuButtonInfo,
+                    header_background_type: header_background_type,
+                    is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
                 });
+                this.$emit('immersion-model-call-back', this.is_immersion_model);
+            },
+            // 获取顶部导航高度
+            get_nav_height() {
+                const query = uni.createSelectorQuery().in(this);
+                query
+                    .select('.article-tabs')
+                    .boundingClientRect((res) => {
+                        if ((res || null) != null) {
+                            this.setData({
+                                tabs_top: res.top,
+                            });
+                        }
+                    })
+                    .exec();
             },
             go_map_event() {
                 console.log('地图方法');

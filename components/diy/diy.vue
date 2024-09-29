@@ -2,7 +2,7 @@
     <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
         <!-- 头部小程序兼容 -->
         <view class="pr header">
-            <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data"></componentDiyHeader>
+            <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
             <view v-for="(item, index) in tabs_data" :key="item.key">
@@ -20,8 +20,8 @@
                         <componentDiyNotice v-else-if="item.key == 'notice'" :propValue="item.com_data"></componentDiyNotice>
                         <componentDiyVideo v-else-if="item.key == 'video'" :propValue="item.com_data"></componentDiyVideo>
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propValue="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? 33 : 0"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="temp_sticky_top + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="is_header_top ? 33 : 0"></componentDiyGoodsTabs>
+                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
+                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyGoodsTabs>
 
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propValue="item.com_data"></componentDiyDataMagic>
@@ -155,6 +155,8 @@
                 is_tabs: false,
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
                 is_tabs_type: true,
+                // 是否开启沉浸模式
+                is_immersion_model: false,
 
                 // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
@@ -245,6 +247,12 @@
                     temp_header_top: this.header_top,
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
+            },
+            // 顶部导航沉浸模式回调
+            immersion_model_call_back(bool) {
+                this.setData({
+                    is_immersion_model: bool,
+                });
             },
 
             // 选项卡回调更新数据

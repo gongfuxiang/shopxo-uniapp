@@ -35,6 +35,11 @@
                 type: Number,
                 default: 0,
             },
+            // 顶部导航是否开启沉浸模式
+            isImmersionModel: {
+                type: Boolean,
+                default: false,
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -60,7 +65,7 @@
                     let new_style = this.propValue.style || {};
                     let tabs_bg = new_style.common_style.color_list;
                     let new_tabs_background = '';
-                    if (tabs_bg.length > 0 && tabs_bg[0].color !== '') {
+                    if (tabs_bg.length > 0 && (tabs_bg[0].color || null) != null) {
                         new_tabs_background = gradient_computer(new_style.common_style);
                     }
                     let new_tabs_background_img = background_computer(new_style.common_style);

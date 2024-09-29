@@ -129,12 +129,9 @@
             this.init();
             // 延迟执行，等待dom渲染完成
             this.$nextTick(() => {
-                // #ifdef H5 || MP-TOUTIAO
-                // 获取自定义导航栏高度
                 this.setData({
                     custom_nav_height: this.propCustomNavHeight,
                 });
-                // #endif
             });
         },
         methods: {
