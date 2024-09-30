@@ -59,7 +59,7 @@
                     </view>
 
                     <!-- 导航 -->
-                    <view class="nav-button bottom-fixed pr">
+                    <view class="bottom-fixed br-top-shadow pr bg-white bt">
                         <view class="bottom-line-exclude oh flex-row jc-sb align-c">
                             <view class="left-price">
                                 <view class="sales-price single-text">
@@ -81,7 +81,7 @@
                                 </view>
                             </view>
                             <view class="right-button">
-                                <button type="default" size="mini" class="bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">{{$t('detail.detail.27pmj3')}}</button>
+                                <button type="default" size="mini" class="btn bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">{{$t('detail.detail.27pmj3')}}</button>
                             </view>
                         </view>
                     </view>
