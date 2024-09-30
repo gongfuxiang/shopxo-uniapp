@@ -459,13 +459,8 @@
                             }
                             this.setData(upd_data);
 
-                            // 导航购物车处理
-                            var cart_total = data.cart_total.buy_number || 0;
-                            if (cart_total <= 0) {
-                                app.globalData.set_tab_bar_badge(2, 0);
-                            } else {
-                                app.globalData.set_tab_bar_badge(2, 1, cart_total);
-                            }
+                            // 购物车导航角标
+                            app.globalData.set_tab_bar_badge('cart', data.cart_total.buy_number);
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {
                                 app.globalData.showToast(res.data.msg);
@@ -511,7 +506,7 @@
                 app.globalData.remove_user_cache_event();
 
                 // 导航购物车处理
-                app.globalData.set_tab_bar_badge(2, 0);
+                app.globalData.set_tab_bar_badge('cart');
             },
 
             // 客服电话

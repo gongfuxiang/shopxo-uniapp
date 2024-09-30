@@ -110,17 +110,12 @@
                 }
 
                 // 初始数据
-                var upd_data = {
+                this.setData({
                     load_status: 1,
-                }
+                });
 
-                // 是否展示系统底部菜单
-                upd_data['is_tabbar'] = app.globalData.is_tabbar_pages();
-                if(upd_data['is_tabbar']) {
-                    upd_data['key'] = Math.random();
-                    upd_data['app_tabber'] = app.globalData.get_config('app_tabber');
-                }
-                this.setData(upd_data);
+                // 系统底部菜单
+                this.footer_init();
 
                 // #ifdef MP-WEIXIN
                 // 微信协议验证
@@ -144,6 +139,9 @@
                 //隐藏系统tabbar
                 app.globalData.system_hide_tabbar();
 
+                // 系统底部菜单
+                this.footer_init();
+
                 // app管理
                 if (this.propIsAppAdmin && (this.$refs.app_admin || null) != null) {
                     this.$refs.app_admin.init();
@@ -153,6 +151,18 @@
                 if (this.propIsUserBase && (this.$refs.user_base || null) != null) {
                     this.$refs.user_base.init();
                 }
+            },
+
+            // 底部菜单初始化
+            footer_init() {
+                var upd_data = {
+                    is_tabbar: app.globalData.is_tabbar_pages()
+                };
+                if(upd_data['is_tabbar']) {
+                    upd_data['key'] = Math.random();
+                    upd_data['app_tabber'] = app.globalData.get_config('app_tabber');
+                }
+                this.setData(upd_data);
             },
 
             // 底部菜单高度回调事件

@@ -1211,12 +1211,8 @@
                                 });
                                 this.cart_data_list_handle();
 
-                                // 导航购物车处理
-                                if (data.buy_number <= 0) {
-                                    app.globalData.set_tab_bar_badge(2, 0);
-                                } else {
-                                    app.globalData.set_tab_bar_badge(2, 1, data.buy_number);
-                                }
+                                // 购物车导航角标
+                                app.globalData.set_tab_bar_badge('cart', data.buy_number);
                             }
                         },
                         fail: () => {

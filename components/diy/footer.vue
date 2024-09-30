@@ -4,17 +4,22 @@
         <view class="footer-nav-content flex-row jc-c align-c wh-auto" :style="style_container">
             <view class="flex-row jc-c align-c wh-auto" :class="nav_type == 0 ? 'bottom-line-exclude' : ''">
                 <view class="flex-row jc-sa align-c wh padding-0">
-                    <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-value="item.link.page || ''" @tap="url_event">
-                        <view v-if="nav_style != 2" class="img-content pr">
-                            <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
-                                <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
+                    <block v-for="(item, index) in nav_content" :key="index">
+                        <view class="flex-1 flex-col jc-c align-c gap-5 pr" :data-value="item.link.page || ''" @tap="url_event">
+                            <view v-if="nav_style != 2" class="img-content pr">
+                                <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
+                                    <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
+                                </view>
+                                <view class="img-item pa border-radius-xs animate-linear" :class="active_index == index ? 'active' : ''">
+                                    <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                                </view>
                             </view>
-                            <view class="img-item pa border-radius-xs animate-linear" :class="active_index == index ? 'active' : ''">
-                                <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                            <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
+                            <view v-if="(item.badge || null) != null" class="pa top-0-xxxl right-xxxxl">
+                                <component-badge :propNumber="item.badge"></component-badge>
                             </view>
                         </view>
-                        <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
-                    </view>
+                    </block>
                 </view>
             </view>
         </view>
@@ -23,6 +28,7 @@
 <script>
     let app = getApp();
     import { common_styles_computer } from '@/common/js/common/common.js';
+    import componentBadge from '@/components/badge/badge';
     export default {
         props: {
             propValue: {
@@ -45,6 +51,9 @@
                 text_color_checked: '',
                 active_index: 0,
             };
+        },
+        components: {
+            componentBadge
         },
         // 属性值改变监听
         watch: {
@@ -71,9 +80,23 @@
                     let page = app.globalData.current_page() || null;
                     let active_index = this.propFooterActiveIndex;
                     if (page != null) {
+                        // 角标链接定义
+                        let badge_arr = {
+                            '/pages/cart/cart': 'cart',
+                            '/pages/cart-page/cart-page': 'cart',
+                        };
                         for (var i in nav_content) {
-                            if ((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null && nav_content[i]['link']['page'] == '/' + page) {
-                                active_index = i;
+                            if ((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null) {
+                                // 选中索引
+                                if(nav_content[i]['link']['page'] == '/' +page) {
+                                    active_index = i;
+                                }
+
+                                // 获取角标数据
+                                var badge_key = badge_arr[nav_content[i]['link']['page']];
+                                if(badge_key !== undefined) {
+                                    nav_content[i]['badge'] = app.globalData.get_tab_bar_badge(badge_key);
+                                }
                             }
                         }
                     }

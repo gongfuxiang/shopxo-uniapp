@@ -196,9 +196,12 @@
                 cache_diy_data_key: 'cache_diy_data_key',
                 // diy页面数据缓存key
                 cache_diy_page_data_key: 'cache_diy_page_data_key',
-                
+
                 // apptabbar底部菜单高度
                 cache_app_tabbar_height_key: 'cache_app_tabbar_height_key',
+
+                // apptabbar底部菜单角标数据
+                cache_tabbar_badge_key: 'cache_tabbar_badge_key',
 
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
@@ -1153,42 +1156,36 @@
             },
 
             /**
-             * 设置导航reddot
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
+             * 读取底部导航badge
+             * type     类型标识（如购物车 cart）
              */
-            set_tab_bar_reddot(index, type) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.hideTabBarRedDot({
-                            index: Number(index),
-                        });
-                    } else {
-                        uni.showTabBarRedDot({
-                            index: Number(index),
-                        });
-                    }
+            get_tab_bar_badge(type) {
+                if ((type || null) != null) {
+                    return uni.getStorageSync(this.data.cache_tabbar_badge_key+'-'+type) || null;
                 }
+                return null;
             },
 
             /**
-             * 设置导航车badge
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
-             * value     显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
+             * 设置底部导航badge
+             * type     类型标识（如购物车 cart）
+             * value    显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
              */
-            set_tab_bar_badge(index, type, value) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.removeTabBarBadge({
-                            index: Number(index),
-                        });
+            set_tab_bar_badge(type, value = 0) {
+                // 数据处理
+                if ((type || null) != null) {
+                    var key = this.data.cache_tabbar_badge_key+'-'+type;
+                    if ((value || null) == null) {
+                        uni.removeStorageSync(key);
                     } else {
-                        uni.setTabBarBadge({
-                            index: Number(index),
-                            text: value.toString(),
-                        });
+                        uni.setStorageSync(key, value);
                     }
+                }
+
+                // 更新底部菜单数据
+                var obj = this.get_page_object() || null;
+                if(obj != null && (obj.$refs || null) != null && (obj.$refs.common || null) != null) {
+                    obj.$refs.common.footer_init();
                 }
             },
 

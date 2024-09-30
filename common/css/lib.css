@@ -782,6 +782,38 @@
 /**
  * 细微偏移量
  */
+.top-0-xs {
+    top: -2rpx;
+}
+.top-0-sm {
+    top: -4rpx;
+}
+.top-0-md {
+    top: -6rpx;
+}
+.top-0-lg {
+    top: -8rpx;
+}
+
+.top-0-xl {
+    top: -10rpx;
+}
+
+.top-0-xxl {
+    top: -12rpx;
+}
+
+.top-0-xxxl {
+    top: -16rpx;
+}
+
+.top-0-xxxxl {
+    top: -20rpx;
+}
+
+.top-0-xxxxxl {
+    top: -24rpx;
+}
 .top-0 {
     top: 0;
 }
@@ -822,6 +854,41 @@
     top: 24rpx;
 }
 
+.left-0-xs {
+    left: -2rpx;
+}
+
+.left-0-sm {
+    left: -4rpx;
+}
+
+.left-0-md {
+    left: -6rpx;
+}
+
+.left-0-lg {
+    left: -8rpx;
+}
+
+.left-0-xl {
+    left: -10rpx;
+}
+
+.left-0-xxl {
+    left: -12rpx;
+}
+
+.left-0-xxxl {
+    left: -16rpx;
+}
+
+.left-0-xxxxl {
+    left: -20rpx;
+}
+
+.left-0-xxxxxl {
+    left: 24rpx;
+}
 .left-0 {
     left: 0;
 }
@@ -862,6 +929,42 @@
     left: 24rpx;
 }
 
+.bottom-0-xs {
+    bottom: -2rpx;
+}
+
+.bottom-0-sm {
+    bottom: -4rpx;
+}
+
+.bottom-0-md {
+    bottom: -6rpx;
+}
+
+.bottom-0-lg {
+    bottom: -8rpx;
+}
+
+.bottom-0-xl {
+    bottom: -10rpx;
+}
+
+.bottom-0-xxl {
+    bottom: -12rpx;
+}
+
+.bottom-0-xxxl {
+    bottom: -16rpx;
+}
+
+.bottom-0-xxxxl {
+    bottom: -20rpx;
+}
+
+.bottom-0-xxxxxl {
+    bottom: -24rpx;
+}
+
 .bottom-0 {
     bottom: 0;
 }
@@ -900,6 +1003,42 @@
 
 .bottom-xxxxxl {
     bottom: 24rpx;
+}
+
+.right-0-xs {
+    right: -2rpx;
+}
+
+.right-0-sm {
+    right: -4rpx;
+}
+
+.right-0-md {
+    right: -6rpx;
+}
+
+.right-0-lg {
+    right: -8rpx;
+}
+
+.right-0-xl {
+    right: -10rpx;
+}
+
+.right-0-xxl {
+    right: -12rpx;
+}
+
+.right-0-xxxl {
+    right: -16rpx;
+}
+
+.right-0-xxxxl {
+    right: -20rpx;
+}
+
+.right-0-xxxxxl {
+    right: -24rpx;
 }
 
 .right-0 {

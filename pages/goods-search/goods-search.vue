@@ -714,13 +714,9 @@
                 });
             },
 
-            // 导航购物车处理
+            // 购物车导航角标
             set_tab_bar_badge_handle() {
-                if (this.top_right_cart_total <= 0) {
-                    app.globalData.set_tab_bar_badge(2, 0);
-                } else {
-                    app.globalData.set_tab_bar_badge(2, 1, this.top_right_cart_total);
-                }
+                app.globalData.set_tab_bar_badge('cart', this.top_right_cart_total);
             },
 
             // url事件
