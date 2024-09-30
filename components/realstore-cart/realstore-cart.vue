@@ -5,91 +5,93 @@
             <view v-if="cart_status" class="plugins-realstore-cart-mask wh-auto ht-auto pf" @tap="cart_switch_event"></view>
             <!-- 购物车列表 -->
             <view class="plugins-realstore-cart-content pf wh-auto" :style="realstore_cart_content_style">
-                <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main margin-bottom-xxxl">
-                    <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
-                        <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
-                            <text class="va-m cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
-                            <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
-                                <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
-                                <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
-                                    <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
-                                    <view class="va-m dis-inline-block margin-left-xs">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
+                <view class="bottom-line-exclude">
+                    <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-horizontal-main margin-bottom-xxxl">
+                        <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
+                            <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
+                                <text class="va-m cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
+                                <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
+                                    <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
+                                    <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
+                                        <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                        <view class="va-m dis-inline-block margin-left-xs">
+                                            <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
-                            </view>
-                            <view class="fr cp" @tap="cart_all_delete_event">
-                                <view class="dis-inline-block va-m">
-                                    <uni-icons type="trash" size="24rpx" color="#f00"></uni-icons>
+                                <view class="fr cp" @tap="cart_all_delete_event">
+                                    <view class="dis-inline-block va-m">
+                                        <uni-icons type="trash" size="24rpx" color="#f00"></uni-icons>
+                                    </view>
+                                    <text class="cr-red va-m margin-left-xs">{{$t('common.clear')}}</text>
                                 </view>
-                                <text class="cr-red va-m margin-left-xs">{{$t('common.clear')}}</text>
                             </view>
-                        </view>
-                        <scroll-view :scroll-y="true" class="cart-list goods-list">
-                            <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
-                                    <view class="flex-row jc-sb">
-                                        <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
-                                        <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
-                                            <view class="goods-base-content">
-                                                <view class="goods-title text-size-sm single-text">{{ goods.title }}</view>
-                                                <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-sm">
-                                                    <block v-for="(sv, si) in goods.spec" :key="si">
-                                                        <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
-                                                        <text>{{ sv.value }}</text>
-                                                    </block>
-                                                </view>
-                                            </view>
-                                            <view class="margin-top-sm">
-                                                <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
-                                                <view class="tc fr flex-row align-c">
-                                                    <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
-                                                        <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
+                            <scroll-view :scroll-y="true" class="cart-list goods-list">
+                                <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
+                                    <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
+                                        <view class="flex-row jc-sb">
+                                            <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
+                                            <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                                <view class="goods-base-content">
+                                                    <view class="goods-title text-size-sm single-text">{{ goods.title }}</view>
+                                                    <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-sm">
+                                                        <block v-for="(sv, si) in goods.spec" :key="si">
+                                                            <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
+                                                            <text>{{ sv.value }}</text>
+                                                        </block>
                                                     </view>
-                                                    <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
-                                                    <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
-                                                        <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                </view>
+                                                <view class="margin-top-sm">
+                                                    <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
+                                                    <view class="tc fr flex-row align-c">
+                                                        <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
+                                                            <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
+                                                        </view>
+                                                        <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
+                                                        <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
+                                                            <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                        </view>
                                                     </view>
                                                 </view>
                                             </view>
                                         </view>
                                     </view>
                                 </view>
-                            </view>
-                        </scroll-view>
-                    </block>
-                    <block v-else>
-                        <component-no-data propStatus="0" :propMsg="$t('realstore-cart.realstore-cart.2dc65q')"></component-no-data>
-                        <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
-                            <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
-                            <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
-                                <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
-                                <view class="va-m dis-inline-block margin-left-xs">
-                                    <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
+                            </scroll-view>
+                        </block>
+                        <block v-else>
+                            <component-no-data propStatus="0" :propMsg="$t('realstore-cart.realstore-cart.2dc65q')"></component-no-data>
+                            <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
+                                <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
+                                <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
+                                    <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                    <view class="va-m dis-inline-block margin-left-xs">
+                                        <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
+                                    </view>
                                 </view>
                             </view>
-                        </view>
-                    </block>
-                </view>
+                        </block>
+                    </view>
 
-                <!-- 购物车底部导航 -->
-                <view class="plugins-realstore-cart-botton-nav pr round oh bg-white">
-                    <view class="wh-auto flex-row jc-sb align-c">
-                        <view class="flex-row align-c flex-1 flex-width padding-bottom-xs">
-                            <view class="cart-icon-total pr cp top-sm padding-left-main" @tap="cart_switch_event">
-                                <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
-                                <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
-                                    <component-badge :propNumber="cart.buy_number"></component-badge>
+                    <!-- 购物车底部导航 -->
+                    <view class="plugins-realstore-cart-botton-nav pr round oh bg-white">
+                        <view class="wh-auto flex-row jc-sb align-c">
+                            <view class="flex-row align-c flex-1 flex-width padding-bottom-xs">
+                                <view class="cart-icon-total pr cp top-sm padding-left-main" @tap="cart_switch_event">
+                                    <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
+                                    <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
+                                        <component-badge :propNumber="cart.buy_number"></component-badge>
+                                    </view>
+                                </view>
+                                <view class="cart-total-price single-text fw-b cr-red padding-left-sm" @tap="cart_switch_event">
+                                    <text class="text-size-xss">{{ propCurrencySymbol }}</text>
+                                    <text class="text-size-lg">{{ (cart || null) == null ? '0.00' : (cart.total_price || '0.00') }}</text>
                                 </view>
                             </view>
-                            <view class="cart-total-price single-text fw-b cr-red padding-left-sm" @tap="cart_switch_event">
-                                <text class="text-size-xss">{{ propCurrencySymbol }}</text>
-                                <text class="text-size-lg">{{ (cart || null) == null ? '0.00' : (cart.total_price || '0.00') }}</text>
+                            <view class="padding-right-main padding-top-main padding-bottom-sm">
+                                <button v-if="params.source == 'goods'" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :loading="realstore_goods_data_cart_loading" :class="'btn text-size-md round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey-disabled cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
+                                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :loading="settlement_btn_loading" :class="'btn text-size-md round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey-disabled cr-grey')">{{ settlement_btn_text }}</button>
                             </view>
-                        </view>
-                        <view class="padding-right-main padding-top-main padding-bottom-sm">
-                            <button v-if="params.source == 'goods'" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :loading="realstore_goods_data_cart_loading" :class="'btn text-size-md round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey-disabled cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
-                            <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :loading="settlement_btn_loading" :class="'btn text-size-md round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey-disabled cr-grey')">{{ settlement_btn_text }}</button>
                         </view>
                     </view>
                 </view>
