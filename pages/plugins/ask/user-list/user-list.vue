@@ -26,7 +26,7 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-            <view class="bottom-fixed">
+            <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
                     <button class="item bg-white br-main cr-main round text-size" type="default" data-value="/pages/plugins/ask/form/form" @tap="url_event" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
                 </view>
@@ -54,6 +54,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
             };
         },
 

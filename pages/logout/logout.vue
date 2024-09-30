@@ -7,7 +7,7 @@
                         <view class="">
                             <mp-html :content="agreement_data.value" />
                         </view>
-                        <view class="bottom-fixed oh">
+                        <view class="bottom-fixed" :style="bottom_fixed_style">
                             <view class="bottom-line-exclude">
                                 <button class="item bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">{{$t('logout.logout.u10002')}}</button>
                                 <button class="item bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">{{$t('common.cancel')}}</button>
@@ -35,6 +35,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 agreement_data: {},
             };
         },

@@ -32,7 +32,7 @@
         </block>
 
         <!-- 底部操作 -->
-        <view class="bottom-fixed">
+        <view class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <button class="item cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
                     <view class="add-icon">
@@ -64,6 +64,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data: [],
                 data_is_loading: 0,
                 data_total: 0,

@@ -49,7 +49,7 @@
                 </view>
             </view>
         </scroll-view>
-        <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed">
+        <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                     <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
@@ -89,6 +89,7 @@
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
                 is_mp_env: true,
                 // #endif
+                bottom_fixed_style: '',
                 data_base: {},
                 data_list: [],
                 data_total: 0,

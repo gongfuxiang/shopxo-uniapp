@@ -43,7 +43,7 @@
                     </view>
                     <textarea :placeholder="$t('recharge-pay.recharge-pay.95pfkd')" name="pay_note" placeholder-class="cr-base" class="wh-auto bg-white" :value="pay_note" :maxlength="pay_note_length_max" @input="pay_note_event"></textarea>
                 </view>
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <view class="flex-row align-c">
                             <button type="default" class="item cancel-btn round margin-right-sm" @tap="cancel_event">{{$t('common.cancel')}}</button>
@@ -75,6 +75,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
+                bottom_fixed_style: '',
                 params: null,
                 accounts: {},
                 image_list: [],

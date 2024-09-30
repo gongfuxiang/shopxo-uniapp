@@ -18,7 +18,7 @@
                 <view class="cr-grey tc margin-top-xxxl">{{$t('member-code.member-code.oc4x18')}}</view>
 
                 <!-- 导航 -->
-                <view v-if="(plugins_wallet || null) != null" class="bottom-fixed">
+                <view v-if="(plugins_wallet || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <view class="bg-white br-grey-d round oh">
                             <button type="default" class="btn bg-main cr-white round text-size fl br-0" size="mini">{{$t('member-code.member-code.26bu38')}}</button>
@@ -49,19 +49,20 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
-                data_list_loding_msg: "",
+                data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 is_to_login: 0,
                 screen_brightness_value: 0,
                 plugins_wallet: null,
                 user: null,
-                member_code: "",
+                member_code: '',
                 barcode: {
                     width: 660,
                     height: 120,
-                    code: "",
+                    code: '',
                 },
                 qrcode: {
-                    code: "",
+                    code: '',
                     size: 450,
                 },
             };

@@ -31,7 +31,7 @@
                         </view>
                     </view>
                 </view>
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto">我要领取</button>
                     </view>
@@ -67,6 +67,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 params: {},
                 data: null,
                 form_data: {},

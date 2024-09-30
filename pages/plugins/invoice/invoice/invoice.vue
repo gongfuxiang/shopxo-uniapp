@@ -44,7 +44,7 @@
                 </view>
 
                 <!-- 添加发票 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
                     </view>
@@ -74,6 +74,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
                 params: null,
                 nav_status_list: [],
                 nav_status_index: 0,

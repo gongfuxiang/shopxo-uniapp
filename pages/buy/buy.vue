@@ -248,7 +248,7 @@
                 </view>
 
                 <!-- 导航 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <view class="item oh round flex-row jc-sb align-c br-top-shadow bg-white padding-vertical-sm">
                             <view class="nav-base single-text padding-left-main fl">
@@ -363,6 +363,7 @@
                 data_list_loding_status: 1,
                 buy_submit_disabled_status: false,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 params: null,
                 payment_list: [],
                 payment_index: -1,

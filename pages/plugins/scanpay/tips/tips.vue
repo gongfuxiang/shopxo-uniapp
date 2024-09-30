@@ -36,7 +36,7 @@
                     <mp-html :content="data.ad_code" />
                 </view>
             </view>
-            <view class="bottom-fixed">
+            <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
                     <button class="item bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
                 </view>
@@ -64,6 +64,7 @@
                 data: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 params: {},
                 pay_fail_msg: '',
             };

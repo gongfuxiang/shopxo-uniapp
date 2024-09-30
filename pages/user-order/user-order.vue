@@ -94,7 +94,7 @@
         </scroll-view>
 
         <!-- 合并支付 -->
-        <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed">
+        <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <button class="item bg-main cr-white round text-size wh-auto" hover-class="none" @tap="pay_merge_event">{{$t('user-order.user-order.7571p2')}}</button>
             </view>
@@ -138,6 +138,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
+                bottom_fixed_style: '',
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

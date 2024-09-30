@@ -84,7 +84,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="bottom-fixed">
+                            <view class="bottom-fixed" :style="bottom_fixed_style">
                                 <view class="bottom-line-exclude">
                                     <view class="flex-row jc-sb align-c gap-10">
                                         <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('recharge.recharge.otwkjn')}}</button>
@@ -132,6 +132,7 @@
                 status_bar_height: bar_height,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data_base: null,
                 user_wallet: null,
                 nav_list: [],

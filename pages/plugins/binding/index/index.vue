@@ -17,7 +17,7 @@
             </view>
 
             <!-- 回到店铺 -->
-            <view v-if="(shop || null) != null" class="bottom-fixed">
+            <view v-if="(shop || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
                     <button class="item bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" @tap="shop_event" :data-value="shop.url">{{$t('index.index.i78v36')}}</button>
                 </view>
@@ -44,6 +44,7 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 currency_symbol: app.globalData.currency_symbol(),
+                bottom_fixed_style: '',
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

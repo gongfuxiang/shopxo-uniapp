@@ -66,7 +66,7 @@
                 </view>
 
                 <!-- 兑换卡密 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none" data-value="/pages/plugins/giftcard/form/form" @tap="url_event">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
                     </view>
@@ -88,6 +88,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                bottom_fixed_style: '',
                 data_base: null,
                 data_list: [],
                 data_total: 0,

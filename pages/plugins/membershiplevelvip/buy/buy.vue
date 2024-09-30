@@ -35,7 +35,7 @@
                                             </view>
                                         </view>
                                     </block>
-                                    <view class="bottom-fixed">
+                                    <view class="bottom-fixed" :style="bottom_fixed_style">
                                         <view class="bottom-line-exclude">
                                             <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.buy.0s1k23')}}{{ selected_tabs_value }}</button>
                                         </view>
@@ -97,6 +97,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data_list: [],
                 data_base: null,
                 selected_tabs_index: 0,

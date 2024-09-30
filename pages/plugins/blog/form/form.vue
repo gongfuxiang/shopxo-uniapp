@@ -93,7 +93,7 @@
                     </view>
                 </view>
                 <!-- 底部操作 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                     </view>
@@ -137,11 +137,11 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
-                params: {},
                 data_list_loding_status: 1,
+                bottom_fixed_style: '',
+                params: {},
                 data: {},
                 index: 0,
-
                 // 分类选择弹窗
                 popup_status: false,
                 blog_category_list: [],

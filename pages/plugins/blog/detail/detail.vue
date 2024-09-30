@@ -73,7 +73,7 @@
         <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 
         <!-- 发布博文、我的博文入口 -->
-        <view v-if="(data_base || null) != null && (data_base.is_user_add_blog || 0) == 1" class="bottom-fixed">
+        <view v-if="(data_base || null) != null && (data_base.is_user_add_blog || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <view class="item flex-row jc-sa align-c text-size fw-b br bg-white round padding-vertical">
                     <view data-value="/pages/plugins/blog/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
@@ -109,6 +109,7 @@
                 data_bottom_line_status: false,
                 currency_symbol: app.globalData.currency_symbol(),
                 client_type: app.globalData.application_client_type(),
+                bottom_fixed_style: '',
                 params: null,
                 data_base: null,
                 info: null,
