@@ -93,16 +93,7 @@
 /**
  * 购买操作导航
  */
-.goods-buy-nav {
-    position: fixed;
-    left: 20rpx;
-    bottom: 20rpx;
-    height: 116rpx;
-    z-index: 2;
-    width: calc(100% - 40rpx);
-    box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
-}
-.goods-buy-nav .btn-items .item {
+.goods-buy-nav .btn-items .btn {
     height: 70rpx;
     line-height: 70rpx;
     padding: 0 10rpx;
@@ -123,35 +114,35 @@
     left: calc(50% + 25rpx);
     z-index: 1;
 }
-.goods-buy-nav-btn-number-0 .item,
-.goods-buy-nav-btn-number-1 .item {
+.goods-buy-nav-btn-number-0 .btn,
+.goods-buy-nav-btn-number-1 .btn {
     width: calc(100% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-2 .item {
+.goods-buy-nav-btn-number-2 .btn {
     width: calc(50% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-3 .item {
+.goods-buy-nav-btn-number-3 .btn {
     width: calc(33.33% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-4 .item {
+.goods-buy-nav-btn-number-4 .btn {
     width: calc(25% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-5 .item {
+.goods-buy-nav-btn-number-5 .btn {
     width: calc(20% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-6 .item {
+.goods-buy-nav-btn-number-6 .btn {
     width: calc(16.66% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-7 .item {
+.goods-buy-nav-btn-number-7 .btn {
     width: calc(14.28% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-8 .item {
+.goods-buy-nav-btn-number-8 .btn {
     width: calc(12.5% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-9 .item {
+.goods-buy-nav-btn-number-9 .btn {
     width: calc(11.11% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-10 .item {
+.goods-buy-nav-btn-number-10 .btn {
     width: calc(10% - 15rpx) !important;
 }
 

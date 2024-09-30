@@ -15,7 +15,7 @@
                                 </view>
                             </view>
                             <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
-                            <view v-if="(item.badge || null) != null" class="pa top-0-xxxl right-xxxxl">
+                            <view v-if="(item.badge || null) != null" class="pa top-0-xxl right-xxxxl">
                                 <component-badge :propNumber="item.badge"></component-badge>
                             </view>
                         </view>
@@ -31,6 +31,10 @@
     import componentBadge from '@/components/badge/badge';
     export default {
         props: {
+            propKey: {
+                type: [Number,String],
+                default: '‘',
+            },
             propValue: {
                 type: Object,
                 default: null,
@@ -57,6 +61,10 @@
         },
         // 属性值改变监听
         watch: {
+            // 唯一key
+            propKey(value, old_value) {
+                this.init();
+            },
             // 菜单数据
             propValue(value, old_value) {
                 this.init();

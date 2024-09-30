@@ -1184,8 +1184,8 @@
 
                 // 更新底部菜单数据
                 var obj = this.get_page_object() || null;
-                if(obj != null && (obj.$refs || null) != null && (obj.$refs.common || null) != null) {
-                    obj.$refs.common.footer_init();
+                if(obj != null && (obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null) {
+                    obj.$vm.$refs.common.footer_init();
                 }
             },
 

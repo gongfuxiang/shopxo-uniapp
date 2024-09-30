@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 底部菜单 -->
         <block v-if="is_tabbar">
-            <component-diy-footer :key="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></component-diy-footer>
+            <component-diy-footer :propKey="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></component-diy-footer>
             <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
         </block>
 
