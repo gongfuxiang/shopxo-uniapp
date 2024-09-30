@@ -60,13 +60,6 @@
     bottom: 0;
 }
 
-/*
-* 底部按钮
-*/
-.bottom-fixed .btn {
-    width: calc(50% - 20rpx);
-}
-
 /**
 * 媒体查询
 */

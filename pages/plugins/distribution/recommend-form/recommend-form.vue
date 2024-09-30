@@ -57,9 +57,9 @@
                             </view>
                         </view>
 
-                        <view class="bottom-fixed">
+                        <view class="bottom-fixed" :style="bottom_fixed_style">
                             <view class="bottom-line-exclude">
-                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
+                                <button class="item bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
                             </view>
                         </view>
                     </view>
@@ -120,7 +120,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -136,9 +136,10 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
-                params: {},
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
+                params: {},
                 recommend_data: {},
                 form_submit_disabled_status: false,
                 currency_symbol: app.globalData.currency_symbol(),
@@ -166,7 +167,7 @@
 
             // 设置参数
             this.setData({
-                params: params || {},
+                params: params,
             });
         },
 
@@ -176,6 +177,11 @@
 
             // 数据加载
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

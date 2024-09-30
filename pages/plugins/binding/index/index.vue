@@ -17,15 +17,15 @@
             </view>
 
             <!-- 回到店铺 -->
-            <view v-if="(shop || null) != null" class="bottom-fixed">
+            <view v-if="(shop || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" @tap="shop_event" :data-value="shop.url">{{$t('index.index.i78v36')}}</button>
+                    <button class="item bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" @tap="shop_event" :data-value="shop.url">{{$t('index.index.i78v36')}}</button>
                 </view>
             </view>
         </scroll-view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -44,6 +44,7 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 currency_symbol: app.globalData.currency_symbol(),
+                bottom_fixed_style: '',
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -82,6 +83,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

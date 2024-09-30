@@ -51,9 +51,9 @@
                         </view>
                     </view>
                 </view>
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button type="default" form-type="submit" class="bg-main br-main cr-white text-size round wh-auto" :disabled="form_submit_disabled_status">提交支付</button>
+                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto" :disabled="form_submit_disabled_status">提交支付</button>
                     </view>
                 </view>
             </form>
@@ -85,7 +85,7 @@
         ></component-payment>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -101,6 +101,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 params: {},
                 goods: null,
                 buy_number: 1,
@@ -152,6 +153,11 @@
 
             // 加载数据
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

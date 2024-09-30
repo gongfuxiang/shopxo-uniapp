@@ -93,9 +93,9 @@
                     </view>
                 </view>
                 <!-- 底部操作 -->
-                <view class="bottom-fixed">
-                    <view class="oh bottom-line-exclude">
-                        <button class="cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
+                <view class="bottom-fixed" :style="bottom_fixed_style">
+                    <view class="bottom-line-exclude">
+                        <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                     </view>
                 </view>
                 <!-- 分类选择 -->
@@ -123,7 +123,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -137,11 +137,11 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
-                params: {},
                 data_list_loding_status: 1,
+                bottom_fixed_style: '',
+                params: {},
                 data: {},
                 index: 0,
-
                 // 分类选择弹窗
                 popup_status: false,
                 blog_category_list: [],
@@ -185,6 +185,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

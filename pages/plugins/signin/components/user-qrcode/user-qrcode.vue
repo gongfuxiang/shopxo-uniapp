@@ -30,7 +30,7 @@
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed">
                         <view class="bottom-line-exclude">
-                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
+                            <button class="item cr-white bg-green br-green text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
                         </view>
                     </view>
                 </view>
@@ -38,14 +38,10 @@
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
         </scroll-view>
-
-        <!-- 公共 -->
-        <component-common></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
 
@@ -79,7 +75,6 @@
         },
 
         components: {
-            componentCommon,
             componentNoData,
             componentBottomLine,
         },

@@ -25,7 +25,7 @@
         methods: {}
     };
 </script>
-<style>
+<style scoped>
     .am-badge {
         display: inline-block;
         position: relative;
@@ -47,7 +47,7 @@
         color: #fff;
         font-size: 10px;
         padding: 2rpx 2rpx;
-        box-shadow: 0 0 10rpx rgb(0 0 0 / 60%);
+        box-shadow: 0 0 10rpx rgb(0 0 0 / 30%);
     }
     .am-badge-text-max {
         padding: 2rpx 4rpx;

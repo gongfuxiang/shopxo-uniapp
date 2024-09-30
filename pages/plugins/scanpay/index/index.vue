@@ -40,7 +40,7 @@
                     </view>
                 </view>
             </view>
-            <view class="bottom-fixed sub-key">
+            <view class="bottom-fixed sub-key" :style="bottom_fixed_style">
                 <view class="tc text-size-xs spacing-mb">
                     <block v-if="!form.note">
                         <view class="cr-blue" @tap="add_desc_event">{{$t('index.index.1e582h')}}</view>
@@ -125,7 +125,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -137,11 +137,11 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 data: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 form_submit_loading: false,
                 checked: 0,
                 is_more: false,
@@ -192,6 +192,11 @@
 
             // 加载数据
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

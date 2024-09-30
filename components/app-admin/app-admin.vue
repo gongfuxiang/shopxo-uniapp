@@ -34,7 +34,7 @@
 
         <!-- 关于我们中使用 -->
         <!-- #ifdef APP -->
-        <view v-if="propType == 'about'" class="margin-top">
+        <view v-if="is_about_page" class="margin-top">
             <text class="cr-grey-9">{{app_version_info}}</text>
             <block v-if="is_loading">
                 <text v-if="(update_data || null) == null" class="cr-grey-c margin-left-lg text-size-xs">{{$t('common.already_latest_text')}}</text>
@@ -54,6 +54,7 @@
                 update_tips_cache_key: app.globalData.data.cache_app_update_tips_interval_time_key,
                 star_tips_cache_key: app.globalData.data.cache_app_star_tips_interval_time_key,
                 app_version_info: app.globalData.data.app_version_info,
+                is_about_page: false,
                 is_loading: false,
                 update_data: null,
                 // 更新提示
@@ -66,14 +67,8 @@
                 star_tips_interval_time: 0,
                 star_alert_images: null,
                 star_url: null
+                
             };
-        },
-        components: {},
-        props: {
-            propType: {
-            	type: String,
-            	default: ''
-            }
         },
         // 页面被展示
         created: function () {
@@ -84,6 +79,12 @@
             // 初始化、获取数据
             init(is_init = 0) {
                 // #ifdef APP
+                // 是否关于我们页面
+                this.setData({
+                    is_about_page: app.globalData.current_page(false) == 'pages/about/about',
+                });
+
+                // 请求接口获取版本数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'version', 'appadmin'),
                     method: 'POST',
@@ -135,7 +136,7 @@
                             }
 
                             // 关于我们页面则不直接展示
-                            if(this.propType == 'about') {
+                            if(this.is_about_page) {
                                 upd_data.is_update_status = false;
                                 upd_data.is_star_status = false;
                             }

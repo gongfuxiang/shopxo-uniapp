@@ -11,9 +11,6 @@
 
                             <!-- 版权信息 -->
                             <component-copyright></component-copyright>
-
-                            <!-- 公共 -->
-                            <component-common></component-common>
                         </template>
                     </componentDiy>
                 </block>
@@ -289,16 +286,10 @@
 
             <!-- 快捷导航 -->
             <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-
-            <!-- 用户基础 -->
-            <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
-
-            <!-- app管理 -->
-            <component-app-admin ref="app_admin"></component-app-admin>
-
-            <!-- 公共 -->
-            <component-common></component-common>
         </block>
+
+        <!-- 公共 -->
+        <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
     </view>
 </template>
 <script>
@@ -320,10 +311,8 @@
     import componentRealstoreList from '@/components/realstore-list/realstore-list';
     import componentShopList from '@/components/shop-list/shop-list';
     import componentGoodsList from '@/components/goods-list/goods-list';
-    import componentUserBase from '@/components/user-base/user-base';
     import componentBindingList from '@/components/binding-list/binding-list';
     import componentMagicList from '@/components/magic-list/magic-list';
-    import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentDiy from '@/components/diy/diy';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
 
@@ -382,8 +371,6 @@
                 // #endif
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
-                // 用户位置信息
-                user_location: {},
                 // 轮播滚动时，背景色替换
                 slider_bg: null,
                 // 插件顺序列表
@@ -436,10 +423,8 @@
             componentRealstoreList,
             componentShopList,
             componentGoodsList,
-            componentUserBase,
             componentBindingList,
             componentMagicList,
-            componentAppAdmin,
             componentDiy,
             componentChoiceLocation
         },
@@ -453,26 +438,15 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 加载数据
-            if (this.is_home_location_choice == 1) {
-                // 用户位置初始化
-                this.user_location_init();
-            }
-
             // 数据加载
             this.init();
 
             // 初始化配置
             this.init_config();
 
-            // app管理
-            if ((this.$refs.app_admin || null) != null) {
-                this.$refs.app_admin.init();
-            }
-
-            // 用户头像和昵称设置提示
-            if ((this.$refs.user_base || null) != null) {
-                this.$refs.user_base.init('index');
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
             }
         },
 
@@ -591,12 +565,8 @@
                             if (parseInt(data.is_result_data_cache || 0) == 1) {
                                 this.init({ is_cache: 0 });
                             } else {
-                                // 导航购物车处理、缓存数据则不更新导航角标
-                                if (this.cart_total <= 0) {
-                                    app.globalData.set_tab_bar_badge(2, 0);
-                                } else {
-                                    app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
-                                }
+                                // 购物车导航角标
+                                app.globalData.set_tab_bar_badge('cart', this.cart_total);
                             }
                         } else {
                             this.setData({
@@ -659,16 +629,8 @@
 
             // 选择用户地理位置回调
             user_back_choice_location(e) {
-                this.setData({
-                    user_location: e
-                });
-            },
-
-            // 用户地理位置初始化
-            user_location_init() {
-                this.setData({
-                    user_location: app.globalData.choice_user_location_init()
-                });
+                // 重新刷新数据
+                this.init();
             },
 
             // url事件

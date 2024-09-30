@@ -33,9 +33,9 @@
                 </view>
             </scroll-view>
             <!-- 合并开票 -->
-            <view v-if="select_ids.length > 0" class="bottom-fixed">
+            <view v-if="select_ids.length > 0" class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
+                    <button class="item bg-white cr-main br-main round wh-auto" type="default" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
                 </view>
             </view>
         </view>
@@ -45,7 +45,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -66,6 +66,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
                 params: null,
                 select_ids: [],
                 content_list: [
@@ -99,6 +100,11 @@
 
             // 加载数据
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

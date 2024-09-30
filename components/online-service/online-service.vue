@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="online_service_status == 1">
             <!-- 是否商品页样式 -->
-            <view v-if="propIsGoods == true" class="goods-chat-container item fl cp">
+            <view v-if="propIsGoods == true" class="goods-chat-container fl cp">
                 <block v-if="is_chat == 1">
                     <view @tap="chat_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>

@@ -43,15 +43,19 @@
                     </view>
                     <textarea :placeholder="$t('recharge-pay.recharge-pay.95pfkd')" name="pay_note" placeholder-class="cr-base" class="wh-auto bg-white" :value="pay_note" :maxlength="pay_note_length_max" @input="pay_note_event"></textarea>
                 </view>
-                <view class="bottom-fixed flex-row align-c">
-                    <button type="default" class="cancel-btn round margin-right-sm" @tap="cancel_event">{{$t('common.cancel')}}</button>
-                    <button type="default" class="submit-btn round margin-left-sm" @tap="submit_event">{{$t('form.form.4yd066')}}</button>
+                <view class="bottom-fixed" :style="bottom_fixed_style">
+                    <view class="bottom-line-exclude">
+                        <view class="flex-row align-c">
+                            <button type="default" class="item cancel-btn round margin-right-sm" @tap="cancel_event">{{$t('common.cancel')}}</button>
+                            <button type="default" class="item submit-btn round margin-left-sm" @tap="submit_event">{{$t('form.form.4yd066')}}</button>
+                        </view>
+                    </view>
                 </view>
             </view>
         </scroll-view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -71,6 +75,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
+                bottom_fixed_style: '',
                 params: null,
                 accounts: {},
                 image_list: [],
@@ -103,6 +108,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

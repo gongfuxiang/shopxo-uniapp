@@ -26,15 +26,15 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-            <view class="bottom-fixed">
-                <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="bottom-line-exclude cp">
-                    <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
+            <view class="bottom-fixed" :style="bottom_fixed_style">
+                <view class="bottom-line-exclude">
+                    <button class="item bg-white br-main cr-main round text-size" type="default" data-value="/pages/plugins/ask/form/form" @tap="url_event" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
                 </view>
             </view>
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -54,6 +54,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
             };
         },
 
@@ -74,6 +75,11 @@
 
             // 加载数据
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

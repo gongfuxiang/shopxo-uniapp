@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propName="$t('pages.plugins-wallet-user')"></component-nav-back>
+        <component-nav-back :propIsShowBack="true" :propName="$t('pages.plugins-wallet-user')"></component-nav-back>
         <block v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
                 <view class="page-bottom-fixed">
@@ -84,13 +84,11 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="bottom-fixed">
-                                <view class="bottom-line-exclude flex-row jc-sb align-c">
-                                    <view v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event" class="btn cp">
-                                        <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">{{$t('recharge.recharge.otwkjn')}}</button>
-                                    </view>
-                                    <view v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event" class="btn cp">
-                                        <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">{{$t('user.user.8752a4')}}</button>
+                            <view class="bottom-fixed" :style="bottom_fixed_style">
+                                <view class="bottom-line-exclude">
+                                    <view class="flex-row jc-sb align-c gap-10">
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('recharge.recharge.otwkjn')}}</button>
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event">{{$t('user.user.8752a4')}}</button>
                                     </view>
                                 </view>
                             </view>
@@ -105,7 +103,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -134,6 +132,7 @@
                 status_bar_height: bar_height,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data_base: null,
                 user_wallet: null,
                 nav_list: [],
@@ -189,6 +188,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

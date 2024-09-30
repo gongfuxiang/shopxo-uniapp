@@ -363,14 +363,12 @@
                     this.$refs.cart_para_curve.init(null, back.pos, goods.images);
                 }
 
-                // 导航购物车处理
+                // 购物车总数
+                var cart_total = e.cart_number || 0;
+
+                // 购物车导航角标
                 if (this.propIsCartNumberTabBarBadgeSync) {
-                    var cart_total = e.cart_number || 0;
-                    if (cart_total <= 0) {
-                        app.globalData.set_tab_bar_badge(2, 0);
-                    } else {
-                        app.globalData.set_tab_bar_badge(2, 1, cart_total);
-                    }
+                    app.globalData.set_tab_bar_badge('cart', cart_total);
                 }
 
                 // 当前页面

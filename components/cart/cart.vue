@@ -607,13 +607,8 @@
                             // 选择处理
                             this.cart_selected_calculate();
 
-                            // 导航购物车处理
-                            var cart_total = data.buy_number || 0;
-                            if (cart_total <= 0) {
-                                app.globalData.set_tab_bar_badge(2, 0);
-                            } else {
-                                app.globalData.set_tab_bar_badge(2, 1, cart_total);
-                            }
+                            // 购物车导航角标
+                            app.globalData.set_tab_bar_badge('cart', data.buy_number);
                         } else {
                             this.setData({
                                 is_first: 0,
@@ -986,12 +981,8 @@
                     this.pre_order_handle();
                 }
 
-                // 底部tabs总数处理
-                if (cart_total <= 0) {
-                    app.globalData.set_tab_bar_badge(2, 0);
-                } else {
-                    app.globalData.set_tab_bar_badge(2, 1, cart_total);
-                }
+                // 购物车导航角标
+                app.globalData.set_tab_bar_badge('cart', cart_total);
             },
 
             // 预下单处理

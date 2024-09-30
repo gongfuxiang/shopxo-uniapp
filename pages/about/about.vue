@@ -8,7 +8,7 @@
                     <!-- 名称 -->
                     <view class="margin-top-sm text-size">{{title}}</view>
                     <!-- app管理 -->
-                    <component-app-admin ref="app_admin" propType="about"></component-app-admin>
+                    <component-app-admin ref="app_admin"></component-app-admin>
                     <!-- 简介 -->
                     <view class="margin-top-xxxxl cr-base text-size-sm">{{describe}}</view>
                     <!-- 协议 -->
@@ -22,7 +22,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common" :propIsAppAdmin="false"></component-common>
     </view>
 </template>
 <script>
@@ -52,6 +52,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // app管理
             if ((this.$refs.app_admin || null) != null) {

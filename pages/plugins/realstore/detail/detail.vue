@@ -284,7 +284,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 公共 -->
-        <component-common @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
+        <component-common ref="common" @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 <script>
@@ -436,6 +436,11 @@
             setTimeout(function() {
                 self.get_detail_init();
             }, 100);
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

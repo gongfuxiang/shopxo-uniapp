@@ -66,16 +66,16 @@
                 </view>
 
                 <!-- 兑换卡密 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button data-value="/pages/plugins/giftcard/form/form" @tap="url_event" class="round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none" data-value="/pages/plugins/giftcard/form/form" @tap="url_event">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
                     </view>
                 </view>
             </view>
         </scroll-view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -88,6 +88,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                bottom_fixed_style: '',
                 data_base: null,
                 data_list: [],
                 data_total: 0,
@@ -125,11 +126,16 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 分享菜单处理
-            app.globalData.page_share_handle();
-
             // 初始化配置
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
 
         // 下拉刷新

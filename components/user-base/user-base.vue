@@ -90,37 +90,53 @@
                 // 初始化配置
                 this.init_config(true);
 
-                // 是否需要展示弹窗提示
-                if (!this.popup_status && this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
-                    // 当前缓存用户
-                    var user = app.globalData.get_user_cache_info() || null;
-                    // 默认昵称则赋空值
-                    var arr = [this.$t('user-base.user-base.8u9on2'), this.$t('user-base.user-base.t8i9l4'), this.$t('user-base.user-base.0imw74'), this.$t('user-base.user-base.27q5af'), this.$t('user-base.user-base.211pk4'), this.$t('user-base.user-base.5x8o43'), 'WeChat User', 'Usuarios de Wechat'];
-                    if (user != null && (user.nickname || null) != null && arr.indexOf(user.nickname) != -1) {
-                        user.nickname = '';
+                // 未指定类型则自动匹配页面
+                if((type || null) == null) {
+                    var page = '/'+app.globalData.current_page(false);
+                    var obj = {
+                        index: '/pages/index/index',
+                        goods_category: '/pages/goods-category/goods-category',
+                        cart: '/pages/cart/cart',
+                        user: '/pages/user/user',
+                    };
+                    var index = Object.values(obj).indexOf(page);
+                    if(index != -1) {
+                        type = Object.keys(obj)[index];
                     }
-                    // 头像是默认则置为空
-                    if (user != null && (user.avatar || null) != null && user.avatar.indexOf('default-user-avatar') != -1) {
-                        user.avatar = '';
-                    }
-                    // 状态
-                    var status = user == null ? false : ((user.avatar || null) == null || (user.nickname || null) == null ? true : false);
-                    // 间隔时间
-                    var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
-                    var current_time = Date.parse(new Date()) / 1000;
-                    if (status && !this.popup_status && cache_time > 0 && current_time < cache_time + parseInt(this.interval_time)) {
-                        status = false;
-                    }
+                }
+                if((type || null) == null) {
+                    // 是否需要展示弹窗提示
+                    if (!this.popup_status && this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
+                        // 当前缓存用户
+                        var user = app.globalData.get_user_cache_info() || null;
+                        // 默认昵称则赋空值
+                        var arr = [this.$t('user-base.user-base.8u9on2'), this.$t('user-base.user-base.t8i9l4'), this.$t('user-base.user-base.0imw74'), this.$t('user-base.user-base.27q5af'), this.$t('user-base.user-base.211pk4'), this.$t('user-base.user-base.5x8o43'), 'WeChat User', 'Usuarios de Wechat'];
+                        if (user != null && (user.nickname || null) != null && arr.indexOf(user.nickname) != -1) {
+                            user.nickname = '';
+                        }
+                        // 头像是默认则置为空
+                        if (user != null && (user.avatar || null) != null && user.avatar.indexOf('default-user-avatar') != -1) {
+                            user.avatar = '';
+                        }
+                        // 状态
+                        var status = user == null ? false : ((user.avatar || null) == null || (user.nickname || null) == null ? true : false);
+                        // 间隔时间
+                        var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
+                        var current_time = Date.parse(new Date()) / 1000;
+                        if (status && !this.popup_status && cache_time > 0 && current_time < cache_time + parseInt(this.interval_time)) {
+                            status = false;
+                        }
 
-                    // 1秒后再提示用户填写信息
-                    var self = this;
-                    clearTimeout(this.timer);
-                    this.timer = setTimeout(function () {
-                        self.setData({
-                            popup_status: status,
-                            user: user,
-                        });
-                    }, 500);
+                        // 1秒后再提示用户填写信息
+                        var self = this;
+                        clearTimeout(this.timer);
+                        this.timer = setTimeout(function () {
+                            self.setData({
+                                popup_status: status,
+                                user: user,
+                            });
+                        }, 500);
+                    }
                 }
             },
 

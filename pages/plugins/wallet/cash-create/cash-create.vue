@@ -60,9 +60,9 @@
                         <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.445m7n')}}</view>
                     </view>
 
-                    <view class="bottom-fixed">
+                    <view class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
+                            <button class="item bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                         </view>
                     </view>
                 </view>
@@ -82,7 +82,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -99,6 +99,7 @@
                 form_submit_loading: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data_base: null,
                 user_wallet: {},
                 default_data: {},
@@ -132,6 +133,11 @@
 
             // 加载数据
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

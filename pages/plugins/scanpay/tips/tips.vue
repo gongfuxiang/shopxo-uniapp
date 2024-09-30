@@ -36,9 +36,9 @@
                     <mp-html :content="data.ad_code" />
                 </view>
             </view>
-            <view class="bottom-fixed">
+            <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
+                    <button class="item bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
                 </view>
             </view>
         </view>
@@ -48,7 +48,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -64,6 +64,7 @@
                 data: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 params: {},
                 pay_fail_msg: '',
             };
@@ -90,6 +91,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

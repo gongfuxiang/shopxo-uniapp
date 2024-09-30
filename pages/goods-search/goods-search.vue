@@ -164,7 +164,7 @@
         <component-quick-nav></component-quick-nav>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -317,6 +317,11 @@
 
             // 数据加载
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新
@@ -709,13 +714,9 @@
                 });
             },
 
-            // 导航购物车处理
+            // 购物车导航角标
             set_tab_bar_badge_handle() {
-                if (this.top_right_cart_total <= 0) {
-                    app.globalData.set_tab_bar_badge(2, 0);
-                } else {
-                    app.globalData.set_tab_bar_badge(2, 1, this.top_right_cart_total);
-                }
+                app.globalData.set_tab_bar_badge('cart', this.top_right_cart_total);
             },
 
             // url事件

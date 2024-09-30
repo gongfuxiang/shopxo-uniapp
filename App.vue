@@ -90,9 +90,8 @@
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,
 
-                // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
+                // 是否开启微信隐私弹窗授权提示、仅微信小程序有效（0否, 1是）
                 is_weixin_privacy_setting: 1,
-                weixin_privacy_setting_timer: null,
                 
                 // 弹出获取用户当前位置（0否, 1是）
                 get_user_location_status: 0,
@@ -197,9 +196,12 @@
                 cache_diy_data_key: 'cache_diy_data_key',
                 // diy页面数据缓存key
                 cache_diy_page_data_key: 'cache_diy_page_data_key',
-                
+
                 // apptabbar底部菜单高度
                 cache_app_tabbar_height_key: 'cache_app_tabbar_height_key',
+
+                // apptabbar底部菜单角标数据
+                cache_tabbar_badge_key: 'cache_tabbar_badge_key',
 
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
@@ -961,6 +963,11 @@
                 return false;
             },
 
+            // 系统底部菜单隐藏
+            system_hide_tabbar() {
+                uni.hideTabBar();
+            },
+
             /**
              * 事件操作
              */
@@ -986,7 +993,7 @@
                                     url: value
                                 });
                                 //隐藏系统tabbar
-                                uni.hideTabBar();
+                                this.system_hide_tabbar();
                             } else {
                                 uni.navigateTo({
                                     url: value
@@ -1149,42 +1156,36 @@
             },
 
             /**
-             * 设置导航reddot
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
+             * 读取底部导航badge
+             * type     类型标识（如购物车 cart）
              */
-            set_tab_bar_reddot(index, type) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.hideTabBarRedDot({
-                            index: Number(index),
-                        });
-                    } else {
-                        uni.showTabBarRedDot({
-                            index: Number(index),
-                        });
-                    }
+            get_tab_bar_badge(type) {
+                if ((type || null) != null) {
+                    return uni.getStorageSync(this.data.cache_tabbar_badge_key+'-'+type) || null;
                 }
+                return null;
             },
 
             /**
-             * 设置导航车badge
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
-             * value     显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
+             * 设置底部导航badge
+             * type     类型标识（如购物车 cart）
+             * value    显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
              */
-            set_tab_bar_badge(index, type, value) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.removeTabBarBadge({
-                            index: Number(index),
-                        });
+            set_tab_bar_badge(type, value = 0) {
+                // 数据处理
+                if ((type || null) != null) {
+                    var key = this.data.cache_tabbar_badge_key+'-'+type;
+                    if ((value || null) == null) {
+                        uni.removeStorageSync(key);
                     } else {
-                        uni.setTabBarBadge({
-                            index: Number(index),
-                            text: value.toString(),
-                        });
+                        uni.setStorageSync(key, value);
                     }
+                }
+
+                // 更新底部菜单数据
+                var obj = this.get_page_object() || null;
+                if(obj != null && (obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null) {
+                    obj.$vm.$refs.common.footer_init();
                 }
             },
 
@@ -1683,7 +1684,7 @@
                                     url: value
                                 });
                                 //隐藏系统tabbar
-                                uni.hideTabBar();
+                                this.system_hide_tabbar();
                             } else {
                                 if (is_redirect) {
                                     uni.redirectTo({
@@ -2412,30 +2413,6 @@
                 }
             },
 
-            // 微信隐私弹窗提示
-            weixin_privacy_setting() {
-                if (this.data.is_weixin_privacy_setting == 1) {
-                    var self = this;
-                    self.weixin_privacy_setting_timer = setInterval(function () {
-                        var page = self.get_page_url(false);
-                        if ('/' + page == self.app_tabbar_pages()[0]) {
-                            uni.getPrivacySetting({
-                                success: (res) => {
-                                    if (res.needAuthorization) {
-                                        // 需要弹出隐私协议
-                                        uni.navigateTo({
-                                            url: '/pages/common/agreement/agreement',
-                                        });
-                                    }
-                                },
-                            });
-                            // 已执行隐私方法清除定时任务
-                            clearInterval(self.weixin_privacy_setting_timer);
-                        }
-                    }, 100);
-                }
-            },
-
             // 获取主题色值
             // is_light 是否获取浅主色（false, true）
             get_theme_color(theme, is_light = false) {
@@ -2818,8 +2795,6 @@
                     }
                 }
                 this.data.network_type_page_record_timer = null;
-                // 清除微信隐私方法定时任务
-                clearInterval(this.data.weixin_privacy_setting_timer);
                 // 清除弹出位置权限提示定时任务
                 clearInterval(this.data.get_user_location_timer);
             },
@@ -2889,7 +2864,7 @@
                     if(temp !== undefined && this.is_tabbar_pages()) {
                         obj.$vm.setData(
                         {
-                            bottom_fixed_style: 'bottom:'+((this.app_tabbar_height_value()-8)*2)+'rpx'
+                            bottom_fixed_style: 'bottom:'+(((this.app_tabbar_height_value()-8)*2)+20)+'rpx'
                         });
                     }
                 }
@@ -2914,11 +2889,14 @@
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {
             //隐藏系统tabbar
-            uni.hideTabBar();
+            this.globalData.system_hide_tabbar();
         },
 
         // 启动，或从后台进入前台显示
         onShow(params) {
+            //隐藏系统tabbar
+            this.globalData.system_hide_tabbar();
+
             // 初始化配置
             this.globalData.init_config();
 
@@ -2933,11 +2911,6 @@
 
             // 公共数据初始化处理
             this.globalData.common_data_init_handle();
-
-            // #ifdef MP-WEIXIN
-            // 协议验证处理
-            this.globalData.weixin_privacy_setting();
-            // #endif
         },
 
         // 从前台进入后台

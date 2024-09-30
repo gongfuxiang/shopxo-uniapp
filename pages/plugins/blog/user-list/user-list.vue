@@ -32,12 +32,14 @@
         </block>
 
         <!-- 底部操作 -->
-        <view class="bottom-fixed">
-            <view class="oh bottom-line-exclude">
-                <button class="cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
+        <view class="bottom-fixed" :style="bottom_fixed_style">
+            <view class="bottom-line-exclude">
+                <button class="item cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
                     <view class="add-icon">
                         <iconfont name="icon-xzdz-tianjiabiaoq" size="32rpx"></iconfont>
-                    </view>{{$t('common.add')}}</button>
+                    </view>
+                    <text>{{$t('common.add')}}</text>
+                </button>
             </view>
         </view>
         <block v-if="data.length == 0 && data_list_loding_status != 3">
@@ -46,7 +48,7 @@
         </block>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -62,6 +64,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data: [],
                 data_is_loading: 0,
                 data_total: 0,
@@ -86,6 +89,11 @@
 
             // 数据加载
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新

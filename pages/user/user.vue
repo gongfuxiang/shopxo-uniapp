@@ -161,14 +161,8 @@
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
 
-        <!-- 用户基础 -->
-        <component-user-base ref="user_base"></component-user-base>
-
-        <!-- app管理 -->
-        <component-app-admin ref="app_admin"></component-app-admin>
-
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -178,8 +172,6 @@
     import componentBadge from '@/components/badge/badge';
     import componentCopyright from '@/components/copyright/copyright';
     import componentOnlineService from '@/components/online-service/online-service';
-    import componentUserBase from '@/components/user-base/user-base';
-    import componentAppAdmin from '@/components/app-admin/app-admin';
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
@@ -220,9 +212,7 @@
             componentQuickNav,
             componentBadge,
             componentCopyright,
-            componentOnlineService,
-            componentUserBase,
-            componentAppAdmin
+            componentOnlineService
         },
 
         onLoad(params) {
@@ -243,14 +233,9 @@
             // 数据加载
             this.init();
 
-            // app管理
-            if ((this.$refs.app_admin || null) != null) {
-                this.$refs.app_admin.init();
-            }
-
-            // 用户头像和昵称设置提示
-            if ((this.$refs.user_base || null) != null) {
-                this.$refs.user_base.init('user');
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
             }
         },
 
@@ -474,13 +459,8 @@
                             }
                             this.setData(upd_data);
 
-                            // 导航购物车处理
-                            var cart_total = data.cart_total.buy_number || 0;
-                            if (cart_total <= 0) {
-                                app.globalData.set_tab_bar_badge(2, 0);
-                            } else {
-                                app.globalData.set_tab_bar_badge(2, 1, cart_total);
-                            }
+                            // 购物车导航角标
+                            app.globalData.set_tab_bar_badge('cart', data.cart_total.buy_number);
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {
                                 app.globalData.showToast(res.data.msg);
@@ -526,7 +506,7 @@
                 app.globalData.remove_user_cache_event();
 
                 // 导航购物车处理
-                app.globalData.set_tab_bar_badge(2, 0);
+                app.globalData.set_tab_bar_badge('cart');
             },
 
             // 客服电话

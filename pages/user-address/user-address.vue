@@ -33,21 +33,21 @@
 
         <!-- 底部操作 -->
         <view class="bottom-fixed" :style="bottom_fixed_style">
-            <view class="oh bottom-line-exclude">
+            <view class="bottom-line-exclude">
                 <block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
-                    <view class="submit-list flex-row jc-sb align-c">
-                        <button class="cr-white round text-size" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
-                        <button class="br-main cr-main bg-white round text-size" type="default" hover-class="none" @tap="choose_system_address_event">{{$t('user-address.user-address.1rwt3l')}}</button>
+                    <view class="flex-row jc-sb align-c gap-10">
+                        <button class="item cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
+                        <button class="item br-main cr-main bg-white round text-size wh-auto" type="default" hover-class="none" @tap="choose_system_address_event">{{$t('user-address.user-address.1rwt3l')}}</button>
                     </view>
                 </block>
                 <block v-else>
-                    <button class="cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
+                    <button class="item cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">{{$t('user-address.user-address.3i4x2r')}}</button>
                 </block>
             </view>
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 
@@ -106,6 +106,11 @@
 
             // 数据初始化
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

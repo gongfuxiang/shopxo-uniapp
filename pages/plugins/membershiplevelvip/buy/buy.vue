@@ -35,9 +35,9 @@
                                             </view>
                                         </view>
                                     </block>
-                                    <view class="bottom-fixed sub-pay">
+                                    <view class="bottom-fixed" :style="bottom_fixed_style">
                                         <view class="bottom-line-exclude">
-                                            <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.buy.0s1k23')}}{{ selected_tabs_value }}</button>
+                                            <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.buy.0s1k23')}}{{ selected_tabs_value }}</button>
                                         </view>
                                     </view>
                                 </view>
@@ -82,7 +82,7 @@
         ></component-payment>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -97,6 +97,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data_list: [],
                 data_base: null,
                 selected_tabs_index: 0,
@@ -135,6 +136,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

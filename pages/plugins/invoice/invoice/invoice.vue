@@ -30,8 +30,8 @@
                         </view>
                         <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
                         <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
-                            <button class="round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
-                            <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" :data-value="'/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id='+item.id" @tap="url_event" hover-class="none">{{$t('common.edit')}}</button>
+                            <button class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                            <button v-if="item.status == 0 || item.status == 3" class="btn round cr-main br-main bg-white text-size-md" type="default" size="mini" :data-value="'/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id='+item.id" @tap="url_event" hover-class="none">{{$t('common.edit')}}</button>
                         </view>
                     </view>
 
@@ -44,16 +44,16 @@
                 </view>
 
                 <!-- 添加发票 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button data-value="/pages/plugins/invoice/order/order" @tap="url_event" class="round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none">{{$t('invoice.invoice.p3dmd2')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
                     </view>
                 </view>
             </view>
         </scroll-view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -74,6 +74,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
                 params: null,
                 nav_status_list: [],
                 nav_status_index: 0,
@@ -119,6 +120,11 @@
 
             // 初始化配置
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();

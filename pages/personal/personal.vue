@@ -51,9 +51,9 @@
                             </view>
                         </view>
 
-                        <view class="bottom-fixed">
+                        <view class="bottom-fixed" :style="bottom_fixed_style">
                             <view class="bottom-line-exclude">
-                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.save')}}</button>
+                                <button class="item bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.save')}}</button>
                             </view>
                         </view>
                     </view>
@@ -65,7 +65,7 @@
         </view>
 
         <!-- 公共 -->
-        <component-common></component-common>
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
@@ -79,6 +79,7 @@
                 application_client_type: app.globalData.application_client_type(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 form_submit_disabled_status: false,
                 default_avatar: app.globalData.data.default_user_head_src,
                 user_data: {},
@@ -102,6 +103,11 @@
 
             // 数据加载
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         methods: {
