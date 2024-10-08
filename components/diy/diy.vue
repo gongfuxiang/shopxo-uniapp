@@ -22,7 +22,7 @@
                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="diy_key" :propValue="item.com_data"></componentDiyArticleList>
                         <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="diy_key" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
                         <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propkey="diy_key" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyGoodsTabs>
-                        
+
                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propkey="diy_key" :propValue="item.com_data"></componentDiyGoodsList>
                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="diy_key" :propValue="item.com_data"></componentDiyDataMagic>
                         <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCustom>
@@ -119,7 +119,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         components: {
             componentDiyHeader,
@@ -218,11 +218,11 @@
         watch: {
             propkey(val) {
                 this.setData({
-                    diy_key: val
-                })
+                    diy_key: val,
+                });
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             // 初始化配置
@@ -274,6 +274,7 @@
                 let new_data = [];
                 this.setData({
                     is_tabs_type: bool,
+                    tabs_id: tabs_id,
                 });
                 let new_params = {
                     ...params,
@@ -315,6 +316,9 @@
                             },
                         });
                     } else {
+                        this.setData({
+                            goods_page: 1,
+                        });
                         this.get_goods_list(1);
                     }
                 } else {
