@@ -56,8 +56,6 @@
                 content_img_radius: '',
                 cube_cell: '',
                 container_size: '',
-                cubeCellWidth: 0,
-                hackReset: true,
             };
         },
         watch: {
@@ -93,26 +91,25 @@
                     img_spacing: `padding:${spacing}`,
                     img_outer_spacing: new_style.image_spacing * 2 + 'rpx',
                     content_img_radius: radius_computer(new_style),
-                    cubeCellWidth: sys_width / density,
                     container_size: sys_width * 2 + 'rpx',
                     cube_cell: sys_width / density,
                     style_container: common_styles_computer(new_style.common_style),
                 });
             },
             getSelectedWidth(item) {
-                return (item.end.x - item.start.x + 1) * this.cubeCellWidth;
+                return (item.end.x - item.start.x + 1) * this.cube_cell;
             },
             //计算选中层的高度。
             getSelectedHeight(item) {
-                return (item.end.y - item.start.y + 1) * this.cubeCellWidth;
+                return (item.end.y - item.start.y + 1) * this.cube_cell;
             },
             //计算选中层的右边距离。
             getSelectedTop(item) {
-                return (item.start.y - 1) * this.cubeCellWidth;
+                return (item.start.y - 1) * this.cube_cell;
             },
             //计算选中层的左边距离。
             getSelectedLeft(item) {
-                return (item.start.x - 1) * this.cubeCellWidth;
+                return (item.start.x - 1) * this.cube_cell;
             },
             // 计算成百分比
             percentage(num) {
