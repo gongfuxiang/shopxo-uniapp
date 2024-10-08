@@ -210,7 +210,7 @@
                 footer_height_value: 0,
             };
         },
-        created() {
+        created() { 
             // 初始化配置
             this.init_config();
 

@@ -42,7 +42,7 @@
                     </view>
                 </view>
             </view>
-            <hotWordList v-if="is_click" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
+            <hotWordList v-if="is_click && form.content.hot_word_list.length > 0" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
         </view>
         <block v-if="!is_immersion_model">
             <view v-if="!is_positon_realative" class="nav-seat" :style="top_content_style">

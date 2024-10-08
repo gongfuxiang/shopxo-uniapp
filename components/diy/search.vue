@@ -54,7 +54,7 @@
                 </view>
             </template>
         </view>
-        <hotWordList v-if="is_click && !propIsPageSettings" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
+        <hotWordList v-if="is_click && !propIsPageSettings && form.content.hot_word_list.length > 0" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
     </view>
 </template>
 
@@ -180,9 +180,11 @@
                 })
             },
             search_icon_tap() {
-                if (!isEmpty(this.form.icon_src)) {
-                    app.globalData.url_open(this.form.icon_src.page);
+                if (isEmpty(this.form.icon_src)) {
+                    this.search_tap();
+                    return;
                 }
+                app.globalData.url_open(this.form.icon_src.page);
             },
             url_event() {
                 if (!isEmpty(this.search_content)) {

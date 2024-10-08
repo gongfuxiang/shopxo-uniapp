@@ -16,7 +16,7 @@
                 required: true,
             },
             propSourceList: {
-                type: Object,
+                type: [ Object, Array ],
                 default: () => {
                     return {};
                 },
