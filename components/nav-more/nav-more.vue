@@ -22,7 +22,7 @@
 
 <script>
     const app = getApp();
-    import componentPopup from '../popup/popup';
+    import componentPopup from '@/components/popup/popup';
     export default {
         name: 'more',
         components: {

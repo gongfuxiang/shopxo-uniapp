@@ -31,7 +31,8 @@ iframe,
 .cart-buy-nav,
 .bg-img,
 .pa-w,
-.plugins-realstore-cart-content {
+.plugins-realstore-cart-content,
+.tabs-content {
     max-width: 1600rpx !important;
     margin: 0 auto !important;
 }

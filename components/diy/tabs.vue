@@ -2,7 +2,7 @@
     <!-- 选项卡 -->
     <view class="tabs pr">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
-            <view class="max-w tabs-content" :style="style_container">
+            <view class="tabs-content wh-auto bs-bb" :style="style_container">
                 <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
