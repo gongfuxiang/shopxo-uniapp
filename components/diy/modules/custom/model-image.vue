@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_open(form.link)">
+    <view class="img-outer pr wh-auto ht-auto" :style="border_style" :data-value="form.link.page" @tap="url_event">
         <imageEmpty :propImageSrc="img" :propStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
     </view>
 </template>
@@ -68,8 +68,8 @@
                 }
                 return style;
             },
-            url_open(link) {
-                this.$emit('url_open', link);
+            url_event(e) {
+                this.$emit('url_event', e);
             },
         },
     };

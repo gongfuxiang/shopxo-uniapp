@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" @tap="url_open(form.icon_link)">
+    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="form.icon_link.page" @tap="url_event">
         <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * 2 + 'rpx'"></iconfont>
     </view>
 </template>
@@ -54,8 +54,8 @@
                 }
                 return style;
             },
-            url_open(link) {
-                this.$emit('url_open', link)
+            url_event(e) {
+                this.$emit('url_event', e)
             },
         },
     };  
