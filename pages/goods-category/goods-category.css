@@ -267,35 +267,18 @@
  * 底部导航
  */
 .botton-nav {
-    width: calc(100% - 40rpx);
+    width: calc(100% - 60rpx);
     left: auto;
     bottom: 20rpx;
     z-index: 2;
     margin-left: 20rpx;
-    background: linear-gradient(132deg, #EBEBEB 0%, #F7F7F7 100%);
     box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
+    line-height: 84rpx;
+    height: 84rpx;
 }
 .botton-nav .cart .badge-icon {
     top: -20rpx;
     right: -2rpx;
-}
-.botton-nav button {
-    width: 160rpx;
-    line-height: 84rpx;
-    height: 84rpx;
-    padding: 0 38rpx;
-    border: 0;
-    /* #ifdef MP-QQ */
-    padding-top: 0;
-    padding-bottom: 0;
-    /* #endif */
-}
-.botton-nav .cart-total-price {
-    padding-left: 20rpx;
-    width: calc(100% - 260rpx);
-}
-.cart {
-    padding-left: 40rpx;
 }
 
 /**
@@ -309,7 +292,7 @@
 }
 .cart-content {
     left: auto;
-    bottom: 130rpx;
+    bottom: 150rpx;
     width: calc(100% - 40rpx);
     z-index: 6;
     max-width: calc(800px - 40rpx);
