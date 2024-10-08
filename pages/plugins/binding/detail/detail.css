@@ -46,24 +46,20 @@
 /**
  * 导航
  */
-.nav-button.bottom-fixed {
-    padding: 24rpx !important;
-}
-
-.nav-button .left-price {
+.bottom-fixed .left-price {
     width: calc(100% - 270rpx);
 }
 
-.nav-button .right-button {
+.bottom-fixed .right-button {
     width: 240rpx;
 }
 
-.nav-button .right-button button {
+.bottom-fixed .right-button .btn {
     height: 80rpx;
     line-height: 78rpx;
 }
 
-.nav-button .left-price .discount-icon {
+.bottom-fixed .left-price .discount-icon {
     border-top-right-radius: 30rpx;
     border-bottom-left-radius: 30rpx;
     background-image: linear-gradient(45deg, #a3f9a3, #248828, #8bc34a, #d2374c, #9c27b0);

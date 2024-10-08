@@ -11,6 +11,9 @@
 
                             <!-- 版权信息 -->
                             <component-copyright></component-copyright>
+
+                            <!-- 公共 -->
+                            <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
                         </template>
                     </componentDiy>
                 </block>
@@ -286,10 +289,10 @@
 
             <!-- 快捷导航 -->
             <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-        </block>
 
-        <!-- 公共 -->
-        <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
+            <!-- 公共 -->
+            <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
+        </block>
     </view>
 </template>
 <script>
