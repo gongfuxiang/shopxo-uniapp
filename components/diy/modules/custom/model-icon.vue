@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" @tap="url_open(form.icon_link)">
-        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size"></iconfont>
+        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * 2 + 'rpx'"></iconfont>
     </view>
 </template>
 <script>
