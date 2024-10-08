@@ -64,7 +64,7 @@
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal + this.propTop + this.custom_nav_height >= this.tabs_top) {
+                if (newVal + this.propTop + this.custom_nav_height >= this.tabs_top && this.top_up == '1') {
                     let new_style = this.propValue.style || {};
                     let tabs_bg = new_style.common_style.color_list;
                     let new_tabs_background = '';

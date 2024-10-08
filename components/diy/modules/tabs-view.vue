@@ -4,13 +4,15 @@
         <view class="tabs-view flex-row gap-10 jc-sb align-c" :style="propStyle + propTabsBackground">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
-                    <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'rpx;'">
-                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :data-index="index" @tap="handle_event">
-                            <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
-                            <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
-                            <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
-                            <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
-                            <view class="bottom_line" :style="tabs_check"></view>
+                    <view class="flex-row">
+                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :style="'padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
+                            <view class="pr nowrap flex-col jc-c gap-4">
+                                <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
+                                <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
+                                <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
+                                <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
+                                <view class="bottom_line" :style="tabs_check"></view>
+                            </view>
                         </view>
                     </view>
                 </scroll-view>
@@ -114,13 +116,13 @@
                 propIsBar: false,
                 // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                tabs_top: 'calc(' + bar_height + 5 + 12 + 'px + 66rpx);',
+                tabs_top: 'calc(' + (bar_height + 5 + 12) + 'px + 66rpx);',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                tabs_top: 'calc(' + bar_height + 7 + 12 + 'px+ 66rpx);',
+                tabs_top: 'calc(' + (bar_height + 7 + 12) + 'px+ 66rpx);',
                 // #endif
                 // #ifdef APP
-                tabs_top: 'calc(' + bar_height + 0 + 12 + 'px+ 66rpx);',
+                tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px+ 66rpx);',
                 // #endif
                 custom_nav_height: '66rpx',
             };
@@ -151,7 +153,7 @@
                     tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
                 };
                 this.setData({
-                    tabs_spacing: Number(new_style.tabs_spacing * 2),
+                    tabs_spacing: Number(new_style.tabs_spacing),
                     tabs_list: new_content.tabs_list,
                     // 选项卡主题
                     tabs_theme: this.get_tabs_theme(new_content),
@@ -241,7 +243,7 @@
                 position: absolute;
                 left: 0;
                 right: 0;
-                bottom: 0;
+                bottom: -10rpx;
                 display: none;
             }
             .icon {

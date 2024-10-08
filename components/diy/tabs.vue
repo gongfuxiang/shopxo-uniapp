@@ -2,18 +2,17 @@
     <!-- 选项卡 -->
     <view class="tabs pr">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
-            <view class="max-w tabs-content" :style="style_container">
+            <view class="tabs-content wh-auto bs-bb" :style="style_container">
                 <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
-        <!-- <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px;padding-top:' + tabs_padding_top"></view> -->
         <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px;'"></view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));

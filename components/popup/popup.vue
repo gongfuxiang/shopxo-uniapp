@@ -62,7 +62,7 @@
                 type: Number,
                 default: 100,
             },
-            // 需要携带后缀
+            // 需要携带单位后缀
             propTop: {
                 type: String,
                 default: '',
@@ -113,7 +113,7 @@
                 }
                 // #endif
                 this.setData({
-                    popup_content_style: 'left:' + left + ';' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:'+tabbar_height+'rpx;',
+                    popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:'+tabbar_height+'rpx;',
                 });
             },
         },

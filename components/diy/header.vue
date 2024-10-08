@@ -173,17 +173,18 @@
                 }
                 // 小程序下，获取小程序胶囊的宽度
                 let menuButtonInfo = 'max-width:100%';
-
+                let new_text_style = `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`;
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 const custom = uni.getMenuButtonBoundingClientRect();
                 menuButtonInfo = `max-width:calc(100% - ${custom.width + 10}px);`;
+                new_text_style += `right:-${custom.width + 10}px;`;
                 // #endif
                 this.setData({
                     form: this.propValue,
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : 'position:relative;',
                     is_positon_realative: new_style.up_slide_display == '1' ? false : true,
                     roll_style: new_roll_style,
-                    text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};right:-${custom.width + 10}px;`,
+                    text_style: new_text_style,
                     position_class: new_content.indicator_location == 'center' ? `indicator-center` : '',
                     header_style: menuButtonInfo,
                     header_background_type: header_background_type,
@@ -255,7 +256,7 @@
             overflow: hidden;
             .model-head-content {
                 height: 66rpx;
-                top: -6rpx;
+                top: -1rpx;
             }
         }
         .model-head-icon {

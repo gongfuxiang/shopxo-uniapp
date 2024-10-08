@@ -18,7 +18,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
@@ -32,7 +32,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -42,8 +42,8 @@
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
                 this.setData({
-                    video_img: new_content.video_img[0].url || '',
-                    video: new_content.video[0].url || '',
+                    video_img: new_content.video_img.length > 0 ? new_content.video_img[0].url : '',
+                    video: new_content.video.length > 0 ? new_content.video[0].url : '',
                     style_container: common_styles_computer(new_style.common_style),
                 });
             },

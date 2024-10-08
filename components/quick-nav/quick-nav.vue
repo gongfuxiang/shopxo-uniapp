@@ -35,8 +35,8 @@
 </template>
 <script>
     const app = getApp();
-    import componentPopup from '../popup/popup';
-    import componentNoData from '../no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
+    import componentNoData from '@/components/no-data/no-data';
     export default {
         data() {
             return {
