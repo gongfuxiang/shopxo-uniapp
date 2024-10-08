@@ -255,7 +255,7 @@
             overflow: hidden;
             .model-head-content {
                 height: 66rpx;
-                top: -6rpx;
+                top: -1rpx;
             }
         }
         .model-head-icon {
