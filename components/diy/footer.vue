@@ -15,7 +15,7 @@
                                 </view>
                             </view>
                             <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
-                            <view v-if="(item.badge || null) != null" class="pa top-0-xxl right-xxxxl">
+                            <view v-if="(item.badge || null) != null" class="pa badge-icon">
                                 <component-badge :propNumber="item.badge"></component-badge>
                             </view>
                         </view>
@@ -187,6 +187,10 @@
                         height: 44rpx;
                     }
                 }
+            }
+            .badge-icon {
+                margin-top: -76rpx;
+                margin-right: -76rpx;
             }
         }
     }

@@ -342,7 +342,7 @@
                                         <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
                                     </view>
                                 </view>
-                                <button type="default" size="mini" hover-class="none" class="bg-main cr-white text-size-md round margin-right-xs" @tap="buy_submit_event">{{ $t('goods-category.goods-category.44f1ww') }}</button>
+                                <button type="default" size="mini" hover-class="none" class="btn bg-main cr-white text-size-md round margin-right-xs" @tap="buy_submit_event">{{ $t('goods-category.goods-category.44f1ww') }}</button>
                             </view>
                         </block>
                     </view>

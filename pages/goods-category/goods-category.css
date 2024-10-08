@@ -276,6 +276,10 @@
     line-height: 84rpx;
     height: 84rpx;
 }
+.botton-nav .btn {
+    height: 70rpx;
+    line-height: 70rpx;
+}
 .botton-nav .cart .badge-icon {
     top: -20rpx;
     right: -2rpx;
