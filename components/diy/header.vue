@@ -2,8 +2,8 @@
     <view v-if="(propValue || null) !== null" class="header-container">
         <view class="wh-auto header-z-3" :style="roll_style + position">
             <view :style="top_content_style">
-                <view class="header-content flex-row align-c">
-                    <view class="model-top flex-1">
+                <view class="header-content flex-row align-s">
+                    <view class="model-top flex-1 mt-1">
                         <view class="roll pr z-i">
                             <view class="model-head pr flex-row align-c" :style="header_style">
                                 <view class="flex-row align-c jc-sb gap-16 wh-auto">
