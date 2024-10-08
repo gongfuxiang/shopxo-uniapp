@@ -32,7 +32,8 @@ iframe,
 .bg-img,
 .pa-w,
 .plugins-realstore-cart-content,
-.tabs-content {
+.tabs-content,
+.header-around {
     max-width: 1600rpx !important;
     margin: 0 auto !important;
 }
