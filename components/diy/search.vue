@@ -54,7 +54,7 @@
                 </view>
             </template>
         </view>
-        <hotWordList v-if="is_click && !propIsPageSettings" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
+        <hotWordList v-if="is_click && !propIsPageSettings && form.content.hot_word_list.length > 0" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
     </view>
 </template>
 
@@ -80,6 +80,10 @@
             propIsClick: {
                 type: Boolean,
                 default: false,
+            },
+            propkey: {
+                type: String,
+                default: '',
             }
         },
         data() {
@@ -103,18 +107,22 @@
                     });
                 },
                 immediate: true
+            },
+            propkey(val) {
+                // 初始化
+                this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             isEmpty,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 const { search_button_radius, common_style } = this.new_style;
                 this.setData({
                     style: this.get_style(), // 内部样式
@@ -180,9 +188,11 @@
                 })
             },
             search_icon_tap() {
-                if (!isEmpty(this.form.icon_src)) {
-                    app.globalData.url_open(this.form.icon_src.page);
+                if (isEmpty(this.form.icon_src)) {
+                    this.search_tap();
+                    return;
                 }
+                app.globalData.url_open(this.form.icon_src.page);
             },
             url_event() {
                 if (!isEmpty(this.search_content)) {

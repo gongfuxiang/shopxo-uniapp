@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer re oh" :style="com_style" @tap="url_open(form.text_link)">
+    <view class="img-outer re oh" :style="com_style" :data-value="form.text_link.page" @tap="url_event">
         <view :style="text_style" class="break">
             <template v-if="form.is_rich_text == '1'">
                 <view class="rich-text-content" :innerHTML="text_title"></view>
@@ -11,7 +11,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, isEmpty } from '@/common/js/common/common.js';
+    import { radius_computer, padding_computer, isEmpty, gradient_handle } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -23,7 +23,7 @@
                 required: true,
             },
             propSourceList: {
-                type: Object,
+                type: [ Object, Array ],
                 default: () => {
                     return {};
                 },
@@ -70,7 +70,7 @@
                 return style;
             },
             get_com_style() {
-                let style = `background-color: ${this.form.com_bg}; ${radius_computer(this.form.bg_radius)}`;
+                let style = `${ gradient_handle(this.form.color_list, this.form.direction) } ${radius_computer(this.form.bg_radius)}`;
                 if (this.form.border_show == '1') {
                     style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color};`;
                 }
@@ -80,8 +80,8 @@
                 }
                 return style;
             },
-            url_open(link) {
-                this.$emit('url_open', link)
+            url_event(e) {
+                this.$emit('url_event', e)
             },
         },
     };  

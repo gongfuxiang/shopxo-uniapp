@@ -27,6 +27,10 @@
                     return {};
                 },
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -38,15 +42,21 @@
                 color: '',
             };
         },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
+        },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 const { float_style, float_style_color, display_location, offset_number_percentage } = this.propValue.style;
 
                 const { windowWidth, windowHeight } = uni.getSystemInfoSync();

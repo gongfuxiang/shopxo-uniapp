@@ -2,23 +2,25 @@
     <view v-if="(propValue || null) !== null" class="header-container">
         <view class="wh-auto header-z-3" :style="roll_style + position">
             <view :style="top_content_style">
-                <view class="header-content flex-row align-c">
-                    <view class="model-top flex-1">
+                <view class="header-content flex-row align-s">
+                    <view class="model-top flex-1 mt-1">
                         <view class="roll pr z-i">
                             <view class="model-head pr flex-row align-c" :style="header_style">
-                                <view class="flex-row align-c jc-sb gap-16 wh-auto">
-                                    <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16 padding-left-main" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
-                                        <template v-if="['2', '3'].includes(form.content.theme)">
-                                            <view class="logo-outer-style">
-                                                <imageEmpty :propImageSrc="form.content.logo[0]" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
-                                            </view>
-                                        </template>
-                                        <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
-                                        <template v-if="['3', '5'].includes(form.content.theme)">
-                                            <view class="flex-1">
-                                                <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
-                                            </view>
-                                        </template>
+                                <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr">
+                                    <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
+                                        <view class="flex-row align-c jc-c ht-auto gap-16 padding-left-main" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
+                                            <template v-if="['2', '3'].includes(form.content.theme)">
+                                                <view class="logo-outer-style">
+                                                    <imageEmpty :propImageSrc="form.content.logo[0]" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
+                                                </view>
+                                            </template>
+                                            <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
+                                            <template v-if="['3', '5'].includes(form.content.theme)">
+                                                <view class="flex-1">
+                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
+                                                </view>
+                                            </template>
+                                        </view>
                                     </view>
                                     <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
                                         <view class="flex-row align-c gap-2" @tap="go_map_event">
@@ -42,7 +44,7 @@
                     </view>
                 </view>
             </view>
-            <hotWordList v-if="is_click" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
+            <hotWordList v-if="is_click && form.content.hot_word_list.length > 0" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
         </view>
         <block v-if="!is_immersion_model">
             <view v-if="!is_positon_realative" class="nav-seat" :style="top_content_style">
@@ -81,6 +83,10 @@
                 type: Number,
                 default: 0,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         components: {
             componentDiySearch,
@@ -138,6 +144,11 @@
                     }
                 }
             },
+            propkey(val) {
+                if ((this.propValue || null) !== null) {
+                    this.init();
+                }
+            }
         },
         created() {
             if ((this.propValue || null) !== null) {
@@ -172,7 +183,8 @@
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : 'position:relative;',
                     is_positon_realative: new_style.up_slide_display == '1' ? false : true,
                     roll_style: new_roll_style,
-                    text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
+                    text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};right:-${custom.width + 10}px;`,
+                    position_class: new_content.indicator_location == 'center' ? `indicator-center` : '',
                     header_style: menuButtonInfo,
                     header_background_type: header_background_type,
                     is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
@@ -206,6 +218,9 @@
                     is_click: false,
                 });
             },
+            user_back_choice_location(e) {
+                console.log('选择位置', e);
+            },
             url_event(e) {
                 app.globalData.url_event(e);
             },
@@ -236,23 +251,36 @@
             }
         }
         .model-head {
+            height: 66rpx;
             overflow: hidden;
+            .model-head-content {
+                height: 66rpx;
+                top: -6rpx;
+            }
         }
         .model-head-icon {
             position: absolute;
             right: 0;
             bottom: 0;
-            height: 64rpx;
+            height: 66rpx;
             .function-icon {
-                height: 64rpx;
+                height: 66rpx;
             }
         }
         .logo-outer-style {
-            height: 64rpx;
+            height: 66rpx;
             .logo-style {
-                height: 64rpx;
-                width: 64rpx;
+                height: 66rpx;
+                width: 66rpx;
             }
         }
+    }
+    .indicator-center {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        top: 0;
+        padding-left: 0;
     }
 </style>

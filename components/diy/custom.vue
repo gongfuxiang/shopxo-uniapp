@@ -3,16 +3,16 @@
         <view class="wh-auto ht-auto pr">
             <view v-for="item in form.custom_list" :key="item.id" class="main-content" :style="{ left: get_percentage_count(item.location.x, div_width), top: get_percentage_count(item.location.y, div_height), width: get_percentage_count(item.com_data.com_width, div_width), height: get_percentage_count(item.com_data.com_height, div_height) }">
                 <template v-if="item.key == 'text'">
-                    <model-text :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_open="url_open"></model-text>
+                    <model-text :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-text>
                 </template>
                 <template v-else-if="item.key == 'img'">
-                    <model-image :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_open="url_open"></model-image>
+                    <model-image :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-image>
                 </template>
                 <template v-else-if="item.key == 'auxiliary-line'">
                     <model-lines :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content"></model-lines>
                 </template>
                 <template v-else-if="item.key == 'icon'">
-                    <model-icon :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_open="url_open"></model-icon>
+                    <model-icon :key="item.com_data" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-icon>
                 </template>
             </view>
         </view>
@@ -43,6 +43,10 @@
                     return {};
                 },
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -61,24 +65,30 @@
                 };
             },
         },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
+        },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             percentage_count,
             init() {
                 this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
+                this.setData({
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     div_width: sys_width,
-                    div_height: this.form.height * this.scale,
+                    div_height: this.form.height,
                 });
             },
-            url_open(link) {
-                app.globalData.url_event(link);
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };
