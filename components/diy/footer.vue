@@ -189,8 +189,8 @@
                 }
             }
             .badge-icon {
-                margin-top: -76rpx;
-                margin-right: -76rpx;
+                margin-top: -70rpx;
+                margin-right: -70rpx;
             }
         }
     }
