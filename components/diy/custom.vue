@@ -74,7 +74,7 @@
                 this.setData({
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     div_width: sys_width,
-                    div_height: this.form.height * this.scale,
+                    div_height: this.form.height,
                 });
             },
             url_open(link) {
