@@ -187,6 +187,10 @@
                 type: Boolean,
                 default: true,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -224,6 +228,15 @@
             button_gradient() {
                 return gradient_handle(this.new_style.shop_button_color, '180deg');
             },
+        },
+        watch: {
+            propkey(val) {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
+                this.init();
+            }
         },
         created() {
             this.setData({

@@ -45,6 +45,10 @@
                 type: Boolean,
                 default: false,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -78,6 +82,11 @@
                     this.tabs_background = 'background:transparent';
                 }
             },
+        },
+        watch: {
+            propkey(val) {
+                this.init();
+            }
         },
         created() {
             this.init();
