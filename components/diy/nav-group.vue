@@ -43,6 +43,10 @@
                     return {};
                 },
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -58,17 +62,21 @@
                 nav_content_list: [],
             };
         },
-        created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         mounted() {
             this.init();
         },
         methods: {
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 this.setData({
                     style_container: common_styles_computer(this.new_style.common_style), // 用于样式显示
                     img_style: radius_computer(this.new_style), // 图片的设置

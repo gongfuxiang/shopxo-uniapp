@@ -80,6 +80,10 @@
             propIsClick: {
                 type: Boolean,
                 default: false,
+            },
+            propkey: {
+                type: String,
+                default: '',
             }
         },
         data() {
@@ -103,18 +107,22 @@
                     });
                 },
                 immediate: true
+            },
+            propkey(val) {
+                // 初始化
+                this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             isEmpty,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 const { search_button_radius, common_style } = this.new_style;
                 this.setData({
                     style: this.get_style(), // 内部样式

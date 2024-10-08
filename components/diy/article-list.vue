@@ -69,6 +69,10 @@
                 type: Boolean,
                 default: true,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -113,6 +117,12 @@
                 // 文章轮播数据
                 article_carousel_list: [],
             };
+        },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();

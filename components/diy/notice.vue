@@ -63,6 +63,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -93,6 +97,12 @@
                 // 公告数据
                 notice_list: [],
             };
+        },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();

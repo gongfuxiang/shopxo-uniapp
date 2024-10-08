@@ -167,6 +167,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -189,6 +193,12 @@
                 // 首页地址
                 home_page_url: tabbar_pages[0],
             };
+        },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();
@@ -545,9 +555,6 @@
                 text-align: center;
                 display: flex;
                 align-items: center;
-
-                &.long-name {
-                }
 
                 &.short-name {
                     height: 132rpx;

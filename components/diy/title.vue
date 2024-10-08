@@ -7,18 +7,23 @@
                         <image :src="form.img_src[0].url" class="title-img" mode="heightFix"></image>
                     </template>
                     <template v-else-if="!isEmpty(form.icon_class)">
-                        <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color"></iconfont>
+                        <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'"
+                            :color="new_style.icon_color"></iconfont>
                     </template>
                     <view class="pr-15 nowrap" :style="title_style">{{ form.title || '标题' }}</view>
                 </view>
                 <view class="flex-row gap-10 align-c right-0 pa">
                     <template v-if="form.keyword_show == '1'">
-                        <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" :data-value="item.link.page" @tap="url_event">
+                        <view v-for="item in keyword_list" :key="item.id" :style="keyword_style"
+                            :data-value="item.link.page" @tap="url_event">
                             {{ item.title }}
                         </view>
                     </template>
-                    <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="form.right_link.page" @tap="url_event">{{ form.right_title }}
-                        <iconfont name="icon-arrow-right" :color="new_style.right_color" :size="new_style.right_size * 2 + 'rpx'"></iconfont>
+                    <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style"
+                        :data-value="form.right_link.page" @tap="url_event">{{ form.right_title }}
+                        <iconfont name="icon-arrow-right" :color="new_style.right_color"
+                            :size="new_style.right_size * 2 + 'rpx'">
+                        </iconfont>
                     </view>
                 </view>
             </view>
@@ -38,6 +43,10 @@ export default {
                 return {};
             },
         },
+        propkey: {
+            type: String,
+            default: '',
+        }
     },
     data() {
         return {
@@ -52,18 +61,22 @@ export default {
             right_size: '',
         };
     },
+    watch: {
+        propkey(val) {
+            // 初始化
+            this.init();
+        }
+    },
     created() {
-        this.setData({
-            form: this.propValue.content,
-            new_style: this.propValue.style,
-        });
-        console.log(this.propValue);
-        
         this.init();
     },
     methods: {
         isEmpty,
         init() {
+            this.setData({
+                form: this.propValue.content,
+                new_style: this.propValue.style,
+            });
             // 是否居中
             this.setData({
                 title_center: this.form.is_title_center == '1' ? 'jc-c' : '',

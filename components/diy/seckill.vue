@@ -178,6 +178,10 @@
                     return {};
                 },
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -230,11 +234,13 @@
                 return gradient_handle(this.new_style.shop_button_color, '180deg');
             },
         },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
+        },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         beforeDestroy() {
@@ -246,6 +252,10 @@
         methods: {
             isEmpty,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 const data = this.form.data;
                 let new_list = [];
                 if (data && !isEmpty(data.current)) {

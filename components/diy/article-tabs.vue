@@ -3,7 +3,7 @@
     <view class="article-tabs ou" :style="style_container">
         <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
-            <componentDiyArticleList v-if="hackReset" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+            <componentDiyArticleList v-if="hackReset" :propkey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
     </view>
 </template>
@@ -40,6 +40,10 @@
                 type: Boolean,
                 default: false,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         components: {
             componentDiyModulesTabsView,
@@ -57,6 +61,7 @@
                 tabs_top: 0,
                 tabs_background: 'background:transparent',
                 custom_nav_height: 33,
+                diy_key: '',
             };
         },
         watch: {
@@ -79,6 +84,13 @@
                     this.tabs_background = 'background:transparent';
                 }
             },
+            propkey(val) {
+                this.setData({
+                    diy_key: val
+                })
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();

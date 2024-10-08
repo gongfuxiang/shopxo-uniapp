@@ -35,6 +35,10 @@
                 type: Boolean,
                 default: false,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -64,6 +68,10 @@
             propTabsIsTop(value, old_value) {
                 this.init();
             },
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         methods: {
             init() {

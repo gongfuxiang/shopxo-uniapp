@@ -81,6 +81,10 @@
                 type: Number,
                 default: 0,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         components: {
             componentDiySearch,
@@ -138,6 +142,11 @@
                     }
                 }
             },
+            propkey(val) {
+                if ((this.propValue || null) !== null) {
+                    this.init();
+                }
+            }
         },
         created() {
             if ((this.propValue || null) !== null) {

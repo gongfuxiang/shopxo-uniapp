@@ -43,6 +43,10 @@
                     return {};
                 },
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -61,16 +65,22 @@
                 };
             },
         },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
+        },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             percentage_count,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 this.setData({
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     div_width: sys_width,
