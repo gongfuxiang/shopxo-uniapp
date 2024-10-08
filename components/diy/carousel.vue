@@ -1,15 +1,15 @@
 <template>
     <view class="pr" :style="style_container">
-        <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+        <swiper v-if="hackReset" circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
             <block v-if="form.carousel_type == 'card'">
                 <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
-                        <imageEmpty v-if="hackReset" :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                        <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
                             <view class="video_img">
-                                <imageEmpty v-if="hackReset" :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
                             </view>
                         </block>
                         <block v-else>
@@ -22,12 +22,12 @@
             <block v-else>
                 <swiper-item v-for="(item, index) in new_list" :key="index" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="wh-auto ht-auto pr" :style="img_style">
-                        <imageEmpty v-if="hackReset" :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                        <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
                     <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
                             <view class="video_img">
-                                <imageEmpty v-if="hackReset" :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
                             </view>
                         </block>
                         <block v-else>
@@ -155,7 +155,6 @@
                         video_style: this.get_video_style(), // 视频播放按钮显示逻辑
                     });
                 });
-                console.log('carousel_style', this.form.carousel_list);
                 if (this.form.carousel_type == 'card') {
                     this.$nextTick(() => {
                         this.setData({
@@ -200,7 +199,6 @@
                 return styles;
             },
             get_seat_list() {
-                console.log('keysk', this.form.carousel_list);
                 if (this.form.carousel_list.length > 3) {
                     return [];
                 } else {

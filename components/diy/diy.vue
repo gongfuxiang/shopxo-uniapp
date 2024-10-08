@@ -5,7 +5,7 @@
             <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
-            <view v-for="(item, index) in tabs_data" :key="item.key">
+            <view v-for="item in tabs_data" :key="item.key">
                 <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
                 <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
@@ -13,30 +13,32 @@
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
                         <!-- 基础组件 -->
-                        <componentDiySearch v-if="item.key == 'search'" :propkey="diy_key" :propValue="item.com_data"></componentDiySearch>
-                        <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCarousel>
-                        <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propkey="diy_key" :propValue="item.com_data"></componentDiyNavGroup>
-                        <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propkey="diy_key" :propValue="item.com_data"></componentDiyUserInfo>
-                        <componentDiyNotice v-else-if="item.key == 'notice'" :propkey="diy_key" :propValue="item.com_data"></componentDiyNotice>
-                        <componentDiyVideo v-else-if="item.key == 'video'" :propkey="diy_key" :propValue="item.com_data"></componentDiyVideo>
-                        <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="diy_key" :propValue="item.com_data"></componentDiyArticleList>
-                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="diy_key" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
-                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propkey="diy_key" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyGoodsTabs>
+                        <template v-if="item.is_enable == '1'">
+                            <componentDiySearch v-if="item.key == 'search'" :propkey="diy_key" :propValue="item.com_data"></componentDiySearch>
+                            <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCarousel>
+                            <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propkey="diy_key" :propValue="item.com_data"></componentDiyNavGroup>
+                            <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propkey="diy_key" :propValue="item.com_data"></componentDiyUserInfo>
+                            <componentDiyNotice v-else-if="item.key == 'notice'" :propkey="diy_key" :propValue="item.com_data"></componentDiyNotice>
+                            <componentDiyVideo v-else-if="item.key == 'video'" :propkey="diy_key" :propValue="item.com_data"></componentDiyVideo>
+                            <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="diy_key" :propValue="item.com_data"></componentDiyArticleList>
+                            <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="diy_key" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
+                            <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propkey="diy_key" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyGoodsTabs>
 
-                        <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propkey="diy_key" :propValue="item.com_data"></componentDiyGoodsList>
-                        <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="diy_key" :propValue="item.com_data"></componentDiyDataMagic>
-                        <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCustom>
-                        <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propkey="diy_key" :propValue="item.com_data"></componentDiyImgMagic>
-                        <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propkey="diy_key" :propValue="item.com_data"></componentDiyHotZone>
-                        <componentDiySeckill v-else-if="item.key == 'seckill'" :propkey="diy_key" :propValue="item.com_data"></componentDiySeckill>
-                        <!-- 插件 -->
-                        <componentDiyCoupon v-else-if="item.key == 'coupon'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCoupon>
-                        <!-- 工具组件 -->
-                        <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propkey="diy_key" :propValue="item.com_data"></componentDiyFloatWindow>
-                        <componentDiyTitle v-else-if="item.key == 'title'" :propkey="diy_key" :propValue="item.com_data"></componentDiyTitle>
-                        <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propkey="diy_key" :propValue="item.com_data"></componentDiyAuxiliaryLine>
-                        <componentDiyRichText v-else-if="item.key == 'rich-text'" :propkey="diy_key" :propValue="item.com_data"></componentDiyRichText>
-                        <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propkey="diy_key" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
+                            <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propkey="diy_key" :propValue="item.com_data"></componentDiyGoodsList>
+                            <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="diy_key" :propValue="item.com_data"></componentDiyDataMagic>
+                            <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCustom>
+                            <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propkey="diy_key" :propValue="item.com_data"></componentDiyImgMagic>
+                            <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propkey="diy_key" :propValue="item.com_data"></componentDiyHotZone>
+                            <componentDiySeckill v-else-if="item.key == 'seckill'" :propkey="diy_key" :propValue="item.com_data"></componentDiySeckill>
+                            <!-- 插件 -->
+                            <componentDiyCoupon v-else-if="item.key == 'coupon'" :propkey="diy_key" :propValue="item.com_data"></componentDiyCoupon>
+                            <!-- 工具组件 -->
+                            <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propkey="diy_key" :propValue="item.com_data"></componentDiyFloatWindow>
+                            <componentDiyTitle v-else-if="item.key == 'title'" :propkey="diy_key" :propValue="item.com_data"></componentDiyTitle>
+                            <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propkey="diy_key" :propValue="item.com_data"></componentDiyAuxiliaryLine>
+                            <componentDiyRichText v-else-if="item.key == 'rich-text'" :propkey="diy_key" :propValue="item.com_data"></componentDiyRichText>
+                            <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propkey="diy_key" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
+                        </template>
                     </view>
                 </template>
 

@@ -2,7 +2,7 @@
     <view v-if="!isEmpty(list)" class="oh" :style="style_container">
         <view :class="outer_class" :style="onter_style">
             <block v-if="!['5'].includes(theme)">
-                <view v-for="(item, index) in list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
+                <view v-for="(item, index) in list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                     <block v-if="theme == '6'">
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
@@ -103,7 +103,7 @@
             <block v-else>
                 <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
                     <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1" class="flex-row" :style="onter_style">
-                        <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
+                        <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                             <block v-if="!isEmpty(item)">
                                 <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
                                     <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
@@ -414,8 +414,16 @@
                 }
                 return style;
             },
-            url_event(link) {
-                app.globalData.url_event(link);
+            url_event(e) {
+                let index = e.currentTarget.dataset.index || 0;
+                let goods = this.list[index];
+                if (this.theme == '5') {
+                    split_index = e.currentTarget.dataset.split_index || 0;
+                    goods = this.shop_content_list[index][split_index];
+                }
+                app.globalData.goods_data_cache_handle(goods.id, goods);
+
+                app.globalData.url_event(e);
             },
             goods_button_event(e) {
                 this.goods_cart_event(e);
@@ -426,7 +434,6 @@
                 let split_index = 0;
                 let goods = this.list[index];
                 if (this.theme == '5') {
-                    index = e.currentTarget.dataset.index || 0;
                     split_index = e.currentTarget.dataset.split_index || 0;
                     goods = this.shop_content_list[index][split_index];
                 }
