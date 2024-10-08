@@ -5,7 +5,7 @@
             <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
-            <view v-for="(item, index) in tabs_data" :key="item.key">
+            <view v-for="item in tabs_data" :key="item.key">
                 <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
                 <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
