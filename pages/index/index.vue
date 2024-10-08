@@ -581,7 +581,7 @@
                         // 初始化返回公共处理
                         this.init_result_common_handle();
                         this.setData({
-                            diy_key: Math.random(),
+                            diy_key: Math.random().toString(),
                         });
                     },
                     fail: () => {

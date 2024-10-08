@@ -36,7 +36,7 @@
             <template v-else>
                 <view class="search wh-auto pr">
                     <view class="box oh flex-row align-c gap-10 bg-white" :style="box_style + search_box_style">
-                        <input :focus="is_click" type="text" name="title" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :placeholder="form.tips" @input="search_input" />
+                        <input :focus="is_click" type="text" name="title" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :placeholder="form.tips" @input="search_input" @confirm="url_event"  />
                     </view>
                     <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="url_event">
                         <template v-if="form.search_type === 'text'">
@@ -54,7 +54,7 @@
                 </view>
             </template>
         </view>
-        <hotWordList v-if="is_click && !propIsPageSettings && form.content.hot_word_list.length > 0" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
+        <hotWordList v-if="is_click && !propIsPageSettings && form.hot_word_list.length > 0" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
     </view>
 </template>
 
