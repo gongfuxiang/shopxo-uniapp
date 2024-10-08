@@ -20,7 +20,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentGoodsList from '../goods-list/goods-list';
+    import componentGoodsList from '@/components/goods-list/goods-list';
     export default {
         data() {
             return {
