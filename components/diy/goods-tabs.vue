@@ -2,7 +2,7 @@
     <view class="goods-tabs ou" :style="style_container">
         <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
-            <componentGoodsList v-if="hackReset" :propkey="diy_key" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
+            <componentGoodsList :propkey="diy_key" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
         </view>
     </view>
 </template>
@@ -48,13 +48,12 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 style_container: '',
                 goods_tabs: {},
-                hackReset: true,
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_top: 0,
@@ -86,10 +85,10 @@
             propkey(val) {
                 // 初始化
                 this.setData({
-                    diy_key: val
-                })
+                    diy_key: val,
+                });
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -154,12 +153,7 @@
                 new_data.content.data_auto_list = new_data.content.tabs_list[index].data_auto_list;
                 this.setData({
                     goods_tabs: new_data,
-                    hackReset: false,
-                });
-                this.$nextTick(() => {
-                    this.setData({
-                        hackReset: true,
-                    });
+                    diy_key: Math.random(),
                 });
             },
             // 获取商品距离顶部的距离

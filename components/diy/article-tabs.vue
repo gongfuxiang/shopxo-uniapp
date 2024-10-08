@@ -3,7 +3,7 @@
     <view class="article-tabs ou" :style="style_container">
         <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
-            <componentDiyArticleList v-if="hackReset" :propkey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+            <componentDiyArticleList :propkey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
         </view>
     </view>
 </template>
@@ -43,7 +43,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -54,7 +54,6 @@
                 style_container: '',
                 style: '',
                 article_tabs: {},
-                hackReset: true,
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_style: '',
@@ -86,11 +85,11 @@
             },
             propkey(val) {
                 this.setData({
-                    diy_key: val
-                })
+                    diy_key: val,
+                });
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -162,12 +161,7 @@
                 new_data.content.is_cover = new_data.content.tabs_list[index].is_cover;
                 this.setData({
                     article_tabs: new_data,
-                    hackReset: false,
-                });
-                this.$nextTick(() => {
-                    this.setData({
-                        hackReset: true,
-                    });
+                    diy_key: Math.random(),
                 });
             }, // 获取商品距离顶部的距离
             getTop() {

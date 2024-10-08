@@ -24,7 +24,7 @@
                                     </view>
                                     <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
                                         <view class="flex-row align-c gap-2" @tap="go_map_event">
-                                            <component-choice-location propBaseColor="#666" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" @onback="user_back_choice_location"></component-choice-location>
+                                            <component-choice-location propBaseColor="#666" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" propTextMaxWidth="150rpx" @onback="user_back_choice_location"></component-choice-location>
                                         </view>
                                         <template v-if="['5'].includes(form.content.theme)">
                                             <view class="flex-1">
@@ -86,7 +86,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         components: {
             componentDiySearch,
@@ -148,7 +148,7 @@
                 if ((this.propValue || null) !== null) {
                     this.init();
                 }
-            }
+            },
         },
         created() {
             if ((this.propValue || null) !== null) {
