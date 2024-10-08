@@ -1,6 +1,5 @@
 <template>
     <view :class="theme_view">
-        <!-- 购物车顶部导航 -->
         <block v-if="is_first == 0">
             <block v-if="(plugins_realstore_info || null) != null">
                 <!-- 顶部导航 -->
@@ -139,55 +138,57 @@
                     </view>
 
                     <!-- 操作导航 -->
-                    <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
-                        <view v-if="common_site_type == 1" class="cart-buy-nav oh round" :style="cart_buy_nav_style">
-                            <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
-                                <button class="exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
-                                    <view class="dis-inline-block va-m margin-right-xl">
-                                        <uni-icons type="phone" size="14" color="#fff" />
-                                    </view>
-                                    <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
-                                </button>
-                            </view>
-                        </view>
-                        <!-- 销售,自提,虚拟销售 -->
-                        <view v-else class="cart-buy-nav oh round flex-row jc-sb align-c br-top-shadow bg-white" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="cart_buy_nav_style">
-                            <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
-                                <view class="cart-selected flex-row align-c">
-                                    <view @tap="selected_event" data-type="all">
-                                        <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
-                                    </view>
-                                    <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
-                                    <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
+                        <view class="bottom-fixed z-i" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="bottom_fixed_style">
+                            <view :class="propCartNavBottomValue > 0 ? '' : 'bottom-line-exclude'">
+                                <!-- 展示 -->
+                                <view v-if="common_site_type == 1" class="cart-exhibition-mode">
+                                    <button class="item exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                                        <view class="dis-inline-block va-m margin-right-xl">
+                                            <uni-icons type="phone" size="14" color="#fff" />
+                                        </view>
+                                        <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
+                                    </button>
                                 </view>
-                                <view class="price">
-                                    <view class="flex-row jc-s flex-nowrap align-c">
-                                        <view>{{ $t('buy.buy.wx78ju') }}</view>
-                                        <view class="sales-price single-text fw-b">
-                                            <text class="text-size-sm">{{ buy_currency_symbol }}</text>
-                                            <text class="text-size-lg">{{ total_price }}</text>
+                                <!-- 销售,自提,虚拟销售 -->
+                                <view v-else class="bottom-fixed-content item round bg-white flex-row jc-sb align-c">
+                                    <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
+                                        <view class="cart-selected flex-row align-c">
+                                            <view @tap="selected_event" data-type="all">
+                                                <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
+                                            </view>
+                                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
+                                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
+                                        </view>
+                                        <view class="price">
+                                            <view class="flex-row jc-s flex-nowrap align-c">
+                                                <view>{{ $t('buy.buy.wx78ju') }}</view>
+                                                <view class="sales-price single-text fw-b">
+                                                    <text class="text-size-sm">{{ buy_currency_symbol }}</text>
+                                                    <text class="text-size-lg">{{ total_price }}</text>
+                                                </view>
+                                            </view>
+                                            <block v-if="is_cart_show_discount == 1 && total_num > 0">
+                                                <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
+                                                    <block v-if="preferential_price > 0">
+                                                        <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                                    </block>
+                                                    <block v-else>
+                                                        <block v-if="increase_price > 0">
+                                                            <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ buy_currency_symbol }}{{ increase_price }}</view>
+                                                        </block>
+                                                    </block>
+                                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
+                                                </view>
+                                            </block>
                                         </view>
                                     </view>
-                                    <block v-if="is_cart_show_discount == 1 && total_num > 0">
-                                        <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
-                                            <block v-if="preferential_price > 0">
-                                                <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
-                                            </block>
-                                            <block v-else>
-                                                <block v-if="increase_price > 0">
-                                                    <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ buy_currency_symbol }}{{ increase_price }}</view>
-                                                </block>
-                                            </block>
-                                            <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
-                                        </view>
-                                    </block>
+                                    <view class="cart-nav-submit">
+                                        <button class="nav-btn bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                                            {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
+                                        </button>
+                                    </view>
                                 </view>
-                            </view>
-                            <view class="cart-nav-submit">
-                                <button class="nav-btn bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
-                                    {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
-                                </button>
                             </view>
                         </view>
                     </block>
@@ -408,7 +409,7 @@
                 window_top: '100rpx',
                 // #endif
                 // 底部购买导航样式
-                cart_buy_nav_style: ''
+                bottom_fixed_style: ''
             };
         },
 
@@ -418,7 +419,7 @@
                 type: String,
                 default: '', // 默认主页面。当传入page时为子页面
             },
-            // 来源类型
+            // 底部菜单高度
             propCartNavBottomValue: {
                 type: Number,
                 default: 0
@@ -1298,7 +1299,7 @@
             page_style_handle() {
                 var value = (this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 20;
                 this.setData({
-                    cart_buy_nav_style: 'bottom:'+value+'rpx;'
+                    bottom_fixed_style: 'bottom:'+(((this.propCartNavBottomValue-8)*2)+20)+'rpx'
                 });
             }
         },
@@ -1408,14 +1409,8 @@
     /**
     * 操作导航
     */
-    .cart-buy-nav {
-        position: fixed;
-        z-index: 1;
-        left: 20rpx;
-        bottom: 20rpx;
-        width: calc(100% - 40rpx);
-        box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);
-        height: 116rpx;
+    .bottom-fixed-content {
+        height: 120rpx;
     }
     .cart-nav-base {
         width: calc(75% - 20rpx);
@@ -1431,14 +1426,14 @@
         line-height: 70rpx;
         border-radius: 0;
     }
-    .cart-buy-nav .price {
+    .bottom-fixed .price {
         width: calc(100% - 170rpx);
         padding: 16rpx 0 16rpx 16rpx;
     }
-    .cart-buy-nav .sales-price {
+    .bottom-fixed .sales-price {
         max-width: calc(100% - 80rpx);
     }
-    .cart-buy-nav .price .discount-details {
+    .bottom-fixed .price .discount-details {
         height: 32rpx;
         background: #f2f2f2;
         padding: 0 12rpx;
@@ -1532,7 +1527,7 @@
         margin-top: 84rpx;
     }
     .discount-detail-popup-z-index {
-        z-index: 1002;
+        z-index: 1002 !important;
     }
     .discount_detail-popup {
         margin-bottom: 122rpx;
