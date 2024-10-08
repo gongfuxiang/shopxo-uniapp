@@ -43,6 +43,10 @@
                 type: Number,
                 default: 0,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -73,6 +77,10 @@
             propFooterActiveIndex(value, old_value) {
                 this.init();
             },
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         // 页面被展示
         created: function () {

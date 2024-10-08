@@ -81,6 +81,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -112,16 +116,22 @@
                 };
             },
         },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
+        },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             isEmpty,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 const density = 4;
                 this.setData({
                     outer_spacing: this.new_style.image_spacing * 2 + 'rpx',

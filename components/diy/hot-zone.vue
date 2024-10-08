@@ -17,6 +17,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -34,6 +38,12 @@
                 w_scale2: 1,
                 h_scale2: 1,
             };
+        },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();

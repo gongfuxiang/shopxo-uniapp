@@ -77,6 +77,10 @@
                 type: Boolean,
                 default: true,
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -107,16 +111,22 @@
                 slides_per_group: 1,
             };
         },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
+        },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             isEmpty,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 const { windowWidth } = uni.getSystemInfoSync();
                 // 将90%的宽度分成16份
                 const block = (windowWidth * 0.9) / 16;

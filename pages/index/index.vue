@@ -3,8 +3,8 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
-                <block v-if="data_list !== null && hackReset">
-                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id">
+                <block v-if="data_list !== null">
+                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id" :propkey="diy_key">
                         <template slot="diy-bottom">
                             <!-- 结尾 -->
                             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -402,8 +402,7 @@
                 plugins_binding_data: null,
                 // 魔方插件
                 plugins_magic_data: null,
-                // 更新组件
-                hackReset: true,
+                diy_key: '',
             };
         },
 
@@ -439,17 +438,8 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-            this.setData({
-                hackReset: false,
-            });
-            this.$nextTick(() => {
-                this.setData({
-                    hackReset: true,
-                });
-            });
             // 数据加载
             this.init();
-
             // 初始化配置
             this.init_config();
 
@@ -587,6 +577,9 @@
 
                         // 初始化返回公共处理
                         this.init_result_common_handle();
+                        this.setData({
+                            diy_key: Math.random(),
+                        });
                     },
                     fail: () => {
                         // 轮播数据处理

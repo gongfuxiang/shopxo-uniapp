@@ -45,6 +45,10 @@
                 type: String,
                 default: '',
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         components: {
             componentDiyModulesTabsView,
@@ -82,6 +86,10 @@
                     this.get_tabs_height();
                 });
             },
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         methods: {
             init() {

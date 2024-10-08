@@ -38,6 +38,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -53,10 +57,14 @@
                 container_size: '',
             };
         },
-        created() {
-            this.$nextTick(() => {
+        watch: {
+            propkey(val) {
+                // 初始化
                 this.init();
-            });
+            }
+        },
+        created() {
+            this.init();
         },
         methods: {
             init() {

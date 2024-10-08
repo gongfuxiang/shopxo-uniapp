@@ -13,12 +13,22 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
                 style_container: '',
                 style: '',
             };
+        },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();

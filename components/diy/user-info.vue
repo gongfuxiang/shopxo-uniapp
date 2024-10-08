@@ -38,6 +38,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -76,6 +80,12 @@
                     number_code: '',
                 },
             };
+        },
+        watch: {
+            propkey(val) {
+                // 初始化
+                this.init();
+            }
         },
         created() {
             this.init();
