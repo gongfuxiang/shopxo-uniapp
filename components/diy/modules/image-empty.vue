@@ -37,6 +37,11 @@
                 defaultImage: '/static/images/common/image-empty.png',
             };
         },
+        watch: {
+            propImageSrc(val) {
+                this.init();
+            },
+        },
         mounted() {
             this.init();
         },
