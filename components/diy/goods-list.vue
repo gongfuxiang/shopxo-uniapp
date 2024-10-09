@@ -226,23 +226,19 @@
         },
         watch: {
             propkey(val) {
-                this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
-                });
                 this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
             this.init();
         },
         methods: {
             isEmpty,
             init() {
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                });
                 let new_list = [];
                 // 指定商品并且指定商品数组不为空
                 if (!isEmpty(this.form.data_list) && this.form.data_type == '0') {
@@ -434,7 +430,7 @@
                 }
                 if (this.form.shop_button_effect == '0') {
                     app.globalData.goods_data_cache_handle(goods.id, goods);
-                    
+
                     app.globalData.url_open(goods.goods_url);
                 } else {
                     // 开启购物车抛物线效果则展示提示操作

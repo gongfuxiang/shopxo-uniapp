@@ -108,7 +108,6 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
-import props from '../../uni_modules/uv-sticky/components/uv-sticky/props';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
