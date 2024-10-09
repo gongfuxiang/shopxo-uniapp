@@ -248,7 +248,7 @@
             init() {
                 // tabs选项卡数据过滤
                 this.setData({
-                    hack_reset: true,
+                    hack_reset: false,
                     header_data: this.propValue.header,
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
@@ -257,6 +257,11 @@
                     is_header_top: this.propValue.header.com_data.style.up_slide_display == '1' ? true : false,
                     temp_sticky_top: this.sticky_top,
                     temp_header_top: this.header_top,
+                });
+                this.$nextTick(() => {
+                    this.setData({
+                        hack_reset: true,
+                    });
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
