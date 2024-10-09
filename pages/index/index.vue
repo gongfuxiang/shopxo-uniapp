@@ -33,7 +33,7 @@
                         <view :class="'search-content-fixed-content ' + (common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 ? top_content_search_content_style : '')">
                             <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                                 <!-- 定位 -->
-                                <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" >
+                                <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg">
                                     <component-choice-location @onback="user_back_choice_location"></component-choice-location>
                                 </view>
                                 <block v-else>
@@ -430,7 +430,7 @@
             componentBindingList,
             componentMagicList,
             componentDiy,
-            componentChoiceLocation
+            componentChoiceLocation,
         },
 
         onLoad(params) {
@@ -699,7 +699,7 @@
             // 搜索icon扫码事件
             search_icon_event(e) {
                 app.globalData.scan_handle();
-            }
+            },
         },
     };
 </script>
