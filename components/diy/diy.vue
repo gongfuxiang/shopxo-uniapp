@@ -22,9 +22,9 @@
                             <componentDiyVideo v-else-if="item.key == 'video'" :propkey="item.id" :propValue="item.com_data"></componentDiyVideo>
                             <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="item.id" :propValue="item.com_data"></componentDiyArticleList>
                             <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
-                            <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyGoodsTabs>
+                            <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
 
-                            <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propkey="item.id" :propValue="item.com_data"></componentDiyGoodsList>
+                            <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
                             <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyDataMagic>
                             <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="item.id" :propValue="item.com_data"></componentDiyCustom>
                             <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyImgMagic>
@@ -59,6 +59,11 @@
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </scroll-view>
             </template>
+
+            <!-- 商品购买 -->
+            <view class="z-i-deep">
+                <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+            </view>
         </view>
 
         <!-- 当前diy页面底部菜单（非公共底部菜单） -->
@@ -102,6 +107,8 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+import props from '../../uni_modules/uv-sticky/components/uv-sticky/props';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -152,6 +159,7 @@
             componentGoodsList,
             componentNoData,
             componentBottomLine,
+            componentGoodsBuy
         },
         data() {
             return {
@@ -214,6 +222,7 @@
                 hack_reset: false,
                 // 底部导航高度
                 footer_height_value: 0,
+                goods_index: 0
             };
         },
         watch: {
@@ -474,6 +483,17 @@
                     footer_height_value: value * 2 + 20,
                 });
             },
+            goods_buy_event(index, goods = {}, params = {}, back_data = null) {
+                if ((this.$refs.goods_buy || null) != null) {
+                    this.goods_index = index;
+                    this.$refs.goods_buy.init(goods, params, back_data);
+                }
+            },
+            goods_cart_back_event(e) {                
+                if ((this.$refs[`diy_goods_buy${this.goods_index}`][0] || null) != null) {
+                    this.$refs[`diy_goods_buy${this.goods_index}`][0].goods_cart_back_event(e);
+                }
+            }
         },
     };
 </script>

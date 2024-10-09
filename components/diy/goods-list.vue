@@ -103,7 +103,7 @@
             <block v-else>
                 <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
                     <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1" class="flex-row" :style="onter_style">
-                        <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-index="index" :data-value="item.goods_url" @tap="url_event">
+                        <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-index="index1" :data-split-index="index" :data-value="item.goods_url" @tap="url_event">
                             <block v-if="!isEmpty(item)">
                                 <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
                                     <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
@@ -154,11 +154,6 @@
                 </swiper>
             </block>
         </view>
-        <!-- 商品购买 -->
-        <component-goods-buy v-if="is_show_cart" ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
-
-        <!-- 购物车抛物线 -->
-        <component-cart-para-curve v-if="is_show_cart" ref="cart_para_curve"></component-cart-para-curve>
     </view>
 </template>
 
@@ -167,14 +162,10 @@
     import { isEmpty, common_styles_computer, get_math, gradient_handle, padding_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import componentBadge from '@/components/badge/badge';
-    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
-    import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
     export default {
         components: {
             imageEmpty,
             componentBadge,
-            componentGoodsBuy,
-            componentCartParaCurve,
         },
         props: {
             propValue: {
@@ -190,7 +181,11 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
+            propIndex: {
+                type: Number,
+                default: 0,
+            },
         },
         data() {
             return {
@@ -438,25 +433,26 @@
                     goods = this.shop_content_list[index][split_index];
                 }
                 if (this.form.shop_button_effect == '0') {
+                    app.globalData.goods_data_cache_handle(goods.id, goods);
+                    
                     app.globalData.url_open(goods.goods_url);
                 } else {
-                    if ((this.$refs.goods_buy || null) != null) {
-                        // 开启购物车抛物线效果则展示提示操作
-                        let is_success_tips = this.propIsCartParaCurve ? 0 : 1;
-                        this.$refs.goods_buy.init(
-                            goods,
-                            {
-                                buy_event_type: 'cart',
-                                is_direct_cart: 1,
-                                is_success_tips: is_success_tips,
-                            },
-                            {
-                                index: index,
-                                split_index: split_index,
-                                pos: e,
-                            }
-                        );
-                    }
+                    // 开启购物车抛物线效果则展示提示操作
+                    let is_success_tips = this.propIsCartParaCurve ? 0 : 1;
+                    this.$emit('goods_buy_event',
+                        this.propIndex,
+                        goods,
+                        {
+                            buy_event_type: 'cart',
+                            is_direct_cart: 1,
+                            is_success_tips: is_success_tips,
+                        },
+                        {
+                            index: index,
+                            split_index: split_index,
+                            pos: e,
+                        }
+                    );
                 }
             },
             // 加入购物车成功回调

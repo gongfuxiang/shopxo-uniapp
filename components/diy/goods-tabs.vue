@@ -2,7 +2,7 @@
     <view class="goods-tabs ou" :style="style_container">
         <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
         <view class="oh">
-            <componentGoodsList :propkey="diy_key" :propValue="goods_tabs" :propIsCommonStyle="false"></componentGoodsList>
+            <componentGoodsList ref="diy_goods_list" :propkey="diy_key" :propIndex="propIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
         </view>
     </view>
 </template>
@@ -48,6 +48,10 @@
             propkey: {
                 type: String,
                 default: '',
+            },
+            propIndex: {
+                type: Number,
+                default: 0,
             },
         },
         data() {
@@ -170,6 +174,14 @@
                     })
                     .exec();
             },
+            goods_buy_event(index, goods = {}, params = {}, back_data = null) {
+                this.$emit('goods_buy_event', index, goods, params, back_data);
+            },
+            goods_cart_back_event(e) {
+                if ((this.$refs.diy_goods_list || null) != null) {
+                    this.$refs.diy_goods_list.goods_cart_back_event(e);
+                }
+            }
         },
     };
 </script>
