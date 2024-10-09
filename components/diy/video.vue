@@ -41,6 +41,8 @@
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
+                // 视频比例
+                this.get_video_height(new_content.video_ratio);
                 this.setData({
                     video_img: new_content.video_img.length > 0 ? new_content.video_img[0].url : '',
                     video: new_content.video.length > 0 ? new_content.video[0].url : '',
