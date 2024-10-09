@@ -3,7 +3,7 @@
     /* Project id 4227145 */
     /* 全局注册需要切换成绝对路径 */
     /* @/static/icon/ */
-    src: url('@/static/icon/iconfont.ttf?t=1693280977762') format('truetype');
+    src: url('iconfont.ttf?t=1728461619582') format('truetype');
 }
 
 .iconfont {
@@ -12,6 +12,334 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-left:before {
+  content: "\e755";
+}
+
+.icon-reset:before {
+  content: "\e756";
+}
+
+.icon-radius-l-t:before {
+  content: "\e757";
+}
+
+.icon-right:before {
+  content: "\e754";
+}
+
+.icon-radius-r-b:before {
+  content: "\e758";
+}
+
+.icon-arrow-bottom1:before {
+  content: "\e759";
+}
+
+.icon-elliptic:before {
+  content: "\e75a";
+}
+
+.icon-out-t:before {
+  content: "\e75b";
+}
+
+.icon-enter-r:before {
+  content: "\e75c";
+}
+
+.icon-single-sheet:before {
+  content: "\e752";
+}
+
+.icon-spread-over:before {
+  content: "\e753";
+}
+
+.icon-enter-l:before {
+  content: "\e75d";
+}
+
+.icon-round-dot:before {
+  content: "\e75e";
+}
+
+.icon-enter-b:before {
+  content: "\e75f";
+}
+
+.icon-search:before {
+  content: "\e760";
+}
+
+.icon-tile:before {
+  content: "\e761";
+}
+
+.icon-center:before {
+  content: "\e762";
+}
+
+.icon-enter-t:before {
+  content: "\e763";
+}
+
+.icon-close:before {
+  content: "\e764";
+}
+
+.icon-edit:before {
+  content: "\e765";
+}
+
+.icon-text:before {
+  content: "\e766";
+}
+
+.icon-auxiliary-line:before {
+  content: "\e767";
+}
+
+.icon-img:before {
+  content: "\e768";
+}
+
+.icon-out-l:before {
+  content: "\e769";
+}
+
+.icon-out-b:before {
+  content: "\e76a";
+}
+
+.icon-del:before {
+  content: "\e76b";
+}
+
+.icon-drag:before {
+  content: "\e76c";
+}
+
+.icon-out-r:before {
+  content: "\e76d";
+}
+
+.icon-line-point:before {
+  content: "\e76e";
+}
+
+.icon-del-o:before {
+  content: "\e76f";
+}
+
+.icon-copy1:before {
+  content: "\e770";
+}
+
+.icon-line:before {
+  content: "\e772";
+}
+
+.icon-close-o1:before {
+  content: "\e773";
+}
+
+.icon-radius-r-t:before {
+  content: "\e774";
+}
+
+.icon-radius-l-b:before {
+  content: "\e775";
+}
+
+.icon-arrow-top1:before {
+  content: "\e738";
+}
+
+.icon-arrow-left1:before {
+  content: "\e73f";
+}
+
+.icon-arrow-right1:before {
+  content: "\e737";
+}
+
+.icon-add:before {
+  content: "\e720";
+}
+
+.icon-eye-close:before {
+  content: "\e776";
+}
+
+.icon-eye:before {
+  content: "\e777";
+}
+
+.icon-true-o:before {
+  content: "\e77a";
+}
+
+.icon-error-img:before {
+  content: "\e77b";
+}
+
+.icon-folder:before {
+  content: "\e77c";
+}
+
+.icon-file:before {
+  content: "\e77d";
+}
+
+.icon-vf:before {
+  content: "\e77e";
+}
+
+.icon-video:before {
+  content: "\e77f";
+}
+
+.icon-zip:before {
+  content: "\e780";
+}
+
+.icon-ipa:before {
+  content: "\e781";
+}
+
+.icon-excel:before {
+  content: "\e782";
+}
+
+.icon-vsd:before {
+  content: "\e783";
+}
+
+.icon-apk:before {
+  content: "\e784";
+}
+
+.icon-word:before {
+  content: "\e785";
+}
+
+.icon-pdf:before {
+  content: "\e787";
+}
+
+.icon-ppt:before {
+  content: "\e788";
+}
+
+.icon-cart:before {
+  content: "\e791";
+}
+
+.icon-true:before {
+  content: "\e741";
+}
+
+.icon-upload:before {
+  content: "\e72b";
+}
+
+.icon-shu2:before {
+  content: "\e786";
+}
+
+.icon-heng2:before {
+  content: "\e789";
+}
+
+.icon-a-4x4:before {
+  content: "\e78a";
+}
+
+.icon-zuo1you2:before {
+  content: "\e78b";
+}
+
+.icon-shu3:before {
+  content: "\e78c";
+}
+
+.icon-shang2xia1:before {
+  content: "\e78d";
+}
+
+.icon-zuo1youshang1youxia2:before {
+  content: "\e78e";
+}
+
+.icon-shang1xia2:before {
+  content: "\e78f";
+}
+
+.icon-tianzige:before {
+  content: "\e790";
+}
+
+.icon-shang2xia3:before {
+  content: "\e792";
+}
+
+.icon-zuo2you1:before {
+  content: "\e793";
+}
+
+.icon-a-1ge:before {
+  content: "\e794";
+}
+
+.icon-EXE:before {
+  content: "\e795";
+}
+
+.icon-txt:before {
+  content: "\e796";
+}
+
+.icon-arrow-right-dbl:before {
+  content: "\e7b6";
+}
+
+.icon-tips:before {
+  content: "\e74a";
+}
+
+.icon-commodity-edit:before {
+  content: "\e797";
+}
+
+.icon-ellipsis:before {
+  content: "\e635";
+}
+
+.icon-arrow-right-o:before {
+  content: "\e799";
+}
+
+.icon-close-b:before {
+  content: "\e745";
+}
+
+.icon-a-miaosha:before {
+  content: "\e79a";
+}
+
+.icon-jinzhi:before {
+  content: "\e79c";
+}
+
+.icon-tubiao:before {
+  content: "\e79d";
+}
+
+.icon-mianxingtubiao_baojieguanli:before {
+  content: "\e64d";
 }
 
 .icon-bofang:before {
@@ -318,7 +646,7 @@
   content: "\e6b8";
 }
 
-.icon-fenlei-more:before {
+.icon-categroy-more:before {
   content: "\e6b7";
 }
 
