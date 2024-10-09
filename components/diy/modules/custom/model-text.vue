@@ -27,6 +27,10 @@
                 default: () => {
                     return {};
                 },
+            },
+            propkey: {
+                type: String,
+                default: '',
             }
         },
         data() {
@@ -36,6 +40,14 @@
                 text_style: '',
                 com_style: '',
             };
+        },
+        watch: {
+            propkey(val) {
+                this.setData({
+                    form: this.propValue,
+                });
+                this.init();
+            }
         },
         created() {
             this.setData({

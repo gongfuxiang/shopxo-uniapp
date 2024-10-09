@@ -24,6 +24,10 @@
                     return {};
                 },
             },
+            propkey: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
@@ -32,6 +36,14 @@
                 image_style: '',
                 border_style: '',
             };
+        },
+        watch: {
+            propkey(val) {
+                this.setData({
+                    form: this.propValue,
+                });
+                this.init();
+            }
         },
         created() {
             this.setData({
