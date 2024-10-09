@@ -72,7 +72,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
@@ -103,7 +103,7 @@
                 article_spacing: '',
                 article_item_height: '',
 
-                article_style: {},
+                article_style: '',
                 // 轮播图定时轮播
                 interval_time: 2000,
                 // 轮播图是否滚动
@@ -122,7 +122,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -187,7 +187,7 @@
                         interval_time: (new_style.interval_time || 2) * 1000,
                         // 是否滚动修改
                         is_roll: new_style.is_roll,
-                        article_item_height: `max-height: ${new_style.article_height * 2}rpx`,
+                        article_item_height: `height: ${new_style.article_height * 2}rpx`,
                         article_style: this.article_style + this.content_radius + multicolumn_columns_width,
                         // 轮播高度
                         carousel_height_computer: (new_style.name_size * 2 + new_style.article_height) * 2 + 'rpx',
