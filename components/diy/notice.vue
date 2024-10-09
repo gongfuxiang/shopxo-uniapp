@@ -8,7 +8,7 @@
                         <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
                     </view>
                     <view v-else>
-                        <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                        <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
                     </view>
                 </template>
                 <template v-else>
@@ -32,7 +32,7 @@
                             <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
                         </template>
                         <template v-else>
-                            <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                            <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
                         </template>
                     </template>
                     <template v-else>
@@ -66,7 +66,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
@@ -102,7 +102,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
