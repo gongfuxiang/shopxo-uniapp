@@ -2,7 +2,7 @@
     <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
         <!-- 头部小程序兼容 -->
         <view class="pr header">
-            <componentDiyHeader v-if="hack_reset" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
+            <componentDiyHeader :propkey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
         </view>
         <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
             <view v-for="item in tabs_data" :key="item.key">
@@ -63,7 +63,7 @@
 
         <!-- 当前diy页面底部菜单（非公共底部菜单） -->
         <block v-if="is_show_footer == 1">
-            <componentDiyFooter v-if="hack_reset" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
+            <componentDiyFooter :propkey="footer_data.id" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
             <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
         </block>
 
@@ -210,8 +210,6 @@
                 data_is_loading: 0,
                 // 缓存key
                 cache_key: app.globalData.data.cache_diy_data_key,
-                // 重置
-                hack_reset: false,
                 // 底部导航高度
                 footer_height_value: 0,
             };
@@ -248,7 +246,6 @@
             init() {
                 // tabs选项卡数据过滤
                 this.setData({
-                    hack_reset: false,
                     header_data: this.propValue.header,
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
@@ -257,11 +254,6 @@
                     is_header_top: this.propValue.header.com_data.style.up_slide_display == '1' ? true : false,
                     temp_sticky_top: this.sticky_top,
                     temp_header_top: this.header_top,
-                });
-                this.$nextTick(() => {
-                    this.setData({
-                        hack_reset: true,
-                    });
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
