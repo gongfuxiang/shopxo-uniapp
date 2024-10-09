@@ -36,10 +36,10 @@
                             </view>
                         </view>
                         <view v-else-if="propStatusType == 4" class="card-image pa top-0 right-0">
-                            <image :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
+                            <image class="image" :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
                         </view>
                         <view v-else-if="propStatusType == 5" class="card-image pa top-0 right-0">
-                            <image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
+                            <image class="image" :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
                         </view>
                         <view v-else @tap="receive">{{$t('coupon-card.coupon-card.j318xx')}}</view>
                     </view>
@@ -223,7 +223,7 @@
         bottom: -20rpx;
     }
 
-    .card-image image {
+    .card-image .image {
         width: 136rpx;
         height: 108rpx;
     }

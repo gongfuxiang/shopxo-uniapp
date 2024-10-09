@@ -51,13 +51,22 @@
                         </view>
                         <view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.category_list" :key="index">
-                                <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="category_list">{{item.name}}</view>
+                                <view :class="'item fl radius ' + (item.active == 1 ? 'cr-main br-main' : 'cr-base')" @tap="map_item_event" :data-value="item.id" data-field="category_list">{{item.name}}</view>
                             </block>
                         </view>
+                        <block v-for="(item, index) in search_map_list.category_list" :key="index">
+                            <view v-if="item.active == 1 && (item.items || null) != null && item.items.length > 0" class="map-category-two map-text-item padding-bottom">
+                                <view class="bg-grey-f7 oh radius padding-sm">
+                                    <block v-for="(item2, index2) in item.items" :key="index2">
+                                        <view :class="'item fl radius ' + (item2.active == 1 ? 'cr-main' : 'cr-base')" @tap="map_item_event" :data-pvalue="item.id" :data-value="item2.id" data-field="category_list">{{item2.name}}</view>
+                                    </block>
+                                </view>
+                            </view>
+                        </block>
                     </view>
 
                     <view class="search-submit padding-main pa">
-                        <button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">{{$t('common.confirm')}}</button>
+                        <button form-type="submit" class="btn bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">{{$t('common.confirm')}}</button>
                     </view>
                 </view>
             </form>
@@ -193,6 +202,11 @@
                             if((this.params.category_id || 0) != 0 && category.length > 0) {
                                 for(var i in category) {
                                     category[i]['active'] = (category[i]['id'] == this.params.category_id) ? 1 : 0;
+                                    if((category[i]['items'] || null) != null && category[i]['items'].length > 0) {
+                                        for(var x in category[i]['items']) {
+                                            category[i]['items'][x]['active'] = (category[i]['items'][x]['id'] == this.params.category_id) ? 1 : 0;
+                                        }
+                                    }
                                 }
                             }
                             this.setData({
@@ -339,15 +353,20 @@
                 var temp_list = this.search_map_list;
                 for (var i in temp_field) {
                     if (temp_list[i] != null != null && temp_list[i].length > 0) {
-                        var temp = {};
-                        var index = 0;
+                        var value = '';
                         for (var k in temp_list[i]) {
                             if ((temp_list[i][k]['active'] || 0) == 1) {
-                                temp[index] = temp_list[i][k]['id'];
-                                index++;
+                                value = temp_list[i][k]['id'];
+                                if((temp_list[i][k]['items'] || null) != null) {
+                                    for(var x in temp_list[i][k]['items']) {
+                                        if ((temp_list[i][k]['items'][x]['active'] || 0) == 1) {
+                                            value = temp_list[i][k]['items'][x]['id'];
+                                        }
+                                    }
+                                }
                             }
                         }
-                        post_data[temp_field[i]['form_key']] = app.globalData.get_length(temp) > 0 ? JSON.stringify(temp) : '';
+                        post_data[temp_field[i]['form_key']] = value;
                     }
                 }
                 
@@ -457,13 +476,37 @@
 
             // 条件-选择事件
             map_item_event(e) {
-                var index = e.currentTarget.dataset.index;
+                var pvalue = e.currentTarget.dataset.pvalue;
+                var value = e.currentTarget.dataset.value;
                 var field = e.currentTarget.dataset.field;
-                var temp_list = this.search_map_list;                
-                if ((temp_list[field] || null) != null && (temp_list[field][index] || null) != null) {
-                    temp_list[field][index]['active'] = (temp_list[field][index]['active'] || 0) == 0 ? 1 : 0;
+                var temp_list = this.search_map_list;
+                if ((temp_list[field] || null) != null) {
+                    if(pvalue === undefined) {
+                        for(var i in temp_list[field]) {
+                            temp_list[field][i]['active'] = (temp_list[field][i]['id'] == value) ? (temp_list[field][i]['active'] == 1 ? 0 : 1) : 0;
+                            // 当前没有选中则取消子级数据的选中
+                            if(temp_list[field][i]['active'] == 0 && (temp_list[field][i]['items'] || null) != null) {
+                                for(var x in temp_list[field][i]['items']) {
+                                    temp_list[field][i]['items'][x]['active'] = 0;
+                                }
+                            }
+                        }
+                    } else {
+                        for(var i in temp_list[field]) {
+                            temp_list[field][i]['active'] = (temp_list[field][i]['id'] == pvalue) ? 1 : 0;
+                            if((temp_list[field][i]['items'] || null) != null) {
+                                for(var x in temp_list[field][i]['items']) {
+                                    temp_list[field][i]['items'][x]['active'] = (temp_list[field][i]['items'][x]['id'] == value) ? (temp_list[field][i]['items'][x]['active'] == 1 ? 0 : 1) : 0;
+                                    // 选中父级
+                                    if(temp_list[field][i]['items'][x]['active'] == 1) {
+                                        temp_list[field][i]['active'] = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     this.setData({
-                        search_map_list: temp_list
+                        search_map_list: temp_list,
                     });
                 }
             },
@@ -481,6 +524,11 @@
                     if((temp_list[i] || null) != null && temp_list[i].length > 0) {
                         for(var k in temp_list[i]) {
                             temp_list[i][k]['active'] = 0;
+                            if((temp_list[i][k]['items'] || null) != null) {
+                                for(var x in temp_list[i][k]['items']) {
+                                    temp_list[i][k]['items'][x]['active'] = 0;
+                                }
+                            }
                         }
                     }
                 }

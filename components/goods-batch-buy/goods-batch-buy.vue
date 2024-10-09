@@ -44,7 +44,7 @@
                                             <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
                                             <view v-else class="tc oh round fr item-right text-size-xs">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index">-</view>
-                                                <input @blur="batchbuy_goods_buy_number_blur" class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
+                                                <input @blur="batchbuy_goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1" :data-index="index">+</view>
                                             </view>
                                         </view>
@@ -536,11 +536,11 @@ export default {
         width: 80rpx;
         font-weight: bold;
     }
-    .plugins-batchbuy-container .item-right input {
+    .plugins-batchbuy-container .item-right .number-input {
         width: 50px;
     }
     .plugins-batchbuy-container .item-right .number-submit,
-    .plugins-batchbuy-container .item-right input {
+    .plugins-batchbuy-container .item-right .number-input {
         padding: 0;
         height: 60rpx;
         line-height: 60rpx;

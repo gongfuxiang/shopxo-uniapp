@@ -436,7 +436,7 @@
                                     </view>
                                     <!-- 左侧购买导航列表 -->
                                     <block v-if="buy_left_nav.length > 0">
-                                        <block v-for="(item, index) in buy_left_nav">
+                                        <block v-for="(item, index) in buy_left_nav" :key="index">
                                             <!-- 不展示收藏 -->
                                             <block v-if="item.type != 'favor'">
                                                 <!-- 客服 -->
