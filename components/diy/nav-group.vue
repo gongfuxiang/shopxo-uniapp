@@ -169,7 +169,6 @@
         height: 100rpx;
         width: 100rpx;
         border-radius: 8rpx;
-        background-color: #f4fcff;
     }
 
     .dot {
