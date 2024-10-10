@@ -10,9 +10,11 @@
                 <view class="pf left-0 bottom-xxxxl wh-auto tc padding-horizontal-main bs-bb">
                     <view class="bottom-line-exclude">
                         <button type="default" class="scan-button text-size-sm round" @tap="scan_event">
+                            <!-- #ifndef H5 -->
                             <view class="va-m dis-inline-block margin-right-xs">
                                 <iconfont name="icon-scan" size="28rpx" propClass="lh-il va-m" color="#CC2121"></iconfont>
                             </view>
+                            <!-- #endif -->
                             <text class="va-m">{{$t('common.scan_name')}}</text>
                         </button>
                     </view>

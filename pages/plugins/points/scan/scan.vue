@@ -7,6 +7,7 @@
                 <!-- 底部图片 -->
                 <image v-if="(data_base.scan_bottom_images || null) != null" :src="data_base.scan_bottom_images" mode="widthFix" class="dis-block wh-auto auto"></image>
                 <!-- 扫码 -->
+                <!-- #ifndef H5 -->
                 <view v-if="user != null" class="pf left-0 bottom-xxxxl wh-auto tc padding-horizontal-main bs-bb">
                     <view class="bottom-line-exclude">
                         <button type="default" class="scan-button text-size-sm round" @tap="scan_event">
@@ -17,6 +18,7 @@
                         </button>
                     </view>
                 </view>
+                <!-- #endif -->
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </block>

@@ -5,9 +5,11 @@
                 <view class="border-radius-main bg-white padding-main padding-bottom-xxxxl spacing-mb">
                     <view class="title fw-b text-size margin-vertical-xxxl">{{$t('common.verification_text')}}</view>
                     <view class="flex-row align-c padding-bottom-xl">
+                        <!-- #ifndef H5 -->
                         <view class="margin-right" @tap="scan_event">
                             <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
                         </view>
+                        <!-- #endif -->
                         <input type="text" class="wh-auto check-value" :placeholder="$t('common.verification_message')" placeholder-class="cr-grey-c" :value="check_value" @input="check_event" />
                     </view>
                 </view>

@@ -7,9 +7,11 @@
                         <view class="title fw-b text-size margin-right-main">{{$t('cash-create.cash-create.36756z')}}</view>
                         <view class="flex-1 flex-width padding-right-main">
                             <view class="flex-row jc-sb align-c">
+                                <!-- #ifndef H5 -->
                                 <view class="margin-right-sm pr top-xs" @tap="scan_event">
                                     <iconfont name="icon-scan" size="28rpx" color="#999" propClass="lh-il"></iconfont>
                                 </view>
+                                <!-- #endif -->
                                 <input name="keywords" :value="input_clear_value" class="text-size-md pr top-sm flex-1 flex-width" :placeholder="$t('transfer.transfer.t53ary')" placeholder-class="cr-grey-c" @input="input_account_event" />
                                 <text class="cr-main pr top-xs margin-left-sm" @tap="search_account_event">{{$t('common.confirm')}}</text>
                             </view>
