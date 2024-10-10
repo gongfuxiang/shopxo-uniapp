@@ -235,7 +235,7 @@
                     content_title: new_content.content_title || '',
                     content_desc: new_content.content_desc || '',
                     // 判断是自动还是手动
-                    data_list: new_content.data_type == '0' ? new_content.data_list : new_content.data_auto_list,
+                    data_list: new_content.data_type == '1' ? new_content.data_list : new_content.data_auto_list,
                     theme: temp_theme,
                     theme_style: {
                         price_color: new_style.price_color,
