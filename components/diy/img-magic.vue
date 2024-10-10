@@ -101,7 +101,6 @@
                     query
                         .select('.magic-container')
                         .boundingClientRect((res) => {
-                            console.log(res);
                             if ((res || null) != null) {
                                 this.setData({
                                     div_width: res.width,

@@ -2,36 +2,38 @@
     <view v-if="!isEmpty(list)" :style="style_container">
         <view :style="style_img_container">
             <view class="flex-col gap-10">
-                <view v-if="form.head_state == '1'" class="seckill-head flex-row align-c jc-sb oh" :style="seckill_head_style">
-                    <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
-                        <view class="seckill-title">
-                            <imageEmpty v-if="form.title_type == 'image'" :propImageSrc="form.title_src[0]" propImgFit="heightFix" propErrorStyle="width:42rpx; height: 20rpx;"></imageEmpty>
-                            <text v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</text>
-                        </view>
-                        <view v-if="form.theme == '1'" class="padding-horizontal-sm cr-white">|</view>
-                        <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
-                            <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</text>
-                            <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
-                                <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
-                                <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
-                                    <template v-if="form.theme == '4'">
-                                        <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
-                                        <text v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</text>
-                                    </template>
-                                    <template v-else>
-                                        <view class="time-config text-size-xs" :style="time_bg + 'color:' + new_style.countdown_color">{{ item.value }}</view>
-                                        <text v-if="[0, 1].includes(index)" class="colon" :style="icon_time_check">:</text>
-                                    </template>
+                <view v-if="form.head_state == '1'" class="oh" :style="seckill_head_style">
+                    <view class="seckill-head flex-row align-c jc-sb" :style="seckill_head_img_style">
+                        <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
+                            <view class="seckill-title">
+                                <imageEmpty v-if="form.title_type == 'image'" :propImageSrc="form.title_src[0]" propImgFit="heightFix" propErrorStyle="width:42rpx; height: 20rpx;"></imageEmpty>
+                                <text v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</text>
+                            </view>
+                            <view v-if="form.theme == '1'" class="padding-horizontal-sm cr-white">|</view>
+                            <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
+                                <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</text>
+                                <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
+                                    <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
+                                    <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
+                                        <template v-if="form.theme == '4'">
+                                            <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
+                                            <text v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</text>
+                                        </template>
+                                        <template v-else>
+                                            <view class="time-config text-size-xs" :style="time_bg + 'color:' + new_style.countdown_color">{{ item.value }}</view>
+                                            <text v-if="[0, 1].includes(index)" class="colon" :style="icon_time_check">:</text>
+                                        </template>
+                                    </view>
                                 </view>
                             </view>
+                            <view v-else class="flex-row align-c gap-4">
+                                <text class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</text>
+                            </view>
                         </view>
-                        <view v-else class="flex-row align-c gap-4">
-                            <text class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</text>
+                        <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
+                            <text :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</text>
+                            <iconfont name="icon-arrow-right" :color="new_style.head_button_color"></iconfont>
                         </view>
-                    </view>
-                    <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
-                        <text :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</text>
-                        <iconfont name="icon-arrow-right" :color="new_style.head_button_color"></iconfont>
                     </view>
                 </view>
                 <template v-if="form.shop_style_type != '3'">
@@ -285,7 +287,8 @@
                 this.setData({
                     time_bg: this.get_time_bg(),
                     slide_active_color: this.get_slide_active_color(),
-                    seckill_head_style: this.get_seckill_head_style(),
+                    seckill_head_style: this.get_seckill_head_style('1'),
+                    seckill_head_img_style: this.get_seckill_head_style('2'),
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;',
                     style_img_container: common_img_computer(this.new_style.common_style),
                     content_outer_spacing: this.new_style.content_outer_spacing,
@@ -354,15 +357,17 @@
                 const gradient = { color_list: progress_actived_color_list, direction: progress_actived_direction };
                 return gradient_computer(gradient);
             },
-            get_seckill_head_style() {
-                let style = ``;
+            get_seckill_head_style(num) {
                 const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction } = this.new_style;
                 // 渐变
                 const gradient = { color_list: header_background_color_list, direction: header_background_direction };
                 // 背景图
                 const back = { background_img: header_background_img, background_img_style: header_background_img_style };
-                style += gradient_computer(gradient) + background_computer(back);
-                return style;
+                if (num == '1') {
+                    return gradient_computer(gradient);
+                } else {
+                    return background_computer(back);
+                }
             },
             updateCountdown() {
                 const now = new Date();
