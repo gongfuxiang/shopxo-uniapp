@@ -166,8 +166,8 @@
 
 <style scoped lang="scss">
     .top-img {
-        height: 100rpx;
-        width: 100rpx;
+        height: 80rpx;
+        width: 80rpx;
         border-radius: 8rpx;
     }
 
