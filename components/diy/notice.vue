@@ -3,52 +3,56 @@
     <view :style="style_container">
         <view :style="style_img_container">
             <template v-if="form_content.notice_style == 'inherit'">
-                <view class="flex-row align-c news-box gap-8" :style="container_background_style + container_height">
-                    <template v-if="form_content.title_type == 'img-icon'">
-                        <view v-if="form_content.icon_class">
-                            <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
-                        </view>
-                        <view v-else>
-                            <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
-                        </view>
-                    </template>
-                    <template v-else>
-                        <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
-                    </template>
-                    <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
-                        <swiper-item v-for="(item, index) in notice_list" :key="index">
-                            <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
-                        </swiper-item>
-                    </swiper>
-                    <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
-                        <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
-                    </view>
-                </view>
-            </template>
-            <template v-else>
-                <view class="news-card flex-col gap-10" :style="container_background_style">
-                    <view class="flex-row wh-auto jc-sb align-c">
+                <view class="news-box" :style="container_background_style + container_height">
+                    <view class="flex-row align-c gap-8" :style="container_background_img_style">
                         <template v-if="form_content.title_type == 'img-icon'">
-                            <template v-if="form_content.icon_class">
+                            <view v-if="form_content.icon_class">
                                 <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
-                            </template>
-                            <template v-else>
+                            </view>
+                            <view v-else>
                                 <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
-                            </template>
+                            </view>
                         </template>
                         <template v-else>
                             <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
                         </template>
-                        <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
-                            更多
-                            <view class="pr top-xs">
-                                <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
-                            </view>
+                        <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
+                            <swiper-item v-for="(item, index) in notice_list" :key="index">
+                                <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
+                            </swiper-item>
+                        </swiper>
+                        <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
+                            <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
                         </view>
                     </view>
-                    <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
-                        <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
-                        <view class="break" :style="'color:' + form_style.news_color">{{ item.notice_title }}</view>
+                </view>
+            </template>
+            <template v-else>
+                <view class="news-card" :style="container_background_style">
+                    <view class="flex-col gap-10" :style="container_background_img_style">
+                        <view class="flex-row wh-auto jc-sb align-c">
+                            <template v-if="form_content.title_type == 'img-icon'">
+                                <template v-if="form_content.icon_class">
+                                    <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
+                                </template>
+                                <template v-else>
+                                    <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                                </template>
+                            </template>
+                            <template v-else>
+                                <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
+                            </template>
+                            <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
+                                更多
+                                <view class="pr top-xs">
+                                    <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
+                                </view>
+                            </view>
+                        </view>
+                        <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
+                            <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
+                            <view class="break" :style="'color:' + form_style.news_color">{{ item.notice_title }}</view>
+                        </view>
                     </view>
                 </view>
             </template>
@@ -122,7 +126,8 @@
                     background_img: container_background_img,
                     background_img_style: container_background_img_style,
                 };
-                const temp_container_background_style = gradient_computer(temp_obj) + radius_computer(new_style.container_radius) + background_computer(temp_obj) + `overflow:hidden;`;
+                const temp_container_background_style = gradient_computer(temp_obj) + radius_computer(new_style.container_radius) + `overflow:hidden;`;
+                const temp_container_background_img_style = background_computer(temp_obj);
                 // 标题渐变色处理
                 const gradient = gradient_handle(new_style.title_color_list, '90deg');
                 const time = (new_style.interval_time || 2) * 1000;
@@ -140,6 +145,7 @@
                     form_style: new_style,
                     container_height: 'height:' + new_style.container_height * 2 + 'rpx',
                     container_background_style: temp_container_background_style,
+                    container_background_img_style: temp_container_background_img_style,
                     img_style: `height: ${new_style.title_height * 2}rpx; width: ${new_style.title_width * 2}rpx`,
                     title_style: `color:${new_style.title_color}; font-size: ${new_style.title_size * 2}rpx; font-weight: ${new_style.title_typeface}; ${gradient}`,
                     content_title_style: `font-size: ${new_style.news_size * 2}rpx; font-weight: ${new_style.news_typeface};`,
