@@ -1,6 +1,6 @@
 <template>
     <view v-if="(propValue || null) !== null" class="header-container">
-        <view class="header-around wh-auto header-z-3" :style="roll_style + position">
+        <view class="header-around wh-auto" :style="roll_style + position">
             <view :style="top_content_style">
                 <view class="header-content flex-row align-s">
                     <view class="model-top flex-1 mt-1">
@@ -231,10 +231,8 @@
 
 <style lang="scss" scoped>
     .header-container {
-        position: relative;
-        z-index: 4;
         width: 100%;
-        .header-z-3 {
+        .header-around {
             z-index: 3;
         }
         .header-content {
