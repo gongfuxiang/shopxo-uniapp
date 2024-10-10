@@ -121,10 +121,10 @@
                                 data_bottom_line_status: true
                             };
                             this.setData(upd_data);
-                            
+
                             // 存储缓存
                             uni.setStorageSync(cache_key, upd_data);
-                            
+
                             // 是否需要重新加载数据
                             if (parseInt(data.is_result_data_cache || 0) == 1) {
                                 this.get_data({ is_cache: 0 });
