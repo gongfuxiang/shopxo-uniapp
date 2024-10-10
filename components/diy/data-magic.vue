@@ -168,7 +168,6 @@
                 data.forEach((item) => {
                     const data_content = item.data_content;
                     const data_style = item.data_style;
-                    const key = data_style.carouselKey;
                     item.actived_index = 0;
                     // 指示器样式
                     data_style.indicator_styles = this.indicator_style(data_style);
@@ -179,7 +178,6 @@
                     data_style.heading_style = this.trends_config(item.data_style, 'heading');
                     data_style.subtitle_style = this.trends_config(item.data_style, 'subtitle');
 
-                    const { goods_list, images_list } = data_content;
                     if (data_content.data_type == 'goods') {
                         data_content.list = this.commodity_list(data_content.goods_list, item.num);
                     } else {
