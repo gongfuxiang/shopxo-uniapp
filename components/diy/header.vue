@@ -10,8 +10,8 @@
                                     <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                         <view class="flex-row align-c jc-c ht-auto gap-16 padding-left-main" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                             <template v-if="['2', '3'].includes(form.content.theme)">
-                                                <view class="logo-outer-style">
-                                                    <imageEmpty :propImageSrc="form.content.logo[0]" propImgFit="heightFix" propErrorStyle="width:40rpx;height:40rpx;"></imageEmpty>
+                                                <view v-if="form.content.logo.length > 0" class="logo-outer-style">
+                                                    <image class="logo-style" src="http://shopxo.com/static/upload/images/brand/2023/08/12/1691831848237506.png" mode="heightFix" />
                                                 </view>
                                             </template>
                                             <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
@@ -269,10 +269,10 @@
             }
         }
         .logo-outer-style {
-            height: 66rpx;
+            height: 50rpx;
             .logo-style {
-                height: 66rpx;
-                width: 66rpx;
+                height: 50rpx;
+                width: 100%;
             }
         }
     }

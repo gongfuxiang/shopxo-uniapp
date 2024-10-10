@@ -3,9 +3,7 @@
     <view ref="containerRef" class="oh container" :style="style_container">
         <view ref="hotRef" class="hot pr" :style="style">
             <image :src="img" class="wh-auto dis-block" mode="widthFix" @load="on_load_img" />
-            <view v-for="(item, index) in hot_data" :key="index" class="hot_box" :style="'left: ' + item.drag_start.x * w_scale1 * w_scale2 * 2 + 'rpx;top:' + item.drag_start.y * h_scale1 * h_scale2 * 2 + 'rpx;width: ' + Math.max(item.drag_end.width * w_scale1 * w_scale2, 1) * 2 + 'rpx;height: ' + Math.max(item.drag_end.height * h_scale1 * h_scale2, 1) * 2 + 'rpx;display: flex;'" :data-value="item.link.page" @tap="url_event">
-                {{ item.drag_start.x * w_scale1 * w_scale2 * 2 }}
-            </view>
+            <view v-for="(item, index) in hot_data" :key="index" class="hot_box" :style="'left: ' + item.drag_start.x * w_scale1 * w_scale2 + 'px;top:' + item.drag_start.y * h_scale1 * h_scale2 + 'px;width: ' + Math.max(item.drag_end.width * w_scale1 * w_scale2, 1) + 'px;height: ' + Math.max(item.drag_end.height * h_scale1 * h_scale2, 1) + 'px;display: flex;'" :data-value="item.link.page" @tap="url_event"> </view>
         </view>
     </view>
 </template>
