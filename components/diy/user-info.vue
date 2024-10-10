@@ -1,29 +1,31 @@
 <template>
     <!-- 用户信息 -->
     <view :style="style_container">
-        <view class="pr padding-xxl" :style="style">
-            <view class="flex-row jc-sb align-c margin-bottom-xxl">
-                <view class="flex-1 flex-row align-c gap-12">
-                    <image :src="(user_info.user || null) !== null ? user_info.user.avatar : user.avatar" class="circle" mode="widthFix" :style="'width:' + base_data.user_avatar_size * 2 + 'rpx;height:' + base_data.user_avatar_size * 2 + 'rpx;'" data-value="/pages/personal/personal" @tap="url_event" />
-                    <view class="flex-col gap-8" data-value="/pages/personal/personal" @tap="url_event">
-                        <view class="text-size fw-b" :style="user_name_style">{{ (user_info.user || null) !== null ? user_info.user.user_name_view : user.user_name_view }}</view>
-                        <view v-if="id_bool && (user_info.user || null) !== null" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="number_code_style">ID:{{ user_info.user.number_code }}</view>
+        <view :style="style_img_container">
+            <view class="pr padding-xxl" :style="style">
+                <view class="flex-row jc-sb align-c margin-bottom-xxl">
+                    <view class="flex-1 flex-row align-c gap-12">
+                        <image :src="(user_info.user || null) !== null ? user_info.user.avatar : user.avatar" class="circle" mode="widthFix" :style="'width:' + base_data.user_avatar_size * 2 + 'rpx;height:' + base_data.user_avatar_size * 2 + 'rpx;'" data-value="/pages/personal/personal" @tap="url_event" />
+                        <view class="flex-col gap-8" data-value="/pages/personal/personal" @tap="url_event">
+                            <view class="text-size fw-b" :style="user_name_style">{{ (user_info.user || null) !== null ? user_info.user.user_name_view : user.user_name_view }}</view>
+                            <view v-if="id_bool && (user_info.user || null) !== null" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="number_code_style">ID:{{ user_info.user.number_code }}</view>
+                        </view>
+                    </view>
+                    <view class="flex-row align-c" :style="'gap:' + base_data.img_space * 2 + 'rpx;'">
+                        <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" :data-value="item.link.page" @tap="url_event">
+                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="border-radius-sm" mode="scaleToFill" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" />
+                            <iconfont v-else :name="'icon-' + item.icon" :size="base_data.img_size * 2 + 'rpx'" color="#666"></iconfont>
+                        </view>
                     </view>
                 </view>
-                <view class="flex-row align-c" :style="'gap:' + base_data.img_space * 2 + 'rpx;'">
-                    <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" :data-value="item.link.page" @tap="url_event">
-                        <image v-if="item.img.length > 0" :src="item.img[0].url" class="border-radius-sm" mode="scaleToFill" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" />
-                        <iconfont v-else :name="'icon-' + item.icon" :size="base_data.img_size * 2 + 'rpx'" color="#666"></iconfont>
-                    </view>
+                <view class="flex-row jc-sa align-c">
+                    <template v-for="(item, index) in stats_list">
+                        <view v-if="config.includes(item.id)" :key="index" class="tc" :data-value="'/pages/' + item.url + '/' + item.url" @tap="url_event">
+                            <view class="text-size fw-b margin-bottom-sm" :style="stats_number_style">{{ item.value }}</view>
+                            <view class="text-size-xs" :style="stats_name_style">{{ item.name }}</view>
+                        </view>
+                    </template>
                 </view>
-            </view>
-            <view class="flex-row jc-sa align-c">
-                <template v-for="(item, index) in stats_list">
-                    <view v-if="config.includes(item.id)" :key="index" class="tc" :data-value="'/pages/' + item.url + '/' + item.url" @tap="url_event">
-                        <view class="text-size fw-b margin-bottom-sm" :style="stats_number_style">{{ item.value }}</view>
-                        <view class="text-size-xs" :style="stats_name_style">{{ item.name }}</view>
-                    </view>
-                </template>
             </view>
         </view>
     </view>
@@ -31,7 +33,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -41,11 +43,12 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 style: '',
                 id_bool: true,
                 stats_list: [
@@ -85,7 +88,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -142,6 +145,7 @@
                     stats_name_style: 'color:' + temp_base_data.stats_name_color + ';' + 'font-size:' + temp_base_data.stats_name_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.stats_name_weight + ';',
                     stats_number_style: 'color:' + temp_base_data.stats_number_color + ';' + 'font-size:' + temp_base_data.stats_number_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.stats_number_weight + ';',
                     style_container: common_styles_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
             },
             // 跳转链接

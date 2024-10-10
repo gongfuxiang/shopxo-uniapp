@@ -1,34 +1,36 @@
 <template>
     <!-- 图片魔方 -->
     <view ref="container" class="img-magic" :style="style_container + 'height:' + container_size">
-        <view class="pr" :style="outer_style">
-            <!-- 风格3 -->
-            <template v-if="form.style_actived == 2">
-                <view class="flex-row align-c jc-c style-size">
-                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="three" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
+        <view :style="style_img_container">
+            <view class="pr" :style="outer_style">
+                <!-- 风格3 -->
+                <template v-if="form.style_actived == 2">
+                    <view class="flex-row align-c jc-c style-size">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="three" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
+                            <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
+                        </view>
+                    </view>
+                </template>
+                <!-- 风格9 -->
+                <template v-else-if="form.style_actived == 8">
+                    <view class="flex-row align-c jc-c style-size flex-wrap">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
+                            <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
+                        </view>
+                    </view>
+                </template>
+                <template v-else>
+                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
                         <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
                     </view>
-                </view>
-            </template>
-            <!-- 风格9 -->
-            <template v-else-if="form.style_actived == 8">
-                <view class="flex-row align-c jc-c style-size flex-wrap">
-                    <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
-                        <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
-                    </view>
-                </view>
-            </template>
-            <template v-else>
-                <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
-                    <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
-                </view>
-            </template>
+                </template>
+            </view>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
-    import { common_styles_computer, radius_computer, percentage_count } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, percentage_count } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     // var height = app.globalData.window_height_handle(system);
@@ -41,13 +43,14 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 img_outer_spacing: '',
                 form: {},
                 style_container: '',
+                style_img_container: '',
                 // 外部样式
                 outer_style: '',
                 // 图片间距设置
@@ -62,7 +65,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         computed: {
             // 根据当前页面大小计算成百分比
@@ -94,6 +97,7 @@
                     container_size: sys_width * 2 + 'rpx',
                     cube_cell: sys_width / density,
                     style_container: common_styles_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
             },
             getSelectedWidth(item) {

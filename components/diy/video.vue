@@ -1,8 +1,10 @@
 <template>
     <!-- 视频 -->
     <view :style="style_container">
-        <view class="video pr" :style="style">
-            <video :src="video" class="wh-auto ht-auto" :poster="video_img"></video>
+        <view :style="style_img_container">
+            <view class="video pr" :style="style">
+                <video :src="video" class="wh-auto ht-auto" :poster="video_img"></video>
+            </view>
         </view>
     </view>
 </template>
@@ -23,6 +25,7 @@
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 style: '',
                 video_img: '',
                 video: '',
@@ -47,6 +50,7 @@
                     video_img: new_content.video_img.length > 0 ? new_content.video_img[0].url : '',
                     video: new_content.video.length > 0 ? new_content.video[0].url : '',
                     style_container: common_styles_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
             },
             get_video_height(data) {

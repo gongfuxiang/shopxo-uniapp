@@ -1,7 +1,7 @@
 <template>
     <!-- 优惠券 -->
-    <view class="coupon-theme-container">
-        <view class="pr" :style="style_container">
+    <view class="coupon-theme-container" :style="style_container">
+        <view class="pr" :style="style_img_container">
             <view class="hide-scrollbar">
                 <template v-if="theme == '1'">
                     <view class="coupon-theme-1" :style="'gap:' + theme_style.spacing">
@@ -160,7 +160,7 @@
 <script>
     const app = getApp();
     var tabbar_pages = app.globalData.app_tabbar_pages();
-    import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -170,12 +170,13 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 currency_symbol: app.globalData.currency_symbol(),
                 style_container: '',
+                style_img_container: '',
                 data_list: [],
                 // 主题
                 theme: '0',
@@ -198,7 +199,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -282,6 +283,7 @@
                         url_3: new_content.theme_5_static_img[0].url,
                     },
                     style_container: common_styles_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
             },
             // 领取优惠券

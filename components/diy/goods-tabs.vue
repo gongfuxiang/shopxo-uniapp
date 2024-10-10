@@ -1,15 +1,17 @@
 <template>
     <view class="goods-tabs ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-        <view class="oh">
-            <componentGoodsList ref="diy_goods_list" :propkey="diy_key" :propIndex="propIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+        <view class="ou" :style="style_img_container">
+            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+            <view class="oh">
+                <componentGoodsList ref="diy_goods_list" :propkey="diy_key" :propIndex="propIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -57,6 +59,7 @@
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 goods_tabs: {},
                 // 是否滑动置顶
                 top_up: '0',
@@ -142,6 +145,7 @@
                 this.setData({
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
+                    style_img_container: common_img_computer(common_style),
                     tabs_style: new_tabs_style,
                 });
             },
@@ -181,7 +185,7 @@
                 if ((this.$refs.diy_goods_list || null) != null) {
                     this.$refs.diy_goods_list.goods_cart_back_event(e);
                 }
-            }
+            },
         },
     };
 </script>

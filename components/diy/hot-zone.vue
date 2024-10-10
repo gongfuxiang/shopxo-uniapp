@@ -1,16 +1,18 @@
 <template>
     <!-- 热区 -->
     <view ref="containerRef" class="oh container" :style="style_container">
-        <view ref="hotRef" class="hot pr" :style="style">
-            <image :src="img" class="wh-auto dis-block" mode="widthFix" @load="on_load_img" />
-            <view v-for="(item, index) in hot_data" :key="index" class="hot_box" :style="'left: ' + item.drag_start.x * w_scale1 * w_scale2 + 'px;top:' + item.drag_start.y * h_scale1 * h_scale2 + 'px;width: ' + Math.max(item.drag_end.width * w_scale1 * w_scale2, 1) + 'px;height: ' + Math.max(item.drag_end.height * h_scale1 * h_scale2, 1) + 'px;display: flex;'" :data-value="item.link.page" @tap="url_event"> </view>
+        <view :style="style_img_container">
+            <view ref="hotRef" class="hot pr" :style="style">
+                <image :src="img" class="wh-auto dis-block" mode="widthFix" @load="on_load_img" />
+                <view v-for="(item, index) in hot_data" :key="index" class="hot_box" :style="'left: ' + item.drag_start.x * w_scale1 * w_scale2 + 'px;top:' + item.drag_start.y * h_scale1 * h_scale2 + 'px;width: ' + Math.max(item.drag_end.width * w_scale1 * w_scale2, 1) + 'px;height: ' + Math.max(item.drag_end.height * h_scale1 * h_scale2, 1) + 'px;display: flex;'" :data-value="item.link.page" @tap="url_event"> </view>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -25,6 +27,7 @@
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 style: '',
                 img: '',
                 hot_data: [],
@@ -58,6 +61,7 @@
                     img_height: new_content.hot.img_height || 1,
                     hot_data: new_content.hot.data || [],
                     style_container: common_styles_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
             },
             // 图片加载完成 获取宽高

@@ -1,11 +1,13 @@
 <template>
     <view :style="style_container">
-        <view :style="style"></view>
+        <view :style="style_img_container">
+            <view :style="style"></view>
+        </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -17,11 +19,12 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 style: '',
             };
         },
@@ -29,7 +32,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -41,6 +44,7 @@
                 this.setData({
                     style: `height: ${height * 2}rpx;background: ${line_color || 'transparent'};`,
                     style_container: common_styles_computer(common_style),
+                    style_img_container: common_img_computer(common_style),
                 });
             },
         },
