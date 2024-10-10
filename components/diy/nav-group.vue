@@ -166,10 +166,9 @@
 
 <style scoped lang="scss">
     .top-img {
-        height: 100rpx;
-        width: 100rpx;
+        height: 72rpx;
+        width: 72rpx;
         border-radius: 8rpx;
-        background-color: #f4fcff;
     }
 
     .dot {

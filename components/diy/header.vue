@@ -274,9 +274,9 @@
             }
         }
         .logo-outer-style {
-            height: 50rpx;
+            height: 56rpx;
             .logo-style {
-                height: 50rpx;
+                height: 56rpx;
                 width: 100%;
             }
         }
