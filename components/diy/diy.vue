@@ -279,9 +279,14 @@
                     page_style: common_styles_computer(this.propValue.header.com_data.style.common_style),
                     page_img_style: common_img_computer(this.propValue.header.com_data.style.common_style),
                     // 判断顶部导航是否置顶
-                    is_header_top: this.propValue.header.com_data.style.up_slide_display == '1' ? true : false,
+                    is_header_top: parseInt(this.propValue.header.com_data.style.up_slide_display) == 1 ? true : false,
                     temp_sticky_top: this.sticky_top,
                     temp_header_top: this.header_top,
+                });
+                // 设置顶部导航的默认颜色
+                uni.setNavigationBarColor({
+                    frontColor: parseInt(this.propValue.header.com_data.style.function_buttons_type) == 0 ? '#000000' : '#ffffff',
+                    backgroundColor: 'transparent',
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
