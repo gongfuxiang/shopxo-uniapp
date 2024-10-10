@@ -1,18 +1,49 @@
 <template>
     <view ref="container" class="img-magic" :style="'height:' + container_size + ';' + style_container">
-        <view class="pr" :style="'width:calc(100% + ' + outer_spacing + ');height:calc(100% + ' + outer_spacing + ');margin:-' + spacing + ';'">
-            <!-- 风格9 -->
-            <template v-if="form.style_actived == 7">
-                <view class="flex-row align-c jc-c style-size flex-wrap">
-                    <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
+        <view class="wh-auto pr" :style="style_img_container">
+            <view class="pr" :style="'width:calc(100% + ' + outer_spacing + ');height:calc(100% + ' + outer_spacing + ');margin:-' + spacing + ';'">
+                <!-- 风格9 -->
+                <template v-if="form.style_actived == 7">
+                    <view class="flex-row align-c jc-c style-size flex-wrap">
+                        <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
+                            <template v-if="item.data_content.data_type == 'goods'">
+                                <view class="wh-auto ht-auto flex-col gap-20" :style="[0, 1].includes(index) ? item.data_style.chunk_padding_data : ''">
+                                    <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" class="flex-col gap-5 tl">
+                                        <view class="ma-0 wh-auto text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
+                                        <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                    </view>
+                                    <view class="wh-auto ht-auto">
+                                        <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                    </view>
+                                </view>
+                            </template>
+                            <template v-else>
+                                <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                            </template>
+                            <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
+                                <template v-if="item.data_style.indicator_style == 'num'">
+                                    <view :style="item.data_style.indicator_styles" class="dot-item">
+                                        <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text
+                                        ><text>/{{ item.data_content.list.length }}</text>
+                                    </view>
+                                </template>
+                                <template v-else>
+                                    <view v-for="(item3, index3) in item.data_content.list" :key="index3" :style="item.data_style.indicator_styles + style_actived_color(item, index3)" class="dot-item" />
+                                </template>
+                            </view>
+                        </view>
+                    </view>
+                </template>
+                <template v-else>
+                    <view v-for="(item, index) in data_magic_list" :key="index" class="cube-selected cr-main" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
                         <template v-if="item.data_content.data_type == 'goods'">
-                            <view class="wh-auto ht-auto flex-col gap-20" :style="[0, 1].includes(index) ? item.data_style.chunk_padding_data : ''">
-                                <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" class="flex-col gap-5 tl">
-                                    <view class="ma-0 wh-auto text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
+                            <view :class="[spacing_processing(index) ? 'gap-20 wh-auto ht-auto flex-col' : 'gap-10 wh-auto ht-auto flex-col']" :style="item.data_style.chunk_padding_data">
+                                <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" class="flex-col gap-5 tl">
+                                    <view class="ma-0 wh-auto text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
                                     <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                 </view>
                                 <view class="wh-auto ht-auto">
-                                    <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                    <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                                 </view>
                             </view>
                         </template>
@@ -22,8 +53,8 @@
                         <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                             <template v-if="item.data_style.indicator_style == 'num'">
                                 <view :style="item.data_style.indicator_styles" class="dot-item">
-                                    <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text
-                                    ><text>/{{ item.data_content.list.length }}</text>
+                                    <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text>
+                                    <text>/{{ item.data_content.list.length }}</text>
                                 </view>
                             </template>
                             <template v-else>
@@ -31,37 +62,8 @@
                             </template>
                         </view>
                     </view>
-                </view>
-            </template>
-            <template v-else>
-                <view v-for="(item, index) in data_magic_list" :key="index" class="cube-selected cr-main" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
-                    <template v-if="item.data_content.data_type == 'goods'">
-                        <view :class="[spacing_processing(index) ? 'gap-20 wh-auto ht-auto flex-col' : 'gap-10 wh-auto ht-auto flex-col']" :style="item.data_style.chunk_padding_data">
-                            <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" class="flex-col gap-5 tl">
-                                <view class="ma-0 wh-auto text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
-                                <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
-                            </view>
-                            <view class="wh-auto ht-auto">
-                                <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
-                            </view>
-                        </view>
-                    </template>
-                    <template v-else>
-                        <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
-                    </template>
-                    <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
-                        <template v-if="item.data_style.indicator_style == 'num'">
-                            <view :style="item.data_style.indicator_styles" class="dot-item">
-                                <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text>
-                                <text>/{{ item.data_content.list.length }}</text>
-                            </view>
-                        </template>
-                        <template v-else>
-                            <view v-for="(item3, index3) in item.data_content.list" :key="index3" :style="item.data_style.indicator_styles + style_actived_color(item, index3)" class="dot-item" />
-                        </template>
-                    </view>
-                </view>
-            </template>
+                </template>
+            </view>
         </view>
     </view>
 </template>
@@ -69,7 +71,7 @@
 <script>
     const app = getApp();
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
-    import { background_computer, common_styles_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer } from '@/common/js/common/common.js';
+    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
@@ -84,7 +86,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
@@ -101,6 +103,7 @@
                 cubeCellWidth: 0,
                 container_size: 0,
                 style_container: '',
+                style_img_container: '',
             };
         },
         computed: {
@@ -120,7 +123,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -142,6 +145,7 @@
                     container_size: sys_width * 2 + 'rpx',
                     data_magic_list: this.get_data_magic_list(this.form.data_magic_list),
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
+                    style_img_container: common_img_computer(this.new_style.common_style),
                 });
             },
             get_data_magic_list(data) {

@@ -15,14 +15,14 @@ export function is_obj_empty (obj) {
 /**
  * 判断对象数组等是否为空。
  */
-export function isEmpty(value) {
-  return (
-    value === null ||
-    value === undefined ||
-    value === '' ||
-    (Array.isArray(value) && value.length === 0) ||
-    (typeof value === 'object' && Object.keys(value).length === 0)
-  )
+export function isEmpty (value) {
+    return (
+        value === null ||
+        value === undefined ||
+        value === '' ||
+        (Array.isArray(value) && value.length === 0) ||
+        (typeof value === 'object' && Object.keys(value).length === 0)
+    )
 }
 /**
  * 检查给定的参数是否为对象
@@ -145,12 +145,28 @@ export function box_shadow_computer (new_style) {
 export function background_computer (new_style) {
     if (new_style.background_img.length > 0) {
         let url_styke = '';
-        if (new_style.background_img_style == 1) {
+        if (new_style.background_img_style == '1') {
             url_styke = 'background-repeat: repeat;';
-        } else if (new_style.background_img_style == 2) {
-            url_styke = 'background-size: cover;background-position: center;';
+        } else if (new_style.background_img_style == '2') {
         } else {
             url_styke = `background-repeat: no-repeat;background-position: center;`;
+        }
+        switch (new_style.background_img_style) {
+            case '1':
+                url_styke = `background-repeat: no-repeat;background-position: bottom;background-size: 100% auto;`;
+                break;
+            case '2':
+                url_styke = `background-repeat: no-repeat;background-position: center;background-size: 100% auto;`;
+                break;
+            case '3':
+                url_styke = 'background-repeat: repeat;';
+                break;
+            case '4':
+                url_styke = 'background-size: cover;background-position: center;';
+                break;
+            default:
+                url_styke = `background-repeat: no-repeat;background-position: top;background-size: 100% auto;`;
+                break;
         }
         return `background-image:url(${new_style.background_img[0].url});${url_styke}`;
     } else {
@@ -167,7 +183,11 @@ export function background_computer (new_style) {
  * @returns 返回一个字符串，包含了计算后的样式定义，可以被直接应用于组件的样式属性。
  */
 export function common_styles_computer (new_style) {
-    return gradient_computer(new_style) + padding_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + background_computer(new_style) + `overflow:hidden;`;
+    return gradient_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + `overflow:hidden;`;
+}
+
+export function common_img_computer (new_style) {
+    return padding_computer(new_style) + background_computer(new_style) + `overflow:hidden;box-sizing: border-box;`;
 }
 /**
  * 生成一个随机数学字符串。

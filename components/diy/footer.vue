@@ -1,25 +1,27 @@
 <template>
     <!-- 底部导航 -->
     <view v-if="(propValue || null) !== null" class="footer-nav flex-row jc-c align-c" :class="nav_type == 1 ? 'bottom-line-exclude' : ''">
-        <view class="footer-nav-content flex-row jc-c align-c wh-auto" :style="style_container">
-            <view class="flex-row jc-c align-c wh-auto" :class="nav_type == 0 ? 'bottom-line-exclude' : ''">
-                <view class="flex-row jc-sa align-c wh padding-0">
-                    <block v-for="(item, index) in nav_content" :key="index">
-                        <view class="flex-1 flex-col jc-c align-c gap-5 pr" :data-value="item.link.page || ''" @tap="url_event">
-                            <view v-if="nav_style != 2" class="img-content pr">
-                                <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
-                                    <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
+        <view class="flex-1 wh-auto" :style="style_container">
+            <view class="footer-nav-content flex-row jc-c align-c wh-auto" :style="style_img_container">
+                <view class="flex-row jc-c align-c wh-auto" :class="nav_type == 0 ? 'bottom-line-exclude' : ''">
+                    <view class="flex-row jc-sa align-c wh padding-0">
+                        <block v-for="(item, index) in nav_content" :key="index">
+                            <view class="flex-1 flex-col jc-c align-c gap-5 pr" :data-value="item.link.page || ''" @tap="url_event">
+                                <view v-if="nav_style != 2" class="img-content pr">
+                                    <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
+                                        <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
+                                    </view>
+                                    <view class="img-item pa border-radius-xs animate-linear" :class="active_index == index ? 'active' : ''">
+                                        <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                                    </view>
                                 </view>
-                                <view class="img-item pa border-radius-xs animate-linear" :class="active_index == index ? 'active' : ''">
-                                    <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                                <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
+                                <view v-if="(item.badge || null) != null" class="pa badge-icon">
+                                    <component-badge :propNumber="item.badge"></component-badge>
                                 </view>
                             </view>
-                            <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
-                            <view v-if="(item.badge || null) != null" class="pa badge-icon">
-                                <component-badge :propNumber="item.badge"></component-badge>
-                            </view>
-                        </view>
-                    </block>
+                        </block>
+                    </view>
                 </view>
             </view>
         </view>
@@ -27,12 +29,12 @@
 </template>
 <script>
     let app = getApp();
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
     import componentBadge from '@/components/badge/badge';
     export default {
         props: {
             propKey: {
-                type: [Number,String],
+                type: [Number, String],
                 default: '‘',
             },
             propValue: {
@@ -46,11 +48,12 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 style: '',
                 nav_content: [],
                 nav_type: 0,
@@ -61,7 +64,7 @@
             };
         },
         components: {
-            componentBadge
+            componentBadge,
         },
         // 属性值改变监听
         watch: {
@@ -80,7 +83,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         // 页面被展示
         created: function () {
@@ -104,13 +107,13 @@
                         for (var i in nav_content) {
                             if ((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null) {
                                 // 选中索引
-                                if(nav_content[i]['link']['page'] == '/' +page) {
+                                if (nav_content[i]['link']['page'] == '/' + page) {
                                     active_index = i;
                                 }
 
                                 // 获取角标数据
                                 var badge_key = badge_arr[nav_content[i]['link']['page']];
-                                if(badge_key !== undefined) {
+                                if (badge_key !== undefined) {
                                     nav_content[i]['badge'] = app.globalData.get_tab_bar_badge(badge_key);
                                 }
                             }
@@ -124,19 +127,20 @@
                         default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
                         text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
                         style_container: common_styles_computer(new_style.common_style),
+                        style_img_container: common_img_computer(new_style.common_style),
                     });
 
                     // 高度计算
                     let nav_min_height = 70;
-                    var nav_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom)+44;
-                    if(nav_height < nav_min_height) {
+                    var nav_height = parseInt(new_style.common_style.padding_top) + parseInt(new_style.common_style.padding_bottom) + 44;
+                    if (nav_height < nav_min_height) {
                         nav_height = nav_min_height;
                     }
                     let footer_height = nav_height + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom);
 
                     // 底部菜单距离底部的安全距离，减去20、默认的安全距离太高了
                     var safe_area_insets_bottom = parseInt(uni.getSystemInfoSync().safeAreaInsets.bottom);
-                    if(safe_area_insets_bottom > 0) {
+                    if (safe_area_insets_bottom > 0) {
                         safe_area_insets_bottom -= 24;
                     }
                     footer_height += safe_area_insets_bottom;
@@ -152,8 +156,8 @@
                 let item = this.nav_content[index];
                 app.globalData.url_event(e);
                 this.$emit('footer-tap', index, item);
-            }
-        }
+            },
+        },
     };
 </script>
 <style lang="scss" scoped>

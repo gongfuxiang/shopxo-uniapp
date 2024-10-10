@@ -1,62 +1,64 @@
 <template>
     <!-- 公告 -->
     <view :style="style_container">
-        <template v-if="form_content.notice_style == 'inherit'">
-            <view class="flex-row align-c news-box gap-8" :style="container_background_style + container_height">
-                <template v-if="form_content.title_type == 'img-icon'">
-                    <view v-if="form_content.icon_class">
-                        <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
-                    </view>
-                    <view v-else>
-                        <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
-                    </view>
-                </template>
-                <template v-else>
-                    <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
-                </template>
-                <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
-                    <swiper-item v-for="(item, index) in notice_list" :key="index">
-                        <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
-                    </swiper-item>
-                </swiper>
-                <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
-                    <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
-                </view>
-            </view>
-        </template>
-        <template v-else>
-            <view class="news-card flex-col gap-10" :style="container_background_style">
-                <view class="flex-row wh-auto jc-sb align-c">
+        <view :style="style_img_container">
+            <template v-if="form_content.notice_style == 'inherit'">
+                <view class="flex-row align-c news-box gap-8" :style="container_background_style + container_height">
                     <template v-if="form_content.title_type == 'img-icon'">
-                        <template v-if="form_content.icon_class">
+                        <view v-if="form_content.icon_class">
                             <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
-                        </template>
-                        <template v-else>
+                        </view>
+                        <view v-else>
                             <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
-                        </template>
+                        </view>
                     </template>
                     <template v-else>
                         <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
                     </template>
-                    <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
-                        更多
-                        <view class="pr top-xs">
-                            <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
-                        </view>
+                    <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
+                        <swiper-item v-for="(item, index) in notice_list" :key="index">
+                            <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
+                        </swiper-item>
+                    </swiper>
+                    <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
+                        <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
                     </view>
                 </view>
-                <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
-                    <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
-                    <view class="break" :style="'color:' + form_style.news_color">{{ item.notice_title }}</view>
+            </template>
+            <template v-else>
+                <view class="news-card flex-col gap-10" :style="container_background_style">
+                    <view class="flex-row wh-auto jc-sb align-c">
+                        <template v-if="form_content.title_type == 'img-icon'">
+                            <template v-if="form_content.icon_class">
+                                <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
+                            </template>
+                            <template v-else>
+                                <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
+                        </template>
+                        <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
+                            更多
+                            <view class="pr top-xs">
+                                <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
+                            </view>
+                        </view>
+                    </view>
+                    <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
+                        <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
+                        <view class="break" :style="'color:' + form_style.news_color">{{ item.notice_title }}</view>
+                    </view>
                 </view>
-            </view>
-        </template>
+            </template>
+        </view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { background_computer, common_styles_computer, get_math, gradient_computer, gradient_handle, radius_computer } from '@/common/js/common/common.js';
+    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, radius_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -73,6 +75,7 @@
                 form_content: {},
                 form_style: {},
                 style_container: '',
+                style_img_container: '',
                 // 容器高度
                 container_height: '',
                 // 容器背景
@@ -145,6 +148,7 @@
                     direction_type: direction,
                     interval_list: new_interval_list,
                     style_container: common_styles_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
             },
             // 跳转链接

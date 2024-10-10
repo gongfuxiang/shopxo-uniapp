@@ -1,16 +1,18 @@
 <template>
     <!-- 文章列表 -->
     <view class="article-tabs ou" :style="style_container">
-        <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-        <view class="oh">
-            <componentDiyArticleList :propkey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+        <view class="ou" :style="style_img_container">
+            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+            <view class="oh">
+                <componentDiyArticleList :propkey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentDiyArticleList from '@/components/diy/article-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -52,6 +54,7 @@
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 style: '',
                 article_tabs: {},
                 // 是否滑动置顶
@@ -142,6 +145,7 @@
                 this.setData({
                     article_tabs: new_data,
                     style_container: common_styles_computer(common_style),
+                    style_img_container: common_img_computer(common_style),
                     tabs_style: new_tabs_style,
                 });
             },

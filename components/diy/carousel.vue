@@ -1,60 +1,62 @@
 <template>
     <view class="pr" :style="style_container">
-        <swiper v-if="hackReset" circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
-            <block v-if="form.carousel_type == 'card'">
-                <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
-                    <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
-                        <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+        <view class="pr" :style="style_img_container">
+            <swiper v-if="hackReset" circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+                <block v-if="form.carousel_type == 'card'">
+                    <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
+                        <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
+                            <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                        </view>
+                        <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
+                            <block v-if="new_style.video_type == 'img'">
+                                <view class="video_img">
+                                    <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                                </view>
+                            </block>
+                            <block v-else>
+                                <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
+                            </block>
+                            <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
+                        </view>
+                    </swiper-item>
+                </block>
+                <block v-else>
+                    <swiper-item v-for="(item, index) in new_list" :key="index" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
+                        <view class="wh-auto ht-auto pr" :style="img_style">
+                            <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                        </view>
+                        <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
+                            <block v-if="new_style.video_type == 'img'">
+                                <view class="video_img">
+                                    <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                                </view>
+                            </block>
+                            <block v-else>
+                                <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
+                            </block>
+                            <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
+                        </view>
+                    </swiper-item>
+                </block>
+            </swiper>
+            <view v-if="new_style.is_show == '1'" :class="{ 'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
+                <template v-if="new_style.indicator_style == 'num'">
+                    <view :style="indicator_style" class="dot-item">
+                        <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
+                        <text>/{{ form.carousel_list.length }}</text>
                     </view>
-                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
-                        <block v-if="new_style.video_type == 'img'">
-                            <view class="video_img">
-                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
-                            </view>
-                        </block>
-                        <block v-else>
-                            <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
-                        </block>
-                        <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
-                    </view>
-                </swiper-item>
-            </block>
-            <block v-else>
-                <swiper-item v-for="(item, index) in new_list" :key="index" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
-                    <view class="wh-auto ht-auto pr" :style="img_style">
-                        <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                    </view>
-                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
-                        <block v-if="new_style.video_type == 'img'">
-                            <view class="video_img">
-                                <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
-                            </view>
-                        </block>
-                        <block v-else>
-                            <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
-                        </block>
-                        <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
-                    </view>
-                </swiper-item>
-            </block>
-        </swiper>
-        <view v-if="new_style.is_show == '1'" :class="{ 'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
-            <template v-if="new_style.indicator_style == 'num'">
-                <view :style="indicator_style" class="dot-item">
-                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
-                    <text>/{{ form.carousel_list.length }}</text>
-                </view>
-            </template>
-            <template v-else>
-                <view v-for="(item, index2) in form.carousel_list" :key="index2" :style="indicator_style + (actived_index == index2 ? 'background:' + new_style.actived_color : '')" class="dot-item" />
-            </template>
+                </template>
+                <template v-else>
+                    <view v-for="(item, index2) in form.carousel_list" :key="index2" :style="indicator_style + (actived_index == index2 ? 'background:' + new_style.actived_color : '')" class="dot-item" />
+                </template>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { common_styles_computer, radius_computer, isEmpty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -74,7 +76,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
@@ -82,6 +84,7 @@
                 new_style: {},
                 // 通用样式显示
                 style_container: '',
+                style_img_container: '',
                 // 图片的设置
                 img_style: '',
                 // 指示器的样式
@@ -109,7 +112,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         created() {
             this.init();
@@ -141,6 +144,7 @@
                         popup_width: block * 16 * 2 + 'rpx',
                         popup_height: block * 9 * 2 + 'rpx',
                         style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
+                        style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 用于样式显示
                         img_style: radius_computer(this.new_style), // 图片的设置
                         indicator_style: this.get_indicator_style(), // 指示器的样式
                         dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置

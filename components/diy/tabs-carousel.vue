@@ -1,12 +1,14 @@
 <template>
     <view class="flex-col ou" :style="style_container">
-        <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
-        <componentDiycarousel :propValue="propValue" :propIsCommon="false"></componentDiycarousel>
+        <view class="ou" :style="style_img_container">
+            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
+            <componentDiycarousel :propValue="propValue" :propIsCommon="false"></componentDiycarousel>
+        </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer, padding_computer, margin_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
     import componentDiyTabs from '@/components/diy/tabs';
     import componentDiycarousel from '@/components/diy/carousel';
     export default {
@@ -38,11 +40,12 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 spacing_common_style: {
                     padding: 0,
                     padding_top: 0,
@@ -71,7 +74,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         methods: {
             init() {
@@ -93,6 +96,7 @@
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};gap:${new_style.data_spacing * 2}rpx`,
+                    style_img_container: common_img_computer(new_style.common_style),
                     top_up: new_content.tabs_top_up,
                     // tabs_style: new_tabs_style,
                 });

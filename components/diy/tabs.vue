@@ -3,7 +3,9 @@
     <view class="tabs pr">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
             <view class="tabs-content wh-auto bs-bb" :style="style_container">
-                <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+                <view class="wh-auto bs-bb" :style="style_img_container">
+                    <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+                </view>
             </view>
         </view>
         <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + tabs_seat_height + 'px;'"></view>
@@ -12,7 +14,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -47,7 +49,7 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -55,6 +57,7 @@
         data() {
             return {
                 style_container: '',
+                style_img_container: '',
                 content: '',
                 tabs_data: {},
 
@@ -88,7 +91,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         methods: {
             init() {
@@ -117,6 +120,7 @@
                 this.setData({
                     tabs_data: new_tabs_data,
                     style_container: common_styles_computer(new_style.common_style) + new_tabs_background,
+                    style_img_container: common_img_computer(new_style.common_style),
                     tabs_top_style: new_tabs_top_style,
                     // 判断是否置顶
                     top_up: new_top_up,

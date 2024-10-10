@@ -1,36 +1,38 @@
 <template>
     <view :style="style_container">
-        <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: newHeight }" @change="slideChange">
-            <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c">
-                <view class="bannerImg flex-row flex-wrap wh-auto gap-x-10">
-                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{ width: group_width }" :data-value="item1.link.page" @tap="url_open_event">
-                        <view v-if="['image_with_text', 'image'].includes(nav_style)" class="flex-row align-c jc-c">
-                            <view class="top-img">
-                                <imageEmpty :propImageSrc="item1.img[0]" :propStyle="img_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+        <view :style="style_img_container">
+            <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: newHeight }" @change="slideChange">
+                <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c">
+                    <view class="bannerImg flex-row flex-wrap wh-auto gap-x-10">
+                        <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{ width: group_width }" :data-value="item1.link.page" @tap="url_open_event">
+                            <view v-if="['image_with_text', 'image'].includes(nav_style)" class="flex-row align-c jc-c">
+                                <view class="top-img">
+                                    <imageEmpty :propImageSrc="item1.img[0]" :propStyle="img_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+                                </view>
                             </view>
+                            <view v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</view>
                         </view>
-                        <view v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</view>
                     </view>
-                </view>
-            </swiper-item>
-        </swiper>
-        <view v-if="form.display_style == 'slide' && new_style.is_show == '1'" :style="{ 'justify-content': new_style.indicator_location || 'center' }" class="dot flex-row">
-            <block v-if="new_style.indicator_style == 'num'">
-                <view :style="indicator_style" class="dot-item">
-                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text
-                    ><text>/{{ nav_content_list.length }}</text>
-                </view>
-            </block>
-            <block v-else>
-                <view v-for="(item, index) in nav_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
-            </block>
+                </swiper-item>
+            </swiper>
+            <view v-if="form.display_style == 'slide' && new_style.is_show == '1'" :style="{ 'justify-content': new_style.indicator_location || 'center' }" class="dot flex-row">
+                <block v-if="new_style.indicator_style == 'num'">
+                    <view :style="indicator_style" class="dot-item">
+                        <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text
+                        ><text>/{{ nav_content_list.length }}</text>
+                    </view>
+                </block>
+                <block v-else>
+                    <view v-for="(item, index) in nav_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
+                </block>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, radius_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -46,13 +48,14 @@
             propkey: {
                 type: String,
                 default: '',
-            }
+            },
         },
         data() {
             return {
                 form: {},
                 new_style: {},
                 style_container: '',
+                style_img_container: '',
                 img_style: '',
                 text_style: '',
                 indicator_style: '',
@@ -66,7 +69,7 @@
             propkey(val) {
                 // 初始化
                 this.init();
-            }
+            },
         },
         mounted() {
             this.init();
@@ -79,6 +82,7 @@
                 });
                 this.setData({
                     style_container: common_styles_computer(this.new_style.common_style), // 用于样式显示
+                    style_img_container: common_img_computer(this.new_style.common_style),
                     img_style: radius_computer(this.new_style), // 图片的设置
                     text_style: `font-size: ${this.new_style.title_size * 2 || 24}rpx; color: ${this.new_style.title_color || '#000'};`, // 标题的样式
                     indicator_style: this.get_indicator_style(), // 指示器的样式
