@@ -1,9 +1,6 @@
 <template>
     <view v-if="(propValue || null) !== null" class="header-container">
         <view class="header-around wh-auto header-z-3" :style="roll_style + position">
-            <view class="wh-auto ht-auto pa up_slide_bg" :style="up_slide_style">
-                <view class="wh-auto ht-auto" :style="up_slide_img_style"></view>
-            </view>
             <view :style="top_content_style">
                 <view class="header-content flex-row align-s">
                     <view class="model-top flex-1 mt-1">
@@ -14,7 +11,7 @@
                                         <view class="flex-row align-c jc-c ht-auto gap-16 padding-left-main" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                             <template v-if="['2', '3'].includes(form.content.theme)">
                                                 <view v-if="form.content.logo.length > 0" class="logo-outer-style">
-                                                    <image class="logo-style" src="http://shopxo.com/static/upload/images/brand/2023/08/12/1691831848237506.png" mode="heightFix" />
+                                                    <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" />
                                                 </view>
                                             </template>
                                             <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
@@ -130,24 +127,21 @@
                 // #endif
                 // 判断是否是沉浸模式
                 is_immersion_model: false,
-                up_slide_style: '',
-                up_slide_img_style: '',
             };
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal < this.header_top) {
-                    console.log(this.propValue);
-                    const { up_slide_background_color_list,  up_slide_background_direction, up_slide_background_img,  up_slide_background_img_style } = this.propValue.style || {};
-                    // 渐变
-                    const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
-                    // 背景图
-                    const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
-                    this.setData({
-                        // 20是大小误差
-                        up_slide_style: gradient_computer(gradient) + 'opacity:' + (newVal / (this.header_top + 33) > 1 ? 1 : (newVal / (this.header_top + 33)).toFixed(2)) + ';',
-                        up_slide_img_style: background_computer(back),
-                    });
+                if (this.header_background_type != 'color_image') {
+                    if (newVal < this.header_top) {
+                        this.setData({
+                            // 20是大小误差
+                            roll_style: this.roll_style + 'background: rgba(255,255,255,' + (newVal + 20 < this.header_top ? 0 : (newVal / this.header_top).toFixed(2)) + ');',
+                        });
+                    } else {
+                        this.setData({
+                            roll_style: this.roll_style + 'background: rgba(255,255,255,1);',
+                        });
+                    }
                 }
             },
             propkey(val) {
@@ -289,8 +283,5 @@
         text-align: center;
         top: 0;
         padding-left: 0;
-    }
-    .up_slide_bg {
-        z-index: -1;
     }
 </style>

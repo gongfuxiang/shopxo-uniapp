@@ -1,91 +1,93 @@
 <template>
-    <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
-        <!-- 头部小程序兼容 -->
-        <view class="pr header">
-            <componentDiyHeader :propkey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
-        </view>
-        <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
-            <view v-for="item in tabs_data" :key="item.key">
-                <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+    <div :style="page_style">
+        <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
+            <!-- 头部小程序兼容 -->
+            <view class="pr header">
+                <componentDiyHeader :propkey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
             </view>
-            <template v-if="is_tabs_type">
-                <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
-                        <!-- 基础组件 -->
-                        <template v-if="item.is_enable == '1'">
-                            <componentDiySearch v-if="item.key == 'search'" :propkey="item.id" :propValue="item.com_data"></componentDiySearch>
-                            <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="item.id" :propValue="item.com_data" @video_play="video_play"></componentDiyCarousel>
-                            <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propkey="item.id" :propValue="item.com_data"></componentDiyNavGroup>
-                            <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propkey="item.id" :propValue="item.com_data"></componentDiyUserInfo>
-                            <componentDiyNotice v-else-if="item.key == 'notice'" :propkey="item.id" :propValue="item.com_data"></componentDiyNotice>
-                            <componentDiyVideo v-else-if="item.key == 'video'" :propkey="item.id" :propValue="item.com_data"></componentDiyVideo>
-                            <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="item.id" :propValue="item.com_data"></componentDiyArticleList>
-                            <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
-                            <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
+            <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
+                <view v-for="item in tabs_data" :key="item.key">
+                    <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
+                    <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                </view>
+                <template v-if="is_tabs_type">
+                    <template v-if="diy_data.length > 0">
+                        <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
+                            <!-- 基础组件 -->
+                            <template v-if="item.is_enable == '1'">
+                                <componentDiySearch v-if="item.key == 'search'" :propkey="item.id" :propValue="item.com_data"></componentDiySearch>
+                                <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="item.id" :propValue="item.com_data" @video_play="video_play"></componentDiyCarousel>
+                                <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propkey="item.id" :propValue="item.com_data"></componentDiyNavGroup>
+                                <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propkey="item.id" :propValue="item.com_data"></componentDiyUserInfo>
+                                <componentDiyNotice v-else-if="item.key == 'notice'" :propkey="item.id" :propValue="item.com_data"></componentDiyNotice>
+                                <componentDiyVideo v-else-if="item.key == 'video'" :propkey="item.id" :propValue="item.com_data"></componentDiyVideo>
+                                <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="item.id" :propValue="item.com_data"></componentDiyArticleList>
+                                <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
+                                <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
 
-                            <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
-                            <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyDataMagic>
-                            <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="item.id" :propValue="item.com_data"></componentDiyCustom>
-                            <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyImgMagic>
-                            <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propkey="item.id" :propValue="item.com_data"></componentDiyHotZone>
-                            <componentDiySeckill v-else-if="item.key == 'seckill'" :propkey="item.id" :propValue="item.com_data"></componentDiySeckill>
-                            <!-- 插件 -->
-                            <componentDiyCoupon v-else-if="item.key == 'coupon'" :propkey="item.id" :propValue="item.com_data"></componentDiyCoupon>
-                            <!-- 工具组件 -->
-                            <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propkey="item.id" :propValue="item.com_data"></componentDiyFloatWindow>
-                            <componentDiyTitle v-else-if="item.key == 'title'" :propkey="item.id" :propValue="item.com_data"></componentDiyTitle>
-                            <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propkey="item.id" :propValue="item.com_data"></componentDiyAuxiliaryLine>
-                            <componentDiyRichText v-else-if="item.key == 'rich-text'" :propkey="item.id" :propValue="item.com_data"></componentDiyRichText>
-                            <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propkey="item.id" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
+                                <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
+                                <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyDataMagic>
+                                <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="item.id" :propValue="item.com_data"></componentDiyCustom>
+                                <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyImgMagic>
+                                <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propkey="item.id" :propValue="item.com_data"></componentDiyHotZone>
+                                <componentDiySeckill v-else-if="item.key == 'seckill'" :propkey="item.id" :propValue="item.com_data"></componentDiySeckill>
+                                <!-- 插件 -->
+                                <componentDiyCoupon v-else-if="item.key == 'coupon'" :propkey="item.id" :propValue="item.com_data"></componentDiyCoupon>
+                                <!-- 工具组件 -->
+                                <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propkey="item.id" :propValue="item.com_data"></componentDiyFloatWindow>
+                                <componentDiyTitle v-else-if="item.key == 'title'" :propkey="item.id" :propValue="item.com_data"></componentDiyTitle>
+                                <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propkey="item.id" :propValue="item.com_data"></componentDiyAuxiliaryLine>
+                                <componentDiyRichText v-else-if="item.key == 'rich-text'" :propkey="item.id" :propValue="item.com_data"></componentDiyRichText>
+                                <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propkey="item.id" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
+                            </template>
+                        </view>
+                    </template>
+
+                    <!-- diy底部卡槽 -->
+                    <slot name="diy-bottom"></slot>
+                </template>
+                <template v-else>
+                    <!-- 商品九宫格列表 -->
+                    <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+                        <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-main oh">
+                            <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
+                        </view>
+                        <template v-else>
+                            <!-- 提示信息 -->
+                            <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg"></component-no-data>
                         </template>
-                    </view>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                    </scroll-view>
                 </template>
 
-                <!-- diy底部卡槽 -->
-                <slot name="diy-bottom"></slot>
-            </template>
-            <template v-else>
-                <!-- 商品九宫格列表 -->
-                <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-                    <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-main oh">
-                        <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
-                    </view>
-                    <template v-else>
-                        <!-- 提示信息 -->
-                        <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg"></component-no-data>
-                    </template>
-                    <!-- 结尾 -->
-                    <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
-                </scroll-view>
-            </template>
-
-            <!-- 商品购买 -->
-            <view class="z-i-deep">
-                <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
-                <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
-                    <view class="flex-col align-c jc-c gap-10">
-                        <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
-                        <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
-                    </view>
-                </uni-popup>
+                <!-- 商品购买 -->
+                <view class="z-i-deep">
+                    <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+                    <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
+                        <view class="flex-col align-c jc-c gap-10">
+                            <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
+                            <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
+                        </view>
+                    </uni-popup>
+                </view>
             </view>
-        </view>
 
-        <!-- 当前diy页面底部菜单（非公共底部菜单） -->
-        <block v-if="is_show_footer == 1">
-            <componentDiyFooter :propkey="footer_data.id" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
-            <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
-        </block>
+            <!-- 当前diy页面底部菜单（非公共底部菜单） -->
+            <block v-if="is_show_footer == 1">
+                <componentDiyFooter :propkey="footer_data.id" :propValue="footer_data.com_data" @footer-height="footer_height_value_event"></componentDiyFooter>
+                <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
+            </block>
 
-        <!-- 底部卡槽 -->
-        <slot name="bottom"></slot>
-    </scroll-view>
+            <!-- 底部卡槽 -->
+            <slot name="bottom"></slot>
+        </scroll-view>
+    </div>
 </template>
 
 <script>
     const app = getApp();
-    import { isEmpty } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer } from '@/common/js/common/common.js';
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
     import componentDiyTabs from '@/components/diy/tabs';
@@ -165,7 +167,7 @@
             componentGoodsList,
             componentNoData,
             componentBottomLine,
-            componentGoodsBuy
+            componentGoodsBuy,
         },
         data() {
             return {
@@ -204,6 +206,7 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
+                page_style: '',
                 is_show_footer: 0,
                 tabs_home_id: this.propDataId,
                 // 商品列表
@@ -270,6 +273,7 @@
                     footer_data: this.propValue.footer,
                     diy_data: this.propValue.diy_data,
                     tabs_data: this.propValue.tabs_data,
+                    page_style: common_styles_computer(this.propValue.header.com_data.style.common_style),
                     // 判断顶部导航是否置顶
                     is_header_top: this.propValue.header.com_data.style.up_slide_display == '1' ? true : false,
                     temp_sticky_top: this.sticky_top,
@@ -497,7 +501,7 @@
                     this.$refs.goods_buy.init(goods, params, back_data);
                 }
             },
-            goods_cart_back_event(e) {                
+            goods_cart_back_event(e) {
                 if ((this.$refs[`diy_goods_buy${this.goods_index}`][0] || null) != null) {
                     this.$refs[`diy_goods_buy${this.goods_index}`][0].goods_cart_back_event(e);
                 }
@@ -506,7 +510,7 @@
                 this.setData({
                     video_src: url,
                     popup_width: width,
-                    popup_height: height
+                    popup_height: height,
                 });
                 this.$refs.popup.open();
                 const videoContext = uni.createVideoContext('carousel_video');
