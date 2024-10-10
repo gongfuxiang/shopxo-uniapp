@@ -17,9 +17,9 @@
                     </view>
                     <view class="base-content oh padding-vertical-sm">
                         <view class="content cr-base text-size-sm">{{ item.content }}</view>
-                        <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
+                        <view v-if="(item.images || null) != null && item.images.length > 0" class="image-list oh margin-top-lg">
                             <block v-for="(iv, ix) in item.images" :key="ix">
-                                <image class="br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
+                                <image class="image br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
                             </block>
                         </view>
                         <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{ item.msg }}</view>
@@ -45,10 +45,8 @@
     export default {
         props: {
             propData: {
-                type: Array,
-                default: () => {
-                    return [];
-                },
+                type: [Array,String],
+                default: '',
             },
             // 是否需要显示管理员回复
             propIsReply: {
@@ -76,8 +74,8 @@
                 var index = e.currentTarget.dataset.index;
                 var ix = e.currentTarget.dataset.ix;
                 uni.previewImage({
-                    current: this.goods.comments_data[index]['images'][ix],
-                    urls: this.goods.comments_data[index]['images'],
+                    current: this.propData[index]['images'][ix],
+                    urls: this.propData[index]['images'],
                 });
             },
         },
@@ -114,11 +112,11 @@
     .goods-comment-item .base-content .reply {
         line-height: 46rpx;
     }
-    .goods-comment-item .base-content .images image {
+    .goods-comment-item .base-content .image-list .image {
         width: 100rpx;
         height: 100rpx;
     }
-    .goods-comment-item .base-content .images image:not(:last-child) {
+    .goods-comment-item .base-content .image-list .image:not(:last-child) {
         margin-right: 10rpx;
     }
     .no-comment {

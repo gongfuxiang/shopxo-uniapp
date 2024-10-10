@@ -27,7 +27,7 @@
 * 条件
 */
 .search-map {
-    height: calc(100vh - 160rpx);
+    height: calc(100vh - 180rpx);
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -54,7 +54,7 @@
     line-height: 66rpx;
 }
 .map-content {
-    line-height: 60rpx;
+    line-height: 50rpx;
 }
 .map-content .item {
     margin-bottom: 20rpx;
@@ -62,30 +62,15 @@
 .map-content .item:not(:last-child) {
     margin-right: 20rpx;
 }
-.map-text-item .item,
-.map-images-text-item .item {
+.map-text-item .item {
     padding: 0 15rpx;
     border: 1px solid transparent;
-}
-.map-images-text-item .item {
-    vertical-align: middle;
-    border: 1px solid #eee;
-    width: 150rpx;
-    height: 72rpx;
-    line-height: 72rpx;
-}
-.map-images-text-item .item image {
-    width: 150rpx;
-    height: calc(100% - 8rpx);
-    display: block;
-    margin: 0 auto;
-    margin-top: 4rpx;
 }
 .search-map .search-submit {
     left: 0;
     bottom: 0;
 }
-.search-map .search-submit button {
+.search-map .search-submit .btn {
     height: 80rpx;
     line-height: 80rpx;
 }

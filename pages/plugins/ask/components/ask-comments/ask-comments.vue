@@ -24,7 +24,7 @@
                 <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                 <view class="right-base flex-1 flex-width">
                     <view class="comments border-radius-main padding-main">
-                        <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-base" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                        <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-base" class="textarea wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                         <view class="oh flex-row jc-sb align-e">
                             <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                             <view class="flex-row align-e">
@@ -121,7 +121,7 @@
                             </view>
                         </view>
                     </view>
-                    <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-base" class="wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                    <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-base" class="textarea wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                     <view class="margin-top-lg oh">
                         <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                         <view class="fr">
@@ -492,8 +492,8 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            },
-        },
+            }
+        }
     };
 </script>
 <style scoped>
@@ -519,7 +519,7 @@
     .ask-comments-reply-container .right-base .comments {
         background-color: #f8f8f8;
     }
-    .ask-comments-reply-container .right-base textarea {
+    .ask-comments-reply-container .right-base .textarea {
         height: 120rpx;
     }
     .ask-comments-modal {
@@ -538,7 +538,7 @@
         margin-top: 30%;
         max-width: calc(800px - 180rpx);
     }
-    .ask-comments-modal-content textarea {
+    .ask-comments-modal-content .textarea {
         height: 200rpx;
     }
     .ask-comments-modal-content .close {

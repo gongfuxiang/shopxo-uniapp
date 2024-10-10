@@ -331,13 +331,13 @@
                             <!-- 购物车底部导航 -->
                             <view class="botton-nav bg-white round pa oh padding-sm flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
                                 <view class="flex-row align-c flex-1 flex-width">
-                                    <view class="cart pr cp top-sm padding-left-lg" @tap="cart_event">
+                                    <view class="cart pr cp top-sm padding-left-sm" @tap="cart_event">
                                         <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
                                         <view v-if="(cart || null) != null && (cart.buy_number || 0) != 0" class="badge-icon pa">
                                             <component-badge :propNumber="cart.buy_number"></component-badge>
                                         </view>
                                     </view>
-                                    <view class="cart-total-price single-text padding-left-lg fw-b cr-red flex-1">
+                                    <view class="cart-total-price single-text padding-left-sm fw-b cr-red flex-1">
                                         <text class="text-size-xss">{{ currency_symbol }}</text>
                                         <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
                                     </view>
