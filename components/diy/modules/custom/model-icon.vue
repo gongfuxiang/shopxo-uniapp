@@ -20,6 +20,10 @@
                 default: () => {
                     return {};
                 },
+            },
+            propkey: {
+                type: String,
+                default: '',
             }
         },
         data() {
@@ -27,6 +31,14 @@
                 form: {},
                 com_style: '',
             };
+        },
+        watch: {
+            propkey(val) {
+                this.setData({
+                    form: this.propValue,
+                });
+                this.init();
+            }
         },
         created() {
             this.setData({

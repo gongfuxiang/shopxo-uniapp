@@ -10,6 +10,10 @@
                     return {};
                 },
                 required: true,
+            },
+            propkey: {
+                type: String,
+                default: '',
             }
         },
         data() {
@@ -17,6 +21,14 @@
                 form: {},
                 border_style: '',
             };
+        },
+        watch: {
+            propkey(val) {
+                this.setData({
+                    form: this.propValue,
+                });
+                this.init();
+            }
         },
         created() {
             this.setData({

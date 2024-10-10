@@ -15,16 +15,16 @@
                         <!-- 基础组件 -->
                         <template v-if="item.is_enable == '1'">
                             <componentDiySearch v-if="item.key == 'search'" :propkey="item.id" :propValue="item.com_data"></componentDiySearch>
-                            <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="item.id" :propValue="item.com_data"></componentDiyCarousel>
+                            <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="item.id" :propValue="item.com_data" @video_play="video_play"></componentDiyCarousel>
                             <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propkey="item.id" :propValue="item.com_data"></componentDiyNavGroup>
                             <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propkey="item.id" :propValue="item.com_data"></componentDiyUserInfo>
                             <componentDiyNotice v-else-if="item.key == 'notice'" :propkey="item.id" :propValue="item.com_data"></componentDiyNotice>
                             <componentDiyVideo v-else-if="item.key == 'video'" :propkey="item.id" :propValue="item.com_data"></componentDiyVideo>
                             <componentDiyArticleList v-else-if="item.key == 'article-list'" :propkey="item.id" :propValue="item.com_data"></componentDiyArticleList>
                             <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyArticleTabs>
-                            <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0"></componentDiyGoodsTabs>
+                            <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? 33 : 0" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
 
-                            <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :propkey="item.id" :propValue="item.com_data"></componentDiyGoodsList>
+                            <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="index" :propkey="item.id" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
                             <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyDataMagic>
                             <componentDiyCustom v-else-if="item.key == 'custom'" :propkey="item.id" :propValue="item.com_data"></componentDiyCustom>
                             <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propkey="item.id" :propValue="item.com_data"></componentDiyImgMagic>
@@ -59,6 +59,17 @@
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </scroll-view>
             </template>
+
+            <!-- 商品购买 -->
+            <view class="z-i-deep">
+                <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+                <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
+                    <view class="flex-col align-c jc-c gap-10">
+                        <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
+                        <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
+                    </view>
+                </uni-popup>
+            </view>
         </view>
 
         <!-- 当前diy页面底部菜单（非公共底部菜单） -->
@@ -74,6 +85,7 @@
 
 <script>
     const app = getApp();
+    import { isEmpty } from '@/common/js/common/common.js';
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
     import componentDiyTabs from '@/components/diy/tabs';
@@ -102,6 +114,7 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -152,6 +165,7 @@
             componentGoodsList,
             componentNoData,
             componentBottomLine,
+            componentGoodsBuy
         },
         data() {
             return {
@@ -212,6 +226,12 @@
                 cache_key: app.globalData.data.cache_diy_data_key,
                 // 底部导航高度
                 footer_height_value: 0,
+                // 商品ref索引
+                goods_index: 0,
+                // 视频播放逻辑
+                video_src: '',
+                popup_width: '0rpx',
+                popup_height: '0rpx',
             };
         },
         watch: {
@@ -470,6 +490,36 @@
                 this.setData({
                     footer_height_value: value * 2 + 20,
                 });
+            },
+            goods_buy_event(index, goods = {}, params = {}, back_data = null) {
+                if ((this.$refs.goods_buy || null) != null) {
+                    this.goods_index = index;
+                    this.$refs.goods_buy.init(goods, params, back_data);
+                }
+            },
+            goods_cart_back_event(e) {                
+                if ((this.$refs[`diy_goods_buy${this.goods_index}`][0] || null) != null) {
+                    this.$refs[`diy_goods_buy${this.goods_index}`][0].goods_cart_back_event(e);
+                }
+            },
+            video_play(url, width, height) {
+                this.setData({
+                    video_src: url,
+                    popup_width: width,
+                    popup_height: height
+                });
+                this.$refs.popup.open();
+                const videoContext = uni.createVideoContext('carousel_video');
+                if (!isEmpty(videoContext)) {
+                    videoContext.play();
+                }
+            },
+            video_close() {
+                const videoContext = uni.createVideoContext('carousel_video');
+                if (!isEmpty(videoContext)) {
+                    videoContext.pause();
+                }
+                this.$refs.popup.close();
             },
         },
     };
