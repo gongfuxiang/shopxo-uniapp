@@ -285,7 +285,6 @@
                 });
 
                 // 设置顶部导航的默认颜色
-                this.propValue.header.com_data.style.function_buttons_type = 1;
                 app.globalData.set_navigation_bar_color(parseInt(this.propValue.header.com_data.style.function_buttons_type || 0) == 1);
 
                 // 缓存数据
