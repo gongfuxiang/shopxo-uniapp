@@ -1,6 +1,6 @@
 <template>
-    <view ref="container" class="img-magic" :style="'height:' + container_size + ';' + style_container">
-        <view class="wh-auto pr" :style="style_img_container">
+    <view class="img-magic" :style="'height:' + container_size + ';' + style_container">
+        <view class="magic-container wh-auto ht-auto pr" :style="style_img_container">
             <view class="pr" :style="'width:calc(100% + ' + outer_spacing + ');height:calc(100% + ' + outer_spacing + ');margin:-' + spacing + ';'">
                 <!-- 风格9 -->
                 <template v-if="form.style_actived == 7">
@@ -72,8 +72,6 @@
     const app = getApp();
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer } from '@/common/js/common/common.js';
-    var system = app.globalData.get_system_info(null, null, true);
-    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             magicCarousel,
@@ -104,6 +102,7 @@
                 container_size: 0,
                 style_container: '',
                 style_img_container: '',
+                div_width: 0
             };
         },
         computed: {
@@ -125,7 +124,7 @@
                 this.init();
             },
         },
-        created() {
+        mounted() {
             this.init();
         },
         methods: {
@@ -141,11 +140,24 @@
                     spacing: this.new_style.image_spacing + 'rpx',
                     content_radius: radius_computer(this.new_style.data_radius),
                     content_img_radius: radius_computer(this.new_style.img_radius),
-                    cubeCellWidth: sys_width / density,
-                    container_size: sys_width * 2 + 'rpx',
                     data_magic_list: this.get_data_magic_list(this.form.data_magic_list),
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(this.new_style.common_style),
+                });
+                this.$nextTick(() => {
+                    const query = uni.createSelectorQuery().in(this);
+                    query
+                        .select('.magic-container')
+                        .boundingClientRect((res) => {
+                            if ((res || null) != null) {
+                                this.setData({
+                                    div_width: res.width,
+                                    cubeCellWidth: res.width / density,
+                                    container_size: res.width + 'px',
+                                });
+                            }
+                        })
+                        .exec();
                 });
             },
             get_data_magic_list(data) {
@@ -216,7 +228,7 @@
             },
             // 计算成百分比
             percentage(num) {
-                return percentage_count(num, sys_width);
+                return percentage_count(num, this.div_width);
             },
             // 根据传递的参数，从对象中取值
             trends_config(style, key) {
@@ -260,7 +272,6 @@
 <style lang="scss" scoped>
     // 图片魔方是一个正方形，根据宽度计算高度
     .img-magic {
-        width: 100%;
         overflow: hidden;
     }
     .cube-selected {

@@ -1,7 +1,7 @@
 <template>
     <!-- 图片魔方 -->
-    <view ref="container" class="img-magic" :style="style_container + 'height:' + container_size">
-        <view :style="style_img_container">
+    <view class="img-magic" :style="style_container + 'height:' + container_size">
+        <view class="magic-container wh-auto ht-auto" :style="style_img_container">
             <view class="pr" :style="outer_style">
                 <!-- 风格3 -->
                 <template v-if="form.style_actived == 2">
@@ -31,9 +31,6 @@
 <script>
     const app = getApp();
     import { common_styles_computer, common_img_computer, radius_computer, percentage_count } from '@/common/js/common/common.js';
-    var system = app.globalData.get_system_info(null, null, true);
-    var sys_width = app.globalData.window_width_handle(system.windowWidth);
-    // var height = app.globalData.window_height_handle(system);
     export default {
         props: {
             propValue: {
@@ -59,6 +56,7 @@
                 content_img_radius: '',
                 cube_cell: '',
                 container_size: '',
+                div_width: 0,
             };
         },
         watch: {
@@ -75,7 +73,7 @@
                 };
             },
         },
-        created() {
+        mounted() {
             this.init();
         },
         methods: {
@@ -90,14 +88,29 @@
                 const density = 4;
                 this.setData({
                     form: this.propValue.content,
-                    outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx}`,
-                    img_spacing: `padding:${spacing}`,
+                    outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx};`,
+                    img_spacing: `padding:${spacing};`,
                     img_outer_spacing: new_style.image_spacing * 2 + 'rpx',
                     content_img_radius: radius_computer(new_style),
-                    container_size: sys_width * 2 + 'rpx',
-                    cube_cell: sys_width / density,
-                    style_container: common_styles_computer(new_style.common_style),
+                    style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
                     style_img_container: common_img_computer(new_style.common_style),
+                });
+
+                this.$nextTick(() => {
+                    const query = uni.createSelectorQuery().in(this);
+                    query
+                        .select('.magic-container')
+                        .boundingClientRect((res) => {
+                            console.log(res);
+                            if ((res || null) != null) {
+                                this.setData({
+                                    div_width: res.width,
+                                    container_size: res.width + 'px',
+                                    cube_cell: res.width / density,
+                                });
+                            }
+                        })
+                        .exec();
                 });
             },
             getSelectedWidth(item) {
@@ -117,7 +130,7 @@
             },
             // 计算成百分比
             percentage(num) {
-                return percentage_count(num, sys_width);
+                return percentage_count(num, this.div_width);
             },
             // 跳转链接
             url_event(e) {
@@ -130,7 +143,6 @@
 <style lang="scss" scoped>
     // 图片魔方是一个正方形，根据宽度计算高度
     .img-magic {
-        width: 100%;
         overflow: hidden;
         box-sizing: border-box;
     }
