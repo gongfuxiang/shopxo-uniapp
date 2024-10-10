@@ -6,7 +6,7 @@
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
                         <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
-                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
+                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
                         <block v-if="new_style.video_type == 'img'">
                             <view class="video_img">
                                 <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
@@ -24,7 +24,7 @@
                     <view class="wh-auto ht-auto pr" :style="img_style">
                         <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                     </view>
-                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap.stop="video_play(item.carousel_video)">
+                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
                         <block v-if="new_style.video_type == 'img'">
                             <view class="video_img">
                                 <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
@@ -49,12 +49,6 @@
                 <view v-for="(item, index2) in form.carousel_list" :key="index2" :style="indicator_style + (actived_index == index2 ? 'background:' + new_style.actived_color : '')" class="dot-item" />
             </template>
         </view>
-        <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
-            <view class="flex-col align-c jc-c gap-10">
-                <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
-                <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
-            </view>
-        </uni-popup>
     </view>
 </template>
 
@@ -100,7 +94,6 @@
                 img_fit: '',
                 dot_style: '',
                 video_style: '',
-                video_src: '',
                 popup_width: '0rpx',
                 popup_height: '0rpx',
                 // 样式二的处理
@@ -250,22 +243,11 @@
                 style += gradient_computer(data) + padding_computer(video_padding) + `color: ${video_title_color};`;
                 return style;
             },
-            video_play(list) {
-                this.setData({
-                    video_src: list[0].url,
-                });
-                this.$refs.popup.open();
-                const videoContext = uni.createVideoContext('carousel_video');
-                if (!isEmpty(videoContext)) {
-                    videoContext.play();
+            video_play(e) {
+                const list = e.currentTarget.dataset.value;
+                if (!isEmpty(list)) {
+                    this.$emit('video_play', list[0].url, this.popup_width, this.popup_height);
                 }
-            },
-            video_close() {
-                const videoContext = uni.createVideoContext('carousel_video');
-                if (!isEmpty(videoContext)) {
-                    videoContext.pause();
-                }
-                this.$refs.popup.close();
             },
             url_open(link) {
                 app.globalData.url_event(link);
