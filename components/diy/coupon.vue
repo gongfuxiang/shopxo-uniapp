@@ -68,7 +68,7 @@
                                 <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background_inside">
                                     <view class="type" :style="'background: ' + theme_style.type_background + ';color:' + theme_style.type_color">
                                         <view class="type-before" :style="'background: ' + theme_style.type_background"></view>
-                                        <text>通用券</text>
+                                        <text>{{ item.type_name }}</text>
                                         <view class="type-after" :style="'background: ' + theme_style.type_background"></view>
                                     </view>
                                     <view class="price" :style="'color:' + theme_style.price_color">
@@ -232,8 +232,8 @@
                     false
                 );
                 this.setData({
-                    content_title: new_content.content_title || '',
-                    content_desc: new_content.content_desc || '',
+                    content_title: new_content.title || '',
+                    content_desc: new_content.desc || '',
                     // 判断是自动还是手动
                     data_list: new_content.data_type == '1' ? new_content.data_list : new_content.data_auto_list,
                     theme: temp_theme,
