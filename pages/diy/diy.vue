@@ -111,7 +111,7 @@
                             uni.setStorageSync(cache_key, upd_data);
 
                             // 是否需要重新加载数据
-                            if (parseInt(this.data.is_result_data_cache || 0) == 1) {
+                            if (parseInt(data.is_result_data_cache || 0) == 1) {
                                 this.get_data({ is_cache: 0 });
                             }
 

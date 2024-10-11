@@ -14,6 +14,7 @@
 		"save": "Preserve",
 		"add": "Add",
 		"del": "Delete",
+        "del_record": "Delete record",
 		"edit": "Edit",
         "link": "Link",
         "gift": "Gift",
@@ -1453,11 +1454,6 @@
 			"wkfi45": "Please enter data"
 		}
 	},
-	"user-goods-browse": {
-		"user-goods-browse": {
-			"rx8t1v": "Cannot be restored after deletion?, Are you sure to continue?"
-		}
-	},
 	"user-order": {
 		"user-order": {
 			"twc3r7": "comment",
@@ -1583,6 +1579,7 @@
 			"3v6ulk": "After choosing for so long, do you really want to delete it?",
 			"8q2yej": "Please slide the data you want to operate on first",
 			"9g81jk": "Data does not exist",
+            "87rfg3": "Cancel collection",
 			"346c25": "Collection successful",
 			"21051p": "Collection failed",
 			"3sy0mp": "Please select the product first"

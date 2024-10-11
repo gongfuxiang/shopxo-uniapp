@@ -6,7 +6,7 @@
                     <view :data-value="item.goods_url" @tap="url_event" class="cp">
                         <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                         <view class="goods-base">
-                            <view class="goods-title multi-text">{{item.title}}</view>
+                            <view class="goods-title multi-text padding-right-xxxxl">{{item.title}}</view>
                             <view class="oh margin-top-sm">
                                 <block v-if="(item.show_field_price_status || 0) == 1">
                                     <text class="sales-price">{{item.show_price_symbol}}{{item.price}}</text>
@@ -16,7 +16,15 @@
                             </view>
                         </view>
                     </view>
-                    <button class="br-red cr-red bg-white round text-size-xs pa operate-submit" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                    <view class="dis-inline-block pa top-xxxxl right-xxxxl" @tap="delete_event" :data-value="item.id" :data-index="index">
+                        <iconfont name="icon-ellipsis" size="40rpx" color="#999"></iconfont>
+                    </view>
+                    <view v-if="(item.is_error || 0) == 0" class="dis-inline-block pa right-xxxxl bottom-xxxxl" :data-index="index" @tap.stop="goods_cart_event">
+                        <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                        <view class="pa top-0-xxxl right-xs">
+                            <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                        </view>
+                    </view>
                 </view>
             </view>
             <view v-else>
@@ -26,6 +34,9 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+            <!-- 商品购买 -->
+            <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
         </scroll-view>
 
         <!-- 公共 -->
@@ -37,10 +48,13 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentBadge from '@/components/badge/badge';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -56,7 +70,9 @@
         components: {
             componentCommon,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentBadge,
+            componentGoodsBuy
         },
         
         onLoad(params) {
@@ -217,59 +233,92 @@
 
             // 删除
             delete_event(e) {
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('user-goods-browse.user-goods-browse.rx8t1v'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
-                    success: result => {
-                        if (result.confirm) {
-                            // 参数
-                            var id = e.currentTarget.dataset.value;
-                            var index = e.currentTarget.dataset.index;
-                            
-                            // 加载loding
-                            uni.showLoading({
-                                title: this.$t('common.processing_in_text')
-                            });
-                            uni.request({
-                                url: app.globalData.get_request_url("delete", "usergoodsbrowse"),
-                                method: 'POST',
-                                data: {
-                                    ids: id
-                                },
-                                dataType: 'json',
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        var temp_data_list = this.data_list;
-                                        temp_data_list.splice(index, 1);
-                                        this.setData({
-                                            data_list: temp_data_list
+                var self = this;
+                wx.showActionSheet({
+                    itemList: [self.$t('common.del_record')],
+                    success (res) {
+                        // 参数
+                        var id = e.currentTarget.dataset.value;
+                        var index = e.currentTarget.dataset.index;
+                        // 加载loding
+                        uni.showLoading({
+                            title: self.$t('common.processing_in_text')
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url("delete", "usergoodsbrowse"),
+                            method: 'POST',
+                            data: {
+                                ids: id
+                            },
+                            dataType: 'json',
+                            success: res => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    var temp_data_list = self.data_list;
+                                    temp_data_list.splice(index, 1);
+                                    self.setData({
+                                        data_list: temp_data_list
+                                    });
+                                    if (temp_data_list.length == 0) {
+                                        self.setData({
+                                            data_list_loding_status: 0,
+                                            data_bottom_line_status: false
                                         });
-                                        if (temp_data_list.length == 0) {
-                                            this.setData({
-                                                data_list_loding_status: 0,
-                                                data_bottom_line_status: false
-                                            });
-                                        }
-                                        app.globalData.showToast(res.data.msg, 'success');
-                                    } else {
-                                        if (app.globalData.is_login_check(res.data)) {
-                                            app.globalData.showToast(res.data.msg);
-                                        } else {
-                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
-                                        }
                                     }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                    app.globalData.showToast(res.data.msg, 'success');
+                                } else {
+                                    if (app.globalData.is_login_check(res.data)) {
+                                        app.globalData.showToast(res.data.msg);
+                                    } else {
+                                        app.globalData.showToast(self.$t('common.sub_error_retry_tips'));
+                                    }
                                 }
-                            });
-                        }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast(self.$t('common.internet_error_tips'));
+                            }
+                        });
                     }
                 });
+            },
+
+            // 加入购物车
+            goods_cart_event(e) {
+                if ((this.$refs.goods_buy || null) != null) {
+                    var index = e.currentTarget.dataset.index || 0;
+                    var goods = this.data_list[index];
+                        goods['id'] = goods.goods_id;
+                    this.$refs.goods_buy.init(
+                        goods,
+                        {
+                            buy_event_type: 'cart',
+                            is_direct_cart: 1,
+                        },
+                        {
+                            index: index,
+                            pos: e,
+                        }
+                    );
+                }
+            },
+
+            // 加入购物车成功回调
+            goods_cart_back_event(e) {
+                // 增加数量
+                var back = e.back_data;
+                var temp_data_list = this.data_list;
+                var goods = temp_data_list[back.index];
+                goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0) + parseInt(e.stock);
+                if (goods['user_cart_count'] > 99) {
+                    goods['user_cart_count'] = '99+';
+                }
+                temp_data_list[back.index] = goods;
+                this.setData({
+                    data_list: temp_data_list,
+                });
+                // 购物车导航角标
+                app.globalData.set_tab_bar_badge('cart', e.cart_number || 0);
             },
 
             // url事件
