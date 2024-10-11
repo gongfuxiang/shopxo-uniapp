@@ -138,19 +138,16 @@
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal < this.header_top) {
-                    console.log(this.propValue);
-                    const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style } = this.propValue.style || {};
-                    // 渐变
-                    const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
-                    // 背景图
-                    const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
-                    this.setData({
-                        // 20是大小误差
-                        up_slide_style: gradient_computer(gradient) + 'opacity:' + (newVal / (this.header_top + 33) > 1 ? 1 : (newVal / (this.header_top + 33)).toFixed(2)) + ';',
-                        up_slide_img_style: background_computer(back),
-                    });
-                }
+                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style } = this.propValue.style || {};
+                // 渐变
+                const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
+                // 背景图
+                const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
+                this.setData({
+                    // 20是大小误差
+                    up_slide_style: gradient_computer(gradient) + 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';',
+                    up_slide_img_style: background_computer(back),
+                });
             },
             propkey(val) {
                 if ((this.propValue || null) !== null) {
