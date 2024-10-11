@@ -73,7 +73,7 @@
                 return text;
             },
             get_text_style() {
-                let style = `font-size: ${this.form.text_size * 2}rpx;color: ${this.form.text_color}; text-align: ${this.form.text_location}; transform: rotate(${this.form.text_rotate}deg);text-decoration: ${this.form.text_option};${padding_computer(this.form.text_padding)};box-sizing: border-box;`;
+                let style = `font-size: ${this.form.text_size * 2}rpx;line-height: ${this.form.text_size * 2}rpx;color: ${this.form.text_color}; text-align: ${this.form.text_location}; transform: rotate(${this.form.text_rotate}deg);text-decoration: ${this.form.text_option};${padding_computer(this.form.text_padding)};box-sizing: border-box;`;
                 if (this.form.text_weight == 'italic') {
                     style += `font-style: italic`;
                 } else if (this.form.text_weight == '500') {
