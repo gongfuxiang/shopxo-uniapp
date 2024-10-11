@@ -238,57 +238,61 @@
         methods: {
             isEmpty,
             init() {
-                this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
-                });
+                const new_form = this.propValue.content;
+                const new_style = this.propValue.style
                 let new_list = [];
                 // 指定商品并且指定商品数组不为空
-                if (!isEmpty(this.form.data_list) && this.form.data_type == '0') {
-                    new_list = this.form.data_list.map((item) => ({
+                if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
+                    new_list = new_form.data_list.map((item) => ({
                         ...item.data,
                         title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
                         new_cover: item.new_cover,
                     }));
-                } else if (!isEmpty(this.form.data_auto_list) && this.form.data_type == '1') {
+                } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
                     // 筛选商品并且筛选商品数组不为空
-                    new_list = this.form.data_auto_list;
+                    new_list = new_form.data_auto_list;
                 }
                 // 最外层不同风格下的显示
-                this.set_outer_class();
+                const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
+                const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
+                const background = ['6'].includes(new_form.theme) ? 'bg-white ' : '';
+
                 this.setData({
+                    form: new_form,
+                    new_style: new_style,
+                    outer_class: flex + wrap + background + 'oh',
                     list: new_list,
-                    content_radius: radius_computer(this.new_style.shop_radius), // 圆角设置
-                    content_img_radius: radius_computer(this.new_style.shop_img_radius), // 图片圆角设置
-                    content_padding: padding_computer(this.new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
-                    theme: this.form.theme, // 选择的风格
-                    content_outer_spacing: this.new_style.content_outer_spacing, // 商品间距
-                    onter_style: this.form.theme == '6' ? radius_computer(this.new_style.shop_radius) : `gap: ${this.new_style.content_outer_spacing * 2 + 'rpx'};`,
+                    content_radius: radius_computer(new_style.shop_radius), // 圆角设置
+                    content_img_radius: radius_computer(new_style.shop_img_radius), // 图片圆角设置
+                    content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
+                    theme: new_form.theme, // 选择的风格
+                    content_outer_spacing: new_style.content_outer_spacing, // 商品间距
+                    onter_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
                     // 不同风格下的样式
-                    layout_type: this.get_layout_type(),
-                    layout_style: this.get_layout_style(),
-                    content_style: this.get_content_style(), // 内容区域的样式
-                    show_content: ['0', '1', '2'].includes(this.form.theme), // 显示除标题外的其他区域
-                    text_line: this.get_text_line(), // 超过多少行隐藏
-                    style_container: this.propIsCommonStyle ? common_styles_computer(this.new_style.common_style) : '', // 公共样式
-                    style_img_container: this.propIsCommonStyle ? common_img_computer(this.new_style.common_style) : '', // 图片样式
+                    layout_type: this.get_layout_type(new_form),
+                    layout_style: this.get_layout_style(new_style, new_form),
+                    content_style: this.get_content_style(new_style, new_form), // 内容区域的样式
+                    show_content: ['0', '1', '2'].includes(new_form.theme), // 显示除标题外的其他区域
+                    text_line: this.get_text_line(new_form), // 超过多少行隐藏
+                    style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
+                    style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style) : '', // 图片样式
                     // 内容样式设置
-                    title_style: this.trends_config('title'),
-                    price_style: this.trends_config('price'),
-                    sold_number_style: this.trends_config('sold_number'),
-                    score_style: this.trends_config('score'),
-                    button_style: this.trends_config('button', 'gradient'),
-                    shop_content_list: this.get_shop_content_list(new_list),
-                    is_show_cart: this.form.shop_button_effect == '1',
+                    title_style: this.trends_config(new_style, 'title'),
+                    price_style: this.trends_config(new_style, 'price'),
+                    sold_number_style: this.trends_config(new_style, 'sold_number'),
+                    score_style: this.trends_config(new_style, 'score'),
+                    button_style: this.trends_config(new_style, 'button', 'gradient'),
+                    shop_content_list: this.get_shop_content_list(new_list, new_form),
+                    is_show_cart: new_form.shop_button_effect == '1',
                 });
             },
-            get_shop_content_list(list) {
+            get_shop_content_list(list, form) {
                 // 深拷贝一下，确保不会出现问题
                 const cloneList = JSON.parse(JSON.stringify(list));
                 // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
                 if (cloneList.length > 0) {
                     // 每页显示的数量
-                    const num = this.form.carousel_col;
+                    const num = form.carousel_col;
                     // 存储数据显示
                     let nav_list = [];
                     // 拆分的数量
@@ -308,27 +312,19 @@
                     ];
                 }
             },
-            get_text_line() {
+            get_text_line(form) {
                 let line = '';
-                if (['1', '6'].includes(this.form.theme)) {
+                if (['1', '6'].includes(form.theme)) {
                     line = 'text-line-1';
-                } else if (['0', '2', '3', '4', '5'].includes(this.form.theme)) {
+                } else if (['0', '2', '3', '4', '5'].includes(form.theme)) {
                     line = 'text-line-2';
                 }
                 return line;
             },
-            set_outer_class() {
-                const flex = ['0', '2', '6'].includes(this.form.theme) ? 'flex-col ' : 'flex-row ';
-                const wrap = this.form.theme == '5' ? '' : 'flex-wrap ';
-                const background = ['6'].includes(this.form.theme) ? 'bg-white ' : '';
-                this.setData({
-                    outer_class: flex + wrap + background + 'oh',
-                });
-            },
             // 不同风格下的样式
-            get_layout_type() {
+            get_layout_type(new_form) {
                 let class_type = '';
-                switch (this.form.theme) {
+                switch (new_form) {
                     case '0':
                         class_type = `flex-row bg-white oh`;
                         break;
@@ -352,32 +348,32 @@
                 }
                 return class_type;
             },
-            get_layout_style() {
-                const radius = this.form.theme == '6' ? '' : radius_computer(this.new_style.shop_radius);
-                const padding = ['0', '4'].includes(this.form.theme) ? padding_computer(this.new_style.shop_padding) + 'box-sizing: border-box;' : '';
+            get_layout_style(new_style, form) {
+                const radius = form.theme == '6' ? '' : radius_computer(new_style.shop_radius);
+                const padding = ['0', '4'].includes(form.theme) ? padding_computer(new_style.shop_padding) + 'box-sizing: border-box;' : '';
                 let size_style = ``;
-                if (['1', '4'].includes(this.form.theme)) {
-                    size_style = `width: calc((100% - ${this.new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
-                } else if (this.form.theme == '3') {
-                    size_style = `width: calc((100% - ${this.new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
-                } else if (this.form.theme == '5') {
-                    size_style = `width: ${this.get_multicolumn_columns_width()};min-width: ${this.get_multicolumn_columns_width()};height: ${this.new_style.content_outer_height * 2 + 'rpx'}`;
+                if (['1', '4'].includes(form.theme)) {
+                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
+                } else if (form.theme == '3') {
+                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
+                } else if (form.theme == '5') {
+                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(form)};height: ${new_style.content_outer_height * 2 + 'rpx'}`;
                 }
                 return `${radius} ${padding} ${size_style}`;
             },
-            get_multicolumn_columns_width() {
-                const { carousel_col } = this.form;
+            get_multicolumn_columns_width(new_style, form) {
+                const { carousel_col } = form;
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
-                let gap = (this.new_style.content_outer_spacing * (carousel_col - 1)) / carousel_col;
+                let gap = (new_style.content_outer_spacing * (carousel_col - 1)) / carousel_col;
                 return `calc(${100 / carousel_col}% - ${gap * 2}rpx)`;
             },
-            get_content_style() {
-                const spacing_value = this.new_style.content_spacing;
+            get_content_style(new_style, form) {
+                const spacing_value = new_style.content_spacing;
                 let spacing = '';
-                if (['0', '4'].includes(this.form.theme)) {
+                if (['0', '4'].includes(form.theme)) {
                     spacing = `margin-left: ${spacing_value * 2}rpx;`;
                 } else {
-                    spacing = padding_computer(this.new_style.shop_padding) + 'box-sizing: border-box;';
+                    spacing = padding_computer(new_style.shop_padding) + 'box-sizing: border-box;';
                 }
                 return `${spacing}`;
             },
@@ -386,8 +382,8 @@
                 return this.form.is_show.includes(index);
             },
             // 根据传递的参数，从对象中取值
-            trends_config(key, type) {
-                return this.style_config(this.new_style[`shop_${key}_typeface`], this.new_style[`shop_${key}_size`], this.new_style[`shop_${key}_color`], type);
+            trends_config(new_style, key, type) {
+                return this.style_config(new_style[`shop_${key}_typeface`], new_style[`shop_${key}_size`], new_style[`shop_${key}_color`], type);
             },
             // 根据传递的值，显示不同的内容
             style_config(typeface, size, color, type) {
