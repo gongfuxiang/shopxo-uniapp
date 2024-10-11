@@ -28,7 +28,7 @@
                                         </view>
                                         <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
                                             <view class="flex-row align-c gap-2" @tap="go_map_event">
-                                                <component-choice-location propBaseColor="#666" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" propTextMaxWidth="150rpx" @onback="user_back_choice_location"></component-choice-location>
+                                                <component-choice-location :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" propTextMaxWidth="150rpx" @onback="user_back_choice_location"></component-choice-location>
                                             </view>
                                             <template v-if="['5'].includes(form.content.theme)">
                                                 <view class="flex-1">
@@ -138,19 +138,16 @@
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal < this.header_top) {
-                    console.log(this.propValue);
-                    const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style } = this.propValue.style || {};
-                    // 渐变
-                    const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
-                    // 背景图
-                    const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
-                    this.setData({
-                        // 20是大小误差
-                        up_slide_style: gradient_computer(gradient) + 'opacity:' + (newVal / (this.header_top + 33) > 1 ? 1 : (newVal / (this.header_top + 33)).toFixed(2)) + ';',
-                        up_slide_img_style: background_computer(back),
-                    });
-                }
+                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style } = this.propValue.style || {};
+                // 渐变
+                const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
+                // 背景图
+                const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
+                this.setData({
+                    // 20是大小误差
+                    up_slide_style: gradient_computer(gradient) + 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';',
+                    up_slide_img_style: background_computer(back),
+                });
             },
             propkey(val) {
                 if ((this.propValue || null) !== null) {
