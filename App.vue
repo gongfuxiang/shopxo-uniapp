@@ -2863,7 +2863,6 @@
                 var bg_color = '#fff';
                 var arr = [
                     'pages/index/index',
-                    'pages/diy/diy',
                 ];
                 var page = this.current_page(false);
                 if(is_white === true || (is_white === null && arr.indexOf(page) != -1)) {
