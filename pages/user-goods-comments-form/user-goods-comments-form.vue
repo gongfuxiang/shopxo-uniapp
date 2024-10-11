@@ -21,8 +21,8 @@
                         </checkbox-group>
                     </view>
                 </view>
-                <view class="sub-btn">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('form.form.4yd066') }}</button>
+                <view class="sub-btn margin-top-xxxxl">
+                    <button class="btn bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('form.form.4yd066') }}</button>
                 </view>
             </form>
             <view v-else>
@@ -43,19 +43,17 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    const theme_color = app.globalData.get_theme_color();
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                theme_color: theme_color,
+                theme_color: app.globalData.get_theme_color(),
                 goods_images: '',
                 rate_value: 0,
                 goods_id: '',
                 is_anonymous: '0',
                 content: '',
                 text_num: 0,
-                theme_color: theme_color,
                 data_list_loding_status: 1,
                 data_list_loding_msg: this.$t('form.form.bniyyt'),
                 form_submit_loading: false,

@@ -21,7 +21,7 @@
                         <block v-for="(fv, fi) in content_list" :key="fi">
                             <view class="margin-top-xs flex-row align-c">
                                 <view class="cr-grey margin-right-xl">{{ fv.name }}</view>
-                                <view class="cr-base flex-1 flex-width ">{{ item[fv.field] }}</view>
+                                <view class="cr-base flex-1 flex-width ">{{ item[fv.field] || '' }}</view>
                             </view>
                         </block>
                     </view>
