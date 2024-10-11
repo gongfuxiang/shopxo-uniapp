@@ -324,7 +324,7 @@
             // 不同风格下的样式
             get_layout_type(new_form) {
                 let class_type = '';
-                switch (new_form) {
+                switch (new_form.theme) {
                     case '0':
                         class_type = `flex-row bg-white oh`;
                         break;
