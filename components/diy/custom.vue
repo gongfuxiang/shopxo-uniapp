@@ -68,7 +68,7 @@ export default {
     computed: {
         get_percentage_count() {
             return (num, container_size) => {
-                return this.percentage_count(num * this.scale, container_size);
+                return num * this.scale + 'px';
             };
         },
     },
