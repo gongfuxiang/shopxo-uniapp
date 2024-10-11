@@ -53,7 +53,6 @@
                 is_show_privacy: false,
                 privacy_content: null,
                 key: '',
-                load_status: 0,
                 is_tabbar: false,
                 app_tabber: null,
                 footer_height_value: 0,
@@ -92,6 +91,15 @@
             this.init_config();
         },
         methods: {
+            // 显示响应方法
+            on_show() {
+                //隐藏系统tabbar
+                app.globalData.system_hide_tabbar();
+
+                // 初始化配置
+                this.init_config();
+            },
+
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
@@ -102,20 +110,20 @@
                 }
             },
 
-            // 初始化
+            // 初始化数据
             init() {
-                // 首次则调用实际的接口再回调
-                if(this.load_status == 0) {
-                    app.globalData.init_config_back(this, 'init');
-                }
-
-                // 初始数据
-                this.setData({
-                    load_status: 1,
-                });
-
                 // 系统底部菜单
                 this.footer_init();
+                
+                // app管理
+                if (this.propIsAppAdmin && (this.$refs.app_admin || null) != null) {
+                    this.$refs.app_admin.init();
+                }
+
+                // 用户头像和昵称设置提示
+                if (this.propIsUserBase && (this.$refs.user_base || null) != null) {
+                    this.$refs.user_base.init();
+                }
 
                 // #ifdef MP-WEIXIN
                 // 微信协议验证
@@ -132,25 +140,6 @@
                     });
                 }
                 // #endif
-            },
-
-            // 显示响应方法
-            on_show() {
-                //隐藏系统tabbar
-                app.globalData.system_hide_tabbar();
-
-                // 系统底部菜单
-                this.footer_init();
-
-                // app管理
-                if (this.propIsAppAdmin && (this.$refs.app_admin || null) != null) {
-                    this.$refs.app_admin.init();
-                }
-
-                // 用户头像和昵称设置提示
-                if (this.propIsUserBase && (this.$refs.user_base || null) != null) {
-                    this.$refs.user_base.init();
-                }
             },
 
             // 底部菜单初始化

@@ -7,12 +7,12 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url: 'http://shopxo.com/',
-                //  request_url:'https://new.shopxo.vip/',
+                //request_url: 'http://shopxo.com/',
+                  request_url:'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'http://shopxo.com/',
-                //  static_url:'https://new.shopxo.vip/',
+                //static_url: 'http://shopxo.com/',
+                  static_url:'https://new.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -1433,11 +1433,19 @@
             is_config(object, method, params) {
                 var self = this;
                 var count = 0;
+                var is_config_count = 0;
                 var timer = setInterval(function () {
                     if (self.get_config('status') == 1) {
                         clearInterval(timer);
                         if (typeof object === 'object' && (method || null) != null) {
                             object[method](true, params);
+                        }
+                    } else {
+                        // 如果已经初始化过，但是没有数据则读取接口一次
+                        if(is_config_count < 1 && self.data.common_data_init_status == 1) {
+                            is_config_count++;
+                            self.data.common_data_init_status = 0;
+                            self.init_config();
                         }
                     }
                     count++;
@@ -1445,24 +1453,6 @@
                         clearInterval(timer);
                     }
                 }, 100);
-            },
-
-            /**
-             * 初始化 配置信息后回调
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调操请求参数
-             */
-            init_config_back(object, method, params) {
-                var self = this;
-                self.data.common_data_init_back_timer = setInterval(function () {
-                    if (self.data.common_data_init_status == 1) {
-                        clearInterval(self.data.common_data_init_back_timer);
-                        if (typeof object === 'object' && (method || null) != null) {
-                            object[method](params);
-                        }
-                    }
-                }, 1000);
             },
 
             /**
