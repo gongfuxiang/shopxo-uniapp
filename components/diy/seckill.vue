@@ -532,8 +532,7 @@
     }
     .flex-img2 {
         width: 100%;
-        height: 100%;
-        min-height: 360rpx;
+        height: 360rpx;
     }
     .flex-img3 {
         background: #f4fcff;
