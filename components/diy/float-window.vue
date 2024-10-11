@@ -1,12 +1,17 @@
 <template>
-    <movable-area class="online-service-movable-container">
-        <movable-view :x="x" :y="y" direction="all" class="float-window-spread flex-row align-c jc-c">
-            <block v-if="new_style.float_style == 'diffuse'">
-                <view class="ring" :style="color"></view>
-                <view class="ring" :style="color"></view>
+    <movable-area class="float-window-movable-container">
+        <movable-view :x="x" :y="y" direction="all" class="float-window-spread flex-row align-c jc-c" @tap="url_open">
+            <block v-if="style.float_style == 'diffuse'">
+                <view class="ring" :style="content_style"></view>
+                <view class="ring" :style="content_style"></view>
             </block>
-            <view class="img">
-                <imageEmpty :propImageSrc="form.button_img[0]" :propStyle="color" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+            <view class="img oh" :style="content_style">
+                <block v-if="(form || null) != null && form.button_jump == 'customer_service'">
+                    <component-online-service :propChatImage="img_url" :propIsSpread="false" :propIsMovable="false"></component-online-service>
+                </block>
+                <block v-else>
+                    <imageEmpty :propImageSrc="img_url" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
+                </block>
             </view>
         </movable-view>
     </movable-area>
@@ -16,9 +21,11 @@
     const app = getApp();
     import { isEmpty } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    import componentOnlineService from '@/components/online-service/online-service';
     export default {
         components: {
             imageEmpty,
+            componentOnlineService
         },
         props: {
             propValue: {
@@ -35,11 +42,11 @@
         data() {
             return {
                 form: {},
-                new_style: {},
+                style: {},
+                img_url: '',
                 x: 0,
                 y: 0,
-                style: '',
-                color: '',
+                content_style: '',
             };
         },
         watch: {
@@ -53,31 +60,33 @@
         },
         methods: {
             init() {
+                let form = this.propValue.content || {};
+                let img_url = (form.button_img || null) != null ? (form.button_img[0] || null) : null;
+                if (img_url != null) {
+                    img_url = img_url.url || null;
+                }
                 this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
+                    form: form,
+                    style: this.propValue.style,
+                    img_url: img_url,
                 });
                 const { float_style, float_style_color, display_location, offset_number_percentage } = this.propValue.style;
-
                 const { windowWidth, windowHeight } = uni.getSystemInfoSync();
-                let x = windowWidth - 10;
-                if (display_location == 'left') {
-                    x = 10;
-                }
+                let x = display_location == 'left' ? 10 : windowWidth - 60;
                 // 计算出距离顶部的距离
-                const num = Math.ceil(windowHeight * (1 - Number(offset_number_percentage)));
+                const y = Math.ceil(windowHeight * (1 - Number(offset_number_percentage)));
                 this.setData({
-                    color: float_style == 'shadow' ? `box-shadow: 0 10rpx 40rpx ${float_style_color};border-radius: 50%;` : `background-color: ${float_style_color};border-radius: 50%;`,
+                    content_style: float_style == 'shadow' ? `box-shadow: 0 0 40rpx ${float_style_color};border-radius: 50%;` : `background-color: ${float_style_color};border-radius: 50%;`,
                     x: x,
-                    y: num
+                    y: y
                 });
+                
+                console.log(windowWidth, x, this.x)
             },
             url_open() {
                 const { button_jump, button_link } = this.form;
                 if (button_jump == 'link' && !isEmpty(button_link)) {
                     app.globalData.url_open(button_link.page);
-                } else {
-                    console.log('客服');
                 }
             },
         },
@@ -89,11 +98,9 @@
         width: 90rpx;
         height: 90rpx;
         border-radius: 50%;
+        z-index: 2;
     }
-    .float-window {
-        z-index: 103;
-    }
-    .online-service-movable-container {
+    .float-window-movable-container {
         position: fixed;
         width: 100%;
         height: 100%;
@@ -110,8 +117,8 @@
         position: relative;
         pointer-events: auto;
         z-index: 1;
-        width: 120rpx;
-        height: 120rpx;
+        width: 100rpx;
+        height: 100rpx;
         border-radius: 50%;
     }
     .float-window-spread .ring {

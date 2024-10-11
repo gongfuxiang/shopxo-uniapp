@@ -5,26 +5,26 @@
             <view v-if="propIsGoods == true" class="goods-chat-container fl cp">
                 <block v-if="is_chat == 1">
                     <view @tap="chat_event">
-                        <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                        <image class="icon" :src="chat_icon" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </view>
                 </block>
                 <block v-else>
                     <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-KUAISHOU -->
                     <button class="chat-btn" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                        <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                        <image class="icon" :src="chat_icon" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
                     <button class="chat-btn" open-type="contact" class="alipay-contact">
-                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'chat-icon.png'" size="40rpx*40rpx" />
+                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_icon" size="40rpx*40rpx" />
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <button class="chat-btn" type="default" @tap="call_event">
-                        <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                        <image class="icon" :src="chat_icon" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
                     <!-- #endif -->
@@ -33,34 +33,70 @@
             <!-- 默认浮动展示-可拖拽位置 -->
             <view v-else>
                 <block v-if="is_online_service_fixed == 1">
-                    <movable-area class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
-                        <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit spread">
-                            <view class="ring"></view>
-    	                    <view class="ring"></view>
-                            <block v-if="is_chat == 1">
-                                <button class="chat-btn" type="default" :class="common_ent" @tap="chat_event">
-                                    <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
-                                </button>
-                            </block>
-                            <block v-else>
-                                <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
-                                <button class="chat-btn" open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                                    <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
-                                </button>
-                                <!-- #endif -->
-                                <!-- #ifdef MP-ALIPAY -->
-                                <button class="chat-btn" open-type="contact" :class="'alipay-contact '+common_ent">
-                                    <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="40rpx*40rpx" />
-                                </button>
-                                <!-- #endif -->
-                                <!-- #ifdef H5 || APP -->
-                                <button class="chat-btn" type="default" :class="common_ent" @tap="call_event">
-                                    <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
-                                </button>
-                                <!-- #endif -->
-                            </block>
-                        </movable-view>
-                    </movable-area>
+                    <block v-if="propIsMovable">
+                        <movable-area class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
+                            <movable-view direction="all" :x="x" :y="y" :animation="false" :class="'online-service-event-submit '+(propIsSpread ? ' spread' : '')">
+                                <block v-if="propIsSpread">
+                                    <view class="ring"></view>
+                                    <view class="ring"></view>
+                                </block>
+                                <block v-if="is_chat == 1">
+                                    <button class="chat-btn" type="default" :class="common_ent" @tap="chat_event">
+                                        <image class="icon dis-block" :src="chat_image"></image>
+                                    </button>
+                                </block>
+                                <block v-else>
+                                    <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
+                                    <button class="chat-btn" open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                                        <image class="icon dis-block" :src="chat_image"></image>
+                                    </button>
+                                    <!-- #endif -->
+                                    <!-- #ifdef MP-ALIPAY -->
+                                    <button class="chat-btn" open-type="contact" :class="'alipay-contact '+common_ent">
+                                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="40rpx*40rpx" />
+                                    </button>
+                                    <!-- #endif -->
+                                    <!-- #ifdef H5 || APP -->
+                                    <button class="chat-btn" type="default" :class="common_ent" @tap="call_event">
+                                        <image class="icon dis-block" :src="chat_image"></image>
+                                    </button>
+                                    <!-- #endif -->
+                                </block>
+                            </movable-view>
+                        </movable-area>
+                    </block>
+                    <block v-else>
+                        <view class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
+                            <view :class="'online-service-event-submit '+(propIsSpread ? ' spread' : '')">
+                                <block v-if="propIsSpread">
+                                    <view class="ring"></view>
+                                    <view class="ring"></view>
+                                </block>
+                                <block v-if="is_chat == 1">
+                                    <button class="chat-btn" type="default" :class="common_ent" @tap="chat_event">
+                                        <image class="icon dis-block" :src="chat_image"></image>
+                                    </button>
+                                </block>
+                                <block v-else>
+                                    <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
+                                    <button class="chat-btn" open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                                        <image class="icon dis-block" :src="chat_image"></image>
+                                    </button>
+                                    <!-- #endif -->
+                                    <!-- #ifdef MP-ALIPAY -->
+                                    <button class="chat-btn" open-type="contact" :class="'alipay-contact '+common_ent">
+                                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="40rpx*40rpx" />
+                                    </button>
+                                    <!-- #endif -->
+                                    <!-- #ifdef H5 || APP -->
+                                    <button class="chat-btn" type="default" :class="common_ent" @tap="call_event">
+                                        <image class="icon dis-block" :src="chat_image"></image>
+                                    </button>
+                                    <!-- #endif -->
+                                </block>
+                            </view>
+                        </view>
+                    </block>
                 </block>
             </view>
         </block>
@@ -76,6 +112,8 @@
                 client_value: app.globalData.application_client_type(),
                 is_chat: 0,
                 chat_url: null,
+                chat_icon: '',
+                chat_image: '',
                 common_app_customer_service_tel: null,
                 common_app_customer_service_custom: null,
                 common_app_customer_service_company_weixin_corpid: null,
@@ -136,6 +174,22 @@
             	type: String,
             	default: ''
             },
+            propChatIcon: {
+            	type: String,
+            	default: ''
+            },
+            propChatImage: {
+            	type: String,
+            	default: ''
+            },
+            propIsSpread: {
+            	type: Boolean,
+            	default: true
+            },
+            propIsMovable: {
+            	type: Boolean,
+            	default: true
+            },
         },
         // 属性值改变监听
         watch: {
@@ -163,6 +217,8 @@
             this.setData({
                 is_first: 0,
                 system: system,
+                chat_icon: this.propChatIcon || this.common_static_url+'chat-icon.png',
+                chat_image: this.propChatImage || this.common_static_url+'online-service-icon.png',
                 // 位置坐标
                 x: width - 65,
                 y: height - 380,
@@ -293,7 +349,7 @@
         }
     };
 </script>
-<style>
+<style scoped>
     .online-service-movable-container {
         position: fixed;
         width: 100%;

@@ -2859,11 +2859,10 @@
 
             // 设置导航背景色和颜色
             set_navigation_bar_color(is_white = null) {
-                var color = '#000';
-                var bg_color = '#fff';
+                var color = '#000000';
+                var bg_color = '#ffffff';
                 var arr = [
                     'pages/index/index',
-                    'pages/diy/diy',
                 ];
                 var page = this.current_page(false);
                 if(is_white === true || (is_white === null && arr.indexOf(page) != -1)) {

@@ -1,6 +1,6 @@
 <template>
     <view :class="['oh img_wh', propClass]" :style="empty_outer_style + propStyle">
-        <image :src="imageUrl" @error="handleImageError" :mode="propImgFit" :style="empty_style" />
+        <image :src="img_url" @error="handleImageError" :mode="propImgFit" :style="empty_style" />
     </view>
 </template>
 
@@ -33,8 +33,8 @@
             return {
                 empty_outer_style: '',
                 empty_style: 'width: 100%; height: 100%;', // 有图片的时候显示为100%
-                imageUrl: '',
-                defaultImage: '/static/images/common/image-empty.png',
+                img_url: '',
+                default_image: '/static/images/common/image-empty.png',
             };
         },
         watch: {
@@ -57,10 +57,10 @@
                         empty_outer_style: 'background: #f4fcff;display:flex;align-items: center;justify-content: center;',
                         empty_style: `${this.propErrorStyle}`,
                     });
-                    img_url = this.defaultImage;
+                    img_url = this.default_image;
                 }
                 this.setData({
-                    imageUrl: img_url,
+                    img_url: img_url,
                 });
             },
         },
