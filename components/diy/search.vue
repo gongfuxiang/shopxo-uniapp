@@ -5,18 +5,20 @@
                 <template v-if="!is_click">
                     <view class="search wh-auto pr" :style="style">
                         <view class="box oh flex-row align-c gap-10 bg-white" :style="box_style" @tap="search_tap">
-                            <template v-if="form.is_icon_show == '1'">
-                                <template v-if="form.icon_img.length > 0">
-                                    <view class="img-box" @tap="search_icon_tap">
-                                        <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
-                                    </view>
+                            <view class="search-icon" @tap="search_icon_tap">
+                                <template v-if="form.is_icon_show == '1'">
+                                    <template v-if="form.icon_img.length > 0">
+                                        <view class="img-box">
+                                            <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
+                                        </view>
+                                    </template>
+                                    <template v-else>
+                                        <view>
+                                            <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color"></iconfont>
+                                        </view>
+                                    </template>
                                 </template>
-                                <template v-else>
-                                    <view @tap="search_icon_tap">
-                                        <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color"></iconfont>
-                                    </view>
-                                </template>
-                            </template>
+                            </view>
                             <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                         </view>
                         <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="url_event">
@@ -37,7 +39,7 @@
                 <template v-else>
                     <view class="search wh-auto pr">
                         <view class="box oh flex-row align-c gap-10 bg-white" :style="box_style + search_box_style">
-                            <input :focus="is_click" type="text" name="title" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :placeholder="form.tips" @input="search_input" @confirm="url_event" />
+                            <input :focus="is_click" type="text" name="title" :class="[propIsPageSettings ? 'text-size-xs text-line-1 wh-auto' : 'text-size-md text-line-1 wh-auto']" :placeholder="form.tips" @input="search_input" @confirm="url_event" />
                         </view>
                         <view v-if="form.is_search_show == '1'" class="pa search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="url_event">
                             <template v-if="form.search_type === 'text'">
@@ -56,7 +58,7 @@
                 </template>
             </view>
         </view>
-        <hotWordList v-if="is_click && !propIsPageSettings && form.hot_word_list.length > 0" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
+        <hotWordList v-if="is_click && !propIsPageSettings" :propValue="form.hot_word_list" :prophotWordsColor="new_style.hot_words_color" @search_hot_close="search_hot_close"></hotWordList>
     </view>
 </template>
 
@@ -244,6 +246,17 @@
                 min-width: 6rpx;
                 max-width: 20rpx;
             }
+        }
+        .search-icon{
+            position: relative;
+        }
+        .search-icon::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            bottom: -10px;
+            left: -10px
         }
     }
 </style>

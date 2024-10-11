@@ -10,7 +10,7 @@
                                     <imageEmpty :propImageSrc="item1.img[0]" :propStyle="img_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
                                 </view>
                             </view>
-                            <view v-if="['image_with_text', 'text'].includes(nav_style)" class="size-12 ma-0" :style="text_style">{{ item1.title }}</view>
+                            <view v-if="['image_with_text', 'text'].includes(nav_style)" class="wh-auto size-12 ma-0 nowrap oh" :style="text_style">{{ item1.title }}</view>
                         </view>
                     </view>
                 </swiper-item>

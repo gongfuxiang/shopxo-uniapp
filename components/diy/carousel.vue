@@ -120,15 +120,13 @@
         methods: {
             isEmpty,
             init() {
-                this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
-                });
+                const new_form = this.propValue.content;
+                const new_style = this.propValue.style;
                 const { windowWidth } = uni.getSystemInfoSync();
                 // 将90%的宽度分成16份
                 const block = (windowWidth * 0.9) / 16;
 
-                const { common_style, actived_color } = this.new_style;
+                const { common_style, actived_color } = new_style;
                 // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
                 const { img_fit } = this.form;
                 let fit = 'scaleToFill';
@@ -139,20 +137,22 @@
                 }
                 this.$nextTick(() => {
                     this.setData({
-                        seat_list: this.get_seat_list(),
-                        new_list: this.seat_list.concat(this.form.carousel_list),
+                        form: this.propValue.content,
+                        new_style: this.propValue.style,
+                        seat_list: this.get_seat_list(new_form),
+                        new_list: this.get_seat_list(new_form).concat(new_form.carousel_list),
                         popup_width: block * 16 * 2 + 'rpx',
                         popup_height: block * 9 * 2 + 'rpx',
                         style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
                         style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 用于样式显示
-                        img_style: radius_computer(this.new_style), // 图片的设置
-                        indicator_style: this.get_indicator_style(), // 指示器的样式
+                        img_style: radius_computer(new_style), // 图片的设置
+                        indicator_style: this.get_indicator_style(new_style), // 指示器的样式
                         dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置
                         img_fit: fit,
-                        video_style: this.get_video_style(), // 视频播放按钮显示逻辑
+                        video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑
                     });
                 });
-                if (this.form.carousel_type == 'card') {
+                if (new_form.carousel_type == 'card') {
                     this.$nextTick(() => {
                         this.setData({
                             previousMargin: '82rpx',
@@ -160,11 +160,11 @@
                             animationData: 0,
                         });
                     });
-                } else if (this.form.carousel_type != 'inherit') {
+                } else if (new_form.carousel_type != 'inherit') {
                     this.$nextTick(() => {
                         this.setData({
                             nextMargin: '100rpx',
-                            slides_per_group: this.form.carousel_type == 'twoDragOne' ? 2 : 1,
+                            slides_per_group: new_form.carousel_type == 'twoDragOne' ? 2 : 1,
                         });
                     });
                 }
@@ -177,8 +177,8 @@
                     });
                 });
             },
-            get_indicator_style() {
-                const { indicator_radius, indicator_style, indicator_size, color } = this.new_style;
+            get_indicator_style(new_style) {
+                const { indicator_radius, indicator_style, indicator_size, color } = new_style;
                 let styles = '';
                 if (!isEmpty(indicator_radius)) {
                     styles += radius_computer(indicator_radius);
@@ -195,12 +195,12 @@
                 }
                 return styles;
             },
-            get_seat_list() {
-                if (this.form.carousel_list.length > 3) {
+            get_seat_list(form) {
+                if (form.carousel_list.length > 3) {
                     return [];
                 } else {
                     let seat_list = [];
-                    const list = JSON.parse(JSON.stringify(this.form.carousel_list));
+                    const list = JSON.parse(JSON.stringify(form.carousel_list));
                     switch (list.length) {
                         case 1:
                             seat_list = [...list, ...list, ...list];
@@ -234,8 +234,8 @@
                     actived_index: actived_index,
                 });
             },
-            get_video_style() {
-                const { video_bottom, video_radius, video_color_list, video_direction, video_title_color, video_padding } = this.new_style;
+            get_video_style(new_style) {
+                const { video_bottom, video_radius, video_color_list, video_direction, video_title_color, video_padding } = new_style;
                 let style = `bottom: ${video_bottom}px;`;
                 if (!isEmpty(video_radius)) {
                     style += radius_computer(video_radius);
