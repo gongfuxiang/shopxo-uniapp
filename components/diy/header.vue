@@ -36,7 +36,7 @@
                                         <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c padding-right-main z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                             <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                                 <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
-                                                <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
+                                                <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color"></iconfont>
                                             </view>
                                         </view>
                                     </view>
