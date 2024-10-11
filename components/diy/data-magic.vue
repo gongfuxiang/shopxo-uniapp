@@ -14,7 +14,7 @@
                                             <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
                                         <view class="wh-auto ht-auto">
-                                            <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
@@ -46,7 +46,7 @@
                                         <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
                                     <view class="wh-auto ht-auto">
-                                        <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
                                     </view>
                                 </view>
                             </template>
@@ -134,19 +134,19 @@
         methods: {
             isEmpty,
             init() {
-                this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
-                });
+                const new_form = this.propValue.content;
+                const new_style = this.propValue.style;
                 const density = 4;
                 this.setData({
-                    outer_spacing: this.new_style.image_spacing * 2 + 'rpx',
-                    spacing: this.new_style.image_spacing + 'rpx',
-                    content_radius: radius_computer(this.new_style.data_radius),
-                    content_img_radius: radius_computer(this.new_style.img_radius),
-                    data_magic_list: this.get_data_magic_list(this.form.data_magic_list),
-                    style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
-                    style_img_container: common_img_computer(this.new_style.common_style),
+                    form: new_form,
+                    new_style: new_style,
+                    outer_spacing: new_style.image_spacing * 2 + 'rpx',
+                    spacing: new_style.image_spacing + 'rpx',
+                    content_radius: radius_computer(new_style.data_radius),
+                    content_img_radius: radius_computer(new_style.img_radius),
+                    data_magic_list: this.get_data_magic_list(new_form.data_magic_list),
+                    style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
+                    style_img_container: common_img_computer(new_style.common_style),
                 });
                 this.$nextTick(() => {
                     const query = uni.createSelectorQuery().in(this);
@@ -174,9 +174,13 @@
                     data_style.background_style = gradient_computer(data_style);
                     data_style.background_img_style = background_computer(data_style);
 
-                    data_style.chunk_padding_data = padding_computer(item.data_style.chunk_padding) + 'box-sizing: border-box;';
-                    data_style.heading_style = this.trends_config(item.data_style, 'heading');
-                    data_style.subtitle_style = this.trends_config(item.data_style, 'subtitle');
+                    // 商品名称和价格样式
+                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title');
+                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price');
+
+                    data_style.chunk_padding_data = padding_computer(data_style.chunk_padding) + 'box-sizing: border-box;';
+                    data_style.heading_style = this.trends_config(data_style, 'heading');
+                    data_style.subtitle_style = this.trends_config(data_style, 'subtitle');
 
                     if (data_content.data_type == 'goods') {
                         data_content.list = this.commodity_list(data_content.goods_list, item.num);
@@ -230,6 +234,9 @@
             // 计算成百分比
             percentage(num) {
                 return percentage_count(num, this.div_width);
+            },
+            goods_trends_config(style, key) {
+                return this.text_style(style[`goods_${key}_typeface`], style[`goods_${key}_size`], style[`goods_${key}_color`]);
             },
             // 根据传递的参数，从对象中取值
             trends_config(style, key) {

@@ -7,7 +7,7 @@
                 </view>
             </template>
             <template v-else>
-                <product-list-show :propOuterflex="propValue.outerflex" :propFlex="propValue.flex" :propNum="propValue.num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propContentImgRadius="propContentImgRadius" @url_event="url_event"></product-list-show>
+                <product-list-show :propOuterflex="propValue.outerflex" :propFlex="propValue.flex" :propNum="propValue.num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propContentImgRadius" @url_event="url_event"></product-list-show>
             </template>
         </swiper-item>
     </swiper>
@@ -38,6 +38,10 @@
             propActived: {
                 type: Number,
                 default: () => 0,
+            },
+            propGoodStyle: {
+                type: Object,
+                default: () => {},
             },
         },
         methods: {

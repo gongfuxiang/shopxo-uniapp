@@ -14,8 +14,8 @@
                         </view>
                     </template>
                     <view v-if="!isEmpty(propIsShow)" class="flex-col wh-auto ht-auto tl gap-10">
-                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
-                        <view v-if="propIsShow.includes('price')" class="identifying">
+                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
                             <text class="num">{{ item.show_price_symbol }}</text>
                             {{ item.min_price }}
                             <template v-if="propIsShow.includes('price_unit')">
@@ -38,14 +38,14 @@
                                 <imageEmpty :propImageSrc="item.images" :propStyle="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
                             </view>
                         </template>
-                        <view v-if="propIsShow.includes('price')" class="price-suspension text-line-1">
+                        <view v-if="propIsShow.includes('price')" class="price-suspension text-line-1" :style="propGoodStyle.goods_price_style">
                             {{ item.show_price_symbol }}{{ item.min_price }}
                             <template v-if="propIsShow.includes('price_unit')">
                                 {{ item.show_price_unit }}
                             </template>
                         </view>
                     </view>
-                    <view v-if="propIsShow.includes('title')" class="text-line-1 text-size-md shop-title tl wh-auto" style="overflow: inherit">{{ item.title }}</view>
+                    <view v-if="propIsShow.includes('title')" class="text-line-1 text-size-md shop-title tl wh-auto" :style="propGoodStyle.goods_title_style + ';overflow: inherit'">{{ item.title }}</view>
                 </view>
             </template>
             <template v-else>
@@ -61,8 +61,8 @@
                         </view>
                     </template>
                     <view v-if="!isEmpty(propIsShow)" class="flex-col wh-auto tl gap-10" :style="img_padding_computer">
-                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
-                        <view v-if="propIsShow.includes('price')" class="identifying">
+                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
                             <text class="num">{{ item.show_price_symbol }}</text>
                             {{ item.min_price }}
                             <template v-if="propIsShow.includes('price_unit')">
@@ -89,8 +89,8 @@
                         </view>
                     </template>
                     <view v-if="!isEmpty(propIsShow)" class="flex-col wh-auto ht-auto tl gap-20">
-                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
-                        <view v-if="propIsShow.includes('price')" class="identifying">
+                        <view v-if="propIsShow.includes('title')" class="text-line-2 text-size-md shop-title" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
                             <text class="num">{{ item.show_price_symbol }}</text
                             >{{ item.min_price }}
                             <template v-if="propIsShow.includes('price_unit')">
@@ -144,6 +144,10 @@
                 type: Object,
                 default: () => {},
             },
+            propGoodStyle: {
+                type: Object,
+                default: () => {},
+            }
         },
         computed: {
             img_padding_computer() {
