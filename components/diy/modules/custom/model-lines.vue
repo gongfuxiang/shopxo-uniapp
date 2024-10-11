@@ -24,29 +24,24 @@
         },
         watch: {
             propkey(val) {
-                this.setData({
-                    form: this.propValue,
-                });
                 this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue,
-            });
             this.init();
         },
         methods: {
             init() {
                 this.setData({
-                    border_style: this.get_border_style(),
+                    form: this.propValue,
+                    border_style: this.get_border_style(this.propValue),
                 });
             },
-            get_border_style() {
-                if (this.form.line_settings === 'horizontal') {
-                    return `margin: 10rpx 0;border-bottom: ${this.form.line_size * 2}rpx ${this.form.line_style} ${this.form.line_color};`;
+            get_border_style(form) {
+                if (form.line_settings === 'horizontal') {
+                    return `margin: 10rpx 0;border-bottom: ${form.line_size * 2}rpx ${form.line_style} ${form.line_color};`;
                 } else {
-                    return `margin: 0 10rpx;border-right: ${this.form.line_size * 2}rpx ${this.form.line_style} ${this.form.line_color};`;
+                    return `margin: 0 10rpx;border-right: ${form.line_size * 2}rpx ${form.line_style} ${form.line_color};`;
                 }
             }
         },

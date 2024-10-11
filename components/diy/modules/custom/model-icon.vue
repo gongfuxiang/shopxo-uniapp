@@ -34,34 +34,29 @@
         },
         watch: {
             propkey(val) {
-                this.setData({
-                    form: this.propValue,
-                });
                 this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue,
-            });
             this.init();
         },
         methods: {
             init() {
                 this.setData({
-                    com_style: this.get_com_style(),
+                    form: this.propValue,
+                    com_style: this.get_com_style(this.propValue),
                 });
             },
-            get_com_style() {
-                let style = `${ gradient_handle(this.form.color_list, this.form.direction) } ${ radius_computer(this.form.bg_radius) };transform: rotate(${this.form.icon_rotate}deg);${ padding_computer(this.form.icon_padding) };`;
-                if (this.form.border_show == '1') {
-                    style += `border: ${this.form.border_size * 2 }rpx ${this.form.border_style} ${this.form.border_color};box-sizing: border-box;`;
+            get_com_style(form) {
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding) };`;
+                if (form.border_show == '1') {
+                    style += `border: ${form.border_size * 2 }rpx ${form.border_style} ${form.border_color};box-sizing: border-box;`;
                 }
-                if (this.form.icon_location == 'center') {
+                if (form.icon_location == 'center') {
                     style += `justify-content: center;`;
-                } else if (this.form.icon_location == 'left') {
+                } else if (form.icon_location == 'left') {
                     style += `justify-content: flex-start;`;
-                } else if (this.form.icon_location == 'right') {
+                } else if (form.icon_location == 'right') {
                     style += `justify-content: flex-end;`;
                 }
                 return style;
