@@ -39,44 +39,39 @@
         },
         watch: {
             propkey(val) {
-                this.setData({
-                    form: this.propValue,
-                });
                 this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue,
-            });
             this.init();
         },
         methods: {
             init() {
                 this.setData({
-                    img: this.get_img_url(),
-                    image_style: this.get_image_style(),
-                    border_style: this.get_border_style(),
+                    form: this.propValue,
+                    img: this.get_img_url(this.propValue),
+                    image_style: this.get_image_style(this.propValue),
+                    border_style: this.get_border_style(this.propValue),
                 });
             },
-            get_img_url() {
-                if (!isEmpty(this.form.img[0])) {
-                    return this.form.img[0];
+            get_img_url(form) {
+                if (!isEmpty(form.img[0])) {
+                    return form.img[0];
                 } else {
                     if (!isEmpty(this.propSourceList)) {
-                        return this.propSourceList[this.form.data_source_id];
+                        return this.propSourceList[form.data_source_id];
                     } else {
                         return '';
                     }
                 }
             },
-            get_image_style() {
-                return `width: ${percentage_count(this.form.img_width, this.form.com_width)}; height: ${percentage_count(this.form.img_height, this.form.com_height)};transform: rotate(${this.form.img_rotate}deg); ${radius_computer(this.form.img_radius)};`;
+            get_image_style(form) {
+                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius)};`;
             },
-            get_border_style() {
+            get_border_style(form) {
                 let style = ``;
-                if (this.form.border_show == '1') {
-                    style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color}; ${radius_computer(this.form.border_radius)};box-sizing: border-box;`;
+                if (form.border_show == '1') {
+                    style += `border: ${form.border_size * 2}rpx ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius)};box-sizing: border-box;`;
                 }
                 return style;
             },

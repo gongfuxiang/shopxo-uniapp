@@ -62,15 +62,21 @@
                         </scroll-view>
                     </template>
 
-                    <!-- 商品购买 -->
+                    
                     <view class="z-i-deep">
+                        <!-- 商品购买 -->
                         <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+                        <!-- 视频播放 -->
                         <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
                             <view class="flex-col align-c jc-c gap-10">
                                 <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
                                 <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
                             </view>
                         </uni-popup>
+                        <!-- 搜索 -->
+                        <!-- <uni-popup ref="searchPopup" type="center" border-radius="20rpx" :mask-click="false">
+                            
+                        </uni-popup> -->
                     </view>
                 </view>
 
@@ -285,7 +291,7 @@
                 });
 
                 // 设置顶部导航的默认颜色
-                app.globalData.set_navigation_bar_color(parseInt(this.propValue.header.com_data.style.function_buttons_type) == 1);
+                app.globalData.set_navigation_bar_color(parseInt(this.propValue.header.com_data.style.function_buttons_type || 0) == 1);
 
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);

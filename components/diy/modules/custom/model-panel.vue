@@ -1,8 +1,10 @@
 <template>
-    <view class="wh-auto ht-auto re oh" :style="com_style"></view>
+    <view class="wh-auto ht-auto re oh" :style="com_style">
+        <div class="wh-auto ht-auto" :style="com_img_style"></div>
+    </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, isEmpty, gradient_handle } from '@/common/js/common/common.js';
+    import { radius_computer, background_computer, gradient_handle } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -34,31 +36,34 @@
         },
         watch: {
             propkey(val) {
-                this.setData({
-                    form: this.propValue,
-                });
                 this.init();
             }
         },
         created() {
-            this.setData({
-                form: this.propValue,
-            });
             this.init();
         },
         methods: {
             init() {
                 this.setData({
-                    com_style: this.get_com_style(),
+                    form: this.propValue,
+                    com_style: this.get_com_style(this.propValue),
+                    com_img_style: this.get_com_img_style(this.propValue),
                 });
             },
-            get_com_style() {
-                let style = `${ gradient_handle(this.form.color_list, this.form.direction) } ${radius_computer(this.form.bg_radius)}; transform: rotate(${this.form.panel_rotate}deg);`;
-                if (this.form.border_show == '1') {
-                    style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color};`;
+            get_com_style(form) {
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius)}; transform: rotate(${form.panel_rotate}deg);`;
+                if (form.border_show == '1') {
+                    style += `border: ${form.border_size * 2}rpx ${form.border_style} ${form.border_color};`;
                 }
                 return style;
             },
+            get_com_img_style(form) {
+                const data = {
+                    background_img: form?.background_img || [],
+                    background_img_style: form?.background_img_style || '2'
+                }
+                return background_computer(data);
+            }
         },
     };  
 </script>

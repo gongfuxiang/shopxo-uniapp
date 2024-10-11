@@ -1,6 +1,6 @@
 <template>
     <!-- 图片魔方 -->
-    <view class="img-magic" :style="style_container + 'height:' + container_size">
+    <view class="img-magic" :style="style_container + 'height:' + (form.style_actived == 10 ? '100%' : container_size)">
         <view class="magic-container wh-auto ht-auto" :style="style_img_container">
             <view class="pr" :style="outer_style">
                 <!-- 风格3 -->
@@ -17,6 +17,11 @@
                         <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
                             <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
                         </view>
+                    </view>
+                </template>
+                <template v-else-if="form.style_actived == 10">
+                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
+                        <image :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
                     </view>
                 </template>
                 <template v-else>

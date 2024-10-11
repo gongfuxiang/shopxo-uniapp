@@ -1,6 +1,6 @@
 <template>
     <view class="search-hot-location flex-col align-c jc-c">
-        <view class="search-hot flex-row align-c gap-10 bg-white flex-wrap box-shadow-md">
+        <view v-if="propValue.length > 0" class="search-hot flex-row align-c gap-10 bg-white flex-wrap box-shadow-md">
             <view v-for="(item, index) in propValue" :key="index" class="text-size-md" :style="{ color: !isEmpty(prophotWordsColor) ? prophotWordsColor : item.color }" :data-value="item.value" @tap.stop="url_event">{{ item.value }}</view>
         </view>
         <view class="flex-col align-c">
