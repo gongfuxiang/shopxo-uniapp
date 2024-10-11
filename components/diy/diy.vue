@@ -286,7 +286,7 @@
                 // 设置顶部导航的默认颜色
                 uni.setNavigationBarColor({
                     frontColor: parseInt(this.propValue.header.com_data.style.function_buttons_type) == 0 ? '#000000' : '#ffffff',
-                    backgroundColor: 'transparent',
+                    backgroundColor: parseInt(this.propValue.header.com_data.style.function_buttons_type) == 0 ? '#ffffff' : '#000000',
                 });
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
