@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="form.icon_link.page" @tap="url_event">
-        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * 2 + 'rpx'"></iconfont>
+        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * propScale * 2 + 'rpx'"></iconfont>
     </view>
 </template>
 <script>
@@ -24,6 +24,10 @@
             propkey: {
                 type: String,
                 default: '',
+            },
+            propScale: {
+                type: Number,
+                default: 1,
             }
         },
         data() {
@@ -48,9 +52,9 @@
                 });
             },
             get_com_style(form) {
-                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding) };`;
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius, this.propScale) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding, this.propScale) };`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * 2 }rpx ${form.border_style} ${form.border_color};box-sizing: border-box;`;
+                    style += `border: ${form.border_size * this.propScale * 2 }rpx ${form.border_style} ${form.border_color};box-sizing: border-box;`;
                 }
                 if (form.icon_location == 'center') {
                     style += `justify-content: center;`;

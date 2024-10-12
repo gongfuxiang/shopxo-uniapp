@@ -370,12 +370,11 @@
                 }
             },
             updateCountdown() {
-                const now = new Date();
-                let endTime = this.seckill_time.endTime.replace(/-/g, '/');
+                let endTime = this.seckill_time.endTime;
                 if (this.seckill_time.status === 0) {
-                    endTime = this.seckill_time.startTime.replace(/-/g, '/');
+                    endTime = this.seckill_time.startTime;
                 }
-                const distance = new Date(endTime).getTime() - now.getTime();
+                const distance = new Date(endTime).getTime() - new Date().getTime();
                 // 如果倒计时结束，显示结束信息
                 if (distance <= 1000) {
                     clearInterval(this.intervalId);
@@ -425,7 +424,6 @@
             },
             get_layout_type(form) {
                 let class_type = '';
-                console.log(form.shop_style_type);
                 switch (form.shop_style_type) {
                     case '1':
                         class_type = `flex-row bg-white oh`;
@@ -537,6 +535,7 @@
     .flex-img3 {
         background: #f4fcff;
         width: 100%;
+        height: 100%;
     }
     .slide-bottom {
         height: 20rpx;

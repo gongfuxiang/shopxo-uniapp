@@ -24,6 +24,10 @@
             propkey: {
                 type: String,
                 default: '',
+            },
+            propScale: {
+                type: Number,
+                default: 1
             }
         },
         data() {
@@ -51,9 +55,9 @@
                 });
             },
             get_com_style(form) {
-                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius)}; transform: rotate(${form.panel_rotate}deg);`;
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, this.propScale)}; transform: rotate(${form.panel_rotate}deg);`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * 2}rpx ${form.border_style} ${form.border_color};`;
+                    style += `border: ${form.border_size * this.propScale * 2}rpx ${form.border_style} ${form.border_color};`;
                 }
                 return style;
             },

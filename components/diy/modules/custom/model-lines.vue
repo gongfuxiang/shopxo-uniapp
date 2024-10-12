@@ -14,6 +14,10 @@
             propkey: {
                 type: String,
                 default: '',
+            },
+            propScale: {
+                type: Number,
+                default: 1,
             }
         },
         data() {
@@ -39,9 +43,9 @@
             },
             get_border_style(form) {
                 if (form.line_settings === 'horizontal') {
-                    return `margin: 10rpx 0;border-bottom: ${form.line_size * 2}rpx ${form.line_style} ${form.line_color};`;
+                    return `margin: 10rpx 0;border-bottom: ${form.line_size * this.propScale * 2}rpx ${form.line_style} ${form.line_color};`;
                 } else {
-                    return `margin: 0 10rpx;border-right: ${form.line_size * 2}rpx ${form.line_style} ${form.line_color};`;
+                    return `margin: 0 10rpx;border-right: ${form.line_size * this.propScale * 2}rpx ${form.line_style} ${form.line_color};`;
                 }
             }
         },

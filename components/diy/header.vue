@@ -21,7 +21,7 @@
                                                 <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
                                                 <template v-if="['3', '5'].includes(form.content.theme)">
                                                     <view class="flex-1">
-                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
+                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true" @search_tap="search_tap"></componentDiySearch>
                                                     </view>
                                                 </template>
                                             </view>
@@ -32,7 +32,7 @@
                                             </view>
                                             <template v-if="['5'].includes(form.content.theme)">
                                                 <view class="flex-1">
-                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true" :propIsClick="is_click" @search_tap="search_tap"></componentDiySearch>
+                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true" @search_tap="search_tap"></componentDiySearch>
                                                 </view>
                                             </template>
                                         </view>
@@ -48,7 +48,6 @@
                         </view>
                     </view>
                 </view>
-                <hotWordList v-if="is_click" :propValue="form.content.hot_word_list" :prophotWordsColor="form.style.hot_words_color" :propIsPageSettings="true" @search_hot_close="search_hot_close"></hotWordList>
             </view>
         </view>
         <block v-if="!is_immersion_model">
@@ -101,7 +100,6 @@
         },
         data() {
             return {
-                is_click: false,
                 form: {},
                 new_style: {},
                 position: '',
@@ -217,15 +215,8 @@
             go_map_event() {
                 console.log('地图方法');
             },
-            search_tap(value) {
-                this.setData({
-                    is_click: value,
-                });
-            },
-            search_hot_close() {
-                this.setData({
-                    is_click: false,
-                });
+            search_tap(form, list, color) {
+                this.$emit('search_tap', form, list, color);
             },
             user_back_choice_location(e) {
                 console.log('选择位置', e);
