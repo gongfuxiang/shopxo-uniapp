@@ -107,8 +107,12 @@ export function gradient_handle (color_list, direction, is_return_all = true) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function padding_computer (new_style, scale = 1) {
-    return `padding: ${new_style.padding_top * scale * 2 || 0}rpx ${new_style.padding_right * scale * 2 || 0}rpx ${new_style.padding_bottom * scale * 2 || 0}rpx ${new_style.padding_left * scale * 2 || 0}rpx;`;
+export function padding_computer (new_style, scale = 1, is_custom = false) {
+    if (!is_custom) {
+        return `padding: ${new_style.padding_top * 2 || 0}rpx ${new_style.padding_right * 2 || 0}rpx ${new_style.padding_bottom * 2 || 0}rpx ${new_style.padding_left * 2 || 0}rpx;`;
+    } else {
+        return `padding: ${new_style.padding_top * scale || 0}px ${new_style.padding_right * scale || 0}px ${new_style.padding_bottom * scale || 0}px ${new_style.padding_left * scale || 0}px;`;
+    }
 }
 /**
  * 设置外边距的方法
@@ -125,8 +129,13 @@ export function margin_computer (new_style) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function radius_computer (new_style, scale = 1) {
-    return `border-radius: ${new_style.radius_top_left * scale * 2 || 0}rpx ${new_style.radius_top_right * scale * 2 || 0}rpx ${new_style.radius_bottom_right * scale * 2 || 0}rpx ${new_style.radius_bottom_left * scale * 2 || 0}rpx;`;
+export function radius_computer (new_style, scale = 1, is_custom = false) {
+    if (!is_custom) {
+        return `border-radius: ${new_style.radius_top_left * 2 || 0}rpx ${new_style.radius_top_right * 2 || 0}rpx ${new_style.radius_bottom_right * 2 || 0}rpx ${new_style.radius_bottom_left * 2 || 0}rpx;`;
+    } else {
+        return `border-radius: ${new_style.radius_top_left * scale || 0}px ${new_style.radius_top_right * scale || 0}px ${new_style.radius_bottom_right * scale || 0}px ${new_style.radius_bottom_left * scale || 0}px;`;
+    }
+    
 }
 /**
  * 设置阴影样式
