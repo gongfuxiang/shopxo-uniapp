@@ -267,11 +267,7 @@
                                     }
                                     app.globalData.showToast(res.data.msg, 'success');
                                 } else {
-                                    if (app.globalData.is_login_check(res.data)) {
-                                        app.globalData.showToast(res.data.msg);
-                                    } else {
-                                        app.globalData.showToast(self.$t('common.sub_error_retry_tips'));
-                                    }
+                                    app.globalData.showToast(res.data.msg);
                                 }
                             },
                             fail: () => {

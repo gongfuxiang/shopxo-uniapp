@@ -16,7 +16,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="dis-inline-block pa top-xxxxl right-xxxxl" @tap="delete_event" :data-value="item.id" :data-index="index">
+                    <view class="dis-inline-block pa top-xxxxl right-xxxxl" @tap="item_event" :data-value="item.id" :data-index="index">
                         <iconfont name="icon-ellipsis" size="40rpx" color="#999"></iconfont>
                     </view>
                     <view v-if="(item.is_error || 0) == 0" class="dis-inline-block pa right-xxxxl bottom-xxxxl" :data-index="index" @tap.stop="goods_cart_event">
@@ -231,55 +231,86 @@
                 this.get_data_list();
             },
 
-            // 删除
-            delete_event(e) {
+            // 列表数据事件
+            item_event(e) {
                 var self = this;
                 wx.showActionSheet({
-                    itemList: [self.$t('common.del_record')],
+                    itemList: [self.$t('cart.cart.8tt78i'), self.$t('common.del_record')],
                     success (res) {
-                        // 参数
                         var id = e.currentTarget.dataset.value;
                         var index = e.currentTarget.dataset.index;
-                        // 加载loding
-                        uni.showLoading({
-                            title: self.$t('common.processing_in_text')
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url("delete", "usergoodsbrowse"),
-                            method: 'POST',
-                            data: {
-                                ids: id
-                            },
-                            dataType: 'json',
-                            success: res => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    var temp_data_list = self.data_list;
-                                    temp_data_list.splice(index, 1);
-                                    self.setData({
-                                        data_list: temp_data_list
-                                    });
-                                    if (temp_data_list.length == 0) {
-                                        self.setData({
-                                            data_list_loding_status: 0,
-                                            data_bottom_line_status: false
-                                        });
-                                    }
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                } else {
-                                    if (app.globalData.is_login_check(res.data)) {
-                                        app.globalData.showToast(res.data.msg);
-                                    } else {
-                                        app.globalData.showToast(self.$t('common.sub_error_retry_tips'));
-                                    }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(self.$t('common.internet_error_tips'));
-                            }
-                        });
+                        if(res.tapIndex == 0) {
+                            self.goods_favor_handle(self, id, index);
+                        } else {
+                            self.goods_delete_handle(self, id, index);
+                        }
                     }
+                });
+            },
+            
+            // 删除处理
+            goods_delete_handle(self, id, index, success_msg = null) {
+                uni.showLoading({
+                    title: self.$t('common.processing_in_text')
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("delete", "usergoodsbrowse"),
+                    method: 'POST',
+                    data: {
+                        ids: id
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var temp_data_list = self.data_list;
+                            temp_data_list.splice(index, 1);
+                            self.setData({
+                                data_list: temp_data_list
+                            });
+                            if (temp_data_list.length == 0) {
+                                self.setData({
+                                    data_list_loding_status: 0,
+                                    data_bottom_line_status: false
+                                });
+                            }
+                            app.globalData.showToast(success_msg || res.data.msg, 'success');
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(self.$t('common.internet_error_tips'));
+                    }
+                });
+            },
+
+            // 收藏操作
+            goods_favor_handle(self, id, index) {
+                uni.showLoading({
+                    title: self.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('favor', 'goods'),
+                    method: 'POST',
+                    data: {
+                        id: self.data_list[index]['goods_id'],
+                        is_mandatory_favor: 1
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            self.goods_delete_handle(self, id, index, res.data.msg);
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(self.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
