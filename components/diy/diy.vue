@@ -79,7 +79,7 @@
                         <uni-popup ref="searchPopup" type="center" border-radius="50rpx" :mask-click="false">
                             <view class="flex-col align-c jc-c gap-10 ht-auto" :style="{'width': search_width }">
                                 <view class="bg-white padding-xxxxl wh-auto flex-col gap-10" style="box-sizing: border-box;border-radius: 20rpx;">
-                                    <componentSearch :propFocus="true" propClass="br" propSize="md" propPadding="18rpx 20rpx 0px" :propPlaceholder="search_form.tips" :propIsBtn="true" :propIsOnEvent="true" :propIsIconOnEvent="true" @onicon="onicon"  @onsearch="onsearch"></componentSearch>
+                                    <componentSearch :propFocus="is_focus" propClass="br" propSize="md" propPadding="18rpx 20rpx 0px" :propPlaceholder="search_form.tips" :propIsBtn="true" :propIsOnEvent="true" :propIsIconOnEvent="true" @onicon="onicon"  @onsearch="onsearch"></componentSearch>
                                     <view v-if="hot_word_list.length > 0">
                                         <view class="search-hot flex-row align-c gap-10 bg-white flex-wrap box-shadow-md">
                                             <view v-for="(item, index) in hot_word_list" :key="index" class="text-size-md" :style="{ color: !isEmpty(search_hot_words_color) ? search_hot_words_color : item.color }" :data-value="item.value" @tap.stop="serch_url_event">{{ item.value }}</view>
@@ -264,7 +264,8 @@
                 search_form: {},
                 hot_word_list: [],
                 search_hot_words_color: '',
-                search_width: sys_width * 0.9 + 'px'
+                search_width: sys_width * 0.9 + 'px',
+                is_focus: false,
             };
         },
         watch: {
@@ -547,11 +548,15 @@
                 this.setData({
                     search_form: form,
                     hot_word_list: list,
-                    search_hot_words_color: color
+                    search_hot_words_color: color,
+                    is_focus: true
                 });
                 this.$refs.searchPopup.open();
             },
             search_close() {
+                this.setData({
+                    is_focus: false
+                });
                 this.$refs.searchPopup.close();
             },
             onsearch(val) {
