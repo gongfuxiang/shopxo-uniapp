@@ -1,5 +1,5 @@
 <template>
-    <view :style="style_container + 'height:' + form.height * 2 + 'rpx;'">
+    <view :style="style_container + 'height:' + form.height * scale + 'px;'">
         <view class="custom-container wh-auto ht-auto" :style="style_img_container">
             <view class="wh-auto ht-auto pr">
                 <view v-for="item in form.custom_list" :key="item.id" class="main-content"
@@ -68,6 +68,7 @@ export default {
     computed: {
         get_percentage_count() {
             return (num, container_size) => {
+                // console.log(num);
                 return num * this.scale + 'px';
             };
         },
@@ -93,6 +94,7 @@ export default {
                 query
                     .select('.custom-container')
                     .boundingClientRect((res) => {
+                        console.log(res);
                         if ((res || null) != null) {
                             this.setData({
                                 div_width: res.width,
