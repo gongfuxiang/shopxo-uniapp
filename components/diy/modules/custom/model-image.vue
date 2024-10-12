@@ -39,9 +39,14 @@
                 img: '',
                 image_style: '',
                 border_style: '',
+                scale: 1,
             };
         },
         watch: {
+            propScale(val) {
+                this.scale = val;
+                this.init();
+            },
             propkey(val) {
                 this.init();
             }
@@ -70,12 +75,12 @@
                 }
             },
             get_image_style(form) {
-                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, this.propScale)};`;
+                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, this.scale)};`;
             },
             get_border_style(form) {
                 let style = ``;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.propScale * 2}rpx ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius, this.propScale)};box-sizing: border-box;`;
+                    style += `border: ${form.border_size * this.scale * 2}rpx ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius, this.scale)};box-sizing: border-box;`;
                 }
                 return style;
             },

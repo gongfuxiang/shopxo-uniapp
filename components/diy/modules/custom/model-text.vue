@@ -43,9 +43,14 @@
                 text_title: '',
                 text_style: '',
                 com_style: '',
+                scale: 1,
             };
         },
         watch: {
+            propScale(val) {
+                this.scale = val;
+                this.init();
+            },
             propkey(val) {
                 this.init();
             }
@@ -72,7 +77,7 @@
                 return text;
             },
             get_text_style(form) {
-                let style = `font-size: ${form.text_size * this.propScale * 2}rpx;line-height: ${form.text_size * this.propScale * 2}rpx;color: ${form.text_color}; text-align: ${form.text_location}; transform: rotate(${form.text_rotate}deg);text-decoration: ${form.text_option};${padding_computer(form.text_padding, this.propScale)};box-sizing: border-box;`;
+                let style = `font-size: ${form.text_size * this.scale * 2}rpx;line-height: ${form.text_size * this.scale * 2}rpx;color: ${form.text_color}; text-align: ${form.text_location}; transform: rotate(${form.text_rotate}deg);text-decoration: ${form.text_option};${padding_computer(form.text_padding, this.scale)};box-sizing: border-box;`;
                 if (form.text_weight == 'italic') {
                     style += `font-style: italic`;
                 } else if (form.text_weight == '500') {
@@ -81,9 +86,9 @@
                 return style;
             },
             get_com_style(form) {
-                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, this.propScale)}`;
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, this.scale)}`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.propScale * 2}rpx ${form.border_style} ${form.border_color};`;
+                    style += `border: ${form.border_size * this.scale * 2}rpx ${form.border_style} ${form.border_color};`;
                 }
                 // 是富文本并且开启了上下滚动的开关
                 if (form.is_rich_text == '1' && form.is_up_down == '1') {

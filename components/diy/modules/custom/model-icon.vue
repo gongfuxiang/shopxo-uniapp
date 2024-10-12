@@ -34,9 +34,14 @@
             return {
                 form: {},
                 com_style: '',
+                scale: 1,
             };
         },
         watch: {
+            propScale(val) {
+                this.scale = val;
+                this.init();
+            },
             propkey(val) {
                 this.init();
             }
@@ -52,9 +57,9 @@
                 });
             },
             get_com_style(form) {
-                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius, this.propScale) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding, this.propScale) };`;
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius, this.scale) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding, this.scale) };`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.propScale * 2 }rpx ${form.border_style} ${form.border_color};box-sizing: border-box;`;
+                    style += `border: ${form.border_size * this.scale * 2 }rpx ${form.border_style} ${form.border_color};box-sizing: border-box;`;
                 }
                 if (form.icon_location == 'center') {
                     style += `justify-content: center;`;
