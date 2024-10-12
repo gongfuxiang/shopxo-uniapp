@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <view :class="'search-content pr round '+propSize" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')">
-            <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
+            <view class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
             <input
@@ -11,6 +11,7 @@
                 :placeholder="(propPlaceholder || this.$t('search.search.660us5'))"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
+                :focus="propFocus"
                 @input="search_input_value_event"
                 @confirm="search_submit_confirm_event"
                 @focus="search_input_focus_event"
@@ -108,6 +109,14 @@
                 type: String,
                 default: '',
             },
+            propFocus: {
+                type: Boolean,
+                default: false,
+            },
+            propPadding: {
+                type: String,
+                default: '14rpx 20rpx 0 20rpx;',
+            },
         },
         // 属性值改变监听
         watch: {
@@ -190,7 +199,6 @@
         z-index: 1;
         left: 0;
         top: 0;
-        padding: 14rpx 20rpx 0 20rpx;
         line-height: 28rpx;
         height: 42rpx;
     }

@@ -5,19 +5,19 @@
                 <view v-for="item in form.custom_list" :key="item.id" class="main-content"
                     :style="{ left: get_percentage_count(item.location.x, div_width), top: get_percentage_count(item.location.y, div_height), width: get_percentage_count(item.com_data.com_width, div_width), height: get_percentage_count(item.com_data.com_height, div_height) }">
                     <template v-if="item.key == 'text'">
-                        <model-text :propkey="propkey" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-text>
+                        <model-text :propkey="propkey" :propValue="item.com_data" :propScale="scale" :propSourceList="form.data_source_content" @url_event="url_event"></model-text>
                     </template>
                     <template v-else-if="item.key == 'img'">
-                        <model-image :propkey="propkey" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-image>
+                        <model-image :propkey="propkey" :propValue="item.com_data" :propScale="scale" :propSourceList="form.data_source_content" @url_event="url_event"></model-image>
                     </template>
                     <template v-else-if="item.key == 'auxiliary-line'">
-                        <model-lines :propkey="propkey" :propValue="item.com_data" :propSourceList="form.data_source_content"></model-lines>
+                        <model-lines :propkey="propkey" :propValue="item.com_data" :propScale="scale" :propSourceList="form.data_source_content"></model-lines>
                     </template>
                     <template v-else-if="item.key == 'icon'">
-                        <model-icon :propkey="propkey" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-icon>
+                        <model-icon :propkey="propkey" :propValue="item.com_data" :propScale="scale" :propSourceList="form.data_source_content" @url_event="url_event"></model-icon>
                     </template>
                     <template v-else-if="item.key == 'panel'">
-                        <model-panel :propkey="propkey" :propValue="item.com_data" :propSourceList="form.data_source_content" @url_event="url_event"></model-panel>
+                        <model-panel :propkey="propkey" :propValue="item.com_data" :propScale="scale" :propSourceList="form.data_source_content" @url_event="url_event"></model-panel>
                     </template>
                 </view>
             </view>
@@ -58,7 +58,7 @@ export default {
         return {
             form: {},
             new_style: {},
-            scale: 0,
+            scale: 1,
             style_container: '',
             style_img_container: '',
             div_width: 0,

@@ -7,7 +7,7 @@
                 <template v-if="form.style_actived == 2">
                     <view class="flex-row align-c jc-c style-size">
                         <view v-for="(item, index) in form.img_magic_list" :key="index" class="three" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
-                            <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
+                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
                         </view>
                     </view>
                 </template>
@@ -15,18 +15,18 @@
                 <template v-else-if="form.style_actived == 8">
                     <view class="flex-row align-c jc-c style-size flex-wrap">
                         <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
-                            <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
+                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
                         </view>
                     </view>
                 </template>
                 <template v-else-if="form.style_actived == 10">
                     <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
-                        <image :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
+                        <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
                     </view>
                 </template>
                 <template v-else>
                     <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
-                        <image :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
+                        <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" mode="aspectFill" :style="content_img_radius"></image>
                     </view>
                 </template>
             </view>

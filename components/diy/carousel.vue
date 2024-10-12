@@ -140,7 +140,7 @@
                         form: this.propValue.content,
                         new_style: this.propValue.style,
                         seat_list: this.get_seat_list(new_form),
-                        new_list: this.get_seat_list(new_form).concat(new_form.carousel_list),
+                        new_list: new_form.carousel_type == 'inherit' ? new_form.carousel_list : new_form.carousel_list.concat(this.get_seat_list(new_form)),
                         popup_width: block * 16 * 2 + 'rpx',
                         popup_height: block * 9 * 2 + 'rpx',
                         style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
@@ -219,14 +219,16 @@
             },
             slideChange(e) {
                 let actived_index = e.target.current;
-                if (e.target.current > this.form.carousel_list.length - 1) {
-                    const seat_length = this.seat_list.length;
-                    if (seat_length == 2 && e.target.current == 3) {
-                        actived_index = 1;
-                    } else if (seat_length == 3) {
-                        actived_index = 0;
-                    } else {
-                        actived_index = e.target.current - this.seat_list.length;
+                if (this.form.carousel_type != 'inherit') {
+                    if (e.target.current > this.form.carousel_list.length - 1) {
+                        const seat_length = this.seat_list.length;
+                        if (seat_length == 2 && e.target.current == 3) {
+                            actived_index = 1;
+                        } else if (seat_length == 3) {
+                            actived_index = 0;
+                        } else {
+                            actived_index = e.target.current - this.seat_list.length;
+                        }
                     }
                 }
                 this.setData({
