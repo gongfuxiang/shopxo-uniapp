@@ -73,10 +73,12 @@
                                 <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
                             </view>
                         </uni-popup>
+                    </view>
+                    <view class="search-popup">
                         <!-- 搜索 -->
-                        <uni-popup ref="searchPopup" type="center" border-radius="20rpx" :mask-click="false">
+                        <uni-popup ref="searchPopup" type="center" border-radius="50rpx" :mask-click="false">
                             <view class="flex-col align-c jc-c gap-10 ht-auto" :style="{'width': search_width }">
-                                <view class="bg-white padding-default wh-auto flex-col gap-10">
+                                <view class="bg-white padding-xxxxl wh-auto flex-col gap-10" style="box-sizing: border-box;border-radius: 20rpx;">
                                     <componentSearch :propFocus="true" propClass="br" propSize="md" propPadding="18rpx 20rpx 0px" :propPlaceholder="search_form.tips" :propIsBtn="true" :propIsOnEvent="true" :propIsIconOnEvent="true" @onicon="onicon"  @onsearch="onsearch"></componentSearch>
                                     <view v-if="hot_word_list.length > 0">
                                         <view class="search-hot flex-row align-c gap-10 bg-white flex-wrap box-shadow-md">
@@ -596,10 +598,7 @@
 </script>
 
 <style lang="scss" scoped>
-.search-style {
-    border: 2rpx solid #eee;
-    background: #eee;
-    border-radius: 1000rpx;
-    height: 64rpx;
+.search-popup {
+    z-index: 100 !important;
 }
 </style>
