@@ -55,7 +55,7 @@
                             <view class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
                                 <view class="flex-col gap-10 wh-auto">
                                     <!-- 标题 -->
-                                    <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                    <view v-if="is_show('title')" :style="title_style" class="text-line-2 multi-text">{{ item.title }}</view>
                                     <!-- 进度条 -->
                                     <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
                                             <view class="re flex-1">
@@ -117,7 +117,7 @@
                                 <view class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
                                     <view class="flex-col gap-10 wh-auto">
                                         <!-- 标题 -->
-                                        <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                        <view v-if="is_show('title')" :style="title_style" class="text-line-2 multi-text">{{ item.title }}</view>
                                         <!-- 进度条 -->
                                         <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
                                         <view class="re flex-1">
@@ -267,8 +267,8 @@
                     const { status, time_first_text } = data.current.time;
                     this.setData({
                         seckill_time: {
-                            endTime: data.current.time_end,
-                            startTime: data.current.time_start,
+                            end_time: data.current.time_end,
+                            start_time: data.current.time_start,
                             status: status,
                             time_first_text: time_first_text,
                         },
@@ -304,14 +304,14 @@
                     title_style: this.trends_config(new_style, 'title'),
                     price_style: this.trends_config(new_style, 'price'),
                     button_style: this.trends_config(new_style, 'button', 'gradient'),
-                    list: this.get_shop_content_list(new_list, new_form),
+                    list: this.get_shop_content_list(new_list, new_form, new_style),
                     sckill_list: new_list,
-                });
+                });        
             },
-            get_shop_content_list(list, form) {
+            get_shop_content_list(list, form, new_style) {
                 // 深拷贝一下，确保不会出现问题
                 const cloneList = JSON.parse(JSON.stringify(list));
-                if (this.new_style.rolling_fashion != 'translation') {
+                if (new_style.rolling_fashion != 'translation') {
                     // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
                     if (cloneList.length > 0) {
                         // 每页显示的数量
@@ -370,11 +370,16 @@
                 }
             },
             updateCountdown() {
-                let endTime = this.seckill_time.endTime;
+                let end_time = this.seckill_time.end_time;
                 if (this.seckill_time.status === 0) {
-                    endTime = this.seckill_time.startTime;
+                    end_time = this.seckill_time.start_time;
                 }
-                const distance = new Date(endTime).getTime() - new Date().getTime();
+                // 先获取秒杀结束时间
+                let time = new Date(end_time).getTime();
+                if (isEmpty(time)) {
+                    time = new Date(end_time.replace(/-/g, '/')).getTime();
+                }
+                const distance = time - new Date().getTime();
                 // 如果倒计时结束，显示结束信息
                 if (distance <= 1000) {
                     clearInterval(this.intervalId);
@@ -382,8 +387,8 @@
                     if (this.seckill_time.status === 0) {
                         this.setData({
                             seckill_time: {
-                                endTime: this.seckill_time.current.time_end,
-                                startTime: this.seckill_time.current.time_start,
+                                end_time: this.seckill_time.current.time_end,
+                                start_time: this.seckill_time.current.time_start,
                                 status: 1,
                                 time_first_text: '距结束',
                             },

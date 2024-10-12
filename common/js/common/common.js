@@ -20,6 +20,7 @@ export function isEmpty (value) {
         value === null ||
         value === undefined ||
         value === '' ||
+        value === NaN ||
         (Array.isArray(value) && value.length === 0) ||
         (typeof value === 'object' && Object.keys(value).length === 0)
     )
