@@ -68,7 +68,6 @@ export default {
     computed: {
         get_percentage_count() {
             return (num, container_size) => {
-                // console.log(num);
                 return num * this.scale + 'px';
             };
         },
@@ -94,7 +93,6 @@ export default {
                 query
                     .select('.custom-container')
                     .boundingClientRect((res) => {
-                        console.log(res);
                         if ((res || null) != null) {
                             this.setData({
                                 div_width: res.width,
