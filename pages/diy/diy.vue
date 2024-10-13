@@ -65,6 +65,9 @@
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+
+            // 设置顶部导航的默认颜色
+            app.globalData.set_navigation_bar_color(parseInt(app.globalData.get_key_data(this.data, 'config.header.com_data.style.function_buttons_type', 0)) == 1);
         },
         
         // 下拉刷新
