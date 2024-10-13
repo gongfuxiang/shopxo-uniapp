@@ -375,9 +375,9 @@
                     end_time = this.seckill_time.start_time;
                 }
                 // 先获取秒杀结束时间
-                let time = new Date(end_time).getTime();
+                let time = new Date(end_time.replace(/-/g, '/')).getTime();
                 if (isEmpty(time)) {
-                    time = new Date(end_time.replace(/-/g, '/')).getTime();
+                    time = new Date(end_time).getTime();
                 }
                 const distance = time - new Date().getTime();
                 // 如果倒计时结束，显示结束信息

@@ -54,12 +54,7 @@
         methods: {
             // 返回
             back_event(e) {
-                var pages = getCurrentPages();
-                if(pages > 1) {
-                    uni.navigateBack();
-                } else {
-                    app.globalData.url_open(app.globalData.app_tabbar_pages()[0]);
-                }
+                app.globalData.page_back_prev_event();
             }
         }
     };

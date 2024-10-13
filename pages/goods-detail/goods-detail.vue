@@ -1078,12 +1078,7 @@
 
             // 返回事件
             top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    app.globalData.url_open(app.globalData.app_tabbar_pages()[0]);
-                } else {
-                    uni.navigateBack();
-                }
+                app.globalData.page_back_prev_event();
             },
 
             // 更多事件

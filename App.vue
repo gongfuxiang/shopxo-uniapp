@@ -2917,6 +2917,9 @@
 
             // 页面展示事件处理
             page_event_onshow_handle() {
+                //隐藏系统tabbar
+                this.system_hide_tabbar();
+
                 // 底部浮动按钮样式处理
                 this.bottom_fixed_style_handle();
 
