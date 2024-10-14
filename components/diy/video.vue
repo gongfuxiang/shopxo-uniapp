@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {

@@ -67,7 +67,7 @@
             }
 
             // 设置顶部导航的默认颜色
-            app.globalData.set_navigation_bar_color(parseInt(app.globalData.get_key_data(this.data, 'config.header.com_data.style.function_buttons_type', 0)) == 1);
+            this.set_navigation_bar_color();
         },
         
         // 下拉刷新
@@ -89,6 +89,9 @@
 
                         // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
                         params['is_cache'] = 0;
+
+                        // 设置顶部导航的默认颜色
+                        this.set_navigation_bar_color();
                     }
                 } else {
                     // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
@@ -134,6 +137,9 @@
                                 uni.setNavigationBarTitle({
                                     title: this.data.name
                                 });
+
+                                // 设置顶部导航的默认颜色
+                                this.set_navigation_bar_color();
                             }
             
                             // 分享菜单处理
@@ -163,6 +169,11 @@
                 });
             }
         },
+
+        // 状态栏设置
+        set_navigation_bar_color() {
+            app.globalData.set_navigation_bar_color(parseInt(app.globalData.get_key_data(this.data, 'config.header.com_data.style.function_buttons_type', 0)) == 1);
+        }
     };
 </script>
 <style></style>
