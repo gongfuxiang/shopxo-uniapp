@@ -218,6 +218,9 @@ button:before {
 .dis-inline-block {
     display: inline-block !important;
 }
+.dis-inline-grid {
+    display: inline-grid;
+}
 .va-t {
     vertical-align: top;
 }

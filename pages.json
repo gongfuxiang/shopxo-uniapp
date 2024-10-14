@@ -155,6 +155,18 @@
             ]
         },
         {
+            "root": "pages/goods-search-start",
+            "pages": [
+                {
+                    "path": "goods-search-start",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/goods-comment",
             "pages": [
                 {

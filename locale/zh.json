@@ -15,6 +15,8 @@
 		"add": "新增",
 		"del": "删除",
         "del_record": "删除记录",
+        "del_success": "删除成功",
+        "del_fail": "删除失败",
 		"edit": "编辑",
         "link": "链接",
         "gift": "礼物",
@@ -77,6 +79,7 @@
 		"login": "登录",
 		"paytips": "安全支付",
 		"goods-search": "商品搜索",
+        "goods-search-start": "商品搜索",
 		"goods-detail": "商品详情",
 		"goods-comment": "商品评价",
 		"user-address": "我的地址",
@@ -759,9 +762,7 @@
 	},
 	"user-list": {
 		"user-list": {
-			"yhvl2q": "确定要删除这条帖子吗？",
-			"kpn3fp": "删除成功",
-			"649j60": "删除失败"
+			"yhvl2q": "确定要删除这条帖子吗？"
 		}
 	},
 	"shop": {

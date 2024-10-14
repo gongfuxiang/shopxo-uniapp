@@ -8,11 +8,11 @@
                 // 基础配置
                 // 数据接口请求地址
                  request_url: 'http://shopxo.com/',
-                //  request_url:'https://new.shopxo.vip/',
+                // request_url:'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                  static_url: 'http://shopxo.com/',
-                //  static_url:'https://new.shopxo.vip/',
+                // static_url:'https://new.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -204,6 +204,9 @@
 
                 // apptabbar底部菜单角标数据
                 cache_tabbar_badge_key: 'cache_tabbar_badge_key',
+
+                // 搜索历史记录
+                cache_search_history_key: 'cache_search_history_key',
 
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
@@ -2877,14 +2880,14 @@
             },
 
             // 设置导航背景色和颜色
-            set_navigation_bar_color(is_white = false) {
+            set_navigation_bar_color(is_white = null) {
                 var color = '#000000';
                 var bg_color = '#ffffff';
                 var arr = [
                     'pages/index/index',
                 ];
                 var page = this.current_page(false);
-                if(is_white === true || (is_white === false && arr.indexOf(page) != -1)) {
+                if(is_white === true || (is_white === null && arr.indexOf(page) != -1)) {
                     color = '#ffffff';
                     bg_color = '#000000';
                 }

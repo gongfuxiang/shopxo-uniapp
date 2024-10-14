@@ -882,13 +882,13 @@
                                 data_list_loding_status: temp_list.length == 0 ? 0 : this.data_list_loding_status,
                                 random_value: Math.random(),
                             });
-                            app.globalData.showToast(type == 'delete' ? this.$t('user-list.user-list.kpn3fp') : this.$t('cart.cart.346c25'), 'success');
+                            app.globalData.showToast(type == 'delete' ? this.$t('common.del_success') : this.$t('cart.cart.346c25'), 'success');
 
                             // 选择处理
                             this.cart_selected_calculate();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(type == 'delete' ? this.$t('user-list.user-list.649j60') : this.$t('cart.cart.21051p'));
+                                app.globalData.showToast(type == 'delete' ? this.$t('common.del_fail') : this.$t('cart.cart.21051p'));
                             } else {
                                 app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }

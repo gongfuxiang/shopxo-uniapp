@@ -471,11 +471,11 @@
                                 this.setData({
                                     data_page: 1,
                                 });
-                                app.globalData.showToast(this.$t('user-list.user-list.kpn3fp'), 'success');
+                                app.globalData.showToast(this.$t('common.del_success'), 'success');
                                 this.get_data_list(1);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
-                                    app.globalData.showToast(this.$t('user-list.user-list.649j60'));
+                                    app.globalData.showToast(this.$t('common.del_fail'));
                                 } else {
                                     app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }

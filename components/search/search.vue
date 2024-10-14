@@ -168,7 +168,7 @@
             },
 
             // 搜索确认事件
-            search_submit_confirm_event(e) {
+            search_submit_confirm_event() {
                 // 是否验证必须要传值
                 if (this.propIsRequired && this.input_value === '') {
                     app.globalData.showToast(this.$t('search.search.ic9b89'));
@@ -182,6 +182,11 @@
                     // 进入搜索页面
                     app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + this.input_value);
                 }
+            },
+
+            // 搜索确认（外部调用直接跳转搜索）
+            search_submit_confirm(input_value = '') {
+                app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + input_value);
             },
 
             // icon事件
