@@ -8,15 +8,15 @@
                         <view class="margin-top-xxxl">
                             <view class="pr">
                                 <input type="text" :placeholder="$t('password.password.4e24j1')" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
-                                <view class="eyes pa" data-index="1" @tap="eyes_event"><iconfont :name="eyes1 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
+                                <view class="eyes pa" data-index="1" @tap="eyes_event"><iconfont :name="eyes1 ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
                                 <input type="text" :placeholder="$t('password.password.1lwiaz')" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item margin-bottom-main" />
-                                <view class="eyes pa" data-index="2" @tap="eyes_event"><iconfont :name="eyes2 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
+                                <view class="eyes pa" data-index="2" @tap="eyes_event"><iconfont :name="eyes2 ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
                                 <input type="text" :placeholder="$t('password.password.338433')" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item margin-bottom-main" />
-                                <view class="eyes pa" data-index="3" @tap="eyes_event"><iconfont :name="eyes3 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
+                                <view class="eyes pa" data-index="3" @tap="eyes_event"><iconfont :name="eyes3 ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                         </view>
                         <view class="margin-top-xxxxl tc">

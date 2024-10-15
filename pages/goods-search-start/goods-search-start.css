@@ -8,3 +8,6 @@
 .ranking-list .goods-list .goods-title {
     width: calc(100% - 120rpx);
 }
+.ranking-list .goods-list .single-text {
+    width: 54vw;
+}

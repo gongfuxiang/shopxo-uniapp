@@ -34,7 +34,7 @@
                                     <view v-if="item.is_error == 0" class="flex-row jc-sb align-c">
                                         <view class="flex-row align-c">
                                             <view class="margin-right-sm pr" :data-index="index" @tap="goods_cart_event">
-                                                <iconfont name="icon-zuhedap-shoping" size="42rpx" color="#E22C08"></iconfont>
+                                                <iconfont name="icon-cart-add" size="42rpx" color="#E22C08"></iconfont>
                                                 <view class="cart-badge-icon pa">
                                                     <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                 </view>

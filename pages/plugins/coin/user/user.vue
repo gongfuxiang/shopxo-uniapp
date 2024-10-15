@@ -10,7 +10,7 @@
                             <view class="text-size-40 fw-b">{{ is_price_show ? accounts_summary : '***' }}</view>
                         </view>
                         <view @tap="price_change">
-                            <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
+                            <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" size="44rpx"></iconfont>
                         </view>
                     </view>
                     <view class="flex-row jc-sb padding-bottom-main">

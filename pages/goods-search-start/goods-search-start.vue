@@ -3,7 +3,7 @@
         <view v-if="data_list_loding_status == 3" class="padding-main">
             <!-- 搜索 -->
             <view class="margin-bottom-xxxl">
-                <component-search ref="search" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                <component-search ref="search" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
             </view>
             <!-- 历史搜索关键字 -->
             <view v-if="history_keywords.length > 0" class="history-keywords margin-bottom-xxxl">
@@ -42,8 +42,21 @@
                             <view class="goods-list bg-white border-radius-main padding-main margin-top-xs">
                                 <block v-for="(item2, index2) in item.data" :key="index2">
                                     <view class="goods-item oh margin-bottom-main" :data-value="item2.goods_url" @tap="url_event">
-                                        <image class="goods-image radius fl" :src="item2.images" mode="aspectFill"></image>
-                                        <view class="goods-title text-size-sm multi-text fr">{{item2.title}}</view>
+                                        <view v-if="index2 > 3" class="single-text">
+                                            <view class="dis-inline-block pr margin-right-sm">
+                                                <iconfont :name="item.icon" size="26rpx" propClass="cr-main"></iconfont>
+                                                <text class="pa top-0 left-0 cr-white">{{index2}}</text>
+                                            </view>
+                                            <text class="text-size-sm">{{item2.title}}</text>
+                                        </view>
+                                        <view v-else class="pr">
+                                            <view class="pa top-sm left-sm z-i">
+                                                <iconfont :name="item.icon" size="26rpx" propClass="cr-main"></iconfont>
+                                                <text class="pa top-0 left-0 cr-white">{{index2}}</text>
+                                            </view>
+                                            <image class="goods-image radius fl" :src="item2.images" mode="aspectFill"></image>
+                                            <view class="goods-title text-size-sm multi-text fr">{{item2.title}}</view>
+                                        </view>
                                     </view>
                                 </block>
                             </view>
@@ -75,6 +88,7 @@
                 history_keywords: [],
                 recommend_keywords: [],
                 ranking_list: [],
+                search_placeholder_keywords_value: '',
                 search_keywords_value: '',
             };
         },
@@ -93,7 +107,7 @@
             params = app.globalData.launch_params_handle(params);
             this.setData({
                 params: params,
-                search_keywords_value: params.keywords || '',
+                search_placeholder_keywords_value: params.keywords || '',
             });
         },
 

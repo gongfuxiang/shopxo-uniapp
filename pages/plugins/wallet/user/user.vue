@@ -27,7 +27,7 @@
                                                 </view>
                                                 <view class="flex-row">
                                                     <view @tap="price_change">
-                                                        <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
+                                                        <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" size="44rpx"></iconfont>
                                                     </view>
                                                     <view class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
                                                         <iconfont name="icon-qrcode" size="44rpx"></iconfont>

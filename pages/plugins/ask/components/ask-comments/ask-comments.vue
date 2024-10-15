@@ -6,15 +6,15 @@
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tr ask-comments-bottom-container cr-base">
                     <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block cr-base" :data-value="'/pages/plugins/ask/comments/comments?id=' + data.id" @tap="url_event">
-                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
+                        <iconfont name="icon-message-square" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">{{$t('ask-comments.ask-comments.2zlnb5')}}{{ data.comments_count }})</text>
                     </view>
                     <view v-if="(data_base.is_ask_give_thumbs || 0) == 1" :class="'item dis-inline-block cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'base')" :data-askid="data.id" @tap="give_thumbs_event">
-                        <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
+                        <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
                         <text class="va-m text-size-xs">{{$t('ask-comments.ask-comments.du7rcv')}}{{ data.give_thumbs_count }})</text>
                     </view>
                     <view class="item dis-inline-block cr-base" @tap="popup_share_event">
-                        <iconfont name="icon-bowenxiangqing-fenxiang" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
+                        <iconfont name="icon-share" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">{{$t('common.share')}}</text>
                     </view>
                 </view>
@@ -50,11 +50,11 @@
                             <view class="margin-top-sm comments-content">{{ item.content }}</view>
                             <view class="ask-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
                                 <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-askcommentsid="item.id" @tap="modal_open_event">
-                                    <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
+                                    <iconfont name="icon-message-square" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
                                     <text class="va-m">{{$t('ask-comments.ask-comments.3fcnme')}}{{ item.comments_count }})</text>
                                 </view>
                                 <view v-if="(data_base.is_ask_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="1" :data-index="index" :data-askid="item.ask_id" :data-askcommentsid="item.id" @tap="give_thumbs_event">
-                                    <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
+                                    <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
                                     <text class="va-m">{{$t('ask-comments.ask-comments.du7rcv')}}{{ item.give_thumbs_count }})</text>
                                 </view>
                             </view>
@@ -72,11 +72,11 @@
                                                 <view class="margin-top-sm">{{ comments.content }}</view>
                                                 <view class="ask-comments-right-content-operate flex-row jc-e align-c text-size-xs cr-grey-9 padding-0">
                                                     <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="comments.user.user_name_view" :data-askcommentsid="comments.ask_comments_id" :data-replycommentsid="comments.id" @tap="modal_open_event">
-                                                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
+                                                        <iconfont name="icon-message-square" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
                                                         <text class="va-m">{{$t('ask-comments.ask-comments.3fcnme')}}{{ comments.comments_count }})</text>
                                                     </view>
                                                     <view v-if="(data_base.is_ask_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="2" :data-index="index" :data-indexs="index2" :data-askid="comments.ask_id" :data-askcommentsid="comments.id" :data-replycommentsid="comments.ask_comments_id" @tap="give_thumbs_event">
-                                                        <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
+                                                        <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
                                                         <text class="va-m">{{$t('ask-comments.ask-comments.du7rcv')}}{{ comments.give_thumbs_count }})</text>
                                                     </view>
                                                 </view>
