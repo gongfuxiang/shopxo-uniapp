@@ -15,6 +15,8 @@
 		"add": "Add",
 		"del": "Delete",
         "del_record": "Delete record",
+        "del_success": "Delete successful",
+        "del_fail": "Delete failed",
 		"edit": "Edit",
         "link": "Link",
         "gift": "Gift",
@@ -77,6 +79,7 @@
 		"login": "Login",
 		"paytips": "Secure payment",
 		"goods-search": "Product search",
+        "goods-search-start": "Product search",
 		"goods-detail": "Product details",
 		"goods-comment": "Product evaluation",
 		"user-address": "My address",
@@ -550,6 +553,7 @@
 			"j8o278": "Filter out",
 			"t9nikq": "Piece of data",
 			"pxk051": "clear",
+            "4eerty": "origin",
 			"6n8316": "brand",
 			"v6e5b7": "attribute"
 		}
@@ -764,9 +768,7 @@
 	},
 	"user-list": {
 		"user-list": {
-			"yhvl2q": "Are you sure you want to delete this post?",
-			"kpn3fp": "Delete successful",
-			"649j60": "Delete failed"
+			"yhvl2q": "Are you sure you want to delete this post?"
 		}
 	},
 	"shop": {

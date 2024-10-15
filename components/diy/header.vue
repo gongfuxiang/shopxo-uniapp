@@ -10,9 +10,12 @@
                         <view class="model-top flex-1 mt-1">
                             <view class="roll pr z-i">
                                 <view class="model-head pr flex-row align-c" :style="header_style">
-                                    <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr">
+                                    <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr padding-left-main">
+                                        <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
+                                            <iconfont name="icon-arrow-left" size="40rpx"></iconfont>
+                                        </view>
                                         <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
-                                            <view class="flex-row align-c jc-c ht-auto gap-16 padding-left-main" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
+                                            <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                 <template v-if="['2', '3'].includes(form.content.theme)">
                                                     <view v-if="form.content.logo.length > 0" class="logo-outer-style">
                                                         <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" />
@@ -26,8 +29,8 @@
                                                 </template>
                                             </view>
                                         </view>
-                                        <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10 padding-left-main">
-                                            <view class="flex-row align-c gap-2" @tap="go_map_event">
+                                        <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c h gap-10">
+                                            <view class="flex-row align-c gap-2">
                                                 <component-choice-location :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onback="user_back_choice_location"></component-choice-location>
                                             </view>
                                             <template v-if="['5'].includes(form.content.theme)">
@@ -132,6 +135,8 @@
                 is_immersion_model: false,
                 up_slide_style: '',
                 up_slide_img_style: '',
+                // 当前页面是否在底部菜单中
+                is_tabbar_pages: app.globalData.is_tabbar_pages(),
             };
         },
         watch: {
@@ -177,11 +182,11 @@
                     new_roll_style += `background: transparent;`;
                 }
                 // 小程序下，获取小程序胶囊的宽度
-                let menuButtonInfo = 'max-width:100%';
+                let menu_button_info = 'max-width:100%';
                 let new_text_style = `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`;
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 const custom = uni.getMenuButtonBoundingClientRect();
-                menuButtonInfo = `max-width:calc(100% - ${custom.width + 10}px);`;
+                menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
                 new_text_style += `right:-${custom.width + 10}px;`;
                 // #endif
                 this.setData({
@@ -192,7 +197,7 @@
                     roll_img_style: new_roll_img_style,
                     text_style: new_text_style,
                     position_class: new_content.indicator_location == 'center' ? `indicator-center` : '',
-                    header_style: menuButtonInfo,
+                    header_style: menu_button_info,
                     header_background_type: header_background_type,
                     is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
                 });
@@ -212,17 +217,21 @@
                     })
                     .exec();
             },
-            go_map_event() {
-                console.log('地图方法');
-            },
+            // 搜索回调
             search_tap(form, list, color) {
                 this.$emit('search_tap', form, list, color);
             },
+            // 位置回调
             user_back_choice_location(e) {
-                console.log('选择位置', e);
+                console.log('选择位置回调', e);
             },
+            // 打开地址
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+            // 返回事件
+            top_nav_left_back_event() {
+                app.globalData.page_back_prev_event();
             },
         },
     };
@@ -242,7 +251,6 @@
                 width: 100%;
                 height: 100%;
                 margin: 0 auto;
-                cursor: pointer;
             }
             .img {
                 width: 680rpx;

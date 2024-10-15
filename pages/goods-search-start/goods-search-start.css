@@ -1,0 +1,10 @@
+.ranking-list .ranking-item {
+    width: 65%;
+}
+.ranking-list .goods-list .goods-image {
+    width: 100rpx;
+    height: 100rpx;
+}
+.ranking-list .goods-list .goods-title {
+    width: calc(100% - 120rpx);
+}

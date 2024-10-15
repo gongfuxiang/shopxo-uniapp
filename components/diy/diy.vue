@@ -62,7 +62,6 @@
                         </scroll-view>
                     </template>
 
-                    
                     <view class="z-i-deep">
                         <!-- 商品购买 -->
                         <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
@@ -312,9 +311,6 @@
                     temp_sticky_top: this.sticky_top,
                     temp_header_top: this.header_top,
                 });
-
-                // 设置顶部导航的默认颜色
-                app.globalData.set_navigation_bar_color(parseInt(this.propValue.header.com_data.style.function_buttons_type || 0) == 1);
 
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);

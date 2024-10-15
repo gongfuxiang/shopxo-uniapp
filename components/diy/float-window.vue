@@ -80,8 +80,6 @@
                     x: x,
                     y: y
                 });
-                
-                console.log(windowWidth, x, this.x)
             },
             url_open() {
                 const { button_jump, button_link } = this.form;

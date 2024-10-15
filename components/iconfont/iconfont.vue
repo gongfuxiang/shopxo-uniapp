@@ -1,5 +1,5 @@
 <template>
-    <view class="iconfont-container" :class="propClass">
+    <view class="iconfont-container" :class="propClass" :style="'display:'+propContainerDisplay+';'">
         <text class="iconfont" :class="name" :style="[{ color: color }, { 'font-size': size }]" @tap="$emit('click', $event)"></text>
     </view>
 </template>
@@ -23,6 +23,10 @@
                 type: String,
                 default: '',
             },
+            propContainerDisplay: {
+                type: String,
+                default: 'inline-block',
+            }
         },
     };
 </script>
@@ -32,10 +36,6 @@
     /* @/static/icon/ */
     @import url('@/static/icon/iconfont.css');
     /* @import url('https://at.alicdn.com/t/c/font_4227145_kbr2f9jt68b.css'); */
-
-    .iconfont-container {
-        display: inline-block;
-    }
     .iconfont {
         display: flex;
         font-size: inherit;

@@ -1,10 +1,11 @@
 <template>
     <view :class="theme_view">
         <view class="pa-w" :class="(propFixed ? 'pf z-i left-0 top-0 right-0' : '') + ' ' + propClass" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0) + 'px;background-color:rgba(255,255,255,' + opacity + ');' + propStyle">
-            <!-- 返回 -->
             <view v-if="(propName || null) != null || propIsRightSlot || is_show_back" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? '' : 'padding-vertical-main')">
                 <view v-if="(propName || null) != null" :class="'text-size-md tc pa left-0 right-0 padding-top-xs ' + propNameClass" :style="propNameOpacity ? (opacity ? 'color:rgba(51,51,51,' + opacity + ')' : '') : ''">{{ propName }}</view>
-                <iconfont v-if="is_show_back" name="icon-arrow-left" size="40rpx" @tap="top_nav_left_back_event" propClass="pr top-xs z-i" :color="(client_value == 'alipay' || client_value == 'baidu') ? 'transparent' : propColor"></iconfont>
+                <view v-if="is_show_back" @tap="top_nav_left_back_event" class="dis-inline-block">
+                    <iconfont name="icon-arrow-left" size="40rpx" propClass="pr top-xs z-i" :color="(client_value == 'alipay' || client_value == 'baidu') ? 'transparent' : propColor"></iconfont>
+                </view>
                 <slot v-if="propIsRightSlot" name="right"></slot>
             </view>
             <slot name="content"></slot>
@@ -20,7 +21,7 @@
             // 是否显示返回按钮
             propIsShowBack: {
                 type: Boolean,
-                default: false,
+                default: true,
             },
             // 最外层class
             propClass: {
@@ -92,12 +93,7 @@
         },
         methods: {
             top_nav_left_back_event() {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    app.globalData.url_open(app.globalData.app_tabbar_pages()[0]);
-                } else {
-                    uni.navigateBack();
-                }
+                app.globalData.page_back_prev_event();
             },
         },
     };
