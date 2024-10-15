@@ -12,7 +12,7 @@
                                 <view class="model-head pr flex-row align-c" :style="header_style">
                                     <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr padding-left-main">
                                         <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
-                                            <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex"></iconfont>
+                                            <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
                                         </view>
                                         <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                             <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">

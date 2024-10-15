@@ -363,8 +363,8 @@
         .item {
             flex-basis: auto;
             flex-shrink: 0;
-            width: 180rpx;
-            height: 180rpx;
+            width: 168rpx;
+            height: 168rpx;
             border-radius: 20rpx;
             margin-top: 20rpx;
 
@@ -411,7 +411,7 @@
                 font-size: 18rpx;
                 border-radius: 46rpx;
                 position: relative;
-                top: -4rpx;
+                top: -10rpx;
             }
         }
     }
@@ -803,14 +803,13 @@
 
     .coupon-theme-6 {
         display: flex;
-
         .item {
             flex-basis: auto;
             flex-shrink: 0;
             border-radius: 24rpx;
             padding: 12rpx;
-            width: 280rpx;
-            height: 200rpx;
+            width: 268rpx;
+            height: 188rpx;
             position: relative;
             box-sizing: border-box;
 
@@ -876,12 +875,12 @@
             }
 
             .bottom {
-                margin-top: 12rpx;
+                margin-top: 8rpx;
                 text-align: center;
 
                 .coupon-btn {
                     position: relative;
-                    font-size: 32rpx;
+                    font-size: 28rpx;
                     line-height: 44rpx;
                     font-weight: 500;
                     text-align: center;

@@ -1357,3 +1357,9 @@ button[disabled].bg-grey {
     padding-top: calc(var(--status-bar-height) + 10rpx);
     /* #endif */
 }
+
+/* 富文本 */
+.diy-rich-text * {
+    max-width: 100%;
+    width: 100%;
+}
