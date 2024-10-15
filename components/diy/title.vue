@@ -8,7 +8,7 @@
                             <image :src="form.img_src[0].url" class="title-img" mode="heightFix"></image>
                         </template>
                         <template v-else-if="!isEmpty(form.icon_class)">
-                            <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color"></iconfont>
+                            <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
                         </template>
                         <view class="pr-15 nowrap" :style="title_style">{{ form.title || '标题' }}</view>
                     </view>
@@ -20,7 +20,7 @@
                         </template>
                         <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="form.right_link.page" @tap="url_event"
                             >{{ form.right_title }}
-                            <iconfont name="icon-arrow-right" :color="new_style.right_color" :size="new_style.right_size * 2 + 'rpx'"> </iconfont>
+                            <iconfont name="icon-arrow-right" :color="new_style.right_color" :size="new_style.right_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                         </view>
                     </view>
                 </view>

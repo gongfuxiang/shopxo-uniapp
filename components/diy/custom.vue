@@ -2,8 +2,7 @@
     <view :style="style_container + 'height:' + form.height * scale + 'px;'">
         <view class="custom-container wh-auto ht-auto" :style="style_img_container">
             <view class="wh-auto ht-auto pr">
-                <view v-for="item in form.custom_list" :key="item.id" class="main-content"
-                    :style="{ left: get_percentage_count(item.location.x, div_width), top: get_percentage_count(item.location.y, div_height), width: get_percentage_count(item.com_data.com_width, div_width), height: get_percentage_count(item.com_data.com_height, div_height) }">
+                <view v-for="(item, index) in form.custom_list" :key="item.id" class="main-content" :style="{ 'left': get_percentage_count(item.location.x, div_width), 'top': get_percentage_count(item.location.y, div_height), 'width': get_percentage_count(item.com_data.com_width, div_width), 'height': get_percentage_count(item.com_data.com_height, div_height), 'z-index': custom_list_length > 0 ? custom_list_length - index : 0 }">
                     <template v-if="item.key == 'text'">
                         <model-text :propkey="propkey" :propValue="item.com_data" :propScale="scale" :propSourceList="form.data_source_content" @url_event="url_event"></model-text>
                     </template>
@@ -63,6 +62,7 @@ export default {
             style_img_container: '',
             div_width: 0,
             div_height: 0,
+            custom_list_length: 0,
         };
     },
     computed: {
@@ -84,10 +84,8 @@ export default {
     methods: {
         percentage_count,
         init() {
-            this.setData({
-                form: this.propValue.content,
-                new_style: this.propValue.style,
-            });
+            const new_form = this.propValue.content;
+            const new_style = this.propValue.style;
             this.$nextTick(() => {
                 const query = uni.createSelectorQuery().in(this);
                 query
@@ -103,9 +101,12 @@ export default {
                     .exec();
             });
             this.setData({
-                style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
-                style_img_container: common_img_computer(this.new_style.common_style),
-                div_height: this.form.height,
+                form: new_form,
+                new_style: new_style,
+                custom_list_length: new_form.custom_list.length - 1,
+                style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
+                style_img_container: common_img_computer(new_style.common_style),
+                div_height: new_form.height,
             });
         },
         url_event(e) {

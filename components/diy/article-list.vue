@@ -18,7 +18,7 @@
                             <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
                                 <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                 <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                    <iconfont name="icon-eye"></iconfont>
+                                    <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
                                     <view>
                                         {{ item.data.access_count ? item.data.access_count : '' }}
                                     </view>
@@ -42,7 +42,7 @@
                                     <view class="flex-row jc-sb gap-8 align-e margin-top">
                                         <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                         <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                            <iconfont name="icon-eye"></iconfont>
+                                            <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
                                             <view>
                                                 {{ item.data.access_count ? item.data.access_count : '' }}
                                             </view>

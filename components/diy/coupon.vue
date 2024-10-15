@@ -55,7 +55,7 @@
                                 <div class="right-before" :style="'background: ' + theme_style.background"></div>
                                 <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">
                                     <text class="text">{{ item.status_operable_name }}</text>
-                                    <iconfont name="icon-arrow-right-round" class="icon"></iconfont>
+                                    <iconfont name="icon-arrow-right-round" class="icon" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </view>
                         </view>

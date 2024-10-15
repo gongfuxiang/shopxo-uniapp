@@ -50,7 +50,7 @@
                 if (form.line_settings === 'horizontal') {
                     return `margin: 10rpx 0;border-bottom: ${form.line_size * this.scale }px ${form.line_style} ${form.line_color};`;
                 } else {
-                    return `margin: 0 10rpx;border-right: ${form.line_size * this.scale }px ${form.line_style} ${form.line_color};`;
+                    return `margin: 0 10rpx;height:100%;border-right: ${form.line_size * this.scale }px ${form.line_style} ${form.line_color};`;
                 }
             }
         },

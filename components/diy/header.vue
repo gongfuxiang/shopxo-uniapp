@@ -12,7 +12,7 @@
                                 <view class="model-head pr flex-row align-c" :style="header_style">
                                     <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr padding-left-main">
                                         <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
-                                            <iconfont name="icon-arrow-left" size="40rpx"></iconfont>
+                                            <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex"></iconfont>
                                         </view>
                                         <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                             <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
@@ -42,7 +42,7 @@
                                         <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c padding-right-main z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                             <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                                 <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
-                                                <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color"></iconfont>
+                                                <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color" propContainerDisplay="flex"></iconfont>
                                             </view>
                                         </view>
                                     </view>
