@@ -8,7 +8,7 @@
                 type="text"
                 confirm-type="search"
                 :class="'input round wh-auto dis-block '+propClass"
-                :placeholder="(propPlaceholder || this.$t('search.search.660us5'))"
+                :placeholder="(propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5'))"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
                 :focus="propFocus"
@@ -41,11 +41,15 @@
                 type: String,
                 default: 'keywords',
             },
+            propDefaultValue: {
+                type: String,
+                default: '',
+            },
             propPlaceholder: {
                 type: String,
                 default: '',
             },
-            propDefaultValue: {
+            propPlaceholderValue: {
                 type: String,
                 default: '',
             },
@@ -170,23 +174,24 @@
             // 搜索确认事件
             search_submit_confirm_event() {
                 // 是否验证必须要传值
-                if (this.propIsRequired && this.input_value === '') {
+                var value = this.input_value || this.propPlaceholderValue;
+                if (this.propIsRequired && value === '') {
                     app.globalData.showToast(this.$t('search.search.ic9b89'));
                     return false;
                 }
 
                 // 是否回调事件
                 if (this.propIsOnEvent) {
-                    this.$emit('onsearch', this.input_value);
+                    this.$emit('onsearch', value);
                 } else {
                     // 进入搜索页面
-                    app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + this.input_value);
+                    app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + value);
                 }
             },
 
             // 搜索确认（外部调用直接跳转搜索）
-            search_submit_confirm(input_value = '') {
-                app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + input_value);
+            search_submit_confirm(value = '') {
+                app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + value);
             },
 
             // icon事件
