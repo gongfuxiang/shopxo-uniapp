@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="data_list_loding_status == 3" class="padding-main">
+        <view class="padding-main">
             <!-- 搜索 -->
             <view class="margin-bottom-xxxl">
                 <component-search ref="search" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
@@ -65,10 +65,6 @@
                 </scroll-view>
             </view>
         </view>
-        <block v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </block>
 
         <!-- 公共 -->
         <component-common ref="common" @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
@@ -83,8 +79,6 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                data_list_loding_status: 1,
-                data_list_loding_msg: '',
                 history_keywords: [],
                 recommend_keywords: [],
                 ranking_list: [],
@@ -115,9 +109,6 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 初始化配置
-            this.init_config();
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -138,26 +129,8 @@
         },
 
         methods: {
-            // 初始化配置
-            init_config(status) {
-                if ((status || false) == true) {
-                    this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol'),
-                    });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
-                }
-            },
-
             // 获取数据
             get_data(params = {}) {
-                // 网络检查
-                if((params || null) == null || (params.loading || 0) == 0) {
-                    app.globalData.network_type_handle(this, 'get_data');
-                    return false;
-                }
-
-                // 请求数据
                 uni.request({
                     url: app.globalData.get_request_url("start", "search"),
                     method: 'POST',
@@ -170,22 +143,11 @@
                             this.setData({
                                 recommend_keywords: data.search_keywords || [],
                                 ranking_list: data.ranking_list || [],
-                                data_list_loding_status: 3,
-                                data_list_loding_msg: '',
-                            });
-                        } else {
-                            this.setData({
-                                data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg,
                             });
                         }
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
-                        });
                     },
                 });
             },
