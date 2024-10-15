@@ -1,5 +1,5 @@
 <template>
-    <view class="wh-auto ht-auto re oh" :style="com_style">
+    <view class="wh-auto ht-auto re oh" :style="com_style" :data-value="form.link && form.link.page" @tap="url_event">
         <div class="wh-auto ht-auto" :style="com_img_style"></div>
     </view>
 </template>
@@ -72,7 +72,10 @@
                     background_img_style: form?.background_img_style || '2'
                 }
                 return background_computer(data);
-            }
+            },
+            url_event(e) {
+                this.$emit('url_event', e);
+            },
         },
     };  
 </script>

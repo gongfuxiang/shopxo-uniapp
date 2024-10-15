@@ -4,7 +4,7 @@
             <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
-                    <componentDiyHeader :propkey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back" @search_tap="search_tap"></componentDiyHeader>
+                    <componentDiyHeader :propkey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @immersion-model-call-back="immersion_model_call_back"></componentDiyHeader>
                 </view>
                 <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                     <view v-for="item in tabs_data" :key="item.key">
@@ -16,7 +16,7 @@
                             <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
                                 <!-- 基础组件 -->
                                 <template v-if="item.is_enable == '1'">
-                                    <componentDiySearch v-if="item.key == 'search'" :propkey="item.id" :propValue="item.com_data" @search_tap="search_tap"></componentDiySearch>
+                                    <componentDiySearch v-if="item.key == 'search'" :propkey="item.id" :propValue="item.com_data"></componentDiySearch>
                                     <componentDiyCarousel v-else-if="item.key == 'carousel'" :propkey="item.id" :propValue="item.com_data" @video_play="video_play"></componentDiyCarousel>
                                     <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propkey="item.id" :propValue="item.com_data"></componentDiyNavGroup>
                                     <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propkey="item.id" :propValue="item.com_data"></componentDiyUserInfo>
@@ -70,22 +70,6 @@
                             <view class="flex-col align-c jc-c gap-10">
                                 <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
                                 <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" propContainerDisplay="flex" @tap="video_close"></iconfont>
-                            </view>
-                        </uni-popup>
-                    </view>
-                    <view class="search-popup">
-                        <!-- 搜索 -->
-                        <uni-popup ref="searchPopup" type="center" border-radius="50rpx" :mask-click="false">
-                            <view class="flex-col align-c jc-c gap-10 ht-auto" :style="{'width': search_width }">
-                                <view class="bg-white padding-xxxxl wh-auto flex-col gap-10" style="box-sizing: border-box;border-radius: 20rpx;">
-                                    <componentSearch :propFocus="is_focus" propClass="br" propSize="md" propPadding="18rpx 20rpx 0px" :propPlaceholder="search_form.tips" :propIsBtn="true" :propIsOnEvent="true" :propIsIconOnEvent="true" @onicon="onicon"  @onsearch="onsearch"></componentSearch>
-                                    <view v-if="hot_word_list.length > 0">
-                                        <view class="search-hot flex-row align-c gap-10 bg-white flex-wrap box-shadow-md">
-                                            <view v-for="(item, index) in hot_word_list" :key="index" class="text-size-md" :style="{ color: !isEmpty(search_hot_words_color) ? search_hot_words_color : item.color }" :data-value="item.value" @tap.stop="serch_url_event">{{ item.value }}</view>
-                                        </view>
-                                    </view>
-                                </view>
-                                <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" propContainerDisplay="flex" @tap="search_close"></iconfont>
                             </view>
                         </uni-popup>
                     </view>
@@ -260,11 +244,6 @@
                 video_src: '',
                 popup_width: '0rpx',
                 popup_height: '0rpx',
-                search_form: {},
-                hot_word_list: [],
-                search_hot_words_color: '',
-                search_width: sys_width * 0.9 + 'px',
-                is_focus: false,
             };
         },
         watch: {
@@ -548,32 +527,6 @@
                     is_focus: true
                 });
                 this.$refs.searchPopup.open();
-            },
-            search_close() {
-                this.setData({
-                    is_focus: false
-                });
-                this.$refs.searchPopup.close();
-            },
-            onsearch(val) {
-                this.serch_url_open(val);
-            },
-            onicon() {
-                if (!isEmpty(this.search_form.icon_link)) {
-                    this.search_close();
-                    app.globalData.url_open(this.search_form.icon_link.page);
-                }
-            },
-            serch_url_event(e) {
-                this.serch_url_open(e.currentTarget.dataset.value);
-            },
-            serch_url_open(url) {
-                if (!isEmpty(e.currentTarget.dataset.value)) {
-                    this.search_close();
-                    app.globalData.url_open('/pages/goods-search/goods-search?keywords=' + e.currentTarget.dataset.value);
-                } else {
-                    app.globalData.showToast('请输入搜索关键字', 'error');
-                }
             },
             video_play(url, width, height) {
                 this.setData({
