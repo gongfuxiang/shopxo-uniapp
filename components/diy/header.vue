@@ -241,7 +241,7 @@
     .header-container {
         width: 100%;
         .header-around {
-            z-index: 3;
+            z-index: 4;
         }
         .header-content {
             height: 66rpx;
