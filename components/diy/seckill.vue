@@ -32,7 +32,7 @@
                         </view>
                         <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
                             <text :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</text>
-                            <iconfont name="icon-arrow-right" :color="new_style.head_button_color"></iconfont>
+                            <iconfont name="icon-arrow-right" :color="new_style.head_button_color" propContainerDisplay="flex"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -89,7 +89,7 @@
                                             <view class="plr-11 padding-vertical-xs round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
                                         <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
-                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                                         </view>
                                     </view>
                                 </view>
@@ -151,7 +151,7 @@
                                                 <view class="plr-11 padding-vertical-xs round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                             </template>
                                             <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
-                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                                             </view>
                                         </view>
                                     </view>

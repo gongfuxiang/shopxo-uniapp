@@ -12,7 +12,7 @@
                             </template>
                             <template v-else>
                                 <view>
-                                    <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color"></iconfont>
+                                    <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </template>
                         </template>
@@ -28,7 +28,7 @@
                     </template>
                     <template v-else>
                         <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
-                            <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx"></iconfont>
+                            <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx" propContainerDisplay="flex"></iconfont>
                         </view>
                     </template>
                 </view>

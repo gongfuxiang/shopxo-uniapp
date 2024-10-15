@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="form.icon_link.page" @tap="url_event">
-        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'"></iconfont>
+        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'" propContainerDisplay="flex"></iconfont>
     </view>
 </template>
 <script>

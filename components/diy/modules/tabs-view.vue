@@ -10,14 +10,14 @@
                                 <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
                                 <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
                                 <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
-                                <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
+                                <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''" propContainerDisplay="flex"></iconfont>
                                 <view class="bottom_line" :style="tabs_check"></view>
                             </view>
                         </view>
                     </view>
                 </scroll-view>
             </view>
-            <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" @click="category_check_event"></iconfont>
+            <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
         </view>
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="tabs_top" @onclose="quick_close_event">
             <view class="padding-vertical-lg">
@@ -35,7 +35,7 @@
                 </view>
                 <view class="tc padding-top-lg flex-row jc-c align-c" @tap="quick_close_event">
                     <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
-                    <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
+                    <iconfont name="icon-arrow-top" color="#ccc" propContainerDisplay="flex"></iconfont>
                 </view>
             </view>
         </componentPopup>
