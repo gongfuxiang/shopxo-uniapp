@@ -1361,5 +1361,5 @@ button[disabled].bg-grey {
 /* 富文本 */
 .diy-rich-text * {
     max-width: 100%;
-    width: 100%;
+    /* width: 100%; */
 }
