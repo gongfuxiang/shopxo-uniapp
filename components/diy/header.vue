@@ -24,7 +24,7 @@
                                                 <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
                                                 <template v-if="['3', '5'].includes(form.content.theme)">
                                                     <view class="flex-1">
-                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true" @search_tap="search_tap"></componentDiySearch>
+                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                     </view>
                                                 </template>
                                             </view>
@@ -35,7 +35,7 @@
                                             </view>
                                             <template v-if="['5'].includes(form.content.theme)">
                                                 <view class="flex-1">
-                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true" @search_tap="search_tap"></componentDiySearch>
+                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                 </view>
                                             </template>
                                         </view>
@@ -216,10 +216,6 @@
                         }
                     })
                     .exec();
-            },
-            // 搜索回调
-            search_tap(form, list, color) {
-                this.$emit('search_tap', form, list, color);
             },
             // 位置回调
             user_back_choice_location(e) {
