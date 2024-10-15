@@ -119,7 +119,7 @@
             },
             propPadding: {
                 type: String,
-                default: '14rpx 20rpx 0 20rpx;',
+                default: '16rpx 20rpx 0 20rpx;',
             },
         },
         // 属性值改变监听

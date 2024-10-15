@@ -1,5 +1,5 @@
 .ranking-list .ranking-item {
-    width: 65%;
+    width: 65vw;
 }
 .ranking-list .goods-list .goods-image {
     width: 100rpx;
@@ -9,5 +9,8 @@
     width: calc(100% - 120rpx);
 }
 .ranking-list .goods-list .single-text {
-    width: 54vw;
+    width: 59vw;
+}
+.ranking-list .goods-list .icon {
+    width: 38rpx;
 }
