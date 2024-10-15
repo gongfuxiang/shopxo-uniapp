@@ -75,12 +75,12 @@
                 }
             },
             get_image_style(form) {
-                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, this.scale)};`;
+                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, this.scale, true)};`;
             },
             get_border_style(form) {
                 let style = ``;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.scale * 2}rpx ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius, this.scale)};box-sizing: border-box;`;
+                    style += `border: ${form.border_size * this.scale }px ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius, this.scale, true)};box-sizing: border-box;`;
                 }
                 return style;
             },

@@ -1,5 +1,5 @@
 <template>
-    <view :style="style_container + 'height:' + form.height * 2 + 'rpx;'">
+    <view :style="style_container + 'height:' + form.height * scale + 'px;'">
         <view class="custom-container wh-auto ht-auto" :style="style_img_container">
             <view class="wh-auto ht-auto pr">
                 <view v-for="item in form.custom_list" :key="item.id" class="main-content"
