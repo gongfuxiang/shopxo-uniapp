@@ -60,7 +60,7 @@
                                                 <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                             </block>
                                             <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
-                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                                             </view>
                                             <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -90,7 +90,7 @@
                                             <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
                                         <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
-                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                                         </view>
                                         <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
                                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -142,7 +142,7 @@
                                                 <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                             </block>
                                             <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
-                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'"></iconfont>
+                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                                             </view>
                                             <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>

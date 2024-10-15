@@ -7,7 +7,7 @@
                     <view class="flex-row align-c gap-8" :style="container_background_img_style">
                         <template v-if="form_content.title_type == 'img-icon'">
                             <view v-if="form_content.icon_class">
-                                <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
+                                <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color" propContainerDisplay="flex"></iconfont>
                             </view>
                             <view v-else>
                                 <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
@@ -22,7 +22,7 @@
                             </swiper-item>
                         </swiper>
                         <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
-                            <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
+                            <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'" propContainerDisplay="flex"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -33,7 +33,7 @@
                         <view class="flex-row wh-auto jc-sb align-c">
                             <template v-if="form_content.title_type == 'img-icon'">
                                 <template v-if="form_content.icon_class">
-                                    <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color"></iconfont>
+                                    <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color" propContainerDisplay="flex"></iconfont>
                                 </template>
                                 <template v-else>
                                     <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
@@ -45,7 +45,7 @@
                             <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
                                 更多
                                 <view class="pr top-xs">
-                                    <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
+                                    <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </view>
                         </view>

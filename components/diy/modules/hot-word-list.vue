@@ -5,7 +5,7 @@
         </view>
         <view class="flex-col align-c">
             <view class="icon-top" />
-            <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="search_hot_close"></iconfont>
+            <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" propContainerDisplay="flex" @tap="search_hot_close"></iconfont>
         </view>
     </view>
 </template>
