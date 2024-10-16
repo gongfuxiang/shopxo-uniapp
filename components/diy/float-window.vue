@@ -74,7 +74,7 @@
                 const { windowWidth, windowHeight } = uni.getSystemInfoSync();
                 let x = display_location == 'left' ? 10 : windowWidth - 60;
                 // 计算出距离顶部的距离
-                const y = Math.ceil(windowHeight * (1 - Number(offset_number_percentage)));
+                const y = Math.ceil(windowHeight * (1 - Number(offset_number_percentage)) - 20);
                 this.setData({
                     content_style: float_style == 'shadow' ? `box-shadow: 0 0 40rpx ${float_style_color};border-radius: 50%;` : `background-color: ${float_style_color};border-radius: 50%;`,
                     x: x,
