@@ -17,7 +17,7 @@
                         <view class="br-t-f5 flex-row jc-sa align-c text-size tc">
                             <view class="cr-base flex-1 divider-r-f5 padding-vertical-main" :data-value="'/pages/plugins/blog/form/form?id=' + item.id" @tap="url_event">
                                 <view class="margin-right-xs dis-inline-block">
-                                    <iconfont name="icon-wenda-wytw" size="32rpx"></iconfont>
+                                    <iconfont name="icon-edit-below-line" size="32rpx"></iconfont>
                                 </view>{{$t('common.edit')}}</view>
                             <view class="cr-main flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
                                 <view class="margin-right-xs dis-inline-block">

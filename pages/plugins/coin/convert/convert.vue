@@ -23,7 +23,7 @@
                             </view>
                         </view>
                         <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event(2)">
-                            <iconfont name="icon-convert2" class="pa convert-icon" :class="convert_bool ? 'convert_true' : 'convert_false'" color="#1D7DEF" size="36rpx"></iconfont>
+                            <iconfont name="icon-convert" class="pa convert-icon" :class="convert_bool ? 'convert_true' : 'convert_false'" color="#1D7DEF" size="36rpx"></iconfont>
                         </view>
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
