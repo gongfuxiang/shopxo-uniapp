@@ -10,7 +10,7 @@
                                 <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
                                 <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
                                 <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
-                                <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''"></iconfont>
+                                <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''"></iconfont>
                                 <view class="bottom_line" :style="tabs_check"></view>
                             </view>
                         </view>

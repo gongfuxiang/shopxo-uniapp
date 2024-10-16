@@ -45,7 +45,6 @@
                     style_container: common_styles_computer(new_style.common_style),
                     style_img_container: common_img_computer(new_style.common_style),
                 });
-                console.log(this.content);
             },
         },
     };
@@ -56,8 +55,13 @@
         * {
             max-width: 100%;
         }
-        [id^='v'] {
+        /* #ifdef H5 */
+        [id^=v] {
             width: 100%;
         }
+        /* #endif */
+    }
+    .diy-rich-text video {
+        width: 100%;
     }
 </style>
