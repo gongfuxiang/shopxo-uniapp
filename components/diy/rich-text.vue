@@ -51,4 +51,13 @@
     };
 </script>
 
-<style></style>
+<style>
+    .rich-text {
+        * {
+            max-width: 100%;
+        }
+        [id^=v] {
+            width: 100%;
+        }
+    }
+</style>
