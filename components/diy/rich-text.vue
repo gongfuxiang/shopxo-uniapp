@@ -55,5 +55,8 @@
         * {
             max-width: 100%;
         }
+        [id^=v] {
+            width: 100%;
+        }
     }
 </style>
