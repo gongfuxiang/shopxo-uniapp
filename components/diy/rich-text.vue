@@ -45,6 +45,7 @@
                     style_container: common_styles_computer(new_style.common_style),
                     style_img_container: common_img_computer(new_style.common_style),
                 });
+                console.log(this.content);
             },
         },
     };
