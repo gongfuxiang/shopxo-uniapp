@@ -72,7 +72,6 @@
     const app = getApp();
     import componentDiySearch from '@/components/diy/search';
     import imageEmpty from '@/components/diy/modules/image-empty';
-    import hotWordList from '@/components/diy/modules/hot-word-list';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     import { isEmpty, background_computer, gradient_computer } from '@/common/js/common/common.js';
     // 状态栏高度
@@ -98,7 +97,6 @@
         components: {
             componentDiySearch,
             imageEmpty,
-            hotWordList,
             componentChoiceLocation,
         },
         data() {

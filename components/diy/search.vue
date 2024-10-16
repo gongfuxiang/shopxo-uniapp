@@ -47,11 +47,7 @@
 <script>
 const app = getApp();
 import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
-import hotWordList from '@/components/diy/modules/hot-word-list';
 export default {
-    components: {
-        hotWordList,
-    },
     props: {
         propValue: {
             type: Object,

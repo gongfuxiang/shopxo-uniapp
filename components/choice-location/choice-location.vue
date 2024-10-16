@@ -5,7 +5,7 @@
                 <iconfont name="icon-location" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
             </view>
             <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
-            <view class="va-m lh dis-inline-block margin-left-xs">
+            <view v-if="propIsIconArrow" class="va-m lh dis-inline-block margin-left-xs">
                 <iconfont name="icon-arrow-bottom" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
             </view>
         </view>
