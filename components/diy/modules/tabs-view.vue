@@ -5,13 +5,13 @@
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row">
-                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :style="'padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
+                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
                             <view class="nowrap flex-col jc-c align-c gap-4">
                                 <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
                                 <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
                                 <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
                                 <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''"></iconfont>
-                                <view class="bottom_line" :style="tabs_check"></view>
+                                <view class="bottom_line" :class="tabs_bottom_line_theme" :style="tabs_check"></view>
                             </view>
                         </view>
                     </view>
@@ -125,6 +125,7 @@
                 tabs_top: 'calc(' + (bar_height + 0 + 12) + 'px+ 66rpx);',
                 // #endif
                 custom_nav_height: '66rpx',
+                tabs_bottom_line_theme: '',
             };
         },
         mounted() {
@@ -163,6 +164,7 @@
                     icon_tabs_check: `${new_tabs_check};line-height: 1;background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
                     icon: new_icon,
                     tabs_theme_style: new_tabs_theme_style,
+                    tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
                 });
             },
             get_tabs_theme(data) {
@@ -267,6 +269,15 @@
                     .bottom_line {
                         display: block;
                     }
+                }
+                .tabs-bottom-line-theme {
+                    opacity: 0.6;
+                    bottom: 16rpx;
+                    z-index: 0;
+                    height: 14rpx;
+                    border-radius: 0;
+                    width: 76%;
+                    left: 12%;
                 }
             }
             &.tabs-style-2 {
