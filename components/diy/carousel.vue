@@ -127,12 +127,14 @@
                 const block = (windowWidth * 0.9) / 16;
 
                 const { common_style, actived_color } = new_style;
-                // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
-                let fit = 'scaleToFill';
+                // scaleToFill 对应 cover aspectFit 对应 contain  center 对应 none
+                let fit = '';
                 if (new_form.img_fit == 'cover') {
-                    fit = 'aspectFill';
+                    fit = 'scaleToFill';
                 } else if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
+                } else if (new_form.img_fit =='none') {
+                    fit = 'center';
                 }
                 this.setData({
                     form: this.propValue.content,

@@ -91,12 +91,13 @@
                 const outer_sx = `-${new_style.image_spacing}rpx`;
                 // 图片间距设置
                 const spacing = `${new_style.image_spacing}rpx`;
-                // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
-                let fit = 'scaleToFill';
-                if (new_content.img_fit == 'cover') {
-                    fit = 'aspectFill';
-                } else if (new_content.img_fit == 'contain') {
+                // scaleToFill 对应 cover aspectFit 对应 contain  center 对应 none
+                if (new_form.img_fit == 'cover') {
+                    fit = 'scaleToFill';
+                } else if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
+                } else if (new_form.img_fit =='none') {
+                    fit = 'center';
                 }
                 const density = 4;
                 this.setData({
