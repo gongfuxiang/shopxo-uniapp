@@ -5,12 +5,14 @@
                 <view class="pr flex-row" :class="title_center">
                     <view class="z-i flex-row align-c gap-10">
                         <template v-if="!isEmpty(form.img_src) && !isEmpty(form.img_src[0].url)">
-                            <image :src="form.img_src[0].url" class="title-img" mode="heightFix"></image>
+                            <view :style="{ 'height': form.img_height * 2 + 'rpx' }">
+                                <image :src="form.img_src[0].url" class="title-img" mode="aspectFit"></image>
+                            </view>
                         </template>
                         <template v-else-if="!isEmpty(form.icon_class)">
                             <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
                         </template>
-                        <view class="pr-15 nowrap" :style="title_style">{{ form.title || '标题' }}</view>
+                        <view class="pr-15 nowrap" :style="title_style">{{ form.title }}</view>
                     </view>
                     <view class="flex-row gap-10 align-c right-0 pa">
                         <template v-if="form.keyword_show == '1'">

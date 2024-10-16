@@ -1,7 +1,7 @@
 <template>
     <view class="pr" :style="style_container">
         <view class="pr" :style="style_img_container">
-            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: form.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                         <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
@@ -129,13 +129,13 @@
                 const { common_style, actived_color } = new_style;
                 // scaleToFill 对应 cover aspectFit 对应 contain  center 对应 none
                 let fit = '';
-                if (new_form.img_fit == 'cover') {
-                    fit = 'scaleToFill';
-                } else if (new_form.img_fit == 'contain') {
+                if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
-                } else if (new_form.img_fit =='none') {
-                    fit = 'center';
-                }
+                } else if (new_form.img_fit =='fill') {
+                    fit = 'scaleToFill';
+                } else if (new_form.img_fit == 'cover') {
+                    fit = 'aspectFill';
+                } 
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
