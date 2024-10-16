@@ -12,7 +12,7 @@
                                 <view class="model-head pr flex-row align-c" :style="header_style">
                                     <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr padding-left-main">
                                         <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
-                                            <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex"></iconfont>
+                                            <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
                                         </view>
                                         <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                             <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
@@ -24,7 +24,7 @@
                                                 <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
                                                 <template v-if="['3', '5'].includes(form.content.theme)">
                                                     <view class="flex-1">
-                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true" @search_tap="search_tap"></componentDiySearch>
+                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                     </view>
                                                 </template>
                                             </view>
@@ -35,7 +35,7 @@
                                             </view>
                                             <template v-if="['5'].includes(form.content.theme)">
                                                 <view class="flex-1">
-                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true" @search_tap="search_tap"></componentDiySearch>
+                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                 </view>
                                             </template>
                                         </view>
@@ -217,10 +217,6 @@
                     })
                     .exec();
             },
-            // 搜索回调
-            search_tap(form, list, color) {
-                this.$emit('search_tap', form, list, color);
-            },
             // 位置回调
             user_back_choice_location(e) {
                 console.log('选择位置回调', e);
@@ -241,7 +237,7 @@
     .header-container {
         width: 100%;
         .header-around {
-            z-index: 3;
+            z-index: 4;
         }
         .header-content {
             height: 66rpx;

@@ -7,7 +7,7 @@
                     <view class="flex-row align-c gap-8" :style="container_background_img_style">
                         <template v-if="form_content.title_type == 'img-icon'">
                             <view v-if="form_content.icon_class">
-                                <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color" propContainerDisplay="flex"></iconfont>
+                                <iconfont :name="'icon-' + form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color" propContainerDisplay="flex"></iconfont>
                             </view>
                             <view v-else>
                                 <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
@@ -33,7 +33,7 @@
                         <view class="flex-row wh-auto jc-sb align-c">
                             <template v-if="form_content.title_type == 'img-icon'">
                                 <template v-if="form_content.icon_class">
-                                    <iconfont :name="form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color" propContainerDisplay="flex"></iconfont>
+                                    <iconfont :name="'icon-' + form_content.icon_class" :size="form_style.icon_size * 2 + 'rpx'" :color="form_style.icon_color" propContainerDisplay="flex"></iconfont>
                                 </template>
                                 <template v-else>
                                     <image v-if="form_content.img_src.length > 0" :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>

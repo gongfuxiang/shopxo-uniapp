@@ -1,6 +1,6 @@
 <template>
     <!-- 富文本 -->
-    <view class="rich-text" :style="style_container">
+    <view class="diy-rich-text" :style="style_container">
         <view :style="style_img_container">
             <mp-html :content="content" />
         </view>
@@ -45,15 +45,19 @@
                     style_container: common_styles_computer(new_style.common_style),
                     style_img_container: common_img_computer(new_style.common_style),
                 });
+                console.log(this.content);
             },
         },
     };
 </script>
 
 <style>
-    .rich-text {
+    .diy-rich-text {
         * {
             max-width: 100%;
+        }
+        [id^=v] {
+            width: 100%;
         }
     }
 </style>

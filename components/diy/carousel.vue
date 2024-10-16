@@ -128,11 +128,10 @@
 
                 const { common_style, actived_color } = new_style;
                 // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
-                const { img_fit } = this.form;
                 let fit = 'scaleToFill';
-                if (img_fit == 'cover') {
+                if (new_form.img_fit == 'cover') {
                     fit = 'aspectFill';
-                } else if (img_fit == 'contain') {
+                } else if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
                 }
                 this.$nextTick(() => {
