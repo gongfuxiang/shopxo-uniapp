@@ -24,14 +24,9 @@
             return {
                 form: {},
                 border_style: '',
-                scale: 1,
             };
         },
         watch: {
-            propScale(val) {
-                this.scale = val;
-                this.init();
-            },
             propkey(val) {
                 this.init();
             }
@@ -43,14 +38,14 @@
             init() {
                 this.setData({
                     form: this.propValue,
-                    border_style: this.get_border_style(this.propValue),
+                    border_style: this.get_border_style(this.propValue, this.propScale),
                 });
             },
-            get_border_style(form) {
+            get_border_style(form, scale) {
                 if (form.line_settings === 'horizontal') {
-                    return `margin: 10rpx 0;border-bottom: ${form.line_size * this.scale }px ${form.line_style} ${form.line_color};`;
+                    return `margin: 10rpx 0;border-bottom: ${form.line_size * scale }px ${form.line_style} ${form.line_color};`;
                 } else {
-                    return `margin: 0 10rpx;height:100%;border-right: ${form.line_size * this.scale }px ${form.line_style} ${form.line_color};`;
+                    return `margin: 0 10rpx;height:100%;border-right: ${form.line_size * scale }px ${form.line_style} ${form.line_color};`;
                 }
             }
         },

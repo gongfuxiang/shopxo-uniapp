@@ -38,10 +38,6 @@
             };
         },
         watch: {
-            propScale(val) {
-                this.scale = val;
-                this.init();
-            },
             propkey(val) {
                 this.init();
             }
@@ -53,13 +49,14 @@
             init() {
                 this.setData({
                     form: this.propValue,
-                    com_style: this.get_com_style(this.propValue),
+                    scale: this.propScale,
+                    com_style: this.get_com_style(this.propValue, this.propScale),
                 });
             },
-            get_com_style(form) {
-                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius, this.scale, true) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding, this.scale, true) };`;
+            get_com_style(form, scale) {
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${ radius_computer(form.bg_radius, scale, true) };transform: rotate(${form.icon_rotate}deg);${ padding_computer(form.icon_padding, scale, true) };`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.scale }px ${form.border_style} ${form.border_color};box-sizing: border-box;`;
+                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color};box-sizing: border-box;`;
                 }
                 if (form.icon_location == 'center') {
                     style += `justify-content: center;`;

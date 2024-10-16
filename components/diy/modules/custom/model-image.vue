@@ -39,14 +39,9 @@
                 img: '',
                 image_style: '',
                 border_style: '',
-                scale: 1,
             };
         },
         watch: {
-            propScale(val) {
-                this.scale = val;
-                this.init();
-            },
             propkey(val) {
                 this.init();
             }
@@ -59,8 +54,8 @@
                 this.setData({
                     form: this.propValue,
                     img: this.get_img_url(this.propValue),
-                    image_style: this.get_image_style(this.propValue),
-                    border_style: this.get_border_style(this.propValue),
+                    image_style: this.get_image_style(this.propValue, this.propScale),
+                    border_style: this.get_border_style(this.propValue, this.propScale),
                 });
             },
             get_img_url(form) {
@@ -74,13 +69,13 @@
                     }
                 }
             },
-            get_image_style(form) {
-                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, this.scale, true)};`;
+            get_image_style(form, scale) {
+                return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, scale, true)};`;
             },
-            get_border_style(form) {
+            get_border_style(form, scale) {
                 let style = ``;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.scale }px ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius, this.scale, true)};box-sizing: border-box;`;
+                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color}; ${radius_computer(form.border_radius, scale, true)};box-sizing: border-box;`;
                 }
                 return style;
             },

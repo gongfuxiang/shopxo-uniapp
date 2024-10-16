@@ -36,14 +36,9 @@
                 text_title: '',
                 text_style: '',
                 com_style: '',
-                scale: 1,
             };
         },
         watch: {
-            propScale(val) {
-                this.scale = val;
-                this.init();
-            },
             propkey(val) {
                 this.init();
             }
@@ -55,14 +50,14 @@
             init() {
                 this.setData({
                     form: this.propValue,
-                    com_style: this.get_com_style(this.propValue),
+                    com_style: this.get_com_style(this.propValue, this.propScale),
                     com_img_style: this.get_com_img_style(this.propValue),
                 });
             },
-            get_com_style(form) {
-                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, this.scale, true)}; transform: rotate(${form.panel_rotate}deg);`;
+            get_com_style(form, scale) {
+                let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, scale, true)}; transform: rotate(${form.panel_rotate}deg);`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * this.scale }px ${form.border_style} ${form.border_color};`;
+                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color};`;
                 }
                 return style;
             },

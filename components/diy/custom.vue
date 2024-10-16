@@ -90,15 +90,11 @@ export default {
             const new_style = this.propValue.style;
             const { margin_left, margin_right } = new_style.common_style;
             const width = sys_width - margin_left - margin_right;
-            this.$nextTick(() => {
-                this.setData({
-                    div_width: width,
-                    scale: width / 390,
-                });
-            });
             this.setData({
                 form: new_form,
                 new_style: new_style,
+                div_width: width,
+                scale: width / 390,
                 custom_list_length: new_form.custom_list.length - 1,
                 style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                 style_img_container: common_img_computer(new_style.common_style),
