@@ -119,7 +119,7 @@ export default {
             return common_styles;
         },
         get_box_style(new_style, form) {
-            let style = `background: ${ new_style?.search_bg_color || '#fff' };border: 1px solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
+            let style = `background: ${ new_style?.search_bg_color || '' };border: 1px solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
             if (form.is_center == '1') {
                 style += `justify-content: center;`;
             }
