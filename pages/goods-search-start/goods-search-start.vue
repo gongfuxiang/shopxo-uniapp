@@ -42,17 +42,17 @@
                             <view class="goods-list bg-white border-radius-main padding-main margin-top-xs">
                                 <block v-for="(item2, index2) in item.data" :key="index2">
                                     <view class="goods-item oh margin-bottom-main" :data-value="item2.goods_url" @tap="url_event">
-                                        <view v-if="index2 > 3" class="single-text">
+                                        <view v-if="index2 > 2" class="single-text">
                                             <view class="dis-inline-block pr margin-right-sm">
-                                                <iconfont :name="item.icon" size="26rpx" propClass="cr-main"></iconfont>
-                                                <text class="pa top-0 left-0 cr-white">{{index2}}</text>
+                                                <iconfont name="icon-label" size="38rpx" propClass="cr-grey-c"></iconfont>
+                                                <view class="icon pa top-0 left-xs tc cr-white text-size-xs">{{index2+1}}</view>
                                             </view>
                                             <text class="text-size-sm">{{item2.title}}</text>
                                         </view>
                                         <view v-else class="pr">
-                                            <view class="pa top-sm left-sm z-i">
-                                                <iconfont :name="item.icon" size="26rpx" propClass="cr-main"></iconfont>
-                                                <text class="pa top-0 left-0 cr-white">{{index2}}</text>
+                                            <view class="pa top-sm left-sm z-i tc">
+                                                <iconfont name="icon-label" size="38rpx" :propClass="index2 == 0 ? 'cr-red' : (index2 == 1 ? 'cr-yellow' : 'cr-blue-dark')"></iconfont>
+                                                <view class="icon pa top-0 left-xs tc cr-white text-size-xs">{{index2+1}}</view>
                                             </view>
                                             <image class="goods-image radius fl" :src="item2.images" mode="aspectFill"></image>
                                             <view class="goods-title text-size-sm multi-text fr">{{item2.title}}</view>

@@ -557,6 +557,9 @@ button:before {
 .cr-blue {
     color: #2196F3 !important;
 }
+.cr-blue-dark {
+    color: #B3BFCB !important;
+}
 
 /**
  * 统一背景色
@@ -1356,4 +1359,10 @@ button[disabled].bg-grey {
     /* #ifndef H5  */
     padding-top: calc(var(--status-bar-height) + 10rpx);
     /* #endif */
+}
+
+/* 富文本 */
+.diy-rich-text * {
+    max-width: 100%;
+    /* width: 100%; */
 }

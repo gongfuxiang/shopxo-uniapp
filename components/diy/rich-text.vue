@@ -1,6 +1,6 @@
 <template>
     <!-- 富文本 -->
-    <view class="rich-text" :style="style_container">
+    <view class="diy-rich-text" :style="style_container">
         <view :style="style_img_container">
             <mp-html :content="content" />
         </view>
@@ -50,13 +50,4 @@
     };
 </script>
 
-<style>
-    .rich-text {
-        * {
-            max-width: 100%;
-        }
-        [id^=v] {
-            width: 100%;
-        }
-    }
-</style>
+<style></style>
