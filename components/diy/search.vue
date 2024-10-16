@@ -3,23 +3,21 @@
         <view :style="style_img_container">
             <view class="search wh-auto pr" :style="style">
                 <view class="box oh flex-row align-c gap-10" :style="box_style" @tap="search_tap">
-                    <view class="search-icon" @tap.stop="search_icon_tap">
-                        <template v-if="form.is_icon_show == '1'">
-                            <template v-if="form.icon_img.length > 0">
-                                <view class="img-box">
-                                    <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
-                                </view>
-                            </template>
-                            <template v-else>
-                                <view>
-                                    <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
-                                </view>
-                            </template>
+                    <view v-if="form.is_icon_show == '1'" class="search-icon" @tap.stop="search_icon_tap">
+                        <template v-if="form.icon_img.length > 0">
+                            <view class="img-box">
+                                <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
+                            </view>
+                        </template>
+                        <template v-else>
+                            <view>
+                                <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
+                            </view>
                         </template>
                     </view>
                     <template v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'">
-                        <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
-                            <swiper-item v-for="(item, index) in form.hot_word_list" :key="index" class="flex-row align-c" :style="{ color: !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : item.color }" :data-value="item.value" @tap.stop="serch_event">{{ item.value }}</swiper-item>
+                        <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
+                            <swiper-item v-for="(item, index) in form.hot_word_list" :key="index" class="flex-row align-c" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">{{ item.value }}</swiper-item>
                         </swiper>
                     </template>
                     <template v-else>
@@ -41,7 +39,6 @@
                         </template>
                     </view>
                 </view>
-                
             </view>
         </view>
     </view>

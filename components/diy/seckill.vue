@@ -387,8 +387,8 @@
                     if (this.seckill_time.status === 0) {
                         this.setData({
                             seckill_time: {
-                                end_time: this.seckill_time.current.time_end,
-                                start_time: this.seckill_time.current.time_start,
+                                end_time: this.seckill_time.time_end,
+                                start_time: this.seckill_time.time_start,
                                 status: 1,
                                 time_first_text: '距结束',
                             },

@@ -1,7 +1,7 @@
 <template>
     <view class="pr" :style="style_container">
         <view class="pr" :style="style_img_container">
-            <swiper v-if="hackReset" circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                         <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
@@ -105,7 +105,7 @@
                 previousMargin: '0rpx',
                 nextMargin: '0rpx',
                 slides_per_group: 1,
-                hackReset: true,
+                // hackReset: true,
             };
         },
         watch: {
@@ -134,22 +134,20 @@
                 } else if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
                 }
-                this.$nextTick(() => {
-                    this.setData({
-                        form: this.propValue.content,
-                        new_style: this.propValue.style,
-                        seat_list: this.get_seat_list(new_form),
-                        new_list: new_form.carousel_type == 'inherit' ? new_form.carousel_list : new_form.carousel_list.concat(this.get_seat_list(new_form)),
-                        popup_width: block * 16 * 2 + 'rpx',
-                        popup_height: block * 9 * 2 + 'rpx',
-                        style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
-                        style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 用于样式显示
-                        img_style: radius_computer(new_style), // 图片的设置
-                        indicator_style: this.get_indicator_style(new_style), // 指示器的样式
-                        dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置
-                        img_fit: fit,
-                        video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑
-                    });
+                this.setData({
+                    form: this.propValue.content,
+                    new_style: this.propValue.style,
+                    seat_list: this.get_seat_list(new_form),
+                    new_list: new_form.carousel_list.concat(this.get_seat_list(new_form)),
+                    popup_width: block * 16 * 2 + 'rpx',
+                    popup_height: block * 9 * 2 + 'rpx',
+                    style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
+                    style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 用于样式显示
+                    img_style: radius_computer(new_style), // 图片的设置
+                    indicator_style: this.get_indicator_style(new_style), // 指示器的样式
+                    dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置
+                    img_fit: fit,
+                    video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑
                 });
                 if (new_form.carousel_type == 'card') {
                     this.$nextTick(() => {
@@ -167,14 +165,14 @@
                         });
                     });
                 }
-                this.setData({
-                    hackReset: false,
-                });
-                this.$nextTick(() => {
-                    this.setData({
-                        hackReset: true,
-                    });
-                });
+                // this.setData({
+                //     hackReset: false,
+                // });
+                // this.$nextTick(() => {
+                //     this.setData({
+                //         hackReset: true,
+                //     });
+                // });
             },
             get_indicator_style(new_style) {
                 const { indicator_radius, indicator_style, indicator_size, color } = new_style;
@@ -218,16 +216,14 @@
             },
             slideChange(e) {
                 let actived_index = e.target.current;
-                if (this.form.carousel_type != 'inherit') {
-                    if (e.target.current > this.form.carousel_list.length - 1) {
-                        const seat_length = this.seat_list.length;
-                        if (seat_length == 2 && e.target.current == 3) {
-                            actived_index = 1;
-                        } else if (seat_length == 3) {
-                            actived_index = 0;
-                        } else {
-                            actived_index = e.target.current - this.seat_list.length;
-                        }
+                if (e.target.current > this.form.carousel_list.length - 1) {
+                    const seat_length = this.seat_list.length;
+                    if (seat_length == 2 && e.target.current == 3) {
+                        actived_index = 1;
+                    } else if (seat_length == 3) {
+                        actived_index = 0;
+                    } else {
+                        actived_index = e.target.current - this.seat_list.length;
                     }
                 }
                 this.setData({
