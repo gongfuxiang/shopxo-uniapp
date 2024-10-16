@@ -22,7 +22,7 @@
                         </view>
                         <view v-if="data_base.is_enable_convert == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/convert/convert" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
-                                <iconfont name="icon-convert" size="44rpx" color="#635BFF"></iconfont>
+                                <iconfont name="icon-convert-o" size="44rpx" color="#635BFF"></iconfont>
                             </view>
                             <view>{{$t('pages.plugins-coin-convert')}}</view>
                         </view>
