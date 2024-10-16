@@ -20,9 +20,16 @@
                     </view>
                 </template>
                 <template v-else-if="form.style_actived == 10">
-                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
-                        <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
-                    </view>
+                    <template v-if="form.limit_size == '0'">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
+                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
+                        </view>
+                    </template>
+                    <template v-else>
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item) + ';height:' + form.image_height * 2 + 'rpx;'" :data-value="item.img_link.page" @tap="url_event">
+                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                        </view>
+                    </template>
                 </template>
                 <template v-else>
                     <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
@@ -91,16 +98,19 @@
                 const outer_sx = `-${new_style.image_spacing}rpx`;
                 // 图片间距设置
                 const spacing = `${new_style.image_spacing}rpx`;
-                // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
-                let fit = 'scaleToFill';
-                if (new_content.img_fit == 'cover') {
-                    fit = 'aspectFill';
-                } else if (new_content.img_fit == 'contain') {
+                // scaleToFill 对应 cover aspectFit 对应 contain  center 对应 none
+                let fit = '';
+                if (new_content.img_fit == 'contain') {
                     fit = 'aspectFit';
-                }
+                } else if (new_content.img_fit =='fill') {
+                    fit = 'scaleToFill';
+                } else if (new_content.img_fit == 'cover') {
+                    fit = 'aspectFill';
+                } 
                 const density = 4;
                 this.setData({
                     form: this.propValue.content,
+                    new_style: this.propValue.style,
                     outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx};`,
                     img_spacing: `padding:${spacing};`,
                     img_outer_spacing: new_style.image_spacing * 2 + 'rpx',

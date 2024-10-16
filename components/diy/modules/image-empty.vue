@@ -40,7 +40,7 @@
         watch: {
             propImageSrc(val) {
                 this.init();
-            },
+            }
         },
         mounted() {
             this.init();

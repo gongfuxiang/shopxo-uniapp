@@ -8,7 +8,7 @@
                         <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
                             <view class="wh-auto ht-auto"  :style="item.data_style.background_img_style">
                                 <template v-if="item.data_content.data_type == 'goods'">
-                                    <view class="wh-auto ht-auto flex-col gap-20" :style="[0, 1].includes(index) ? item.data_style.chunk_padding_data : ''">
+                                    <view class="wh-auto ht-auto flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + ([0, 1].includes(index) ? item.data_style.chunk_padding_data : '')">
                                         <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" class="flex-col gap-5 tl">
                                             <view class="ma-0 wh-auto text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
                                             <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
@@ -40,7 +40,7 @@
                     <view v-for="(item, index) in data_magic_list" :key="index" class="cube-selected cr-main" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
                         <view class="wh-auto ht-auto"  :style="item.data_style.background_img_style">
                             <template v-if="item.data_content.data_type == 'goods'">
-                                <view :class="[spacing_processing(index) ? 'gap-20 wh-auto ht-auto flex-col' : 'gap-10 wh-auto ht-auto flex-col']" :style="item.data_style.chunk_padding_data">
+                                <view class="wh-auto ht-auto flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
                                     <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" class="flex-col gap-5 tl">
                                         <view class="ma-0 wh-auto text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
                                         <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
@@ -173,7 +173,15 @@
                     data_style.indicator_styles = this.indicator_style(data_style);
                     data_style.background_style = gradient_computer(data_style);
                     data_style.background_img_style = background_computer(data_style);
-
+                    let fit = '';
+                    if (data_content.img_fit == 'contain') {
+                        fit = 'aspectFit';
+                    } else if (data_content.img_fit =='fill') {
+                        fit = 'scaleToFill';
+                    } else if (data_content.img_fit == 'cover') {
+                        fit = 'aspectFill';
+                    } 
+                    data_content.fit = fit;
                     // 商品名称和价格样式
                     data_style.goods_title_style = this.goods_trends_config(data_style, 'title');
                     data_style.goods_price_style = this.goods_trends_config(data_style, 'price');
