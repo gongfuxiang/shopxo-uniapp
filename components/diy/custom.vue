@@ -32,6 +32,8 @@ import modelLines from '@/components/diy/modules/custom/model-lines.vue';
 import modelImage from '@/components/diy/modules/custom/model-image.vue';
 import modelIcon from '@/components/diy/modules/custom/model-icon.vue';
 import modelPanel from '@/components/diy/modules/custom/model-panel.vue';
+var system = app.globalData.get_system_info(null, null, true);
+var sys_width = app.globalData.window_width_handle(system.windowWidth);
 
 export default {
     components: {
@@ -86,23 +88,12 @@ export default {
         init() {
             const new_form = this.propValue.content;
             const new_style = this.propValue.style;
-            this.$nextTick(() => {
-                const query = uni.createSelectorQuery().in(this);
-                query
-                    .select('.custom-container')
-                    .boundingClientRect((res) => {
-                        if ((res || null) != null) {
-                            this.setData({
-                                div_width: res.width,
-                                scale: res.width / 390,
-                            });
-                        }
-                    })
-                    .exec();
-            });
+            const width = sys_width - new_style.common_style.margin_left - new_style.common_style.margin_right;
             this.setData({
                 form: new_form,
                 new_style: new_style,
+                div_width: width,
+                scale: width / 390,
                 custom_list_length: new_form.custom_list.length - 1,
                 style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                 style_img_container: common_img_computer(new_style.common_style),
