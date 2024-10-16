@@ -52,7 +52,7 @@
 </script>
 
 <style>
-    .rich-text {
+    .diy-rich-text {
         * {
             max-width: 100%;
         }
