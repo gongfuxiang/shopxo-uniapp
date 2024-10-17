@@ -1,16 +1,16 @@
 <template>
     <view :class="theme_view">
         <!-- 批发规则展示 -->
-        <view v-if="(data || null) != null" class="scroll-view-horizontal">
+        <view v-if="(data || null) != null" class="plugins-wholesale-container scroll-view-horizontal">
             <scroll-view scroll-x="true">
-                <view :class="'plugins-wholesale-container-rules-view wh-auto item-number-'+data.rules.length" @tap="popup_wholesale_event">
+                <view :class="'plugins-wholesale-container-rules-view wh-auto padding-main item-number-'+data.rules.length" @tap="popup_wholesale_event">
                     <view v-for="(item, index) in data.rules" :key="index" class="item">
                         <view class="price">
                             <text v-if="item.arr.type == 1" class="cr-red text-size-xs">{{propCurrencySymbol}}</text>
                             <text class="sales-price text-size-lg">{{item.range_val}}</text>
                             <text v-if="item.arr.type == 0" class="unit text-size-xsss">{{item.arr.unit}}</text>
                         </view>
-                        <view :class="'msg text-size-sm cr-base margin-top-xs '+(propIsSeckill ? 'cr-white' : 'cr-black')">{{item.range_msg}}</view>
+                        <view class="msg text-size-sm cr-base margin-top-xs cr-black">{{item.range_msg}}</view>
                     </view>
                 </view>
             </scroll-view>
@@ -64,11 +64,6 @@ export default {
         componentPopup
     },
     props: {
-        // 是否秒杀状态
-        propIsSeckill: {
-            type: Boolean,
-            default: false,
-        },
         // 是否展示弹窗
         propIsPopup: {
             type: Boolean,
@@ -121,10 +116,13 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
     /**
      * 批发 - 插件
      */
+    .plugins-wholesale-container {
+        background: linear-gradient(to bottom, #fafafa 0%, #fff 100%);
+    }
     .plugins-wholesale-container-rules-view {
         display: flex;
         justify-content: flex-start;
