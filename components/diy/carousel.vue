@@ -1,7 +1,7 @@
 <template>
     <view class="pr" :style="style_container">
         <view class="pr" :style="style_img_container">
-            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: form.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                         <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
@@ -58,6 +58,8 @@
     const app = getApp();
     import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    var system = app.globalData.get_system_info(null, null, true);
+    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             imageEmpty,
@@ -106,6 +108,8 @@
                 nextMargin: '0rpx',
                 slides_per_group: 1,
                 // hackReset: true,
+                // 轮播图的高度
+                swiper_height: 50,
             };
         },
         watch: {
@@ -116,6 +120,7 @@
         },
         created() {
             this.init();
+            console.log(sys_width);
         },
         methods: {
             isEmpty,
@@ -131,11 +136,12 @@
                 let fit = '';
                 if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
-                } else if (new_form.img_fit =='fill') {
+                } else if (new_form.img_fit == 'fill') {
                     fit = 'scaleToFill';
                 } else if (new_form.img_fit == 'cover') {
                     fit = 'aspectFill';
-                } 
+                }
+                console.log(common_style);
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
@@ -150,6 +156,7 @@
                     dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置
                     img_fit: fit,
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑
+                    swiper_height: new_form.height * (sys_width / 390) * 2 + 'rpx',
                 });
                 if (new_form.carousel_type == 'card') {
                     this.$nextTick(() => {
