@@ -357,7 +357,7 @@
                 } else if (form.theme == '3') {
                     size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
                 } else if (form.theme == '5') {
-                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(form)};height: ${new_style.content_outer_height * 2 + 'rpx'}`;
+                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'}`;
                 }
                 return `${radius} ${padding} ${size_style}`;
             },
