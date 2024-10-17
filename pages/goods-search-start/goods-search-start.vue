@@ -1,38 +1,40 @@
 <template>
     <view :class="theme_view">
-        <view class="padding-main">
-            <!-- 搜索 -->
-            <view class="margin-bottom-xxxl">
-                <component-search ref="search" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
-            </view>
-            <!-- 历史搜索关键字 -->
-            <view v-if="history_keywords.length > 0" class="history-keywords margin-bottom-xxxl">
-                <view class="margin-bottom flex-row jc-sb align-c">
-                    <text class="text-size-sm fw-b">历史搜索</text>
-                    <view class="dis-inline-block" @tap="history_delete_event">
-                        <iconfont name="icon-delete" size="30rpx" color="#999"></iconfont>
+        <view class="padding-bottom-main">
+            <view class="padding-horizontal-main padding-top-main">
+                <!-- 搜索 -->
+                <view class="margin-bottom-xxxl">
+                    <component-search ref="search" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                </view>
+                <!-- 历史搜索关键字 -->
+                <view v-if="history_keywords.length > 0" class="history-keywords margin-bottom-xxxl">
+                    <view class="margin-bottom flex-row jc-sb align-c">
+                        <text class="text-size-sm fw-b">历史搜索</text>
+                        <view class="dis-inline-block" @tap="history_delete_event">
+                            <iconfont name="icon-delete" size="30rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="oh">
+                        <block v-for="(item, index) in history_keywords" :key="index">
+                            <view class="dis-inline-block bg-grey-e cr-base round padding-vertical-xs padding-horizontal-lg margin-right margin-bottom" :data-value="item" @tap="keywords_event">{{item}}</view>
+                        </block>
                     </view>
                 </view>
-                <view class="oh">
-                    <block v-for="(item, index) in history_keywords" :key="index">
-                        <view class="dis-inline-block bg-grey-e cr-base round padding-vertical-xs padding-horizontal-lg margin-right margin-bottom" :data-value="item" @tap="keywords_event">{{item}}</view>
-                    </block>
-                </view>
-            </view>
-            <!-- 推荐搜索关键字 -->
-            <view v-if="recommend_keywords.length > 0" class="recommend-keywords margin-bottom-xxxl">
-                <view class="text-size-sm fw-b margin-bottom">热门搜索</view>
-                <view class="oh">
-                    <block v-for="(item, index) in recommend_keywords" :key="index">
-                        <view class="dis-inline-block bg-grey-e cr-base round padding-vertical-xs padding-horizontal-lg margin-right margin-bottom" :data-value="item" @tap="keywords_event">{{item}}</view>
-                    </block>
+                <!-- 推荐搜索关键字 -->
+                <view v-if="recommend_keywords.length > 0" class="recommend-keywords margin-bottom-xxxl">
+                    <view class="text-size-sm fw-b margin-bottom">热门搜索</view>
+                    <view class="oh">
+                        <block v-for="(item, index) in recommend_keywords" :key="index">
+                            <view class="dis-inline-block bg-grey-e cr-base round padding-vertical-xs padding-horizontal-lg margin-right margin-bottom" :data-value="item" @tap="keywords_event">{{item}}</view>
+                        </block>
+                    </view>
                 </view>
             </view>
             <!-- 排行榜 -->
-            <view v-if="ranking_list.length > 0" class="ranking-list scroll-view-horizontal border-radius-main oh">
+            <view v-if="ranking_list.length > 0" class="ranking-list scroll-view-horizontal oh">
                 <scroll-view scroll-x="true">
                     <block v-for="(item, index) in ranking_list" :key="index">
-                        <view class="ranking-item dis-inline-grid bg-main-light padding-sm border-radius-main" :class="index > 0 ? 'margin-left-main' : ''">
+                        <view class="ranking-item dis-inline-grid bg-main-light padding-sm border-radius-main margin-right-main" :class="index == 0 ? 'margin-left-main' : ''">
                             <view class="padding-vertical-sm padding-left-sm">
                                 <view v-if="(item.icon || null) != null" class="dis-inline-block margin-right-sm">
                                     <iconfont :name="item.icon" size="26rpx" propClass="cr-main"></iconfont>
@@ -43,11 +45,11 @@
                                 <block v-for="(item2, index2) in item.data" :key="index2">
                                     <view class="goods-item oh margin-bottom-main" :data-value="item2.goods_url" @tap="url_event">
                                         <view v-if="index2 > 2" class="single-text">
-                                            <view class="dis-inline-block pr margin-right-sm">
+                                            <view class="dis-inline-block pr va-m margin-right-sm">
                                                 <iconfont name="icon-label" size="38rpx" propClass="cr-grey-c"></iconfont>
                                                 <view class="icon pa top-xs left-xs tc cr-white text-size-xs">{{index2+1}}</view>
                                             </view>
-                                            <text class="text-size-sm">{{item2.title}}</text>
+                                            <text class="text-size-sm va-m">{{item2.title}}</text>
                                         </view>
                                         <view v-else class="pr">
                                             <view class="pa top-sm left-sm z-i tc">
