@@ -1,18 +1,18 @@
 <template>
     <view :class="theme_view">
         <view v-if="propIsShowAddressChoice" class="choice-location pr wh-auto flex-row gap-2 align-c" @tap="choose_user_location">
-            <view v-if="propIsLeftIconArrow" :class="['dis-inline-block va-m lh', { 'wh-auto': propLeftImgValue.length > 0 }]">
+            <view v-if="propIsLeftIconArrow" class="dis-inline-block va-m lh">
                 <block v-if="propLeftImgValue.length > 0">
-                    <image :src="propLeftImgValue[0].url" class="dis-block wh-auto" mode="aspectFit"></image>
+                    <image :src="propLeftImgValue[0].url" class="dis-block" mode="heightFix"></image>
                 </block>
                 <block v-else>
                     <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
                 </block>
             </view>
             <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
-            <view v-if="propIsRightIconArrow" :class="['va-m lh dis-inline-block margin-left-xs', { 'wh-auto': propRightImgValue.length }]">
+            <view v-if="propIsRightIconArrow" class="va-m lh dis-inline-block margin-left-xs">
                 <block v-if="propRightImgValue.length > 0">
-                    <image :src="propRightImgValue[0].url" class="dis-block wh-auto" mode="aspectFit"></image>
+                    <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>
                 </block>
                 <block v-else>
                     <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
@@ -145,6 +145,7 @@
         line-height: 56rpx;
     }
     .dis-block {
+        width: 100%;
         height: 56rpx;
     }
 </style>

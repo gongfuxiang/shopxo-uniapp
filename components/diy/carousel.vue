@@ -141,7 +141,6 @@
                 } else if (new_form.img_fit == 'cover') {
                     fit = 'aspectFill';
                 }
-                console.log(common_style);
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
@@ -153,7 +152,7 @@
                     style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 用于样式显示
                     img_style: radius_computer(new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(new_style), // 指示器的样式
-                    dot_style: `bottom: ${common_style.padding_bottom * 2 + 24}rpx;`, // 指示器位置
+                    dot_style: `bottom: ${ new_style.indicator_bottom * 2 }rpx;`, // 指示器位置
                     img_fit: fit,
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑
                     swiper_height: new_form.height * (sys_width / 390) * 2 + 'rpx',
