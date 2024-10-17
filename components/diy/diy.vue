@@ -8,8 +8,8 @@
                 </view>
                 <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                     <view v-for="item in tabs_data" :key="item.key">
-                        <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
-                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="is_header_top ? is_header_top && temp_is_header_top : temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                        <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
+                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_sticky_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
                     </view>
                     <template v-if="is_tabs_type">
                         <template v-if="diy_data.length > 0">
@@ -123,7 +123,7 @@
     import componentSearch from '@/components/search/search';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
-    
+
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -175,7 +175,7 @@
             componentNoData,
             componentBottomLine,
             componentGoodsBuy,
-            componentSearch
+            componentSearch,
         },
         data() {
             return {
@@ -244,6 +244,8 @@
                 video_src: '',
                 popup_width: '0rpx',
                 popup_height: '0rpx',
+                // 顶部导航是否换行
+                is_search_alone_row: false,
             };
         },
         watch: {
@@ -289,6 +291,8 @@
                     is_header_top: parseInt(this.propValue.header.com_data.style.up_slide_display) == 1 ? true : false,
                     temp_sticky_top: this.sticky_top,
                     temp_header_top: this.header_top,
+                    // 顶部导航高度是否变化--------------------------------------------------
+                    is_search_alone_row: false,
                 });
 
                 // 缓存数据
@@ -524,7 +528,7 @@
                     search_form: form,
                     hot_word_list: list,
                     search_hot_words_color: color,
-                    is_focus: true
+                    is_focus: true,
                 });
                 this.$refs.searchPopup.open();
             },
@@ -552,7 +556,7 @@
 </script>
 
 <style lang="scss" scoped>
-.search-popup {
-    z-index: 100 !important;
-}
+    .search-popup {
+        z-index: 100 !important;
+    }
 </style>

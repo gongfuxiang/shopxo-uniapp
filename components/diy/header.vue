@@ -9,7 +9,7 @@
                     <view class="header-content flex-row align-s">
                         <view class="model-top flex-1 mt-1">
                             <view class="roll pr z-i">
-                                <view class="model-head pr flex-row align-c" :style="header_style">
+                                <view class="model-head pr flex-col" :style="'height:' + (is_search_alone_row ? '132rpx' : '66rpx') + ';' + header_style">
                                     <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr padding-left-main">
                                         <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
                                             <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
@@ -22,7 +22,7 @@
                                                     </view>
                                                 </template>
                                                 <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
-                                                <template v-if="['3', '5'].includes(form.content.theme)">
+                                                <template v-if="['3', '5'].includes(form.content.theme) && !is_search_alone_row">
                                                     <view class="flex-1">
                                                         <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                     </view>
@@ -33,7 +33,7 @@
                                             <view class="flex-row align-c gap-2">
                                                 <component-choice-location :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsIconArrow="form.content.is_arrows_show == '1'" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onback="user_back_choice_location"></component-choice-location>
                                             </view>
-                                            <template v-if="['5'].includes(form.content.theme)">
+                                            <template v-if="['5'].includes(form.content.theme) && !is_search_alone_row">
                                                 <view class="flex-1">
                                                     <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                 </view>
@@ -45,6 +45,9 @@
                                                 <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color" propContainerDisplay="flex"></iconfont>
                                             </view>
                                         </view>
+                                    </view>
+                                    <view class="padding-horizontal-main">
+                                        <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                     </view>
                                 </view>
                             </view>
@@ -135,6 +138,8 @@
                 up_slide_img_style: '',
                 // 当前页面是否在底部菜单中
                 is_tabbar_pages: app.globalData.is_tabbar_pages(),
+                // 判断header的查询是否独行
+                is_search_alone_row: false,
             };
         },
         watch: {
@@ -198,6 +203,8 @@
                     header_style: menu_button_info,
                     header_background_type: header_background_type,
                     is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
+                    // is_search_alone_row: new_content.is_search_alone_row == '1',
+                    is_search_alone_row: true,
                 });
                 this.$emit('immersion-model-call-back', this.is_immersion_model);
             },
@@ -236,9 +243,6 @@
         width: 100%;
         .header-around {
             z-index: 4;
-        }
-        .header-content {
-            height: 66rpx;
         }
         .model-top {
             .roll {
