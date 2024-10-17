@@ -1,12 +1,22 @@
 <template>
     <view :class="theme_view">
-        <view v-if="propIsShowAddressChoice" class="choice-location pr" @tap="choose_user_location">
-            <view class="dis-inline-block va-m lh">
-                <iconfont name="icon-location" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
+        <view v-if="propIsShowAddressChoice" class="choice-location pr wh-auto flex-row gap-2 align-c" @tap="choose_user_location">
+            <view v-if="propIsLeftIconArrow" :class="['dis-inline-block va-m lh', { 'wh-auto': propLeftImgValue.length > 0 }]">
+                <block v-if="propLeftImgValue.length > 0">
+                    <image :src="propLeftImgValue[0].url" class="dis-block wh-auto" mode="aspectFit"></image>
+                </block>
+                <block v-else>
+                    <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
+                </block>
             </view>
             <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
-            <view v-if="propIsIconArrow" class="va-m lh dis-inline-block margin-left-xs">
-                <iconfont name="icon-arrow-bottom" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
+            <view v-if="propIsRightIconArrow" :class="['va-m lh dis-inline-block margin-left-xs', { 'wh-auto': propRightImgValue.length }]">
+                <block v-if="propRightImgValue.length > 0">
+                    <image :src="propRightImgValue[0].url" class="dis-block wh-auto" mode="aspectFit"></image>
+                </block>
+                <block v-else>
+                    <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
+                </block>
             </view>
         </view>
     </view>
@@ -58,9 +68,29 @@
                 type: String,
                 default: '24rpx',
             },
-            propIsIconArrow: {
+            propIsLeftIconArrow: {
                 type: Boolean,
                 default: true,
+            },
+            propLeftImgValue: {
+                type: Array,
+                default: [],
+            },
+            propLeftIconValue: {
+                type: String,
+                default: 'icon-location',
+            },
+            propIsRightIconArrow: {
+                type: Boolean,
+                default: true,
+            },
+            propRightImgValue: {
+                type: Array,
+                default: [],
+            },
+            propRightIconValue: {
+                type: String,
+                default: 'icon-arrow-bottom',
             },
         },
         // 页面被展示
@@ -113,5 +143,8 @@
     .choice-location {
         height: 56rpx;
         line-height: 56rpx;
+    }
+    .dis-block {
+        height: 56rpx;
     }
 </style>
