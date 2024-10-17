@@ -167,12 +167,12 @@
                         });
                     }
                 });
-            }
-        },
+            },
 
-        // 状态栏设置
-        set_navigation_bar_color() {
-            app.globalData.set_navigation_bar_color(parseInt(app.globalData.get_key_data(this.data, 'config.header.com_data.style.function_buttons_type', 0)) == 1);
+            // 状态栏设置
+            set_navigation_bar_color() {
+                app.globalData.set_navigation_bar_color(parseInt(app.globalData.get_key_data(this.data, 'config.header.com_data.style.function_buttons_type', 0)) == 1);
+            }
         }
     };
 </script>
