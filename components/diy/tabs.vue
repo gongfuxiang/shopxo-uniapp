@@ -29,8 +29,8 @@
             },
             // 置顶距离顶部高度
             propTop: {
-                type: Number,
-                default: 0,
+                type: String,
+                default: '0',
             },
             // 是否导航栏置顶
             propNavIsTop: {

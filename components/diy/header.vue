@@ -9,7 +9,7 @@
                     <view class="header-content flex-row align-s">
                         <view class="model-top flex-1 mt-1">
                             <view class="roll pr z-i">
-                                <view class="model-head pr padding-left-main padding-right-main" style="box-sizing:border-box;">
+                                <view class="model-head pr padding-left-main padding-right-main" style="box-sizing: border-box">
                                     <view class="flex-col" :style="'gap:' + form.style.data_alone_row_space * 2 + 'rpx;'">
                                         <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr" :style="header_style">
                                             <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
@@ -72,13 +72,13 @@
         </view>
         <block v-if="!is_immersion_model">
             <view v-if="!is_positon_realative" class="nav-seat" :style="top_content_style">
-                <view style="height: 66rpx"></view>
+                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space * 2 + 'rpx);' : '66rpx;')"></view>
             </view>
         </block>
         <!-- #ifndef H5 || MP-TOUTIAO -->
         <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
             <view :style="top_content_style">
-                <view style="height: 66rpx"></view>
+                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space * 2 + 'rpx);' : '66rpx;')"></view>
             </view>
         </view>
         <!-- #endif -->
@@ -125,6 +125,7 @@
                 text_style: '',
                 header_style: 'max-width:100%',
                 common_app_is_header_nav_fixed: 0,
+                // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
                 top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:12px;',
                 // #endif
@@ -138,9 +139,11 @@
                 // 顶部背景样式类别
                 header_background_type: 'color_image',
                 // #ifdef MP
+                sticky_top: bar_height + 5,
                 header_top: bar_height + 5 + 12 + 33,
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
+                sticky_top: bar_height + 7 + 12,
                 header_top: bar_height + 7 + 12 + 33,
                 // #endif
                 // #ifdef APP
@@ -155,6 +158,7 @@
                 // 判断header的查询是否独行
                 is_search_alone_row: false,
                 is_icon_alone_row: false,
+                data_alone_row_space: 0,
             };
         },
         watch: {
@@ -218,8 +222,9 @@
                     header_style: menu_button_info,
                     header_background_type: header_background_type,
                     is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
+                    data_alone_row_space: new_style.data_alone_row_space,
                     is_search_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search'),
-                    is_icon_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon')
+                    is_icon_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon'),
                 });
                 this.$emit('immersion-model-call-back', this.is_immersion_model);
             },

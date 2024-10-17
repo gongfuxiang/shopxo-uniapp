@@ -64,11 +64,20 @@
                 tabs_background: 'background:transparent',
                 custom_nav_height: 33,
                 diy_key: '',
+                // #ifdef MP
+                nav_safe_space: bar_height + 5,
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                nav_safe_space: bar_height + 7,
+                // #endif
+                // #ifdef APP
+                nav_safe_space: bar_height + 0,
+                // #endif
             };
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal + this.propTop + this.custom_nav_height >= this.tabs_top && this.top_up == '1') {
+                if (newVal + this.propTop + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
                     let new_style = this.propValue.style || {};
                     let tabs_bg = new_style.common_style.color_list;
                     let new_tabs_background = '';
@@ -82,8 +91,12 @@
                     this.setData({
                         tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
                     });
+                    console.log(1);
                 } else {
-                    this.tabs_background = 'background:transparent';
+                    this.setData({
+                        tabs_background: 'background:transparent',
+                    });
+                    console.log(2);
                 }
             },
             propkey(val) {
