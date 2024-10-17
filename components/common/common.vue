@@ -94,7 +94,9 @@
             // 显示响应方法
             on_show() {
                 //隐藏系统tabbar
-                app.globalData.system_hide_tabbar();
+                if(app.globalData.data.is_use_native_tabbar != 1) {
+                    app.globalData.system_hide_tabbar();
+                }
 
                 // 初始化配置
                 this.init_config();
@@ -145,7 +147,7 @@
             // 底部菜单初始化
             footer_init() {
                 var upd_data = {
-                    is_tabbar: app.globalData.is_tabbar_pages()
+                    is_tabbar: (app.globalData.data.is_use_native_tabbar == 1) ? false : app.globalData.is_tabbar_pages()
                 };
                 if(upd_data['is_tabbar']) {
                     upd_data['key'] = Math.random();

@@ -101,7 +101,7 @@
             // 初初始化处理
             init_handle() {
                 // 弹窗从底部弹出，获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
-                var tabbar_height = (this.propPosition == 'bottom' && app.globalData.is_tabbar_pages()) ? ((app.globalData.app_tabbar_height_value()*2)+20) : 0;
+                var tabbar_height = (app.globalData.data.is_use_native_tabbar != 1 && this.propPosition == 'bottom' && app.globalData.is_tabbar_pages()) ? ((app.globalData.app_tabbar_height_value()*2)+20) : 0;
 
                 // 左边距位置处理
                 var left = 0;

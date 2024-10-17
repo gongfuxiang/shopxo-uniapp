@@ -7,12 +7,12 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                 request_url: 'http://shopxo.com/',
-                // request_url:'https://new.shopxo.vip/',
+                // request_url: 'http://shopxo.com/',
+                 request_url:'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                 static_url: 'http://shopxo.com/',
-                // static_url:'https://new.shopxo.vip/',
+                // static_url: 'http://shopxo.com/',
+                 static_url:'https://new.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -59,6 +59,9 @@
                 ],
 
                 // 公共配置
+                // 是否使用原生菜单（0否, 1是）
+                is_use_native_tabbar: 0,
+
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
                 is_share_use_image: 1,
 
@@ -942,7 +945,8 @@
              * 当前地址是否存在底部菜单tabbar中
              */
             is_tabbar_pages(url = null) {
-                return this.is_tabbar_pages_handle(this.app_tabbar_pages(), url);
+                var pages = (this.data.is_use_native_tabbar == 1) ? this.data.system_tabbar : this.app_tabbar_pages();
+                return this.is_tabbar_pages_handle(pages, url);
             },
 
             /**
@@ -970,7 +974,9 @@
 
             // 系统底部菜单隐藏
             system_hide_tabbar() {
-                uni.hideTabBar();
+                if(this.data.is_use_native_tabbar != 1) {
+                    uni.hideTabBar();
+                }
             },
 
             /**
@@ -1177,20 +1183,35 @@
              * value    显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
              */
             set_tab_bar_badge(type, value = 0) {
-                // 数据处理
-                if ((type || null) != null) {
-                    var key = this.data.cache_tabbar_badge_key+'-'+type;
-                    if ((value || null) == null) {
-                        uni.removeStorageSync(key);
-                    } else {
-                        uni.setStorageSync(key, value);
+                // 是否使用原生菜单
+                if(this.data.is_use_native_tabbar == 1) {
+                    if(type == 'cart') {
+                        if ((value || 0) == 0) {
+                            uni.removeTabBarBadge({
+                                index: 2
+                            });
+                        } else {
+                            uni.setTabBarBadge({
+                                index: 2,
+                                text: value.toString()
+                            });
+                        }
                     }
-                }
-
-                // 更新底部菜单数据
-                var obj = this.get_page_object() || null;
-                if(obj != null && (obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null) {
-                    obj.$vm.$refs.common.footer_init();
+                } else {
+                    // 数据处理
+                    if ((type || null) != null) {
+                        var key = this.data.cache_tabbar_badge_key+'-'+type;
+                        if ((value || null) == null) {
+                            uni.removeStorageSync(key);
+                        } else {
+                            uni.setStorageSync(key, value);
+                        }
+                    }
+                    // 更新底部菜单数据
+                    var obj = this.get_page_object() || null;
+                    if(obj != null && (obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null) {
+                        obj.$vm.$refs.common.footer_init();
+                    }
                 }
             },
 
@@ -1451,6 +1472,9 @@
 
                 // 主题设置
                 self.set_theme_value(data.plugins_themestyle_data);
+
+                // 设置底部菜单
+                self.set_tabbar(data.plugins_themestyle_data);
 
                 // 用户自动登录处理
                 self.user_auto_login_handle();
@@ -2494,6 +2518,64 @@
             set_theme_value(value) {
                 // 设置主题缓存
                 uni.setStorageSync('theme', value || this.data.default_theme);
+            },
+
+            // 底部菜单设置
+            set_tabbar(theme) {
+                if(this.data.is_use_native_tabbar == 1) {
+                    // 当前主题
+                    if ((theme || null) == null) {
+                        theme = this.get_theme_value();
+                    }
+
+                    // 整体样式
+                    uni.setTabBarStyle({
+                        selectedColor: this.get_theme_color(theme),
+                        color: '#333',
+                        backgroundColor: '#fff',
+                        borderStyle: 'black'
+                    });
+
+                    // 菜单
+                    uni.setTabBarItem({
+                        index: 0,
+                        iconPath: 'static/images/common/tabbar/home.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
+                        text: i18n.t('common.home'),
+                    });
+                    uni.setTabBarItem({
+                        index: 1,
+                        iconPath: 'static/images/common/tabbar/category.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
+                        text: i18n.t('common.category'),
+                    });
+                    uni.setTabBarItem({
+                        index: 2,
+                        iconPath: 'static/images/common/tabbar/cart.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
+                        text: i18n.t('common.cart'),
+                    });
+                    uni.setTabBarItem({
+                        index: 3,
+                        iconPath: 'static/images/common/tabbar/user.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
+                        text: i18n.t('common.my'),
+                    });
+                }
+            },
+
+            // 数组分组
+            group_arry(arry, sub_group_length) {
+                let index = 0;
+                let new_arry = [];
+                if (arry.length > sub_group_length) {
+                    while (index < arry.length) {
+                        new_arry.push(arry.slice(index, (index += sub_group_length)));
+                    }
+                } else {
+                    new_arry = [arry];
+                }
+                return new_arry;
             },
 
             // 数组分组

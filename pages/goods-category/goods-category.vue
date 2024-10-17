@@ -22,7 +22,7 @@
                     </block>
                     <view class="category-container">
                         <!-- 分类内容 -->
-                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + search_height + 'px);'">
+                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + (search_height + window_bottom_height) + 'px);'">
                             <block v-if="category_show_level == 1">
                                 <!-- 一级模式 -->
                                 <scroll-view scroll-y class="ht-auto" :show-scrollbar="false">
@@ -91,7 +91,7 @@
                                     <!-- 商品列表 -->
                                     <view :class="'goods-right-content bg-white pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view class="padding-left-sm" :style="right_content_actual_style">
+                                            <view class="padding-left-main" :style="right_content_actual_style">
                                                 <!-- 操作导航 -->
                                                 <view class="goods-list-top-nav bg-white">
                                                     <!-- 排序 -->
@@ -444,6 +444,11 @@
                 popup_status: false,
                 // 获取搜索框高度
                 search_height: 0,
+                // 底部tab高度 - 只有H5下有值
+                window_bottom_height: 0,
+                // #ifdef H5
+                window_bottom_height: (app.globalData.data.is_use_native_tabbar == 1) ? (uni.getWindowInfo().windowBottom || 50) : 0,
+                // #endif
                 // 样式
                 left_content_actual_style: '',
                 right_content_actual_style: '',
@@ -679,21 +684,28 @@
 
             // 内容实际大小处理
             content_actual_size_handle() {
+                // 是否使用原生菜单
+                var left_style_value = 0;
+                var botton_style_value = 0;
+                if(app.globalData.data.is_use_native_tabbar != 1) {
+                    left_style_value = this.footer_height_value+20;
+                    botton_style_value = this.footer_height_value;
+                }
                 // 左侧
                 var left_style = '';
                 if(this.category_goods_is_show_cart_nav == 1) {
-                    left_style = 'height: calc(100% - 120rpx - '+(this.footer_height_value+20)+'rpx);';
+                    left_style = 'height: calc(100% - 120rpx - '+left_style_value+'rpx);';
                 }
                 // 右侧
                 var right_style = '';
                 if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 1) {
-                    right_style = 'padding-bottom: calc(120rpx + '+(this.footer_height_value+20)+'rpx);';
+                    right_style = 'padding-bottom: calc(120rpx + '+left_style_value+'rpx);';
                 }
                 this.setData({
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
-                    botton_nav_style: 'bottom: calc(20rpx + '+this.footer_height_value+'rpx);',
-                    cart_content_style: 'bottom: calc(150rpx + '+this.footer_height_value+'rpx);',
+                    botton_nav_style: 'bottom: calc(20rpx + '+botton_style_value+'rpx);',
+                    cart_content_style: 'bottom: calc(150rpx + '+botton_style_value+'rpx);',
                 });
             },
 

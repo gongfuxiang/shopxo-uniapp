@@ -1297,9 +1297,16 @@
 
             // 页面样式处理
             page_style_handle() {
-                var value = (this.propCartNavBottomValue > 0) ? (parseInt(this.propCartNavBottomValue*2)+20) : 20;
+                var value = 0;
+                if(app.globalData.data.is_use_native_tabbar == 1) {
+                    // #ifdef H5
+                    value += (uni.getWindowInfo().windowBottom || 50)+40;
+                    // #endif
+                } else {
+                    value += ((this.propCartNavBottomValue-8)*2)+20;
+                }
                 this.setData({
-                    bottom_fixed_style: 'bottom:'+(((this.propCartNavBottomValue-8)*2)+20)+'rpx'
+                    bottom_fixed_style: 'bottom:'+value+'rpx'
                 });
             }
         },
@@ -1530,7 +1537,7 @@
         z-index: 1002 !important;
     }
     .discount_detail-popup {
-        margin-bottom: 122rpx;
+        margin-bottom: 140rpx;
         height: calc(70vh - 122rpx);
         overflow-y: auto;
     }
