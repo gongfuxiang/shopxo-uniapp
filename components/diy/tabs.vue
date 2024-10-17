@@ -100,7 +100,7 @@
                 let new_tabs_data = JSON.parse(JSON.stringify(this.propValue));
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 // 判断选项卡是否置顶
-                let other_style = 'calc(' + this.propTop + 'px' + ' + 66rpx)';
+                let other_style = this.propTop;
 
                 let new_tabs_top_style = this.propNavIsTop || this.propTabsIsTop || new_content.tabs_top_up == '1' ? (new_content.tabs_top_up == '1' ? 'top:' + other_style + ';z-index:3;' : '') : '';
                 let new_top_up = new_content.tabs_top_up;
