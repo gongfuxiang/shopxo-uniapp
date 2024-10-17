@@ -289,14 +289,15 @@
                     // 判断顶部导航是否置顶
                     is_header_top: parseInt(this.propValue.header.com_data.style.up_slide_display) == 1 ? true : false,
                     temp_sticky_top: this.sticky_top,
-                    // temp_header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(this.propValue.header.com_data.style.data_alone_row_space || 5) * 2}rpx + ${this.propValue.header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
-                    temp_header_top: `calc(${this.sticky_top}px + 66rpx + 40rpx + 66rpx);`,
-                    header_top: `calc(${this.sticky_top}px + 66rpx + 40rpx + 66rpx);`,
+                    temp_header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(this.propValue.header.com_data.style.data_alone_row_space || 5) * 2}rpx + ${this.propValue.header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
+                    header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(this.propValue.header.com_data.style.data_alone_row_space || 5) * 2}rpx + ${this.propValue.header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
+                    // temp_header_top: `calc(${this.sticky_top}px + 66rpx + 40rpx + 66rpx);`,
+                    // header_top: `calc(${this.sticky_top}px + 66rpx + 40rpx + 66rpx);`,
                     // 顶部导航高度是否变化--------------------------------------------------
-                    // is_search_alone_row: this.propValue.header.com_data.content.data_alone_row_value.length > 0 ? true : false,
-                    // data_alone_row_space: parseInt(this.propValue.header.com_data.style.data_alone_row_space || 5),
-                    is_search_alone_row: true,
-                    data_alone_row_space: 20,
+                    is_search_alone_row: this.propValue.header.com_data.content.data_alone_row_value.length > 0 ? true : false,
+                    data_alone_row_space: parseInt(this.propValue.header.com_data.style.data_alone_row_space || 5),
+                    // is_search_alone_row: true,
+                    // data_alone_row_space: 20,
                 });
 
                 // 缓存数据

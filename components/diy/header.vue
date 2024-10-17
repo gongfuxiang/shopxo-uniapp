@@ -72,13 +72,13 @@
         </view>
         <block v-if="!is_immersion_model">
             <view v-if="!is_positon_realative" class="nav-seat" :style="top_content_style">
-                <view style="height: 66rpx"></view>
+                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space * 2 + 'rpx);' : '66rpx;')"></view>
             </view>
         </block>
         <!-- #ifndef H5 || MP-TOUTIAO -->
         <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
             <view :style="top_content_style">
-                <view style="height: 66rpx"></view>
+                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space * 2 + 'rpx);' : '66rpx;')"></view>
             </view>
         </view>
         <!-- #endif -->
@@ -155,6 +155,7 @@
                 // 判断header的查询是否独行
                 is_search_alone_row: false,
                 is_icon_alone_row: false,
+                data_alone_row_space: 0,
             };
         },
         watch: {
@@ -219,7 +220,8 @@
                     header_background_type: header_background_type,
                     is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
                     is_search_alone_row: new_content.data_alone_row_value.includes('search'),
-                    is_icon_alone_row: new_content.data_alone_row_value.includes('icon')
+                    is_icon_alone_row: new_content.data_alone_row_value.includes('icon'),
+                    data_alone_row_space: new_style.data_alone_row_space,
                 });
                 this.$emit('immersion-model-call-back', this.is_immersion_model);
             },
