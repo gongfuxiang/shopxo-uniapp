@@ -261,17 +261,17 @@
     width: 60%;
     min-height: 164rpx;
 }
-.goods-base-price-countdown .price-icon {
+.goods-base-price-countdown .price-content .price-icon {
     border-color: #fff;
     color: #fff;
     background: transparent;
 }
-.goods-base-price-countdown .sales-price,
-.goods-base-price-countdown .sales-price-unit {
+.goods-base-price-countdown .price-content .sales-price,
+.goods-base-price-countdown .price-content .sales-price-unit {
     color: #fff !important;
 }
-.goods-base-price-countdown .original-price,
-.goods-base-price-countdown .unit{
+.goods-base-price-countdown .price-content .original-price,
+.goods-base-price-countdown .price-content .unit{
     color: #ffcece !important;
 }
 .price-content .price-icon.seckill {

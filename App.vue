@@ -25,10 +25,10 @@
                 application_logo: '',
 
                 // 版本号、如: v1.0.0
-                version: 'v6.2',
+                version: 'v6.3',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.2 20240704',
+                app_version_info: 'v6.3 20241022',
 
                 // 货币价格符号
                 currency_symbol: '￥',
