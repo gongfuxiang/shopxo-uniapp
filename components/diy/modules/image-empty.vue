@@ -58,6 +58,11 @@
                         empty_style: `${this.propErrorStyle}`,
                     });
                     img_url = this.default_image;
+                } else {
+                    this.setData({
+                        empty_outer_style: '',
+                        empty_style: 'width: 100%; height: 100%;', // 有图片的时候显示为100%
+                    });
                 }
                 this.setData({
                     img_url: img_url,
