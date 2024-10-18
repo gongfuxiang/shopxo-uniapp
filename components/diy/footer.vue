@@ -44,11 +44,7 @@
             propFooterActiveIndex: {
                 type: Number,
                 default: 0,
-            },
-            propkey: {
-                type: String,
-                default: '',
-            },
+            }
         },
         data() {
             return {
@@ -78,10 +74,6 @@
             },
             // 选中索引
             propFooterActiveIndex(value, old_value) {
-                this.init();
-            },
-            propkey(val) {
-                // 初始化
                 this.init();
             },
         },
@@ -146,7 +138,7 @@
                     footer_height += safe_area_insets_bottom;
 
                     // 回调高度
-                    this.$emit('footer-height', footer_height);
+                    this.$emit('onFooterHeight', footer_height);
                 }
             },
 
@@ -155,7 +147,7 @@
                 let index = e.currentTarget.dataset.index;
                 let item = this.nav_content[index];
                 app.globalData.url_event(e);
-                this.$emit('footer-tap', index, item);
+                this.$emit('onFooterTap', index, item);
             },
         },
     };

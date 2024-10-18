@@ -157,7 +157,7 @@
         </view>
 
         <!-- 位置选择 -->
-        <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onback="user_back_choice_location"></component-choice-location>
+        <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onBack="user_back_choice_location"></component-choice-location>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>

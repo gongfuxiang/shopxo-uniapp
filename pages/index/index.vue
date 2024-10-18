@@ -4,7 +4,7 @@
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
-                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id" :propkey="diy_key">
+                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
                         <template slot="diy-bottom">
                             <!-- 结尾 -->
                             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -34,7 +34,7 @@
                             <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                                 <!-- 定位 -->
                                 <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg">
-                                    <component-choice-location @onback="user_back_choice_location"></component-choice-location>
+                                    <component-choice-location @onBack="user_back_choice_location"></component-choice-location>
                                 </view>
                                 <block v-else>
                                     <!-- logo/标题 -->
@@ -405,7 +405,6 @@
                 plugins_binding_data: null,
                 // 魔方插件
                 plugins_magic_data: null,
-                diy_key: '',
             };
         },
 
@@ -589,9 +588,6 @@
 
                         // 初始化返回公共处理
                         this.init_result_common_handle();
-                        this.setData({
-                            diy_key: Math.random().toString(),
-                        });
                     },
                     fail: () => {
                         // 轮播数据处理
@@ -715,7 +711,7 @@
             // 搜索icon扫码事件
             search_icon_event(e) {
                 app.globalData.scan_handle();
-            },
+            }
         },
     };
 </script>

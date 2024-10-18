@@ -14,12 +14,12 @@
                                             <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
                                         <view class="wh-auto ht-auto">
-                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
                                 <template v-else>
-                                    <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                    <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                                 </template>
                                 <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                                     <template v-if="item.data_style.indicator_style == 'num'">
@@ -46,12 +46,12 @@
                                         <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
                                     <view class="wh-auto ht-auto">
-                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                                     </view>
                                 </view>
                             </template>
                             <template v-else>
-                                <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @carousel_change="carousel_change($event, index)"></magic-carousel>
+                                <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                             </template>
                             <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                                 <template v-if="item.data_style.indicator_style == 'num'">
@@ -85,7 +85,7 @@
                 type: Object,
                 default: () => ({}),
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -123,7 +123,7 @@
             },
         },
         watch: {
-            propkey(val) {
+            propKey(val) {
                 // 初始化
                 this.init();
             },

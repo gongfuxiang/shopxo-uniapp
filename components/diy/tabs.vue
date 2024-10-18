@@ -4,7 +4,7 @@
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
             <view class="tabs-content wh-auto bs-bb" :style="style_container">
                 <view class="wh-auto bs-bb" :style="style_img_container">
-                    <componentDiyModulesTabsView :propValue="tabs_data" propIsTabsIcon :propStyle="propStyle" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+                    <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
                 </view>
             </view>
         </view>
@@ -46,7 +46,7 @@
                 type: String,
                 default: '',
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -88,7 +88,7 @@
                     this.get_tabs_height();
                 });
             },
-            propkey(val) {
+            propKey(val) {
                 // 初始化
                 this.init();
             },
@@ -141,12 +141,12 @@
                                 this.setData({
                                     tabs_seat_height: res.height,
                                 });
-                                this.$emit('computer-height', this.tabs_seat_height);
+                                this.$emit('onComputerHeight', this.tabs_seat_height);
                             }
                         })
                         .exec(); // 执行查询
                 } else {
-                    this.$emit('computer-height', 0);
+                    this.$emit('onComputerHeight', 0);
                 }
             },
             // 选项卡回调
@@ -156,7 +156,7 @@
                 tabs_id = this.get_tabs_id(item, index);
                 // 是否是商品分类页面
                 const is_micro_page = item.data_type == '0';
-                this.$emit('tabs-click', tabs_id, is_micro_page);
+                this.$emit('onTabsTap', tabs_id, is_micro_page);
             },
             get_tabs_id(item, index) {
                 if (item.data_type === '0') {

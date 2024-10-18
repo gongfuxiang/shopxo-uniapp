@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(data || null) != null">
             <!-- diy模块 -->
-            <componentDiy :propValue="data.config" :propDataId="data.id">
+            <componentDiy :propValue="data.config" :propDataId="data.id" @onLocationBack="user_back_choice_location">
                 <template slot="diy-bottom">
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -172,7 +172,13 @@
             // 状态栏设置
             set_navigation_bar_color() {
                 app.globalData.set_navigation_bar_color(parseInt(app.globalData.get_key_data(this.data, 'config.header.com_data.style.function_buttons_type', 0)) == 1);
-            }
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                // 重新刷新数据
+                this.get_data();
+            },
         }
     };
 </script>

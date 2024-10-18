@@ -199,7 +199,7 @@
                     active_index: index,
                     popup_status: false,
                 });
-                this.$emit('tabs-click', index, tabs_list_item);
+                this.$emit('onTabsTap', index, tabs_list_item);
             },
             // 分类选择事件
             category_check_event() {

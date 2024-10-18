@@ -7,7 +7,7 @@
             <view class="spacing-mb pr z-i cr-white">
                 <!-- 位置 -->
                 <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xl margin-top">
-                    <component-choice-location ref="choice_location" @onback="user_back_choice_location"></component-choice-location>
+                    <component-choice-location ref="choice_location" @onBack="user_back_choice_location"></component-choice-location>
                 </view>
             </view>
             <!-- 搜索 -->

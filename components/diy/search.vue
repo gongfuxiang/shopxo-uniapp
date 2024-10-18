@@ -59,7 +59,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        propkey: {
+        propKey: {
             type: String,
             default: '',
         },
@@ -79,7 +79,7 @@ export default {
         };
     },
     watch: {
-        propkey(val) {
+        propKey(val) {
             // 初始化
             this.init();
         },

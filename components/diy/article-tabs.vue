@@ -2,9 +2,9 @@
     <!-- 文章列表 -->
     <view class="article-tabs ou" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view class="oh">
-                <componentDiyArticleList :propkey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+                <componentDiyArticleList :propKey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
             </view>
         </view>
     </view>
@@ -38,11 +38,11 @@
                 default: 0,
             },
             // 顶部导航是否开启沉浸模式
-            isImmersionModel: {
+            propIsImmersionModel: {
                 type: Boolean,
                 default: false,
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -99,7 +99,7 @@
                     console.log(2);
                 }
             },
-            propkey(val) {
+            propKey(val) {
                 this.setData({
                     diy_key: val,
                 });

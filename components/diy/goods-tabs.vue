@@ -1,9 +1,9 @@
 <template>
     <view class="goods-tabs ou" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view class="oh">
-                <componentGoodsList ref="diy_goods_list" :propkey="diy_key" :propIndex="propIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+                <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
             </view>
         </view>
     </view>
@@ -43,11 +43,11 @@
                 default: 0,
             },
             // 顶部导航是否开启沉浸模式
-            isImmersionModel: {
+            propIsImmersionModel: {
                 type: Boolean,
                 default: false,
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -100,7 +100,7 @@
                     });
                 }
             },
-            propkey(val) {
+            propKey(val) {
                 // 初始化
                 this.setData({
                     diy_key: val,
