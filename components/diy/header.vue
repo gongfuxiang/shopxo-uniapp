@@ -107,7 +107,7 @@
                 default: 0,
             },
             propKey: {
-                type: String,
+                type: [String,Number],
                 default: '',
             },
         },

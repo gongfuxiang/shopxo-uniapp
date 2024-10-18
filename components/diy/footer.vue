@@ -34,7 +34,7 @@
     export default {
         props: {
             propKey: {
-                type: [Number, String],
+                type: [String,Number],
                 default: '',
             },
             propValue: {

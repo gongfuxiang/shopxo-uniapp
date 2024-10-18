@@ -141,7 +141,7 @@
                 default: '',
             },
             propKey: {
-                type: Number,
+                type: [String,Number],
                 default: 0,
             },
         },

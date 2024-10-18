@@ -76,7 +76,7 @@
                 default: true,
             },
             propKey: {
-                type: String,
+                type: [String,Number],
                 default: '',
             },
         },

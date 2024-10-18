@@ -48,7 +48,7 @@
                 default: false,
             },
             propKey: {
-                type: String,
+                type: [String,Number],
                 default: '',
             },
             propIndex: {

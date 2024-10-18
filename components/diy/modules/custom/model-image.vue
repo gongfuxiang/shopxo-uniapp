@@ -25,7 +25,7 @@
                 },
             },
             propKey: {
-                type: String,
+                type: [String,Number],
                 default: '',
             },
             propScale: {
