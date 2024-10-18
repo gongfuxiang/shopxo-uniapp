@@ -50,9 +50,9 @@
 										<div class="ring"></div>
 									</div>
 									<!-- 暂停中 -->
-									<iconfont v-else-if="item.status==='2'" name="icon-zhibo-zt margin-right-xs pr top-xs"></iconfont>
+									<iconfont v-else-if="item.status==='2'" name="icon-player-pause margin-right-xs pr top-xs"></iconfont>
 									<!-- 已结束 -->
-									<iconfont v-else-if="item.status==='3'" name="icon-zhibo-jies margin-right-xs pr top-xs"></iconfont>
+									<iconfont v-else-if="item.status==='3'" name="icon-player-end margin-right-xs pr top-xs"></iconfont>
 									<!-- 其他 -->
 									<iconfont v-else name="icon-zhibo-shixiao margin-right-xs pr top-xs"></iconfont>
 									{{item.status_name}}

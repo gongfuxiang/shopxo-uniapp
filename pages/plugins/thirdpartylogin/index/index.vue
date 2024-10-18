@@ -15,7 +15,7 @@
             </block>
             <block v-else>
                 <view class="margin-top-xxl">
-                    <iconfont name="icon-qiandao-dqxz" size="28rpx" propClass="cr-green circle"></iconfont>
+                    <iconfont name="icon-qiandao-yixuan" size="28rpx" propClass="cr-green circle"></iconfont>
                     <text class="margin-left-xs">{{$t('index.index.n0vnl6')}}</text>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">
