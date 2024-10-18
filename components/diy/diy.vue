@@ -141,8 +141,8 @@
                 default: '',
             },
             propKey: {
-                type: String,
-                default: '',
+                type: Number,
+                default: 0,
             },
         },
         components: {

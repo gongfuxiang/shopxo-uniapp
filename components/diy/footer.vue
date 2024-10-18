@@ -35,7 +35,7 @@
         props: {
             propKey: {
                 type: [Number, String],
-                default: '‘',
+                default: '',
             },
             propValue: {
                 type: Object,

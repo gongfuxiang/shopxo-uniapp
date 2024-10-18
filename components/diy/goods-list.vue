@@ -23,9 +23,12 @@
                                     <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                 </view>
                             </block>
-                            <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
+                            <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || is_show('sales_count') || is_show('plugins_view_icon') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                 <view class="flex-col gap-10 top-title">
-                                    <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
+                                    <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                        <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
+                                        <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
+                                    </view>
                                     <view v-if="show_content && is_show('plugins_view_icon') && !isEmpty(item.plugins_view_icon_data)" class="flex-row gap-5 align-c">
                                         <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
                                     </view>
@@ -113,9 +116,12 @@
                                         <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                     </view>
                                 </block>
-                                <view class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
+                                <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('plugins_view_icon') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                     <view class="flex-col gap-10 top-title">
-                                        <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
+                                        <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                            <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
+                                            <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
+                                        </view>
                                         <view v-if="show_content && is_show('plugins_view_icon') && !isEmpty(item.plugins_view_icon_data)" class="flex-row gap-5 align-c">
                                             <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
                                         </view>
@@ -219,6 +225,7 @@
                 sold_number_style: '',
                 score_style: '',
                 button_style: '',
+                simple_desc: '',
             };
         },
         computed: {
@@ -277,11 +284,12 @@
                     style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
                     style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style) : '', // 图片样式
                     // 内容样式设置
-                    title_style: this.trends_config(new_style, 'title'),
+                    title_style: this.trends_config(new_style, 'title', 'title', new_form.theme),
                     price_style: this.trends_config(new_style, 'price'),
                     sold_number_style: this.trends_config(new_style, 'sold_number'),
                     score_style: this.trends_config(new_style, 'score'),
                     button_style: this.trends_config(new_style, 'button', 'gradient'),
+                    simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                     shop_content_list: this.get_shop_content_list(new_list, new_form),
                     is_show_cart: new_form.shop_button_effect == '1',
                 });
@@ -382,14 +390,22 @@
                 return this.form.is_show.includes(index);
             },
             // 根据传递的参数，从对象中取值
-            trends_config(new_style, key, type) {
-                return this.style_config(new_style[`shop_${key}_typeface`], new_style[`shop_${key}_size`], new_style[`shop_${key}_color`], type);
+            trends_config(new_style, key, type, theme) {
+                return this.style_config(new_style[`shop_${key}_typeface`], new_style[`shop_${key}_size`], new_style[`shop_${key}_color`], type, theme);
             },
             // 根据传递的值，显示不同的内容
-            style_config(typeface, size, color, type) {
+            style_config(typeface, size, color, type, theme) {
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'gradient') {
                     style += this.button_gradient;
+                } else if (type == 'title') {
+                    if (['1', '6'].includes(theme)) {
+                        style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
+                    } else if (['0', '2', '3', '4', '5'].includes(theme)) {
+                        style += `line-height: ${size > 0 ? size + 3 : 0}px;height: ${size > 0 ? (size + 3) * 2 : 0}px;color: ${color};`;
+                    }
+                } else if (type == 'desc') {
+                    style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
                 } else {
                     style += `color: ${color};`;
                 }
