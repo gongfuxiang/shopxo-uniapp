@@ -299,7 +299,11 @@
                     // is_search_alone_row: true,
                     // data_alone_row_space: 20,
                 });
-
+                var client_value = app.globalData.application_client_type();
+                var client_brand = app.globalData.application_client_brand();
+                if (client_value == 'h5' || client_brand == 'devtools') {
+                    
+                }
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
