@@ -344,6 +344,7 @@
                 var token = user == null ? '' : user.token || '';
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
+                var client_brand = this.application_client_brand();
                 // 启动参数
                 var params = this.get_launch_cache_info();
                 var referrer = params == null ? null : params.referrer || null;
@@ -358,7 +359,7 @@
 
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&application_client_brand=' + client_brand + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
             },
 
             /**
@@ -1871,6 +1872,12 @@
                 value = this.get_system_info('platform', null, true);
                 // #endif
                 return value;
+            },
+
+            // app客户端品牌
+            application_client_brand(e) {
+                var value = this.get_system_info('brand', null, true);
+                return (value === null) ? '' : value.toLowerCase();
             },
 
             // 授权验证
