@@ -15,6 +15,7 @@
                 type: Object,
                 default: () => ({}),
             },
+            // key
             propKey: {
                 type: [String,Number],
                 default: '',
@@ -37,10 +38,13 @@
             this.init();
         },
         methods: {
+            // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
+                // 边框设置
                 let border_content = `border-bottom-style: ${new_content?.styles || 'solid'};`;
+                // 边框颜色设置
                 let border_style = `border-bottom-width: ${new_style.line_width * 2 || 2}rpx; border-bottom-color: ${new_style.line_color || 'rgba(204, 204, 204, 1)'};`;
                 this.setData({
                     style: border_content + border_style,

@@ -41,6 +41,7 @@
                 type: Object,
                 default: null,
             },
+            // 底部选中索引
             propFooterActiveIndex: {
                 type: Number,
                 default: 0,

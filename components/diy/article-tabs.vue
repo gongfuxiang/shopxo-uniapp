@@ -25,14 +25,17 @@
                 type: Object,
                 default: () => {},
             },
+            // 距离顶部高度
             propTop: {
                 type: Number,
                 default: 0,
             },
+            // 自定义导航栏高度
             propCustomNavHeight: {
                 type: Number,
                 default: 33,
             },
+            // 滚动距离
             propScrollTop: {
                 type: Number,
                 default: 0,
@@ -76,6 +79,7 @@
             };
         },
         watch: {
+            // 监听滚动距离
             propScrollTop(newVal) {
                 if (newVal + this.propTop + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
                     let new_style = this.propValue.style || {};
@@ -91,12 +95,10 @@
                     this.setData({
                         tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
                     });
-                    console.log(1);
                 } else {
                     this.setData({
                         tabs_background: 'background:transparent',
                     });
-                    console.log(2);
                 }
             },
             propKey(val) {
@@ -125,6 +127,7 @@
             });
         },
         methods: {
+            // 初始化数据
             init() {
                 let new_content = this.propValue.content || {};
                 let new_style = this.propValue.style || {};
@@ -162,6 +165,7 @@
                     tabs_style: new_tabs_style,
                 });
             },
+            // tabs切换事件
             tabs_click_event(index) {
                 let new_data = JSON.parse(JSON.stringify(this.propValue));
                 new_data.content.theme = new_data.content.article_theme;
@@ -180,7 +184,8 @@
                     article_tabs: new_data,
                     diy_key: Math.random(),
                 });
-            }, // 获取商品距离顶部的距离
+            },
+             // 获取商品距离顶部的距离
             getTop() {
                 const query = uni.createSelectorQuery().in(this);
                 query

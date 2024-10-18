@@ -60,22 +60,24 @@
         },
         methods: {
             init() {
+                // 获取内容
                 let form = this.propValue.content || {};
+                // 获取图片
                 let img_url = (form.button_img || null) != null ? (form.button_img[0] || null) : null;
                 if (img_url != null) {
                     img_url = img_url.url || null;
                 }
-                this.setData({
-                    form: form,
-                    style: this.propValue.style,
-                    img_url: img_url,
-                });
                 const { float_style, float_style_color, display_location, offset_number_percentage } = this.propValue.style;
+                // 获取当前手机的宽度和高度
                 const { windowWidth, windowHeight } = uni.getSystemInfoSync();
+                // 计算出距离左边的距离
                 let x = display_location == 'left' ? 10 : windowWidth - 60;
                 // 计算出距离顶部的距离
                 const y = Math.ceil(windowHeight * (1 - Number(offset_number_percentage)) - 20);
                 this.setData({
+                    form: form,
+                    style: this.propValue.style,
+                    img_url: img_url,
                     content_style: float_style == 'shadow' ? `box-shadow: 0 0 40rpx ${float_style_color};border-radius: 50%;` : `background-color: ${float_style_color};border-radius: 50%;`,
                     x: x,
                     y: y
@@ -83,6 +85,7 @@
             },
             url_open() {
                 const { button_jump, button_link } = this.form;
+                // 如果是指定链接，并且链接不为空的情况下跳转
                 if (button_jump == 'link' && !isEmpty(button_link)) {
                     app.globalData.url_open(button_link.page);
                 }

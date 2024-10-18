@@ -126,12 +126,13 @@
             init() {
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
+                // 获取当前手机的宽度
                 const { windowWidth } = uni.getSystemInfoSync();
                 // 将90%的宽度分成16份
                 const block = (windowWidth * 0.9) / 16;
 
                 const { common_style, actived_color } = new_style;
-                // scaleToFill 对应 cover aspectFit 对应 contain  center 对应 none
+                // scaleToFill 对应 fill aspectFit 对应 contain  aspectFill 对应 cover
                 let fit = '';
                 if (new_form.img_fit == 'contain') {
                     fit = 'aspectFit';
@@ -146,17 +147,18 @@
                     new_style: this.propValue.style,
                     seat_list: this.get_seat_list(new_form),
                     new_list: new_form.carousel_list.concat(this.get_seat_list(new_form)),
-                    popup_width: block * 16 * 2 + 'rpx',
-                    popup_height: block * 9 * 2 + 'rpx',
-                    style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 用于样式显示
-                    style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 用于样式显示
+                    popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
+                    popup_height: block * 9 * 2 + 'rpx',  // 视频的高度
+                    style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 公共样式显示
+                    style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 公共样式显示
                     img_style: radius_computer(new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(new_style), // 指示器的样式
                     dot_style: `bottom: ${ (new_style.indicator_bottom + common_style.margin_bottom + common_style.padding_bottom) * (sys_width / 390) * 2 }rpx;`, // 指示器位置
-                    img_fit: fit,
+                    img_fit: fit, // 图片风格
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑   
-                    swiper_height: new_form.height * (sys_width / 390) * 2 + 'rpx',
+                    swiper_height: new_form.height * (sys_width / 390) * 2 + 'rpx', // 轮播图高度
                 });
+                // 风格二显示逻辑
                 if (new_form.carousel_type == 'card') {
                     this.$nextTick(() => {
                         this.setData({
@@ -166,6 +168,7 @@
                         });
                     });
                 } else if (new_form.carousel_type != 'inherit') {
+                    // 风格三，四显示逻辑
                     this.$nextTick(() => {
                         this.setData({
                             nextMargin: '100rpx',
@@ -188,13 +191,16 @@
                 if (!isEmpty(indicator_radius)) {
                     styles += radius_computer(indicator_radius);
                 }
+                // 数字类型的指示器
                 if (indicator_style == 'num') {
                     styles += `color: ${color || '#DDDDDD'};`;
                     styles += `font-size: ${indicator_size * 2}rpx;`;
                 } else if (indicator_style == 'elliptic') {
+                    // 宽的指示器，按照宽高1:3 来计算
                     styles += `background: ${color || '#DDDDDD'};`;
                     styles += `width: ${indicator_size * 6}rpx; height: ${indicator_size * 2}rpx;`;
                 } else {
+                    // 圆点指示器
                     styles += `background: ${color || '#DDDDDD'};`;
                     styles += `width: ${indicator_size * 2}rpx; height: ${indicator_size * 2}rpx;`;
                 }
