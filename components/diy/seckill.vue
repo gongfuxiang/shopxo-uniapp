@@ -37,7 +37,7 @@
                     </view>
                 </view>
                 <template v-if="form.shop_style_type != '3'">
-                    <view class="flex-row flex-wrap wh-auto ht-auto" :style="{ gap: content_outer_spacing * 2 + 'rpx' }">
+                    <view class="flex-row flex-wrap wh-auto ht-auto" :style="{ gap: content_outer_spacing }">
                         <view v-for="(item, index) in sckill_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" :data-value="item.goods_url" @tap="url_event">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr">
@@ -52,10 +52,13 @@
                                     </view>
                                 </view>
                             </template>
-                            <view class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
+                            <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
                                 <view class="flex-col gap-10 wh-auto">
                                     <!-- 标题 -->
-                                    <view v-if="is_show('title')" :style="title_style" class="text-line-2 multi-text">{{ item.title }}</view>
+                                    <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                        <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                        <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
+                                    </view>
                                     <!-- 进度条 -->
                                     <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
                                             <view class="re flex-1">
@@ -114,10 +117,13 @@
                                         </view>
                                     </view>
                                 </template>
-                                <view class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
+                                <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
                                     <view class="flex-col gap-10 wh-auto">
                                         <!-- 标题 -->
-                                        <view v-if="is_show('title')" :style="title_style" class="text-line-2 multi-text">{{ item.title }}</view>
+                                        <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                            <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                            <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
+                                        </view>
                                         <!-- 进度条 -->
                                         <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
                                         <view class="re flex-1">
@@ -226,6 +232,7 @@
                 title_style: '',
                 price_style: '',
                 button_style: '',
+                simple_desc: '',
                 sckill_list: [],
             };
         },
@@ -267,8 +274,8 @@
                     const { status, time_first_text } = data.current.time;
                     this.setData({
                         seckill_time: {
-                            end_time: data.current.time_end,
-                            start_time: data.current.time_start,
+                            time_end_number: Number(data.current.time_end_number + '000'),
+                            time_start_number: Number(data.current.time_start_number + '000'),
                             status: status,
                             time_first_text: time_first_text,
                         },
@@ -290,7 +297,7 @@
                     seckill_head_img_style: this.get_seckill_head_style(new_style, '2'),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
                     style_img_container: common_img_computer(new_style.common_style),
-                    content_outer_spacing: new_style.content_outer_spacing,
+                    content_outer_spacing: new_style.content_outer_spacing + 'px',
                     content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                     content_radius: radius_computer(new_style.shop_radius),
                     content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;',
@@ -301,9 +308,10 @@
                     corner_marker: this.get_corner_marker(new_style),
                     slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.carousel_col : 1,
                     // 内容样式设置
-                    title_style: this.trends_config(new_style, 'title'),
+                    title_style: this.trends_config(new_style, 'title', 'title'),
                     price_style: this.trends_config(new_style, 'price'),
                     button_style: this.trends_config(new_style, 'button', 'gradient'),
+                    simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                     list: this.get_shop_content_list(new_list, new_form, new_style),
                     sckill_list: new_list,
                 });        
@@ -370,16 +378,12 @@
                 }
             },
             updateCountdown() {
-                let end_time = this.seckill_time.end_time;
+                let time_end_number = this.seckill_time.time_end_number;
                 if (this.seckill_time.status === 0) {
-                    end_time = this.seckill_time.start_time;
+                    time_end_number = this.seckill_time.time_start_number;
                 }
-                // 先获取秒杀结束时间
-                let time = new Date(end_time.replace(/-/g, '/')).getTime();
-                if (isEmpty(time)) {
-                    time = new Date(end_time).getTime();
-                }
-                const distance = time - new Date().getTime();
+                // 先获取秒杀结束时间和当前时间的差值
+                const distance = time_end_number - new Date().getTime();
                 // 如果倒计时结束，显示结束信息
                 if (distance <= 1000) {
                     clearInterval(this.intervalId);
@@ -387,8 +391,8 @@
                     if (this.seckill_time.status === 0) {
                         this.setData({
                             seckill_time: {
-                                end_time: this.seckill_time.time_end,
-                                start_time: this.seckill_time.time_start,
+                                time_end_number: this.seckill_time.time_end_number,
+                                time_start_number: this.seckill_time.time_start_number,
                                 status: 1,
                                 time_first_text: '距结束',
                             },
@@ -456,6 +460,10 @@
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'gradient') {
                     style += this.button_gradient;
+                } else if (type == 'title') {
+                    style += `line-height: ${size > 0 ? size + 3 : 0}px;height: ${size > 0 ? (size + 3) * 2 : 0}px;color: ${color};`;
+                } else if (type == 'desc') {
+                    style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
                 } else {
                     style += `color: ${color};`;
                 }
@@ -470,7 +478,7 @@
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.content_outer_spacing * (model_number - 1)) / model_number;
-                return `calc(${100 / model_number}% - ${gap * 2}rpx)`;
+                return `calc(${100 / model_number}% - ${gap}px)`;
             },
             is_show(index) {
                 return this.form.is_show.includes(index);
