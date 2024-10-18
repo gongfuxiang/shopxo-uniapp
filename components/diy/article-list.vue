@@ -14,7 +14,10 @@
                             </template>
                         </template>
                         <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
-                            <view class="title" :class="article_theme == '3' ? 'text-line-1 flex-1 flex-width' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                            <div class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
+                                <div class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
+                            </div>
                             <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
                                 <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                 <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
@@ -38,7 +41,10 @@
                                     <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
                                 </template>
                                 <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                    <view class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                    <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
+                                        <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                        <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
+                                    </div>
                                     <view class="flex-row jc-sb gap-8 align-e margin-top">
                                         <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                         <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
@@ -90,6 +96,8 @@
                 field_show: ['0', '1'],
                 // 文章
                 article_name: '',
+                // 描述
+                article_desc: '',
                 // 日期
                 article_date: '',
                 // 浏览量
@@ -119,6 +127,8 @@
                 article_name_height_computer: '',
                 // 文章轮播数据
                 article_carousel_list: [],
+                // 文章描述间距
+                name_desc_space: 0,
             };
         },
         watch: {
@@ -150,6 +160,7 @@
                     field_show: new_content.field_show,
                     // 样式
                     article_name: 'font-size:' + new_style.name_size + 'px;' + 'font-weight:' + new_style.name_weight + ';' + 'color:' + new_style.name_color + ';',
+                    article_desc: 'font-size:' + new_style.desc_size + 'px;' + 'color:' + new_style.desc_color + ';',
                     article_date: 'font-size:' + new_style.time_size + 'px;' + 'font-weight:' + new_style.time_weight + ';' + 'color:' + new_style.time_color + ';',
                     article_page_view: 'font-size:' + new_style.page_view_size + 'px;' + 'font-weight:' + new_style.page_view_weight + ';' + 'color:' + new_style.page_view_color + ';',
                     content_radius: radius_computer(new_style.content_radius),
@@ -160,6 +171,8 @@
                     content_spacing: `gap: ${new_style.content_spacing}px;`,
                     // 文章间距
                     article_spacing: `gap: ${new_style.article_spacing}px;`,
+                    // 描述间距
+                    name_desc_space: parseInt(new_style.name_desc_space),
                 });
                 // 文章样式
                 if (this.article_theme == '0') {
