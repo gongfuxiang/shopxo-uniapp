@@ -15,6 +15,7 @@
                 type: Object,
                 default: () => ({}),
             },
+            // key
             propKey: {
                 type: [String,Number],
                 default: '',
@@ -37,6 +38,7 @@
             this.init();
         },
         methods: {
+            // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
