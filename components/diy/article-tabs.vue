@@ -95,12 +95,10 @@
                     this.setData({
                         tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
                     });
-                    console.log(1);
                 } else {
                     this.setData({
                         tabs_background: 'background:transparent',
                     });
-                    console.log(2);
                 }
             },
             propKey(val) {
