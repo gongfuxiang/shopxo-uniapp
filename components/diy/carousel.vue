@@ -75,7 +75,7 @@
                 type: Boolean,
                 default: true,
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -113,7 +113,7 @@
             };
         },
         watch: {
-            propkey(val) {
+            propKey(val) {
                 // 初始化
                 this.init();
             },
@@ -255,7 +255,7 @@
             video_play(e) {
                 const list = e.currentTarget.dataset.value;
                 if (!isEmpty(list)) {
-                    this.$emit('video_play', list[0].url, this.popup_width, this.popup_height);
+                    this.$emit('onVideoPlay', list[0].url, this.popup_width, this.popup_height);
                 }
             },
             url_open(link) {

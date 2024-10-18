@@ -46,7 +46,7 @@
         },
         methods: {
             carousel_change(e) {
-                this.$emit('carousel_change', e);
+                this.$emit('onCarouselChange', e);
             },
             // 跳转链接
             url_event(link) {

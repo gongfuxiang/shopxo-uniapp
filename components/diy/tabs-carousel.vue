@@ -1,7 +1,7 @@
 <template>
     <view class="flex-col ou" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" @computer-height="tabs_height_event" @tabs-click="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <componentDiycarousel :propValue="propValue" :propIsCommon="false"></componentDiycarousel>
         </view>
     </view>
@@ -37,7 +37,7 @@
                 type: Boolean,
                 default: false,
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -70,7 +70,7 @@
             propTabsIsTop(value, old_value) {
                 this.init();
             },
-            propkey(val) {
+            propKey(val) {
                 // 初始化
                 this.init();
             },
@@ -87,10 +87,10 @@
                 });
             },
             tabs_click_event(tabs_id, is_micro_page) {
-                this.$emit('tabs-click', tabs_id, is_micro_page);
+                this.$emit('onTabsTap', tabs_id, is_micro_page);
             },
             tabs_height_event(height) {
-                this.$emit('computer-height', height);
+                this.$emit('onComputerHeight', height);
             },
         },
     };

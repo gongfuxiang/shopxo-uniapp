@@ -21,7 +21,7 @@
                     return {};
                 },
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -39,7 +39,7 @@
             };
         },
         watch: {
-            propkey(val) {
+            propKey(val) {
                 this.init();
             }
         },

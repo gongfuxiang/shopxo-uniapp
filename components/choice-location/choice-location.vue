@@ -126,7 +126,7 @@
                         clearInterval(self.cloice_location_timer);
 
                         // 回调事件
-                        self.$emit('onback', result);
+                        self.$emit('onBack', result);
                     }
                 }, 1000);
                 this.setData({

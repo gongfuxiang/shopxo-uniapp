@@ -33,7 +33,7 @@
                                             <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c gap-10">
                                                 <view class="flex-row align-c gap-2">
                                                     <view class="flex-1">
-                                                        <component-choice-location :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onback="user_back_choice_location"></component-choice-location>
+                                                        <component-choice-location :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
                                                     </view>
                                                 </view>
                                                 <template v-if="['5'].includes(form.content.theme) && !is_search_alone_row">
@@ -106,7 +106,7 @@
                 type: Number,
                 default: 0,
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -174,7 +174,7 @@
                     up_slide_img_style: background_computer(back),
                 });
             },
-            propkey(val) {
+            propKey(val) {
                 if ((this.propValue || null) !== null) {
                     this.init();
                 }
@@ -226,7 +226,7 @@
                     is_search_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search'),
                     is_icon_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon'),
                 });
-                this.$emit('immersion-model-call-back', this.is_immersion_model);
+                this.$emit('onImmersionModelCallBack', this.is_immersion_model);
             },
             // 获取顶部导航高度
             get_nav_height() {
@@ -243,8 +243,8 @@
                     .exec();
             },
             // 位置回调
-            user_back_choice_location(e) {
-                console.log('选择位置回调', e);
+            choice_location_back(e) {
+                this.$emit('onLocationBack', e);
             },
             // 打开地址
             url_event(e) {

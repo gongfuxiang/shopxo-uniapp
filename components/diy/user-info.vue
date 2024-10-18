@@ -40,7 +40,7 @@
                 type: Object,
                 default: () => ({}),
             },
-            propkey: {
+            propKey: {
                 type: String,
                 default: '',
             },
@@ -85,7 +85,7 @@
             };
         },
         watch: {
-            propkey(val) {
+            propKey(val) {
                 // 初始化
                 this.init();
             },
