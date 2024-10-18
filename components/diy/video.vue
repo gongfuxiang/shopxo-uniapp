@@ -41,6 +41,7 @@
             this.init();
         },
         methods: {
+            // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
@@ -53,6 +54,7 @@
                     style_img_container: common_img_computer(new_style.common_style),
                 });
             },
+            // 获取视频高度
             get_video_height(data) {
                 uni.getSystemInfo({
                     success: (res) => {

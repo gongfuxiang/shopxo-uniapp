@@ -58,6 +58,7 @@
                 type: Object,
                 default: () => {},
             },
+            // 是否需要icon
             propIsTabsIcon: {
                 type: Boolean,
                 default: false,
@@ -77,14 +78,17 @@
                 type: String,
                 default: '',
             },
+            // 层级
             propZIndex: {
                 type: Number,
                 default: 2,
             },
+            // 自定义导航栏高度
             propCustomNavHeight: {
                 type: String,
                 default: '66rpx',
             },
+            // tabs背景色
             propTabsBackground: {
                 type: String,
                 default: 'transparent',
@@ -138,7 +142,9 @@
             });
         },
         methods: {
+            // 判断是否为空
             isEmpty,
+            // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
@@ -167,6 +173,7 @@
                     tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
                 });
             },
+            // 获取选项卡主题
             get_tabs_theme(data) {
                 switch (data.tabs_theme) {
                     case '1':

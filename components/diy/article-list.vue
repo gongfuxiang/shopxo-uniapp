@@ -73,10 +73,12 @@
                 type: Object,
                 default: () => {},
             },
+            // 是否使用公共样式
             propIsCommonStyle: {
                 type: Boolean,
                 default: true,
             },
+            // 关键key
             propKey: {
                 type: String,
                 default: '',
@@ -141,6 +143,7 @@
             this.init();
         },
         methods: {
+            // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};

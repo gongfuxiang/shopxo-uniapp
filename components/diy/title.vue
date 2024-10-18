@@ -72,7 +72,9 @@
             this.init();
         },
         methods: {
+            // 判断是否为空
             isEmpty,
+            // 初始化数据
             init() {
                 this.setData({
                     form: this.propValue.content,
@@ -87,11 +89,13 @@
                 // 样式设置
                 this.set_common_styles();
             },
+            // 设置关键字
             set_keyword_list() {
                 this.setData({
                     keyword_list: this.form.keyword_list.filter((item) => item.is_show == '1'),
                 });
             },
+            // 获取公共样式
             set_common_styles() {
                 const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = this.new_style;
                 // 标题样式设置
@@ -112,6 +116,7 @@
                     style_img_container: common_img_computer(common_style),
                 });
             },
+            // 副标题样式设置
             get_subtitle_style() {
                 let common_styles = '';
                 if (this.new_style.subtitle_weight == 'italic') {

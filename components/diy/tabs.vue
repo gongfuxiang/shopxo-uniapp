@@ -42,6 +42,7 @@
                 type: Boolean,
                 default: false,
             },
+            // 样式
             propStyle: {
                 type: String,
                 default: '',
@@ -94,6 +95,7 @@
             },
         },
         methods: {
+            // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
@@ -158,6 +160,7 @@
                 const is_micro_page = item.data_type == '0';
                 this.$emit('onTabsTap', tabs_id, is_micro_page);
             },
+            // 获取 tabs_id
             get_tabs_id(item, index) {
                 if (item.data_type === '0') {
                     return index !== 0 ? item.micro_page_list?.id : '';

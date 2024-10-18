@@ -102,6 +102,7 @@
                 type: Object,
                 default: () => ({}),
             },
+            // 滚动距离
             propScrollTop: {
                 type: Number,
                 default: 0,
@@ -162,6 +163,7 @@
             };
         },
         watch: {
+            // 监听滚动距离
             propScrollTop(newVal) {
                 const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style } = this.propValue.style || {};
                 // 渐变
@@ -181,12 +183,15 @@
             },
         },
         created() {
+            // 判断是否有值初始化
             if ((this.propValue || null) !== null) {
                 this.init();
             }
         },
         methods: {
+            // 判断是否为空
             isEmpty,
+            // 初始化
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
