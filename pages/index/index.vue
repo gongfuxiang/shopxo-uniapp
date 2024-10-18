@@ -17,6 +17,9 @@
                         </template>
                     </componentDiy>
                 </block>
+                <block v-else>
+                    <component-no-data propStatus="0" propPage="home"></component-no-data>
+                </block>
             </block>
             <!-- 自动和手动模式 -->
             <block v-else>
