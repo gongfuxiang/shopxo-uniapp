@@ -408,9 +408,10 @@
             url_event(e) {
                 let index = e.currentTarget.dataset.index || 0;
                 let goods = this.list[index];
+                let split_index = 0;
                 if (this.theme == '5') {
-                    split_index = e.currentTarget.dataset.split_index || 0;
-                    goods = this.shop_content_list[index][split_index];
+                    split_index = e.currentTarget.dataset.splitIndex || 0;
+                    goods = this.shop_content_list[index].split_list[split_index];
                 }
                 app.globalData.goods_data_cache_handle(goods.id, goods);
 
@@ -425,8 +426,8 @@
                 let split_index = 0;
                 let goods = this.list[index];
                 if (this.theme == '5') {
-                    split_index = e.currentTarget.dataset.split_index || 0;
-                    goods = this.shop_content_list[index][split_index];
+                    split_index = e.currentTarget.dataset.splitIndex || 0;
+                    goods = this.shop_content_list[index].split_list[split_index];
                 }
                 if (this.form.shop_button_effect == '0') {
                     app.globalData.goods_data_cache_handle(goods.id, goods);
