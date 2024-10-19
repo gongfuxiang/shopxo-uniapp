@@ -290,8 +290,7 @@
                     } else {
                         if (new_diy_index == 0) {
                             // 判断是否开启沉浸模式和是否开启安全距离 如果为true则除了选项卡和选项卡轮播外， 第一个组件则加上安全距离样式的padding_top加上顶部导航的高度和安全距离的高度
-                            // if (header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1') {
-                            if (header_style.immersive_style == '1') {
+                            if (header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1') {
                                 let new_data = JSON.parse(JSON.stringify(item));
                                 // 顶部导航的高度
                                 let header_top_height = (header.com_data.content.data_alone_row_value.length > 0 ? parseInt(header.com_data.style.data_alone_row_space || 5) : 0) + 33 + (header.com_data.content.data_alone_row_value.length > 0 ? 33 : 0);
