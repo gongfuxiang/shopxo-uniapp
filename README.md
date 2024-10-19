@@ -1,6 +1,20 @@
-# ShopXO开源商城uniapp端
+<p align="center">
+<img src="https://shopxoserver.oss-cn-beijing.aliyuncs.com/demo/system/logo.jpg" width="360" />
+</p>
 
-#### 介绍
+<h3 align="center">ShopXO企业级免费开源电商系统 - uniapp手机端</h3>
+
+<div align="center">
+
+```shell
+如果对您有帮助，您可以点右上角 “Star” 收藏一下 ，获取第一时间更新，谢谢！
+```
+
+</div>
+
+------------------------------------------------------------------------
+
+#### 项目介绍
 * 后端支持依托于ShopXO免费开源电商系统开发的uniapp端主题源码
 * 内置8中搭配主色(可自行扩展更多配色)、自由快捷切换适应各大行业需求
 * 已支持小程序（微信、QQ、百度、支付宝、头条&抖音、快手）+ H5 + APP
@@ -19,7 +33,7 @@
 * 官方uniapp群：679303149
 
 #### 体验码
-![二维码.jpg](https://doc.shopxo.net/upload/image/20211211/1639234221484373.jpg)
+![二维码.jpg](https://shopxoserver.oss-cn-beijing.aliyuncs.com/demo/system/demo-qrcode.jpg)
 
 
 #### 当前项目源代码平台
@@ -34,6 +48,11 @@
 * GitHub：[https://github.com/gongfuxiang/shopxo](https://github.com/gongfuxiang/shopxo)
 * Coding：[https://zongzhige.coding.net/public/shopxo/shopxo/git](https://zongzhige.coding.net/public/shopxo/shopxo/git)
 * GitCode：[https://gitcode.net/zongzhige/shopxo](https://gitcode.net/zongzhige/shopxo)
+
+#### DIY装修源代码平台
+* Gitee：[https://gitee.com/zongzhige/shopxo-diy](https://gitee.com/zongzhige/shopxo-diy)
+* GitHub：[https://github.com/gongfuxiang/shopxo-diy](https://github.com/gongfuxiang/shopxo-diy)
+* GitCode：[https://gitcode.net/zongzhige/shopxo-diy](https://gitcode.net/zongzhige/shopxo-diy)
 
 #### API接口文档
 * [https://doc.shopxo.net/article/2.html](https://doc.shopxo.net/article/2.html)
