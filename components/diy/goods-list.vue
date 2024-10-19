@@ -541,7 +541,7 @@
     }
     .flex-img5 {
         width: 100%;
-        min-height: 208rpx;
+        // min-height: 208rpx;
         height: 100%;
     }
     .original-price-left {
