@@ -216,8 +216,8 @@ export function common_styles_computer (new_style) {
     return gradient_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + `overflow:hidden;`;
 }
 
-export function common_img_computer (new_style, index) {
-    return padding_computer(new_style, 1, false, index) + background_computer(new_style) + `overflow:hidden;box-sizing: border-box;`;
+export function common_img_computer (new_style, index, bool) {
+    return padding_computer(new_style, 1, false, index, bool) + background_computer(new_style) + `overflow:hidden;box-sizing: border-box;`;
 }
 /**
  * 生成一个随机数学字符串。
