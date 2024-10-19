@@ -73,6 +73,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -155,7 +160,7 @@
                     direction_type: direction,
                     interval_list: new_interval_list,
                     style_container: common_styles_computer(new_style.common_style),
-                    style_img_container: common_img_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                 });
             },
             // 跳转链接

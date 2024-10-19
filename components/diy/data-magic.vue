@@ -89,6 +89,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -146,7 +151,7 @@
                     content_img_radius: radius_computer(new_style.img_radius),
                     data_magic_list: this.get_data_magic_list(new_form.data_magic_list),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
-                    style_img_container: common_img_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                 });
                 this.$nextTick(() => {
                     const query = uni.createSelectorQuery().in(this);

@@ -25,7 +25,7 @@
                             </block>
                             <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || is_show('sales_count') || is_show('plugins_view_icon') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                 <view class="flex-col gap-10 top-title">
-                                    <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                    <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{ gap: new_style.title_simple_desc_spacing * 2 + 'rpx' }">
                                         <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                                         <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
                                     </view>
@@ -118,7 +118,7 @@
                                 </block>
                                 <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('plugins_view_icon') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                     <view class="flex-col gap-10 top-title">
-                                        <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                        <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{ gap: new_style.title_simple_desc_spacing * 2 + 'rpx' }">
                                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                                             <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
                                         </view>
@@ -187,9 +187,14 @@
                 default: true,
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
+            propDiyIndex: {
+                type: Number,
+                default: 0,
+            },
+            // 组件渲染的下标
             propIndex: {
                 type: Number,
                 default: 0,
@@ -246,7 +251,7 @@
             isEmpty,
             init() {
                 const new_form = this.propValue.content;
-                const new_style = this.propValue.style
+                const new_style = this.propValue.style;
                 let new_list = [];
                 // 指定商品并且指定商品数组不为空
                 if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
@@ -282,7 +287,7 @@
                     show_content: ['0', '1', '2'].includes(new_form.theme), // 显示除标题外的其他区域
                     text_line: this.get_text_line(new_form), // 超过多少行隐藏
                     style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
-                    style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style) : '', // 图片样式
+                    style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '', // 图片样式
                     // 内容样式设置
                     title_style: this.trends_config(new_style, 'title', 'title', new_form.theme),
                     price_style: this.trends_config(new_style, 'price'),
@@ -454,7 +459,7 @@
                     let is_success_tips = this.propIsCartParaCurve ? 0 : 1;
                     this.$emit(
                         'goods_buy_event',
-                        this.propIndex,
+                        this.propDiyIndex,
                         goods,
                         {
                             buy_event_type: 'cart',

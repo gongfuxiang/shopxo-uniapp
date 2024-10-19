@@ -171,6 +171,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -284,7 +289,7 @@
                         url_3: new_content.theme_5_static_img[0].url,
                     },
                     style_container: common_styles_computer(new_style.common_style),
-                    style_img_container: common_img_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                 });
             },
             // 领取优惠券

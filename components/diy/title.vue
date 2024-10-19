@@ -47,6 +47,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -113,7 +118,7 @@
                     title_style: `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`,
                     subtitle_style: this.get_subtitle_style(), // 副标题样式设置
                     style_container: common_styles_computer(common_style), // 通用样式区
-                    style_img_container: common_img_computer(common_style),
+                    style_img_container: common_img_computer(common_style, this.propIndex),
                 });
             },
             // 副标题样式设置
