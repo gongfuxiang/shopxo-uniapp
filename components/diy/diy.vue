@@ -214,7 +214,7 @@
                 diy_data: [],
                 page_style: '',
                 page_img_style: '',
-                is_show_footer: 0,
+                is_show_footer: false,
                 tabs_home_id: this.propDataId,
                 // 商品列表
                 goods_list: [],
@@ -266,10 +266,10 @@
             init_config(status) {
                 if ((status || false) == true) {
                     // 是否显示底部菜单，如果当前地址已经存在系统底部菜单中则不显示当前diy页面自定义的底部菜单
-                    var is_show_footer = parseInt(this.propValue.header.com_data.content.bottom_navigation_show || 0) == 1;
+                    var is_show_footer = parseInt(app.globalData.get_key_data(this.propValue, 'header.com_data.content.bottom_navigation_show', 0)) == 1;
                     var is_tabbar = app.globalData.is_tabbar_pages();
                     this.setData({
-                        is_show_footer: is_show_footer && !is_tabbar,
+                        is_show_footer: (is_show_footer && !is_tabbar) || is_tabbar,
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
