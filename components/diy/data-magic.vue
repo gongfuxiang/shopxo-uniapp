@@ -258,10 +258,6 @@
             text_style(typeface, size, color) {
                 return `font-weight:${typeface}; font-size: ${size * 2}rpx; color: ${color};`;
             },
-            // 不属于第9个，并且第9个的第一个和第二个
-            spacing_processing(index) {
-                return this.form.style_actived !== 8 || (this.form.style_actived === 8 && [0, 1].includes(index));
-            },
             // 指示器的样式
             indicator_style(item) {
                 let styles = '';
