@@ -413,7 +413,7 @@
             <block v-if="goods_bottom_nav_status">
                 <view v-if="plugins_realstore_cart_nav_status || data_loading_status == 0" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <view class="item goods-buy-nav oh round bg-white flex-row jc-sb align-c padding-sm">
+                        <view class="item goods-buy-nav oh round bg-white flex-row jc-sb align-c padding-vertical-sm padding-horizontal-xs">
                             <button class="bg-white br-white round tc text-size-md wh-auto margin-horizontal-main cr-grey" type="default" :loading="true">{{ $t('realstore-cart.realstore-cart.50lf68') }}</button>
                         </view>
                     </view>
@@ -422,7 +422,7 @@
                     <!-- 底部操作 -->
                     <view v-if="goods_bottom_opt_nav_status" class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
-                            <view class="item goods-buy-nav oh round bg-white flex-row jc-sb align-c padding-sm">
+                            <view class="item goods-buy-nav oh round bg-white flex-row jc-sb align-c padding-vertical-sm padding-horizontal-xs">
                                 <!-- 左侧集合操作 -->
                                 <view class="tc flex-row jc-sa align-c flex-width-half padding-right-sm">
                                     <!-- 是否指定返回操作 -->

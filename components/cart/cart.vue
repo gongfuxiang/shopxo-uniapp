@@ -152,7 +152,7 @@
                                 </view>
                                 <!-- 销售,自提,虚拟销售 -->
                                 <view v-else class="bottom-fixed-content item round bg-white flex-row jc-sb align-c">
-                                    <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
+                                    <view class="cart-nav-base single-text padding-left-sm flex-row jc-sb align-c">
                                         <view class="cart-selected flex-row align-c">
                                             <view @tap="selected_event" data-type="all">
                                                 <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
@@ -1417,13 +1417,13 @@
     * 操作导航
     */
     .bottom-fixed-content {
-        height: 120rpx;
+        height: 106rpx;
     }
     .cart-nav-base {
         width: calc(75% - 20rpx);
     }
     .cart-nav-submit {
-        padding-right: 24rpx;
+        padding-right: 16rpx;
         white-space: nowrap;
     }
     .cart-nav-submit .nav-btn {
