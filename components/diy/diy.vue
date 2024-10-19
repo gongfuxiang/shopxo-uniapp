@@ -78,8 +78,9 @@
                 <!-- 当前diy页面底部菜单（非公共底部菜单） -->
                 <block v-if="is_show_footer == 1">
                     <componentDiyFooter :propKey="footer_data.id" :propValue="footer_data.com_data" @onFooterHeight="footer_height_value_event"></componentDiyFooter>
-                    <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
                 </block>
+                <view v-if="is_show_footer_height && footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
+                
 
                 <!-- 底部卡槽 -->
                 <slot name="bottom"></slot>
@@ -215,6 +216,7 @@
                 page_style: '',
                 page_img_style: '',
                 is_show_footer: false,
+                is_tabbar: false,
                 tabs_home_id: this.propDataId,
                 // 商品列表
                 goods_list: [],
@@ -269,7 +271,8 @@
                     var is_show_footer = parseInt(app.globalData.get_key_data(this.propValue, 'header.com_data.content.bottom_navigation_show', 0)) == 1;
                     var is_tabbar = app.globalData.is_tabbar_pages();
                     this.setData({
-                        is_show_footer: (is_show_footer && !is_tabbar) || is_tabbar,
+                        is_show_footer: is_show_footer && !is_tabbar,
+                        is_show_footer_height: is_tabbar || is_show_footer
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
