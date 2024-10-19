@@ -63,6 +63,11 @@ export default {
             type: [String,Number],
             default: '',
         },
+        // 组件渲染的下标
+        propIndex: {
+            type: Number,
+            default: 1000000,
+        },
     },
     data() {
         return {
@@ -98,7 +103,7 @@ export default {
                 new_style: new_style,
                 style: this.get_style(new_style), // 内部样式
                 style_container: this.propIsPageSettings ? '' : common_styles_computer(common_style), // 全局样式
-                style_img_container: this.propIsPageSettings ? '' : common_img_computer(common_style),
+                style_img_container: this.propIsPageSettings ? '' : common_img_computer(common_style, this.propIndex),
                 search_button_radius: radius_computer(search_button_radius), // 按钮圆角
                 box_style: this.get_box_style(new_style, new_form), // 搜索框设置
                 search_box_style: `border: 1px solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,

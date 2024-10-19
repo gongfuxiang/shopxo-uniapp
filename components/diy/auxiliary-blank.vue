@@ -17,8 +17,13 @@
                 },
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
+            },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
             },
         },
         data() {
@@ -44,7 +49,7 @@
                 this.setData({
                     style: `height: ${height * 2}rpx;background: ${line_color || 'transparent'};`,
                     style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style),
+                    style_img_container: common_img_computer(common_style, this.propIndex),
                 });
             },
         },

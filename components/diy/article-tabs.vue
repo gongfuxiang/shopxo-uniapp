@@ -49,6 +49,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -161,7 +166,7 @@
                 this.setData({
                     article_tabs: new_data,
                     style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style),
+                    style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                 });
             },

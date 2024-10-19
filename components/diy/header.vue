@@ -10,7 +10,7 @@
                         <view class="model-top flex-1 mt-1">
                             <view class="roll pr z-i">
                                 <view class="model-head pr padding-left-main padding-right-main" style="box-sizing: border-box">
-                                    <view class="flex-col" :style="'gap:' + form.style.data_alone_row_space * 2 + 'rpx;'">
+                                    <view class="flex-col" :style="'gap:' + data_alone_row_space">
                                         <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr" :style="header_style">
                                             <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
                                                 <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
@@ -72,13 +72,13 @@
         </view>
         <block v-if="!is_immersion_model">
             <view v-if="!is_positon_realative" class="nav-seat" :style="top_content_style">
-                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space * 2 + 'rpx);' : '66rpx;')"></view>
+                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space + ');' : '66rpx;')"></view>
             </view>
         </block>
         <!-- #ifndef H5 || MP-TOUTIAO -->
         <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
             <view :style="top_content_style">
-                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space * 2 + 'rpx);' : '66rpx;')"></view>
+                <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space + ');' : '66rpx;')"></view>
             </view>
         </view>
         <!-- #endif -->
@@ -108,7 +108,7 @@
                 default: 0,
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
         },
@@ -140,11 +140,9 @@
                 // 顶部背景样式类别
                 header_background_type: 'color_image',
                 // #ifdef MP
-                sticky_top: bar_height + 5,
                 header_top: bar_height + 5 + 12 + 33,
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                sticky_top: bar_height + 7 + 12,
                 header_top: bar_height + 7 + 12 + 33,
                 // #endif
                 // #ifdef APP
@@ -159,7 +157,7 @@
                 // 判断header的查询是否独行
                 is_search_alone_row: false,
                 is_icon_alone_row: false,
-                data_alone_row_space: 0,
+                data_alone_row_space: '0rpx',
             };
         },
         watch: {
@@ -227,7 +225,7 @@
                     header_style: menu_button_info,
                     header_background_type: header_background_type,
                     is_immersion_model: header_background_type !== 'color_image' && immersive_style == '1',
-                    data_alone_row_space: new_style.data_alone_row_space,
+                    data_alone_row_space: new_style.data_alone_row_space * 2 + 'rpx',
                     is_search_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search'),
                     is_icon_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon'),
                 });

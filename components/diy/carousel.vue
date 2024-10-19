@@ -79,6 +79,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -150,7 +155,7 @@
                     popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
                     popup_height: block * 9 * 2 + 'rpx',  // 视频的高度
                     style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 公共样式显示
-                    style_img_container: this.propIsCommon ? common_img_computer(common_style) : '', // 公共样式显示
+                    style_img_container: this.propIsCommon ? common_img_computer(common_style, this.propIndex) : '', // 公共样式显示
                     img_style: radius_computer(new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(new_style), // 指示器的样式
                     dot_style: `bottom: ${ (new_style.indicator_bottom + common_style.margin_bottom + common_style.padding_bottom) * (sys_width / 390) * 2 }rpx;`, // 指示器位置
