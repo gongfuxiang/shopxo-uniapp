@@ -1,7 +1,7 @@
 <template>
     <view :style="style_container">
         <view :style="style_img_container">
-            <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: newHeight }" @change="slideChange">
+            <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: new_height }" @change="slideChange">
                 <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c">
                     <view class="bannerImg flex-row flex-wrap wh-auto" :style="space">
                         <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="group_width + nav_title_space" :data-value="item1.link.page" @tap="url_open_event">
@@ -64,7 +64,7 @@
                 img_style: '',
                 text_style: '',
                 indicator_style: '',
-                newHeight: '300rpx',
+                new_height: '300rpx',
                 actived_index: 0,
                 group_width: '',
                 nav_content_list: [],
@@ -111,7 +111,7 @@
                             if ((res || null) != null) {
                                 // data包含元素的宽度、高度等信息
                                 this.setData({
-                                    newHeight: res.height * 2 + 'rpx',
+                                    new_height: res.height + 'px',
                                 });
                             }
                         })
