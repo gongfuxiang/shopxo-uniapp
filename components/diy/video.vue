@@ -18,8 +18,13 @@
                 default: () => ({}),
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
+            },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
             },
         },
         data() {
@@ -51,7 +56,7 @@
                     video_img: new_content.video_img.length > 0 ? new_content.video_img[0].url : '',
                     video: new_content.video.length > 0 ? new_content.video[0].url : '',
                     style_container: common_styles_computer(new_style.common_style),
-                    style_img_container: common_img_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                 });
             },
             // 获取视频高度

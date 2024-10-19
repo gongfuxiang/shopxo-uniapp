@@ -53,6 +53,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -116,7 +121,7 @@
                     img_outer_spacing: new_style.image_spacing * 2 + 'rpx',
                     content_img_radius: radius_computer(new_style),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
-                    style_img_container: common_img_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     img_fit: fit,
                 });
 

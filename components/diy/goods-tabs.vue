@@ -3,7 +3,7 @@
         <view class="ou" :style="style_img_container">
             <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view class="oh">
-                <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+                <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
             </view>
         </view>
     </view>
@@ -48,9 +48,14 @@
                 default: false,
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
+            propDiyIndex: {
+                type: Number,
+                default: 0,
+            },
+            // 组件渲染的下标
             propIndex: {
                 type: Number,
                 default: 0,
@@ -156,7 +161,7 @@
                 this.setData({
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style),
+                    style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                 });
             },

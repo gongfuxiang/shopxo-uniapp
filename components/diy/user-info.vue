@@ -44,6 +44,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -146,7 +151,7 @@
                     stats_name_style: 'color:' + temp_base_data.stats_name_color + ';' + 'font-size:' + temp_base_data.stats_name_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.stats_name_weight + ';',
                     stats_number_style: 'color:' + temp_base_data.stats_number_color + ';' + 'font-size:' + temp_base_data.stats_number_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.stats_number_weight + ';',
                     style_container: common_styles_computer(new_style.common_style),
-                    style_img_container: common_img_computer(new_style.common_style),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                 });
             },
             // 跳转链接

@@ -47,6 +47,11 @@
                 type: [String,Number],
                 default: '',
             },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -76,28 +81,10 @@
             isEmpty,
             // 初始化数据
             init() {
-                this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
-                });
-                // 是否居中
-                this.setData({
-                    title_center: this.form.is_title_center == '1' ? 'jc-c' : '',
-                });
-                // 关键字
-                this.set_keyword_list();
-                // 样式设置
-                this.set_common_styles();
-            },
-            // 设置关键字
-            set_keyword_list() {
-                this.setData({
-                    keyword_list: this.form.keyword_list.filter((item) => item.is_show == '1'),
-                });
-            },
-            // 获取公共样式
-            set_common_styles() {
-                const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = this.new_style;
+                const new_form = this.propValue.content;
+                const new_style = this.propValue.style;
+                
+                const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = new_style;
                 // 标题样式设置
                 let common_styles = '';
                 if (title_weight == 'italic') {
@@ -105,26 +92,30 @@
                 } else if (title_weight == '500') {
                     common_styles += `font-weight: 500`;
                 }
-
+                // 是否居中
                 this.setData({
+                    form: new_form,
+                    new_style: new_style,
+                    title_center: new_form.is_title_center == '1' ? 'jc-c' : '',
+                    keyword_list: new_form.keyword_list.filter((item) => item.is_show == '1'), // 关键字
                     keyword_style: `color:${keyword_color}; font-size: ${keyword_size * 2}rpx;`, // 关键字设置
                     right_size: right_size * 2 + 'rpx', // 右边按钮设置
-                    right_style: `color:${right_color}; font-size: ${right_size * 2}rpx;`,
-                    title_style: `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`,
-                    subtitle_style: this.get_subtitle_style(), // 副标题样式设置
+                    right_style: `color:${right_color}; font-size: ${right_size * 2}rpx;`, //右侧按钮样式
+                    title_style: `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`, // 标题样式设置
+                    subtitle_style: this.get_subtitle_style(new_style), // 副标题样式设置
                     style_container: common_styles_computer(common_style), // 通用样式区
-                    style_img_container: common_img_computer(common_style),
+                    style_img_container: common_img_computer(common_style, this.propIndex), // 通用图片样式区
                 });
             },
             // 副标题样式设置
-            get_subtitle_style() {
+            get_subtitle_style(new_style) {
                 let common_styles = '';
-                if (this.new_style.subtitle_weight == 'italic') {
+                if (new_style.subtitle_weight == 'italic') {
                     common_styles += `font-style: italic`;
-                } else if (this.new_style.subtitle_weight == '500') {
+                } else if (new_style.subtitle_weight == '500') {
                     common_styles += `font-weight: 500`;
                 }
-                return `color:${this.new_style.subtitle_color}; font-size: ${this.new_style.subtitle_size * 2}rpx; ${common_styles}`;
+                return `color:${new_style.subtitle_color}; font-size: ${new_style.subtitle_size * 2}rpx; ${common_styles}`;
             },
             url_event(e) {
                 app.globalData.url_event(e);
