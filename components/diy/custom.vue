@@ -105,6 +105,7 @@
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     div_height: new_form.height,
                 });
+                console.log(this.propIndex);
             },
             url_event(e) {
                 app.globalData.url_event(e);
