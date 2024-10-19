@@ -109,29 +109,29 @@ export function gradient_handle (color_list, direction, is_return_all = true) {
  * @returns {string}
  */
 export function padding_computer (new_style, scale = 1, is_custom = false, index) {
-    let padding_top = '';
-    if (index == 0) {
-        // 状态栏高度
-        var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-        // #ifdef MP-TOUTIAO
-        bar_height = 0;
-        // #endif
-        let sticky_top = 0;
-        // #ifdef MP
-        sticky_top = bar_height + 5 + 12;
-        // #endif
-        // #ifdef H5 || MP-TOUTIAO
-        sticky_top = bar_height + 7 + 12;
-        // #endif
-        // #ifdef APP
-        sticky_top = bar_height + 0 + 12;
-        // #endif
-        padding_top = `padding-top:calc(${new_style.padding_top * 2 || 0}rpx + ${sticky_top}px);`;
-    }
     if (!is_custom) {
+        let padding_top = '';
+        if (index == 0) {
+            // 状态栏高度
+            var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+            // #ifdef MP-TOUTIAO
+            bar_height = 0;
+            // #endif
+            let sticky_top = 0;
+            // #ifdef MP
+            sticky_top = bar_height + 5 + 12;
+            // #endif
+            // #ifdef H5 || MP-TOUTIAO
+            sticky_top = bar_height + 7 + 12;
+            // #endif
+            // #ifdef APP
+            sticky_top = bar_height + 0 + 12;
+            // #endif
+            padding_top = `padding-top:calc(${new_style.padding_top * 2 || 0}rpx + ${sticky_top}px);`;
+        }
         return `padding: ${new_style.padding_top * 2 || 0}rpx ${new_style.padding_right * 2 || 0}rpx ${new_style.padding_bottom * 2 || 0}rpx ${new_style.padding_left * 2 || 0}rpx;` + padding_top;
     } else {
-        return `padding: ${new_style.padding_top * scale || 0}px ${new_style.padding_right * scale || 0}px ${new_style.padding_bottom * scale || 0}px ${new_style.padding_left * scale || 0}px;` + padding_top;
+        return `padding: ${new_style.padding_top * scale || 0}px ${new_style.padding_right * scale || 0}px ${new_style.padding_bottom * scale || 0}px ${new_style.padding_left * scale || 0}px;`;
     }
 }
 /**
@@ -216,8 +216,8 @@ export function common_styles_computer (new_style) {
     return gradient_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + `overflow:hidden;`;
 }
 
-export function common_img_computer (new_style, index) {
-    return padding_computer(new_style, 1, false, index) + background_computer(new_style) + `overflow:hidden;box-sizing: border-box;`;
+export function common_img_computer (new_style, index, bool) {
+    return padding_computer(new_style, 1, false, index, bool) + background_computer(new_style) + `overflow:hidden;box-sizing: border-box;`;
 }
 /**
  * 生成一个随机数学字符串。
