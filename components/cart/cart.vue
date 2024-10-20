@@ -152,7 +152,7 @@
                                 </view>
                                 <!-- 销售,自提,虚拟销售 -->
                                 <view v-else class="bottom-fixed-content item round bg-white flex-row jc-sb align-c">
-                                    <view class="cart-nav-base single-text padding-left-sm flex-row jc-sb align-c">
+                                    <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                                         <view class="cart-selected flex-row align-c">
                                             <view @tap="selected_event" data-type="all">
                                                 <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
