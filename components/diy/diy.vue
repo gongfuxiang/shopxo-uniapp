@@ -1,7 +1,7 @@
 <template>
     <view :style="page_style">
         <view :style="page_img_style">
-            <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event">
+            <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" lower-threshold="60">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
                     <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
@@ -9,7 +9,7 @@
                 <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                     <view v-for="item in tabs_data" :key="item.key">
                         <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabsCarousel>
+                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
                     </view>
                     <template v-if="is_tabs_type">
                         <template v-if="diy_data.length > 0">
@@ -45,21 +45,24 @@
                         </template>
 
                         <!-- diy底部卡槽 -->
-                        <slot name="diy-bottom"></slot>
+                        <slot name="diy-bottom-content"></slot>
+                        <slot name="diy-bottom-common"></slot>
                     </template>
                     <template v-else>
                         <!-- 商品九宫格列表 -->
-                        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-                            <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-main oh">
-                                <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
-                            </view>
-                            <template v-else>
-                                <!-- 提示信息 -->
-                                <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg"></component-no-data>
-                            </template>
-                            <!-- 结尾 -->
-                            <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
-                        </scroll-view>
+                        <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-main oh">
+                            <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                        </view>
+                        <view v-else class="pr">
+                            <!-- 提示信息 -->
+                            <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg" propLoadingLogoTop="30%"></component-no-data>
+                        </view>
+
+                        <!-- diy底部卡槽 -->
+                        <template v-if="goods_bottom_line_status">
+                            <slot name="diy-bottom-content"></slot>
+                        </template>
+                        <slot name="diy-bottom-common"></slot>
                     </template>
 
                     <view class="z-i-deep">
@@ -68,8 +71,8 @@
                         <!-- 视频播放 -->
                         <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
                             <view class="flex-col align-c jc-c gap-10">
-                                <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
-                                <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" propContainerDisplay="flex" @tap="video_close"></iconfont>
+                                <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
+                                <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#ccc" propContainerDisplay="flex" @tap="video_close"></iconfont>
                             </view>
                         </uni-popup>
                     </view>
@@ -249,8 +252,11 @@
         },
         watch: {
             propKey(val) {
-                // 初始化
-                this.init();
+                // 如果当前存在别的diy或者商品分类tabs则不更新数据
+                if((this.tabs_id || null) == null) {
+                    // 初始化
+                    this.init();
+                }
             },
         },
         created() {
@@ -358,12 +364,17 @@
                     }
                     // diy数据
                     if (bool) {
+                        uni.showLoading({
+                            title: this.$t('common.loading_in_text'),
+                            mask: true
+                        });
                         uni.request({
                             url: app.globalData.get_request_url('index', 'diy'),
                             method: 'POST',
                             data: new_params,
                             dataType: 'json',
                             success: (res) => {
+                                uni.hideLoading();
                                 // 数据处理
                                 let data = res.data.data.data;
                                 if (res.data.code == 0) {
@@ -380,10 +391,17 @@
                                     app.globalData.showToast(res.data.msg);
                                 }
                             },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
+                            },
                         });
                     } else {
                         this.setData({
                             goods_page: 1,
+                            goods_list: [],
+                            goods_list_loding_status: 1,
+                            goods_bottom_line_status: false,
                         });
                         this.get_goods_list(1);
                     }
@@ -405,8 +423,10 @@
             },
 
             // 滚动加载
-            scroll_lower(e) {
-                this.get_goods_list();
+            on_scroll_lower_event(e) {
+                if(!this.is_tabs_type) {
+                    this.get_goods_list();
+                }
             },
 
             // 查询商品
@@ -578,14 +598,16 @@
             },
             // 位置回调
             choice_location_back(e) {
-                this.$emit('onLocationBack', e);
+                // 如果存在tabs_id则表示当前有选择tab数据则仅当前模块更新，无需给上级回调位置
+                if((this.tabs_id || null) == null) {
+                    this.$emit('onLocationBack', e);
+                } else {
+                    this.tabs_click_event(this.tabs_id, this.is_tabs_type);
+                }
             },
         },
     };
 </script>
 
 <style lang="scss" scoped>
-    .search-popup {
-        z-index: 100 !important;
-    }
 </style>

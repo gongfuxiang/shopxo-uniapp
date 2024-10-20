@@ -204,8 +204,7 @@
             return {
                 form: {},
                 new_style: {},
-                is_show_cart: false,
-                propIsCartParaCurve: true,
+                propIsCartParaCurve: false,
                 list: [],
                 content_radius: '', // 圆角设置
                 content_img_radius: '', // 图片圆角设置
@@ -296,7 +295,6 @@
                     button_style: this.trends_config(new_style, 'button', 'gradient'),
                     simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                     shop_content_list: this.get_shop_content_list(new_list, new_form),
-                    is_show_cart: new_form.shop_button_effect == '1',
                 });
             },
             get_shop_content_list(list, form) {

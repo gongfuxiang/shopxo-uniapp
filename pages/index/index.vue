@@ -5,14 +5,15 @@
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
                     <componentDiy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
-                        <template slot="diy-bottom">
+                        <!-- 底部内容 -->
+                        <template slot="diy-bottom-content">
                             <!-- 结尾 -->
                             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
                             <!-- 版权信息 -->
                             <component-copyright></component-copyright>
-
-                            <!-- 公共 -->
+                        </template>
+                        <!-- 底部公共 -->
+                        <template slot="diy-bottom-common">
                             <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
                         </template>
                     </componentDiy>

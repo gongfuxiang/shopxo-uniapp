@@ -133,8 +133,8 @@
                 const new_style = this.propValue.style;
                 // 获取当前手机的宽度
                 const { windowWidth } = uni.getSystemInfoSync();
-                // 将90%的宽度分成16份
-                const block = (windowWidth * 0.9) / 16;
+                // 将80%的宽度分成16份
+                const block = (windowWidth * 0.8) / 16;
 
                 const { common_style, actived_color } = new_style;
                 // scaleToFill 对应 fill aspectFit 对应 contain  aspectFill 对应 cover

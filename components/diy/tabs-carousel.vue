@@ -2,7 +2,7 @@
     <view class="flex-col ou" :style="style_container">
         <view class="ou" :style="style_img_container">
             <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-            <componentDiycarousel :propValue="propValue" :propIsCommon="false"></componentDiycarousel>
+            <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
         </view>
     </view>
 </template>
@@ -24,7 +24,7 @@
                 },
             },
             propTop: {
-                type: Number,
+                type: [String,Number],
                 default: 0,
             },
             // 是否导航栏置顶
@@ -86,11 +86,18 @@
                     top_up: new_content.tabs_top_up,
                 });
             },
+            // tab点击
             tabs_click_event(tabs_id, is_micro_page) {
                 this.$emit('onTabsTap', tabs_id, is_micro_page);
             },
+            // tab高度
             tabs_height_event(height) {
                 this.$emit('onComputerHeight', height);
+            },
+            // 视频播放
+            video_play(url, popup_width, popup_height) {
+                console.log(url, popup_width, popup_height)
+                this.$emit('onVideoPlay', url, popup_width, popup_height);
             },
         },
     };

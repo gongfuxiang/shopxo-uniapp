@@ -1,10 +1,10 @@
 <template>
     <!-- 选项卡 -->
-    <view class="tabs pr">
+    <view class="tabs-container pr">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
             <view class="tabs-content wh-auto bs-bb" :style="style_container">
                 <view class="wh-auto bs-bb" :style="style_img_container">
-                    <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+                    <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
                 </view>
             </view>
         </view>
@@ -29,7 +29,7 @@
             },
             // 置顶距离顶部高度
             propTop: {
-                type: String,
+                type: [String,Number],
                 default: '0',
             },
             // 是否导航栏置顶
@@ -66,8 +66,6 @@
                 top_up: '0',
                 // 置顶时，选项卡高度
                 tabs_seat_height: 0,
-                // 置顶时，选项卡距离顶部高度
-                // tabs_padding_top: 0,
                 // 置顶时，选项卡样式
                 tabs_top_style: '',
             };
@@ -125,18 +123,17 @@
                     style_img_container: common_img_computer(new_style.common_style),
                     tabs_top_style: new_tabs_top_style,
                     // 判断是否置顶
-                    top_up: new_top_up,
-                    // tabs_padding_top: this.propNavIsTop || this.propTabsIsTop ? other_style : '0',
+                    top_up: new_top_up
                 });
             },
             // 获取选项卡高度
             get_tabs_height() {
                 if (this.top_up == '1') {
-                    const query = uni.createSelectorQuery();
                     // 选择我们想要的元素
+                    const query = uni.createSelectorQuery();
                     query
                         .in(this)
-                        .select('.tabs-content')
+                        .select('.tabs-top')
                         .boundingClientRect((res) => {
                             if ((res || null) != null) {
                                 // data包含元素的宽度、高度等信息
@@ -145,8 +142,7 @@
                                 });
                                 this.$emit('onComputerHeight', this.tabs_seat_height);
                             }
-                        })
-                        .exec(); // 执行查询
+                        }).exec();
                 } else {
                     this.$emit('onComputerHeight', 0);
                 }
@@ -173,7 +169,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .tabs {
+    .tabs-container {
         z-index: 3;
         .tabs-top {
             position: fixed;

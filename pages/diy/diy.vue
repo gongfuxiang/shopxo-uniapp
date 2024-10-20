@@ -3,11 +3,13 @@
         <block v-if="(data || null) != null">
             <!-- diy模块 -->
             <componentDiy :propValue="data.config" :propDataId="data.id" @onLocationBack="user_back_choice_location">
-                <template slot="diy-bottom">
+                <!-- 底部内容 -->
+                <template slot="diy-bottom-content">
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
-                    <!-- 公共 -->
+                </template>
+                <!-- 底部公共 -->
+                <template slot="diy-bottom-common">
                     <component-common ref="common"></component-common>
                 </template>
             </componentDiy>
