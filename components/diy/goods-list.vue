@@ -88,7 +88,7 @@
                                             </text>
                                         </view>
                                     </view>
-                                    <view v-if="form.is_shop_show == '1'" :data-index="index" @tap.stop="goods_button_event">
+                                    <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                         <block v-if="form.shop_type == 'text'">
                                             <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
@@ -143,7 +143,7 @@
                                                 </text>
                                             </view>
                                         </view>
-                                        <view v-if="form.is_shop_show == '1'" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
+                                        <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
                                             <block v-if="form.shop_type == 'text'">
                                                 <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                             </block>
@@ -230,13 +230,9 @@
                 score_style: '',
                 button_style: '',
                 simple_desc: '',
+                // 按钮背景色
+                button_gradient: '',
             };
-        },
-        computed: {
-            // 按钮渐变色处理
-            button_gradient() {
-                return gradient_handle(this.new_style.shop_button_color, '180deg');
-            },
         },
         watch: {
             propKey(val) {
@@ -267,6 +263,7 @@
                 const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
                 const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
                 const background = ['6'].includes(new_form.theme) ? 'bg-white ' : '';
+                const button_gradient = gradient_handle(new_style.shop_button_color, '180deg');
 
                 this.setData({
                     form: new_form,
@@ -288,11 +285,12 @@
                     style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
                     style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '', // 图片样式
                     // 内容样式设置
+                    button_gradient: button_gradient,
                     title_style: this.trends_config(new_style, 'title', 'title', new_form.theme),
                     price_style: this.trends_config(new_style, 'price'),
                     sold_number_style: this.trends_config(new_style, 'sold_number'),
                     score_style: this.trends_config(new_style, 'score'),
-                    button_style: this.trends_config(new_style, 'button', 'gradient'),
+                    button_style: this.trends_config(new_style, 'button', 'gradient')+button_gradient,
                     simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                     shop_content_list: this.get_shop_content_list(new_list, new_form),
                 });
@@ -399,9 +397,7 @@
             // 根据传递的值，显示不同的内容
             style_config(typeface, size, color, type, theme) {
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
-                if (type == 'gradient') {
-                    style += this.button_gradient;
-                } else if (type == 'title') {
+                if (type == 'title') {
                     if (['1', '6'].includes(theme)) {
                         style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
                     } else if (['0', '2', '3', '4', '5'].includes(theme)) {
@@ -556,6 +552,6 @@
     }
     .badge-style {
         top: -20rpx;
-        right: 0;
+        right: 10rpx;
     }
 </style>
