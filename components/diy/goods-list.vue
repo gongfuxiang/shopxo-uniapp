@@ -60,7 +60,7 @@
                                         </view>
                                         <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                             <block v-if="form.shop_type == 'text'">
-                                                <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                                <view class="plr-11 padding-vertical-xs round" :style="button_gradient + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                             </block>
                                             <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
                                                 <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
@@ -90,7 +90,7 @@
                                     </view>
                                     <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                         <block v-if="form.shop_type == 'text'">
-                                            <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                            <view class="plr-11 padding-vertical-xs round" :style="button_gradient + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
                                         <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
                                             <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
@@ -145,7 +145,7 @@
                                         </view>
                                         <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
                                             <block v-if="form.shop_type == 'text'">
-                                                <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                                <view class="plr-11 padding-vertical-xs round" :style="button_gradient + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                             </block>
                                             <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
                                                 <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
@@ -228,10 +228,8 @@
                 price_style: '',
                 sold_number_style: '',
                 score_style: '',
-                button_style: '',
-                simple_desc: '',
-                // 按钮背景色
                 button_gradient: '',
+                simple_desc: '',
             };
         },
         watch: {
@@ -263,7 +261,6 @@
                 const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
                 const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
                 const background = ['6'].includes(new_form.theme) ? 'bg-white ' : '';
-                const button_gradient = gradient_handle(new_style.shop_button_color, '180deg');
 
                 this.setData({
                     form: new_form,
@@ -285,12 +282,11 @@
                     style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
                     style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '', // 图片样式
                     // 内容样式设置
-                    button_gradient: button_gradient,
+                    button_gradient: gradient_handle(new_style.shop_button_color, '180deg'),
                     title_style: this.trends_config(new_style, 'title', 'title', new_form.theme),
                     price_style: this.trends_config(new_style, 'price'),
                     sold_number_style: this.trends_config(new_style, 'sold_number'),
                     score_style: this.trends_config(new_style, 'score'),
-                    button_style: this.trends_config(new_style, 'button', 'gradient')+button_gradient,
                     simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                     shop_content_list: this.get_shop_content_list(new_list, new_form),
                 });
