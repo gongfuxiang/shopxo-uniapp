@@ -1,25 +1,25 @@
 <template>
     <view class="img-magic" :style="'height:' + container_size + ';' + style_container">
-        <view class="magic-container wh-auto ht-auto pr" :style="style_img_container">
+        <view class="magic-container w h pr" :style="style_img_container">
             <view class="pr" :style="'width:calc(100% + ' + outer_spacing + ');height:calc(100% + ' + outer_spacing + ');margin:-' + spacing + ';'">
                 <!-- 风格9 -->
                 <template v-if="form.style_actived == 7">
                     <view class="flex-row align-c jc-c style-size flex-wrap">
                         <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
-                            <view class="wh-auto ht-auto"  :style="item.data_style.background_img_style">
+                            <view class="w h"  :style="item.data_style.background_img_style">
                                 <template v-if="item.data_content.data_type == 'goods'">
-                                    <view class="wh-auto ht-auto flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + ([0, 1].includes(index) ? item.data_style.chunk_padding_data : '')">
+                                    <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + ([0, 1].includes(index) ? item.data_style.chunk_padding_data : '')">
                                         <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" class="flex-col gap-5 tl">
-                                            <view class="ma-0 wh-auto text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
-                                            <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                            <view class="ma-0 w text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
+                                            <view class="ma-0 w text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
-                                        <view class="wh-auto ht-auto">
-                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" :propActived="form.style_actived" propType="product" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                        <view class="w h">
+                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
                                 <template v-else>
-                                    <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                                 </template>
                                 <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                                     <template v-if="item.data_style.indicator_style == 'num'">
@@ -38,20 +38,20 @@
                 </template>
                 <template v-else>
                     <view v-for="(item, index) in data_magic_list" :key="index" class="cube-selected cr-main" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
-                        <view class="wh-auto ht-auto"  :style="item.data_style.background_img_style">
+                        <view class="w h"  :style="item.data_style.background_img_style">
                             <template v-if="item.data_content.data_type == 'goods'">
-                                <view class="wh-auto ht-auto flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
+                                <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
                                     <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" class="flex-col gap-5 tl">
-                                        <view class="ma-0 wh-auto text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
-                                        <view class="ma-0 wh-auto text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                        <view class="ma-0 w text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
+                                        <view class="ma-0 w text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
-                                    <view class="wh-auto ht-auto">
-                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propContentImgRadius="content_img_radius" propType="product" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                    <view class="w h">
+                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                                     </view>
                                 </view>
                             </template>
                             <template v-else>
-                                <magic-carousel :propValue="item" :propContentImgRadius="content_img_radius" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
                             </template>
                             <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                                 <template v-if="item.data_style.indicator_style == 'num'">
@@ -105,7 +105,7 @@
                 // 内容圆角设置
                 content_radius: '',
                 // 图片圆角设置
-                content_img_radius: '',
+                // content_img_radius: '',
                 data_magic_list: [],
                 cubeCellWidth: 0,
                 container_size: 0,
@@ -148,7 +148,7 @@
                     outer_spacing: new_style.image_spacing * 2 + 'rpx',
                     spacing: new_style.image_spacing + 'rpx',
                     content_radius: radius_computer(new_style.data_radius),
-                    content_img_radius: radius_computer(new_style.img_radius),
+                    // content_img_radius: radius_computer(new_style.img_radius),
                     data_magic_list: this.get_data_magic_list(new_form.data_magic_list),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
@@ -190,6 +190,8 @@
                     // 商品名称和价格样式
                     data_style.goods_title_style = this.goods_trends_config(data_style, 'title');
                     data_style.goods_price_style = this.goods_trends_config(data_style, 'price');
+                    const radius = !isEmpty(data_style.img_radius) ? data_style.img_radius : { radius: 4, radius_top_left: 4, radius_top_right: 4, radius_bottom_left: 4, radius_bottom_right: 4 };
+                    data_style.get_img_radius = radius_computer(radius);
 
                     data_style.chunk_padding_data = padding_computer(data_style.chunk_padding) + 'box-sizing: border-box;';
                     data_style.heading_style = this.trends_config(data_style, 'heading');
@@ -324,5 +326,11 @@
     }
     .gap-20 {
         gap: 40rpx;
+    }
+    .w {
+        width: 100%;
+    }
+    .h {
+        height: 100%;
     }
 </style>

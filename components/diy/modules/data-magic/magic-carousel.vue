@@ -3,11 +3,11 @@
         <swiper-item v-for="(item1, index1) in propValue.data_content.list" :key="index1">
             <template v-if="propType === 'img'">
                 <view class="wh-auto ht-auto" :data-value="item1.carousel_link.page" @tap="url_event">
-                    <imageEmpty :propImageSrc="item1.carousel_img[0]" :propStyle="propContentImgRadius" :propImgFit="propValue.data_content.fit" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
+                    <imageEmpty :propImageSrc="item1.carousel_img[0]" :propStyle="propValue.data_style.get_img_radius" :propImgFit="propValue.data_content.fit" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
                 </view>
             </template>
             <template v-else>
-                <product-list-show :propOuterflex="propValue.outerflex" :propFlex="propValue.flex" :propNum="propValue.num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propContentImgRadius" @url_event="url_event"></product-list-show>
+                <product-list-show :propOuterflex="propValue.outerflex" :propFlex="propValue.flex" :propNum="propValue.num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
             </template>
         </swiper-item>
     </swiper>

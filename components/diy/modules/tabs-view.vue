@@ -10,14 +10,14 @@
                                 <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
                                 <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
                                 <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
-                                <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''" propContainerDisplay="flex"></iconfont>
+                                <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''" propContainerDisplay="flex" size="40rpx"></iconfont>
                                 <view class="bottom_line" :class="tabs_bottom_line_theme" :style="tabs_check"></view>
                             </view>
                         </view>
                     </view>
                 </scroll-view>
             </view>
-            <view class="margin-bottom-sm">
+            <view class="padding-bottom-sm" :class="tabs_theme_index == '3' ? 'pb-12' : ''">
                 <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
             </view>
         </view>
@@ -207,9 +207,9 @@
 </script>
 <style lang="scss" scoped>
     .tabs {
-        min-height: 58rpx;
+        min-height: 60rpx;
         .item {
-            padding: 0 0 10rpx 0;
+            padding: 0 0 16rpx 0;
             position: relative;
             &:first-of-type {
                 margin-left: 0;
@@ -235,7 +235,7 @@
                 position: absolute;
                 left: 0;
                 right: 0;
-                bottom: 0;
+                bottom: 8rpx;
                 display: none;
             }
             .icon {
@@ -260,7 +260,7 @@
                 }
                 .tabs-bottom-line-theme {
                     opacity: 0.6;
-                    bottom: 16rpx;
+                    bottom: 22rpx;
                     z-index: 0;
                     height: 14rpx;
                     border-radius: 0;
@@ -278,7 +278,8 @@
                 .desc {
                     border-radius: 40rpx;
                     padding: 4rpx 12rpx;
-                    display: inline-block;
+                    display: block;
+                    width: -webkit-fill-available;
                 }
             }
             &.tabs-style-3 {
@@ -292,7 +293,7 @@
                 }
             }
             &.tabs-style-4 {
-                padding-bottom: 16rpx;
+                padding-bottom: 24rpx;
                 &.active {
                     .title {
                         color: #ff2222;
@@ -332,5 +333,8 @@
     .nav-list-more .item {
         width: 20%;
         padding: 20rpx 0;
+    }
+    .pb-12 {
+        padding-bottom: 24rpx !important;
     }
 </style>
