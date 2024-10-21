@@ -35,11 +35,11 @@
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
                         <view v-if="(item.service_data || null) != null && (item.service_data.service_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.service_data.service_tel" @tap.stop="tel_event">
-                            <iconfont name="icon-md-phone" size="40rpx"></iconfont>
+                            <iconfont name="icon-md-phone" size="30rpx"></iconfont>
                         </view>
                         <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="item.lat != 0 && item.lng != 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-                            <iconfont name="icon-md-dh" size="40rpx"></iconfont>
+                            <iconfont name="icon-md-dh" size="30rpx"></iconfont>
                         </view>
                         <!-- #endif -->
                     </view>

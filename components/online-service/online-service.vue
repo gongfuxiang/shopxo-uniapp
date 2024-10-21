@@ -17,7 +17,7 @@
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
-                    <button class="chat-btn" open-type="contact" class="alipay-contact">
+                    <button class="chat-btn alipay-contact" open-type="contact">
                         <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_icon" size="40rpx*40rpx" />
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
@@ -84,7 +84,7 @@
                                     </button>
                                     <!-- #endif -->
                                     <!-- #ifdef MP-ALIPAY -->
-                                    <button class="chat-btn" open-type="contact" :class="'alipay-contact '+common_ent">
+                                    <button class="chat-btn alipay-contact" :class="common_ent" open-type="contact">
                                         <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="40rpx*40rpx" />
                                     </button>
                                     <!-- #endif -->
