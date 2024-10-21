@@ -178,9 +178,7 @@
         props: {
             propValue: {
                 type: Object,
-                default: () => {
-                    return {};
-                },
+                default: () => ({}),
             },
             propIsCommonStyle: {
                 type: Boolean,
@@ -245,55 +243,57 @@
         methods: {
             isEmpty,
             init() {
-                const new_form = this.propValue.content;
-                const new_style = this.propValue.style;
-                let new_list = [];
-                // 指定商品并且指定商品数组不为空
-                if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
-                    new_list = new_form.data_list.map((item) => ({
-                        ...item.data,
-                        title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
-                        new_cover: item.new_cover,
-                    }));
-                } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
-                    // 筛选商品并且筛选商品数组不为空
-                    new_list = new_form.data_auto_list;
-                }
-                // 最外层不同风格下的显示
-                const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
-                const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
-                const background = ['6'].includes(new_form.theme) ? 'bg-white ' : '';
-                const button_gradient = gradient_handle(new_style.shop_button_color, '180deg');
+                const new_form = this.propValue.content || null;
+                const new_style = this.propValue.style || null;
+                if(new_form != null && new_style != null) {
+                    let new_list = [];
+                    // 指定商品并且指定商品数组不为空
+                    if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
+                        new_list = new_form.data_list.map((item) => ({
+                            ...item.data,
+                            title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
+                            new_cover: item.new_cover,
+                        }));
+                    } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
+                        // 筛选商品并且筛选商品数组不为空
+                        new_list = new_form.data_auto_list;
+                    }
+                    // 最外层不同风格下的显示
+                    const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
+                    const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
+                    const background = ['6'].includes(new_form.theme) ? 'bg-white ' : '';
+                    const button_gradient = gradient_handle(new_style.shop_button_color, '180deg');
 
-                this.setData({
-                    form: new_form,
-                    new_style: new_style,
-                    outer_class: flex + wrap + background + 'oh',
-                    list: new_list,
-                    content_radius: radius_computer(new_style.shop_radius), // 圆角设置
-                    content_img_radius: radius_computer(new_style.shop_img_radius), // 图片圆角设置
-                    content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
-                    theme: new_form.theme, // 选择的风格
-                    content_outer_spacing: new_style.content_outer_spacing, // 商品间距
-                    onter_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
-                    // 不同风格下的样式
-                    layout_type: this.get_layout_type(new_form),
-                    layout_style: this.get_layout_style(new_style, new_form),
-                    content_style: this.get_content_style(new_style, new_form), // 内容区域的样式
-                    show_content: ['0', '1', '2'].includes(new_form.theme), // 显示除标题外的其他区域
-                    text_line: this.get_text_line(new_form), // 超过多少行隐藏
-                    style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
-                    style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '', // 图片样式
-                    // 内容样式设置
-                    button_gradient: button_gradient,
-                    title_style: this.trends_config(new_style, 'title', 'title', new_form.theme),
-                    price_style: this.trends_config(new_style, 'price'),
-                    sold_number_style: this.trends_config(new_style, 'sold_number'),
-                    score_style: this.trends_config(new_style, 'score'),
-                    button_style: this.trends_config(new_style, 'button', 'buy_button')+button_gradient,
-                    simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
-                    shop_content_list: this.get_shop_content_list(new_list, new_form),
-                });
+                    this.setData({
+                        form: new_form,
+                        new_style: new_style,
+                        outer_class: flex + wrap + background + 'oh',
+                        list: new_list,
+                        content_radius: radius_computer(new_style.shop_radius), // 圆角设置
+                        content_img_radius: radius_computer(new_style.shop_img_radius), // 图片圆角设置
+                        content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
+                        theme: new_form.theme, // 选择的风格
+                        content_outer_spacing: new_style.content_outer_spacing, // 商品间距
+                        onter_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
+                        // 不同风格下的样式
+                        layout_type: this.get_layout_type(new_form),
+                        layout_style: this.get_layout_style(new_style, new_form),
+                        content_style: this.get_content_style(new_style, new_form), // 内容区域的样式
+                        show_content: ['0', '1', '2'].includes(new_form.theme), // 显示除标题外的其他区域
+                        text_line: this.get_text_line(new_form), // 超过多少行隐藏
+                        style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
+                        style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '', // 图片样式
+                        // 内容样式设置
+                        button_gradient: button_gradient,
+                        title_style: this.trends_config(new_style, 'title', 'title', new_form.theme),
+                        price_style: this.trends_config(new_style, 'price'),
+                        sold_number_style: this.trends_config(new_style, 'sold_number'),
+                        score_style: this.trends_config(new_style, 'score'),
+                        button_style: this.trends_config(new_style, 'button', 'buy_button')+button_gradient,
+                        simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
+                        shop_content_list: this.get_shop_content_list(new_list, new_form),
+                    });
+                }
             },
             get_shop_content_list(list, form) {
                 // 深拷贝一下，确保不会出现问题

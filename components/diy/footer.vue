@@ -132,11 +132,12 @@
                     let footer_height = nav_height + parseInt(new_style.common_style.margin_top) + parseInt(new_style.common_style.margin_bottom);
 
                     // 底部菜单距离底部的安全距离，减去20、默认的安全距离太高了
-                    var safe_area_insets_bottom = parseInt(uni.getSystemInfoSync().safeAreaInsets.bottom);
-                    if (safe_area_insets_bottom > 0) {
-                        safe_area_insets_bottom -= 24;
+                    var safe_areaInsets = uni.getSystemInfoSync().safeAreaInsets || {};
+                    var bottom = parseInt(safe_areaInsets.bottom || 0);
+                    if (bottom > 0) {
+                        bottom -= 24;
                     }
-                    footer_height += safe_area_insets_bottom;
+                    footer_height += bottom;
 
                     // 回调高度
                     this.$emit('onFooterHeight', footer_height);

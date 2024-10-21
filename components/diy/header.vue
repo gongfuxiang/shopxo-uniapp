@@ -99,8 +99,8 @@
     export default {
         props: {
             propValue: {
-                type: Object,
-                default: () => ({}),
+                type: [String,Number,Object],
+                default: '',
             },
             // 滚动距离
             propScrollTop: {
@@ -108,7 +108,7 @@
                 default: 0,
             },
             propKey: {
-                type: [String, Number],
+                type: [String,Number],
                 default: '',
             },
         },

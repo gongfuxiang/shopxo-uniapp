@@ -181,7 +181,9 @@
                             computedStyle: ['position'],
                         })
                         .exec((e) => {
-                            resolve('sticky' === e[0].position);
+                            if((e || null) != null && (e[0] || null) != null) {
+                                resolve('sticky' === e[0].position);
+                            }
                         });
                 });
                 // #endif
