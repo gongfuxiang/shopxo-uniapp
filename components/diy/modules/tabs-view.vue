@@ -278,7 +278,8 @@
                 .desc {
                     border-radius: 40rpx;
                     padding: 4rpx 12rpx;
-                    display: inline-block;
+                    display: block;
+                    width: -webkit-fill-available;
                 }
             }
             &.tabs-style-3 {
