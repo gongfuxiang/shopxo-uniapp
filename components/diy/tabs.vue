@@ -29,7 +29,7 @@
             },
             // 置顶距离顶部高度
             propTop: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '0',
             },
             // 是否导航栏置顶
@@ -56,7 +56,7 @@
                 default: '',
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
         },
@@ -129,10 +129,10 @@
                 this.setData({
                     tabs_data: new_tabs_data,
                     style_container: this.propIsCommon ? common_styles_computer(new_style.common_style) + new_tabs_background : new_content.tabs_top_up == '1' ? new_tabs_background : '', // 如果是选项卡轮播，不需要走默认样式
-                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? margin_computer(this.propSpacingCommonStyle) + padding_computer(this.propSpacingCommonStyle) : '', // 如果是选项卡轮播，不需要走默认样式
+                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? margin_computer(this.propSpacingCommonStyle) + padding_computer(this.propSpacingCommonStyle) : 'padding-bottom:20rpx;', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
                     // 判断是否置顶
-                    top_up: new_top_up
+                    top_up: new_top_up,
                 });
             },
             // 获取选项卡高度
@@ -148,11 +148,12 @@
                                 // data包含元素的宽度、高度等信息
                                 this.setData({
                                     tabs_seat_height: res.height,
-                                    tabs_carousel_seat_height: res.height - this.propSpacingCommonStyle.padding_top - this.propSpacingCommonStyle.margin_top // 轮播选项卡置顶时去掉顶部间距
+                                    tabs_carousel_seat_height: res.height - this.propSpacingCommonStyle.padding_top - this.propSpacingCommonStyle.margin_top, // 轮播选项卡置顶时去掉顶部间距
                                 });
                                 this.$emit('onComputerHeight', this.tabs_seat_height);
                             }
-                        }).exec();
+                        })
+                        .exec();
                 } else {
                     this.$emit('onComputerHeight', 0);
                 }
