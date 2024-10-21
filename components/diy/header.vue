@@ -278,12 +278,13 @@
             }
         }
         .model-head {
-            // height: 66rpx;/
-            overflow: hidden;
             .model-head-content {
                 height: 66rpx;
                 overflow: hidden;
                 top: -1rpx;
+                /* #ifdef H5 */
+                top: 4rpx;
+                /* #endif */
             }
         }
         .model-head-icon {
