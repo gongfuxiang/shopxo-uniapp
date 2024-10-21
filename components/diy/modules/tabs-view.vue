@@ -17,7 +17,9 @@
                     </view>
                 </scroll-view>
             </view>
-            <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
+            <view class="margin-bottom-sm">
+                <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
+            </view>
         </view>
         <!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
@@ -205,6 +207,7 @@
 </script>
 <style lang="scss" scoped>
     .tabs {
+        min-height: 58rpx;
         .item {
             padding: 0 0 10rpx 0;
             position: relative;
@@ -237,9 +240,7 @@
             }
             .icon {
                 position: absolute;
-                // left: 0;
-                // right: 0;
-                bottom: 0;
+                bottom: -6rpx;
                 text-align: center;
                 font-size: 40rpx;
                 display: none;
@@ -291,7 +292,7 @@
                 }
             }
             &.tabs-style-4 {
-                padding-bottom: 36rpx;
+                padding-bottom: 16rpx;
                 &.active {
                     .title {
                         color: #ff2222;
