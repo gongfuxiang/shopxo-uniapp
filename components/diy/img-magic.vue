@@ -6,7 +6,7 @@
                 <!-- 风格3 -->
                 <template v-if="form.style_actived == 2">
                     <view class="flex-row align-c jc-c style-size">
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="three" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="three" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                         </view>
                     </view>
@@ -14,25 +14,25 @@
                 <!-- 风格9 -->
                 <template v-else-if="form.style_actived == 8">
                     <view class="flex-row align-c jc-c style-size flex-wrap">
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link.page" @tap="url_event">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                         </view>
                     </view>
                 </template>
                 <template v-else-if="form.style_actived == 10">
                     <template v-if="form.limit_size == '0'">
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
                         </view>
                     </template>
                     <template v-else>
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item) + ';height:' + form.image_height * 2 + 'rpx;'" :data-value="item.img_link.page" @tap="url_event">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item) + ';height:' + form.image_height * 2 + 'rpx;'" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                         </view>
                     </template>
                 </template>
                 <template v-else>
-                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link.page" @tap="url_event">
+                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                         <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                     </view>
                 </template>
@@ -50,7 +50,7 @@
                 default: () => ({}),
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
             // 组件渲染的下标
@@ -99,7 +99,7 @@
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
                 // 外部样式
-                const outer_spacing = `calc(100% + ${new_style.image_spacing * 2}rpx)`;
+                const outer_spacing = `calc(100% + ${new_style.image_spacing * 4}rpx)`;
                 const outer_sx = `-${new_style.image_spacing}rpx`;
                 // 图片间距设置
                 const spacing = `${new_style.image_spacing}rpx`;
@@ -107,11 +107,11 @@
                 let fit = '';
                 if (new_content.img_fit == 'contain') {
                     fit = 'aspectFit';
-                } else if (new_content.img_fit =='fill') {
+                } else if (new_content.img_fit == 'fill') {
                     fit = 'scaleToFill';
                 } else if (new_content.img_fit == 'cover') {
                     fit = 'aspectFill';
-                } 
+                }
                 const density = 4;
                 this.setData({
                     form: this.propValue.content,
