@@ -9,7 +9,7 @@
                 <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                     <view v-for="item in tabs_data" :key="item.key">
                         <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
+                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
                     </view>
                     <template v-if="is_tabs_type">
                         <template v-if="diy_data.length > 0">
@@ -253,7 +253,7 @@
         watch: {
             propKey(val) {
                 // 如果当前存在别的diy或者商品分类tabs则不更新数据
-                if((this.tabs_id || null) == null) {
+                if ((this.tabs_id || null) == null) {
                     // 初始化
                     this.init();
                 }
@@ -366,7 +366,7 @@
                     if (bool) {
                         uni.showLoading({
                             title: this.$t('common.loading_in_text'),
-                            mask: true
+                            mask: true,
                         });
                         uni.request({
                             url: app.globalData.get_request_url('index', 'diy'),
@@ -424,7 +424,7 @@
 
             // 滚动加载
             on_scroll_lower_event(e) {
-                if(!this.is_tabs_type) {
+                if (!this.is_tabs_type) {
                     this.get_goods_list();
                 }
             },
@@ -599,7 +599,7 @@
             // 位置回调
             choice_location_back(e) {
                 // 如果存在tabs_id则表示当前有选择tab数据则仅当前模块更新，无需给上级回调位置
-                if((this.tabs_id || null) == null) {
+                if ((this.tabs_id || null) == null) {
                     this.$emit('onLocationBack', e);
                 } else {
                     this.tabs_click_event(this.tabs_id, this.is_tabs_type);
@@ -609,5 +609,4 @@
     };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

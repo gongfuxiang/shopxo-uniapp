@@ -1,7 +1,7 @@
 <template>
     <view class="ou" :style="style_container">
         <view class="flex-col ou" :style="style_img_container">
-            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
         </view>
     </view>
@@ -24,7 +24,7 @@
                 },
             },
             propTop: {
-                type: [String,Number],
+                type: [String, Number],
                 default: 0,
             },
             // 是否导航栏置顶
@@ -38,7 +38,7 @@
                 default: false,
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
         },
@@ -86,7 +86,7 @@
                     spacing_common_style: {
                         padding: 0,
                         padding_top: new_style.common_style.padding_top,
-                        padding_bottom: 0,
+                        padding_bottom: 10,
                         padding_left: new_style.common_style.padding_left,
                         padding_right: new_style.common_style.padding_right,
                         margin: 0,
@@ -94,7 +94,7 @@
                         margin_bottom: 0,
                         margin_left: new_style.common_style.margin_left,
                         margin_right: new_style.common_style.margin_right,
-                    }
+                    },
                 });
             },
             // tab点击
@@ -107,7 +107,7 @@
             },
             // 视频播放
             video_play(url, popup_width, popup_height) {
-                console.log(url, popup_width, popup_height)
+                console.log(url, popup_width, popup_height);
                 this.$emit('onVideoPlay', url, popup_width, popup_height);
             },
         },

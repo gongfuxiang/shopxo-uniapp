@@ -5,7 +5,7 @@
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row">
-                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
+                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
                             <view class="nowrap flex-col jc-c align-c gap-4">
                                 <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
                                 <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
@@ -17,7 +17,7 @@
                     </view>
                 </scroll-view>
             </view>
-            <view class="padding-bottom-sm" :class="tabs_theme_index == '3' ? 'pb-12' : ''">
+            <view :class="tabs_theme_index == '3' ? 'pb-14' : (tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? '' : 'padding-bottom-sm'">
                 <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
             </view>
         </view>
@@ -157,6 +157,7 @@
                     icon: new_icon,
                     tabs_theme_style: new_tabs_theme_style,
                     tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
+                    tabs_theme_1_style: new_style.tabs_one_theme == '1',
                 });
             },
             // 获取选项卡主题
@@ -207,9 +208,8 @@
 </script>
 <style lang="scss" scoped>
     .tabs {
-        min-height: 60rpx;
         .item {
-            padding: 0 0 16rpx 0;
+            padding: 0 0 10rpx 0;
             position: relative;
             &:first-of-type {
                 margin-left: 0;
@@ -235,14 +235,15 @@
                 position: absolute;
                 left: 0;
                 right: 0;
-                bottom: 8rpx;
+                bottom: 0;
                 display: none;
             }
             .icon {
                 position: absolute;
-                bottom: -6rpx;
+                bottom: 0;
                 text-align: center;
                 font-size: 40rpx;
+                line-height: 20rpx !important;
                 display: none;
             }
             .img {
@@ -260,7 +261,7 @@
                 }
                 .tabs-bottom-line-theme {
                     opacity: 0.6;
-                    bottom: 22rpx;
+                    bottom: 16rpx;
                     z-index: 0;
                     height: 14rpx;
                     border-radius: 0;
@@ -278,8 +279,7 @@
                 .desc {
                     border-radius: 40rpx;
                     padding: 4rpx 12rpx;
-                    display: block;
-                    width: -webkit-fill-available;
+                    display: inline-block;
                 }
             }
             &.tabs-style-3 {
@@ -293,7 +293,7 @@
                 }
             }
             &.tabs-style-4 {
-                padding-bottom: 24rpx;
+                padding-bottom: 28rpx;
                 &.active {
                     .title {
                         color: #ff2222;
@@ -334,7 +334,10 @@
         width: 20%;
         padding: 20rpx 0;
     }
-    .pb-12 {
-        padding-bottom: 24rpx !important;
+    .pb-14 {
+        padding-bottom: 28rpx;
+    }
+    .pb-0 {
+        padding-bottom: 0 !important;
     }
 </style>
