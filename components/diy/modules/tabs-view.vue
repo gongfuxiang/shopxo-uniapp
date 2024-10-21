@@ -17,7 +17,7 @@
                     </view>
                 </scroll-view>
             </view>
-            <view class="margin-bottom-sm">
+            <view class="padding-bottom-sm" :class="tabs_theme_index == '3' ? 'pb-8' : ''">
                 <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
             </view>
         </view>
@@ -332,5 +332,8 @@
     .nav-list-more .item {
         width: 20%;
         padding: 20rpx 0;
+    }
+    .pb-8 {
+        padding-bottom: 16rpx !important;
     }
 </style>
