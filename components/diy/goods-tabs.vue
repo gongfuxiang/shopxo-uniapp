@@ -135,7 +135,6 @@
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
                 let new_data = JSON.parse(JSON.stringify(this.propValue));
-                this.top_up = new_content.tabs_top_up;
                 // 产品的值
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
                 new_data.content.category = new_data.content.tabs_list[0].category;
@@ -159,6 +158,7 @@
                     margin_top: 0,
                 });
                 this.setData({
+                    top_up:new_content.tabs_top_up,
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),

@@ -46,7 +46,7 @@
                 default: false,
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
             // 组件渲染的下标
@@ -137,7 +137,6 @@
                 let new_content = this.propValue.content || {};
                 let new_style = this.propValue.style || {};
                 let new_data = JSON.parse(JSON.stringify(this.propValue));
-                this.top_up = new_content.tabs_top_up;
                 new_data.content.theme = new_data.content.article_theme;
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
                 new_data.content.category = new_data.content.tabs_list[0].category;
@@ -164,6 +163,7 @@
                     margin_top: 0,
                 });
                 this.setData({
+                    top_up: new_content.tabs_top_up,
                     article_tabs: new_data,
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),
@@ -190,7 +190,7 @@
                     diy_key: Math.random(),
                 });
             },
-             // 获取商品距离顶部的距离
+            // 获取商品距离顶部的距离
             getTop() {
                 const query = uni.createSelectorQuery().in(this);
                 query
