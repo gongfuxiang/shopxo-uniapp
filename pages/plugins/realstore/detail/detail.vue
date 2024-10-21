@@ -45,8 +45,8 @@
                                     <view class="base-right flex-1 flex-width">
                                         <view v-if="is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
                                             <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_index]['name'] }}</text>
-                                            <view class="dis-inline-block va-m pr top-sm">
-                                                <iconfont name="icon-arrow-bottom" size="28rpx" color="#fff"></iconfont>
+                                            <view class="dis-inline-block va-m pr">
+                                                <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                             </view>
                                         </view>
                                         <view :class="'title fw-b text-size single-text ' + (is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">

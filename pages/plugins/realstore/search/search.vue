@@ -5,7 +5,7 @@
             <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey">
                 <!-- 位置 -->
                 <view class="nav-location flex-row align-c single-text margin-right-sm">
-                    <component-choice-location ref="choice_location" propIconLocationColor="#999" propIconArrowColor="#999" propTextMaxWidth="180rpx" @onBack="user_back_choice_location"></component-choice-location>
+                    <component-choice-location ref="choice_location" propBaseColor="#666" propTextMaxWidth="180rpx" @onBack="user_back_choice_location"></component-choice-location>
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search">

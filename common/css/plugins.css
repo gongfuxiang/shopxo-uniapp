@@ -212,6 +212,7 @@
 .plugins-realstore-data-list .item .icon-list .icon-item {
     width: 46rpx;
     height: 46rpx;
+    line-height: 46rpx;
 }
 .plugins-realstore-data-list .item .icon-item .badge-icon {
     top: -10px;
