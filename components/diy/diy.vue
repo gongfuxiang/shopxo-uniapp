@@ -320,8 +320,8 @@
                     // 判断顶部导航是否置顶
                     is_header_top: parseInt(header.com_data.style.up_slide_display) == 1 ? true : false,
                     temp_sticky_top: this.sticky_top,
-                    temp_header_top: `calc(${this.sticky_top}px + 33px + ${parseInt(header.com_data.content.data_alone_row_value.length > 0 ? header.com_data.style.data_alone_row_space || 5 : 0) * 2}rpx + ${header.com_data.content.data_alone_row_value.length > 0 ? '33px' : '0rpx'});`,
-                    header_top: `calc(${this.sticky_top}px + 33px + ${parseInt(header.com_data.content.data_alone_row_value.length > 0 ? header.com_data.style.data_alone_row_space || 5 : 0) * 2}rpx + ${header.com_data.content.data_alone_row_value.length > 0 ? '33px' : '0rpx'});`,
+                    temp_header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(header.com_data.content.data_alone_row_value.length > 0 ? header.com_data.style.data_alone_row_space || 5 : 0) * 2}rpx + ${header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
+                    header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(header.com_data.content.data_alone_row_value.length > 0 ? header.com_data.style.data_alone_row_space || 5 : 0) * 2}rpx + ${header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
                     // 顶部导航高度是否变化--------------------------------------------------
                     is_search_alone_row: header.com_data.content.data_alone_row_value.length > 0 ? true : false,
                     data_alone_row_space: parseInt(header.com_data.style.data_alone_row_space || 5),
