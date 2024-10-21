@@ -1,7 +1,7 @@
 <template>
-    <view class="flex-col ou" :style="style_container">
-        <view class="ou" :style="style_img_container">
-            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+    <view class="ou" :style="style_container">
+        <view class="flex-col ou" :style="style_img_container">
+            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
             <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
         </view>
     </view>
@@ -58,7 +58,7 @@
                     margin_left: 0,
                     margin_right: 0,
                 },
-                top_up: '0',
+                // top_up: '0',
             };
         },
         created() {
@@ -81,9 +81,20 @@
                 const new_style = this.propValue.style || {};
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
-                    style_container: `${common_styles_computer(new_style.common_style)};gap:${new_style.data_spacing * 2}rpx`,
-                    style_img_container: common_img_computer(new_style.common_style),
-                    top_up: new_content.tabs_top_up,
+                    style_container: `${common_styles_computer(new_style.common_style)};`,
+                    style_img_container: common_img_computer(new_style.common_style) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
+                    spacing_common_style: {
+                        padding: 0,
+                        padding_top: new_style.common_style.padding_top,
+                        padding_bottom: 0,
+                        padding_left: new_style.common_style.padding_left,
+                        padding_right: new_style.common_style.padding_right,
+                        margin: 0,
+                        margin_top: new_style.common_style.margin_top,
+                        margin_bottom: 0,
+                        margin_left: new_style.common_style.margin_left,
+                        margin_right: new_style.common_style.margin_right,
+                    }
                 });
             },
             // tab点击
