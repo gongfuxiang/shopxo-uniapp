@@ -2,7 +2,7 @@
     <view :class="theme_view + ' ' + propMostClass">
         <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : 'popup-hide') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
             <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
-            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="popup_content_style+this.propStyle">
+            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="popup_content_style + this.propStyle">
                 <slot></slot>
             </view>
         </view>
@@ -64,7 +64,7 @@
             },
             // 需要携带单位后缀
             propTop: {
-                type: String,
+                type: [String, Number],
                 default: '',
             },
             propBottom: {
@@ -101,7 +101,7 @@
             // 初初始化处理
             init_handle() {
                 // 弹窗从底部弹出，获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
-                var tabbar_height = (app.globalData.data.is_use_native_tabbar != 1 && this.propPosition == 'bottom' && app.globalData.is_tabbar_pages()) ? ((app.globalData.app_tabbar_height_value()*2)+20) : 0;
+                var tabbar_height = app.globalData.data.is_use_native_tabbar != 1 && this.propPosition == 'bottom' && app.globalData.is_tabbar_pages() ? app.globalData.app_tabbar_height_value() * 2 + 20 : 0;
 
                 // 左边距位置处理
                 var left = 0;
@@ -113,7 +113,7 @@
                 }
                 // #endif
                 this.setData({
-                    popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:'+tabbar_height+'rpx;',
+                    popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;',
                 });
             },
         },

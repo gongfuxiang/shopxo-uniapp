@@ -3,7 +3,7 @@
     <view :style="style_container">
         <view :style="style_img_container">
             <view class="video pr" :style="style">
-                <video :src="video" class="wh-auto ht-auto" :poster="video_img"></video>
+                <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" style="object-fit: cover"></video>
             </view>
         </view>
     </view>

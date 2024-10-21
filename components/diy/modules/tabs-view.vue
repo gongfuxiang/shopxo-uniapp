@@ -91,7 +91,7 @@
             },
             // 置顶距离顶部高度
             propTop: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '0',
             },
         },
@@ -160,10 +160,10 @@
             // 获取选项卡主题
             get_tabs_theme(data) {
                 let arr = {
-                    '1': 'tabs-style-2',
-                    '2': 'tabs-style-3',
-                    '3': 'tabs-style-4',
-                    '4': 'tabs-style-5',
+                    1: 'tabs-style-2',
+                    2: 'tabs-style-3',
+                    3: 'tabs-style-4',
+                    4: 'tabs-style-5',
                 };
                 let value = arr[data.tabs_theme];
                 return value === undefined ? 'tabs-style-1' : value;
