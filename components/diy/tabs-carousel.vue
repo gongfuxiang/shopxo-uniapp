@@ -1,7 +1,7 @@
 <template>
     <view class="ou" :style="style_container">
         <view class="flex-col ou" :style="style_img_container">
-            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @tabs-click="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
         </view>
     </view>

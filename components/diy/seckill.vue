@@ -371,7 +371,7 @@
                 return gradient_computer(gradient);
             },
             get_seckill_head_style(new_style, num) {
-                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction } = new_style;
+                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, seckill_head_padding } = new_style;
                 // 渐变
                 const gradient = { color_list: header_background_color_list, direction: header_background_direction };
                 // 背景图
@@ -379,7 +379,9 @@
                 if (num == '1') {
                     return gradient_computer(gradient);
                 } else {
-                    return background_computer(back);
+                    // 秒杀头部内间距设置， 没有的时候默认15px
+                    const padding = !isEmpty(seckill_head_padding) ? seckill_head_padding : { padding: 0, padding_top: 15, padding_bottom: 15, padding_left: 13, padding_right: 13};
+                    return background_computer(back) + padding_computer(padding);
                 }
             },
             updateCountdown() {
