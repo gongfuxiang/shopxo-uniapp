@@ -47,10 +47,10 @@
         methods: {
             carousel_change(e) {
                 this.$emit('onCarouselChange', e);
-            },
+            },      
             // 跳转链接
-            url_event(link) {
-                app.globalData.url_event(link);
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };

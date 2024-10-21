@@ -98,11 +98,12 @@
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
+                const new_style_spacing = new_content.style_actived === 10 ? 0 : new_style.image_spacing;
                 // 外部样式
-                const outer_spacing = `calc(100% + ${new_style.image_spacing * 4}rpx)`;
-                const outer_sx = `-${new_style.image_spacing}rpx`;
+                const outer_spacing = `calc(100% + ${new_style_spacing * 4}rpx)`;
+                const outer_sx = `-${new_style_spacing}rpx`;
                 // 图片间距设置
-                const spacing = `${new_style.image_spacing}rpx`;
+                const spacing = `${new_style_spacing}rpx`;
                 // scaleToFill 对应 cover aspectFit 对应 contain  center 对应 none
                 let fit = '';
                 if (new_content.img_fit == 'contain') {
@@ -118,7 +119,7 @@
                     new_style: this.propValue.style,
                     outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx};`,
                     img_spacing: `padding:${spacing};`,
-                    img_outer_spacing: new_style.image_spacing * 2 + 'rpx',
+                    img_outer_spacing: new_style_spacing * 2 + 'rpx',
                     content_img_radius: radius_computer(new_style),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
