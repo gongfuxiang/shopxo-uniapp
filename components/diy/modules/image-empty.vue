@@ -1,6 +1,6 @@
 <template>
     <view :class="['oh img_wh', propClass]" :style="empty_outer_style + propStyle">
-        <image :src="img_url" :mode="propImgFit" :style="empty_style" />
+        <image :src="img_url" :mode="propImgFit" :style="empty_style + 'display: block;'" />
     </view>
 </template>
 
