@@ -12,9 +12,15 @@
                                 <view class="model-head pr padding-left-main padding-right-main" style="box-sizing: border-box">
                                     <view class="flex-col" :style="'gap:' + data_alone_row_space">
                                         <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr" :style="header_style">
+                                            <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                                            <!-- #ifndef MP-ALIPAY -->
                                             <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
                                                 <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
                                             </view>
+                                            <!-- #endif -->
+                                            <!-- #ifdef MP-ALIPAY -->
+                                            <view class="dis-inline-block padding-left-sm"></view>
+                                            <!-- #endif -->
                                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                                 <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                     <template v-if="['2', '3'].includes(form.content.theme)">
@@ -209,7 +215,7 @@
                 // 小程序下，获取小程序胶囊的宽度
                 let menu_button_info = 'max-width:100%';
                 let new_text_style = `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`;
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
+                // #ifdef MP
                 const custom = uni.getMenuButtonBoundingClientRect();
                 menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
                 new_text_style += `right:-${custom.width + 10}px;`;

@@ -4,7 +4,7 @@
         <component-cart ref="cart" :propCartNavBottomValue="footer_height_value"></component-cart>
 
         <!-- 公共 -->
-        <component-common ref="common" @footer-height="footer_height_value_event" :propIsFooterSeat="false"></component-common>
+        <component-common ref="common" @onFooterHeight="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 <script>
