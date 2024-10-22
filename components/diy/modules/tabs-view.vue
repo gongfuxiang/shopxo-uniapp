@@ -287,7 +287,7 @@
                     .title {
                         background: #ff2222;
                         border-radius: 40rpx;
-                        padding: 4rpx 24rpx;
+                        padding: 12rpx 24rpx;
                         color: #fff;
                     }
                 }
