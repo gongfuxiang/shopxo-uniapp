@@ -26,7 +26,7 @@
                         </view>
                     </view>
                     <view v-if="(plugins_realstore_info.buy_use_type_list || null) != null && plugins_realstore_info.buy_use_type_list.length > 0" class="pa top-0 right-0 padding-main cp" @tap="realstore_buy_type_switch_event">
-                        <text class="cr-base">{{ plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name'] }}</text>
+                        <text class="cr-base va-m">{{ plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name'] }}</text>
                         <view class="dis-inline-block va-m margin-left-xs">
                             <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
@@ -34,7 +34,7 @@
                 </view>
             </block>
             <block v-else>
-                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || APP -->
+                <!-- #ifndef MP-TOUTIAO -->
                 <component-nav-back propClass="bg-white" propColor="#333" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
@@ -46,10 +46,10 @@
         </block>
         <block v-else>
             <!-- 购物车商品列表 -->
-            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - ' + window_top + ' - ' + window_bottom + ' - '+(cart_type_value == 'realstore' ? '180rpx' : '0rpx') + ' - ' + (status_bar_height + 5) + 'px);'">
+            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '')" @scrolltolower="scroll_lower" lower-threshold="60" :style="scroll_style">
                 <view class="content">
                     <!-- 数据列表 -->
-                    <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss ' + (propSourceType == 'page' ? 'bottom-line-exclude ' : '') + (cart_type_value == 'realstore' ? '' : 'padding-top-main')">
+                    <view v-if="data_list.length > 0" class="padding-horizontal-main padding-bottom-xsss">
                         <uni-swipe-action>
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
@@ -402,12 +402,7 @@
                 discount_detail_goods_list_status: false,
                 // 预下单计算开关
                 is_cart_show_discount: 0,
-                window_bottom: '0rpx',
-                window_top: '40px',
-                // #ifdef H5
-                window_bottom: '100rpx',
-                window_top: '100rpx',
-                // #endif
+                scroll_style: '',
                 // 底部购买导航样式
                 bottom_fixed_style: ''
             };
@@ -626,6 +621,9 @@
                         setTimeout(function () {
                             app.globalData.page_share_handle();
                         }, 3000);
+
+                        // 页面样式处理
+                        this.page_style_handle();
                     },
                     fail: () => {
                         this.setData({
@@ -634,7 +632,9 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        
+                        // 页面样式处理
+                        this.page_style_handle();
                     },
                 });
             },
@@ -1208,6 +1208,8 @@
                     });
                     // 重新加载数据
                     this.get_data();
+                    // 页面样式处理
+                    this.page_style_handle();
                 }
             },
 
@@ -1306,10 +1308,11 @@
                     value += ((this.propCartNavBottomValue-8)*2)+20;
                 }
                 this.setData({
-                    bottom_fixed_style: 'bottom:'+value+'rpx'
+                    bottom_fixed_style: 'bottom:'+value+'rpx',
+                    scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 220 : 80)-(this.is_first == 1 ? 100 : 0))+'rpx)',
                 });
             }
-        },
+        }
     };
 </script>
 <style scoped>
@@ -1320,28 +1323,10 @@
         height: 100vh;
     }
     .scroll-box .content {
-        padding-bottom: 160rpx;
-        /* #ifdef H5 */
         padding-bottom: 60rpx;
-        /* #endif */
     }
     .scroll-box.cart .content {
-        padding-bottom: 300rpx;
-        /* #ifdef H5 */
-        padding-bottom: 200rpx;
-        /* #endif */
-    }
-    .scroll-box.realstore .content {
-        padding-bottom: 120rpx;
-        /* #ifdef H5 */
-        padding-bottom: 40rpx;
-        /* #endif */
-    }
-    .scroll-box.cart.realstore .content {
-        padding-bottom: 260rpx;
-        /* #ifdef H5 */
-        padding-bottom: 160rpx;
-        /* #endif */
+        padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
     }
     .cart-goods-title {
         line-height: 44rpx;
