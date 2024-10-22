@@ -192,7 +192,7 @@
     }
 
     .dot .dot-item {
-        margin: 0 12rpx;
+        margin: 0 6rpx;
     }
 
     .gap-x-10 {

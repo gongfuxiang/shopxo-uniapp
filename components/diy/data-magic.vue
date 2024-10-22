@@ -321,7 +321,7 @@
     .dot {
         z-index: 3;
         .dot-item {
-            margin: 0 0.3rem;
+            margin: 0 6rpx;
         }
     }
     .gap-20 {
