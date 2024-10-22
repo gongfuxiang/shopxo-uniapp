@@ -104,7 +104,7 @@
                     nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                     nav_content_list: this.get_nav_content_list(new_content),
                 });
-                this.$nextTick(() => {
+                setTimeout(() => {
                     const query = uni.createSelectorQuery().in(this);
                     // 选择我们想要的元素
                     query
@@ -118,7 +118,7 @@
                             }
                         })
                         .exec(); // 执行查询
-                });
+                }, 0);
             },
             get_nav_content_list(data) {
                 // 深拷贝一下，确保不会出现问题
