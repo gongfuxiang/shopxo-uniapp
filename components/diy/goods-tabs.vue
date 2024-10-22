@@ -163,7 +163,6 @@
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                 });
-                console.log(this.propValue);
             },
             tabs_click_event(index) {
                 let new_data = JSON.parse(JSON.stringify(this.propValue));
