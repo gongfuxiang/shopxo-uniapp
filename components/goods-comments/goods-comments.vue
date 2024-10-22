@@ -34,8 +34,10 @@
             </view>
         </block>
         <block v-else>
-            <view class="cr-grey-d tc spacing-mb flex-row jc-c align-c">
-                <image :src="common_static_url + 'no-comment.png'" mode="widthFix" class="no-comment margin-right-main" />{{$t('goods-comments.goods-comments.1p1r2e')}}</view>
+            <view class="tc spacing-mb flex-row jc-c align-c margin-top-xxxxl">
+                <image :src="common_static_url + 'no-comment.png'" mode="widthFix" class="no-comment margin-right-main" />
+                <view class="cr-grey-d">{{$t('goods-comments.goods-comments.1p1r2e')}}</view>
+            </view>
         </block>
     </view>
 </template>
