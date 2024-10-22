@@ -131,7 +131,7 @@
         },
         methods: {
             init() {
-                let new_data = typeof(this.propValue) == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
+                let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
                 const new_content = new_data.content || {};
                 const new_style = new_data.style || {};
                 // 产品的值
@@ -157,12 +157,13 @@
                     margin_top: 0,
                 });
                 this.setData({
-                    top_up:new_content.tabs_top_up,
+                    top_up: new_content.tabs_top_up,
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                 });
+                console.log(this.propValue);
             },
             tabs_click_event(index) {
                 let new_data = JSON.parse(JSON.stringify(this.propValue));

@@ -3,7 +3,7 @@
         <view :style="style_img_container">
             <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: new_height }" @change="slideChange">
                 <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c">
-                    <view class="banner-img flex-row flex-wrap wh-auto" :style="space">
+                    <view class="banner-img flex-row flex-wrap wh-auto" :class="'banner-img-' + propKey" :style="space">
                         <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="group_width + nav_title_space" :data-value="item1.link.page" @tap="url_open_event">
                             <view v-if="['image_with_text', 'image'].includes(nav_style)" class="flex-row align-c jc-c">
                                 <view class="top-img" :style="img_size">
@@ -46,7 +46,7 @@
                 },
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
             // 组件渲染的下标
@@ -102,11 +102,11 @@
                     nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                     nav_content_list: this.get_nav_content_list(new_content),
                 });
-                setTimeout(() => {
+                this.$nextTick(() => {
                     const query = uni.createSelectorQuery().in(this);
                     // 选择我们想要的元素
                     query
-                        .select('.banner-img')
+                        .select('.banner-img-' + this.propKey)
                         .boundingClientRect((res) => {
                             if ((res || null) != null) {
                                 // data包含元素的宽度、高度等信息
@@ -116,7 +116,7 @@
                             }
                         })
                         .exec(); // 执行查询
-                }, 0);
+                });
             },
             get_nav_content_list(data) {
                 // 深拷贝一下，确保不会出现问题

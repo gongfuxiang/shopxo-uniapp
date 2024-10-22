@@ -157,18 +157,20 @@
                     data_list:
                         new_content.data_type == '0'
                             ? new_content.data_list
-                            : new_content.data_auto_list.map((item) => ({
+                            : new_content.data_auto_list && new_content.data_auto_list.length > 0
+                            ? new_content.data_auto_list.map((item) => ({
                                   id: get_math(),
                                   new_title: '',
                                   new_cover: [],
                                   data: item,
-                              })),
+                              }))
+                            : [],
                     article_theme_class: this.article_theme_class_computer(new_content.theme),
                     article_theme: new_content.theme,
                     field_show: new_content.field_show,
                     // 样式
                     article_name: 'font-size:' + new_style.name_size + 'px;' + 'font-weight:' + new_style.name_weight + ';' + 'color:' + new_style.name_color + ';',
-                    article_desc: 'font-size:' + new_style.desc_size + 'px;line-height:' + new_style.desc_size + 'px;height:'+ new_style.desc_size + 'px;color:' + new_style.desc_color + ';',
+                    article_desc: 'font-size:' + new_style.desc_size + 'px;line-height:' + new_style.desc_size + 'px;height:' + new_style.desc_size + 'px;color:' + new_style.desc_color + ';',
                     article_date: 'font-size:' + new_style.time_size + 'px;' + 'font-weight:' + new_style.time_weight + ';' + 'color:' + new_style.time_color + ';',
                     article_page_view: 'font-size:' + new_style.page_view_size + 'px;' + 'font-weight:' + new_style.page_view_weight + ';' + 'color:' + new_style.page_view_color + ';',
                     content_radius: radius_computer(new_style.content_radius),

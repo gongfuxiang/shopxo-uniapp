@@ -3,6 +3,7 @@
     <uv-sticky :disabled="!propIsTop" :offset-top="propTop" :zIndex="propZIndex" :customNavHeight="propCustomNavHeight">
         <view class="tabs-view flex-row gap-10 jc-sb align-c" :style="propStyle + propTabsBackground">
             <view class="tabs flex-1 flex-width">
+            {{ tabs_list }}
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row">
                         <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
@@ -142,8 +143,8 @@
                 };
                 // 标题样式
                 const new_tabs_theme_style = {
-                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
-                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
+                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;line-height: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
+                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;line-height: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
                 };
                 this.setData({
                     tabs_spacing: Number(new_style.tabs_spacing),
@@ -159,6 +160,7 @@
                     tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
                     tabs_theme_1_style: new_style.tabs_one_theme == '1',
                 });
+                console.log(this.propValue);
             },
             // 获取选项卡主题
             get_tabs_theme(data) {
@@ -261,7 +263,7 @@
                 }
                 .tabs-bottom-line-theme {
                     opacity: 0.6;
-                    bottom: 16rpx;
+                    bottom: 0;
                     z-index: 0;
                     height: 14rpx;
                     border-radius: 0;
@@ -287,7 +289,7 @@
                     .title {
                         background: #ff2222;
                         border-radius: 40rpx;
-                        padding: 4rpx 24rpx;
+                        padding: 12rpx 24rpx;
                         color: #fff;
                     }
                 }
