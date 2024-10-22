@@ -157,11 +157,11 @@
             },
 
             // 底部菜单高度回调事件
-            footer_height_value_event(value) {  
+            footer_height_value_event(value) {
                 this.setData({
                     footer_height_value: (value*2)+20
                 });
-                this.$emit('footer-height', value);
+                this.$emit('onFooterHeight', value);
 
                 // 存储底部菜单高度
                 app.globalData.app_tabbar_height_save(value);

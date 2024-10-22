@@ -145,6 +145,9 @@
                 // 初始化
                 this.init();
             },
+            propValue(new_value, old_value) {
+                this.init();
+            },
         },
         created() {
             this.init();

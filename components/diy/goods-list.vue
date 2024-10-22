@@ -239,6 +239,9 @@
             propKey(val) {
                 this.init();
             },
+            propValue(new_value, old_value) {
+                this.init();
+            },
         },
         created() {
             this.init();
@@ -248,7 +251,7 @@
             init() {
                 const new_form = this.propValue.content || null;
                 const new_style = this.propValue.style || null;
-                if(new_form != null && new_style != null) {
+                if (new_form != null && new_style != null) {
                     let new_list = [];
                     // 指定商品并且指定商品数组不为空
                     if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
@@ -292,7 +295,7 @@
                         price_style: this.trends_config(new_style, 'price'),
                         sold_number_style: this.trends_config(new_style, 'sold_number'),
                         score_style: this.trends_config(new_style, 'score'),
-                        button_style: this.trends_config(new_style, 'button', 'buy_button')+button_gradient,
+                        button_style: this.trends_config(new_style, 'button', 'buy_button') + button_gradient,
                         simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                         shop_content_list: this.get_shop_content_list(new_list, new_form),
                     });
@@ -409,7 +412,7 @@
                 } else if (type == 'desc') {
                     style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
                 } else {
-                    if(type != 'buy_button') {
+                    if (type != 'buy_button') {
                         style += `color: ${color};`;
                     }
                 }

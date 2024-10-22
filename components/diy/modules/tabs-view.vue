@@ -124,6 +124,11 @@
                 tabs_bottom_line_theme: '',
             };
         },
+        watch: {
+            propValue(new_value, old_value) {
+                this.init();
+            },
+        },
         mounted() {
             this.init();
         },

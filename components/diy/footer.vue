@@ -69,10 +69,6 @@
             propKey(value, old_value) {
                 this.init();
             },
-            // 菜单数据
-            propValue(value, old_value) {
-                this.init();
-            },
             // 选中索引
             propFooterActiveIndex(value, old_value) {
                 this.init();
