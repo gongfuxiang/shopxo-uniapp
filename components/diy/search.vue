@@ -18,7 +18,7 @@
                     <template v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'">
                         <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
                             <swiper-item v-for="(item, index) in form.hot_word_list" :key="index">
-                                <view class="flex-row align-c ht-auto" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">
+                                <view class="flex-row align-c wh-auto ht-auto" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">
                                     {{ item.value }}
                                 </view>
                             </swiper-item>

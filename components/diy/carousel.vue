@@ -4,7 +4,7 @@
             <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
-                        <view class="flex-row align-c ht-auto" :data-value="item.carousel_link.page" @tap="url_open">
+                        <view class="flex-row align-c wt-auto ht-auto" :data-value="item.carousel_link.page" @tap="url_open">
                             <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
                                 <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>
@@ -24,7 +24,7 @@
                 </block>
                 <block v-else>
                     <swiper-item v-for="(item, index) in new_list" :key="index">
-                        <view :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
+                        <view class="wh-auto ht-auto" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
                             <view class="wh-auto ht-auto pr" :style="img_style">
                                 <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>

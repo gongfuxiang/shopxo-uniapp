@@ -16,11 +16,11 @@
                                     <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
                                     <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
                                         <template v-if="form.theme == '4'">
-                                            <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
+                                            <view class="text-size-xs flex-row jc-c align-c" :style="'min-width:50rpx;color:' + new_style.countdown_color">{{ item.value }}</view>
                                             <text v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</text>
                                         </template>
                                         <template v-else>
-                                            <view class="time-config text-size-xs" :style="time_bg + 'color:' + new_style.countdown_color">{{ item.value }}</view>
+                                            <view class="time-config text-size-xs flex-row jc-c align-c" :style="time_bg + 'min-width:50rpx;color:' + new_style.countdown_color">{{ item.value }}</view>
                                             <text v-if="[0, 1].includes(index)" class="colon" :style="icon_time_check">:</text>
                                         </template>
                                     </view>
@@ -103,7 +103,7 @@
                 <template v-else>
                     <swiper circular="false" :autoplay="new_style.is_roll == '1'" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_style.content_outer_height * 2 + 'rpx' }">
                         <swiper-item v-for="(item1, index1) in list" :key="index1">
-                            <view :class="{ 'flex-row': new_style.rolling_fashion != 'translation' }" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
+                            <view class="wh-auto ht-auto" :class="{ 'flex-row': new_style.rolling_fashion != 'translation' }" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
                                 <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" :data-value="item.goods_url" @tap="url_event">
                                     <template v-if="!isEmpty(item)">
                                         <view class="oh pr wh-auto ht-auto">
