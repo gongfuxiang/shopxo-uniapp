@@ -436,7 +436,6 @@
             order_item_pay_success_handle(data) {
                 var order_ids_arr = data.order_id.toString().split(',');
                 var temp_data_list = this.data_list;
-                console.log(order_ids_arr)
                 for (var i in temp_data_list) {
                     if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
                         temp_data_list[i]['operate_data']['is_pay'] = 0;
