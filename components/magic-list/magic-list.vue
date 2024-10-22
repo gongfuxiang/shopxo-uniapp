@@ -25,7 +25,7 @@
                                                         <view v-for="(gv, gi) in itemss" :key="gi" :class="'bg-white border-radius-main oh flex-width-half '+(itemss.length % 2 != 0 && itemss.length-1 == gi ? 'wh-auto' : '')">
                                                             <view class="tc" :data-index="index" :data-indexs="indexs" :data-indexss="indexss" :data-gi="gi" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="goods_event">
                                                                 <image :src="(gv.images || null) !== null ? gv.images : ''" :mode="itemss.length % 2 != 0 && itemss.length-1 == gi ? 'aspectFit' : 'scaleToFill'" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || 0) == 1) ? '' : 'border-radius-main')"> </image>
-                                                                <view v-if="(gv.show_field_price_status || 0) == 1" :class="'price tc single-text '+(((item.is_text_white || 0) == 1) ? 'padding-horizontal-xs padding-bottom-xs' : '')">
+                                                                <view v-if="(gv.show_field_price_status || 0) == 1" :class="'price tc single-text text-line-1 '+(((item.is_text_white || 0) == 1) ? 'padding-horizontal-xs padding-bottom-xs' : '')">
                                                                     <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
                                                                     <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
                                                                     <text class="va-m text-size-xss cr-grey">{{ gv.show_price_unit }}</text>

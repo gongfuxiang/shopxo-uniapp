@@ -3,7 +3,9 @@
 		<view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-shop-data-list oh">
 			<block v-for="(item, index) in data_list" :key="index">
 				<view class="item oh border-radius-main padding-vertical-xl padding-horizontal-main bg-white spacing-mb pr">
-					<iconfont name="icon-arrow-right" class="item-right-icon" color="#999"></iconfont>
+					<view class="item-right-icon">
+						<iconfont name="icon-arrow-right" color="#999"></iconfont>
+					</view>
 					<view class="flex-row align-c" :data-value="item.url" @tap="url_event">
 						<image :src="item.logo" mode="aspectFit" class="logo border-radius-xs fl br"></image>
 						<view class="right-content fr flex-1 flex-width">
