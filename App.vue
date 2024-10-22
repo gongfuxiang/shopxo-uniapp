@@ -110,7 +110,7 @@
                 is_home_logo_use_text: 0,
 
                 // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
-                is_home_location_choice: 1,
+                is_home_location_choice: 0,
 
                 // 门店详情顶部导航返回按钮（0否, 1是）
                 is_realstore_top_nav_back: 1,
