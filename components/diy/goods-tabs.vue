@@ -1,5 +1,5 @@
 <template>
-    <view class="goods-tabs ou" :style="style_container">
+    <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
             <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view class="oh">
@@ -183,7 +183,7 @@
             getTop() {
                 const query = uni.createSelectorQuery().in(this);
                 query
-                    .select('.goods-tabs')
+                    .select('.goods-tabs-' + this.propKey)
                     .boundingClientRect((res) => {
                         if ((res || null) != null) {
                             this.setData({
