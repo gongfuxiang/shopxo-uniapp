@@ -1,6 +1,5 @@
 <template>
     <!--  66rpx是自定义顶部导航栏的高度-->
-    <!-- <uv-sticky :disabled="!propIsTop" :offset-top="propTop" :zIndex="propZIndex" :customNavHeight="propCustomNavHeight"> -->
     <view class="tabs-view" :style="tabs_sticky">
         <view class="tabs-view flex-row gap-10 jc-sb align-c" :style="propStyle + propTabsBackground">
             <view class="tabs flex-1 flex-width">
@@ -44,7 +43,6 @@
             </view>
         </componentPopup>
     </view>
-    <!-- </uv-sticky> -->
 </template>
 
 <script>
