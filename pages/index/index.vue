@@ -13,9 +13,9 @@
                             <component-copyright></component-copyright>
                         </template>
                         <!-- 底部公共 -->
-                        <template slot="diy-bottom-common">
+                        <!-- <template slot="diy-bottom-common">
                             <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
-                        </template>
+                        </template> -->
                     </componentDiy>
                 </block>
                 <block v-else>
