@@ -13,7 +13,8 @@
     const app = getApp();
     import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
-    import componentGoodsList from '@/components/diy/goods-list'; // 状态栏高度
+    import componentGoodsList from '@/components/diy/goods-list';
+    // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
     bar_height = 0;
@@ -26,9 +27,7 @@
         props: {
             propValue: {
                 type: Object,
-                default: () => {
-                    return {};
-                },
+                default: () => ({}),
             },
             propTop: {
                 type: Number,
@@ -132,9 +131,9 @@
         },
         methods: {
             init() {
-                const new_content = this.propValue.content || {};
-                const new_style = this.propValue.style || {};
-                let new_data = JSON.parse(JSON.stringify(this.propValue));
+                let new_data = typeof(this.propValue) == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
+                const new_content = new_data.content || {};
+                const new_style = new_data.style || {};
                 // 产品的值
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
                 new_data.content.category = new_data.content.tabs_list[0].category;
