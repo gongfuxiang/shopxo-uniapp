@@ -105,7 +105,7 @@
     export default {
         props: {
             propValue: {
-                type: [String,Number,Object],
+                type: [String, Number, Object],
                 default: '',
             },
             // 滚动距离
@@ -114,7 +114,7 @@
                 default: 0,
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
         },
@@ -215,10 +215,12 @@
                 // 小程序下，获取小程序胶囊的宽度
                 let menu_button_info = 'max-width:100%';
                 let new_text_style = `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`;
+                // #ifndef MP-TOUTIAO
                 // #ifdef MP
                 const custom = uni.getMenuButtonBoundingClientRect();
                 menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
                 new_text_style += `right:-${custom.width + 10}px;`;
+                // #endif
                 // #endif
                 this.setData({
                     form: this.propValue,
@@ -288,7 +290,7 @@
                 height: 66rpx;
                 overflow: hidden;
                 top: -1rpx;
-                /* #ifdef H5 */
+                /* #ifdef H5 || MP-TOUTIAO */
                 top: 4rpx;
                 /* #endif */
             }
