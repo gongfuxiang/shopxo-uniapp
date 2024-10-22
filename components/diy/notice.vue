@@ -23,10 +23,10 @@
                                 </view>
                             </swiper-item>
                         </swiper>
-                        <view v-if="form_content.is_right_button == '1'" class="flex-row" :style="'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'" :data-value="form_content.more_link.page" @tap="url_event">
+                        <view v-if="form_content.is_right_button == '1'" class="flex-row align-c" :style="'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'" :data-value="form_content.more_link.page" @tap="url_event">
                             {{ form_content.right_title }}
-                            <view class="pr top-xs">
-                                <iconfont name="icon-arrow-right" :color="form_style.right_button_color || '#999'" propContainerDisplay="flex"></iconfont>
+                            <view class="pr">
+                                <iconfont name="icon-arrow-right" :color="form_style.right_button_color || '#999'" :size="form_style.right_button_size * 2 + 'rpx'"  propContainerDisplay="flex"></iconfont>
                             </view>
                         </view>
                     </view>
@@ -47,10 +47,10 @@
                             <template v-else>
                                 <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title }}</view>
                             </template>
-                            <view v-if="form_content.is_right_button == '1'" class="flex-row" :style="'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'" :data-value="form_content.more_link.page" @tap="url_event">
+                            <view v-if="form_content.is_right_button == '1'" class="flex-row align-c" :style="'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'" :data-value="form_content.more_link.page" @tap="url_event">
                                 {{ form_content.right_title }}
-                                <view class="pr top-xs">
-                                    <iconfont name="icon-arrow-right" :color="form_style.right_button_color || '#999'" propContainerDisplay="flex"></iconfont>
+                                <view class="pr">
+                                    <iconfont name="icon-arrow-right" :color="form_style.right_button_color || '#999'" :size="form_style.right_button_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </view>
                         </view>
