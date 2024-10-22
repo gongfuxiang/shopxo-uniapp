@@ -18,11 +18,16 @@
                         </template>
                         <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
                             <swiper-item v-for="(item, index) in notice_list" :key="index">
-                                <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
+                                <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">
+                                    <view class="text-line-1">{{ item.notice_title }}</view>
+                                </view>
                             </swiper-item>
                         </swiper>
-                        <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
-                            <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'" propContainerDisplay="flex"></iconfont>
+                        <view v-if="form_content.is_right_button == '1'" class="flex-row" :style="'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'" :data-value="form_content.more_link.page" @tap="url_event">
+                            {{ form_content.right_title }}
+                            <view class="pr top-xs">
+                                <iconfont name="icon-arrow-right" :color="form_style.right_button_color || '#999'" propContainerDisplay="flex"></iconfont>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -40,12 +45,12 @@
                                 </template>
                             </template>
                             <template v-else>
-                                <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
+                                <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title }}</view>
                             </template>
-                            <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
-                                更多
+                            <view v-if="form_content.is_right_button == '1'" class="flex-row" :style="'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'" :data-value="form_content.more_link.page" @tap="url_event">
+                                {{ form_content.right_title }}
                                 <view class="pr top-xs">
-                                    <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'" propContainerDisplay="flex"></iconfont>
+                                    <iconfont name="icon-arrow-right" :color="form_style.right_button_color || '#999'" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </view>
                         </view>
