@@ -405,12 +405,12 @@
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'title') {
                     if (['1', '6'].includes(theme)) {
-                        style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
+                        style += `line-height: ${size * 2}rpx;height: ${size * 2}rpx;color: ${color};`;
                     } else if (['0', '2', '3', '4', '5'].includes(theme)) {
-                        style += `line-height: ${size > 0 ? size + 3 : 0}px;height: ${size > 0 ? (size + 3) * 2 : 0}px;color: ${color};`;
+                        style += `line-height: ${size > 0 ? (size + 3) * 2 : 0}rpx;height: ${size > 0 ? (size + 3) * 4 : 0}rpx;color: ${color};`;
                     }
                 } else if (type == 'desc') {
-                    style += `line-height: ${size}px;height: ${size}px;color: ${color};`;
+                    style += `line-height: ${size * 2}rpx;height: ${size * 2}rpx;color: ${color};`;
                 } else {
                     if (type != 'buy_button') {
                         style += `color: ${color};`;

@@ -2,7 +2,7 @@
     <view :style="style_container">
         <view :style="style_img_container">
             <view class="search wh-auto pr" :style="style">
-                <view class="box oh flex-row align-c gap-10" :style="box_style" @tap.stop="search_tap">
+                <view class="box oh flex-row align-c gap-10" :style="box_style" @tap="search_tap">
                     <view v-if="form.is_icon_show == '1'" class="search-icon" @tap.stop="search_icon_tap">
                         <template v-if="form.icon_img.length > 0">
                             <view class="img-box">
@@ -131,15 +131,12 @@ export default {
             return style;
         },
         search_tap() {
-            console.log('111');
             app.globalData.url_open('/pages/goods-search-start/goods-search-start?keywords=' + this.keywords);
         },
         serch_event() {
-            console.log('222');
             app.globalData.url_open('/pages/goods-search-start/goods-search-start?keywords=' + this.keywords);
         },
         serch_button_event() {
-            console.log('333');
             if (!isEmpty(this.keywords)) {
                 app.globalData.url_open('pages/goods-search/goods-search?keywords=' + this.keywords);
             }
@@ -160,7 +157,6 @@ export default {
             return style;
         },
         search_icon_tap() {
-            console.log('search_icon_tap');
             if (isEmpty(this.form.icon_link)) {
                 this.search_tap();
                 return;
