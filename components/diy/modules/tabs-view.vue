@@ -137,11 +137,8 @@
                 handler(new_val) {
                     if (new_val) {
                         this.tabs_sticky = 'position: sticky;top: calc(' + parseInt(this.propTop) + 'px + ' + this.propCustomNavHeight + ');z-index: ' + this.propZIndex + ';';
-                        console.log(this.tabs_sticky);
-                        console.log(this.propTop, this.propCustomNavHeight);
                     } else {
                         this.tabs_sticky = '';
-                        console.log(this.tabs_sticky);
                     }
                 },
             },
