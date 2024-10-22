@@ -142,8 +142,8 @@
                 };
                 // 标题样式
                 const new_tabs_theme_style = {
-                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
-                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
+                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;line-height: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
+                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;line-height: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
                 };
                 this.setData({
                     tabs_spacing: Number(new_style.tabs_spacing),
@@ -261,7 +261,7 @@
                 }
                 .tabs-bottom-line-theme {
                     opacity: 0.6;
-                    bottom: 16rpx;
+                    bottom: 0;
                     z-index: 0;
                     height: 14rpx;
                     border-radius: 0;
