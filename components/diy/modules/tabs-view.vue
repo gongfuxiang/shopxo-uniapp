@@ -164,7 +164,6 @@
                     tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
                     tabs_theme_1_style: new_style.tabs_one_theme == '1',
                 });
-                console.log(this.propValue);
             },
             // 获取选项卡主题
             get_tabs_theme(data) {

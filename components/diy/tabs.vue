@@ -100,6 +100,10 @@
                 // 初始化
                 this.init();
             },
+            propSpacingCommonStyle(val) {
+                // 初始化
+                this.init();
+            },
         },
         methods: {
             // 初始化数据

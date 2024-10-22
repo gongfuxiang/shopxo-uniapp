@@ -107,7 +107,6 @@
             },
             // 视频播放
             video_play(url, popup_width, popup_height) {
-                console.log(url, popup_width, popup_height);
                 this.$emit('onVideoPlay', url, popup_width, popup_height);
             },
         },
