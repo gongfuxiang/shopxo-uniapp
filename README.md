@@ -63,3 +63,6 @@
 
 #### 小程序效果图片
 ![小程序页面](https://shopxoserver.oss-cn-beijing.aliyuncs.com/demo/app/page.png "小程序页面.jpg")
+
+#### 小程序DIY装修
+![DIY图片](https://shopxoserver.oss-cn-beijing.aliyuncs.com/demo/diy/diy.jpg "DIY图片")
