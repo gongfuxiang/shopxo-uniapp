@@ -32,25 +32,27 @@
                 </view>
                 <view v-else class="oh" :class="article_theme_class">
                     <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :style="'height:' + carousel_height_computer">
-                        <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1" class="flex-row" :style="article_spacing">
-                            <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-white oh flex-col" :style="article_style" :data-value="item.data.url" @tap="url_event">
-                                <template v-if="item.new_cover.length > 0">
-                                    <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
-                                </template>
-                                <template v-else>
-                                    <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
-                                </template>
-                                <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                    <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                        <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
-                                        <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
-                                    </div>
-                                    <view class="flex-row jc-sb gap-8 align-e margin-top">
-                                        <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
-                                        <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                            <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
-                                            <view>
-                                                {{ item.data.access_count ? item.data.access_count : '' }}
+                        <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1">
+                            <view class="flex-row" :style="article_spacing">
+                                <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-white oh flex-col" :style="article_style" :data-value="item.data.url" @tap="url_event">
+                                    <template v-if="item.new_cover.length > 0">
+                                        <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
+                                    </template>
+                                    <template v-else>
+                                        <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
+                                    </template>
+                                    <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
+                                        <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
+                                            <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                            <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
+                                        </div>
+                                        <view class="flex-row jc-sb gap-8 align-e margin-top">
+                                            <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
+                                            <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
+                                                <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
+                                                <view>
+                                                    {{ item.data.access_count ? item.data.access_count : '' }}
+                                                </view>
                                             </view>
                                         </view>
                                     </view>

@@ -2,7 +2,7 @@
     <view :style="style_container">
         <view :style="style_img_container">
             <view class="search wh-auto pr" :style="style">
-                <view class="box oh flex-row align-c gap-10" :style="box_style" @tap="search_tap">
+                <view class="box oh flex-row align-c gap-10" :style="box_style" @tap.stop="search_tap">
                     <view v-if="form.is_icon_show == '1'" class="search-icon" @tap.stop="search_icon_tap">
                         <template v-if="form.icon_img.length > 0">
                             <view class="img-box">
@@ -17,7 +17,11 @@
                     </view>
                     <template v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'">
                         <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
-                            <swiper-item v-for="(item, index) in form.hot_word_list" :key="index" class="flex-row align-c" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">{{ item.value }}</swiper-item>
+                            <swiper-item v-for="(item, index) in form.hot_word_list" :key="index">
+                                <view class="flex-row align-c ht-auto" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">
+                                    {{ item.value }}
+                                </view>
+                            </swiper-item>
                         </swiper>
                     </template>
                     <template v-else>
@@ -127,12 +131,15 @@ export default {
             return style;
         },
         search_tap() {
+            console.log('111');
             app.globalData.url_open('/pages/goods-search-start/goods-search-start?keywords=' + this.keywords);
         },
         serch_event() {
+            console.log('222');
             app.globalData.url_open('/pages/goods-search-start/goods-search-start?keywords=' + this.keywords);
         },
         serch_button_event() {
+            console.log('333');
             if (!isEmpty(this.keywords)) {
                 app.globalData.url_open('pages/goods-search/goods-search?keywords=' + this.keywords);
             }
@@ -153,6 +160,7 @@ export default {
             return style;
         },
         search_icon_tap() {
+            console.log('search_icon_tap');
             if (isEmpty(this.form.icon_link)) {
                 this.search_tap();
                 return;
