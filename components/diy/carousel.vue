@@ -8,16 +8,18 @@
                             <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
                                 <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>
-                            <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
-                                <block v-if="new_style.video_type == 'img'">
-                                    <view class="video_img">
-                                        <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
-                                    </view>
-                                </block>
-                                <block v-else>
-                                    <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color" propContainerDisplay="flex"></iconfont>
-                                </block>
-                                <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
+                            <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class pa oh" :style="{'bottom': new_style.video_bottom * 2 + 'rpx'}">
+                                <view class="flex-row gap-10 align-c" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
+                                    <block v-if="new_style.video_type == 'img'">
+                                        <view class="video_img">
+                                            <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                                        </view>
+                                    </block>
+                                    <block v-else>
+                                        <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color" propContainerDisplay="flex"></iconfont>
+                                    </block>
+                                    <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
+                                </view>
                             </view>
                         </view>
                     </swiper-item>
@@ -28,16 +30,18 @@
                             <view class="wh-auto ht-auto pr" :style="img_style">
                                 <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>
-                            <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
-                                <block v-if="new_style.video_type == 'img'">
-                                    <view class="video_img">
-                                        <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
-                                    </view>
-                                </block>
-                                <block v-else>
-                                    <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color" propContainerDisplay="flex"></iconfont>
-                                </block>
-                                <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
+                            <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class pa oh" :style="{'bottom': new_style.video_bottom * 2 + 'rpx'}">
+                                <view class="flex-row gap-10 align-c" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
+                                    <block v-if="new_style.video_type == 'img'">
+                                        <view class="video_img">
+                                            <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
+                                        </view>
+                                    </block>
+                                    <block v-else>
+                                        <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color" propContainerDisplay="flex"></iconfont>
+                                    </block>
+                                    <text v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</text>
+                                </view>
                             </view>
                         </view>
                     </swiper-item>
@@ -255,8 +259,8 @@
                 });
             },
             get_video_style(new_style) {
-                const { video_bottom, video_radius, video_color_list, video_direction, video_title_color, video_padding } = new_style;
-                let style = `bottom: ${video_bottom}px;`;
+                const { video_radius, video_color_list, video_direction, video_title_color, video_padding } = new_style;
+                let style = ``;
                 if (!isEmpty(video_radius)) {
                     style += radius_computer(video_radius);
                 }
@@ -329,8 +333,8 @@
     }
     .video-class {
         max-width: 100%;
-        margin-right: 20rpx;
-        margin-left: 20rpx;
+        padding-right: 20rpx;
+        padding-left: 20rpx;
     }
     .x-middle {
         position: absolute;
