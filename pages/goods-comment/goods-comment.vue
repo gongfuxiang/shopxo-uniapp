@@ -148,7 +148,6 @@
                         data_list_loding_status: 2,
                     });
                 } else {
-                    var self = this;
                     // 分页是否还有数据
                     if ((is_mandatory || 0) == 0) {
                         if (this.data_bottom_line_status == true) {
@@ -163,7 +162,6 @@
                     }
                     this.setData({
                         data_is_loading: 1,
-                        data_list_loding_status: 1,
                     });
 
                     uni.request({
