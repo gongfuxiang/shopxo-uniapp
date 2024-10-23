@@ -9,10 +9,14 @@
                             <view class="flex-1 flex-col jc-c align-c gap-5 pr" :data-value="item.link.page || ''" @tap="url_event">
                                 <view v-if="nav_style != 2" class="img-content pr">
                                     <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
-                                        <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
+                                        <template v-if="item.img.length > 0">
+                                            <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
+                                        </template>
                                     </view>
                                     <view class="img-item pa border-radius-xs animate-linear" :class="active_index == index ? 'active' : ''">
-                                        <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                                        <template v-if="item.img_checked.length > 0">
+                                            <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
+                                        </template>
                                     </view>
                                 </view>
                                 <text v-if="nav_style != 1" class="animate-linear text-size-xs pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
