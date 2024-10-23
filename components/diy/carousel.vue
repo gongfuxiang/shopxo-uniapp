@@ -6,10 +6,12 @@
                     <swiper-item v-for="(item, index) in new_list" :key="index">
                         <view class="flex-row align-c wt-auto ht-auto" :data-value="item.carousel_link.page" @tap="url_open">
                             <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
-                                <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                <view class="wh-auto ht-auto">
+                                    <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                </view>
                             </view>
                             <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class pa oh" :style="{'bottom': new_style.video_bottom * 2 + 'rpx'}">
-                                <view class="flex-row gap-10 align-c" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
+                                <view class="flex-row gap-5 align-c" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
                                     <block v-if="new_style.video_type == 'img'">
                                         <view class="video_img">
                                             <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
@@ -26,12 +28,12 @@
                 </block>
                 <block v-else>
                     <swiper-item v-for="(item, index) in new_list" :key="index">
-                        <view class="wh-auto ht-auto" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
+                        <view class="ht-auto" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
                             <view class="wh-auto ht-auto pr" :style="img_style">
                                 <imageEmpty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                             </view>
                             <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class pa oh" :style="{'bottom': new_style.video_bottom * 2 + 'rpx'}">
-                                <view class="flex-row gap-10 align-c" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
+                                <view class="flex-row gap-5 align-c" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
                                     <block v-if="new_style.video_type == 'img'">
                                         <view class="video_img">
                                             <imageEmpty :propImageSrc="new_style.video_img[0]" propImgFit="aspectFill" propErrorStyle="width: 28rpx;height: 28rpx;"></imageEmpty>
@@ -173,21 +175,21 @@
                 });
                 // 风格二显示逻辑
                 if (new_form.carousel_type == 'card') {
-                    this.$nextTick(() => {
+                    // this.$nextTick(() => {
                         this.setData({
-                            previousMargin: '82rpx',
-                            nextMargin: '82rpx',
+                            previousMargin: '41px',
+                            nextMargin: '41px',
                             animationData: 0,
                         });
-                    });
+                    // });
                 } else if (new_form.carousel_type != 'inherit') {
                     // 风格三，四显示逻辑
-                    this.$nextTick(() => {
+                    // this.$nextTick(() => {
                         this.setData({
-                            nextMargin: '100rpx',
+                            nextMargin: '50px',
                             slides_per_group: new_form.carousel_type == 'twoDragOne' ? 2 : 1,
                         });
-                    });
+                    // });
                 }
                 // this.setData({
                 //     hackReset: false,
