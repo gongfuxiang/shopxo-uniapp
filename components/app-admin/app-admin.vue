@@ -34,7 +34,7 @@
 
         <!-- 关于我们中使用 -->
         <!-- #ifdef APP -->
-        <view v-if="is_about_page" class="margin-top">
+        <view v-if="is_about_page && !propIsHideStar" class="margin-top">
             <text class="cr-grey-9">{{app_version_info}}</text>
             <block v-if="is_loading">
                 <text v-if="(update_data || null) == null" class="cr-grey-c margin-left-lg text-size-xs">{{$t('common.already_latest_text')}}</text>
@@ -69,6 +69,12 @@
                 star_url: null
                 
             };
+        },
+        props: {
+            propIsHideStar: {
+                type: Boolean,
+                default: false,
+            },
         },
         // 页面被展示
         created: function () {

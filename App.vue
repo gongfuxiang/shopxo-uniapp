@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url:'https://d1.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url:'https://d1.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -23,10 +23,10 @@
                 application_logo: '',
 
                 // 版本号、如: v1.0.0
-                version: 'v6.2',
+                version: 'v6.3',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.2 20240704',
+                app_version_info: 'v6.3 20241022',
 
                 // 货币价格符号
                 currency_symbol: '￥',
@@ -48,10 +48,18 @@
                 // 2.去lang里面各个文件去新增语言翻译
                 default_language: 'zh',
 
-                // tabbar页面
-                tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
+                // 系统tabbar
+                system_tabbar: [
+                    '/pages/index/index',
+                    '/pages/goods-category/goods-category',
+                    '/pages/cart/cart',
+                    '/pages/user/user'
+                ],
 
                 // 公共配置
+                // 是否使用原生菜单（0否, 1是）
+                is_use_native_tabbar: 0,
+
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
                 is_share_use_image: 1,
 
@@ -85,9 +93,8 @@
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,
 
-                // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
+                // 是否开启微信隐私弹窗授权提示、仅微信小程序有效（0否, 1是）
                 is_weixin_privacy_setting: 1,
-                weixin_privacy_setting_timer: null,
                 
                 // 弹出获取用户当前位置（0否, 1是）
                 get_user_location_status: 0,
@@ -182,6 +189,26 @@
                 // 商品数据缓存key
                 cache_goods_data_key: 'cache_goods_data_key',
 
+                // 页面设计页面数据缓存key
+                cache_design_page_data_key: 'cache_design_page_data_key',
+
+                // 底部菜单选中索引缓存key
+                cache_footer_active_key: 'cache_footer_active_key',
+
+                // diy模块数据缓存key
+                cache_diy_data_key: 'cache_diy_data_key',
+                // diy页面数据缓存key
+                cache_diy_page_data_key: 'cache_diy_page_data_key',
+
+                // apptabbar底部菜单高度
+                cache_app_tabbar_height_key: 'cache_app_tabbar_height_key',
+
+                // apptabbar底部菜单角标数据
+                cache_tabbar_badge_key: 'cache_tabbar_badge_key',
+
+                // 搜索历史记录
+                cache_search_history_key: 'cache_search_history_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 
@@ -195,6 +222,7 @@
                 // 公共数是否已初始化成功
                 common_data_init_status: 0,
                 common_data_init_timer: null,
+                common_data_init_back_timer: null,
                 // 网络状态检查
                 network_type_page_record_timer: null,
                 // 位置监听更新页面临时记录数据
@@ -215,7 +243,7 @@
                 if ((params.scene || null) != null) {
                     params = this.url_params_to_json(decodeURIComponent(params.scene));
                 }
-                // 原始缓存是否存在邀请id、邀请使用最开始的用户id
+                // 如果当前没有邀请id、但是原始缓存有邀请id、则使用缓存邀请id
                 if ((params['referrer'] || null) == null && cache_params != null && (cache_params.referrer || null) != null) {
                     params['referrer'] = cache_params.referrer;
                 }
@@ -314,6 +342,7 @@
                 var token = user == null ? '' : user.token || '';
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
+                var client_brand = this.application_client_brand();
                 // 启动参数
                 var params = this.get_launch_cache_info();
                 var referrer = params == null ? null : params.referrer || null;
@@ -323,10 +352,12 @@
                 var user_location_params = (user_location || null) != null && (user_location.status || 0) == 1 ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
                 // 当前语言
                 var lang = this.get_language_value();
+                // 当前主题
+                var theme = this.get_theme_value();
 
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&application_client_brand=' + client_brand + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
             },
 
             /**
@@ -527,7 +558,7 @@
             login_confirm_tips_modal(self, object, method, params) {
                 // 是否tabbar页面
                 var page = self.current_page(false);
-                var is_tabbar = self.is_tabbar_pages('/'+page);
+                var is_tabbar = self.is_system_tabbar_pages('/'+page);
                 // 非初始化 并且 非tabbar页面则关闭当前页面并跳转登录页面
                 if(method == 'init' && !is_tabbar) {
                     uni.redirectTo({
@@ -864,7 +895,10 @@
                 return s_x;
             },
 
-            // url主要部分
+            /**
+             * url主要部分
+             * url url地址
+             */
             get_url_main_part(url) {
                 if (url.indexOf('?') == -1) {
                     var value = url;
@@ -874,22 +908,74 @@
                 }
                 return value;
             },
+            
+            /**
+             * 底部菜单高度数据存储
+             * value  高度
+             */
+            app_tabbar_height_save(value) {
+                uni.setStorageSync(this.data.cache_app_tabbar_height_key, value);
+            },
+            
+            /**
+             * 底部菜单高度数据读取
+             */
+            app_tabbar_height_value() {
+                return parseInt(uni.getStorageSync(this.data.cache_app_tabbar_height_key) || 0);
+            },
+
+            /**
+             * 底部菜单页面数、tabbar
+             */
+            app_tabbar_pages() {
+                var temp_tabbar = this.data.system_tabbar;
+                var app_tabber = this.get_config('app_tabber') || null;
+                if(app_tabber != null && (app_tabber.content || null) != null && (app_tabber.content.nav_content || null) != null) {
+                    temp_tabbar = app_tabber.content.nav_content.map(function(v) {
+                        if((v.link || null) != null && (v.link.page || null) != null) {
+                            return v.link.page;
+                        }
+                    });
+                }
+                return temp_tabbar;
+            },
+
+            /**
+             * 当前地址是否存在底部菜单tabbar中
+             */
+            is_tabbar_pages(url = null) {
+                var pages = (this.data.is_use_native_tabbar == 1) ? this.data.system_tabbar : this.app_tabbar_pages();
+                return this.is_tabbar_pages_handle(pages, url);
+            },
+
+            /**
+             * 当前地址是否存在系统tabbar中
+             */
+            is_system_tabbar_pages(url = null) {
+                return this.is_tabbar_pages_handle(this.data.system_tabbar, url);
+            },
 
             /**
              * 当前地址是否存在tabbar中
+             * pages  tabbar页面
+             * url    url地址
              */
-            is_tabbar_pages(url) {
-                var value = this.get_url_main_part(url);
+            is_tabbar_pages_handle(pages, url = null) {
+                var value = (url == null) ? '/'+this.current_page() : url;
                 if ((value || null) == null) {
                     return false;
                 }
-                var temp_tabbar_pages = this.data.tabbar_pages;
-                for (var i in temp_tabbar_pages) {
-                    if (temp_tabbar_pages[i] == value) {
-                        return true;
-                    }
+                if(pages.indexOf(value) != -1) {
+                    return true;
                 }
                 return false;
+            },
+
+            // 系统底部菜单隐藏
+            system_hide_tabbar() {
+                if(this.data.is_use_native_tabbar != 1) {
+                    uni.hideTabBar();
+                }
             },
 
             /**
@@ -906,7 +992,7 @@
                             break;
                         // 内部页面
                         case 1:
-                            if (this.is_tabbar_pages(value)) {
+                            if (this.is_system_tabbar_pages(value)) {
                                 var temp = value.split('?');
                                 if (temp.length > 1 && (temp[1] || null) != null) {
                                     value = temp[0];
@@ -914,11 +1000,13 @@
                                     uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
                                 }
                                 uni.switchTab({
-                                    url: value,
+                                    url: value
                                 });
+                                //隐藏系统tabbar
+                                this.system_hide_tabbar();
                             } else {
                                 uni.navigateTo({
-                                    url: value,
+                                    url: value
                                 });
                             }
                             break;
@@ -1078,41 +1166,50 @@
             },
 
             /**
-             * 设置导航reddot
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
+             * 读取底部导航badge
+             * type     类型标识（如购物车 cart）
              */
-            set_tab_bar_reddot(index, type) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.hideTabBarRedDot({
-                            index: Number(index),
-                        });
-                    } else {
-                        uni.showTabBarRedDot({
-                            index: Number(index),
-                        });
-                    }
+            get_tab_bar_badge(type) {
+                if ((type || null) != null) {
+                    return uni.getStorageSync(this.data.cache_tabbar_badge_key+'-'+type) || null;
                 }
+                return null;
             },
 
             /**
-             * 设置导航车badge
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
-             * value     显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
+             * 设置底部导航badge
+             * type     类型标识（如购物车 cart）
+             * value    显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
              */
-            set_tab_bar_badge(index, type, value) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.removeTabBarBadge({
-                            index: Number(index),
-                        });
-                    } else {
-                        uni.setTabBarBadge({
-                            index: Number(index),
-                            text: value.toString(),
-                        });
+            set_tab_bar_badge(type, value = 0) {
+                // 是否使用原生菜单
+                if(this.data.is_use_native_tabbar == 1) {
+                    if(type == 'cart') {
+                        if ((value || 0) == 0) {
+                            uni.removeTabBarBadge({
+                                index: 2
+                            });
+                        } else {
+                            uni.setTabBarBadge({
+                                index: 2,
+                                text: value.toString()
+                            });
+                        }
+                    }
+                } else {
+                    // 数据处理
+                    if ((type || null) != null) {
+                        var key = this.data.cache_tabbar_badge_key+'-'+type;
+                        if ((value || null) == null) {
+                            uni.removeStorageSync(key);
+                        } else {
+                            uni.setStorageSync(key, value);
+                        }
+                    }
+                    // 更新底部菜单数据
+                    var obj = this.get_page_object() || null;
+                    if(obj != null && (obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null) {
+                        obj.$vm.$refs.common.footer_init();
                     }
                 }
             },
@@ -1121,13 +1218,13 @@
             page_share_handle(share = null) {
                 // 当前页面
                 var pages = getCurrentPages();
-                var obj = pages[pages.length - 1];
+                var obj = pages[pages.length - 1] || null;
                 // 分享信息、是否指定参数
                 if ((share || null) == null) {
                     share = {};
                 }
                 // 从页面对象获取参数
-                if (Object.keys(share).length <= 0) {
+                if (obj != null && Object.keys(share).length <= 0) {
                     share = obj.share_info || {};
                 }
                 // 参数处理
@@ -1224,6 +1321,35 @@
                               ],
                 });
                 // #endif
+            },
+            
+            /**
+             * 数据、可指定key和默认值
+             * data             数据
+             * key              数据key（支持多级读取、以 . 分割key名称）
+             * default_value    默认值
+             */
+            get_key_data(data, key, default_value = null) {
+                var value = default_value;
+                if ((data || null) != null) {
+                    var arr = key.split('.');
+                    if (arr.length == 1) {
+                        if(data[key] != undefined) {
+                            value = data[key];
+                        }
+                    } else {
+                        value = data;
+                        for (var i in arr) {
+                            if (value[arr[i]] != undefined) {
+                                value = value[arr[i]];
+                            } else {
+                                value = default_value;
+                                break;
+                            }
+                        }
+                    }
+                }
+                return value;
             },
 
             /**
@@ -1357,15 +1483,24 @@
              * 配置是否有效(100毫秒检验一次、最多检验100次)
              * object     回调操作对象
              * method     回调操作对象的函数
+             * params     回调操请求参数
              */
-            is_config(object, method) {
+            is_config(object, method, params) {
                 var self = this;
                 var count = 0;
+                var is_config_count = 0;
                 var timer = setInterval(function () {
                     if (self.get_config('status') == 1) {
                         clearInterval(timer);
                         if (typeof object === 'object' && (method || null) != null) {
-                            object[method](true);
+                            object[method](true, params);
+                        }
+                    } else {
+                        // 如果已经初始化过，但是没有数据则读取接口一次
+                        if(is_config_count < 1 && self.data.common_data_init_status == 1) {
+                            is_config_count++;
+                            self.data.common_data_init_status = 0;
+                            self.init_config();
                         }
                     }
                     count++;
@@ -1495,19 +1630,30 @@
 
             // 链接地址事件
             url_event(e) {
-                // 需要打开的url地址
-                var value = e.currentTarget.dataset.value || null;
+                if((e.currentTarget || null) != null && (e.currentTarget.dataset || null) != null) {
+                    // 需要打开的url地址
+                    var value = e.currentTarget.dataset.value || null;
 
-                // 是否阻止商品页面打开
-                if (this.data.is_forbid_to_goods_detail == 1 && value.indexOf('/pages/goods-detail/goods-detail') != -1) {
-                    return false;
+                    // 是否阻止商品页面打开
+                    if (this.data.is_forbid_to_goods_detail == 1 && value.indexOf('/pages/goods-detail/goods-detail') != -1) {
+                        return false;
+                    }
+
+                    // 是否关闭当前页面
+                    var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
+
+                    // 如果是底部菜单，非系统内置菜单则关闭当前页面并打开
+                    var tabbar = this.app_tabbar_pages();
+                    if(tabbar.indexOf(value) != -1 && this.data.system_tabbar.indexOf(value) == -1) {
+                        var page = this.prev_page();
+                        if(page != null && this.data.system_tabbar.indexOf(page) == -1) {
+                            is_redirect = true;
+                        }
+                    }
+
+                    // 调用打开url方法
+                    this.url_open(value, is_redirect);
                 }
-
-                // 是否关闭当前页面
-                var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
-
-                // 调用打开url方法
-                this.url_open(value, is_redirect);
             },
 
             // 是否为url地址
@@ -1540,29 +1686,41 @@
                     }
                     // #endif
 
-                    // web地址
                     if (this.is_url(value)) {
+                        // web地址
                         this.open_web_view(value, is_redirect);
-                        // 打开外部小程序协议
                     } else if (value.substr(0, 8) == 'appid://') {
+                        // 打开外部小程序协议（appid|/pages/index/index?pv=hello|extraData|envVersion）
+                        var values = value.substr(8).split('|');
                         uni.navigateToMiniProgram({
-                            appId: value.substr(8),
+                            appId: values[0],
+                            path: values[1] || '',
+                            extraData: values[2] || '',
+                            envVersion: values[3] || 'release'
                         });
-                        // 地图协议
+                    } else if (value.substr(0, 12) == 'shortlink://') {
+                        // 小程序分享链接
+                        uni.navigateToMiniProgram({
+                            shortLink: value.substr(12)
+                        });
                     } else if (value.substr(0, 6) == 'map://') {
+                        // 地图协议（名称|地址|lng|lat）
                         var values = value.substr(6).split('|');
                         if (values.length != 4) {
                             this.showToast(i18n.t('shopxo-uniapp.app.5y1c52'));
                             return false;
                         }
                         this.open_location(values[2], values[3], values[0], values[1]);
-                        // 电话协议
                     } else if (value.substr(0, 6) == 'tel://') {
+                        // 电话协议
                         this.call_tel(value.substr(6));
-                        // 默认切换或跳转页面
+                    } else if (value.substr(0, 7) == 'scan://') {
+                        // 扫码协议
+                        this.scan_handle();
                     } else {
+                        // 默认切换或跳转页面
                         if (this.is_page(value)) {
-                            if (this.is_tabbar_pages(value)) {
+                            if (this.is_system_tabbar_pages(value)) {
                                 var temp = value.split('?');
                                 if (temp.length > 1 && (temp[1] || null) != null) {
                                     value = temp[0];
@@ -1570,16 +1728,18 @@
                                     uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
                                 }
                                 uni.switchTab({
-                                    url: value,
+                                    url: value
                                 });
+                                //隐藏系统tabbar
+                                this.system_hide_tabbar();
                             } else {
                                 if (is_redirect) {
                                     uni.redirectTo({
-                                        url: value,
+                                        url: value
                                     });
                                 } else {
                                     uni.navigateTo({
-                                        url: value,
+                                        url: value
                                     });
                                 }
                             }
@@ -1712,6 +1872,12 @@
                 return value;
             },
 
+            // app客户端品牌
+            application_client_brand(e) {
+                var value = this.get_system_info('brand', null, true);
+                return (value === null) ? '' : value.toLowerCase();
+            },
+
             // 授权验证
             auth_check(object, method, scope, msg) {
                 var self = this;
@@ -1777,7 +1943,7 @@
                 url = this.page_url_protocol(url);
                 // #endif
                 // #ifdef H5
-                var url = window.location.href;
+                url = window.location.href;
                 // #endif
                 if (is_whole == false) {
                     var temp = url.split('?');
@@ -1813,7 +1979,7 @@
             },
 
             // 用户微信webopenid是否存在
-            is_user_weixin_web_openid(order_ids, payment_id = 0) {
+            is_user_weixin_web_openid(order_ids, payment_id = 0, page = null) {
                 // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
                 if (this.is_weixin_env()) {
                     var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
@@ -1848,7 +2014,7 @@
                                 order_ids: typeof order_ids == 'array' ? order_ids.join(',') : order_ids,
                                 payment_id: payment_id,
                             });
-                            var page_url = this.get_page_url();
+                            var page_url = (page || null) == null ? this.get_page_url() : this.page_url_protocol(page);
                             page_url += page_url.indexOf('?') == -1 ? '?' : '&';
                             page_url += 'is_weixin_auth_web_openid=1';
                             var request_url = encodeURIComponent(base64.encode(page_url));
@@ -1916,7 +2082,7 @@
                 var result = {
                     title: data.title || share_config.title || this.get_application_title(),
                     desc: data.desc || share_config.desc || this.get_application_describe(),
-                    path: data.path || this.data.tabbar_pages[0],
+                    path: data.path || this.app_tabbar_pages()[0],
                     query: this.share_query_handle(data.query || ''),
                     img: data.img || share_config.pic || this.get_application_logo_square(),
                 };
@@ -1924,7 +2090,7 @@
                 // #ifdef H5 || APP
                 // 是有效的url地址则通过#号分割处理参数
                 if(this.is_url(result['url'])) {
-                    result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
+                    result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + ((result.path || null) != null && result.path.substr(0, 1) == '/' ? '' : '/') + (result.path || '') + (result.query || ''));
                 }
                 // #endif
                 return result;
@@ -1952,15 +2118,19 @@
             },
 
             // 调用页面方法
-            get_page_object(page) {
-                var result = [];
+            get_page_object(page = null) {
                 var pages = getCurrentPages();
-                for (var i = 0; i < pages.length; i++) {
-                    if (pages[i]['route'] == page) {
-                        result.push(pages[i]);
+                if(page == null) {
+                    return pages[pages.length - 1];
+                } else {
+                    var result = [];
+                    for (var i = 0; i < pages.length; i++) {
+                        if (pages[i]['route'] == page) {
+                            result.push(pages[i]);
+                        }
                     }
+                    return result;
                 }
-                return result;
             },
 
             // 当前页面地址
@@ -1992,9 +2162,7 @@
             page_back_prev_event() {
                 var prev_page = this.prev_page();
                 if (prev_page == null) {
-                    uni.switchTab({
-                        url: this.data.tabbar_pages[0],
-                    });
+                    this.url_open(this.app_tabbar_pages()[0]);
                 } else {
                     uni.navigateBack();
                 }
@@ -2005,6 +2173,14 @@
                 if ((page || null) == null) {
                     return '';
                 }
+
+                // 直接获取页面全的路径地址
+                if((page.$page || null) != null && (page.$page.fullPath || null) != null) {
+                    var path = page.$page.fullPath;
+                    return path.substr(0, 1) == '/' ? path.substr(1) : path;
+                }
+
+                // 拼接地址和参数
                 var route = page.route;
                 var options = page.options || {};
                 var query = '';
@@ -2290,30 +2466,6 @@
                 }
             },
 
-            // 微信隐私弹窗提示
-            weixin_privacy_setting() {
-                if (this.data.is_weixin_privacy_setting == 1) {
-                    var self = this;
-                    self.weixin_privacy_setting_timer = setInterval(function () {
-                        var page = self.get_page_url(false);
-                        if ('/' + page == self.data.tabbar_pages[0]) {
-                            uni.getPrivacySetting({
-                                success: (res) => {
-                                    if (res.needAuthorization) {
-                                        // 需要弹出隐私协议
-                                        uni.navigateTo({
-                                            url: '/pages/common/agreement/agreement',
-                                        });
-                                    }
-                                },
-                            });
-                            // 已执行隐私方法清除定时任务
-                            clearInterval(self.weixin_privacy_setting_timer);
-                        }
-                    }, 100);
-                }
-            },
-
             // 获取主题色值
             // is_light 是否获取浅主色（false, true）
             get_theme_color(theme, is_light = false) {
@@ -2375,41 +2527,60 @@
 
             // 底部菜单设置
             set_tabbar(theme) {
-                // 当前主题
-                if ((theme || null) == null) {
-                    theme = this.get_theme_value();
+                if(this.data.is_use_native_tabbar == 1) {
+                    // 当前主题
+                    if ((theme || null) == null) {
+                        theme = this.get_theme_value();
+                    }
+
+                    // 整体样式
+                    uni.setTabBarStyle({
+                        selectedColor: this.get_theme_color(theme),
+                        color: '#333',
+                        backgroundColor: '#fff',
+                        borderStyle: 'black'
+                    });
+
+                    // 菜单
+                    uni.setTabBarItem({
+                        index: 0,
+                        iconPath: 'static/images/common/tabbar/home.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
+                        text: i18n.t('common.home'),
+                    });
+                    uni.setTabBarItem({
+                        index: 1,
+                        iconPath: 'static/images/common/tabbar/category.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
+                        text: i18n.t('common.category'),
+                    });
+                    uni.setTabBarItem({
+                        index: 2,
+                        iconPath: 'static/images/common/tabbar/cart.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
+                        text: i18n.t('common.cart'),
+                    });
+                    uni.setTabBarItem({
+                        index: 3,
+                        iconPath: 'static/images/common/tabbar/user.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
+                        text: i18n.t('common.my'),
+                    });
                 }
+            },
 
-                // 整体样式
-                uni.setTabBarStyle({
-                    selectedColor: this.get_theme_color(theme),
-                });
-
-                // 菜单
-                uni.setTabBarItem({
-                    index: 0,
-                    iconPath: 'static/images/common/tabbar/home.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
-                    text: i18n.t('common.home'),
-                });
-                uni.setTabBarItem({
-                    index: 1,
-                    iconPath: 'static/images/common/tabbar/category.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
-                    text: i18n.t('common.category'),
-                });
-                uni.setTabBarItem({
-                    index: 2,
-                    iconPath: 'static/images/common/tabbar/cart.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
-                    text: i18n.t('common.cart'),
-                });
-                uni.setTabBarItem({
-                    index: 3,
-                    iconPath: 'static/images/common/tabbar/user.png',
-                    selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
-                    text: i18n.t('common.my'),
-                });
+            // 数组分组
+            group_arry(arry, sub_group_length) {
+                let index = 0;
+                let new_arry = [];
+                if (arry.length > sub_group_length) {
+                    while (index < arry.length) {
+                        new_arry.push(arry.slice(index, (index += sub_group_length)));
+                    }
+                } else {
+                    new_arry = [arry];
+                }
+                return new_arry;
             },
 
             // 数组分组
@@ -2521,6 +2692,10 @@
 
             // 扫码解析处理
             scan_handle() {
+                // #ifdef H5
+                this.showToast(i18n.t('common.not_supported_scan_tips'));
+                // #endif
+                // #ifndef H5
                 var self = this;
                 uni.scanCode({
                     success: function (res) {
@@ -2591,6 +2766,7 @@
                         }
                     },
                 });
+                // #endif
             },
 
             // 获取当前语言
@@ -2600,6 +2776,15 @@
 
             // 选择用户地理位置
             choose_user_location_event() {
+                // 存在数据则改变状态值
+                var key = this.data.cache_userlocation_key;
+                var result = uni.getStorageSync(key) || null;
+                if(result != null) {
+                    result['status'] = 2;
+                    uni.setStorageSync(key, result);
+                }
+
+                // 进入页面选择位置
                 uni.navigateTo({
                     url: '/pages/common/open-setting-location/open-setting-location',
                 });
@@ -2612,6 +2797,7 @@
 
             // 地址信息初始化
             choice_user_location_init() {
+                // status 0未选择，1已选择，2选择中，3选择失败
                 var result = uni.getStorageSync(this.data.cache_userlocation_key) || null;
                 var user_location = { status: 0 };
                 if (result != null) {
@@ -2622,11 +2808,17 @@
                             address: result.address || null,
                             lat: result.latitude || null,
                             lng: result.longitude || null,
-                            status: 1,
+                            status: result.status || 1,
                         },
                     };
                 }
-                user_location['text'] = user_location.status == 0 ? i18n.t('shopxo-uniapp.app.4v6q86') : (user_location.name || user_location.address || '');
+                // 默认名称
+                var default_name = i18n.t('shopxo-uniapp.app.4v6q86');
+                // 位置选择失败的状态，名称和默认名称不一致则认为是成功的
+                if(user_location.status == 3 && user_location.name != default_name) {
+                    user_location.status = 1;
+                }
+                user_location['text'] = user_location.name || user_location.address || default_name;
                 return user_location;
             },
 
@@ -2702,6 +2894,8 @@
             clear_interval_handle() {
                 // 清除初始化公共数据方法定时任务
                 clearInterval(this.data.common_data_init_timer);
+                // 清除初始化公共数据回调方法定时任务
+                clearInterval(this.data.common_data_init_back_timer);
                 // 清除网络状态检查方法定时任务
                 var network = this.data.network_type_page_record_timer || null;
                 if (network != null) {
@@ -2712,8 +2906,6 @@
                     }
                 }
                 this.data.network_type_page_record_timer = null;
-                // 清除微信隐私方法定时任务
-                clearInterval(this.data.weixin_privacy_setting_timer);
                 // 清除弹出位置权限提示定时任务
                 clearInterval(this.data.get_user_location_timer);
             },
@@ -2750,7 +2942,7 @@
                         'pages/plugins/ask/index/index',
                     ];
                     // 当前tab页面
-                    if(this.data.tabbar_pages.indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {
+                    if(this.is_system_tabbar_pages('/'+url) != -1 || pages_always.indexOf(url) != -1) {
                         value = '';
                     }
                 }
@@ -2764,7 +2956,7 @@
                     // 读取语言
                     var value = i18n.t(key);
                     // 首页则读取当前应用名称
-                    if(this.data.tabbar_pages[0] == '/'+url) {
+                    if(this.app_tabbar_pages()[0] == '/'+url) {
                         value = this.get_application_title();
                     }
                 }
@@ -2774,30 +2966,72 @@
                 });
             },
 
+            // 设置导航背景色和颜色
+            set_navigation_bar_color(is_white = null) {
+                var color = '#000000';
+                var bg_color = '#ffffff';
+                var arr = [
+                    'pages/index/index',
+                ];
+                var page = this.current_page(false);
+                if(is_white === true || (is_white === null && arr.indexOf(page) != -1)) {
+                    color = '#ffffff';
+                    bg_color = '#000000';
+                }
+                uni.setNavigationBarColor({
+                    frontColor: color,
+                    backgroundColor: bg_color,
+                });
+            },
+
+            // 底部浮动按钮样式处理
+            bottom_fixed_style_handle() {
+                var obj = this.get_page_object();
+                if(obj != null) {
+                    // undefined值表示未定义则不处理
+                    var temp = obj.bottom_fixed_style == undefined ? ((obj.data || null) == null ? undefined : obj.data.bottom_fixed_style) : '';
+                    if(temp !== undefined && this.is_tabbar_pages()) {
+                        obj.$vm.setData(
+                        {
+                            bottom_fixed_style: 'bottom:'+(((this.app_tabbar_height_value()-8)*2)+20)+'rpx'
+                        });
+                    }
+                }
+            },
+
             // 页面加载事件处理
             page_event_onload_handle(params) {
-                // 设置底部菜单
-                this.set_tabbar();
-
                 // 获取用户当前位置
                 this.get_user_location();
             },
 
             // 页面展示事件处理
             page_event_onshow_handle() {
-                // 设置底部菜单
-                this.set_tabbar();
+                //隐藏系统tabbar
+                this.system_hide_tabbar();
+
+                // 底部浮动按钮样式处理
+                this.bottom_fixed_style_handle();
 
                 // 页面顶部导航标题设置
                 this.set_pages_navigation_bar_title();
+
+                // 设置导航背景色和颜色
+                this.set_navigation_bar_color();
             },
         },
 
         // 初始化完成时触发（全局只触发一次）
-        onLaunch(params) {},
+        onLaunch(params) {
+            //隐藏系统tabbar
+            this.globalData.system_hide_tabbar();
+        },
 
         // 启动，或从后台进入前台显示
         onShow(params) {
+            //隐藏系统tabbar
+            this.globalData.system_hide_tabbar();
+
             // 初始化配置
             this.globalData.init_config();
 
@@ -2812,11 +3046,6 @@
 
             // 公共数据初始化处理
             this.globalData.common_data_init_handle();
-
-            // #ifdef MP-WEIXIN
-            // 协议验证处理
-            this.globalData.weixin_privacy_setting();
-            // #endif
         },
 
         // 从前台进入后台

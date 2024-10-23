@@ -33,7 +33,7 @@
         </view>
 
         <!-- app管理 -->
-        <component-app-admin ref="app_admin"></component-app-admin>
+        <component-app-admin ref="app_admin" :propIsHideStar="true"></component-app-admin>
 
         <!-- 用户基础 -->
         <component-user-base ref="user_base" :propIsGrayscale="propIsGrayscale"></component-user-base>
