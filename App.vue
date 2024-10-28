@@ -952,6 +952,11 @@
              * 当前地址是否存在系统tabbar中
              */
             is_system_tabbar_pages(url = null) {
+                // 系统页面不能带参数
+                if((url || null) != null) {
+                    var temp = url.split('?');
+                    url = temp[0];
+                }
                 return this.is_tabbar_pages_handle(this.data.system_tabbar, url);
             },
 

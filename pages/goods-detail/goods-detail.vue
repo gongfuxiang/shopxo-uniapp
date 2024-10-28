@@ -436,16 +436,15 @@
                                             <!-- 不展示收藏 -->
                                             <block v-if="item.type != 'favor'">
                                                 <!-- 客服 -->
-                                                <block v-if="item.type == 'plugins-chat'">
+                                                <block v-if="item.type == 'chat'">
                                                     <component-online-service
-                                                        v-if="common_app_is_online_service == 1"
                                                         :propIsGoods="true"
                                                         :propIsNav="true"
                                                         :propCard="true"
                                                         :propTitle="goods.title"
                                                         :propImg="goods.images"
                                                         :propPath="'/pages/goods-detail/goods-detail?id=' + goods.id"
-                                                        :propChatUrl="item.url"
+                                                        :propChatUrl="item.url || ''"
                                                     ></component-online-service>
                                                 </block>
                                                 <!-- 首页 -->
@@ -703,15 +702,12 @@
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 plugins_is_goods_detail_poster: 0,
-                common_app_is_online_service: 0,
                 common_app_is_use_mobile_detail: 0,
                 common_is_goods_detail_show_photo: 0,
                 common_is_show_goods_comments: 1,
                 common_app_customer_service_tel: null,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
-                // 底部导航业务操作按钮数量
-                bottom_nav_bus_number: 4,
                 // 是否底部导航展示返回按钮
                 is_opt_back: 0,
                 // 是否开启购物车
@@ -897,16 +893,12 @@
                 if ((status || false) == true) {
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
-                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service', 0),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
                         common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     });
-
-                    // 底部业务导航按钮数量处理
-                    this.bottom_nav_bus_number_handle();
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -990,7 +982,6 @@
                                 // 是否需要隐藏购物车
                                 if(parseInt(this.plugins_realstore_data.is_hide_cart || 0) == 1) {
                                     this.setData({is_opt_cart: 0});
-                                    this.bottom_nav_bus_number_handle();
                                 }
                             }
 
@@ -1058,18 +1049,6 @@
                     goods_spec_base_original_price: goods.original_price || 0,
                     show_field_price_text: price_text_arr.indexOf(goods.show_field_price_text) != -1 ? null : goods.show_field_price_text.replace(/<[^>]+>/g, '') || null,
                 });
-            },
-
-            // 底部业务导航数量处理
-            bottom_nav_bus_number_handle() {
-                var value = 4;
-                if (this.is_opt_cart != 1) {
-                    value--;
-                }
-                if (this.common_app_is_online_service != 1) {
-                    value--;
-                }
-                this.setData({ bottom_nav_bus_number: value });
             },
 
             // 返回事件
