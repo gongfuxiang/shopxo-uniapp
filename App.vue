@@ -952,11 +952,6 @@
              * 当前地址是否存在系统tabbar中
              */
             is_system_tabbar_pages(url = null) {
-                // 系统页面不能带参数
-                if((url || null) != null) {
-                    var temp = url.split('?');
-                    url = temp[0];
-                }
                 return this.is_tabbar_pages_handle(this.data.system_tabbar, url);
             },
 
@@ -972,6 +967,14 @@
                 }
                 if(pages.indexOf(value) != -1) {
                     return true;
+                } else {
+                    // 存在参数，去掉参数再检索是否存在页面的tabbar
+                    if(value.indexOf('?') != -1) {
+                        var temp = value.split('?');
+                        if(pages.indexOf(temp[0]) != -1) {
+                            return true;
+                        }
+                    }
                 }
                 return false;
             },
