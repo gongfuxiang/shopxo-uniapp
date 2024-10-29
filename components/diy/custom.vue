@@ -93,8 +93,8 @@
             init() {
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
-                const { margin_left, margin_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right;
+                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right;
                 this.setData({
                     form: new_form,
                     new_style: new_style,

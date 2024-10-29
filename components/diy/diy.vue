@@ -13,7 +13,7 @@
                     </view>
                     <template v-if="is_tabs_type">
                         <template v-if="diy_data.length > 0">
-                            <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:1;')">
+                            <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx;z-index:1' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:' + (item.com_data.style.common_style.is_bottom_up == '1' ? '0' : '1'))">
                                 <!-- 基础组件 -->
                                 <template v-if="item.is_enable == '1'">
                                     <componentDiySearch v-if="item.key == 'search'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiySearch>
