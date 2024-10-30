@@ -2757,7 +2757,7 @@
                                 }
 
                                 // 是否为扫码登录
-                                var thirdpartylogin_arr = ['/thirdpartylogin-scan-index-', 'plugins/index/pluginsname/thirdpartylogin/pluginscontrol/scan/pluginsaction/index'];
+                                var thirdpartylogin_arr = ['/thirdpartylogin-scan-index-', 'plugins/index/pluginsname/thirdpartylogin/pluginscontrol/scan/pluginsaction/index/id/'];
                                 var thirdpartylogin_ret = self.web_url_value_mate(value, thirdpartylogin_arr);
                                 if (thirdpartylogin_ret.status == 1 && thirdpartylogin_ret.value != null) {
                                     uni.navigateTo({
