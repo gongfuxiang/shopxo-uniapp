@@ -85,16 +85,16 @@
         mounted() {
             setTimeout(() => {
                 this.get_tabs_height();
-            }, 500);
+            }, 100);
         },
         // 属性值改变监听
         watch: {
             // 数据
             propTabsIsTop(value, old_value) {
                 this.init();
-                this.$nextTick(() => {
+                setTimeout(() => {
                     this.get_tabs_height();
-                });
+                }, 100);
             },
             propKey(val) {
                 // 初始化
