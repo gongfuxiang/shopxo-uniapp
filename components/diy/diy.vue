@@ -414,22 +414,18 @@
             },
             // 选项卡高度
             tabs_height_event(height) {
+                let new_tabs_height = 0;
                 // 判断是否有选项卡切选项卡数组数据内的字段is_enable值是否为1
                 if (this.tabs_data.length > 0) {
                     this.tabs_data.forEach((item, index) => {
                         if (item.is_enable == '1') {
-                            this.setData({
-                                tabs_height: height,
-                            });
-                            console.log(height);
+                            new_tabs_height = height;
                         }
                     });
-                } else {
-                    this.setData({
-                        tabs_height: 0,
-                    });
-                    console.log(2);
                 }
+                this.setData({
+                    tabs_height: new_tabs_height,
+                });
             },
 
             // 滚动加载
