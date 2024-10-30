@@ -85,7 +85,7 @@
         mounted() {
             setTimeout(() => {
                 this.get_tabs_height();
-            });
+            }, 500);
         },
         // 属性值改变监听
         watch: {

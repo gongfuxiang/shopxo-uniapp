@@ -249,7 +249,6 @@
                 // 顶部导航是否换行
                 is_search_alone_row: false,
                 data_alone_row_space: 0,
-                is_have_tabs: false,
             };
         },
         watch: {
@@ -311,7 +310,6 @@
                         new_diy_index++;
                     }
                 });
-
                 // tabs选项卡数据过滤
                 this.setData({
                     header_data: header,
@@ -330,16 +328,6 @@
                     data_alone_row_space: parseInt(header.com_data.style.data_alone_row_space || 5),
                     is_immersive_style_and_general_safe_distance_value: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',
                 });
-                // 判断是否有选项卡切选项卡数组数据内的字段is_enable值是否为1
-                if (this.tabs_data.length > 0) {
-                    this.tabs_data.forEach((item, index) => {
-                        if (item.is_enable == '1') {
-                            this.setData({
-                                is_have_tabs: true,
-                            });
-                        }
-                    });
-                }
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
             },
@@ -426,11 +414,21 @@
             },
             // 选项卡高度
             tabs_height_event(height) {
-                // 判断是否有选项卡
-                if (this.is_have_tabs) {
-                    this.setData({
-                        tabs_seat_height: height,
+                // 判断是否有选项卡切选项卡数组数据内的字段is_enable值是否为1
+                if (this.tabs_data.length > 0) {
+                    this.tabs_data.forEach((item, index) => {
+                        if (item.is_enable == '1') {
+                            this.setData({
+                                tabs_height: height,
+                            });
+                            console.log(height);
+                        }
                     });
+                } else {
+                    this.setData({
+                        tabs_height: 0,
+                    });
+                    console.log(2);
                 }
             },
 
