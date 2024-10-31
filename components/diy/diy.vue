@@ -8,8 +8,10 @@
                 </view>
                 <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                     <view v-for="item in tabs_data" :key="item.key">
-                        <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-                        <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
+                        <template v-if="item.is_enable == '1'">
+                            <componentDiyTabs v-if="item.key == 'tabs'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+                            <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
+                        </template>
                     </view>
                     <template v-if="is_tabs_type">
                         <template v-if="diy_data.length > 0">
@@ -326,10 +328,6 @@
                     data_alone_row_space: parseInt(header.com_data.style.data_alone_row_space || 5),
                     is_immersive_style_and_general_safe_distance_value: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',
                 });
-                var client_value = app.globalData.application_client_type();
-                var client_brand = app.globalData.application_client_brand();
-                if (client_value == 'h5' || client_brand == 'devtools') {
-                }
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
             },
@@ -416,8 +414,17 @@
             },
             // 选项卡高度
             tabs_height_event(height) {
+                let new_tabs_height = 0;
+                // 判断是否有选项卡切选项卡数组数据内的字段is_enable值是否为1
+                if (this.tabs_data.length > 0) {
+                    this.tabs_data.forEach((item, index) => {
+                        if (item.is_enable == '1') {
+                            new_tabs_height = height;
+                        }
+                    });
+                }
                 this.setData({
-                    tabs_height: height,
+                    tabs_height: new_tabs_height,
                 });
             },
 
