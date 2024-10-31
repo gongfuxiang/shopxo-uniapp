@@ -174,9 +174,12 @@
                 const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
                 // 背景图
                 const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
+                const up_slide_opacity = 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';'
                 this.setData({
+                    up_slide_opacity: up_slide_opacity,
+                    up_slide_old_logo_style: 'opacity:' + ((newVal - 5) / (this.header_top + 33) > 1 ? 1 : ((newVal - 5) / (this.header_top + 33)).toFixed(2)) + ';',
                     // 20是大小误差
-                    up_slide_style: gradient_computer(gradient) + 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';',
+                    up_slide_style: gradient_computer(gradient) + up_slide_opacity,
                     up_slide_img_style: background_computer(back),
                 });
             },

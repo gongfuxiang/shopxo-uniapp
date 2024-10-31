@@ -9,9 +9,16 @@
                             <view class="w h"  :style="item.data_style.background_img_style">
                                 <template v-if="item.data_content.data_type == 'goods'">
                                     <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + ([0, 1].includes(index) ? item.data_style.chunk_padding_data : '')">
-                                        <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" class="flex-col gap-5 tl">
-                                            <view class="ma-0 w text-line-1" :style="item.data_style.daheading_style">{{ item.data_content.heading_title || '' }}</view>
-                                            <view class="ma-0 w text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                        <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c gap-10' : ' flex-col gap-5')">
+                                            <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
+                                                <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
+                                                    <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
+                                                </view>
+                                            </template>
+                                            <template v-else>
+                                                <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
+                                            </template>
+                                            <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
                                         <view class="w h">
                                             <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
@@ -41,9 +48,16 @@
                         <view class="w h"  :style="item.data_style.background_img_style">
                             <template v-if="item.data_content.data_type == 'goods'">
                                 <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
-                                    <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" class="flex-col gap-5 tl">
-                                        <view class="ma-0 w text-line-1" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
-                                        <view class="ma-0 w text-line-1" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                    <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c gap-10' : ' flex-col gap-5')">
+                                        <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
+                                            <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
+                                                <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
+                                            </view>
+                                        </template>
+                                        <template v-else>
+                                            <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
+                                        </template>
+                                        <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
                                     <view class="w h">
                                         <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
@@ -76,6 +90,8 @@
     const app = getApp();
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer } from '@/common/js/common/common.js';
+    var system = app.globalData.get_system_info(null, null, true);
+    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             magicCarousel,
@@ -141,6 +157,7 @@
             init() {
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
+                const container_height = !isEmpty(new_form.container_height) ? new_form.container_height : sys_width;
                 const density = 4;
                 this.setData({
                     form: new_form,
@@ -152,21 +169,9 @@
                     data_magic_list: this.get_data_magic_list(new_form.data_magic_list),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
-                });
-                this.$nextTick(() => {
-                    const query = uni.createSelectorQuery().in(this);
-                    query
-                        .select('.magic-container')
-                        .boundingClientRect((res) => {
-                            if ((res || null) != null) {
-                                this.setData({
-                                    div_width: res.width,
-                                    cubeCellWidth: res.width / density,
-                                    container_size: res.width + 'px',
-                                });
-                            }
-                        })
-                        .exec();
+                    div_width: sys_width,
+                    cubeCellWidth: sys_width / density,
+                    container_size: container_height * 2 + 'rpx',
                 });
             },
             get_data_magic_list(data) {
@@ -189,7 +194,7 @@
                     data_content.fit = fit;
                     // 商品名称和价格样式
                     data_style.goods_title_style = this.goods_trends_config(data_style, 'title');
-                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price');
+                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price') + `line-height: ${ item.data_style.goods_price_size }px;`;
                     const radius = !isEmpty(data_style.img_radius) ? data_style.img_radius : { radius: 4, radius_top_left: 4, radius_top_right: 4, radius_bottom_left: 4, radius_bottom_right: 4 };
                     data_style.get_img_radius = radius_computer(radius);
 
@@ -332,5 +337,9 @@
     }
     .h {
         height: 100%;
+    }
+    .flex-basis-shrink {
+        flex-basis: content;
+        flex-shrink: 1;
     }
 </style>
