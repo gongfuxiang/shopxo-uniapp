@@ -20,6 +20,9 @@
 		"edit": "Edit",
         "link": "Link",
         "gift": "Gift",
+        "image": "Image",
+        "video": "Video",
+        "file": "File",
 		"more": "More",
 		"more_null": "",
         "view_more": "View more",
@@ -67,7 +70,8 @@
 		"apply_time": "Application time",
         "verification_text": "Verification code",
         "verification_message": "Please enter the verification code",
-        "not_supported_scan_tips": "H5 webpage does not support scanning codes"
+        "not_supported_scan_tips": "H5 webpage does not support scanning codes",
+        "copy_link": "Copy link"
 	},
 	"pages": {
 		"goods-category": "Product classification",
@@ -233,7 +237,12 @@
 		"plugins-coin-recharge-list": "Recharge details",
         "plugins-antifakecode-index": "Authentic inquiry",
         "plugins-giftcard-index": "My gift card",
-        "plugins-giftcard-form": "Gift card redemption"
+        "plugins-giftcard-form": "Gift card redemption",
+        "plugins-givegift-goods": "Buying Gifts",
+        "plugins-givegift-receive": "Gift collection",
+        "plugins-givegift-gift": "My gift",
+        "plugins-givegift-code": "Gift Link",
+        "plugins-orderresources-orderannex": "Order Resources"
 	},
 	"login": {
 		"login": {
@@ -729,7 +738,6 @@
 			"4h814w": "Pack up more",
 			"lfwj0g": "Expand more",
 			"2e5rv3": "Uploading, please wait a moment",
-			"3h58hv": "picture",
 			"v19gg8": "Please enter a title",
 			"gu3x97": "Please select a category",
 			"adiq70": "Please enter the content"
@@ -1463,6 +1471,7 @@
 			"lp1v28": "Urge and urge",
 			"ht65c9": "Suborder",
 			"9l47b6": "form",
+            "fyuikn": "resources",
 			"3l2jr5": "buy-back",
 			"7571p2": "Merge payments",
 			"hp123x": "To be picked up",

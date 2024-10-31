@@ -1653,6 +1653,18 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/orderresources",
+            "pages": [
+                {
+                    "path": "orderannex/orderannex",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {

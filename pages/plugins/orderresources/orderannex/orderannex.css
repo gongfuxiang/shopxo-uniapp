@@ -1,0 +1,18 @@
+.images-data-list .item {
+    gap: 40rpx 20rpx;
+}
+.images-data-list .item-content {
+    width: calc(25% - 21rpx);
+    height: 200rpx;
+}
+.images-data-list .item .image,
+.video-data-list .item .video {
+    height: calc(100% - 40rpx);
+}
+.video-data-list .item {
+    gap: 50rpx 20rpx;
+}
+.video-data-list .item-content {
+    width: 100%;
+    height: 440rpx;
+}
