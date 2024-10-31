@@ -545,7 +545,7 @@
                 // 判断顶部导航是否置顶
                 // #ifdef H5 || MP-TOUTIAO
                 if (!this.is_header_top) {
-                    if (e.detail.scrollTop >= this.sticky_top + 33 + (is_search_alone_row ? 0 : 33 + data_alone_row_space)) {
+                    if (e.detail.scrollTop >= this.sticky_top + 33 + (this.is_search_alone_row ? 0 : 33 + this.data_alone_row_space)) {
                         this.setData({
                             temp_sticky_top: 0,
                             temp_header_top: 0,
