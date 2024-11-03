@@ -33,7 +33,7 @@
                 <view v-for="(item, index) in propValue" :key="index" :class="['ht-auto', { 'half-width': propNum !== 1, 'w': propNum == 1 }]">
                     <view class="w h oh" :style="style_container">
                         <view class="w h flex-col gap-10" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
-                            <view class="w h pr">
+                            <view class="w h flex-1 pr">
                                 <template v-if="!isEmpty(item.new_cover)">
                                     <view class="w h">
                                         <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
@@ -51,7 +51,7 @@
                                     </template>
                                 </view>
                             </view>
-                            <view v-if="propIsShow.includes('title')" class="text-line-1 tl w" :style="propGoodStyle.goods_title_style + ';overflow: inherit'">{{ item.title }}</view>
+                            <view v-if="propIsShow.includes('title')" class="text-line-1 tl w" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
                         </view>
                     </view>
                 </view>

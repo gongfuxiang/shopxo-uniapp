@@ -24,11 +24,15 @@
                                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                                 <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                     <template v-if="['2', '3'].includes(form.content.theme)">
-                                                        <view v-if="form.content.logo.length > 0" class="logo-outer-style">
+                                                        <view v-if="form.content.logo.length > 0" class="logo-outer-style re flex-row align-c">
                                                             <template v-if="form.style.up_slide_logo && form.style.up_slide_logo.length > 0">
                                                                 <!-- 有上滑logo的处理逻辑 -->
-                                                                <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" :style="up_slide_old_logo_style + 'max-width:' + ((propScrollTop - 5) / (header_top + 33) < 1 ? 100 + '%;' : 0)" />
-                                                                <image :src="form.style.up_slide_logo[0].url" mode="heightFix" :class="['logo-style left-0', {'pa': (propScrollTop - 5) / (header_top + 33) < 1 }]" :style="'opacity:0;' + up_slide_opacity" />
+                                                                <view v-if="(propScrollTop - 5) / (header_top + 33) < 1" class="logo-style" :style="up_slide_old_logo_style">
+                                                                    <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" />
+                                                                </view>
+                                                                <view :class="['logo-style left-0', {'pa': (propScrollTop - 5) / (header_top + 33) < 1 }]" :style="'opacity:0;' + up_slide_opacity">
+                                                                    <image class="logo-style" :src="form.style.up_slide_logo[0].url" mode="heightFix" />
+                                                                </view>
                                                             </template>
                                                             <template v-else>
                                                                 <!-- 没有上滑logo的处理逻辑 -->
