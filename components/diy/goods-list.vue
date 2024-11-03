@@ -371,7 +371,10 @@
                 } else if (form.theme == '3') {
                     size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
                 } else if (form.theme == '5') {
-                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'}`;
+                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};`;
+                }
+                if (form.theme != '6') {
+                    size_style += `height: ${new_style.content_outer_height * 2 + 'rpx'};`;
                 }
                 return `${radius} ${padding} ${size_style}`;
             },
@@ -519,29 +522,26 @@
     }
 
     .flex-img0 {
-        height: auto;
-        min-height: 220rpx;
-        max-height: 240rpx;
+        height: 100%;
         width: 220rpx;
     }
 
     .flex-img1 {
         width: 100%;
-        height: 360rpx;
+        height: 100%;
     }
 
     .flex-img2 {
         width: 100%;
-        height: 332rpx;
+        height: 100%;
     }
 
     .flex-img3 {
         width: 100%;
-        height: 228rpx;
+        height: 100%;
     }
     .flex-img4 {
-        min-width: 140rpx;
-        min-height: 140rpx;
+        width: 140rpx;
         height: 100%;
     }
     .flex-img5 {
