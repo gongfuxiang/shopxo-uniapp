@@ -42,7 +42,9 @@
 </template>
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, radius_computer, percentage_count } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, percentage_count, isEmpty } from '@/common/js/common/common.js';
+    var system = app.globalData.get_system_info(null, null, true);
+    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         props: {
             propValue: {
@@ -113,6 +115,7 @@
                 } else if (new_content.img_fit == 'cover') {
                     fit = 'aspectFill';
                 }
+                const container_height = !isEmpty(new_content.container_height) ? new_content.container_height : sys_width;
                 const density = 4;
                 this.setData({
                     form: this.propValue.content,
@@ -122,24 +125,11 @@
                     img_outer_spacing: new_style_spacing * 2 + 'rpx',
                     content_img_radius: radius_computer(new_style),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
-                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex) + 'box-sizing: border-box;',
                     img_fit: fit,
-                });
-
-                this.$nextTick(() => {
-                    const query = uni.createSelectorQuery().in(this);
-                    query
-                        .select('.magic-container')
-                        .boundingClientRect((res) => {
-                            if ((res || null) != null) {
-                                this.setData({
-                                    div_width: res.width,
-                                    container_size: res.width + 'px',
-                                    cube_cell: res.width / density,
-                                });
-                            }
-                        })
-                        .exec();
+                    div_width: sys_width,
+                    container_size: container_height * 2 + 'rpx',
+                    cube_cell: sys_width / density,
                 });
             },
             getSelectedWidth(item) {

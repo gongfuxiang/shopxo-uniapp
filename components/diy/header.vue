@@ -25,7 +25,15 @@
                                                 <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                     <template v-if="['2', '3'].includes(form.content.theme)">
                                                         <view v-if="form.content.logo.length > 0" class="logo-outer-style">
-                                                            <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" />
+                                                            <template v-if="form.style.up_slide_logo && form.style.up_slide_logo.length > 0">
+                                                                <!-- 有上滑logo的处理逻辑 -->
+                                                                <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" :style="up_slide_old_logo_style + 'max-width:' + ((propScrollTop - 5) / (header_top + 33) < 1 ? 100 + '%;' : 0)" />
+                                                                <image :src="form.style.up_slide_logo[0].url" mode="heightFix" :class="['logo-style left-0', {'pa': (propScrollTop - 5) / (header_top + 33) < 1 }]" :style="'opacity:0;' + up_slide_opacity" />
+                                                            </template>
+                                                            <template v-else>
+                                                                <!-- 没有上滑logo的处理逻辑 -->
+                                                                <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" />
+                                                            </template>
                                                         </view>
                                                     </template>
                                                     <view v-if="['1', '2'].includes(form.content.theme)">{{ form.content.title }}</view>
@@ -49,9 +57,12 @@
                                                 </template>
                                             </view>
                                             <view v-if="!isEmpty(form.content.icon_setting) && !is_icon_alone_row" class="flex-row align-c z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
-                                                <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
+                                                <view v-for="(item, index) in form.content.icon_setting" :key="index" class="pr" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                                     <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
                                                     <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color" propContainerDisplay="flex"></iconfont>
+                                                    <view v-if="!isEmpty(item.badge) && item.badge !== 0" class="pa badge-style">
+                                                        <component-badge :propNumber="item.badge || 0"></component-badge>
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
@@ -62,9 +73,12 @@
                                                 </view>
                                             </template>
                                             <view v-if="!isEmpty(form.content.icon_setting) && is_icon_alone_row" class="flex-row align-c z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
-                                                <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
+                                                <view v-for="(item, index) in form.content.icon_setting" :key="index" class="pr" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                                     <imageEmpty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></imageEmpty>
                                                     <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color" propContainerDisplay="flex"></iconfont>
+                                                    <view v-if="!isEmpty(item.badge) && item.badge !== 0" class="pa badge-style">
+                                                        <component-badge :propNumber="item.badge || 0"></component-badge>
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
@@ -96,6 +110,7 @@
     import componentDiySearch from '@/components/diy/search';
     import imageEmpty from '@/components/diy/modules/image-empty';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    import componentBadge from '@/components/badge/badge';
     import { isEmpty, background_computer, gradient_computer } from '@/common/js/common/common.js';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -122,6 +137,7 @@
             componentDiySearch,
             imageEmpty,
             componentChoiceLocation,
+            componentBadge
         },
         data() {
             return {
@@ -156,6 +172,8 @@
                 // #endif
                 // 判断是否是沉浸模式
                 is_immersion_model: false,
+                up_slide_opacity: '',
+                up_slide_old_logo_style: '',
                 up_slide_style: '',
                 up_slide_img_style: '',
                 // 当前页面是否在底部菜单中
@@ -169,16 +187,22 @@
         watch: {
             // 监听滚动距离
             propScrollTop(newVal) {
-                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style } = this.propValue.style || {};
-                // 渐变
-                const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
-                // 背景图
-                const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
-                this.setData({
-                    // 20是大小误差
-                    up_slide_style: gradient_computer(gradient) + 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';',
-                    up_slide_img_style: background_computer(back),
-                });
+                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display } = this.propValue.style || {};
+                if (up_slide_display == '1') {
+                    // 渐变
+                    const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
+                    // 背景图
+                    const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
+                    const up_slide_opacity = 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';';
+                    this.setData({
+                        up_slide_opacity: up_slide_opacity,
+                        // 原来的logo要比新的隐藏的快，所以要比原来的logo快一点
+                        up_slide_old_logo_style: 'opacity:' + ((newVal - 5) / (this.header_top + 33) > 1 ? 0 : (1 - (newVal - 5) / (this.header_top + 33)).toFixed(2)) + ';',
+                        // 20是大小误差
+                        up_slide_style: gradient_computer(gradient) + up_slide_opacity,
+                        up_slide_img_style: background_computer(back),
+                    });
+                }
             },
             propKey(val) {
                 if ((this.propValue || null) !== null) {
@@ -288,7 +312,7 @@
         .model-head {
             .model-head-content {
                 height: 66rpx;
-                overflow: hidden;
+                // overflow: hidden;
                 top: -1rpx;
                 /* #ifdef H5 || MP-TOUTIAO */
                 top: 4rpx;
@@ -322,5 +346,9 @@
     }
     .up_slide_bg {
         z-index: -1;
+    }
+    .badge-style {
+        top: -20rpx;
+        right: 5rpx;
     }
 </style>
