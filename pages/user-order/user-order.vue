@@ -71,7 +71,7 @@
                             class="item-operation tr br-t padding-top-main">
                             <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                             <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">{{$t('order.order.1i873j')}}</button>
-                            <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
+                            <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" :data-transactionid="item.weixin_collect_data || ''" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
                             <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_data || null) != null" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                             <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                             <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('user-order.user-order.twc3r7')}}</button>
@@ -520,6 +520,44 @@
 
             // 收货
             collect_event(e) {
+                var transactionid = e.currentTarget.dataset.transactionid || null;
+                if(transactionid == null || !uni.openBusinessView) {
+                    this.collect_hand_handle(e);
+                } else {
+                    // 存在微信单号收货数据，则拉起微信确认收货组件、失败则调用手动收货模式
+                    var self = this;
+                    uni.openBusinessView({
+                        businessType: 'weappOrderConfirm',
+                        extraData: {
+                            transaction_id: transactionid
+                        },
+                        success() {
+                            self.collect_handle(e);
+                        },
+                        fail() {
+                            self.collect_hand_handle(e);
+                        }
+                    });
+                }
+            },
+
+            // 手动收货
+            collect_hand_handle(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            this.collect_handle(e);
+                        }
+                    },
+                });
+            },
+
+            // 收货处理
+            collect_handle(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
                     content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
@@ -530,7 +568,7 @@
                             // 参数
                             var id = e.currentTarget.dataset.value;
                             var index = e.currentTarget.dataset.index;
-
+            
                             // 加载loding
                             uni.showLoading({
                                 title: this.$t('common.processing_in_text'),
