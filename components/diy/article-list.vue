@@ -4,13 +4,13 @@
         <view class="oh" :style="style_img_container">
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(article_theme)" class="flex-wrap" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
-                    <view v-for="(item, index) in data_list" :key="index" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :style="article_style + article_item_height" :data-value="item.data.url" @tap="url_event">
+                    <view v-for="(item, index) in data_list" :key="index" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :style="article_style" :data-value="item.data.url" @tap="url_event">
                         <template v-if="article_theme !== '3'">
                             <template v-if="item.new_cover.length > 0">
-                                <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="aspectFill" />
+                                <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
                             </template>
                             <template v-else>
-                                <image :src="item.data.cover" class="img" :style="img_radius" mode="aspectFill" />
+                                <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
                             </template>
                         </template>
                         <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
@@ -33,13 +33,13 @@
                 <view v-else class="oh" :class="article_theme_class">
                     <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :style="'height:' + carousel_height_computer">
                         <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1">
-                            <view class="flex-row" :style="article_spacing + article_item_height">
+                            <view class="flex-row" :style="article_spacing">
                                 <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-white oh flex-col" :style="article_style" :data-value="item.data.url" @tap="url_event">
                                     <template v-if="item.new_cover.length > 0">
-                                        <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="aspectFill" />
+                                        <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
                                     </template>
                                     <template v-else>
-                                        <image :src="item.data.cover" class="img" :style="img_radius" mode="aspectFill" />
+                                        <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
                                     </template>
                                     <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
                                         <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
@@ -134,6 +134,8 @@
                 carousel_height_computer: '',
                 // 文章内容高度
                 article_name_height_computer: '',
+                // 图片大小
+                img_size: '',
                 // 文章轮播数据
                 article_carousel_list: [],
                 // 文章描述间距
@@ -143,9 +145,6 @@
         watch: {
             propKey(val) {
                 // 初始化
-                this.init();
-            },
-            propValue(new_value, old_value) {
                 this.init();
             },
         },
@@ -189,20 +188,55 @@
                     // 描述间距
                     name_desc_space: parseInt(new_style.name_desc_space),
                 });
+                // 默认数据
+                const product_style_list = [
+                    { name: '单列展示', value: '0', width:110, height: 83 },
+                    { name: '两列展示（纵向）', value: '1', width:180, height: 180 },
+                    { name: '大图展示', value: '2', width:0, height: 180 },
+                    { name: '无图模式', value: '3', width:0, height: 0 },
+                    { name: '左右滑动展示', value: '4', width:0, height: 0 },
+                ];
+                let img_style = ``;
+                if (['0'].includes(new_content.theme)) {
+                    // 图片宽度
+                    if (typeof new_style.content_img_width == 'number') {
+                        img_style += `width: ${ new_style.content_img_width * 2 }rpx;`;
+                    } else {
+                        const list = product_style_list.filter(item => item.value == new_content.theme);
+                        if (list.length > 0) {
+                            img_style += `width: ${ list[0].width * 2 }rpx;`;
+                        } else {
+                            img_style += 'width: auto;';
+                        }
+                    }
+                }
+                if (!['3', '4'].includes(new_content.theme)) {
+                    // 图片宽度
+                    if (typeof new_style.content_img_height == 'number') {
+                        img_style += `height: ${ new_style.content_img_height * 2 }rpx;`;
+                    } else {
+                        const list = product_style_list.filter(item => item.value == new_content.theme);
+                        if (list.length > 0) {
+                            img_style += `height: ${ list[0].height * 2 }rpx;`;
+                        } else {
+                            img_style += 'height: auto;';
+                        }
+                    }
+                }
                 // 文章样式
                 if (this.article_theme == '0') {
                     this.setData({
-                        article_item_height: `height: ${new_style.article_height * 2}rpx;`,
+                        img_size: img_style,
                         article_style: this.content_spacing + this.content_padding + this.content_radius,
                     });
                 } else if (this.article_theme == '1') {
                     this.setData({
-                        article_item_height: `height: ${new_style.article_height * 2}rpx;`,
+                        img_size: img_style,
                         article_style: `width: calc(50% - ${new_style.article_spacing / 2}px);` + this.content_radius,
                     });
                 } else if (this.article_theme == '2') {
                     this.setData({
-                        article_item_height: `height: ${new_style.article_height * 2}rpx;`,
+                        img_size: img_style,
                         article_style: this.content_radius,
                     });
                 } else if (this.article_theme == '3') {
@@ -221,10 +255,10 @@
                         interval_time: (new_style.interval_time || 2) * 1000,
                         // 是否滚动修改
                         is_roll: new_style.is_roll,
-                        article_item_height: `height: ${new_style.article_height * 2}rpx;`,
+                        article_item_height: `height: ${new_style.article_height * 2}rpx`,
                         article_style: this.article_style + this.content_radius + multicolumn_columns_width,
                         // 轮播高度
-                        carousel_height_computer: new_style.article_height * 2 + 'rpx',
+                        carousel_height_computer: (new_style.name_size * 2 + new_style.article_height) * 2 + 'rpx',
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
                     });
@@ -284,10 +318,6 @@
     .style1 {
         .item {
             max-width: 100%;
-            .img {
-                height: 100%;
-                width: 220rpx;
-            }
         }
     }
     .style2 {
@@ -295,7 +325,6 @@
             width: calc(50% - 10rpx);
             .img {
                 width: 100%;
-                height: 100%;
             }
         }
     }
@@ -304,7 +333,6 @@
             width: 100%;
             .img {
                 width: 100%;
-                height: 100%;
             }
         }
     }

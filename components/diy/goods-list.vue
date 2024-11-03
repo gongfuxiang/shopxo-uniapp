@@ -16,10 +16,10 @@
                         </block>
                         <block v-else>
                             <block v-if="!isEmpty(item)">
-                                <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
+                                <view v-if="!isEmpty(item.new_cover)" :style="img_size">
                                     <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                 </view>
-                                <view v-else :class="'flex-img' + theme">
+                                <view v-else :style="img_size">
                                     <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                 </view>
                             </block>
@@ -232,6 +232,8 @@
                 simple_desc: '',
                 // 按钮背景色
                 button_gradient: '',
+                // 图片大小
+                img_size: '',
             };
         },
         watch: {
@@ -268,7 +270,43 @@
                     const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
                     const background = ['6'].includes(new_form.theme) ? 'bg-white ' : '';
                     const button_gradient = gradient_handle(new_style.shop_button_color, '180deg');
-
+                    // 默认数据
+                    const product_style_list = [
+                        { name: '单列展示', value: '0', width: 110, height: 120 },
+                        { name: '大图展示', value: '2', width: 166, height: 166 },
+                        { name: '无图模式', value: '6', width: 0, height: 0 },
+                        { name: '两列展示(纵向)', value: '1', width: 180, height: 180 },
+                        { name: '两列展示(横向)', value: '4', width: 70, height: 70 },
+                        { name: '三列展示', value: '3', width: 116, height: 114 },
+                        { name: '左右滑动展示', value: '5', width: 0, height: 0 },
+                    ];
+                    let img_style = ``;
+                    if (['0', '4'].includes(new_form.theme)) {
+                        // 图片宽度
+                        if (typeof new_style.content_img_width == 'number') {
+                            img_style += `width: ${ new_style.content_img_width * 2 }rpx;`;
+                        } else {
+                            const list = product_style_list.filter(item => item.value == new_form.theme);
+                            if (list.length > 0) {
+                                img_style += `width: ${ list[0].width * 2 }rpx;`;
+                            } else {
+                                img_style += 'width: auto;';
+                            }
+                        }
+                    }
+                    if (!['5', '6'].includes(new_form.theme)) {
+                        // 图片宽度
+                        if (typeof new_style.content_img_height == 'number') {
+                            img_style += `height: ${ new_style.content_img_height * 2 }rpx;`;
+                        } else {
+                            const list = product_style_list.filter(item => item.value == new_form.theme);
+                            if (list.length > 0) {
+                                img_style += `height: ${ list[0].height * 2 }rpx;`;
+                            } else {
+                                img_style += 'height: auto;';
+                            }
+                        }
+                    }
                     this.setData({
                         form: new_form,
                         new_style: new_style,
@@ -297,6 +335,7 @@
                         button_style: this.trends_config(new_style, 'button', 'buy_button') + button_gradient,
                         simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                         shop_content_list: this.get_shop_content_list(new_list, new_form),
+                        img_size: img_style,
                     });
                 }
             },
@@ -371,10 +410,7 @@
                 } else if (form.theme == '3') {
                     size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
                 } else if (form.theme == '5') {
-                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};`;
-                }
-                if (form.theme != '6') {
-                    size_style += `height: ${new_style.content_outer_height * 2 + 'rpx'};`;
+                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'};`;
                 }
                 return `${radius} ${padding} ${size_style}`;
             },
@@ -520,33 +556,8 @@
         border-top-right-radius: 20rpx;
         padding: 0 20rpx 0 0;
     }
-
-    .flex-img0 {
-        height: 100%;
-        width: 220rpx;
-    }
-
-    .flex-img1 {
-        width: 100%;
-        height: 100%;
-    }
-
-    .flex-img2 {
-        width: 100%;
-        height: 100%;
-    }
-
-    .flex-img3 {
-        width: 100%;
-        height: 100%;
-    }
-    .flex-img4 {
-        width: 140rpx;
-        height: 100%;
-    }
     .flex-img5 {
         width: 100%;
-        // min-height: 208rpx;
         height: 100%;
     }
     .original-price-left {
