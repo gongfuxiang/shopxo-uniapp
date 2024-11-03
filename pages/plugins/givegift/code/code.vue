@@ -27,7 +27,7 @@
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -52,6 +52,7 @@
                 data_page_total: 0,
                 data_page: 1,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
@@ -144,7 +145,7 @@
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_base')) {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
@@ -154,7 +155,6 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },

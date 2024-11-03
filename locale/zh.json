@@ -20,6 +20,9 @@
 		"edit": "编辑",
         "link": "链接",
         "gift": "礼物",
+        "image": "图片",
+        "video": "视频",
+        "file": "文件",
 		"more": "更多",
 		"more_null": "更 多",
         "view_more": "查看更多",
@@ -67,7 +70,8 @@
 		"apply_time": "申请时间",
         "verification_text": "核销码",
         "verification_message": "请输入核销码",
-        "not_supported_scan_tips": "H5网页不支持扫码"
+        "not_supported_scan_tips": "H5网页不支持扫码",
+        "copy_link": "复制链接"
 	},
 	"pages": {
 		"goods-category": "商品分类",
@@ -235,7 +239,8 @@
         "plugins-givegift-goods": "购买礼品",
         "plugins-givegift-receive": "礼品领取",
         "plugins-givegift-gift": "我的送礼",
-        "plugins-givegift-code": "礼品链接"
+        "plugins-givegift-code": "礼品链接",
+        "plugins-orderresources-orderannex": "订单资源"
 	},
 	"login": {
 		"login": {
@@ -723,7 +728,6 @@
 			"4h814w": "收起更多",
 			"lfwj0g": "展开更多",
 			"2e5rv3": "上传中请稍后",
-			"3h58hv": "图片",
 			"v19gg8": "请输入标题",
 			"gu3x97": "请选择分类",
 			"adiq70": "请输入内容"
@@ -1455,6 +1459,7 @@
 			"lp1v28": "催催",
 			"ht65c9": "子单",
 			"9l47b6": "表单",
+            "fyuikn": "资源",
 			"3l2jr5": "回购",
 			"7571p2": "合并支付",
 			"hp123x": "待取货",

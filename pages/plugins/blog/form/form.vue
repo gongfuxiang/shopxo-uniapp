@@ -362,7 +362,7 @@
                                 editorCtx.insertImage({
                                     src: data.data.url, // 此处需要将图片地址切换成服务器返回的真实图片地址
                                     // width: '50%',
-                                    alt: self.$t('form.form.3h58hv'),
+                                    alt: self.$t('common.video'),
                                     success: function (e) {},
                                 });
                                 uni.hideLoading();

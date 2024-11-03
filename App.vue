@@ -967,6 +967,14 @@
                 }
                 if(pages.indexOf(value) != -1) {
                     return true;
+                } else {
+                    // 存在参数，去掉参数再检索是否存在页面的tabbar
+                    if(value.indexOf('?') != -1) {
+                        var temp = value.split('?');
+                        if(pages.indexOf(temp[0]) != -1) {
+                            return true;
+                        }
+                    }
                 }
                 return false;
             },
@@ -1789,12 +1797,12 @@
             },
 
             // 图片预览
-            image_show_event(e) {
+            image_show_event(e, urls = null) {
                 var value = e.currentTarget.dataset.value || null;
                 if (value != null) {
                     uni.previewImage({
                         current: value,
-                        urls: [value],
+                        urls: urls || [value],
                     });
                 } else {
                     this.showToast(i18n.t('shopxo-uniapp.app.qm8548'));
@@ -2749,7 +2757,7 @@
                                 }
 
                                 // 是否为扫码登录
-                                var thirdpartylogin_arr = ['/thirdpartylogin-scan-index-', 'plugins/index/pluginsname/thirdpartylogin/pluginscontrol/scan/pluginsaction/index'];
+                                var thirdpartylogin_arr = ['/thirdpartylogin-scan-index-', 'plugins/index/pluginsname/thirdpartylogin/pluginscontrol/scan/pluginsaction/index/id/'];
                                 var thirdpartylogin_ret = self.web_url_value_mate(value, thirdpartylogin_arr);
                                 if (thirdpartylogin_ret.status == 1 && thirdpartylogin_ret.value != null) {
                                     uni.navigateTo({

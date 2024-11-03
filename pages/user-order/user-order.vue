@@ -46,7 +46,7 @@
                                 </view>
                             </view>
                         </view>
-                        <view class="padding-vertical-main tr cr-base text-size">
+                        <view class="padding-vertical-main tr cr-base text-size-sm">
                             <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                         </view>
                         <view
@@ -61,7 +61,8 @@
                                     (item.plugins_is_order_batch_button || 0) +
                                     (item.plugins_is_order_frequencycard_button || 0) +
                                     (item.plugins_delivery_data || 0) +
-                                    (item.plugins_ordergoodsform_data || 0)
+                                    (item.plugins_ordergoodsform_data || 0) +
+                                    (item.plugins_orderresources_data || 0)
                                  > 0 ) ||
                                 (item.status == 2 && item.order_model != 2) ||
                                 ((item.plugins_express_data || 0) == 1 && (item.express_data || null) != null) ||
@@ -80,6 +81,7 @@
                             <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
                             <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
                             <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">{{$t('user-order.user-order.9l47b6')}}</button>
+                            <button v-if="(item.plugins_orderresources_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderresources/orderannex/orderannex?oid=' + item.id" hover-class="none">{{$t('user-order.user-order.fyuikn')}}</button>
                             <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
                         </view>
                     </view>
