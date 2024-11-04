@@ -172,6 +172,8 @@
     import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import componentBadge from '@/components/badge/badge';
+    var system = app.globalData.get_system_info(null, null, true);
+    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             imageEmpty,
@@ -280,15 +282,16 @@
                         { name: '三列展示', value: '3', width: 116, height: 114 },
                         { name: '左右滑动展示', value: '5', width: 0, height: 0 },
                     ];
+                    const scale = sys_width / 390;
                     let img_style = ``;
                     if (['0', '4'].includes(new_form.theme)) {
                         // 图片宽度
                         if (typeof new_style.content_img_width == 'number') {
-                            img_style += `width: ${ new_style.content_img_width * 2 }rpx;`;
+                            img_style += `width: ${ new_style.content_img_width * scale }px;`;
                         } else {
                             const list = product_style_list.filter(item => item.value == new_form.theme);
                             if (list.length > 0) {
-                                img_style += `width: ${ list[0].width * 2 }rpx;`;
+                                img_style += `width: ${ list[0].width * scale }px;`;
                             } else {
                                 img_style += 'width: auto;';
                             }
@@ -297,11 +300,11 @@
                     if (!['5', '6'].includes(new_form.theme)) {
                         // 图片宽度
                         if (typeof new_style.content_img_height == 'number') {
-                            img_style += `height: ${ new_style.content_img_height * 2 }rpx;`;
+                            img_style += `height: ${ new_style.content_img_height * scale }px;`;
                         } else {
                             const list = product_style_list.filter(item => item.value == new_form.theme);
                             if (list.length > 0) {
-                                img_style += `height: ${ list[0].height * 2 }rpx;`;
+                                img_style += `height: ${ list[0].height * scale }px;`;
                             } else {
                                 img_style += 'height: auto;';
                             }

@@ -69,6 +69,8 @@
 <script>
     const app = getApp();
     import { common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math } from '@/common/js/common/common.js';
+    var system = app.globalData.get_system_info(null, null, true);
+    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         props: {
             propValue: {
@@ -196,15 +198,16 @@
                     { name: '无图模式', value: '3', width:0, height: 0 },
                     { name: '左右滑动展示', value: '4', width:0, height: 0 },
                 ];
+                const scale = sys_width / 390;
                 let img_style = ``;
                 if (['0'].includes(new_content.theme)) {
                     // 图片宽度
                     if (typeof new_style.content_img_width == 'number') {
-                        img_style += `width: ${ new_style.content_img_width * 2 }rpx;`;
+                        img_style += `width: ${ new_style.content_img_width * scale }px;`;
                     } else {
                         const list = product_style_list.filter(item => item.value == new_content.theme);
                         if (list.length > 0) {
-                            img_style += `width: ${ list[0].width * 2 }rpx;`;
+                            img_style += `width: ${ list[0].width * scale }px;`;
                         } else {
                             img_style += 'width: auto;';
                         }
@@ -213,11 +216,11 @@
                 if (!['3', '4'].includes(new_content.theme)) {
                     // 图片宽度
                     if (typeof new_style.content_img_height == 'number') {
-                        img_style += `height: ${ new_style.content_img_height * 2 }rpx;`;
+                        img_style += `height: ${ new_style.content_img_height * scale }px;`;
                     } else {
                         const list = product_style_list.filter(item => item.value == new_content.theme);
                         if (list.length > 0) {
-                            img_style += `height: ${ list[0].height * 2 }rpx;`;
+                            img_style += `height: ${ list[0].height * scale }px;`;
                         } else {
                             img_style += 'height: auto;';
                         }
