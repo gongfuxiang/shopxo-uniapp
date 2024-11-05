@@ -43,7 +43,7 @@
                             <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')">
                                 <block v-for="(lv, li) in propLabel.data" :key="li">
                                     <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(propLabel.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                        <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
+                                        <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="('background-color:'+(lv.bg_color || '#666'))+' !important;'+('color:'+(lv.text_color || '#fff'))+' !important;'">
                                             {{ lv.name }}
                                         </view>
                                         <block v-else>
@@ -109,7 +109,7 @@
                             <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')">
                                 <block v-for="(lv, li) in propLabel.data" :key="li">
                                     <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(propLabel.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                        <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
+                                        <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="('background-color:'+(lv.bg_color || '#666'))+' !important;'+('color:'+(lv.text_color || '#fff'))+' !important;'">
                                             {{ lv.name }}
                                         </view>
                                         <block v-else>
@@ -157,7 +157,7 @@
                                         <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')">
                                             <block v-for="(lv, li) in propLabel.data" :key="li">
                                                 <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(propLabel.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                                    <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
+                                                    <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="('background-color:'+(lv.bg_color || '#666'))+' !important;'+('color:'+(lv.text_color || '#fff'))+' !important;'">
                                                         {{ lv.name }}
                                                     </view>
                                                     <block v-else>
