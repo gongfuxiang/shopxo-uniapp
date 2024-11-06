@@ -1216,7 +1216,7 @@
                 {
                     "path": "search/search",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 },

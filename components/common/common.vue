@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 底部菜单 -->
         <block v-if="is_tabbar">
-            <component-diy-footer :propKey="key" :propValue="app_tabber" @onFooterHeight="footer_height_value_event"></component-diy-footer>
+            <component-diy-footer :propKey="key" :propValue="app_tabbar" @onFooterHeight="footer_height_value_event"></component-diy-footer>
             <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
         </block>
 
@@ -54,7 +54,7 @@
                 privacy_content: null,
                 key: '',
                 is_tabbar: false,
-                app_tabber: null,
+                app_tabbar: null,
                 footer_height_value: 0,
             };
         },
@@ -151,7 +151,7 @@
                 };
                 if(upd_data['is_tabbar']) {
                     upd_data['key'] = Math.random();
-                    upd_data['app_tabber'] = app.globalData.get_config('app_tabber');
+                    upd_data['app_tabbar'] = app.globalData.get_config('app_tabbar');
                 }
                 this.setData(upd_data);
             },

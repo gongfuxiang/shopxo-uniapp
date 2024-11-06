@@ -207,7 +207,7 @@
                             <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" @tap="plugins_coin_payment_event">
                                     <view class="item-content pr flex-row align-c">
-                                        <image v-if="(item.platform_icon || null) != null" class="icon margin-right-sm va-m" :src="item.platform_icon" mode="widthFix"></image>
+                                        <image v-if="(item.platform_icon || null) != null" class="icon margin-right-sm va-m radius" :src="item.platform_icon" mode="widthFix"></image>
                                         <view class="flex-col">
                                             <view class="cr-base">{{ item.platform_name }}</view>
                                             <view class="flex-row align-c margin-top-xs">
@@ -227,7 +227,7 @@
                             <view v-for="(item, index) in payment_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" :data-index="index" @tap="payment_event">
                                     <view class="item-content pr flex-1 flex-width">
-                                        <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
+                                        <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m radius" :src="item.logo" mode="widthFix"></image>
                                         <text class="va-m">{{ item.name }}</text>
                                         <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}</text>
                                     </view>

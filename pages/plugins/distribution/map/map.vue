@@ -175,14 +175,14 @@
                             });
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                                 data_list_loding_msg: res.data.msg
                             });
                         }
                     },
                     fail: () => {
                         this.setData({
-                            data_list_loding_status: 2,
+                            data_list_loding_status: 3,
                             data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
                     }
@@ -240,7 +240,7 @@
                     } else {
                         this.setData({
                             map_center_icon_status: 1,
-                        })
+                        });
                     }
                 }
             },
