@@ -4,26 +4,28 @@
         <view class="oh" :style="style_img_container">
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(article_theme)" class="flex-wrap" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
-                    <view v-for="(item, index) in data_list" :key="index" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :style="article_style" :data-value="item.data.url" @tap="url_event">
-                        <template v-if="article_theme !== '3'">
-                            <template v-if="item.new_cover.length > 0">
-                                <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
+                    <view v-for="(item, index) in data_list" :key="index" class="item oh" :style="article_style" :data-value="item.data.url" @tap="url_event">
+                        <view :class="article_theme == '0' ? 'flex-row oh' : 'flex-col oh'" :style="article_img_style">
+                            <template v-if="article_theme !== '3'">
+                                <template v-if="item.new_cover.length > 0">
+                                    <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
+                                </template>
+                                <template v-else>
+                                    <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
+                                </template>
                             </template>
-                            <template v-else>
-                                <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
-                            </template>
-                        </template>
-                        <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
-                            <div class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
-                                <div class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</div>
-                                <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
-                            </div>
-                            <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
-                                <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
-                                <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                    <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
-                                    <view>
-                                        {{ item.data.access_count ? item.data.access_count : '' }}
+                            <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
+                                <div class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
+                                    <div class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                    <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
+                                </div>
+                                <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
+                                    <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
+                                    <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
+                                        <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
+                                        <view>
+                                            {{ item.data.access_count ? item.data.access_count : '' }}
+                                        </view>
                                     </view>
                                 </view>
                             </view>
@@ -34,24 +36,26 @@
                     <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :style="'height:' + carousel_height_computer">
                         <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1">
                             <view class="flex-row" :style="article_spacing">
-                                <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-white oh flex-col" :style="article_style" :data-value="item.data.url" @tap="url_event">
-                                    <template v-if="item.new_cover.length > 0">
-                                        <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
-                                    </template>
-                                    <template v-else>
-                                        <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
-                                    </template>
-                                    <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                        <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                            <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
-                                            <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
-                                        </div>
-                                        <view class="flex-row jc-sb gap-8 align-e margin-top">
-                                            <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
-                                            <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                                <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
-                                                <view>
-                                                    {{ item.data.access_count ? item.data.access_count : '' }}
+                                <view v-for="(item, index) in item1.carousel_list" :key="index" class="item oh" :style="article_style" :data-value="item.data.url" @tap="url_event">
+                                    <view class="oh flex-col" :style="article_img_style">
+                                        <template v-if="item.new_cover.length > 0">
+                                            <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
+                                        </template>
+                                        <template v-else>
+                                            <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
+                                        </template>
+                                        <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
+                                            <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
+                                                <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                                <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
+                                            </div>
+                                            <view class="flex-row jc-sb gap-8 align-e margin-top">
+                                                <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
+                                                <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
+                                                    <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
+                                                    <view>
+                                                        {{ item.data.access_count ? item.data.access_count : '' }}
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
@@ -68,7 +72,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
@@ -126,6 +130,7 @@
                 article_item_height: '',
 
                 article_style: '',
+                article_img_style: '',
                 // 轮播图定时轮播
                 interval_time: 2000,
                 // 轮播图是否滚动
@@ -226,21 +231,31 @@
                         }
                     }
                 }
+                // 背景图的处理
+                const article_data = {
+                    background_img_style: new_style.article_background_img_style,
+                    background_img: new_style.article_background_img,
+                }
+                // 渐变效果
+                const gradient = gradient_handle(new_style.article_color_list, new_style.article_direction);
                 // 文章样式
                 if (this.article_theme == '0') {
                     this.setData({
                         img_size: img_style,
-                        article_style: this.content_spacing + this.content_padding + this.content_radius,
+                        article_style:  this.content_radius + gradient,
+                        article_img_style: this.content_spacing + this.content_padding + background_computer(article_data)
                     });
                 } else if (this.article_theme == '1') {
                     this.setData({
                         img_size: img_style,
-                        article_style: `width: calc(50% - ${new_style.article_spacing / 2}px);` + this.content_radius,
+                        article_style: `width: calc(50% - ${new_style.article_spacing / 2}px);` + this.content_radius + gradient,
+                        article_img_style: background_computer(article_data)
                     });
                 } else if (this.article_theme == '2') {
                     this.setData({
                         img_size: img_style,
-                        article_style: this.content_radius,
+                        article_style: this.content_radius + gradient,
+                        article_img_style: background_computer(article_data)
                     });
                 } else if (this.article_theme == '3') {
                     this.setData({
@@ -259,11 +274,12 @@
                         // 是否滚动修改
                         is_roll: new_style.is_roll,
                         article_item_height: `height: ${new_style.article_height * 2}rpx`,
-                        article_style: this.article_style + this.content_radius + multicolumn_columns_width,
+                        article_style: this.content_radius + multicolumn_columns_width + gradient,
                         // 轮播高度
                         carousel_height_computer: (new_style.name_size * 2 + new_style.article_height) * 2 + 'rpx',
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
+                        article_img_style: background_computer(article_data)
                     });
                     // 文章轮播数据
                     const cloneList = JSON.parse(JSON.stringify(this.data_list));

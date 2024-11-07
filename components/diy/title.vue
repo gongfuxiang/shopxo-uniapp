@@ -17,11 +17,13 @@
                     </view>
                     <view class="flex-row gap-10 align-c right-0 pa">
                         <template v-if="form.keyword_show == '1'">
-                            <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" :data-value="item.link.page" @tap="url_event">
-                                {{ item.title }}
+                            <view class="flex-row align-c" :style="keyword_gap">
+                                <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" :data-value="item.link" @tap="url_event">
+                                    {{ item.title }}
+                                </view>
                             </view>
                         </template>
-                        <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="form.right_link.page" @tap="url_event"
+                        <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="form.right_link" @tap="url_event"
                             >{{ form.right_title }}
                             <iconfont name="icon-arrow-right" :color="new_style.right_color" :size="new_style.right_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                         </view>
@@ -64,6 +66,7 @@
                 subtitle_style: '',
                 keyword_list: [],
                 keyword_style: '',
+                keyword_gap: '',
                 right_style: '',
                 right_size: '',
             };
@@ -85,7 +88,7 @@
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
                 
-                const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = new_style;
+                const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size, keyword_spacing = 10 } = new_style;
                 // 标题样式设置
                 let common_styles = '';
                 if (title_weight == 'italic') {
@@ -100,6 +103,7 @@
                     title_center: new_form.is_title_center == '1' ? 'jc-c' : '',
                     keyword_list: new_form.keyword_list.filter((item) => item.is_show == '1'), // 关键字
                     keyword_style: `color:${keyword_color}; font-size: ${keyword_size * 2}rpx;`, // 关键字设置
+                    keyword_gap: !isEmpty(keyword_spacing) ? `gap: ${ keyword_spacing * 2}rpx` : 'gap: 20rpx;', // 关键字间距设置
                     right_size: right_size * 2 + 'rpx', // 右边按钮设置
                     right_style: `color:${right_color}; font-size: ${right_size * 2}rpx;`, //右侧按钮样式
                     title_style: `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`, // 标题样式设置
@@ -119,7 +123,9 @@
                 return `color:${new_style.subtitle_color}; font-size: ${new_style.subtitle_size * 2}rpx; ${common_styles}`;
             },
             url_event(e) {
-                app.globalData.url_event(e);
+                if (!isEmpty(e.currentTarget.dataset.value)) {
+                    app.globalData.url_open(e.currentTarget.dataset.value.page);
+                }
             },
         },
     };

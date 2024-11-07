@@ -1,14 +1,14 @@
 <template>
     <view class="ou" :style="style_container">
         <view class="flex-col ou" :style="style_img_container">
-            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsPaddingStyle="tabs_padding_style" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
         </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, isEmpty } from '@/common/js/common/common.js';
     import componentDiyTabs from '@/components/diy/tabs';
     import componentDiycarousel from '@/components/diy/carousel';
     export default {
@@ -58,6 +58,7 @@
                     margin_left: 0,
                     margin_right: 0,
                 },
+                tabs_padding_style: '',
                 // top_up: '0',
             };
         },
@@ -83,6 +84,7 @@
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
                     style_img_container: common_img_computer(new_style.common_style) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
+                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) : '',
                     spacing_common_style: {
                         padding: 0,
                         padding_top: new_style.common_style.padding_top,

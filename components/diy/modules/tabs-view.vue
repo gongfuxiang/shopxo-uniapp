@@ -1,24 +1,26 @@
 <template>
     <!--  66rpx是自定义顶部导航栏的高度-->
     <view class="tabs-view" :style="tabs_sticky">
-        <view class="tabs-view flex-row gap-10 jc-sb align-c" :style="propStyle + propTabsBackground">
-            <view class="tabs flex-1 flex-width">
-                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
-                    <view class="flex-row">
-                        <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
-                            <view class="nowrap flex-col jc-c align-c gap-4">
-                                <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
-                                <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
-                                <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
-                                <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''" propContainerDisplay="flex" size="40rpx"></iconfont>
-                                <view class="bottom_line" :class="tabs_bottom_line_theme" :style="tabs_check"></view>
+        <view class="tabs-view" :style="propStyle + propTabsBackground">
+            <view class="flex-row gap-10 jc-sb align-c" :style="propsTabsPaddingStyle">
+                <view class="tabs flex-1 flex-width">
+                    <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
+                        <view class="flex-row">
+                            <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
+                                <view class="nowrap flex-col jc-c align-c" :style="tabs_sign_spacing">
+                                    <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
+                                    <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title + tabs_padding_bottom">{{ item.title }}</view>
+                                    <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
+                                    <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''" propContainerDisplay="flex" size="40rpx"></iconfont>
+                                    <view class="bottom_line" :class="tabs_bottom_line_theme" :style="tabs_check"></view>
+                                </view>
                             </view>
                         </view>
-                    </view>
-                </scroll-view>
-            </view>
-            <view :class="tabs_theme_index == '3' ? 'pb-14' : (tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? '' : 'padding-bottom-sm'">
-                <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
+                    </scroll-view>
+                </view>
+                <view :style="tabs_padding_bottom">
+                    <iconfont v-if="propIsTabsIcon" :name="'icon-' + icon.more_icon_class || 'category-more'" :size="icon.more_icon_size + '' || '14'" :color="icon.more_icon_color || '#000'" propContainerDisplay="flex" @click="category_check_event"></iconfont>
+                </view>
             </view>
         </view>
         <!-- 选项卡更多弹窗 -->
@@ -96,6 +98,10 @@
                 type: [String, Number],
                 default: '0',
             },
+            propsTabsPaddingStyle: {
+                type: String,
+                default: '',
+            }
         },
         components: {
             componentPopup,
@@ -107,6 +113,8 @@
                 tabs_check: '',
                 icon_tabs_check: '',
                 tabs_spacing: '',
+                tabs_sign_spacing: '',
+                tabs_padding_bottom: '',
                 tabs_list: [],
                 active_index: 0,
                 tabs_theme_style: {
@@ -171,7 +179,9 @@
                 };
                 this.setData({
                     tabs_spacing: Number(new_style.tabs_spacing),
+                    tabs_sign_spacing: !isEmpty(new_style.tabs_sign_spacing) ? `row-gap:${new_style.tabs_sign_spacing * 2}rpx;` : 'row-gap:8rpx;',
                     tabs_list: new_content.tabs_list,
+                    tabs_padding_bottom: this.get_padding_bottom(new_content, new_style),
                     // 选项卡主题
                     tabs_theme: this.get_tabs_theme(new_content),
                     tabs_theme_index: new_content.tabs_theme,
@@ -194,6 +204,15 @@
                 };
                 let value = arr[data.tabs_theme];
                 return value === undefined ? 'tabs-style-1' : value;
+            },
+            get_padding_bottom(form, new_style) {
+                let bottom = 0;
+                if (form.tabs_theme == '0') {
+                    bottom = 3;
+                } else if (form.tabs_theme == '3') {
+                    bottom = 10;
+                }
+                return ['1', '2', '4'].includes(form.tabs_theme) ? '' : `padding-bottom: ${(new_style?.tabs_sign_spacing || 0) + bottom}px;`;
             },
             // 选中的背景渐变色样式
             tabs_check_computer(data) {
@@ -233,7 +252,7 @@
 <style lang="scss" scoped>
     .tabs {
         .item {
-            padding: 0 0 10rpx 0;
+            // padding: 0 0 10rpx 0;
             position: relative;
             &:first-of-type {
                 margin-left: 0;
@@ -256,14 +275,14 @@
                 height: 6rpx;
                 border-radius: 20rpx;
                 background-color: red;
-                position: absolute;
+                // position: absolute;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 display: none;
             }
             .icon {
-                position: absolute;
+                // position: absolute;
                 bottom: 0;
                 text-align: center;
                 font-size: 40rpx;
@@ -317,7 +336,7 @@
                 }
             }
             &.tabs-style-4 {
-                padding-bottom: 28rpx;
+                // padding-bottom: 28rpx;
                 &.active {
                     .title {
                         color: #ff2222;

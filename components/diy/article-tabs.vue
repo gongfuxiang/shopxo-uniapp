@@ -2,7 +2,7 @@
     <!-- 文章列表 -->
     <view class="article-tabs ou" :class="'article-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propsTabsPaddingStyle="tabs_padding_style" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view class="oh">
                 <componentDiyArticleList :propKey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
             </view>
@@ -12,7 +12,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentDiyArticleList from '@/components/diy/article-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -65,6 +65,7 @@
                 style_img_container: '',
                 style: '',
                 article_tabs: {},
+                tabs_padding_style: '',
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_style: '',
@@ -168,6 +169,7 @@
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
+                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) : '',
                 });
             },
             // tabs切换事件

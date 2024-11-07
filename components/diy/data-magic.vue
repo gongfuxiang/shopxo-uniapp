@@ -158,7 +158,7 @@
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
                 const container_height = !isEmpty(new_form.container_height) ? new_form.container_height : sys_width;
-                const density = 4;
+                const density = !isEmpty(new_form.magic_cube_density) ? new_form.magic_cube_density : 4;
                 this.setData({
                     form: new_form,
                     new_style: new_style,

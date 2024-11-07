@@ -83,7 +83,7 @@
             get_com_style(form, scale) {
                 let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, scale, true)}`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color};`;
+                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color};box-sizing: border-box;`;
                 }
                 // 是富文本并且开启了上下滚动的开关
                 if (form.is_rich_text == '1' && form.is_up_down == '1') {

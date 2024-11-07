@@ -57,7 +57,7 @@
             get_com_style(form, scale) {
                 let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, scale, true)}; transform: rotate(${form.panel_rotate}deg);`;
                 if (form.border_show == '1') {
-                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color};`;
+                    style += `border: ${form.border_size * scale }px ${form.border_style} ${form.border_color};box-sizing: border-box;`;
                 }
                 return style;
             },

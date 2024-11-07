@@ -4,7 +4,7 @@
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
             <view class="tabs-content wh-auto bs-bb" :style="style_container">
                 <view class="wh-auto bs-bb" :style="style_img_container">
-                    <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+                    <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsPaddingStyle="propsTabsPaddingStyle" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
                 </view>
             </view>
         </view>
@@ -59,6 +59,10 @@
                 type: [String, Number],
                 default: '',
             },
+            propsTabsPaddingStyle: {
+                type: String,
+                default: '',
+            }
         },
         components: {
             componentDiyModulesTabsView,

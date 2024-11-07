@@ -116,7 +116,7 @@
                     fit = 'aspectFill';
                 }
                 const container_height = !isEmpty(new_content.container_height) ? new_content.container_height : sys_width;
-                const density = 4;
+                const density = !isEmpty(new_content.magic_cube_density) ? new_content.magic_cube_density : 4;
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
