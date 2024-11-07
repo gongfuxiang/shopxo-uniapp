@@ -2,12 +2,12 @@
     <view :class="theme_view">
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url+propRealstoreDetailQuery" @tap="url_event">
+                <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-index="index" :data-value="item.url+propRealstoreDetailQuery" @tap="realstore_item_event">
                     <view class="base oh flex-row">
                         <!-- 基础内容 -->
                         <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
                         <view class="base-right flex-1 flex-width">
-                            <view class="title fw-b text-size single-text">
+                            <view class="title fw-b text-size single-text tl">
                                 <text v-if="(item.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{ item.alias }}</text>
                                 <text class="va-m">{{ item.name }}</text>
                             </view>
@@ -24,7 +24,7 @@
                     </view>
                     <view class="flex-row jc-sb align-c br-t-dashed margin-top-main padding-top-sm">
                         <!-- 地址 -->
-                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
+                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp tl" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
                             <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
                                 <iconfont name="icon-index-zxmd-dress"></iconfont>
                             </view>
@@ -63,6 +63,14 @@ export default {
         propIsFavor: {
             type: Boolean,
             default: true,
+        },
+        propIsChoice: {
+            type: Boolean,
+            default: false,
+        },
+        propIsChoiceBackType: {
+            type: String,
+            default: 'back',
         },
         propData: {
             type: Object,
@@ -177,20 +185,43 @@ export default {
 
         // 地图查看
         address_map_event(e) {
-            var info = this.data_list[e.currentTarget.dataset.index];
+            var info = this.data_list[e.currentTarget.dataset.index] || {};
             if (info.lat == 0 || info.lng == 0) {
                 app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                 return false;
             }
-
-            // 打开地图
             var address = (info.province_name || "") + (info.city_name || "") + (info.county_name || "") + (info.address || "");
             app.globalData.open_location(info.lng, info.lat, info.name, address);
         },
 
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
+        // 门店事件
+        realstore_item_event(e) {
+            // 是否选择模式
+            if(this.propIsChoice) {
+                // 存储缓存
+                var data = this.data_list[e.currentTarget.dataset.index];
+                uni.setStorageSync(app.globalData.data.cache_realstore_detail_choice_key, {
+                    data: data,
+                    status: 1
+                });
+
+                // 回调事件
+                this.$emit('onChoiceEvent', data);
+
+                // 选择回调类型
+                switch(this.propIsChoiceBackType) {
+                    // 返回上一个页面
+                    case 'back' :
+                        app.globalData.page_back_prev_event();
+                        break;
+                    // 进入门店详情页面
+                    case 'realstore-detail' :
+                        app.globalData.url_open('/pages/plugins/realstore/detail/detail?id='+data.id, true);
+                        break;
+                }
+            } else {
+                app.globalData.url_event(e);
+            }
         }
     }
 };

@@ -2,22 +2,22 @@
     <view :class="theme_view">
         <block v-if="(data_base || null) != null">
             <!-- 顶部 -->
-            <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey" :class="show_type == 1 ? 'map padding-bottom' : ''">
+            <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey" :class="show_type_mode == 1 ? 'map padding-bottom' : ''">
                 <!-- 位置 -->
-                <view v-if="show_type == 0" class="nav-location flex-row align-c single-text margin-right-sm">
+                <view v-if="show_type_mode == 0" class="nav-location flex-row align-c single-text margin-right-sm">
                     <component-choice-location ref="choice_location" propBaseColor="#666" propTextMaxWidth="180rpx" @onBack="user_back_choice_location"></component-choice-location>
                 </view>
                 <!-- 搜索 -->
-                <view class="nav-search" :class="show_type == 1 ? 'map' : ''">
+                <view class="nav-search" :class="show_type_mode == 1 ? 'map' : ''">
                     <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
                 <view v-if="is_search_map == 1" class="dis-inline-block margin-left" @tap="show_event">
-                    <iconfont :name="show_type == 1 ? 'icon-list-dot' : 'icon-map-location'" color="#666" size="38rpx"></iconfont>
+                    <iconfont :name="show_type_mode == 1 ? 'icon-list-dot' : 'icon-map-location'" color="#666" size="38rpx"></iconfont>
                 </view>
             </view>
 
             <!-- 地图 -->
-            <view v-show="show_type == 1" class="map-container pr">
+            <view v-show="show_type_mode == 1" class="map-container pr">
                 <map class="wh-auto ht-auto"
                     :enable-zoom="true"
                     :enable-scroll="true"
@@ -41,13 +41,13 @@
             </scroll-view>
 
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" :scroll-top="scroll_top" :scroll-with-animation="true" class="scroll-box scroll-box-ece-nav" :class="show_type == 1 ? 'map' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
+            <scroll-view :scroll-y="true" :scroll-top="scroll_top" :scroll-with-animation="true" class="scroll-box scroll-box-ece-nav" :class="show_type_mode == 1 ? 'map' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="padding-top-main padding-horizontal-main">
-                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user"></component-realstore-list>
+                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user" :propIsChoice="is_choice_mode == 1" :propIsChoiceBackType="choice_mode_back_type"></component-realstore-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="show_type == 1 ? '20%' : ''"></component-no-data>
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="show_type_mode == 1 ? '20%' : ''"></component-no-data>
                 </view>
 
                 <!-- 结尾 -->
@@ -87,8 +87,12 @@
                 nav_active_value: 0,
                 favor_user: [],
                 realstore_detail_query: '',
-                // 显示类型（0列表，1地图）
-                show_type: 0,
+                // 是否选择模式（0否，1是）
+                is_choice_mode: 0,
+                // 选择模式回调类型（back返回上一页，realstore-detail进入门店详情）
+                choice_mode_back_type: 'back',
+                // 显示类型模式（0列表，1地图）
+                show_type_mode: 0,
                 // 地图
                 is_search_map: 0,
                 map_location_icon: plugins_static_url+'app/map/location-icon.png',
@@ -127,6 +131,9 @@
             // 设置参数
             this.setData({
                 params: params,
+                is_choice_mode: parseInt(params.is_choice_mode || 0),
+                choice_mode_back_type: (params.choice_mode_back_type === undefined) ? 'back' : (params.choice_mode_back_type || ''),
+                show_type_mode: parseInt(params.show_type_mode || 0),
                 search_keywords_value: params.keywords || "",
                 nav_active_value: params.category_id || 0,
                 realstore_detail_query: (params.goods_id || null) == null ? '' : '&source_goods_id='+params.goods_id
@@ -146,6 +153,13 @@
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
+            }
+
+            // 标题设置
+            if(this.is_choice_mode == 1) {
+                uni.setNavigationBarTitle({
+                    title: this.$t('realstore-cart.realstore-cart.87tty2')
+                });
             }
         },
 
@@ -402,7 +416,7 @@
             // 显示类型事件
             show_event(e) {
                 this.setData({
-                    show_type: (this.show_type == 1) ? 0 : 1
+                    show_type_mode: (this.show_type_mode == 1) ? 0 : 1
                 });
             },
 
@@ -469,8 +483,8 @@
                         });
                     }
                 }
-            },
-        },
+            }
+        }
     };
 </script>
 <style>

@@ -209,6 +209,9 @@
                 // 搜索历史记录
                 cache_search_history_key: 'cache_search_history_key',
 
+                // 门店选择详情缓存
+                cache_realstore_detail_choice_key: 'cache_realstore_detail_choice_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 

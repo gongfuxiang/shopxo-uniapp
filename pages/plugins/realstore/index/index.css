@@ -38,6 +38,19 @@ page {
     right: 20rpx;
 }
 
+/**
+ * 已选门店
+ */
+.user-choice-realstore .logo {
+    width: 100rpx;
+}
+.user-choice-realstore .base-right .title {
+    max-width: calc(100% - 180rpx);
+}
+.user-choice-realstore .address-content {
+    max-width: calc(100% - 100rpx);
+}
+
 
 /**
 * 媒体查询
