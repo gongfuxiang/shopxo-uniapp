@@ -8,7 +8,7 @@
                         <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
                             <view class="w h"  :style="item.data_style.background_img_style">
                                 <template v-if="item.data_content.data_type == 'goods'">
-                                    <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
+                                    <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
                                         <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                             <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
                                                 <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
@@ -55,7 +55,7 @@
                     <view v-for="(item, index) in data_magic_list" :key="index" class="cube-selected cr-main" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
                         <view class="w h"  :style="item.data_style.background_img_style">
                             <template v-if="item.data_content.data_type == 'goods'">
-                                <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
+                                <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
                                     <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                         <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
                                             <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
