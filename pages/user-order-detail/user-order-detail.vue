@@ -56,9 +56,9 @@
                         <view v-for="(item, index) in detail.items" :key="index" class="item br-b-dashed oh padding-bottom-main margin-bottom-main">
                             <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="right-value fr">
-                                <view v-if="(item.spec_text || null) != null" class="text-grey padding-bottom-xs margin-bottom-xs br-b-f9 text-size-xs">{{item.spec_text}}</view>
+                                <view v-if="(item.spec_text || null) != null" class="text-base fw-b margin-bottom-sm text-size-xs">{{item.spec_text}}</view>
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
-                                <text v-else class="cr-grey">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
+                                <text v-else class="cr-grey text-size-xs">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
                             </view>
                         </view>
                     </view>
