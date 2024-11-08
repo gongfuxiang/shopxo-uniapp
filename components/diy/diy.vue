@@ -192,15 +192,15 @@
                 // 是否开启沉浸模式
                 is_immersion_model: false,
 
-                // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                sticky_top: bar_height + 5 + 12,
+                sticky_top: bar_height + 5 + 10,
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                sticky_top: bar_height + 7 + 12,
+                sticky_top: bar_height + 7 + 10,
                 // #endif
                 // #ifdef APP
-                sticky_top: bar_height + 0 + 12,
+                sticky_top: bar_height + 0 + 10,
                 // #endif
                 header_top: '',
                 temp_sticky_top: 0,

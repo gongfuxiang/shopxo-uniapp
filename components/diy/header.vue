@@ -152,15 +152,15 @@
                 text_style: '',
                 header_style: 'max-width:100%',
                 common_app_is_header_nav_fixed: 0,
-                // 5,7,0 是误差，， 12 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
-                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:12px;',
+                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:12px;',
+                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
                 // #endif
                 // #ifdef APP
-                top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:12px;',
+                top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
                 // #endif
                 is_positon_realative: false,
                 // 顶部背景样式类别
