@@ -91,9 +91,9 @@
             <block v-if="data_list.length > 0">
                 <view class="padding-horizontal-main">
                     <!-- 导航 -->
-                    <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
+                    <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" :propMoreUrl="'/pages/plugins/realstore/search/search'+(is_force_choice_realstore == 1 ? '?is_choice_mode=1&choice_mode_back_type=realstore-detail&is_open_realstore_redirect=0' : '')"></component-title>
                     <!-- 数据列表 -->
-                    <component-realstore-list :propData="{data: data_list}" :propFavorUser="favor_user"></component-realstore-list>
+                    <component-realstore-list :propData="{data: data_list}" :propFavorUser="favor_user" :propIsChoice="is_force_choice_realstore == 1" propIsChoiceBackType="realstore-detail" :propIsOpenRealstoreRedirect="false"></component-realstore-list>
                 </view>
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>

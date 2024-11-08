@@ -43,7 +43,7 @@
             <!-- 列表 -->
             <scroll-view :scroll-y="true" :scroll-top="scroll_top" :scroll-with-animation="true" class="scroll-box scroll-box-ece-nav" :class="show_type_mode == 1 ? 'map' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="padding-top-main padding-horizontal-main">
-                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user" :propIsChoice="is_choice_mode == 1" :propIsChoiceBackType="choice_mode_back_type"></component-realstore-list>
+                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user" :propIsChoice="is_choice_mode == 1" :propIsChoiceBackType="choice_mode_back_type" :propIsOpenRealstoreRedirect="is_open_realstore_redirect"></component-realstore-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
@@ -91,6 +91,8 @@
                 is_choice_mode: 0,
                 // 选择模式回调类型（back返回上一页，realstore-detail进入门店详情）
                 choice_mode_back_type: 'back',
+                // 打开门店详情页面是否关闭当前页面（0否，1是）
+                is_open_realstore_redirect: true,
                 // 显示类型模式（0列表，1地图）
                 show_type_mode: 0,
                 // 地图
@@ -133,6 +135,7 @@
                 params: params,
                 is_choice_mode: parseInt(params.is_choice_mode || 0),
                 choice_mode_back_type: (params.choice_mode_back_type === undefined) ? 'back' : (params.choice_mode_back_type || ''),
+                is_open_realstore_redirect: (params.is_open_realstore_redirect === undefined) ? true : parseInt(params.is_open_realstore_redirect || 0) == 1,
                 show_type_mode: parseInt(params.show_type_mode || 0),
                 search_keywords_value: params.keywords || "",
                 nav_active_value: params.category_id || 0,

@@ -105,6 +105,10 @@ export default {
                 success: (res) => {
                     // 位置数据存储缓存中，改变状态值（成功）
                     res['status'] = 1;
+                    res['lat'] = res.latitude;
+                    res['lng'] = res.longitude;
+                    delete res['latitude'];
+                    delete res['longitude'];
                     uni.setStorageSync(this.cache_key, res);
 
                     // 触发自定义事件并传递参数给上一页

@@ -70,7 +70,11 @@ export default {
         },
         propIsChoiceBackType: {
             type: String,
-            default: 'back',
+            default: '',
+        },
+        propIsOpenRealstoreRedirect: {
+            type: Boolean,
+            default: true,
         },
         propData: {
             type: Object,
@@ -216,7 +220,7 @@ export default {
                         break;
                     // 进入门店详情页面
                     case 'realstore-detail' :
-                        app.globalData.url_open('/pages/plugins/realstore/detail/detail?id='+data.id, true);
+                        app.globalData.url_open(data.url, this.propIsOpenRealstoreRedirect);
                         break;
                 }
             } else {
