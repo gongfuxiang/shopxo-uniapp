@@ -22,10 +22,10 @@
                         <!-- 右上角 -->
                         <view class="head-right cr-black">
                             <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/setup/setup" data-login="0" @tap="url_event">
-                                <iconfont name="icon-applet-me-settings-acquiesce" size="46rpx"></iconfont>
+                                <iconfont name="icon-setup" size="46rpx"></iconfont>
                             </view>
                             <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/message/message" @tap="url_event">
-                                <iconfont name="icon-applet-me-message-acquiesce" size="46rpx"></iconfont>
+                                <iconfont name="icon-bell" size="46rpx"></iconfont>
                                 <view class="badge-icon pa">
                                     <component-badge :propNumber="message_total"></component-badge>
                                 </view>

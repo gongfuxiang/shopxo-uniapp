@@ -38,37 +38,42 @@
                     <view class="header-top pr">
                         <!-- 头部基础内容 -->
                         <view class="header-content padding-horizontal-main">
-                            <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
+                            <view class="padding-main border-radius-main bg-white pr z-i-deep">
                                 <view class="base flex-row">
                                     <!-- 基础内容 -->
                                     <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
-                                    <view class="base-right flex-1 flex-width">
-                                        <view v-if="is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
+                                    <view class="base-right padding-left-sm flex-1 flex-width">
+                                        <view v-if="is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main tl" @tap="buy_use_type_event">
                                             <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_index]['name'] }}</text>
                                             <view class="dis-inline-block va-m pr">
                                                 <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                             </view>
                                         </view>
-                                        <view :class="'title fw-b text-size single-text ' + (is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
-                                            <text v-if="(info.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
-                                            <text class="va-m">{{ info.name }}</text>
+                                        <view :class="'title ' + (is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')" @tap="realstore_switch_event">
+                                            <view class="dis-inline-block va-m single-text title-content" :class="is_realstore_switch == 1 ? 'switch' : ''">
+                                                <text v-if="(info.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
+                                                <text class="va-m fw-b text-size">{{ info.name }}</text>
+                                            </view>
+                                            <view v-if="is_realstore_switch == 1" class="dis-inline-block va-m margin-left-xs">
+                                                <iconfont name="icon-transfer" size="36rpx" color="#666"></iconfont>
+                                            </view>
                                         </view>
-                                        <view class="margin-top-xs text-size-xs cr-grey">
+                                        <view class="margin-top-xs text-size-xss cr-grey tl">
                                             <view v-if="(info.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ info.status_info.time }}</view>
                                             <view v-if="(info.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ info.distance }}</view>
                                         </view>
                                     </view>
                                 </view>
-                                <view class="margin-top-main cp br-t-dashed padding-top-sm">
+                                <view class="margin-top-sm cp br-t-dashed padding-top-sm">
                                     <view class="flex-row jc-sb align-c">
                                         <!-- 地址 -->
                                         <view class="flex-row align-c flex-1 flex-width">
-                                            <iconfont name="icon-index-zxmd-dress" size="28rpx" propClass="pr top-xs"></iconfont>
+                                            <iconfont name="icon-map-address" size="28rpx" propClass="pr top-xs"></iconfont>
                                             <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
                                                 {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                             </view>
                                             <!-- #ifndef MP-KUAISHOU -->
-                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
+                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
                                             <!-- #endif -->
                                         </view>
                                         <!-- 右侧操作 -->
@@ -387,6 +392,10 @@
                     status: 0,
                     count: 0,
                 },
+                // 门店客服信息展示
+                is_service_info: 0,
+                // 是否支持门店切换
+                is_realstore_switch: 0,
                 // 自定义分享信息
                 share_info: {},
                 // 是否单页预览
@@ -428,6 +437,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 门店选择初始化
+            this.realstore_choice_init();
+
             // 初始化配置
             this.init_config();
 
@@ -465,6 +477,32 @@
                 }
             },
 
+            // 门店选择初始化
+            realstore_choice_init() {
+                var key = app.globalData.data.cache_realstore_detail_choice_key;
+                var res = uni.getStorageSync(key) || null;
+                if(res != null && (res.data || null) != null && res.status == 1) {
+                    uni.setStorageSync(key, {
+                        data: res.data,
+                        status: 0
+                    });
+                    this.setData({
+                        params: {...this.params, ...{id: res.data.id}},
+                        info: res.data,
+                        is_first: 1,
+                        data_list: [],
+                        data_total: 0,
+                        data_page: 1,
+                        data_page_total: 0,
+                        data_is_loading: 0,
+                        data_list_loding_status: 1,
+                        data_bottom_line_status: false
+                    });
+                    this.source_goods_remove();
+                    this.reset_scroll();
+                }
+            },
+
             // 获取数据-初始化
             get_detail_init(params = {}) {
                 // 网络检查
@@ -492,6 +530,7 @@
 
                             this.setData({
                                 is_service_info: parseInt(data_base.is_service_info || 0),
+                                is_realstore_switch: parseInt(data_base.is_realstore_switch || 0),
                                 is_base_mode: parseInt(data.is_base_mode || 0),
                                 is_base_mode_show_type: parseInt(data.is_base_mode_show_type || 0),
                                 is_cart_nav: true,
@@ -870,13 +909,11 @@
 
             // 地图查看
             address_map_event(e) {
-                var info = this.info;
+                var info = this.info || {};
                 if (info.lat == 0 || info.lng == 0) {
                     app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                     return false;
                 }
-
-                // 打开地图
                 var address = (info.province_name || '') + (info.city_name || '') + (info.county_name || '') + (info.address || '');
                 app.globalData.open_location(info.lng, info.lat, info.name, address);
             },
@@ -1008,6 +1045,13 @@
 
                     // 调用公共打开url地址
                     app.globalData.url_event(e);
+                }
+            },
+
+            // 门店切换事件
+            realstore_switch_event (e) {
+                if(this.is_realstore_switch == 1) {
+                    app.globalData.url_open('/pages/plugins/realstore/search/search?is_choice_mode=1&show_type_mode=1');
                 }
             },
 

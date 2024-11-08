@@ -11,7 +11,7 @@
                         </template>
                         <template v-else>
                             <view>
-                                <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
+                                <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-search-max'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
                             </view>
                         </template>
                     </view>

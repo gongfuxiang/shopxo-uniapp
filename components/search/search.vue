@@ -95,7 +95,7 @@
             },
             propIcon: {
                 type: String,
-                default: 'icon-index-search',
+                default: 'icon-search-max',
             },
             propIconColor: {
                 type: String,

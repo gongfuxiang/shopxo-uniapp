@@ -209,6 +209,9 @@
                 // 搜索历史记录
                 cache_search_history_key: 'cache_search_history_key',
 
+                // 门店选择详情缓存
+                cache_realstore_detail_choice_key: 'cache_realstore_detail_choice_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 
@@ -220,8 +223,8 @@
 
                 // 其他数据
                 // 公共数是否已初始化成功
+                common_data_loading_status: 0,
                 common_data_init_status: 0,
-                common_data_init_timer: null,
                 common_data_init_back_timer: null,
                 // 网络状态检查
                 network_type_page_record_timer: null,
@@ -1409,12 +1412,12 @@
 
             /**
              * 初始化 配置信息
-             * status     读取状态、如果失败默认或者0则会再次读取一次
+             * num        读取次数、如果失败+1再次读取
              * object     回调操作对象
              * method     回调操作对象的函数
              * params     回调操请求参数
              */
-            init_config(status = 0, object, method, params) {
+            init_config(num = 0, object, method, params) {
                 var self = this;
                 uni.getNetworkType({
                     success: function (res) {
@@ -1427,46 +1430,54 @@
                             }
 
                             // 读取远程配置
-                            uni.request({
-                                url: self.get_request_url('common', 'base'),
-                                method: 'POST',
-                                data: {
-                                    is_key: 1,
-                                },
-                                dataType: 'json',
-                                success: (res) => {
-                                    if (res.data.code == 0) {
-                                        // 配置存储
-                                        var data = res.data.data;
-                                        uni.setStorageSync(self.data.cache_config_info_key, data);
+                            if(self.data.common_data_loading_status == 0) {
+                                // 赋值在加载状态
+                                self.data.common_data_loading_status = 1;
+                                uni.request({
+                                    url: self.get_request_url('common', 'base'),
+                                    method: 'POST',
+                                    data: {
+                                        is_key: 1,
+                                    },
+                                    dataType: 'json',
+                                    success: (res) => {
+                                        // 赋值不在加载状态
+                                        self.data.common_data_loading_status = 0;
+                                        if (res.data.code == 0) {
+                                            // 配置存储
+                                            var data = res.data.data;
+                                            uni.setStorageSync(self.data.cache_config_info_key, data);
 
-                                        // 公共配置初始化返回处理
-                                        self.init_config_result_handle(data, self);
+                                            // 公共配置初始化返回处理
+                                            self.init_config_result_handle(data, self);
 
-                                        // 回调
-                                        if (typeof object === 'object' && (method || null) != null) {
-                                            object[method](params);
+                                            // 回调
+                                            if (typeof object === 'object' && (method || null) != null) {
+                                                object[method](params);
+                                            }
+                                        } else {
+                                            self.showToast(res.data.msg);
+                                            // 站点关闭状态则 记录已初始化公共数据状态
+                                            if (res.data.code == -10000) {
+                                                self.data.common_data_init_status = 1;
+                                            }
+                                
+                                            // 首次则再次初始化配置、站点关闭状态则不处理
+                                            if (parseInt(num || 0) <= 20 && self.data.common_data_init_status == 0) {
+                                                self.init_config(num+1, object, method, params);
+                                            }
                                         }
-                                    } else {
-                                        self.showToast(res.data.msg);
-                                        // 站点关闭状态则 记录已初始化公共数据状态
-                                        if (res.data.code == -10000) {
-                                            self.data.common_data_init_status = 1;
+                                    },
+                                    fail: () => {
+                                        // 赋值不在加载状态
+                                        self.data.common_data_loading_status = 0;
+                                        // 首次则再次初始化配置
+                                        if (parseInt(num || 0) <= 20) {
+                                            self.init_config(num+1, object, method, params);
                                         }
-                            
-                                        // 首次则再次初始化配置、站点关闭状态则不处理
-                                        if ((status || 0) == 0 && self.data.common_data_init_status == 0) {
-                                            self.init_config(1, object, method, params);
-                                        }
-                                    }
-                                },
-                                fail: () => {
-                                    // 首次则再次初始化配置
-                                    if ((status || 0) == 0) {
-                                        self.init_config(1, object, method, params);
-                                    }
-                                },
-                            });
+                                    },
+                                });
+                            }
                         }
                     },
                 });
@@ -1503,16 +1514,9 @@
                         if (typeof object === 'object' && (method || null) != null) {
                             object[method](true, params);
                         }
-                    } else {
-                        // 如果已经初始化过，但是没有数据则读取接口一次
-                        if(is_config_count < 1 && self.data.common_data_init_status == 1) {
-                            is_config_count++;
-                            self.data.common_data_init_status = 0;
-                            self.init_config();
-                        }
                     }
                     count++;
-                    if (count >= 100) {
+                    if (count >= 2300) {
                         clearInterval(timer);
                     }
                 }, 100);
@@ -2425,19 +2429,6 @@
                 });
             },
 
-            // 公共数据初始化处理
-            common_data_init_handle() {
-                var self = this;
-                self.data.common_data_init_timer = setInterval(function () {
-                    if (self.data.common_data_init_status == 0) {
-                        self.init_config(1);
-                    } else {
-                        // 已初始化则清除定时任务
-                        clearInterval(self.data.common_data_init_timer);
-                    }
-                }, 2000);
-            },
-
             // 网络状态检查处理
             network_type_handle(object, method, params = {}) {
                 // 如果页面已存在位置调用则不重复调用
@@ -2900,8 +2891,6 @@
 
             // 清除定时任务
             clear_interval_handle() {
-                // 清除初始化公共数据方法定时任务
-                clearInterval(this.data.common_data_init_timer);
                 // 清除初始化公共数据回调方法定时任务
                 clearInterval(this.data.common_data_init_back_timer);
                 // 清除网络状态检查方法定时任务
@@ -3040,7 +3029,7 @@
             //隐藏系统tabbar
             this.globalData.system_hide_tabbar();
 
-            // 初始化配置
+            // 公共数据初始化
             this.globalData.init_config();
 
             // 设置设备信息
@@ -3051,9 +3040,6 @@
 
             // 场景值
             this.globalData.set_scene_data(params);
-
-            // 公共数据初始化处理
-            this.globalData.common_data_init_handle();
         },
 
         // 从前台进入后台

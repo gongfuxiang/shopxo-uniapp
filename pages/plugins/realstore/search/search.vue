@@ -2,15 +2,34 @@
     <view :class="theme_view">
         <block v-if="(data_base || null) != null">
             <!-- 顶部 -->
-            <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey">
+            <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey" :class="show_type_mode == 1 ? 'map padding-bottom' : ''">
                 <!-- 位置 -->
-                <view class="nav-location flex-row align-c single-text margin-right-sm">
+                <view v-if="show_type_mode == 0" class="nav-location flex-row align-c single-text margin-right-sm">
                     <component-choice-location ref="choice_location" propBaseColor="#666" propTextMaxWidth="180rpx" @onBack="user_back_choice_location"></component-choice-location>
                 </view>
                 <!-- 搜索 -->
-                <view class="nav-search">
+                <view class="nav-search" :class="show_type_mode == 1 ? 'map' : ''">
                     <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
+                <view v-if="is_search_map == 1" class="dis-inline-block margin-left" @tap="show_event">
+                    <iconfont :name="show_type_mode == 1 ? 'icon-list-dot' : 'icon-map-location'" color="#666" size="38rpx"></iconfont>
+                </view>
+            </view>
+
+            <!-- 地图 -->
+            <view v-show="show_type_mode == 1" class="map-container pr">
+                <map class="wh-auto ht-auto"
+                    :enable-zoom="true"
+                    :enable-scroll="true"
+                    :show-location="true"
+                    :latitude="latitude"
+                    :longitude="longitude"
+                    :scale="map_scale"
+                    :markers="markers"
+                    @regionchange="region_change_event"
+                    @markertap="marker_tap_event"
+                ></map>
+                <image v-if="map_center_icon_status == 1" class="map-center-icon pa" :src="map_location_icon" mode="aspectFit"></image>
             </view>
 
             <!-- 分类 -->
@@ -22,13 +41,13 @@
             </scroll-view>
 
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+            <scroll-view :scroll-y="true" :scroll-top="scroll_top" :scroll-with-animation="true" class="scroll-box scroll-box-ece-nav" :class="show_type_mode == 1 ? 'map' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="padding-top-main padding-horizontal-main">
-                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user"></component-realstore-list>
+                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user" :propIsChoice="is_choice_mode == 1" :propIsChoiceBackType="choice_mode_back_type"></component-realstore-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="show_type_mode == 1 ? '20%' : ''"></component-no-data>
                 </view>
 
                 <!-- 结尾 -->
@@ -48,6 +67,7 @@
     import componentSearch from "@/components/search/search";
     import componentRealstoreList from "@/components/realstore-list/realstore-list";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
+    var plugins_static_url = app.globalData.get_static_url('realstore', true);
     export default {
         data() {
             return {
@@ -67,6 +87,24 @@
                 nav_active_value: 0,
                 favor_user: [],
                 realstore_detail_query: '',
+                // 是否选择模式（0否，1是）
+                is_choice_mode: 0,
+                // 选择模式回调类型（back返回上一页，realstore-detail进入门店详情）
+                choice_mode_back_type: 'back',
+                // 显示类型模式（0列表，1地图）
+                show_type_mode: 0,
+                // 地图
+                is_search_map: 0,
+                map_location_icon: plugins_static_url+'app/search/location-icon.png',
+                markers_icon: plugins_static_url+'app/search/markers-icon.png',
+                markers_icon_active: '',
+                map_scale: 12,
+                latitude: 39.909,
+                longitude: 116.39742,
+                markers: [],
+                map_center_icon_status: 1,
+                markers_active_index: null,
+                scroll_top: 0,
                 // 用户位置信息
                 user_location: {},
                 // 自定义分享信息
@@ -93,6 +131,9 @@
             // 设置参数
             this.setData({
                 params: params,
+                is_choice_mode: parseInt(params.is_choice_mode || 0),
+                choice_mode_back_type: (params.choice_mode_back_type === undefined) ? 'back' : (params.choice_mode_back_type || ''),
+                show_type_mode: parseInt(params.show_type_mode || 0),
                 search_keywords_value: params.keywords || "",
                 nav_active_value: params.category_id || 0,
                 realstore_detail_query: (params.goods_id || null) == null ? '' : '&source_goods_id='+params.goods_id
@@ -112,6 +153,13 @@
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
+            }
+
+            // 标题设置
+            if(this.is_choice_mode == 1) {
+                uni.setNavigationBarTitle({
+                    title: this.$t('realstore-cart.realstore-cart.87tty2')
+                });
             }
         },
 
@@ -135,10 +183,16 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var data_base = data.base || {};
                             this.setData({
                                 data_base: data.base || null,
                                 category: data.category || [],
                                 favor_user: data.favor_user || [],
+                                is_search_map: parseInt(data_base.is_search_map || 0),
+                                map_scale: parseInt(data_base.search_map_scale || 12),
+                                markers_icon: data_base.search_map_store_icon || this.markers_icon,
+                                markers_icon_active: data_base.search_map_store_icon_active || '',
+                                map_location_icon: data_base.search_map_location_icon || this.map_location_icon,
                             });
 
                             // 获取列表数据
@@ -204,8 +258,8 @@
                         keywords: this.search_keywords_value,
                         category_id: this.nav_active_value || 0,
                         goods_id: this.params.goods_id || 0,
-                        lng: lng,
-                        lat: lat,
+                        lng: this.longitude || lng,
+                        lat: this.latitude || lat,
                     },
                     dataType: "json",
                     success: (res) => {
@@ -250,6 +304,25 @@
                                     });
                                 }
                             }
+
+                            // 地图展示
+                            var temp_markers = [];
+                            if(this.data_list.length > 0) {
+                                this.data_list.forEach((item, index) => {
+                                    temp_markers.push({
+                                        id: index,
+                                        width: 25,
+                                        height: 25,
+                                        latitude: item.lat,
+                                        longitude: item.lng,
+                                        iconPath: this.markers_icon
+                                    });
+                                });
+                            }
+                            this.setData({
+                                markers: temp_markers,
+                                markers_active_index: null
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -329,11 +402,89 @@
 
             // 地址信息初始化
             user_location_init() {
+                var user_location = app.globalData.choice_user_location_init();
+                var upd_data = {
+                    user_location: user_location
+                };
+                if ((user_location || null) != null) {
+                    upd_data['longitude'] = user_location.lng;
+                    upd_data['latitude'] = user_location.lat;
+                }
+                this.setData(upd_data);
+            },
+
+            // 显示类型事件
+            show_event(e) {
                 this.setData({
-                    user_location: app.globalData.choice_user_location_init()
+                    show_type_mode: (this.show_type_mode == 1) ? 0 : 1
                 });
             },
-        },
+
+            // 点击标记点事件
+            marker_tap_event(e) {
+                // 索引值
+                var index = e.detail.markerId;
+                // 选中处理
+                this.data_markers_active_handle(index);
+                // 列表滑动到用户位置
+                this.setData({
+                    scroll_top: (index*252)+'rpx'
+                });
+            },
+
+            // 用户和覆盖物选中处理
+            data_markers_active_handle(index) {
+                // 列表数据
+                var temp_data_list = this.data_list;
+                for(var i in temp_data_list) {
+                    if(i == index) {
+                        temp_data_list[i]['active'] = 'active';
+                    } else {
+                        temp_data_list[i]['active'] = '';
+                    }
+                }
+                // 覆盖物
+                var temp_markers = this.markers;
+                for(var i in temp_markers) {
+                    if(i == index) {
+                        temp_markers[i]['iconPath'] = this.markers_icon_active || temp_data_list[temp_markers[i]['id']]['logo'];
+                    } else {
+                        temp_markers[i]['iconPath'] = this.markers_icon;
+                    }
+                }
+                // 设置数据
+                this.setData({
+                    markers_active_index: index,
+                    markers: temp_markers,
+                    data_list: temp_data_list,
+                    map_center_icon_status: 0
+                });
+            },
+
+            // 视野改变事件
+            region_change_event(e) {
+                // 仅拖动及手势有效
+                if(e.causedBy == 'drag' || e.causedBy == 'gesture') {
+                    // 1. 开始显示中心图标
+                    // 2. 结束重新拉取数据
+                    if(e.type == 'end') {
+                        this.setData({
+                            latitude: e.detail.centerLocation.latitude,
+                            longitude: e.detail.centerLocation.longitude,
+                            data_page: 1,
+                            data_list: [],
+                            data_list_loding_status: 1,
+                            data_bottom_line_status: false,
+                        });
+                        this.get_data_list(1);
+                    } else {
+                        this.setData({
+                            map_center_icon_status: 1,
+                        });
+                    }
+                }
+            }
+        }
     };
 </script>
 <style>

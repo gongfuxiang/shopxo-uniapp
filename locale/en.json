@@ -1674,7 +1674,10 @@
 			"47h2a0": "Request failed, please try again!",
 			"miv944": "start",
 			"20epzm": "Product data incorrect",
-			"8tzr7l": "Incorrect store info"
+			"8tzr7l": "Incorrect store info",
+            "87tty2": "Choice store",
+            "76rfgh": "Choose another store",
+            "r67uyg": "Enter store"
 		}
 	},
 	"share-popup": {

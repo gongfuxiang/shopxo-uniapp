@@ -5,7 +5,7 @@
             <view class="label-info bg-white padding-horizontal-main padding-top-main padding-bottom-sm">
                 <view
                     class="dis-inline-block round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs"
-                    :style="((label.bg_color || null) != null ? 'background-color:' + label.bg_color + ' !important;' : '') + ((label.text_color || null) != null ? 'color:' + label.text_color + ' !important;' : '')"
+                    :style="('background-color:'+(label.bg_color || '#666'))+' !important;'+('color:'+(label.text_color || '#fff'))+' !important;'"
                     >{{ label.name }}</view
                 >
                 <view class="dis-inline-block cr-grey margin-left-sm"

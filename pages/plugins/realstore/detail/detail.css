@@ -13,12 +13,6 @@ page {
 .header-content .address-content {
     max-width: calc(100% - 100rpx);
 }
-.header-content .navigation {
-    width: 68rpx;
-    height: 28rpx;
-    line-height: 28rpx;
-    border: 2rpx solid #52C41A;
-}
 .header-content .icon-list {
     right: 20rpx;
     bottom: 20rpx;
@@ -44,11 +38,11 @@ page {
 .header-content .logo {
     width: 100rpx;
 }
-.header-content .base-right {
-    padding-left: 14rpx;
-}
 .header-content .base-right .title-length-limit {
-    width: calc(100% - 110rpx);
+    max-width: calc(100% - 100rpx);
+}
+.header-content .base-right .title-length-limit .title-content.switch {
+    max-width: calc(100% - 44rpx);
 }
 .header-content .base-right .use-type-icon {
     border-top-left-radius: 8rpx;
