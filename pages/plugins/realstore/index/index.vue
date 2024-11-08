@@ -24,9 +24,9 @@
                                 <!-- 基础内容 -->
                                 <image :src="user_choice_realstore.logo" mode="widthFix" class="logo circle fl br"></image>
                                 <view class="base-right padding-left-sm flex-1 flex-width">
-                                    <view class="title single-text">
-                                        <view class="dis-inline-block va-m">
-                                            <text v-if="(user_choice_realstore.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ user_choice_realstore.alias }}</text>
+                                    <view class="padding-right-lg">
+                                        <view class="single-text dis-inline-block va-m">
+                                            <text v-if="(user_choice_realstore.alias || null) != null" class="va-m border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ user_choice_realstore.alias }}</text>
                                             <text class="va-m fw-b text-size">{{ user_choice_realstore.name }}</text>
                                         </view>
                                     </view>
@@ -296,22 +296,30 @@
                                     });
                                 }
 
-                                // 自动选择第一个门店、不存在已选择的门店、非首次
-                                if(this.is_first == 1 && (this.user_choice_realstore || null) == null && this.data_list.length > 0 && this.is_force_choice_realstore == 1 && this.is_force_auto_choice_realstore == 1) {
-                                    var status = true;
-                                    var temp_realstore = this.data_list[0];
-                                    // 最低条件，自动选择第一个最低距离设置、不存在门店位置数据 或 位置值大于最低值则不选择
-                                    if(this.force_auto_choice_realstore_distance > 0) {
-                                        if(temp_realstore.distance_value === undefined || temp_realstore.distance_value > this.force_auto_choice_realstore_distance) {
-                                            status = false;
-                                        }
+                                // 非首次
+                                if(this.is_first == 1) {
+                                    // 是否自动获取用户当前位置、如果系统已经开启获取位置则这里不调用
+                                    if(app.globalData.data.get_user_location_status != 1 && parseInt(this.data_base.is_home_auto_user_location || 0) == 1) {
+                                        app.globalData.get_user_location(this, 'user_back_choice_location', true);
                                     }
-                                    if(status) {
-                                        // 自动进入门店则不显示提示位置选择弹窗
-                                        this.setData({
-                                            location_tips_close_status: false
-                                        });
-                                        app.globalData.url_open(temp_realstore.url);
+
+                                    // 自动选择第一个门店、不存在已选择的门店
+                                    if((this.user_choice_realstore || null) == null && this.data_list.length > 0 && this.is_force_choice_realstore == 1 && this.is_force_auto_choice_realstore == 1) {
+                                        var status = true;
+                                        var temp_realstore = this.data_list[0];
+                                        // 最低条件，自动选择第一个最低距离设置、不存在门店位置数据 或 位置值大于最低值则不选择
+                                        if(this.force_auto_choice_realstore_distance > 0) {
+                                            if(temp_realstore.distance_value === undefined || temp_realstore.distance_value > this.force_auto_choice_realstore_distance) {
+                                                status = false;
+                                            }
+                                        }
+                                        if(status) {
+                                            // 自动进入门店则不显示提示位置选择弹窗
+                                            this.setData({
+                                                location_tips_close_status: false
+                                            });
+                                            app.globalData.url_open(temp_realstore.url);
+                                        }
                                     }
                                 }
                             }
@@ -355,10 +363,16 @@
 
             // 选择用户地理位置回调
             user_back_choice_location(e) {
+                // 设置数据
                 this.setData({
                     user_location: e,
                     location_tips_close_status: e.status != 1
                 });
+                // 位置数据更新
+                if ((this.$refs.choice_location || null) != null) {
+                    this.$refs.choice_location.init();
+                }
+                // 重新获取数据
                 this.get_data();
             },
 
