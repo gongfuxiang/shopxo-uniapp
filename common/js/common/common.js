@@ -119,13 +119,13 @@ export function padding_computer(new_style, scale = 1, is_custom = false, index)
                 // #endif
                 let sticky_top = 0;
                 // #ifdef MP
-                sticky_top = bar_height + 5 + 12;
+                sticky_top = bar_height + 5 + 10;
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                sticky_top = bar_height + 7 + 12;
+                sticky_top = bar_height + 7 + 10;
                 // #endif
                 // #ifdef APP
-                sticky_top = bar_height + 0 + 12;
+                sticky_top = bar_height + 0 + 10;
                 // #endif
                 padding_top = `padding-top:calc(${new_style.padding_top * 2 || 0}rpx + ${sticky_top}px);`;
             }

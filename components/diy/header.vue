@@ -166,13 +166,13 @@
                 // 顶部背景样式类别
                 header_background_type: 'color_image',
                 // #ifdef MP
-                header_top: bar_height + 5 + 12 + 33,
+                header_top: bar_height + 5 + 10 + 33,
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                header_top: bar_height + 7 + 12 + 33,
+                header_top: bar_height + 7 + 10 + 33,
                 // #endif
                 // #ifdef APP
-                header_top: bar_height + 0 + 12 + 33,
+                header_top: bar_height + 0 + 10 + 33,
                 // #endif
                 // 判断是否是沉浸模式
                 is_immersion_model: false,
