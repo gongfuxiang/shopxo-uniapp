@@ -2822,8 +2822,11 @@
             },
 
             // 获取用户当前位置
-            get_user_location() {
-                if(this.data.get_user_location_status == 1) {
+            // object    回调对象
+            // method    回调方法
+            // is_force  强制获取位置
+            get_user_location(object = null, method = null, is_force = false) {
+                if(this.data.get_user_location_status == 1 || is_force) {
                     var cache_key = this.data.cache_userlocation_key;
                     var result = uni.getStorageSync(cache_key) || null;
                     if(result == null) {
@@ -2873,13 +2876,17 @@
                                 uni.getLocation({
                                     type: 'wgs84',
                                     success: function (res) {
-                                        uni.setStorageSync(cache_key, {
+                                        var address = {
                                             name: i18n.t('shopxo-uniapp.app.tghyu3'),
                                             address: '',
                                             latitude: res.latitude || null,
                                             longitude: res.longitude || null,
                                             status: 1,
-                                        });
+                                        };
+                                        uni.setStorageSync(cache_key, address);
+                                        if (typeof object === 'object' && (method || null) != null) {
+                                            object[method](address);
+                                        }
                                     }
                                 });
                                 clearInterval(self.data.get_user_location_timer);
