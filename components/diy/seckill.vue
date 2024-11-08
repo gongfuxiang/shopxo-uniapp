@@ -383,7 +383,7 @@
                 } else {
                     // 秒杀头部内间距设置， 没有的时候默认15px
                     const padding = !isEmpty(seckill_head_padding) ? seckill_head_padding : { padding: 0, padding_top: 15, padding_bottom: 15, padding_left: 13, padding_right: 13};
-                    return background_computer(back) + padding_computer(padding);
+                    return background_computer(back) + padding_computer(padding) + 'box-sizing: border-box;';
                 }
             },
             updateCountdown() {

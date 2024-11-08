@@ -137,7 +137,7 @@
                 this.setData({
                     tabs_data: new_tabs_data,
                     style_container: this.propIsCommon ? common_styles_computer(new_style.common_style) + new_tabs_background : new_content.tabs_top_up == '1' ? gradient_computer(new_style.common_style) + new_tabs_background : '', // 如果是选项卡轮播，不需要走默认样式
-                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + common_img_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) + padding_computer(this.propSpacingCommonStyle) : 'padding-bottom:20rpx;', // 如果是选项卡轮播，不需要走默认样式
+                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + common_img_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) + padding_computer(this.propSpacingCommonStyle) + 'box-sizing: border-box;' : 'padding-bottom:20rpx;', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
                     // 判断是否置顶
                     top_up: new_top_up,

@@ -84,7 +84,7 @@
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
                     style_img_container: common_img_computer(new_style.common_style) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
-                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) : '',
+                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) + 'box-sizing: border-box;' : '',
                     spacing_common_style: {
                         padding: 0,
                         padding_top: new_style.common_style.padding_top,

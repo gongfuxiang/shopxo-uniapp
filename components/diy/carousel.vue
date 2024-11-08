@@ -270,7 +270,7 @@
                     color_list: video_color_list,
                     direction: video_direction,
                 };
-                style += gradient_computer(data) + padding_computer(video_padding) + `color: ${video_title_color};`;
+                style += gradient_computer(data) + padding_computer(video_padding) + `color: ${video_title_color};box-sizing: border-box;`;
                 return style;
             },
             video_play(e) {

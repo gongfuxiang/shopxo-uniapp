@@ -42,7 +42,7 @@
                                                 <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                             </view>
                                             <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                                <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
+                                                <!-- <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image> -->
                                                 <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">
                                                     {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                     <block v-if="is_show('original_price_unit')">
@@ -80,7 +80,7 @@
                                                 <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                             </view>
                                             <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                                <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
+                                                <!-- <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image> -->
                                                 <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">
                                                     {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                     <block v-if="is_show('original_price_unit')">
@@ -138,7 +138,7 @@
                                                         <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
                                                     </view>
                                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
-                                                        <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image>
+                                                        <!-- <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image> -->
                                                         <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">
                                                             {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                             <block v-if="is_show('original_price_unit')">
@@ -541,21 +541,21 @@
         font-size: 18rpx;
     }
     .original-price {
-        background-color: #ede2c5;
+        // background-color: #ede2c5;
         border-radius: 0;
-        font-size: 20rpx;
+        font-size: 24rpx;
         border-bottom-right-radius: 20rpx;
         border-top-right-radius: 20rpx;
-        padding: 0 20rpx 0 0;
+        padding: 0 20rpx;
     }
     .flex-img5 {
         width: 100%;
         height: 100%;
     }
-    .original-price-left {
-        width: 20rpx;
-        height: 28rpx;
-    }
+    // .original-price-left {
+    //     width: 20rpx;
+    //     height: 28rpx;
+    // }
     .br-b-e {
         border-bottom: 2rpx solid #eee;
     }

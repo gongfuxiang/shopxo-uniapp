@@ -163,7 +163,7 @@
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
-                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) : '',
+                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) + 'box-sizing: border-box;': '',
                 });
             },
             tabs_click_event(index) {

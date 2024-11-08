@@ -8,8 +8,8 @@
                         <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
                             <view class="w h"  :style="item.data_style.background_img_style">
                                 <template v-if="item.data_content.data_type == 'goods'">
-                                    <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + ([0, 1].includes(index) ? item.data_style.chunk_padding_data : '')">
-                                        <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c gap-10' : ' flex-col gap-5')">
+                                    <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
+                                        <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                             <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
                                                 <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
                                                     <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
@@ -25,8 +25,16 @@
                                         </view>
                                     </view>
                                 </template>
+                                <template v-else-if="item.data_content.data_type == 'images'">
+                                    <div class="w h" :style="item.data_style.chunk_padding_data">
+                                        <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                    </div>
+                                </template>
+                                <template v-else-if="item.data_content.data_type == 'custom'">
+                                    <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing"></customIndex>
+                                </template>
                                 <template v-else>
-                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                    <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
                                 </template>
                                 <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                                     <template v-if="item.data_style.indicator_style == 'num'">
@@ -48,7 +56,7 @@
                         <view class="w h"  :style="item.data_style.background_img_style">
                             <template v-if="item.data_content.data_type == 'goods'">
                                 <view class="w h flex-col" :style="'gap:'+ item.title_text_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
-                                    <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c gap-10' : ' flex-col gap-5')">
+                                    <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                         <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
                                             <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
                                                 <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
@@ -64,8 +72,16 @@
                                     </view>
                                 </view>
                             </template>
+                            <template v-else-if="item.data_content.data_type == 'images'">
+                                <div class="w h" :style="item.data_style.chunk_padding_data">
+                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                </div>
+                            </template>
+                            <template v-else-if="item.data_content.data_type == 'custom'">
+                                <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing"></customIndex>
+                            </template>
                             <template v-else>
-                                <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
                             </template>
                             <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
                                 <template v-if="item.data_style.indicator_style == 'num'">
@@ -89,12 +105,16 @@
 <script>
     const app = getApp();
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
+    import customIndex from '@/components/diy/modules/data-magic/custom';
+    import videoIndex from '@/components/diy/modules/data-magic/video';
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             magicCarousel,
+            customIndex,
+            videoIndex
         },
         props: {
             propValue: {
@@ -127,7 +147,8 @@
                 container_size: 0,
                 style_container: '',
                 style_img_container: '',
-                div_width: 0
+                div_width: 0,
+                magic_scale: 1,
             };
         },
         computed: {
@@ -159,6 +180,8 @@
                 const new_style = this.propValue.style;
                 const container_height = !isEmpty(new_form.container_height) ? new_form.container_height : sys_width;
                 const density = !isEmpty(new_form.magic_cube_density) ? new_form.magic_cube_density : 4;
+                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right;
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -169,6 +192,7 @@
                     data_magic_list: this.get_data_magic_list(new_form.data_magic_list),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                    magic_scale: width / 390,
                     div_width: sys_width,
                     cubeCellWidth: sys_width / density,
                     container_size: container_height * 2 + 'rpx',
@@ -193,8 +217,8 @@
                     } 
                     data_content.fit = fit;
                     // 商品名称和价格样式
-                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title');
-                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price') + `line-height: ${ item.data_style.goods_price_size }px;`;
+                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title') + `line-height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;height: ${ (item.data_style.goods_title_size + 3) * 4 }rpx;`;
+                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price') + `line-height: ${ item.data_style.goods_price_size * 2 }rpx;`;
                     const radius = !isEmpty(data_style.img_radius) ? data_style.img_radius : { radius: 4, radius_top_left: 4, radius_top_right: 4, radius_bottom_left: 4, radius_bottom_right: 4 };
                     data_style.get_img_radius = radius_computer(radius);
 
@@ -203,7 +227,7 @@
                     data_style.subtitle_style = this.trends_config(data_style, 'subtitle');
 
                     if (data_content.data_type == 'goods') {
-                        data_content.list = this.commodity_list(data_content.goods_list, item.num);
+                        data_content.list = this.commodity_list(data_content.goods_list, data_content.goods_num);
                     } else {
                         data_content.list = data_content.images_list;
                     }

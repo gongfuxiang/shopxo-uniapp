@@ -9,7 +9,7 @@
                         </view>
                     </template>
                     <template v-else>
-                        <product-list-show :propOuterflex="propValue.outerflex" :propFlex="propValue.flex" :propNum="propValue.num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
+                        <product-list-show :propOuterflex="propValue.data_content.goods_outerflex" :propFlex="propValue.data_content.goods_flex" :propNum="propValue.data_content.goods_num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
                     </template>
                 </swiper-item>
             </swiper>
@@ -71,8 +71,8 @@
                         background_img_style: data_background_img_style,
                     }
                     this.setData({
-                        style_container: gradient_computer(style_data) + radius_computer(data_radius) + 'box-sizing: border-box;', // 用于样式显示
-                        style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data),
+                        style_container: gradient_computer(style_data) + radius_computer(data_radius), // 用于样式显示
+                        style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                     });
                 } else {
                     return '';
