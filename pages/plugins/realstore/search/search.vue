@@ -95,9 +95,9 @@
                 show_type_mode: 0,
                 // 地图
                 is_search_map: 0,
-                map_location_icon: plugins_static_url+'app/map/location-icon.png',
-                markers_icon: plugins_static_url+'app/map/markers-icon.png',
-                markers_icon_active: plugins_static_url+'app/map/markers-icon-active.png',
+                map_location_icon: plugins_static_url+'app/search/location-icon.png',
+                markers_icon: plugins_static_url+'app/search/markers-icon.png',
+                markers_icon_active: '',
                 map_scale: 12,
                 latitude: 39.909,
                 longitude: 116.39742,
@@ -191,7 +191,7 @@
                                 is_search_map: parseInt(data_base.is_search_map || 0),
                                 map_scale: parseInt(data_base.search_map_scale || 12),
                                 markers_icon: data_base.search_map_store_icon || this.markers_icon,
-                                markers_icon_active: data_base.search_map_store_icon_active || this.markers_icon_active,
+                                markers_icon_active: data_base.search_map_store_icon_active || '',
                                 map_location_icon: data_base.search_map_location_icon || this.map_location_icon,
                             });
 
@@ -434,15 +434,6 @@
 
             // 用户和覆盖物选中处理
             data_markers_active_handle(index) {
-                // 覆盖物
-                var temp_markers = this.markers;
-                for(var i in temp_markers) {
-                    if(i == index) {
-                        temp_markers[i]['iconPath'] = this.markers_icon_active;
-                    } else {
-                        temp_markers[i]['iconPath'] = this.markers_icon;
-                    }
-                }
                 // 列表数据
                 var temp_data_list = this.data_list;
                 for(var i in temp_data_list) {
@@ -450,6 +441,15 @@
                         temp_data_list[i]['active'] = 'active';
                     } else {
                         temp_data_list[i]['active'] = '';
+                    }
+                }
+                // 覆盖物
+                var temp_markers = this.markers;
+                for(var i in temp_markers) {
+                    if(i == index) {
+                        temp_markers[i]['iconPath'] = this.markers_icon_active || temp_data_list[temp_markers[i]['id']]['logo'];
+                    } else {
+                        temp_markers[i]['iconPath'] = this.markers_icon;
                     }
                 }
                 // 设置数据

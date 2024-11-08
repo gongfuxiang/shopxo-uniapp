@@ -13,7 +13,7 @@
                             </view>
                             <view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
                                 <view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
-                                    <iconfont name="icon-index-zxmd-time pr top-xs cr-grey-9"></iconfont>
+                                    <iconfont name="icon-time pr top-xs cr-grey-9"></iconfont>
                                     <view :class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm ' + (item.status_info.status == 1 ? 'cr-green' : item.status_info.type == 1 ? 'cr-red' : 'cr-grey-c')">
                                         {{ item.status_info.msg }}
                                     </view>
@@ -26,7 +26,7 @@
                         <!-- 地址 -->
                         <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp tl" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
                             <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
-                                <iconfont name="icon-index-zxmd-dress"></iconfont>
+                                <iconfont name="icon-map-address"></iconfont>
                             </view>
                             <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                         </view>
@@ -35,11 +35,11 @@
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
                         <view v-if="(item.service_data || null) != null && (item.service_data.service_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.service_data.service_tel" @tap.stop="tel_event">
-                            <iconfont name="icon-md-phone" size="30rpx"></iconfont>
+                            <iconfont name="icon-tel" size="30rpx"></iconfont>
                         </view>
                         <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="item.lat != 0 && item.lng != 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-                            <iconfont name="icon-md-dh" size="30rpx"></iconfont>
+                            <iconfont name="icon-send" size="30rpx"></iconfont>
                         </view>
                         <!-- #endif -->
                     </view>

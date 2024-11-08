@@ -44,11 +44,15 @@ page {
 .user-choice-realstore .logo {
     width: 100rpx;
 }
-.user-choice-realstore .base-right .title {
-    max-width: calc(100% - 180rpx);
-}
 .user-choice-realstore .address-content {
     max-width: calc(100% - 100rpx);
+}
+.user-choice-realstore .checked {
+    top: 0;
+    right: 0;
+    width: 50rpx;
+    height: 38rpx;
+    border-bottom-left-radius: 100rpx;
 }
 
 

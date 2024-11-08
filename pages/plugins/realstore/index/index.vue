@@ -8,48 +8,49 @@
                 <!-- 提示信息 -->
                 <view class="padding-bottom-xxxxl margin-top-sm">
                     <block v-if="(user_choice_realstore || null) == null">
-                        <image src="../../../../static/images/common/user.png" mode="aspectFit"></image>
-                        <view class="cr-grey margin-top-xl">请先选择门店</view>
+                        <image :src="not_choice_realstore_images" class="dis-block wh-auto" mode="widthFix"></image>
+                        <view v-if="(data_base.home_not_choice_realstore_msg || null) != null" class="cr-grey margin-top-xl">{{data_base.home_not_choice_realstore_msg}}</view>
                         <view class="padding-horizontal-xxxl">
                             <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="realstore_choice_event">{{$t('realstore-cart.realstore-cart.87tty2')}}</button>
                         </view>
                     </block>
                     <!-- 已选择的门店 -->
                     <block v-else>
-                        <view class="padding-main border-radius-main bg-white pr box-shadow user-choice-realstore">
-                            <view class="base flex-row pr">
+                        <view class="padding-main border-radius-main bg-white br-main pr oh tl user-choice-realstore">
+                            <view class="checked pa bg-main lh-sm tc padding-top-xs padding-left-xs">
+                                <iconfont name="icon-checked" size="32rpx" color="#fff"></iconfont>
+                            </view>
+                            <view class="base flex-row oh">
                                 <!-- 基础内容 -->
-                                <image :src="user_choice_realstore.logo" mode="widthFix" class="logo border-radius-sm fl br"></image>
-                                <view class="base-right padding-left-sm flex-1 flex-width tl">
+                                <image :src="user_choice_realstore.logo" mode="widthFix" class="logo circle fl br"></image>
+                                <view class="base-right padding-left-sm flex-1 flex-width">
                                     <view class="title single-text">
                                         <view class="dis-inline-block va-m">
                                             <text v-if="(user_choice_realstore.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ user_choice_realstore.alias }}</text>
                                             <text class="va-m fw-b text-size">{{ user_choice_realstore.name }}</text>
                                         </view>
                                     </view>
-                                    <view class="margin-top-xs text-size-xss cr-grey">
-                                        <view v-if="(user_choice_realstore.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ user_choice_realstore.status_info.time }}</view>
-                                        <view v-if="(user_choice_realstore.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ user_choice_realstore.distance }}</view>
-                                    </view>
-                                    <button type="default" size="mini" class="bg-white br-main cr-main text-size-xss round pa top-lg right-0" hover-class="none" :data-value="user_choice_realstore.url" @tap="url_event">{{$t('realstore-cart.realstore-cart.r67uyg')}}</button>
-                                </view>
-                            </view>
-                            <view class="margin-top-sm cp br-t-dashed padding-top-sm">
-                                <view class="flex-row jc-sb align-c">
                                     <!-- 地址 -->
-                                    <view class="flex-row align-c flex-1 flex-width">
-                                        <iconfont name="icon-index-zxmd-dress" size="28rpx" propClass="pr top-xs"></iconfont>
+                                    <view class="flex-row align-s align-c margin-top-sm">
+                                        <iconfont name="icon-map-address" size="28rpx" propClass="pr top-xs"></iconfont>
                                         <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="user_choice_realstore.province_name + user_choice_realstore.city_name + user_choice_realstore.county_name + user_choice_realstore.address" @tap="text_copy_event">
                                             {{ user_choice_realstore.province_name }}{{ user_choice_realstore.city_name }}{{ user_choice_realstore.county_name }}{{ user_choice_realstore.address }}
                                         </view>
                                         <!-- #ifndef MP-KUAISHOU -->
-                                        <view v-if="user_choice_realstore.lat != 0 && user_choice_realstore.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
+                                        <view v-if="user_choice_realstore.lat != 0 && user_choice_realstore.lng != 0" class="tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
                                         <!-- #endif -->
                                     </view>
                                 </view>
                             </view>
+                            <view class="pr margin-top">
+                                <view class="text-size-xs cr-grey">
+                                    <view v-if="(user_choice_realstore.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ user_choice_realstore.status_info.time }}</view>
+                                    <view v-if="(user_choice_realstore.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ user_choice_realstore.distance }}</view>
+                                </view>
+                                <button type="default" size="mini" class="bg-main-light br-main cr-main text-size-xss round pa bottom-0 right-0" hover-class="none" :data-value="user_choice_realstore.url" @tap="url_event">{{$t('realstore-cart.realstore-cart.r67uyg')}}</button>
+                            </view>
                         </view>
-                        <view class="cr-grey margin-top-xl">当前选择的门店</view>
+                        <view v-if="(data_base.home_already_choice_realstore_msg || null) != null" class="cr-grey margin-top-xl">{{data_base.home_already_choice_realstore_msg}}</view>
                         <view class="padding-horizontal-xxxl">
                             <button type="default" class="bg-main br-main cr-white text-size-sm margin-top-xxl round" hover-class="none" @tap="realstore_choice_event">{{$t('realstore-cart.realstore-cart.76rfgh')}}</button>
                         </view>
@@ -59,7 +60,7 @@
             <block v-else>
                 <view class="realstore-nav-bg">
                     <!-- 背景图片 -->
-                    <image :src="realstore_static_url + 'title-bg'+(screen_width > 960 ? '-pc' : '')+'.png'" mode="widthFix" class="wh-auto pa bg-img" />
+                    <image :src="plugins_static_url + 'title-bg'+(screen_width > 960 ? '-pc' : '')+'.png'" mode="widthFix" class="wh-auto pa bg-img" />
                     <!-- 顶部 -->
                     <view class="spacing-mb pr z-i cr-white">
                         <!-- 位置展示 -->
@@ -134,12 +135,12 @@
     import componentRealstoreList from '@/components/realstore-list/realstore-list';
     import componentTitle from '@/components/title/title';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
-    var realstore_static_url = app.globalData.get_static_url('realstore', true);
+    var plugins_static_url = app.globalData.get_static_url('realstore', true);
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                realstore_static_url: realstore_static_url,
+                plugins_static_url: plugins_static_url,
                 screen_width: parseInt(app.globalData.get_system_info('windowWidth', 0, true)),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -153,6 +154,7 @@
                 icon_list: [],
                 data_list: [],
                 // 用户选择的门店
+                not_choice_realstore_images: plugins_static_url+'app/index/not-choice-realstore-images.png',
                 user_choice_realstore: null,
                 // 强制选择门店
                 is_force_choice_realstore: 0,
@@ -269,6 +271,7 @@
                                 slider_list: data.slider_list || [],
                                 icon_list: data.icon_list || [],
                                 data_list: data_list,
+                                not_choice_realstore_images: data_base.home_not_choice_realstore_images || this.not_choice_realstore_images,
                                 is_force_choice_realstore: parseInt(data_base.is_home_force_choice_one_realstore_mode || 0),
                                 is_force_auto_choice_realstore: parseInt(data_base.is_home_force_choice_one_realstore_mode_auto_lately_realstore || 0),
                                 force_auto_choice_realstore_distance: parseFloat(data_base.home_force_choice_one_realstore_mode_auto_lately_distance || 0),

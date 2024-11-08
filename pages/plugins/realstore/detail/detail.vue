@@ -38,7 +38,7 @@
                     <view class="header-top pr">
                         <!-- 头部基础内容 -->
                         <view class="header-content padding-horizontal-main">
-                            <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
+                            <view class="padding-main border-radius-main bg-white pr z-i-deep">
                                 <view class="base flex-row">
                                     <!-- 基础内容 -->
                                     <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
@@ -68,7 +68,7 @@
                                     <view class="flex-row jc-sb align-c">
                                         <!-- 地址 -->
                                         <view class="flex-row align-c flex-1 flex-width">
-                                            <iconfont name="icon-index-zxmd-dress" size="28rpx" propClass="pr top-xs"></iconfont>
+                                            <iconfont name="icon-map-address" size="28rpx" propClass="pr top-xs"></iconfont>
                                             <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
                                                 {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                             </view>

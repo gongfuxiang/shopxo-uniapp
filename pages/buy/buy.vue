@@ -24,7 +24,7 @@
                                 </view>
                                 <view class="address-detail oh margin-top-lg">
                                     <view class="dis-inline-block va-m">
-                                        <iconfont name="icon-index-zxmd-dress" size="34rpx" color="#999"></iconfont>
+                                        <iconfont name="icon-map-address" size="34rpx" color="#999"></iconfont>
                                     </view>
                                     <view class="text fr"> {{ address.province_name || '' }}{{ address.city_name || '' }}{{ address.county_name || '' }}{{ address.address || '' }} </view>
                                 </view>

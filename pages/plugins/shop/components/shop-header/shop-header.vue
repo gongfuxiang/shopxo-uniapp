@@ -5,7 +5,7 @@
             <view class="flex-1 wh-auto">
                 <view class="search flex-row jc-sb align-c round border-color-main bg-white">
                     <view class="flex-row align-c flex-1 wh-auto padding-left-main">
-                        <iconfont name="icon-index-search" size="28rpx" color="#ccc"></iconfont>
+                        <iconfont name="icon-search-max" size="28rpx" color="#ccc"></iconfont>
                         <input class="text-size-md flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.detail.8q6345')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
                     </view>
                     <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + propShop.id + '&'">
