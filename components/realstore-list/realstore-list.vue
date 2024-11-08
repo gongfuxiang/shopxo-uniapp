@@ -202,7 +202,7 @@ export default {
         realstore_item_event(e) {
             // 是否选择模式
             if(this.propIsChoice) {
-                // 存储缓存
+                // 存储门店缓存
                 var data = this.data_list[e.currentTarget.dataset.index];
                 uni.setStorageSync(app.globalData.data.cache_realstore_detail_choice_key, {
                     data: data,
