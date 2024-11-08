@@ -1,7 +1,7 @@
 <template>
     <!-- 视频 -->
     <view class="wh-auto ht-auto" :style="style_container">
-        <view class="video pr wh-auto ht-auto" :style="style">
+        <view class="video pr wh-auto ht-auto">
             <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" style="object-fit: cover"></video>
         </view>
     </view>

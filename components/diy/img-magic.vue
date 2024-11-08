@@ -63,7 +63,6 @@
         },
         data() {
             return {
-                img_outer_spacing: '',
                 form: {},
                 style_container: '',
                 style_img_container: '',
@@ -89,7 +88,7 @@
             // 根据当前页面大小计算成百分比
             selected_style() {
                 return (item) => {
-                    return `overflow: hidden;width: calc(${this.percentage(this.getSelectedWidth(item))} - ${this.img_outer_spacing} ); height: calc(${this.percentage(this.getSelectedHeight(item))} - ${this.img_outer_spacing} ); top: ${this.percentage(this.getSelectedTop(item))}; left: ${this.percentage(this.getSelectedLeft(item))};`;
+                    return `overflow: hidden;width: ${this.percentage(this.getSelectedWidth(item))}; height: ${this.percentage(this.getSelectedHeight(item))}; top: ${this.percentage(this.getSelectedTop(item))}; left: ${this.percentage(this.getSelectedLeft(item))};`;
                 };
             },
         },
@@ -122,7 +121,6 @@
                     new_style: this.propValue.style,
                     outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx};`,
                     img_spacing: `padding:${spacing};`,
-                    img_outer_spacing: new_style_spacing * 2 + 'rpx',
                     content_img_radius: radius_computer(new_style),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex) + 'box-sizing: border-box;',
