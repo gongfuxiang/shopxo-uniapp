@@ -288,7 +288,7 @@
                     user: user,
                     head_nav_list: head_nav_list,
                     nav_logout_data: nav_logout_data,
-                    nickname: this.$t('login.login.6yfr9g'),
+                    nickname: this.nickname || this.$t('login.login.6yfr9g'),
                 });
             },
 
@@ -318,42 +318,42 @@
             },
 
             // 获取数据
-            init() {
+            init(status = 0) {
                 // 没有用户信息则调用用户登录
                 if(this.user == null) {
-                    app.globalData.get_user_info(this, 'init');
+                    app.globalData.get_user_info(this, 'init', 1);
+                }
+                if(status == 1) {
+                    // 资源设置
+                    this.set_resources_data();
                 }
 
                 // 获取数据
                 this.get_data();
 
-                // 获取基础数据
-                this.set_user_base(user);
+                // 设置用户基础数据
+                this.set_user_base();
 
                 // 分享菜单处理
                 app.globalData.page_share_handle();
             },
 
             // 设置用户基础信息
-            set_user_base(user) {
-                this.setData({
-                    user: user || null,
-                });
-                if ((user.avatar || null) != null) {
-                    this.setData({
-                        avatar: user.avatar,
-                    });
-                }
-                if ((user.user_name_view || null) != null) {
-                    this.setData({
-                        nickname: user.user_name_view,
-                    });
-                }
-
-                // 有用户信息，是否需要绑定手机
-                if(this.user == null) {
-                    var cache_user = app.globalData.get_user_cache_info() || null;
-                    if(cache_user != null && app.globalData.user_is_bind_mobile(cache_user)) {
+            set_user_base() {
+                if(this.user != null) {
+                    if ((this.user.avatar || null) != null) {
+                        this.setData({
+                            avatar: this.user.avatar,
+                        });
+                    }
+                    if ((this.user.user_name_view || null) != null) {
+                        this.setData({
+                            nickname: this.user.user_name_view,
+                        });
+                    }
+                } else {
+                    // 有用户信息，是否需要绑定手机
+                    if(app.globalData.user_is_bind_mobile(this.user)) {
                         this.setData({
                             nickname: this.$t('login.login.np9177')
                         });
