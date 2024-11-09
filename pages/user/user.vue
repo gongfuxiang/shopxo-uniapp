@@ -247,6 +247,8 @@
         methods: {
             // 资源设置
             set_resources_data() {
+                // 当前用户信息
+                var user = app.globalData.get_user_cache_info() || null;
                 // 导航名称处理
                 var old_nav = this.head_nav_list;
                 var head_nav_list = [
@@ -277,12 +279,13 @@
                 };
                 // #ifdef APP || H5
                 // app和h5模式下未登录则不展示退出
-                if(app.globalData.get_user_cache_info() == null) {
+                if(user == null) {
                     nav_logout_data = null;
                 }
                 // #endif
 
                 this.setData({
+                    user: user,
                     head_nav_list: head_nav_list,
                     nav_logout_data: nav_logout_data,
                     nickname: this.$t('login.login.6yfr9g'),
@@ -315,14 +318,14 @@
             },
 
             // 获取数据
-            init(e) {
-                var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
-                    // 获取数据
-                    this.get_data();
-                } else {
-                    uni.stopPullDownRefresh();
+            init() {
+                // 没有用户信息则调用用户登录
+                if(this.user == null) {
+                    app.globalData.get_user_info(this, 'init');
                 }
+
+                // 获取数据
+                this.get_data();
 
                 // 获取基础数据
                 this.set_user_base(user);
