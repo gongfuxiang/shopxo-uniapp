@@ -175,7 +175,6 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
-    var client_value = app.globalData.application_client();
     export default {
         data() {
             return {
@@ -273,16 +272,10 @@
                         count: old_nav.length > 0 ? old_nav[3].count : 0,
                     },
                 ];
-                var nav_logout_data = {
-                    name: client_value == 'mp' ? this.$t('setup.setup.5493ui') : this.$t('user.user.2k0227'),
-                    icon: client_value == 'mp' ? 'cache' : 'logout',
+                var nav_logout_data = (user == null) ? null : {
+                    name: this.$t('user.user.2k0227'),
+                    icon: 'logout',
                 };
-                // #ifdef APP || H5
-                // app和h5模式下未登录则不展示退出
-                if(user == null) {
-                    nav_logout_data = null;
-                }
-                // #endif
 
                 this.setData({
                     user: user,
@@ -488,9 +481,8 @@
                 this.setData({
                     user: null,
                     nickname: '',
-                    // #ifdef APP || H5
+                    avatar: app.globalData.data.default_user_head_src,
                     nav_logout_data: null,
-                    // #endif
                 });
 
                 // 调用公共方法处理
