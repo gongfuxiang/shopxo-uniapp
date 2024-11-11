@@ -110,10 +110,10 @@
                                     <view :class="layout_type" :style="layout_img_style">
                                         <template v-if="!isEmpty(item)">
                                             <view class="oh pr wh-auto ht-auto">
-                                                <view v-if="!isEmpty(item.new_cover)" class="wh0-auto ht-auto">
+                                                <view v-if="!isEmpty(item.new_cover)" class="wh-auto ht-auto">
                                                     <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                                 </view>
-                                                <view v-else class="wh0-auto ht-auto">
+                                                <view v-else class="wh-auto ht-auto">
                                                     <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                                 </view>
                                                 <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
