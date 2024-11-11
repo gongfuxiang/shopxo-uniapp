@@ -18,12 +18,12 @@
                     <view class="flex-row gap-10 align-c right-0 pa">
                         <template v-if="form.keyword_show == '1'">
                             <view class="flex-row align-c" :style="keyword_gap">
-                                <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" :data-value="item.link" @tap="url_event">
+                                <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" :data-value="!isEmpty(item.link) ? item.link.page : ''" @tap="url_event">
                                     {{ item.title }}
                                 </view>
                             </view>
                         </template>
-                        <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="form.right_link" @tap="url_event"
+                        <view v-if="form.right_show == '1'" class="nowrap flex-row align-c" :style="right_style" :data-value="!isEmpty(form.right_link) ? form.right_link.page : ''" @tap="url_event"
                             >{{ form.right_title }}
                             <iconfont name="icon-arrow-right" :color="new_style.right_color" :size="new_style.right_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
                         </view>
@@ -123,9 +123,7 @@
                 return `color:${new_style.subtitle_color}; font-size: ${new_style.subtitle_size * 2}rpx; ${common_styles}`;
             },
             url_event(e) {
-                if (!isEmpty(e.currentTarget.dataset.value)) {
-                    app.globalData.url_open(e.currentTarget.dataset.value);
-                }
+                app.globalData.url_event(e);
             },
         },
     };
