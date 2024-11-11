@@ -308,7 +308,7 @@
                     z-index: 0;
                     height: 14rpx;
                     border-radius: 0;
-                    left: 12%;
+                    // left: 12%;
                 }
             }
             &.tabs-style-2 {
