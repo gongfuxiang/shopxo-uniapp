@@ -38,61 +38,63 @@
                 </view>
                 <template v-if="form.shop_style_type != '3'">
                     <view class="flex-row flex-wrap wh-auto ht-auto" :style="{ gap: content_outer_spacing }">
-                        <view v-for="(item, index) in sckill_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" :data-value="item.goods_url" @tap="url_event">
-                            <template v-if="!isEmpty(item)">
-                                <view class="oh pr">
-                                    <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + form.shop_style_type">
-                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                        <view v-for="(item, index) in sckill_list" :key="index"  :style="layout_gradient_style + layout_type_style + content_radius" :data-value="item.goods_url" @tap="url_event">
+                            <view :class="layout_type" :style="layout_img_style">
+                                <template v-if="!isEmpty(item)">
+                                    <view class="oh pr">
+                                        <view v-if="!isEmpty(item.new_cover)" :style="img_size">
+                                            <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                        </view>
+                                        <view v-else :style="img_size">
+                                            <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                        </view>
+                                        <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
+                                            <text class="text-line-1">{{ form.subscript_text }}</text>
+                                        </view>
                                     </view>
-                                    <view v-else :class="'flex-img' + form.shop_style_type">
-                                        <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                    </view>
-                                    <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                        <text class="text-line-1">{{ form.subscript_text }}</text>
-                                    </view>
-                                </view>
-                            </template>
-                            <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
-                                <view class="flex-col gap-10 wh-auto">
-                                    <!-- 标题 -->
-                                    <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
-                                        <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
-                                        <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
-                                    </view>
-                                    <!-- 进度条 -->
-                                    <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
-                                            <view class="re flex-1">
-                                                <view class="slide-bottom" :style="`background: ${new_style.progress_bg_color}`"></view>
-                                                <view class="slide-top" :style="` width: 51%; ${slide_active_color}`">
-                                                    <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
+                                </template>
+                                <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb oh" :style="content_style">
+                                    <view class="flex-col gap-10 wh-auto">
+                                        <!-- 标题 -->
+                                        <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                            <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                            <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
+                                        </view>
+                                        <!-- 进度条 -->
+                                        <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
+                                                <view class="re flex-1">
+                                                    <view class="slide-bottom" :style="`background: ${new_style.progress_bg_color}`"></view>
+                                                    <view class="slide-top" :style="` width: 51%; ${slide_active_color}`">
+                                                        <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
+                                                    </view>
                                                 </view>
-                                            </view>
-                                            <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</text>
-                                        </view> -->
-                                </view>
-                                <view class="flex-row align-e gap-10 jc-sb">
-                                    <view class="flex-col gap-5">
-                                        <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                            <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
-                                            <text class="identifying">{{ item.show_price_symbol }}</text>
-                                            <text :style="price_style">{{ item.min_price }}</text>
-                                            <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
-                                        </view>
-                                        <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                            <text class="original-price text-line-1 flex-1">
-                                                {{ item.show_original_price_symbol }}{{ item.min_original_price }}
-                                                <template v-if="is_show('original_price_unit')">
-                                                    {{ item.show_original_price_unit }}
-                                                </template>
-                                            </text>
-                                        </view>
+                                                <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</text>
+                                            </view> -->
                                     </view>
-                                    <view v-if="form.is_shop_show == '1'">
-                                        <template v-if="form.shop_type == 'text'">
-                                            <view class="plr-11 padding-vertical-xs round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
-                                        </template>
-                                        <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
-                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
+                                    <view class="flex-row align-e gap-10 jc-sb">
+                                        <view class="flex-col gap-5">
+                                            <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
+                                                <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
+                                                <text class="identifying">{{ item.show_price_symbol }}</text>
+                                                <text :style="price_style">{{ item.min_price }}</text>
+                                                <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
+                                            </view>
+                                            <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                                <text class="original-price text-line-1 flex-1">
+                                                    {{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                                    <template v-if="is_show('original_price_unit')">
+                                                        {{ item.show_original_price_unit }}
+                                                    </template>
+                                                </text>
+                                            </view>
+                                        </view>
+                                        <view v-if="form.is_shop_show == '1'">
+                                            <template v-if="form.shop_type == 'text'">
+                                                <view class="plr-11 padding-vertical-xs round" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
+                                            </template>
+                                            <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
+                                                <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
+                                            </view>
                                         </view>
                                     </view>
                                 </view>
@@ -104,61 +106,63 @@
                     <swiper circular="false" :autoplay="new_style.is_roll == '1'" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_style.content_outer_height * 2 + 'rpx' }">
                         <swiper-item v-for="(item1, index1) in list" :key="index1">
                             <view class="wh-auto ht-auto" :class="{ 'flex-row': new_style.rolling_fashion != 'translation' }" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
-                                <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" :data-value="item.goods_url" @tap="url_event">
-                                    <template v-if="!isEmpty(item)">
-                                        <view class="oh pr wh-auto ht-auto">
-                                            <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + form.shop_style_type">
-                                                <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                            </view>
-                                            <view v-else :class="'flex-img' + form.shop_style_type">
-                                                <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
-                                            </view>
-                                            <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                                <text class="text-line-1">{{ form.subscript_text }}</text>
-                                            </view>
-                                        </view>
-                                    </template>
-                                    <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
-                                        <view class="flex-col gap-10 wh-auto">
-                                            <!-- 标题 -->
-                                            <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
-                                                <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
-                                                <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
-                                            </view>
-                                            <!-- 进度条 -->
-                                            <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
-                                            <view class="re flex-1">
-                                                <view class="slide-bottom" :style="{ 'background': new_style.progress_bg_color }"></view>
-                                                <view class="slide-top" :style="'width: 51%;' + slide_active_color ">
-                                                    <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
+                                <view v-for="(item, index) in item1.split_list" :key="index" :style="layout_gradient_style + content_radius + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" :data-value="item.goods_url" @tap="url_event">
+                                    <view :class="layout_type" :style="layout_img_style">
+                                        <template v-if="!isEmpty(item)">
+                                            <view class="oh pr wh-auto ht-auto">
+                                                <view v-if="!isEmpty(item.new_cover)" class="wh0-auto ht-auto">
+                                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                                </view>
+                                                <view v-else class="wh0-auto ht-auto">
+                                                    <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
+                                                </view>
+                                                <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
+                                                    <text class="text-line-1">{{ form.subscript_text }}</text>
                                                 </view>
                                             </view>
-                                            <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已抢51%</text>
-                                        </view> -->
-                                        </view>
-                                        <view class="flex-row align-e gap-10 jc-sb">
-                                            <view class="flex-col gap-5">
-                                                <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                    <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
-                                                    <text class="identifying">{{ item.show_price_symbol }}</text>
-                                                    <text :style="price_style">{{ item.min_price }}</text>
-                                                    <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
+                                        </template>
+                                        <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb oh" :style="content_style">
+                                            <view class="flex-col gap-10 wh-auto">
+                                                <!-- 标题 -->
+                                                <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
+                                                    <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                                    <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
                                                 </view>
-                                                <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                                    <text class="original-price text-line-1 flex-1">
-                                                        {{ item.show_original_price_symbol }}{{ item.min_original_price }}
-                                                        <template v-if="is_show('original_price_unit')">
-                                                            {{ item.show_original_price_unit }}
-                                                        </template>
-                                                    </text>
+                                                <!-- 进度条 -->
+                                                <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
+                                                <view class="re flex-1">
+                                                    <view class="slide-bottom" :style="{ 'background': new_style.progress_bg_color }"></view>
+                                                    <view class="slide-top" :style="'width: 51%;' + slide_active_color ">
+                                                        <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
+                                                    </view>
                                                 </view>
+                                                <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已抢51%</text>
+                                            </view> -->
                                             </view>
-                                            <view v-if="form.is_shop_show == '1'">
-                                                <template v-if="form.shop_type == 'text'">
-                                                    <view class="plr-11 padding-vertical-xs round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
-                                                </template>
-                                                <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
-                                                    <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
+                                            <view class="flex-row align-e gap-10 jc-sb">
+                                                <view class="flex-col gap-5">
+                                                    <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
+                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
+                                                        <text class="identifying">{{ item.show_price_symbol }}</text>
+                                                        <text :style="price_style">{{ item.min_price }}</text>
+                                                        <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
+                                                    </view>
+                                                    <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                                        <text class="original-price text-line-1 flex-1">
+                                                            {{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                                            <template v-if="is_show('original_price_unit')">
+                                                                {{ item.show_original_price_unit }}
+                                                            </template>
+                                                        </text>
+                                                    </view>
+                                                </view>
+                                                <view v-if="form.is_shop_show == '1'">
+                                                    <template v-if="form.shop_type == 'text'">
+                                                        <view class="plr-11 padding-vertical-xs round" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
+                                                    </template>
+                                                    <view v-else class="round padding-horizontal-sm ptb-5" :styles="button_gradient">
+                                                        <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
@@ -177,6 +181,8 @@
     const app = getApp();
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, padding_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    var system = app.globalData.get_system_info(null, null, true);
+    var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             imageEmpty,
@@ -223,8 +229,11 @@
                 // 内容区域的样式
                 content_style: '',
                 // 不同风格下的样式
+                img_size: '',
                 layout_type: '',
                 layout_type_style: '',
+                layout_img_style: '',
+                layout_gradient_style: '',
                 //图片圆角设置
                 content_img_radius: '',
                 //角标设置
@@ -295,6 +304,40 @@
                         intervalId: setInterval(this.updateCountdown, 1000),
                     });
                 }
+                // 默认数据
+                const product_style_list = [
+                    { name: '单列', value: '1', width: 110, height: 120 },
+                    { name: '双列', value: '2', width: 180, height: 180 },
+                    { name: '横向滑动', value: '3', width: 0, height: 0 },
+                ];
+                const scale = sys_width / 390;
+                let img_style = ``;
+                if (['1'].includes(new_form.shop_style_type)) {
+                    // 图片宽度
+                    if (typeof new_style.content_img_width == 'number') {
+                        img_style += `width: ${ new_style.content_img_width * scale }px;`;
+                    } else {
+                        const list = product_style_list.filter(item => item.value == new_form.shop_style_type);
+                        if (list.length > 0) {
+                            img_style += `width: ${ list[0].width * scale }px;`;
+                        } else {
+                            img_style += 'width: auto;';
+                        }
+                    }
+                }
+                if (!['3'].includes(new_form.shop_style_type)) {
+                    // 图片宽度
+                    if (typeof new_style.content_img_height == 'number') {
+                        img_style += `height: ${ new_style.content_img_height * scale }px;`;
+                    } else {
+                        const list = product_style_list.filter(item => item.value == new_form.shop_style_type);
+                        if (list.length > 0) {
+                            img_style += `height: ${ list[0].height * scale }px;`;
+                        } else {
+                            img_style += 'height: auto;';
+                        }
+                    }
+                }
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
@@ -309,8 +352,10 @@
                     content_radius: radius_computer(new_style.shop_radius),
                     content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;',
                     content_style: this.get_content_style(new_style, new_form),
-                    layout_type: this.get_layout_type(new_form),
+                    layout_type: new_form.shop_style_type == '1' ? 'flex-row wh-auto ht-auto oh' : 'flex-col wh-auto ht-auto oh',
+                    layout_img_style: this.get_layout_img_style(new_style, new_form),
                     layout_type_style: this.get_layout_type_style(new_style, new_form),
+                    layout_gradient_style: gradient_handle(new_style.shop_color_list, new_style.shop_direction),
                     content_img_radius: radius_computer(new_style.shop_img_radius),
                     corner_marker: this.get_corner_marker(new_style),
                     slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.carousel_col : 1,
@@ -321,6 +366,7 @@
                     simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
                     list: this.get_shop_content_list(new_list, new_form, new_style),
                     sckill_list: new_list,
+                    img_size: img_style,
                 });        
             },
             get_shop_content_list(list, form, new_style) {
@@ -440,35 +486,26 @@
                 }
                 return `${spacing}`;
             },
-            get_layout_type(form) {
-                let class_type = '';
-                switch (form.shop_style_type) {
-                    case '1':
-                        class_type = `flex-row bg-white oh`;
-                        break;
-                    case '2':
-                        class_type = `flex-col bg-white oh`;
-                        break;
-                    case '3':
-                        class_type = `flex-col bg-white oh`;
-                        break;
-                    default:
-                        break;
-                }
-                return class_type;
-            },
             get_layout_type_style(new_style, form) {
                 return ['1', '2'].includes(form.shop_style_type) ? `height: 100%;width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};` : `height: ${new_style.content_outer_height * 2}rpx;width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};`;
             },
+            get_layout_img_style(new_style, form) {
+                const padding = ['1'].includes(form.shop_style_type) ? padding_computer(new_style.shop_padding) + 'box-sizing: border-box;' : '';
+                const data = {
+                    background_img_style: new_style.shop_background_img_style,
+                    background_img: new_style.shop_background_img,
+                }
+                return `${padding} ${ background_computer(data) }`;
+            },
             // 根据传递的参数，从对象中取值
             trends_config(new_style, key, type) {
-                return this.style_config(new_style[`shop_${key}_typeface`], new_style[`shop_${key}_size`], new_style[`shop_${key}_color`], type);
+                return this.style_config(new_style[`shop_${key}_typeface`], new_style[`shop_${key}_size`], new_style[`shop_${key}_color`], type, new_style);
             },
             // 根据传递的值，显示不同的内容
-            style_config(typeface, size, color, type) {
+            style_config(typeface, size, color, type, new_style) {
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'gradient') {
-                    style += this.button_gradient;
+                    style += gradient_handle(new_style.shop_button_color, '180deg') + `color: ${color};`;
                 } else if (type == 'title') {
                     style += `line-height: ${size > 0 ? (size + 3) * 2 : 0}rpx;height: ${size > 0 ? (size + 3) * 4 : 0}rpx;color: ${color};`;
                 } else if (type == 'desc') {
@@ -543,21 +580,6 @@
     .colon {
         position: relative;
         top: -2rpx;
-    }
-    .flex-img1 {
-        min-height: 220rpx;
-        max-height: 240rpx;
-        width: 220rpx;
-        height: 100%;
-    }
-    .flex-img2 {
-        width: 100%;
-        height: 360rpx;
-    }
-    .flex-img3 {
-        background: #f4fcff;
-        width: 100%;
-        height: 100%;
     }
     .slide-bottom {
         height: 20rpx;
