@@ -308,7 +308,6 @@
                     z-index: 0;
                     height: 14rpx;
                     border-radius: 0;
-                    width: 76%;
                     left: 12%;
                 }
             }
