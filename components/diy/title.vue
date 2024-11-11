@@ -124,7 +124,7 @@
             },
             url_event(e) {
                 if (!isEmpty(e.currentTarget.dataset.value)) {
-                    app.globalData.url_open(e.currentTarget.dataset.value.page);
+                    app.globalData.url_open(e.currentTarget.dataset.value);
                 }
             },
         },
