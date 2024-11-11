@@ -175,7 +175,6 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
-    var client_value = app.globalData.application_client();
     export default {
         data() {
             return {
@@ -247,6 +246,8 @@
         methods: {
             // 资源设置
             set_resources_data() {
+                // 当前用户信息
+                var user = app.globalData.get_user_cache_info() || null;
                 // 导航名称处理
                 var old_nav = this.head_nav_list;
                 var head_nav_list = [
@@ -271,21 +272,16 @@
                         count: old_nav.length > 0 ? old_nav[3].count : 0,
                     },
                 ];
-                var nav_logout_data = {
-                    name: client_value == 'mp' ? this.$t('setup.setup.5493ui') : this.$t('user.user.2k0227'),
-                    icon: client_value == 'mp' ? 'cache' : 'logout',
+                var nav_logout_data = (user == null) ? null : {
+                    name: this.$t('user.user.2k0227'),
+                    icon: 'logout',
                 };
-                // #ifdef APP || H5
-                // app和h5模式下未登录则不展示退出
-                if(app.globalData.get_user_cache_info() == null) {
-                    nav_logout_data = null;
-                }
-                // #endif
 
                 this.setData({
+                    user: user,
                     head_nav_list: head_nav_list,
                     nav_logout_data: nav_logout_data,
-                    nickname: this.$t('login.login.6yfr9g'),
+                    nickname: this.nickname || this.$t('login.login.6yfr9g'),
                 });
             },
 
@@ -315,42 +311,42 @@
             },
 
             // 获取数据
-            init(e) {
-                var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
-                    // 获取数据
-                    this.get_data();
-                } else {
-                    uni.stopPullDownRefresh();
+            init(status = 0) {
+                // 没有用户信息则调用用户登录
+                if(this.user == null) {
+                    app.globalData.get_user_info(this, 'init', 1);
+                }
+                if(status == 1) {
+                    // 资源设置
+                    this.set_resources_data();
                 }
 
-                // 获取基础数据
-                this.set_user_base(user);
+                // 获取数据
+                this.get_data();
+
+                // 设置用户基础数据
+                this.set_user_base();
 
                 // 分享菜单处理
                 app.globalData.page_share_handle();
             },
 
             // 设置用户基础信息
-            set_user_base(user) {
-                this.setData({
-                    user: user || null,
-                });
-                if ((user.avatar || null) != null) {
-                    this.setData({
-                        avatar: user.avatar,
-                    });
-                }
-                if ((user.user_name_view || null) != null) {
-                    this.setData({
-                        nickname: user.user_name_view,
-                    });
-                }
-
-                // 有用户信息，是否需要绑定手机
-                if(this.user == null) {
-                    var cache_user = app.globalData.get_user_cache_info() || null;
-                    if(cache_user != null && app.globalData.user_is_bind_mobile(cache_user)) {
+            set_user_base() {
+                if(this.user != null) {
+                    if ((this.user.avatar || null) != null) {
+                        this.setData({
+                            avatar: this.user.avatar,
+                        });
+                    }
+                    if ((this.user.user_name_view || null) != null) {
+                        this.setData({
+                            nickname: this.user.user_name_view,
+                        });
+                    }
+                } else {
+                    // 有用户信息，是否需要绑定手机
+                    if(app.globalData.user_is_bind_mobile(this.user)) {
                         this.setData({
                             nickname: this.$t('login.login.np9177')
                         });
@@ -481,32 +477,22 @@
 
             // 清除缓存
             remove_user_cache_event(e) {
-                // 副导航去除总数
-                var temp_head_nav = this.head_nav_list;
-                if(temp_head_nav.length > 0) {
-                    for(var i in temp_head_nav) {
-                        temp_head_nav[i]['count'] = 0;
-                    }
-                }
                 // 当前页面处理
                 this.setData({
-                    message_total: 0,
-                    navigation: [],
-                    head_nav_list: temp_head_nav,
-                    main_navigation_data: [],
                     user: null,
+                    nickname: '',
                     avatar: app.globalData.data.default_user_head_src,
-                    nickname: this.$t('login.login.6yfr9g'),
-                    // #ifdef APP || H5
                     nav_logout_data: null,
-                    // #endif
                 });
 
                 // 调用公共方法处理
                 app.globalData.remove_user_cache_event();
+                
+                // 资源设置
+                this.set_resources_data();
 
-                // 导航购物车处理
-                app.globalData.set_tab_bar_badge('cart');
+                // 初始数据
+                this.get_data();
             },
 
             // 客服电话

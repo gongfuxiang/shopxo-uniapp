@@ -91,9 +91,9 @@
             <block v-if="data_list.length > 0">
                 <view class="padding-horizontal-main">
                     <!-- 导航 -->
-                    <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
+                    <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" :propMoreUrl="'/pages/plugins/realstore/search/search'+(is_force_choice_realstore == 1 ? '?is_choice_mode=1&choice_mode_back_type=realstore-detail&is_open_realstore_redirect=0' : '')"></component-title>
                     <!-- 数据列表 -->
-                    <component-realstore-list :propData="{data: data_list}" :propFavorUser="favor_user"></component-realstore-list>
+                    <component-realstore-list :propData="{data: data_list}" :propFavorUser="favor_user" :propIsChoice="is_force_choice_realstore == 1" propIsChoiceBackType="realstore-detail" :propIsOpenRealstoreRedirect="false"></component-realstore-list>
                 </view>
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -300,7 +300,7 @@
                                 if(this.is_first == 1) {
                                     // 是否自动获取用户当前位置、如果系统已经开启获取位置则这里不调用
                                     if(app.globalData.data.get_user_location_status != 1 && parseInt(this.data_base.is_home_auto_user_location || 0) == 1) {
-                                        app.globalData.get_user_location(this, 'user_back_choice_location', true);
+                                        app.globalData.get_user_location(this, 'user_back_auto_location', true);
                                     }
 
                                     // 自动选择第一个门店、不存在已选择的门店
@@ -318,6 +318,12 @@
                                             this.setData({
                                                 location_tips_close_status: false
                                             });
+                                            // 存储门店缓存
+                                            uni.setStorageSync(app.globalData.data.cache_realstore_detail_choice_key, {
+                                                data: temp_realstore,
+                                                status: 0
+                                            });
+                                            // 进入门店页面
                                             app.globalData.url_open(temp_realstore.url);
                                         }
                                     }
@@ -361,6 +367,20 @@
                 }
             },
 
+            // 自动获取用户位置回调
+            user_back_auto_location(e) {
+                // 位置数据更新
+                if ((this.$refs.choice_location || null) != null) {
+                    this.$refs.choice_location.init();
+                }
+                // 设置状态为首次
+                this.setData({
+                    is_first: 1,
+                });
+                // 设置位置数据，重新获取数据
+                this.user_back_choice_location(e);
+            },
+
             // 选择用户地理位置回调
             user_back_choice_location(e) {
                 // 设置数据
@@ -368,10 +388,6 @@
                     user_location: e,
                     location_tips_close_status: e.status != 1
                 });
-                // 位置数据更新
-                if ((this.$refs.choice_location || null) != null) {
-                    this.$refs.choice_location.init();
-                }
                 // 重新获取数据
                 this.get_data();
             },

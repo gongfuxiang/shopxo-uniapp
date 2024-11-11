@@ -2805,8 +2805,8 @@
                         ...{
                             name: result.name || null,
                             address: result.address || null,
-                            lat: result.latitude || null,
-                            lng: result.longitude || null,
+                            lat: result.lat || null,
+                            lng: result.lng || null,
                             status: result.status || 1,
                         },
                     };
@@ -2879,8 +2879,8 @@
                                         var address = {
                                             name: i18n.t('shopxo-uniapp.app.tghyu3'),
                                             address: '',
-                                            latitude: res.latitude || null,
-                                            longitude: res.longitude || null,
+                                            lat: res.latitude || null,
+                                            lng: res.longitude || null,
                                             status: 1,
                                         };
                                         uni.setStorageSync(cache_key, address);

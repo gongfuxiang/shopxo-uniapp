@@ -172,9 +172,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'index', 'ask'),
                     method: 'POST',
-                    data: {
-                        id: this.params,
-                    },
+                    data: this.params,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
