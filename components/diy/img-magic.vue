@@ -101,7 +101,7 @@
                 const new_style = this.propValue.style || {};
                 const new_style_spacing = new_content.style_actived === 10 ? 0 : new_style.image_spacing;
                 // 外部样式
-                const outer_spacing = `calc(100% + ${new_style_spacing * 4}rpx)`;
+                const outer_spacing = `calc(100% + ${new_style_spacing * 2}rpx)`;
                 const outer_sx = `-${new_style_spacing}rpx`;
                 // 图片间距设置
                 const spacing = `${new_style_spacing}rpx`;

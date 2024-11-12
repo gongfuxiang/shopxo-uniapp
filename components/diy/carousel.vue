@@ -94,6 +94,10 @@
                 type: Number,
                 default: 1000000,
             },
+            propOuterContainerPadding: {
+                type: Number,
+                default: 0,
+            }
         },
         data() {
             return {
@@ -157,7 +161,7 @@
                     fit = 'aspectFill';
                 }
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right - padding_left - padding_right;
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 const scale = width / 390;
                 this.setData({
                     form: this.propValue.content,

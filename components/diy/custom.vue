@@ -59,6 +59,10 @@
                 type: Number,
                 default: 1000000,
             },
+            propOuterContainerPadding: {
+                type: Number,
+                default: 0,
+            }
         },
         data() {
             return {
@@ -94,7 +98,7 @@
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right - padding_left - padding_right;
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 this.setData({
                     form: new_form,
                     new_style: new_style,

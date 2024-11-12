@@ -1,7 +1,7 @@
 <template>
     <view class="ou" :style="style_container">
         <view class="flex-col ou" :style="style_img_container">
-            <componentDiyTabs :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsPaddingStyle="tabs_padding_style" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsPaddingStyle="tabs_padding_style" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
         </view>
     </view>
@@ -41,6 +41,10 @@
                 type: [String, Number],
                 default: '',
             },
+            propContentPadding: {
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {

@@ -1,7 +1,7 @@
 <template>
     <!-- 选项卡 -->
     <view class="tabs-container pr">
-        <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style">
+        <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style + propContentPadding">
             <view class="tabs-content wh-auto bs-bb" :style="style_container">
                 <view class="wh-auto bs-bb" :style="style_img_container">
                     <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsPaddingStyle="propsTabsPaddingStyle" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
@@ -60,6 +60,10 @@
                 default: '',
             },
             propsTabsPaddingStyle: {
+                type: String,
+                default: '',
+            },
+            propContentPadding: {
                 type: String,
                 default: '',
             }
