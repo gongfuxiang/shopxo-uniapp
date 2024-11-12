@@ -68,11 +68,15 @@
                 <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7dikfm')}}</view>
                     <view class="panel-content oh padding-top-main">
+                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-bottom-sm" :src="detail.extraction_data.images" mode="aspectFill"></image>
                         <view>
                             <text>{{$t('user-order-detail.user-order-detail.o38952')}}</text>
                             <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || $t('user-order-detail.user-order-detail.hpq62x') }}</text>
                         </view>
-                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
+                        <view v-if="(detail.extraction_data.name || null) != null || (detail.extraction_data.tel || null) != null" class="margin-top-sm">
+                            <text v-if="(detail.extraction_data.name || null) != null" class="margin-right-xxl">{{detail.extraction_data.name}}</text>
+                            <text v-if="(detail.extraction_data.tel || null) != null">{{detail.extraction_data.tel}}</text>
+                        </view>
                     </view>
                 </view>
 
