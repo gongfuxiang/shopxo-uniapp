@@ -386,7 +386,7 @@
             // 不同风格下的样式
             get_layout_style(new_style, form) {
                 const radius = form.theme == '6' ? '' : radius_computer(new_style.shop_radius);
-                const gradient = form.theme != '6' ? gradient_handle(new_style.shop_color_list, new_style.shop_direction) : '';
+                const gradient = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') : '';
                 let size_style = ``;
                 if (['1', '4'].includes(form.theme)) {
                     size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
@@ -400,8 +400,8 @@
             get_layout_img_style(new_style, form) {
                 const padding = ['0', '4'].includes(form.theme) ? padding_computer(new_style.shop_padding) + 'box-sizing: border-box;' : '';
                 const data = {
-                    background_img_style: new_style.shop_background_img_style,
-                    background_img: new_style.shop_background_img,
+                    background_img_style: new_style?.shop_background_img_style || '',
+                    background_img: new_style?.shop_background_img || '',
                 }
                 const background = form.theme != '6' ? background_computer(data) : '';
                 return `${padding} ${background}`;

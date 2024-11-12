@@ -212,7 +212,8 @@
                 } else if (form.tabs_theme == '3') {
                     bottom = 10;
                 }
-                return ['1', '2', '4'].includes(form.tabs_theme) ? '' : `padding-bottom: ${(new_style?.tabs_sign_spacing || 0) + bottom}px;`;
+                const tabs_sign_spacing = !isEmpty(new_style.tabs_sign_spacing) ? new_style.tabs_sign_spacing : 4;
+                return ['1', '2', '4'].includes(form.tabs_theme) ? '' : `padding-bottom: ${tabs_sign_spacing + bottom}px;`;
             },
             // 选中的背景渐变色样式
             tabs_check_computer(data) {

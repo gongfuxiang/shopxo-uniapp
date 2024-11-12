@@ -233,11 +233,11 @@
                 }
                 // 背景图的处理
                 const article_data = {
-                    background_img_style: new_style.article_background_img_style,
-                    background_img: new_style.article_background_img,
+                    background_img_style: new_style?.article_background_img_style || '',
+                    background_img: new_style?.article_background_img || '',
                 }
                 // 渐变效果
-                const gradient = gradient_handle(new_style.article_color_list, new_style.article_direction);
+                const gradient = gradient_handle(new_style?.article_color_list || [], new_style?.article_direction || '');
                 // 文章样式
                 if (this.article_theme == '0') {
                     this.setData({
