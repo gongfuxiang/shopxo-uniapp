@@ -171,7 +171,7 @@
                     img_style: radius_computer(new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(new_style), // 指示器的样式
                     dot_style: `bottom: ${ new_style.indicator_bottom * scale }px;`, // 指示器位置
-                    img_fit: fit, // 图片风格
+                    img_fit: fit, // 图片风格 默认为aspectFill
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑   
                     swiper_height: new_form.height * scale + 'px', // 轮播图高度
                 });
