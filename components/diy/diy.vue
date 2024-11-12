@@ -6,7 +6,7 @@
                 <view class="pr header">
                     <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
                 </view>
-                <view class="aaaa" :style="content_padding">
+                <view :style="content_padding">
                     <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                         <view v-for="item in tabs_data" :key="item.key">
                             <template v-if="item.is_enable == '1'">
