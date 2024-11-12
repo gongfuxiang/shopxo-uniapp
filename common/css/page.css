@@ -275,6 +275,9 @@ button:before {
 .fw-b {
     font-weight: 500;
 }
+.fw-n {
+    font-weight: 400;
+}
 .auto {
     margin: 0 auto;
 }

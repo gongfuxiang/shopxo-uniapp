@@ -42,7 +42,7 @@
                                                     </template>
                                                     <view v-if="['1', '2', '3'].includes(form.content.theme) && !isEmpty(form.content.title)">{{ form.content.title }}</view>
                                                     <template v-if="['3'].includes(form.content.theme) && !is_search_alone_row">
-                                                        <view class="flex-1">
+                                                        <view class="flex-1 fw-n">
                                                             <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
                                                         </view>
                                                     </template>

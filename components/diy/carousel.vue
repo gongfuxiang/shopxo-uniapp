@@ -1,6 +1,6 @@
 <template>
     <view class="pr" :style="style_container">
-        <view class="pr" :style="style_img_container">
+        <view class="pr re" :style="style_img_container">
             <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
@@ -156,7 +156,9 @@
                 } else if (new_form.img_fit == 'cover') {
                     fit = 'aspectFill';
                 }
-                
+                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right;
+                const scale = width / 390;
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
@@ -168,10 +170,10 @@
                     style_img_container: this.propIsCommon ? common_img_computer(common_style, this.propIndex) : '', // 公共样式显示
                     img_style: radius_computer(new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(new_style), // 指示器的样式
-                    dot_style: `bottom: ${ (new_style.indicator_bottom + common_style.margin_bottom + common_style.padding_bottom) * (sys_width / 390) * 2 }rpx;`, // 指示器位置
+                    dot_style: `bottom: ${ new_style.indicator_bottom * scale * 2 }rpx;`, // 指示器位置
                     img_fit: fit, // 图片风格
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑   
-                    swiper_height: new_form.height * (sys_width / 390) * 2 + 'rpx', // 轮播图高度
+                    swiper_height: new_form.height * scale * 2 + 'rpx', // 轮播图高度
                 });
                 // 风格二显示逻辑
                 if (new_form.carousel_type == 'card') {
