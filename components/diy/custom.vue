@@ -224,7 +224,6 @@ import { isEmpty } from '../../common/js/common/common';
                 } else {
                     list = new_form.data_source_content.data_list;
                 }
-                console.log(list);
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 this.setData({

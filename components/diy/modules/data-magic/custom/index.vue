@@ -92,6 +92,7 @@ export default {
             new_style: {},
             scale: 1,
             style_container: '',
+            style_img_container: '',
             div_width: 0,
             div_height: 0,
             custom_list_length: 0,
@@ -123,6 +124,7 @@ export default {
                     background_img: data_background_img,
                     background_img_style: data_background_img_style,
                 }
+                // 计算宽度
                 const { padding_left, padding_right } = data_chunk_padding;
                 const { margin_left, margin_right } = data_chunk_margin;
                 const width = new_form.width - padding_left - padding_right - margin_left - margin_right - (this.propDataSpacing / 2);
