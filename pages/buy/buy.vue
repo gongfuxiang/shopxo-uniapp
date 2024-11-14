@@ -8,7 +8,7 @@
                 <!-- 模式选择，站点类型选择 销售+自提 -->
                 <view v-if="buy_site_model_list.length > 1" class="buy-site-model bg-white oh tc" :class="'count-'+buy_site_model_list.length">
                     <block v-for="(item, index) in buy_site_model_list" :key="index">
-                        <view :class="'item fl cp ' + (buy_site_model_value == item.value ? 'cr-main' : 'cr-base')" :data-ext="item.ext" :data-value="item.value" @tap="buy_site_model_event">{{ item.name }}</view>
+                        <view :class="'item fl cp ' + (buy_site_model_value == item.value ? 'nav-active-line cr-main' : 'cr-base')" :data-ext="item.ext" :data-value="item.value" @tap="buy_site_model_event">{{ item.name }}</view>
                     </block>
                 </view>
 

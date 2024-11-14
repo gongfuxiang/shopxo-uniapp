@@ -777,6 +777,7 @@
                         uni.showModal({
                             content: msg,
                             showCancel: false,
+                            confirmText: this.$t('common.confirm'),
                             success(res) {
                                 if (res.confirm) {
                                     // 跳转支付页面
