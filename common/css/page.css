@@ -672,7 +672,8 @@ button[disabled].bg-grey {
 }
 .form-container .form-gorup input,
 .form-container .form-gorup textarea,
-.form-container .form-gorup .picker {
+.form-container .form-gorup .picker,
+.form-container .form-gorup .form-gorup-value {
     border-radius: 0;
     width: 100%;
     box-sizing: border-box;
@@ -680,7 +681,8 @@ button[disabled].bg-grey {
 }
 .form-container .form-gorup input,
 .form-container .form-gorup .picker,
-.form-container .form-gorup .radio-gorup {
+.form-container .form-gorup .radio-gorup,
+.form-container .form-gorup .form-gorup-value {
     height: 70rpx;
     line-height: 70rpx;
 }
@@ -700,6 +702,15 @@ button[disabled].bg-grey {
 }
 .form-container .form-gorup .radio-gorup .radio:not(:last-child) {
     margin-right: 50rpx;
+}
+.form-container .form-gorup.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.form-container .form-gorup.row .form-gorup-title {
+    width: 180rpx;
 }
 
 /**
