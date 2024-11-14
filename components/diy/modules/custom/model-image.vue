@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer pr wh-auto ht-auto" :style="border_style" :data-value="form.link.page" @tap="url_event">
+    <view class="img-outer pr wh-auto ht-auto" :style="border_style" :data-value="img_url" @tap="url_event">
         <imageEmpty :propImageSrc="img" :propStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
     </view>
 </template>
@@ -41,6 +41,7 @@
             return {
                 form: {},
                 img: '',
+                img_url: '',
                 image_style: '',
                 border_style: '',
                 keyMap: {
@@ -60,12 +61,20 @@
         },
         methods: {
             init() {
-                
+                let url = '';
+                if (!isEmpty(this.propValue.icon_link)) {
+                    url = this.propValue.icon_link?.page || '';
+                } else if (!isEmpty(this.propSourceList.data)) {
+                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                } else {
+                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                }
                 this.setData({
                     form: this.propValue,
                     img: this.get_img_url(this.propValue),
                     image_style: this.get_image_style(this.propValue, this.propScale),
                     border_style: this.get_border_style(this.propValue, this.propScale),
+                    img_url: url,
                 });
             },
             get_img_url(form) {

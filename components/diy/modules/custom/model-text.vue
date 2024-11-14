@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" :data-value="form.text_link.page" @tap="url_event">
+    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" :data-value="text_url" @tap="url_event">
         <view :style="text_style" class="break">
             <template v-if="form.is_rich_text == '1'">
                 <view class="rich-text-content" :innerHTML="text_title"></view>
@@ -47,6 +47,7 @@
                 text_title: '',
                 text_style: '',
                 com_style: '',
+                text_url: '',
                 keyMap: {
                     goods: 'title',
                     article: 'title',
@@ -64,11 +65,20 @@
         },
         methods: {
             init() {
+                let url = '';
+                if (!isEmpty(this.propValue.icon_link)) {
+                    url = this.propValue.icon_link?.page || '';
+                } else if (!isEmpty(this.propSourceList.data)) {
+                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                } else {
+                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                }
                 this.setData({
                     form: this.propValue,
                     text_title: this.get_text_title(this.propValue),
                     text_style: this.get_text_style(this.propValue, this.propScale),
                     com_style: this.get_com_style(this.propValue, this.propScale),
+                    text_url: url,
                 });
             },
             get_text_title(form) {

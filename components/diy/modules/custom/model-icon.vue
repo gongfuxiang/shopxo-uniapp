@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="form.icon_link.page" @tap="url_event">
+    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="icon_url" @tap="url_event">
         <iconfont :name="'icon-' + icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'" propContainerDisplay="flex"></iconfont>
     </view>
 </template>
@@ -41,6 +41,7 @@ import { isEmpty } from '../../../../common/js/common/common';
                 com_style: '',
                 scale: 1,
                 icon_class: '',
+                icon_url: '',
             };
         },
         watch: {
@@ -69,11 +70,20 @@ import { isEmpty } from '../../../../common/js/common/common';
                         icon_class_value = '';
                     }
                 }
+                let url = '';
+                if (!isEmpty(this.propValue.icon_link)) {
+                    url = this.propValue.icon_link?.page || '';
+                } else if (!isEmpty(this.propSourceList.data)) {
+                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                } else {
+                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                }
                 this.setData({
                     form: this.propValue,
                     scale: this.propScale,
                     com_style: this.get_com_style(this.propValue, this.propScale),
                     icon_class: icon_class_value,
+                    icon_url: url,
                 });
             },
             get_com_style(form, scale) {

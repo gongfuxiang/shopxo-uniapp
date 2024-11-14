@@ -5,19 +5,19 @@
                 <view class="wh-auto pr" :style="'height:' + form.height * scale + 'px;'">
                     <view v-for="(item, index) in form.custom_list" :key="item.id" class="main-content" :style="{ left: get_percentage_count(item.location.x, div_width), top: get_percentage_count(item.location.y, div_height), width: get_percentage_count(item.com_data.com_width, div_width), height: get_percentage_count(item.com_data.com_height, div_height), 'z-index': custom_list_length > 0 ? custom_list_length - index : 0 }">
                         <template v-if="item.key == 'text'">
-                            <model-text :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-text>
+                            <model-text :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-text>
                         </template>
                         <template v-else-if="item.key == 'img'">
-                            <model-image :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-image>
+                            <model-image :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-image>
                         </template>
                         <template v-else-if="item.key == 'auxiliary-line'">
                             <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source"></model-lines>
                         </template>
                         <template v-else-if="item.key == 'icon'">
-                            <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-icon>
+                            <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-icon>
                         </template>
                         <template v-else-if="item.key == 'panel'">
-                            <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-panel>
+                            <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-panel>
                         </template>
                     </view>
                 </view>
@@ -239,7 +239,13 @@ import { isEmpty } from '../../common/js/common/common';
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',
                 });
             },
-            url_event(e) {
+            url_event(e, index = 0) {
+                if (this.data_source == 'goods') {
+                    const list = this.data_source_content_list[index];
+                    if (!isEmpty(list)) {
+                        app.globalData.goods_data_cache_handle(list.data.id, list.data);
+                    }
+                }
                 app.globalData.url_event(e);
             },
         },
