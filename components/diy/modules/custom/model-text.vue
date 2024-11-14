@@ -35,6 +35,10 @@
             propScale: {
                 type: Number,
                 default: 1
+            },
+            propSourceType: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -43,6 +47,11 @@
                 text_title: '',
                 text_style: '',
                 com_style: '',
+                keyMap: {
+                    goods: 'title',
+                    article: 'title',
+                    brand: 'name'
+                }
             };
         },
         watch: {
@@ -66,8 +75,18 @@
                 let text = '';
                 if (!isEmpty(form.text_title)) {
                     text = form.text_title;
-                } else if (!isEmpty(this.propSourceList[form.data_source_id])) {
+                } else {
                     text = this.propSourceList[form.data_source_id];
+                    // 如果是商品的标题或者是品牌的名称，需要判断是否有新的标题，没有的话就取原来的标题
+                    if (['goods', 'article', 'brand'].includes(this.propSourceType) && !isEmpty(this.propSourceList.data)) {
+                        // 其他的切换为从data中取数据
+                        if (form.data_source_id == this.keyMap[this.propSourceType]) {
+                            // 如果是符合条件的标志，先判断新的标题是否存在，存在就取新的标题，否则的话取原来的标题
+                            text = !isEmpty(this.propSourceList.new_title) ? this.propSourceList.new_title : this.propSourceList.data[this.keyMap[this.propSourceType]];
+                        } else {
+                            text = this.propSourceList.data[form.data_source_id];
+                        }
+                    }
                 }
                 return text;
             },

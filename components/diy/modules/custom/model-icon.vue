@@ -1,10 +1,11 @@
 <template>
     <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="form.icon_link.page" @tap="url_event">
-        <iconfont :name="'icon-' + form.icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'" propContainerDisplay="flex"></iconfont>
+        <iconfont :name="'icon-' + icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'" propContainerDisplay="flex"></iconfont>
     </view>
 </template>
 <script>
     import { radius_computer, padding_computer, gradient_handle } from '@/common/js/common/common.js';
+import { isEmpty } from '../../../../common/js/common/common';
     
     export default {
         props: {
@@ -28,6 +29,10 @@
             propScale: {
                 type: Number,
                 default: 1,
+            },
+            propSourceType: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -35,6 +40,7 @@
                 form: {},
                 com_style: '',
                 scale: 1,
+                icon_class: '',
             };
         },
         watch: {
@@ -47,10 +53,27 @@
         },
         methods: {
             init() {
+                let icon_class_value = '';
+                if (!isEmpty(this.propValue.icon_class)) {
+                    icon_class_value = this.propValue.icon_class;
+                } else {
+                    if (!isEmpty(this.propSourceList)) {
+                        // 不输入商品， 文章和品牌时，从外层处理数据
+                        let icon = this.propSourceList[this.propValue.data_source_id];
+                        // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+                        if (['goods', 'article', 'brand'].includes(this.propSourceType) && !isEmpty(this.propSourceList.data)) {
+                            icon = this.propSourceList.data[this.propValue.data_source_id];
+                        }
+                        icon_class_value = icon;
+                    } else {
+                        icon_class_value = '';
+                    }
+                }
                 this.setData({
                     form: this.propValue,
                     scale: this.propScale,
                     com_style: this.get_com_style(this.propValue, this.propScale),
+                    icon_class: icon_class_value,
                 });
             },
             get_com_style(form, scale) {

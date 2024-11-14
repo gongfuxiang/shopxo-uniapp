@@ -1,5 +1,5 @@
 <template>
-    <view class="wh-auto ht-auto oh ssss" :style="style_container">
+    <view class="wh-auto ht-auto oh" :style="style_container">
         <view class="wh-auto ht-auto" :style="style_img_container">
             <swiper circular="true" :autoplay="propValue.data_style.is_roll == '1'" :interval="propValue.data_style.interval_time * 1000" :duration="500" :vertical="propValue.data_style.rotation_direction == 'vertical'" class="swiper" style="height: 100%" @change="carousel_change">
                 <swiper-item v-for="(item1, index1) in propValue.data_content.list" :key="index1">
