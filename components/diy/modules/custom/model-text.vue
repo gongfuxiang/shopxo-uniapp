@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" :data-value="form.text_link.page" @tap="url_event">
+    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" :data-value="text_url" @tap="url_event">
         <view :style="text_style" class="break">
             <template v-if="form.is_rich_text == '1'">
                 <view class="rich-text-content" :innerHTML="text_title"></view>
@@ -35,6 +35,10 @@
             propScale: {
                 type: Number,
                 default: 1
+            },
+            propSourceType: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -43,6 +47,12 @@
                 text_title: '',
                 text_style: '',
                 com_style: '',
+                text_url: '',
+                keyMap: {
+                    goods: 'title',
+                    article: 'title',
+                    brand: 'name'
+                }
             };
         },
         watch: {
@@ -55,19 +65,38 @@
         },
         methods: {
             init() {
+                let url = '';
+                if (!isEmpty(this.propValue.icon_link)) {
+                    url = this.propValue.icon_link?.page || '';
+                } else if (!isEmpty(this.propSourceList.data)) {
+                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                } else {
+                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                }
                 this.setData({
                     form: this.propValue,
                     text_title: this.get_text_title(this.propValue),
                     text_style: this.get_text_style(this.propValue, this.propScale),
                     com_style: this.get_com_style(this.propValue, this.propScale),
+                    text_url: url,
                 });
             },
             get_text_title(form) {
                 let text = '';
                 if (!isEmpty(form.text_title)) {
                     text = form.text_title;
-                } else if (!isEmpty(this.propSourceList[form.data_source_id])) {
+                } else {
                     text = this.propSourceList[form.data_source_id];
+                    // 如果是商品的标题或者是品牌的名称，需要判断是否有新的标题，没有的话就取原来的标题
+                    if (['goods', 'article', 'brand'].includes(this.propSourceType) && !isEmpty(this.propSourceList.data)) {
+                        // 其他的切换为从data中取数据
+                        if (form.data_source_id == this.keyMap[this.propSourceType]) {
+                            // 如果是符合条件的标志，先判断新的标题是否存在，存在就取新的标题，否则的话取原来的标题
+                            text = !isEmpty(this.propSourceList.new_title) ? this.propSourceList.new_title : this.propSourceList.data[this.keyMap[this.propSourceType]];
+                        } else {
+                            text = this.propSourceList.data[form.data_source_id];
+                        }
+                    }
                 }
                 return text;
             },
