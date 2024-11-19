@@ -170,7 +170,9 @@
                     <view v-if="(plugins_points_data || null) != null && ((plugins_points_data.discount_price || 0) > 0 || (plugins_points_data.is_support_goods_exchange || 0) == 1)" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
                         <block v-if="(plugins_points_data.discount_price || 0) > 0">
                             <view class="select oh">
-                                <text v-if="plugins_points_data.discount_type == 1" class="va-m">{{ $t('buy.buy.33fugm') }}{{ plugins_points_data.use_integral }}{{ $t('buy.buy.6e4181') }}</text>
+                                <block v-if="plugins_points_data.discount_type == 1">
+                                    <text v-if="(plugins_points_data.use_msg_tips || null) != null" class="va-m">{{ plugins_points_data.use_msg_tips }}</text>
+                                </block>
                                 <view v-else class="dis-inline-block">
                                     <text class="va-m">{{ $t('buy.buy.33fugm') }}</text>
                                     <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" @confirm="points_use_value_confirm_event" :placeholder="$t('buy.buy.80y7sv')" />
@@ -184,15 +186,10 @@
                                     </view>
                                 </block>
                             </view>
-                            <view class="desc margin-top-xs">
-                                <text v-if="plugins_points_data.discount_type == 1">{{ $t('buy.buy.q800ri') }}{{ plugins_points_data.user_integral }}{{ $t('buy.buy.w96878') }}</text>
-                                <text v-else>{{ $t('buy.buy.q800ri') }}{{ plugins_points_data.user_integral }}{{ $t('buy.buy.186cxy') }}{{ plugins_points_data.use_integral }}{{ $t('buy.buy.w96878') }}</text>
-                            </view>
+                            <view v-if="(plugins_points_data.usable_msg_tips || null) != null" class="desc margin-top-xs">{{ plugins_points_data.usable_msg_tips }}</view>
                         </block>
                         <block v-else>
-                            <view v-if="(plugins_points_data.is_support_goods_exchange || 0) == 1" class="desc tr">
-                                <text>{{ $t('buy.buy.q800ri') }}{{ plugins_points_data.user_integral }}{{ $t('buy.buy.t04z1o') }}</text>
-                            </view>
+                            <view v-if="(plugins_points_data.not_msg_tips || null) != null" class="desc tr">{{ plugins_points_data.not_msg_tips }}</view>
                         </block>
                     </view>
 

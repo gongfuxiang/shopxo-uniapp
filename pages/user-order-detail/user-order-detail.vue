@@ -119,9 +119,9 @@
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.ct34n5')}}</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.tips }}</view>
+                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b-dashed oh padding-vertical-main cr-base">
+                            <text>{{ item.name }}</text>
+                            <text v-if="(item.tips || null) != null">：{{ item.tips }}</text>
                         </view>
                     </view>
                 </view>

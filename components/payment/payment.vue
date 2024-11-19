@@ -395,6 +395,7 @@
                                             uni.showModal({
                                                 content: res.data.msg,
                                                 showCancel: false,
+                                                confirmText: self.$t('common.confirm'),
                                                 success(res) {
                                                     if (res.confirm) {
                                                         self.to_other(order_id);
