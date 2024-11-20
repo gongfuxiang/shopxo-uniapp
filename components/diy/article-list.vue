@@ -7,12 +7,16 @@
                     <view v-for="(item, index) in data_list" :key="index" class="item oh" :style="article_style" :data-value="item.data.url" @tap="url_event">
                         <view :class="article_theme == '0' ? 'flex-row oh' : 'flex-col oh'" :style="article_img_style">
                             <template v-if="article_theme !== '3'">
-                                <template v-if="item.new_cover.length > 0">
-                                    <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
-                                </template>
-                                <template v-else>
-                                    <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
-                                </template>
+                                <view class="oh pr wh-auto ht-auto">
+                                    <template v-if="item.new_cover.length > 0">
+                                        <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
+                                    </template>
+                                    <template v-else>
+                                        <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
+                                    </template>
+                                    <!-- 角标 -->
+                                    <subscriptIndex :propValue="propValue"></subscriptIndex>
+                                </view>
                             </template>
                             <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
                                 <div class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
@@ -33,17 +37,21 @@
                     </view>
                 </view>
                 <view v-else class="oh" :class="article_theme_class">
-                    <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :style="'height:' + carousel_height_computer">
+                    <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :next-margin="next_margin" :display-multiple-items="slides_per_group" :style="'height:' + carousel_height_computer">
                         <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1">
-                            <view class="flex-row" :style="article_spacing">
-                                <view v-for="(item, index) in item1.carousel_list" :key="index" class="item oh" :style="article_style" :data-value="item.data.url" @tap="url_event">
-                                    <view class="oh flex-col" :style="article_img_style">
-                                        <template v-if="item.new_cover.length > 0">
-                                            <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
-                                        </template>
-                                        <template v-else>
-                                            <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
-                                        </template>
+                            <view class="flex-row ht-auto" :style="article_spacing">
+                                <view v-for="(item, index) in item1.carousel_list" :key="index" class="item oh ht-auto" :style="article_style" :data-value="item.data.url" @tap="url_event">
+                                    <view class="oh flex-col ht-auto" :style="article_img_style">
+                                        <view class="oh pr wh-auto ht-auto">
+                                            <template v-if="item.new_cover.length > 0">
+                                                <image :src="item.new_cover[0].url" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
+                                            </template>
+                                            <template v-else>
+                                                <image :src="item.data.cover" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
+                                            </template>
+                                            <!-- 角标 -->
+                                            <subscriptIndex :propValue="propValue"></subscriptIndex>
+                                        </view>
                                         <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
                                             <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
                                                 <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
@@ -73,9 +81,13 @@
 <script>
     const app = getApp();
     import { common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer } from '@/common/js/common/common.js';
+    import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
+        components: {
+            subscriptIndex,
+        },
         props: {
             propValue: {
                 type: Object,
@@ -127,7 +139,7 @@
                 content_spacing: '',
                 // 文章间距
                 article_spacing: '',
-                article_item_height: '',
+                // article_item_height: '',
 
                 article_style: '',
                 article_img_style: '',
@@ -147,6 +159,9 @@
                 article_carousel_list: [],
                 // 文章描述间距
                 name_desc_space: 0,
+                // 一行显示的数量
+                slides_per_group: 1,
+                next_margin: '0rpx',
             };
         },
         watch: {
@@ -194,6 +209,9 @@
                     article_spacing: `gap: ${new_style.article_spacing}px;`,
                     // 描述间距
                     name_desc_space: parseInt(new_style.name_desc_space),
+                    next_margin: new_style.rolling_fashion == 'translation' ? '-' + new_style.article_spacing_margin + 'px' : '0rpx',
+                    // 文章内容高度
+                    slides_per_group: new_style.rolling_fashion == 'translation' ?  Number(new_content.carousel_col) + 1 : 1,
                 });
                 // 默认数据
                 const product_style_list = [
@@ -266,17 +284,17 @@
                     const temp_carousel_col = new_content.carousel_col || '1';
                     // 计算间隔的空间。(gap * gap数量) / 模块数量
                     let gap = temp_carousel_col !== '0' ? (new_style.article_spacing * temp_carousel_col) / (Number(temp_carousel_col) + 1) : '0';
-                    const multicolumn_columns_width = `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx)`;
+                    const multicolumn_columns_width = new_style.rolling_fashion == 'translation' ? `margin-right: ${ new_style.article_spacing }px;width:100%;` : `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);`;
                     // 轮播宽度
                     this.setData({
                         // 滚动时间
                         interval_time: (new_style.interval_time || 2) * 1000,
                         // 是否滚动修改
                         is_roll: new_style.is_roll,
-                        article_item_height: `height: ${new_style.article_height * 2}rpx`,
+                        // article_item_height: `height: ${new_style.article_height }px`,
                         article_style: this.content_radius + multicolumn_columns_width + gradient,
                         // 轮播高度
-                        carousel_height_computer: (new_style.name_size * 2 + new_style.article_height) * 2 + 'rpx',
+                        carousel_height_computer: new_style.name_size * 2 + new_style.article_height + 'px',
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
                         article_img_style: background_computer(article_data)
@@ -284,26 +302,41 @@
                     // 文章轮播数据
                     const cloneList = JSON.parse(JSON.stringify(this.data_list));
                     // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = Number(temp_carousel_col) + 1;
+                    console.log(new_style.rolling_fashion);
+                    if (new_style.rolling_fashion != 'translation') {
+                        if (cloneList.length > 0) {
+                            // 每页显示的数量
+                            const num = Number(temp_carousel_col) + 1;
+                            // 存储数据显示
+                            let nav_list = [];
+                            // 拆分的数量
+                            const split_num = Math.ceil(cloneList.length / num);
+                            for (let i = 0; i < split_num; i++) {
+                                nav_list.push({ carousel_list: cloneList.slice(i * num, (i + 1) * num) });
+                            }
+                            this.setData({
+                                article_carousel_list: nav_list,
+                            });
+                        } else {
+                            // 否则的话，就返回全部的信息
+                            this.setData({
+                                article_carousel_list: [{ carousel_list: cloneList }],
+                            });
+                        }
+                    } else {
                         // 存储数据显示
                         let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({ carousel_list: cloneList.slice(i * num, (i + 1) * num) });
-                        }
+                        cloneList.forEach((item) => {
+                            nav_list.push({
+                                carousel_list: [item],
+                            });
+                        });
                         this.setData({
                             article_carousel_list: nav_list,
                         });
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        this.setData({
-                            article_carousel_list: [{ carousel_list: cloneList }],
-                        });
                     }
                 }
+
                 if (this.propIsCommonStyle) {
                     this.setData({
                         style_container: common_styles_computer(new_style.common_style),

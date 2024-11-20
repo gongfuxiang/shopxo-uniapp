@@ -12,6 +12,39 @@ const app = getApp();
 export function is_obj_empty(obj) {
     return Object.keys(obj).length === 0;
 }
+
+/**
+ * 处理指示器的显示问题
+ *
+ * @param style_object 样式对象
+ * @returns 返回对应的值
+ */
+export function get_indicator_style(style_object) {
+    const { indicator_radius, indicator_style, indicator_size, color, indicator_new_location } = style_object;
+    let styles = '';
+    if (!isEmpty(indicator_radius)) {
+        styles += radius_computer(indicator_radius);
+    }
+    // 数字类型的指示器
+    if (indicator_style == 'num') {
+        styles += `color: ${color || '#DDDDDD'};`;
+        styles += `font-size: ${indicator_size * 2}rpx;`;
+    } else if (indicator_style == 'elliptic') {
+        // 宽的指示器，按照宽高1:3 来计算
+        styles += `background: ${color || '#DDDDDD'};`;
+        if (['left', 'right'].includes(indicator_new_location)) {
+            styles += `width: ${indicator_size * 2 }rpx; height: ${indicator_size * 6}rpx;`;
+        } else {
+            styles += `width: ${indicator_size * 6}rpx; height: ${indicator_size * 2}rpx;`;
+        }
+    } else {
+        // 圆点指示器
+        styles += `background: ${color || '#DDDDDD'};`;
+        styles += `width: ${indicator_size * 2}rpx; height: ${indicator_size * 2}rpx;`;
+    }
+    return styles;
+}
+
 /**
  * 判断对象数组等是否为空。
  */

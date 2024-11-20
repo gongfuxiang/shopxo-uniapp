@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import { padding_computer } from '@/common/js/common/common.js';
+    import { padding_computer, radius_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -38,7 +38,7 @@
                 this.setData({
                     video_img: new_content.video_img.length > 0 ? new_content.video_img[0].url : '',
                     video: new_content.video.length > 0 ? new_content.video[0].url : '',
-                    style_container: padding_computer(this.propDataStyle.chunk_padding) + 'box-sizing: border-box;',
+                    style_container: padding_computer(this.propDataStyle.chunk_padding) + radius_computer(this.propDataStyle.img_radius) + 'box-sizing: border-box;',
                 });
             }
         },

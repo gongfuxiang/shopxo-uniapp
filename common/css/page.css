@@ -1370,3 +1370,26 @@ button[disabled].bg-grey {
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
+/* 指示器上下显示 */
+.indicator_up_down_location {
+    position: absolute;
+    z-index: 1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.indicator_up_down_location .dot-item {
+    margin: 0.3rem 0;
+}
+/* 指示器左右显示 */
+.indicator_about_location {
+    position: absolute;
+    z-index: 1;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: flex;
+}
+.indicator_about_location .dot-item {
+    margin: 0 0.3rem;
+}

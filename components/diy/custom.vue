@@ -2,74 +2,29 @@
     <view v-if="data_source_content_list.length > 0">
         <view v-for="(item1, index1) in data_source_content_list" :key="index1" :style="style_container">
             <view class="custom-container wh-auto ht-auto" :style="style_img_container">
-                <view class="wh-auto pr" :style="'height:' + form.height * scale + 'px;'">
-                    <view v-for="(item, index) in form.custom_list" :key="item.id" class="main-content" :style="{ left: get_percentage_count(item.location.x, div_width), top: get_percentage_count(item.location.y, div_height), width: get_percentage_count(item.com_data.com_width, div_width), height: get_percentage_count(item.com_data.com_height, div_height), 'z-index': custom_list_length > 0 ? custom_list_length - index : 0 }">
-                        <template v-if="item.key == 'text'">
-                            <model-text :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-text>
-                        </template>
-                        <template v-else-if="item.key == 'img'">
-                            <model-image :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-image>
-                        </template>
-                        <template v-else-if="item.key == 'auxiliary-line'">
-                            <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source"></model-lines>
-                        </template>
-                        <template v-else-if="item.key == 'icon'">
-                            <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-icon>
-                        </template>
-                        <template v-else-if="item.key == 'panel'">
-                            <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event($event, index)"></model-panel>
-                        </template>
-                    </view>
-                </view>
+                <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index1" @url_event="url_event"></dataRendering>
             </view>
         </view>
     </view>
     <view v-else>
         <view :style="style_container">
             <view class="custom-container wh-auto ht-auto" :style="style_img_container">
-                <view class="wh-auto pr" :style="'height:' + form.height * scale + 'px;'">
-                    <view v-for="(item, index) in form.custom_list" :key="item.id" class="main-content" :style="{ left: get_percentage_count(item.location.x, div_width), top: get_percentage_count(item.location.y, div_height), width: get_percentage_count(item.com_data.com_width, div_width), height: get_percentage_count(item.com_data.com_height, div_height), 'z-index': custom_list_length > 0 ? custom_list_length - index : 0 }">
-                        <template v-if="item.key == 'text'">
-                            <model-text :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-text>
-                        </template>
-                        <template v-else-if="item.key == 'img'">
-                            <model-image :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-image>
-                        </template>
-                        <template v-else-if="item.key == 'auxiliary-line'">
-                            <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="scale"></model-lines>
-                        </template>
-                        <template v-else-if="item.key == 'icon'">
-                            <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-icon>
-                        </template>
-                        <template v-else-if="item.key == 'panel'">
-                            <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-panel>
-                        </template>
-                    </view>
-                </view>
+                <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale"></dataRendering>
             </view>
         </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, percentage_count } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, percentage_count, isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
-    import modelText from '@/components/diy/modules/custom/model-text.vue';
-    import modelLines from '@/components/diy/modules/custom/model-lines.vue';
-    import modelImage from '@/components/diy/modules/custom/model-image.vue';
-    import modelIcon from '@/components/diy/modules/custom/model-icon.vue';
-    import modelPanel from '@/components/diy/modules/custom/model-panel.vue';
-import { isEmpty } from '../../common/js/common/common';
+    import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
 
     export default {
         components: {
-            modelText,
-            modelLines,
-            modelImage,
-            modelIcon,
-            modelPanel,
+            dataRendering
         },
         props: {
             propValue: {
@@ -172,13 +127,6 @@ import { isEmpty } from '../../common/js/common/common';
                 data_source: '',
             };
         },
-        computed: {
-            get_percentage_count() {
-                return (num, container_size) => {
-                    return num * this.scale + 'px';
-                };
-            },
-        },
         watch: {
             propKey(val) {
                 // 初始化
@@ -239,8 +187,9 @@ import { isEmpty } from '../../common/js/common/common';
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',
                 });
             },
-            url_event(e, index = 0) {
-                if (this.data_source == 'goods') {
+            url_event(e) {
+                if (this.data_source == 'goods' && this.data_source_content_list.length > 0) {
+                    const index = e.currentTarget.dataset.index;
                     const list = this.data_source_content_list[index];
                     if (!isEmpty(list)) {
                         app.globalData.goods_data_cache_handle(list.data.id, list.data);

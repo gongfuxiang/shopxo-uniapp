@@ -17,11 +17,15 @@
                             </block>
                             <block v-else>
                                 <block v-if="!isEmpty(item)">
-                                    <view v-if="!isEmpty(item.new_cover)" :style="img_size">
-                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                    </view>
-                                    <view v-else :style="img_size">
-                                        <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                    <view class="oh re" :class="img_size">
+                                        <view v-if="!isEmpty(item.new_cover)" :style="img_size">
+                                            <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                        </view>
+                                        <view v-else :style="img_size">
+                                            <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                        </view>
+                                        <!-- 角标 -->
+                                        <subscriptIndex :propValue="propValue"></subscriptIndex>
                                     </view>
                                 </block>
                                 <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || is_show('sales_count') || is_show('plugins_view_icon') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
@@ -107,17 +111,21 @@
                     </view>
                 </block>
                 <block v-else>
-                    <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
+                    <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
                         <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
-                            <view class="flex-row" :style="onter_style">
+                            <view class="flex-row wh-auto ht-auto" :style="onter_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-index="index1" :data-split-index="index" :data-value="item.goods_url" @tap.stop="url_event">
                                     <view :class="layout_type" :style="layout_img_style">
                                         <block v-if="!isEmpty(item)">
-                                            <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
-                                                <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                            </view>
-                                            <view v-else :class="'flex-img' + theme">
-                                                <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                            <view class="oh re" :class="'flex-img' + theme">
+                                                <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
+                                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                </view>
+                                                <view v-else :class="'flex-img' + theme">
+                                                    <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                </view>
+                                                <!-- 角标 -->
+                                                <subscriptIndex :propValue="propValue"></subscriptIndex>
                                             </view>
                                         </block>
                                         <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('plugins_view_icon') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
@@ -175,6 +183,7 @@
     const app = getApp();
     import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     import componentBadge from '@/components/badge/badge';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -182,6 +191,7 @@
         components: {
             imageEmpty,
             componentBadge,
+            subscriptIndex
         },
         props: {
             propValue: {
@@ -217,6 +227,7 @@
                 content_padding: '', // 内边距设置
                 theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
+                content_outer_spacing_magin: '', // 商品间距
                 // 最外层不同风格下的显示
                 outer_class: '',
                 onter_style: '',
@@ -230,6 +241,7 @@
                 style_container: '', // 公共样式
                 style_img_container: '',
                 shop_content_list: [],
+                slides_per_group: 1,
                 // 内容样式
                 title_style: '',
                 price_style: '',
@@ -325,6 +337,7 @@
                         content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
                         theme: new_form.theme, // 选择的风格
                         content_outer_spacing: new_style.content_outer_spacing, // 商品间距
+                        content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         onter_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
                         // 不同风格下的样式
                         layout_type: ['0', '4'].includes(new_form.theme) ? 'flex-row wh-auto ht-auto oh' : 'flex-col wh-auto ht-auto oh',
@@ -343,35 +356,47 @@
                         score_style: this.trends_config(new_style, 'score'),
                         button_style: this.trends_config(new_style, 'button', 'buy_button') + button_gradient,
                         simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
-                        shop_content_list: this.get_shop_content_list(new_list, new_form),
+                        shop_content_list: this.get_shop_content_list(new_list, new_form, new_style),
+                        slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.carousel_col : 1,
                         img_size: img_style,
                     });
                 }
             },
-            get_shop_content_list(list, form) {
+            get_shop_content_list(list, form, new_style) {
                 // 深拷贝一下，确保不会出现问题
                 const cloneList = JSON.parse(JSON.stringify(list));
-                // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                if (cloneList.length > 0) {
-                    // 每页显示的数量
-                    const num = form.carousel_col;
+                if (new_style.rolling_fashion != 'translation') {
+                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
+                    if (cloneList.length > 0) {
+                        // 每页显示的数量
+                        const num = form.carousel_col;
+                        // 存储数据显示
+                        let nav_list = [];
+                        // 拆分的数量
+                        const split_num = Math.ceil(cloneList.length / num);
+                        for (let i = 0; i < split_num; i++) {
+                            nav_list.push({
+                                split_list: cloneList.slice(i * num, (i + 1) * num),
+                            });
+                        }
+                        return nav_list;
+                    } else {
+                        // 否则的话，就返回全部的信息
+                        return [
+                            {
+                                split_list: cloneList,
+                            },
+                        ];
+                    }
+                } else {
                     // 存储数据显示
                     let nav_list = [];
-                    // 拆分的数量
-                    const split_num = Math.ceil(cloneList.length / num);
-                    for (let i = 0; i < split_num; i++) {
+                    cloneList.forEach((item) => {
                         nav_list.push({
-                            split_list: cloneList.slice(i * num, (i + 1) * num),
+                            split_list: [item],
                         });
-                    }
+                    });
                     return nav_list;
-                } else {
-                    // 否则的话，就返回全部的信息
-                    return [
-                        {
-                            split_list: cloneList,
-                        },
-                    ];
                 }
             },
             get_text_line(form) {
@@ -388,12 +413,17 @@
                 const radius = form.theme == '6' ? '' : radius_computer(new_style.shop_radius);
                 const gradient = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') : '';
                 let size_style = ``;
-                if (['1', '4'].includes(form.theme)) {
-                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
-                } else if (form.theme == '3') {
-                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
-                } else if (form.theme == '5') {
-                    size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'};`;
+                // 如果不是平移的时候执行
+                if (new_style.rolling_fashion != 'translation') {
+                    if (['1', '4'].includes(form.theme)) {
+                        size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
+                    } else if (form.theme == '3') {
+                        size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
+                    } else if (form.theme == '5') {
+                        size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'};`;
+                    }
+                } else {
+                    size_style = `margin-right: ${ new_style.content_outer_spacing * 2 }rpx;width: 100%;height: 100%;`;
                 }
                 return `${radius} ${size_style} ${ gradient }`;
             },
