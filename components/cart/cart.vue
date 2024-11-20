@@ -585,19 +585,21 @@
                                 plugins_realstore_data: realstore,
                             });
                             // 门店为空、还没有初始门店信息，初始门店信息不在当前列表中则 赋值门店初始信息和门店购物车初始化
-                            if (
-                                realstore == null ||
-                                this.plugins_realstore_info == null ||
-                                !realstore
-                                    .map(function (v) {
-                                        return v.id;
-                                    })
-                                    .includes(this.plugins_realstore_info.id)
-                            ) {
-                                this.setData({
-                                    plugins_realstore_info: realstore == null ? null : realstore[0],
-                                });
-                                this.realstore_cart_data_init();
+                            if(app.globalData.data.is_cart_header_close_realstore != 1) {
+                                if(
+                                    realstore == null ||
+                                    this.plugins_realstore_info == null ||
+                                    !realstore
+                                        .map(function (v) {
+                                            return v.id;
+                                        })
+                                        .includes(this.plugins_realstore_info.id)
+                                ) {
+                                    this.setData({
+                                        plugins_realstore_info: realstore == null ? null : realstore[0],
+                                    });
+                                    this.realstore_cart_data_init();
+                                }
                             }
 
                             // 选择处理
@@ -1079,81 +1081,83 @@
 
             // 猜你喜欢
             get_data_list(is_mandatory) {
-                // 分页是否还有数据
-                if ((is_mandatory || 0) == 0) {
-                    if (this.goods_bottom_line_status == true) {
+                if(app.globalData.data.is_cart_bottom_guess_you_like == 1) {
+                    // 分页是否还有数据
+                    if ((is_mandatory || 0) == 0) {
+                        if (this.goods_bottom_line_status == true) {
+                            return false;
+                        }
+                    }
+
+                    // 是否加载中
+                    if (this.goods_is_loading == 1) {
                         return false;
                     }
-                }
+                    this.setData({
+                        goods_is_loading: 1,
+                    });
 
-                // 是否加载中
-                if (this.goods_is_loading == 1) {
-                    return false;
-                }
-                this.setData({
-                    goods_is_loading: 1,
-                });
+                    // 获取数据
+                    uni.request({
+                        url: app.globalData.get_request_url('datalist', 'search'),
+                        method: 'POST',
+                        data: {
+                            page: this.goods_page,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            if (res.data.code == 0) {
+                                var data = res.data.data;
+                                if (data.data.length > 0) {
+                                    if (this.goods_page <= 1) {
+                                        var temp_data_list = data.data;
+                                    } else {
+                                        var temp_data_list = this.goods_list || [];
+                                        var temp_data = data.data;
+                                        for (var i in temp_data) {
+                                            temp_data_list.push(temp_data[i]);
+                                        }
+                                    }
+                                    this.setData({
+                                        goods_list: temp_data_list,
+                                        random_value: Math.random(),
+                                        goods_total: data.total,
+                                        goods_page_total: data.page_total,
+                                        goods_page: this.goods_page + 1,
+                                        goods_is_loading: 0,
+                                    });
 
-                // 获取数据
-                uni.request({
-                    url: app.globalData.get_request_url('datalist', 'search'),
-                    method: 'POST',
-                    data: {
-                        page: this.goods_page,
-                    },
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data.code == 0) {
-                            var data = res.data.data;
-                            if (data.data.length > 0) {
-                                if (this.goods_page <= 1) {
-                                    var temp_data_list = data.data;
+                                    // 是否还有数据
+                                    this.setData({
+                                        goods_bottom_line_status: this.goods_page > 1 && this.goods_page > this.goods_page_total,
+                                    });
                                 } else {
-                                    var temp_data_list = this.goods_list || [];
-                                    var temp_data = data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
+                                    this.setData({
+                                        goods_total: 0,
+                                        goods_is_loading: 0,
+                                    });
+                                    if (this.goods_page <= 1) {
+                                        this.setData({
+                                            goods_list: [],
+                                            goods_bottom_line_status: false,
+                                        });
                                     }
                                 }
-                                this.setData({
-                                    goods_list: temp_data_list,
-                                    random_value: Math.random(),
-                                    goods_total: data.total,
-                                    goods_page_total: data.page_total,
-                                    goods_page: this.goods_page + 1,
-                                    goods_is_loading: 0,
-                                });
-
-                                // 是否还有数据
-                                this.setData({
-                                    goods_bottom_line_status: this.goods_page > 1 && this.goods_page > this.goods_page_total,
-                                });
                             } else {
                                 this.setData({
-                                    goods_total: 0,
                                     goods_is_loading: 0,
                                 });
-                                if (this.goods_page <= 1) {
-                                    this.setData({
-                                        goods_list: [],
-                                        goods_bottom_line_status: false,
-                                    });
-                                }
+                                app.globalData.showToast(res.data.msg);
                             }
-                        } else {
+                        },
+                        fail: () => {
                             this.setData({
                                 goods_is_loading: 0,
                             });
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        this.setData({
-                            goods_is_loading: 0,
-                        });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
 
             // 猜你喜欢加入购物车回调

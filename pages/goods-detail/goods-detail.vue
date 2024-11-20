@@ -931,12 +931,13 @@
 
                             // 基础数据
                             var plugins_seckill_data = data.plugins_seckill_data || null;
+                            var is_guess_you_like = app.globalData.data.is_goods_detail_bottom_guess_you_like;
                             var upd_data = {
                                 random_value: Math.random(),
                                 data_loading_status: 1,
                                 goods_bottom_nav_status: true,
                                 goods_bottom_opt_nav_status: true,
-                                guess_you_like: data.guess_you_like || [],
+                                guess_you_like: (is_guess_you_like == 1) ? (data.guess_you_like || []) : [],
                                 nav_more_list: data.nav_more_list || [],
                                 buy_button: data.buy_button || null,
                                 buy_left_nav: data.buy_left_nav || [],

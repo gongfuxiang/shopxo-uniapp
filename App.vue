@@ -57,11 +57,23 @@
                 ],
 
                 // 公共配置
+                // 是否多商户店铺id
+                plugins_shop_id: null,
+
+                // 是否多门店门店id
+                plugins_realstore_id: null,
+
                 // 是否使用原生菜单（0否, 1是）
                 is_use_native_tabbar: 0,
 
-                // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
-                is_share_use_image: 1,
+                // 购物车页面顶部导航强制关闭门店（0否, 1是）
+                is_cart_header_close_realstore: 1,
+
+                // 购物车底部猜你喜欢是否显示（0否, 1是）
+                is_cart_bottom_guess_you_like: 1,
+
+                // 购物车底部猜你喜欢是否显示（0否, 1是）
+                is_goods_detail_bottom_guess_you_like: 1,
 
                 // 商品详情页底部导航是否开启购物车功能（0否, 1是）
                 is_goods_bottom_opt_cart: 1,
@@ -71,6 +83,9 @@
 
                 // 全站阻止打开商品详情页面（0否, 1是）
                 is_forbid_to_goods_detail: 0,
+
+                // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
+                is_share_use_image: 1,
 
                 // 开启浮动客服、前提是后台需要开启客服功能（0否, 1是）
                 is_online_service_fixed: 1,
