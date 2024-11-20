@@ -42,7 +42,7 @@
                         <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="form-gorup row padding-horizontal-0 padding-top-0">
                             <view class="form-gorup-title margin-right">{{ buy_datetime_info.title }}</view>
                             <view class="form-gorup-value tr">
-                                <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
+                                <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeType="buy_datetime_info.range_type" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
                                     <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey va-m">{{ buy_datetime_info.placeholder }}</text>
                                     <text v-else class="cr-base va-m">{{ buy_datetime_info.value }}</text>
                                     <view class="dis-inline-block va-m lh-xs">
@@ -609,11 +609,11 @@
                                 var temp_dt = data.buy_datetime_info || {};
                                 var datetime = {
                                     // 是否开启时间选择
-                                    is_select: (temp_dt.is_select || 0) == 1,
+                                    is_select: parseInt(temp_dt.is_select || 0) == 1,
                                     // 是否必选
-                                    required: (temp_dt.required || 0) == 1,
+                                    required: parseInt(temp_dt.required || 0) == 1,
                                     // 状态
-                                    status: data_dt.status || (temp_dt.status || 0) == 1 || false,
+                                    status: data_dt.status || parseInt(temp_dt.status || 0) == 1 || false,
                                     // 默认值
                                     value: data_dt.value || temp_dt.value || '',
                                     // 标题
@@ -624,8 +624,10 @@
                                     time_start: temp_dt.time_start || '',
                                     // 天结束时间
                                     time_end: temp_dt.time_end || '',
+                                    // 随机类型（区间还是固定时间, 0或1）
+                                    range_type: (temp_dt.range_type == undefined || parseInt(temp_dt.range_type || 0) == 1),
                                     // 可选最大天数
-                                    range_day: temp_dt.range_day || 2,
+                                    range_day: parseInt(temp_dt.range_day || 2),
                                     // 禁止选择的时间
                                     disabled: temp_dt.disabled || '',
                                     // 未选择错误提示
@@ -636,14 +638,14 @@
                                 var data_ct = this.buy_extraction_contact_info || {};
                                 var temp_ct = data.buy_extraction_contact_info || {};
                                 var extraction_contact = {
-                                    is_write: (temp_ct.is_write || 0) == 1,
+                                    is_write: parseInt(temp_ct.is_write || 0) == 1,
                                     // 状态
                                     status: data_ct.status || (temp_ct.status || 0) == 1 || false,
                                     // 默认值、姓名和电话
                                     name: data_ct.name || temp_ct.name || '',
                                     tel: data_ct.tel || temp_ct.tel || '',
                                     // 是否必选
-                                    required: (temp_ct.required || 0) == 1,
+                                    required: parseInt(temp_ct.required || 0) == 1,
                                     // 未选择错误提示
                                     error_msg: temp_ct.error_msg || this.$t('buy.buy.8fghje'),
                                 };
@@ -1171,7 +1173,7 @@
                 var temp = this.buy_datetime_info;
                 temp['status'] = !temp.status;
                 if (e != 'open' && e != 'close') {
-                    temp['value'] = ((e || null) != null ? e._date : '') || '';
+                    temp['value'] = ((e || null) != null ? e.value : '') || '';
                 }
                 this.setData({
                     buy_datetime_info: temp,
