@@ -165,6 +165,7 @@
 		"plugins-invoice-invoice-detail": "Invoice details",
 		"plugins-invoice-invoice-saveinfo": "Invoice editing",
 		"plugins-invoice-order": "Order invoicing",
+        "plugins-invoice-recharge": "Recharge invoice",
 		"plugins-signin-user": "Sign in",
 		"plugins-signin-detail": "Sign in",
 		"plugins-signin-user-qrcode-detail": "Sign in code details",
@@ -865,7 +866,6 @@
 			"330m76": "Source terminal",
 			"p3scy0": "The avatar address is incorrect",
 			"o411h6": "Merge invoicing",
-			"i52cw1": "Total order amount",
 			"15k32o": "Please select data first",
 			"3fr155": "The element parameter ID is incorrect",
 			"1i873j": "pay",
@@ -1126,6 +1126,7 @@
 	"invoice": {
 		"invoice": {
 			"p3dmd2": "Order invoicing",
+            "bh8yt3": "Recharge invoice",
 			"l3832z": "Business type",
 			"hoenw8": "Application type",
 			"j04kjc": "Invoice type",
@@ -1140,7 +1141,6 @@
 			"4tu3v3": "You can click on the invoice name and copy it, then go to the browser to open the address and download the invoice.",
 			"rrfex6": "state",
 			"p73963": "Invoice content",
-			"e5n838": "Tax identification number",
 			"41qbu6": "Name of the bank where the enterprise opens the account",
 			"3a9459": "Enterprise account opening",
 			"2g7t23": "Enterprise contact phone number",
@@ -1149,7 +1149,6 @@
 			"f2222p": "Recipient's phone number",
 			"q8l3zj": "Recipient address",
 			"rpdwd3": "Reason for rejection",
-			"dt77rq": "User notes",
 			"2000a0": "Express name"
 		}
 	},

@@ -19,7 +19,7 @@
                             <image :src="item.goods.images" mode="aspectFill" class="radius goods-images fl"></image>
                             <view class="goods-title multi-text fr">{{item.goods.title}}</view>
                         </view>
-                        <component-panel-content :propData="item" :propDataField="content_field_list" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
+                        <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>
@@ -129,7 +129,7 @@
                 form_submit_disabled_status: false,
                 nav_status_list: [],
                 nav_status_index: 0,
-                content_field_list: [],
+                field_list: [],
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
@@ -225,7 +225,7 @@
                                 payment_list: data.payment_list || [],
                                 default_payment_id: data.default_payment_id || 0,
                                 nav_status_list: data.nav_status_list || [],
-                                content_field_list: data.content_field_list || [],
+                                field_list: data.field_list || [],
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
                                 data_page: 1,

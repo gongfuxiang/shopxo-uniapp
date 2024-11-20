@@ -167,6 +167,7 @@
 		"plugins-invoice-invoice-detail": "发票详情",
 		"plugins-invoice-invoice-saveinfo": "开票编辑",
 		"plugins-invoice-order": "订单开票",
+        "plugins-invoice-recharge": "充值开票",
 		"plugins-signin-user": "签到",
 		"plugins-signin-detail": "签到",
 		"plugins-signin-user-qrcode-detail": "签到码详情",
@@ -855,7 +856,6 @@
 			"330m76": "来源终端",
 			"p3scy0": "头像地址有误",
 			"o411h6": "合并开票",
-			"i52cw1": "订单总额",
 			"15k32o": "请先选择数据",
 			"3fr155": "元素参数id有误",
 			"1i873j": "支付",
@@ -1114,6 +1114,7 @@
 	"invoice": {
 		"invoice": {
 			"p3dmd2": "订单开票",
+            "bh8yt3": "充值开票",
 			"l3832z": "业务类型",
 			"hoenw8": "申请类型",
 			"j04kjc": "发票类型",
@@ -1128,7 +1129,6 @@
 			"4tu3v3": "可点击发票名称复制后、到浏览器打开地址下载发票。",
 			"rrfex6": "状态",
 			"p73963": "发票内容",
-			"e5n838": "纳税识别号",
 			"41qbu6": "企业开户行名称",
 			"3a9459": "企业开户帐号",
 			"2g7t23": "企业联系电话",
@@ -1137,7 +1137,6 @@
 			"f2222p": "收件人电话",
 			"q8l3zj": "收件人地址",
 			"rpdwd3": "拒绝原因",
-			"dt77rq": "用户备注",
 			"2000a0": "快递名称"
 		}
 	},

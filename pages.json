@@ -973,6 +973,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "recharge/recharge",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         },

@@ -3,7 +3,7 @@
         <!-- 简洁的数据，一般列表展示使用 -->
         <view v-if="propIsTerse" class="content margin-top cp">
             <block v-if="data != null && data_field.length > 0">
-                <view v-for="(item, index) in data_field" :key="index">
+                <block v-for="(item, index) in data_field" :key="index">
                     <view v-if="(item.is_hide || 0) == 0 " class="single-text margin-top-xs">
                         <text class="cr-grey margin-right-xl">{{ item.name }}</text>
                         <text class="cr-base">
@@ -16,8 +16,8 @@
                             <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
                         </view>
                     </view>
-                </view>
-                <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap="item_more_event" class="margin-top-sm tc">
+                </block>
+                <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
                     <text class="cr-grey-c margin-right-sm">{{$t('common.view_more')}}</text>
                     <iconfont :name="'icon-arrow-'+(more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                 </view>
@@ -30,8 +30,8 @@
                 <view v-if="(propTitle || null) != null" class="br-b padding-bottom-main fw-b text-size">{{propTitle}}</view>
                 <view class="panel-content oh">
                     <block v-if="data != null && data_field.length > 0">
-                        <view v-for="(item, index) in data_field" :key="index">
-                            <view v-if="(item.is_hide || 0) == 0 " class="item br-b-dashed oh padding-vertical-main">
+                        <block v-for="(item, index) in data_field" :key="index">
+                            <view v-if="(item.is_hide || 0) == 0 " class="item br-b-f5 oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <block v-if="item.type == 'images'">
@@ -43,7 +43,7 @@
                                     </view>
                                 </view>
                             </view>
-                        </view>
+                        </block>
                         <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap="item_more_event" class="margin-top-sm tc">
                             <text class="cr-grey-c margin-right-sm">{{$t('common.view_more')}}</text>
                             <iconfont :name="'icon-arrow-'+(more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
@@ -91,6 +91,16 @@
                 type: Number,
                 default: 0,
             },
+            // 指定字段
+            propAppointField: {
+                type: String,
+                default: '',
+            },
+            // 排除字段
+            propExcludeField: {
+                type: String,
+                default: '',
+            },
             // 无数据提示状态
             propNoDataStatus: {
                 type: [Number, String],
@@ -129,9 +139,16 @@
         methods: {
             // 数据字段处理
             data_field_handle(data) {
-                var temp_data = data;
-                for(var i in temp_data) {
-                    temp_data[i]['is_hide'] = (temp_data[i]['is_hide'] || 0) == 0 ? ((i >= this.propIsItemShowMax && this.propIsItemShowMax > 0) ? 1 : 0) : 0;
+                var appoint = (this.propAppointField || null) == null ? [] : this.propAppointField.split(',');
+                var exclude = (this.propExcludeField || null) == null ? [] : this.propExcludeField.split(',');
+                var temp_data = [];
+                var index = 0;
+                for(var i in data) {
+                    if((exclude.length == 0 && appoint.length > 0 && appoint.indexOf(data[i]['field']) != -1) || (appoint.length == 0 && (exclude.length == 0 || exclude.indexOf(data[i]['field']) == -1))) {
+                        data[i]['is_hide'] = (data[i]['is_hide'] || 0) == 0 ? ((index >= this.propIsItemShowMax && this.propIsItemShowMax > 0) ? 1 : 0) : 0;
+                        temp_data.push(data[i]);
+                        index++;
+                    }
                 }
                 this.setData({
                     data_field: temp_data

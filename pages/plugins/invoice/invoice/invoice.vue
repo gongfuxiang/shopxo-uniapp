@@ -20,13 +20,7 @@
                             <text class="cr-black" :class="item.status == 0 || item.status == 1 ? 'cr-black' : item.status == 2 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
                         </view>
                         <view :data-value="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
-                            <view v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                    <text class="cr-black">{{ item[fv.field] }}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                </view>
-                            </view>
+                            <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
                         </view>
                         <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
                         <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
@@ -44,9 +38,10 @@
                 </view>
 
                 <!-- 添加发票 -->
-                <view class="bottom-fixed" :style="bottom_fixed_style">
-                    <view class="bottom-line-exclude">
-                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
+                <view v-if="(data_base.is_invoice_order || 0) == 1 || (data_base.is_invoice_recharge || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
+                    <view class="bottom-line-exclude flex-row gap-10">
+                        <button v-if="(data_base.is_invoice_order || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
+                        <button v-if="(data_base.is_invoice_recharge || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/recharge/recharge" @tap="url_event">{{$t('invoice.invoice.bh8yt3')}}</button>
                     </view>
                 </view>
             </view>
@@ -61,11 +56,13 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentPanelContent from "@/components/panel-content/panel-content";
 
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                field_list: [],
                 data_base: null,
                 data_list: [],
                 data_total: 0,
@@ -79,13 +76,6 @@
                 params: null,
                 nav_status_list: [],
                 nav_status_index: 0,
-                content_list: [
-                    { name: this.$t('invoice.invoice.l3832z'), field: 'business_type_name' },
-                    { name: this.$t('invoice.invoice.hoenw8'), field: 'apply_type_name' },
-                    { name: this.$t('invoice.invoice.j04kjc'), field: 'invoice_type_name' },
-                    { name: this.$t('invoice.invoice.fvuc4p'), field: 'total_price' },
-                    { name: this.$t('invoice.invoice.y724c7'), field: 'invoice_title' },
-                ],
             };
         },
 
@@ -93,6 +83,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentPanelContent
         },
 
         onLoad(params) {
@@ -250,6 +241,7 @@
                             }
                     
                             this.setData({
+                                field_list: data.field_list || [],
                                 data_list: temp_data_list,
                                 data_total: data.total,
                                 data_page_total: data.page_total,
