@@ -36,7 +36,7 @@
                                 <template v-else>
                                     <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
                                 </template>
-                                <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
+                                <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
                                     <template v-if="item.data_style.indicator_style == 'num'">
                                         <view :style="item.data_style.indicator_styles" class="dot-item">
                                             <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text
@@ -83,7 +83,7 @@
                             <template v-else>
                                 <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
                             </template>
-                            <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="{ 'dot-center': item.data_style.indicator_location == 'center', 'dot-right': item.data_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="{ bottom: item.data_style.indicator_bottom * 2 + 'rpx' }">
+                            <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
                                 <template v-if="item.data_style.indicator_style == 'num'">
                                     <view :style="item.data_style.indicator_styles" class="dot-item">
                                         <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text>
@@ -107,7 +107,7 @@
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
     import customIndex from '@/components/diy/modules/data-magic/custom';
     import videoIndex from '@/components/diy/modules/data-magic/video';
-    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer } from '@/common/js/common/common.js';
+    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer, get_indicator_location_style, get_indicator_style } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
@@ -208,7 +208,8 @@
                     const data_style = item.data_style;
                     item.actived_index = 0;
                     // 指示器样式
-                    data_style.indicator_styles = this.indicator_style(data_style);
+                    data_style.indicator_styles = get_indicator_style(data_style);
+                    data_style.indicator_location_style = get_indicator_location_style(data_style);
                     data_style.background_style = gradient_computer(data_style);
                     data_style.background_img_style = background_computer(data_style);
                     let fit = '';
@@ -342,25 +343,6 @@
             },
             text_style(typeface, size, color) {
                 return `font-weight:${typeface}; font-size: ${size * 2}rpx; color: ${color};`;
-            },
-            // 指示器的样式
-            indicator_style(item) {
-                let styles = '';
-                if (!isEmpty(item.indicator_radius)) {
-                    styles += radius_computer(item.indicator_radius);
-                }
-                const size = item.indicator_size || 5;
-                if (item.indicator_style == 'num') {
-                    styles += `color: ${item.color || '#DDDDDD'};`;
-                    styles += `font-size: ${size * 2}rpx;`;
-                } else if (item.indicator_style == 'elliptic') {
-                    styles += `background: ${item.color || '#DDDDDD'};`;
-                    styles += `width: ${size * 6}rpx; height: ${size * 2}rpx;`;
-                } else {
-                    styles += `background: ${item.color || '#DDDDDD'};`;
-                    styles += `width: ${size * 2}rpx; height: ${size * 2}rpx;`;
-                }
-                return styles;
             },
             carousel_change(actived_index, index) {
                 if (this.data_magic_list[index]) {

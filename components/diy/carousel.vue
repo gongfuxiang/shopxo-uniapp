@@ -49,7 +49,7 @@
                     </swiper-item>
                 </block>
             </swiper>
-            <view v-if="new_style.is_show == '1'" :class="{ 'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
+            <view v-if="new_style.is_show == '1'" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
                 <template v-if="new_style.indicator_style == 'num'">
                     <view :style="indicator_style" class="dot-item">
                         <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
@@ -66,7 +66,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer, get_indicator_location_style, get_indicator_style } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -173,7 +173,8 @@
                     style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 公共样式显示
                     style_img_container: this.propIsCommon ? common_img_computer(common_style, this.propIndex) : '', // 公共样式显示
                     img_style: radius_computer(new_style), // 图片的设置
-                    indicator_style: this.get_indicator_style(new_style), // 指示器的样式
+                    indicator_style: get_indicator_style(new_style), // 指示器的样式
+                    indicator_location_style: get_indicator_location_style(new_style),
                     dot_style: `bottom: ${ new_style.indicator_bottom * scale }px;`, // 指示器位置
                     img_fit: fit, // 图片风格 默认为aspectFill
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑   
@@ -205,27 +206,6 @@
                 //         hackReset: true,
                 //     });
                 // });
-            },
-            get_indicator_style(new_style) {
-                const { indicator_radius, indicator_style, indicator_size, color } = new_style;
-                let styles = '';
-                if (!isEmpty(indicator_radius)) {
-                    styles += radius_computer(indicator_radius);
-                }
-                // 数字类型的指示器
-                if (indicator_style == 'num') {
-                    styles += `color: ${color || '#DDDDDD'};`;
-                    styles += `font-size: ${indicator_size * 2}rpx;`;
-                } else if (indicator_style == 'elliptic') {
-                    // 宽的指示器，按照宽高1:3 来计算
-                    styles += `background: ${color || '#DDDDDD'};`;
-                    styles += `width: ${indicator_size * 6}rpx; height: ${indicator_size * 2}rpx;`;
-                } else {
-                    // 圆点指示器
-                    styles += `background: ${color || '#DDDDDD'};`;
-                    styles += `width: ${indicator_size * 2}rpx; height: ${indicator_size * 2}rpx;`;
-                }
-                return styles;
             },
             get_seat_list(form) {
                 if (form.carousel_list.length > 3) {

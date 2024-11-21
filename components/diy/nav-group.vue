@@ -113,6 +113,7 @@
                     img_style: radius_computer(new_style), // 图片的设置
                     text_style: `font-size: ${new_style.title_size * 2 || 24}rpx; color: ${new_style.title_color || '#000'};`, // 标题的样式
                     indicator_style: get_indicator_style(new_style), // 指示器的样式
+                    indicator_location_style: get_indicator_location_style(new_style), // 指示器位置处理
                     actived_color: new_style.actived_color || '#2A94FF', // 轮播图显示样式
                     slides_per_group: group, // 每个轮播图显示的个数
                     group_width: group_width, // 每个导航所占位置
@@ -121,7 +122,6 @@
                     img_size: 'width:' + (new_style.img_size || 0) * 2 + 'rpx;height:' + (new_style.img_size || 0) * 2 + 'rpx;', // 图片大小
                     nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                     nav_content_list: this.get_nav_content_list(new_content, new_style),
-                    indicator_location_style: get_indicator_location_style(new_style),
                 });
                 setTimeout(() => {
                     const query = uni.createSelectorQuery().in(this);

@@ -505,7 +505,7 @@
             style_config(typeface, size, color, type, new_style) {
                 let style = `font-weight:${typeface}; font-size: ${size * 2}rpx;`;
                 if (type == 'gradient') {
-                    style += gradient_handle(new_style.shop_button_color, '180deg') + `color: ${color};`;
+                    style += gradient_handle(new_style.shop_button_color, '180deg');
                 } else if (type == 'title') {
                     style += `line-height: ${size > 0 ? (size + 3) * 2 : 0}rpx;height: ${size > 0 ? (size + 3) * 4 : 0}rpx;color: ${color};`;
                 } else if (type == 'desc') {
