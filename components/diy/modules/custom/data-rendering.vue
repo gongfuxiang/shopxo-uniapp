@@ -1,7 +1,6 @@
 <template>
     <view class="wh-auto pr" :style="'height:' + propDataHeight * propScale + 'px;'">
-        <view v-for="(item, index) in propCustomList" :key="item.id" class="main-content"
-            :style="{ left: get_percentage_count(item.location.x), top: get_percentage_count(item.location.y), width: get_percentage_count(item.com_data.com_width), height: get_percentage_count(item.com_data.com_height), 'z-index': propCustomList.length - 1 > 0 ? (propCustomList.length - 1) - index : 0 }">
+        <view v-for="(item, index) in propCustomList" :key="item.id" class="main-content" :style="{ left: get_percentage_count(item.location.x), top: get_percentage_count(item.location.y), width: get_percentage_count(item.com_data.com_width), height: get_percentage_count(item.com_data.com_height), 'z-index': propCustomList.length - 1 > 0 ? (propCustomList.length - 1) - index : 0 }">
             <template v-if="item.key == 'text'">
                 <model-text :propKey="item.id" :propValue="item.com_data" :propScale="propScale" :propSourceList="propSourceList" :propSourceType="propSourceType" :data-index="propDataIndex" @url_event="url_event"></model-text>
             </template>
@@ -64,7 +63,11 @@ export default {
         propDataIndex: {
             type: Number,
             default: 1,
-        }
+        },
+        propDataSplitIndex: {
+            type: Number,
+            default: 1,
+        },
     },
     data() {
         return {};
@@ -78,7 +81,7 @@ export default {
     },
     methods: {
         url_event(e) {
-            this.$emit('url_event', e);
+            this.$emit('url_event', e, this.propDataIndex, this.propDataSplitIndex);
         }
     },
 };

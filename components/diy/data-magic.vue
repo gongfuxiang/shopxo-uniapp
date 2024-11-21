@@ -21,17 +21,17 @@
                                             <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
                                         <view class="w h">
-                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'images'">
                                     <div class="w h" :style="item.data_style.chunk_padding_data">
-                                        <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                        <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                     </div>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'custom'">
-                                    <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing"></customIndex>
+                                    <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
                                 </template>
                                 <template v-else>
                                     <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
@@ -68,17 +68,17 @@
                                         <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
                                     <view class="w h">
-                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                     </view>
                                 </view>
                             </template>
                             <template v-else-if="item.data_content.data_type == 'images'">
                                 <div class="w h" :style="item.data_style.chunk_padding_data">
-                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" @onCarouselChange="carousel_change($event, index)"></magic-carousel>
+                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                 </div>
                             </template>
                             <template v-else-if="item.data_content.data_type == 'custom'">
-                                <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing"></customIndex>
+                                <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
                             </template>
                             <template v-else>
                                 <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
@@ -193,7 +193,7 @@
                     spacing: new_style.image_spacing + 'rpx',
                     content_radius: radius_computer(new_style.data_radius),
                     // content_img_radius: radius_computer(new_style.img_radius),
-                    data_magic_list: this.get_data_magic_list(new_form.data_magic_list),
+                    data_magic_list: this.get_data_magic_list(new_form.data_magic_list, new_style),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     magic_scale: width / 390,
@@ -202,7 +202,7 @@
                     container_size: container_height * 2 + 'rpx',
                 });
             },
-            get_data_magic_list(data) {
+            get_data_magic_list(data, new_style) {
                 data.forEach((item) => {
                     const data_content = item.data_content;
                     const data_style = item.data_style;
@@ -231,12 +231,35 @@
                     data_style.subtitle_style = this.trends_config(data_style, 'subtitle');
 
                     if (data_content.data_type == 'goods') {
-                        data_content.list = this.commodity_list(data_content.goods_list, data_content.goods_num);
+                        data_content.list = this.commodity_list(data_content.goods_list, data_content.goods_num, data_content, data_style);
+                    } else if (data_content.data_type == 'custom' && ['1', '2'].includes(data_content.data_source_direction)) {
+                        // 是自定义并且是轮播状态的时候，添加数据
+                        const list = this.data_source_content_list(data_content);
+                        const carousel_col = data_content?.data_source_carousel_col || 1;
+                        const num = new_style.rolling_fashion == 'translation' ? list.length : Math.ceil(list.length / carousel_col);
+                        data_content.list = Array(num);
                     } else {
                         data_content.list = data_content.images_list;
                     }
                 });
                 return data;
+            },
+            // 数据来源的内容
+            data_source_content_list(data_content){
+                if (['goods', 'article', 'brand'].includes(data_content.data_source)) {
+                    if (data_content.data_source_content.data_type == '0') {
+                        return data_content.data_source_content.data_list;
+                    } else {
+                        return data_content.data_source_content.data_auto_list.map((item) => ({
+                            id: Math.random(),
+                            new_cover: [],
+                            new_title: '',
+                            data: item,
+                        }));
+                    }
+                } else {
+                    return data_content.data_source_content.data_list;
+                }
             },
             /*
              ** 组装产品的数据
@@ -244,7 +267,7 @@
              ** @param {Number} num 显示数量
              ** @return {Array}
              */
-            commodity_list(list, num) {
+            commodity_list(list, num, data_content, data_style) {
                 if (list.length > 0) {
                     // 深拷贝一下，确保不会出现问题
                     const goods_list = JSON.parse(JSON.stringify(list)).map((item) => ({
@@ -254,15 +277,42 @@
                     }));
                     // 存储数据显示
                     let nav_list = [];
-                    // 拆分的数量
-                    const split_num = Math.ceil(goods_list.length / num);
-                    for (let i = 0; i < split_num; i++) {
-                        nav_list.push({ split_list: goods_list.slice(i * num, (i + 1) * num) });
+                    // 如果是滑动，需要根据每行显示的个数来区分来拆分数据  translation 表示的是平移
+                    if (data_style.rolling_fashion != 'translation') {
+                        // 拆分的数量
+                        const split_num = Math.ceil(goods_list.length / num);
+                        for (let i = 0; i < split_num; i++) {
+                            nav_list.push({ split_list: goods_list.slice(i * num, (i + 1) * num) });
+                        }
+                        return nav_list;
+                    } else {
+                        return this.rotation_calculation(goods_list, num, data_content, data_style);
                     }
-                    return nav_list;
                 } else {
                     return [];
                 }
+            },
+            rotation_calculation(list, num, data_content, data_style)  {
+                // 存储数据显示
+                let nav_list = [];
+                const goods_outerflex = data_content.goods_outerflex;
+                const rotation_direction = data_style.rotation_direction;
+                // 如果是商品是横排的，轮播也是横排的，就不对商品进行拆分/如果商品是竖排的，轮播也是竖排的，不对商品进行拆分
+                if ((goods_outerflex == 'row' && rotation_direction == 'horizontal') || (goods_outerflex == 'col' && rotation_direction == 'vertical')) {
+                    list.forEach((item) => {
+                        nav_list.push({
+                            split_list: [item],
+                        });
+                    });
+                } else {
+                    // 拆分的数量
+                    const split_num = Math.ceil(list.length / num);
+                    for (let i = 0; i < split_num; i++) {
+                        nav_list.push({ split_list: list.slice(i * num, (i + 1) * num) });
+                    }
+                    return nav_list;
+                }
+                return nav_list;
             },
             getSelectedWidth(item) {
                 return (item.end.x - item.start.x + 1) * this.cubeCellWidth;
@@ -312,9 +362,9 @@
                 }
                 return styles;
             },
-            carousel_change(e, key) {
-                if (this.data_magic_list[key]) {
-                    this.data_magic_list[key].actived_index = e.target.current;
+            carousel_change(actived_index, index) {
+                if (this.data_magic_list[index]) {
+                    this.data_magic_list[index].actived_index = actived_index;
                 }
             },
         },

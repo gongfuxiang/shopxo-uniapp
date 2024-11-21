@@ -250,19 +250,19 @@
                 }
             },
             slideChange(e) {
-                let actived_index = e.target.current;
-                if (e.target.current > this.form.carousel_list.length - 1) {
+                let actived_index = e.detail.current;
+                if (e.detail.current > this.form.carousel_list.length - 1) {
                     const seat_length = this.seat_list.length;
-                    if (seat_length == 2 && e.target.current == 3) {
+                    if (seat_length == 2 && e.detail.current == 3) {
                         actived_index = 1;
                     } else if (seat_length == 3) {
                         actived_index = 0;
                     } else {
-                        actived_index = e.target.current - this.seat_list.length;
+                        actived_index = e.detail.current - this.seat_list.length;
                     }
                 }
                 this.setData({
-                    animationData: e.target.current,
+                    animationData: e.detail.current,
                     actived_index: actived_index,
                 });
             },

@@ -62,13 +62,14 @@
         methods: {
             init() {
                 let url = '';
-                if (!isEmpty(this.propValue.icon_link)) {
-                    url = this.propValue.icon_link?.page || '';
+                if (!isEmpty(this.propValue.link)) {
+                    url = this.propValue.link?.page || '';
                 } else if (!isEmpty(this.propSourceList.data)) {
                     url = this.propSourceList.data[this.propValue?.data_source_link] || '';
                 } else {
                     url = this.propSourceList[this.propValue?.data_source_link] || '';
                 }
+                console.log('url', url);
                 this.setData({
                     form: this.propValue,
                     img: this.get_img_url(this.propValue),

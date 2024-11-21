@@ -4,20 +4,19 @@
             <view v-if="data_source_content_list.length > 0 && form.data_source_direction == '0'">
                 <view v-for="(item, index) in data_source_content_list" :key="index">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container">
-                        <view class="custom-container wh-auto ht-auto" :style="style_chunk_img_container">
-                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item2" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index1" @url_event="url_event"></dataRendering>
+                        <view class="wh-auto ht-auto" :style="style_chunk_img_container">
+                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
                         </view>
                     </view>
-                    
                 </view>
             </view>
             <div v-else-if="data_source_content_list.length > 0 && ['1', '2'].includes(form.data_source_direction)" class="oh pr">
-                <swiper class="w flex" circular="true" :vertical="form.data_source_direction != '2'"  :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+                <swiper class="w flex" circular="true" :vertical="form.data_source_direction != '2'"  :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                     <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
                         <view :class="form.data_source_direction != '2' ? '' : 'flex-row'">
                             <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width">
                                 <div class="w h" :style="style_chunk_img_container">
-                                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index1" @url_event="url_event"></dataRendering>
+                                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
                                 </div>
                             </view>
                         </view>
@@ -37,8 +36,8 @@
             </div>
             <view v-else>
                 <view :style="style_chunk_container">
-                    <view class="custom-container wh-auto ht-auto" :style="style_chunk_img_container">
-                        <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale"></dataRendering>
+                    <view class="wh-auto ht-auto" :style="style_chunk_img_container">
+                        <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                     </view>
                 </view>
             </view>
@@ -48,8 +47,8 @@
 
 <script>
     import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
-    const app = getApp();
     import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
+    const app = getApp();
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
 
@@ -167,7 +166,7 @@
                 // 指示器样式
                 indicator_location_style: '',
                 indicator_style: '',
-                slides_per_group: 1,
+                slides_per_view: 1,
             };
         },
         watch: {
@@ -215,7 +214,7 @@
                 } else {
                     list = new_form.data_source_content.data_list;
                 }   
-                const new_list = this.get_list(list, new_form, new_style);
+                const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 // 判断是平移还是整屏滚动
@@ -247,9 +246,8 @@
                     indicator_location_style: get_indicator_location_style(new_style),
                     swiper_height: swiper_height,
                     swiper_width: swiper_width,
-                    slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.data_source_carousel_col : 1,
+                    slides_per_view: new_style.rolling_fashion == 'translation' ? new_form.data_source_carousel_col : 1,
                 });
-                console.log(this.data_source_content_list);
             },
             get_list(list, form, new_style) {
                 // 深拷贝一下，确保不会出现问题
@@ -290,15 +288,18 @@
             },
             slideChange(e) {
                 this.setData({
-                    actived_index: e.target.current,
+                    actived_index: e.detail.current,
                 });
             },
-            url_event(e) {
+            url_event(e, index, split_index) {
                 if (this.data_source == 'goods' && this.data_source_content_list.length > 0) {
-                    const index = e.currentTarget.dataset.index;
                     const list = this.data_source_content_list[index];
-                    if (!isEmpty(list)) {
-                        app.globalData.goods_data_cache_handle(list.data.id, list.data);
+                    if (!isEmpty(list) && !isEmpty(list.split_list[split_index])) {
+                        const new_list = list.split_list[split_index];
+                        if (!isEmpty(new_list)) {
+                            // 缓存商品数据
+                            app.globalData.goods_data_cache_handle(new_list.data.id, new_list.data);
+                        }
                     }
                 }
                 app.globalData.url_event(e);

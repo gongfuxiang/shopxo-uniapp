@@ -1,53 +1,31 @@
 <template>
-    <view v-if="data_source_content_list.length > 0">
-        <view v-for="(item1, index1) in data_source_content_list" :key="index1" class="oh" :style="style_container">
-            <view class="custom-container wh-auto ht-auto oh" :style="style_img_container">
-                <view class="wh-auto pr oh" :style="'height:' + form.height * scale + 'px;'">
-                    <view v-for="(item, index) in form.custom_list" :key="item.id" class="main-content"
-                        :style="{ left: get_percentage_count(item.location.x), top: get_percentage_count(item.location.y), width: get_percentage_count(item.com_data.com_width), height: get_percentage_count(item.com_data.com_height), 'z-index': custom_list_length > 0 ? custom_list_length - index : 0 }">
-                        <template v-if="item.key == 'text'">
-                            <model-text :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-text>
-                        </template>
-                        <template v-else-if="item.key == 'img'">
-                            <model-image :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-image>
-                        </template>
-                        <template v-else-if="item.key == 'auxiliary-line'">
-                            <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source"></model-lines>
-                        </template>
-                        <template v-else-if="item.key == 'icon'">
-                            <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-icon>
-                        </template>
-                        <template v-else-if="item.key == 'panel'">
-                            <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="scale" :propSourceList="item1" :propSourceType="data_source" @url_event="url_event"></model-panel>
-                        </template>
-                    </view>
+    <view v-if="data_source_content_list.length > 0 && form.data_source_direction == '0'">
+        <view v-for="(item, index) in data_source_content_list" :key="index">
+            <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container">
+                <view class="custom-container wh-auto ht-auto" :style="style_img_container">
+                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
                 </view>
             </view>
+            
         </view>
     </view>
-    <view v-else>
-        <view class="oh" :style="style_container">
-            <view class="custom-container wh-auto ht-auto oh" :style="style_img_container">
-                <view class="wh-auto pr oh" :style="'height:' + form.height * scale + 'px;'">
-                    <view v-for="(item, index) in form.custom_list" :key="item.id" class="main-content"
-                        :style="{ left: get_percentage_count(item.location.x), top: get_percentage_count(item.location.y), width: get_percentage_count(item.com_data.com_width), height: get_percentage_count(item.com_data.com_height), 'z-index': custom_list_length > 0 ? custom_list_length - index : 0 }">
-                        <template v-if="item.key == 'text'">
-                            <model-text :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-text>
-                        </template>
-                        <template v-else-if="item.key == 'img'">
-                            <model-image :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-image>
-                        </template>
-                        <template v-else-if="item.key == 'auxiliary-line'">
-                            <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="scale"></model-lines>
-                        </template>
-                        <template v-else-if="item.key == 'icon'">
-                            <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-icon>
-                        </template>
-                        <template v-else-if="item.key == 'panel'">
-                            <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="scale" @url_event="url_event"></model-panel>
-                        </template>
+    <div v-else-if="data_source_content_list.length > 0 && ['1', '2'].includes(form.data_source_direction)" class="oh pr">
+        <swiper class="w flex" circular="true" :vertical="form.data_source_direction != '2'"  :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+            <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
+                <view :class="form.data_source_direction != '2' ? '' : 'flex-row'">
+                    <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container + swiper_width">
+                        <div class="w h" :style="style_img_container">
+                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
+                        </div>
                     </view>
                 </view>
+            </swiper-item>
+        </swiper>
+    </div>
+    <view v-else>
+        <view :style="style_container">
+            <view class="custom-container wh-auto ht-auto" :style="style_img_container">
+                <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
             </view>
         </view>
     </view>
@@ -55,20 +33,12 @@
 
 <script>
 import { padding_computer, isEmpty, margin_computer, gradient_computer, radius_computer, background_computer } from '@/common/js/common/common.js';
+import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
 const app = getApp();
-import modelText from '@/components/diy/modules/custom/model-text.vue';
-import modelLines from '@/components/diy/modules/custom/model-lines.vue';
-import modelImage from '@/components/diy/modules/custom/model-image.vue';
-import modelIcon from '@/components/diy/modules/custom/model-icon.vue';
-import modelPanel from '@/components/diy/modules/custom/model-panel.vue';
 
 export default {
     components: {
-        modelText,
-        modelLines,
-        modelImage,
-        modelIcon,
-        modelPanel,
+        dataRendering
     },
     props: {
         propValue: {
@@ -84,7 +54,11 @@ export default {
         propDataSpacing: {
             type: Number,
             default: 0,
-        }
+        },
+        propDataIndex: {
+            type: Number,
+            default: 0,
+        },
     },
     data() {
         return {
@@ -98,6 +72,11 @@ export default {
             custom_list_length: 0,
             data_source_content_list: [],
             data_source: '',
+            // 一屏显示的数量
+            slides_per_view: 1,
+            // 轮播高度
+            swiper_height: 0,
+            swiper_width: 'width: 100%;',
         };
     },
     computed: {
@@ -124,10 +103,6 @@ export default {
                     background_img: data_background_img,
                     background_img_style: data_background_img_style,
                 }
-                // 计算宽度
-                const { padding_left, padding_right } = data_chunk_padding;
-                const { margin_left, margin_right } = data_chunk_margin;
-                const width = new_form.width - padding_left - padding_right - margin_left - margin_right - (this.propDataSpacing / 2);
                 // 数据来源的内容
                 let list = [];
                 if (['goods', 'article', 'brand'].includes(new_form.data_source)) {
@@ -144,21 +119,90 @@ export default {
                 } else {
                     list = new_form.data_source_content.data_list;
                 }
+                const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                // 计算宽度
+                const { padding_left, padding_right, padding_top, padding_bottom } = data_chunk_padding;
+                const { margin_left, margin_right, margin_bottom, margin_top } = data_chunk_margin;
+                const width = new_form.width - padding_left - padding_right - margin_left - margin_right - (this.propDataSpacing / 2);
+                const new_scale = (width / new_form.width) * this.propMagicScale;
+                // 判断是平移还是整屏滚动
+                let swiper_height = 0;
+                // 轮播图高度控制
+                if (new_form.data_source_direction == '2') {
+                    swiper_height = new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top;
+                } else {
+                    swiper_height = (new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top) * new_form.data_source_carousel_col;
+                }
+                // 横向的时候，根据选择的行数和每行显示的个数来区分具体是显示多少个
+                const swiper_width = (new_form.data_source_direction == '2' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / new_form.data_source_carousel_col }%;`: 'width: 100%;';
                 this.setData({
                     propKey: Math.random(),
                     form: new_form,
                     new_style: new_style,
                     div_width: width,
-                    scale: (width / new_form.width) * this.propMagicScale,
+                    scale: new_scale,
                     custom_list_length: new_form.custom_list.length - 1,
                     style_container: gradient_computer(style_data) + radius_computer(data_radius) + margin_computer(data_chunk_margin), // 用于样式显示
                     style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
-                    data_source_content_list: list,
+                    data_source_content_list: new_list,
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',
+                    slides_per_view: new_style.rolling_fashion == 'translation' ? new_form.data_source_carousel_col : 1,
+                    swiper_height: swiper_height,
+                    swiper_width: swiper_width,
                 });
             }
         },
-        url_event(e) {
+        get_list(list, form, new_style) {
+            // 深拷贝一下，确保不会出现问题
+            const cloneList = JSON.parse(JSON.stringify(list));
+            if (new_style.rolling_fashion != 'translation') {
+                // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
+                if (cloneList.length > 0) {
+                    // 每页显示的数量
+                    const num = form.data_source_carousel_col;
+                    // 存储数据显示
+                    let nav_list = [];
+                    // 拆分的数量
+                    const split_num = Math.ceil(cloneList.length / num);
+                    for (let i = 0; i < split_num; i++) {
+                        nav_list.push({
+                            split_list: cloneList.slice(i * num, (i + 1) * num),
+                        });
+                    }
+                    return nav_list;
+                } else {
+                    // 否则的话，就返回全部的信息
+                    return [
+                        {
+                            split_list: cloneList,
+                        },
+                    ];
+                }
+            } else {
+                // 存储数据显示
+                let nav_list = [];
+                cloneList.forEach((item) => {
+                    nav_list.push({
+                        split_list: [item],
+                    });
+                });
+                return nav_list;
+            }
+        },
+        slideChange(e) {
+            this.$emit('onCarouselChange', e.detail.current, this.propDataIndex);
+        },
+        url_event(e, index, split_index) {
+            if (this.form.data_source == 'goods' && this.data_source_content_list.length > 0) {
+                const list = this.data_source_content_list[index];
+                if (!isEmpty(list) && !isEmpty(list.split_list[split_index])) {
+                    const new_list = list.split_list[split_index];
+                    if (!isEmpty(new_list)) {
+                        // 缓存商品数据
+                        app.globalData.goods_data_cache_handle(new_list.data.id, new_list.data);
+                    }
+                }
+            }
             app.globalData.url_event(e);
         },
     },

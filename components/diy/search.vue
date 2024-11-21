@@ -164,7 +164,7 @@ export default {
             app.globalData.url_open(this.form.icon_link.page);
         },
         slideChange(e) {
-            let actived_index = e.target.current;
+            let actived_index = e.detail.current;
             this.setData({
                 keywords: this.form.hot_word_list[actived_index].value,
             })

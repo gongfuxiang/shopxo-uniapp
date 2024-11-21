@@ -66,8 +66,8 @@
         methods: {
             init() {
                 let url = '';
-                if (!isEmpty(this.propValue.icon_link)) {
-                    url = this.propValue.icon_link?.page || '';
+                if (!isEmpty(this.propValue.text_link)) {
+                    url = this.propValue.text_link?.page || '';
                 } else if (!isEmpty(this.propSourceList.data)) {
                     url = this.propSourceList.data[this.propValue?.data_source_link] || '';
                 } else {

@@ -177,7 +177,7 @@
             },
             slideChange(e) {
                 this.setData({
-                    actived_index: e.target.current,
+                    actived_index: e.detail.current,
                 });
             },
             url_open_event(link) {
