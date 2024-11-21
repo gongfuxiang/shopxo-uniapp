@@ -69,7 +69,6 @@
                 } else {
                     url = this.propSourceList[this.propValue?.data_source_link] || '';
                 }
-                console.log('url', url);
                 this.setData({
                     form: this.propValue,
                     img: this.get_img_url(this.propValue),
