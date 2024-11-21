@@ -53,6 +53,10 @@
             propDataIndex: {
                 type: Number,
                 default: () => 0,
+            },
+            propIsUnlimitedSize: {
+                type: Boolean,
+                default: () => false,
             }
         },
         data() {
