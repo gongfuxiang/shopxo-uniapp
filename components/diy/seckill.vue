@@ -48,9 +48,8 @@
                                         <view v-else :style="img_size">
                                             <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                         </view>
-                                        <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                            <text class="text-line-1">{{ form.subscript_text }}</text>
-                                        </view>
+                                        <!-- 角标 -->
+                                        <subscriptIndex :propValue="propValue"></subscriptIndex>
                                     </view>
                                 </template>
                                 <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb oh" :style="content_style">
@@ -116,9 +115,8 @@
                                                 <view v-else class="wh-auto ht-auto">
                                                     <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width:100rpx; height: 100rpx;"></imageEmpty>
                                                 </view>
-                                                <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                                    <text class="text-line-1">{{ form.subscript_text }}</text>
-                                                </view>
+                                                <!-- 角标 -->
+                                                <subscriptIndex :propValue="propValue"></subscriptIndex>
                                             </view>
                                         </template>
                                         <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
@@ -181,11 +179,13 @@
     const app = getApp();
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, padding_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
             imageEmpty,
+            subscriptIndex
         },
         props: {
             propValue: {
@@ -419,13 +419,13 @@
                 return gradient_computer(gradient);
             },
             get_seckill_head_style(new_style, num) {
-                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, seckill_head_padding } = new_style;
+                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, seckill_head_padding, seckill_head_radius } = new_style;
                 // 渐变
                 const gradient = { color_list: header_background_color_list, direction: header_background_direction };
                 // 背景图
                 const back = { background_img: header_background_img, background_img_style: header_background_img_style };
                 if (num == '1') {
-                    return gradient_computer(gradient);
+                    return gradient_computer(gradient) + radius_computer(seckill_head_radius);
                 } else {
                     // 秒杀头部内间距设置， 没有的时候默认15px
                     const padding = !isEmpty(seckill_head_padding) ? seckill_head_padding : { padding: 0, padding_top: 15, padding_bottom: 15, padding_left: 13, padding_right: 13};
@@ -608,10 +608,5 @@
     }
     .size-11 {
         font-size: 22rpx;
-    }
-    .corner-marker {
-        position: absolute;
-        padding: 2rpx 20rpx;
-        max-width: 100%;
     }
 </style>
