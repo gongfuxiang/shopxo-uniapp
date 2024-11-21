@@ -1,22 +1,53 @@
 <template>
-    <view v-if="data_source_content_list.length > 0">
-        <view v-for="(item1, index1) in data_source_content_list" :key="index1" :style="style_container">
-            <view class="custom-container wh-auto ht-auto" :style="style_img_container">
-                <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index1" @url_event="url_event"></dataRendering>
+    <view :style="style_container">
+        <view class="w h re" :style="style_img_container">
+            <view v-if="data_source_content_list.length > 0 && form.data_source_direction == '0'">
+                <view v-for="(item, index) in data_source_content_list" :key="index">
+                    <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container">
+                        <view class="custom-container wh-auto ht-auto" :style="style_chunk_img_container">
+                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item2" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index1" @url_event="url_event"></dataRendering>
+                        </view>
+                    </view>
+                    
+                </view>
             </view>
-        </view>
-    </view>
-    <view v-else>
-        <view :style="style_container">
-            <view class="custom-container wh-auto ht-auto" :style="style_img_container">
-                <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale"></dataRendering>
+            <div v-else-if="data_source_content_list.length > 0 && ['1', '2'].includes(form.data_source_direction)" class="oh pr">
+                <swiper class="w flex" circular="true" :vertical="form.data_source_direction != '2'"  :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+                    <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
+                        <view :class="form.data_source_direction != '2' ? '' : 'flex-row'">
+                            <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width">
+                                <div class="w h" :style="style_chunk_img_container">
+                                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index1" @url_event="url_event"></dataRendering>
+                                </div>
+                            </view>
+                        </view>
+                    </swiper-item>
+                </swiper>
+                <div v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
+                    <block v-if="new_style.indicator_style == 'num'">
+                        <view :style="indicator_style" class="dot-item">
+                            <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
+                            <text>/{{ data_source_content_list.length }}</text>
+                        </view>
+                    </block>
+                    <block v-else>
+                        <view v-for="(item, index) in data_source_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
+                    </block>
+                </div>
+            </div>
+            <view v-else>
+                <view :style="style_chunk_container">
+                    <view class="custom-container wh-auto ht-auto" :style="style_chunk_img_container">
+                        <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale"></dataRendering>
+                    </view>
+                </view>
             </view>
         </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, percentage_count, isEmpty } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
     const app = getApp();
     import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
     var system = app.globalData.get_system_info(null, null, true);
@@ -125,6 +156,18 @@
                 },
                 data_source_content_list: [],
                 data_source: '',
+                // 数据样式
+                style_chunk_container: '',
+                style_chunk_img_container: '',
+                // 指示器选中的下标
+                actived_index: 0,
+                // 轮播高度
+                swiper_height: 0,
+                swiper_width: 'width: 100%;',
+                // 指示器样式
+                indicator_location_style: '',
+                indicator_style: '',
+                slides_per_group: 1,
             };
         },
         watch: {
@@ -171,9 +214,21 @@
                     }
                 } else {
                     list = new_form.data_source_content.data_list;
-                }
+                }   
+                const new_list = this.get_list(list, new_form, new_style);
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
+                // 判断是平移还是整屏滚动
+                const { padding_top, padding_bottom, margin_bottom, margin_top } = new_style.data_style;
+                let swiper_height = 0;
+                // 轮播图高度控制
+                if (new_form.data_source_direction == '2') {
+                    swiper_height = new_form.height * (width / 390) + padding_top + padding_bottom + margin_bottom + margin_top;
+                } else {
+                    swiper_height = (new_form.height * (width / 390) + padding_top + padding_bottom + margin_bottom + margin_top) * new_form.data_source_carousel_col;
+                }
+                // 横向的时候，根据选择的行数和每行显示的个数来区分具体是显示多少个
+                const swiper_width = (new_form.data_source_direction == '2' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / new_form.data_source_carousel_col }%;`: 'width: 100%;';
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -182,9 +237,60 @@
                     custom_list_length: new_form.custom_list.length - 1,
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                    style_chunk_container: common_styles_computer(new_style.data_style) + 'box-sizing: border-box;', // 用于样式显示
+                    style_chunk_img_container: common_img_computer(new_style.data_style),
+                    style_chunk_width: width,
                     div_height: new_form.height,
-                    data_source_content_list: list,
+                    data_source_content_list: new_list,
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',
+                    indicator_style: get_indicator_style(new_style), // 指示器的样式
+                    indicator_location_style: get_indicator_location_style(new_style),
+                    swiper_height: swiper_height,
+                    swiper_width: swiper_width,
+                    slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.data_source_carousel_col : 1,
+                });
+                console.log(this.data_source_content_list);
+            },
+            get_list(list, form, new_style) {
+                // 深拷贝一下，确保不会出现问题
+                const cloneList = JSON.parse(JSON.stringify(list));
+                if (new_style.rolling_fashion != 'translation') {
+                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
+                    if (cloneList.length > 0) {
+                        // 每页显示的数量
+                        const num = form.data_source_carousel_col;
+                        // 存储数据显示
+                        let nav_list = [];
+                        // 拆分的数量
+                        const split_num = Math.ceil(cloneList.length / num);
+                        for (let i = 0; i < split_num; i++) {
+                            nav_list.push({
+                                split_list: cloneList.slice(i * num, (i + 1) * num),
+                            });
+                        }
+                        return nav_list;
+                    } else {
+                        // 否则的话，就返回全部的信息
+                        return [
+                            {
+                                split_list: cloneList,
+                            },
+                        ];
+                    }
+                } else {
+                    // 存储数据显示
+                    let nav_list = [];
+                    cloneList.forEach((item) => {
+                        nav_list.push({
+                            split_list: [item],
+                        });
+                    });
+                    return nav_list;
+                }
+            },
+            slideChange(e) {
+                this.setData({
+                    actived_index: e.target.current,
                 });
             },
             url_event(e) {

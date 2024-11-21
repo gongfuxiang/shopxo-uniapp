@@ -34,7 +34,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, radius_computer, get_indicator_style } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, radius_computer, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     export default {
@@ -92,7 +92,7 @@
             init() {
                 const new_content = this.propValue.content;
                 const new_style = this.propValue.style;
-                     
+
                 let group = 1;
                 let group_width = `width: ${100 / (new_content.single_line || 4)}%;`;
                 // 判断是否是轮播图
@@ -121,7 +121,7 @@
                     img_size: 'width:' + (new_style.img_size || 0) * 2 + 'rpx;height:' + (new_style.img_size || 0) * 2 + 'rpx;', // 图片大小
                     nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                     nav_content_list: this.get_nav_content_list(new_content, new_style),
-                    indicator_location_style: this.get_indicator_location_style(new_style),
+                    indicator_location_style: get_indicator_location_style(new_style),
                 });
                 setTimeout(() => {
                     const query = uni.createSelectorQuery().in(this);
@@ -174,31 +174,6 @@
                         },
                     ];
                 }
-            },
-            // 根据指示器的位置来处理 对齐方式的处理
-            get_indicator_location_style(new_style) {
-                const { indicator_new_location,  indicator_location, indicator_bottom } = new_style;
-                let styles = '';
-                if (['left', 'right'].includes(indicator_new_location)) {
-                    if (indicator_location == 'flex-start') {
-                        styles += `top: 0px;`;
-                    } else if (indicator_location == 'center') {
-                        styles += `top: 50%; transform: translateY(-50%);`;
-                    } else {
-                        styles += `bottom: 0px;`;
-                    }
-                } else {
-                    if (indicator_location == 'flex-start') {
-                        styles += `left: 0px;`;
-                    } else if (indicator_location == 'center') {
-                        styles += `left: 50%; transform: translateX(-50%);`;
-                    } else {
-                        styles += `right: 0px;`;
-                    }
-                }
-                // 如果有位置的处理，就使用指示器的位置处理，否则的话就用下边距处理
-                styles += `${ !isEmpty(indicator_new_location) ? `${indicator_new_location}: ${ indicator_bottom }px;` : `bottom: ${ indicator_bottom }px;` }`;
-                return styles;
             },
             slideChange(e) {
                 this.setData({

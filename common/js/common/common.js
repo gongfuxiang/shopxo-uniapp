@@ -14,7 +14,7 @@ export function is_obj_empty(obj) {
 }
 
 /**
- * 处理指示器的显示问题
+ * 指示器的样式
  *
  * @param style_object 样式对象
  * @returns 返回对应的值
@@ -44,6 +44,36 @@ export function get_indicator_style(style_object) {
     }
     return styles;
 }
+/**
+ * 指示器的位置处理
+ *
+ * @param style_object 样式对象
+ * @returns 返回对应的值
+ */
+export function get_indicator_location_style(style_object) {
+    const { indicator_new_location,  indicator_location, indicator_bottom } = style_object;
+    let styles = '';
+    if (['left', 'right'].includes(indicator_new_location)) {
+        if (indicator_location == 'flex-start') {
+            styles += `top: 0px;`;
+        } else if (indicator_location == 'center') {
+            styles += `top: 50%; transform: translateY(-50%);`;
+        } else {
+            styles += `bottom: 0px;`;
+        }
+    } else {
+        if (indicator_location == 'flex-start') {
+            styles += `left: 0px;`;
+        } else if (indicator_location == 'center') {
+            styles += `left: 50%; transform: translateX(-50%);`;
+        } else {
+            styles += `right: 0px;`;
+        }
+    }
+    // 如果有位置的处理，就使用指示器的位置处理，否则的话就用下边距处理
+    styles += `${ !isEmpty(indicator_new_location) ? `${indicator_new_location}: ${ indicator_bottom }px;` : `bottom: ${ indicator_bottom }px;` }`;
+    return styles;
+};
 
 /**
  * 判断对象数组等是否为空。
