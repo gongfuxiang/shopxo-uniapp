@@ -15,7 +15,7 @@
                             </view>
                         </template>
                         <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
-                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
+                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title }}</view>
                             <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
                                 <text class="num">{{ item.show_price_symbol }}</text>
                                 {{ item.min_price }}
@@ -50,7 +50,7 @@
                                 </template>
                             </view>
                         </view>
-                        <view v-if="propIsShow.includes('title')" class="text-line-1 tl w" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('title')" class="text-line-1 tl w" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 2) + 'rpx;'">{{ item.title }}</view>
                     </view>
                 </view>
             </view>
@@ -70,7 +70,7 @@
                             </view>
                         </template>
                         <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
-                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style">{{ item.title }}</view>
+                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title }}</view>
                             <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
                                 <text class="num">{{ item.show_price_symbol }}</text>
                                 {{ item.min_price }}

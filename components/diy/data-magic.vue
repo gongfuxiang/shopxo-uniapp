@@ -222,7 +222,7 @@
                     } 
                     data_content.fit = fit;
                     // 商品名称和价格样式
-                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title') + `line-height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;height: ${ (item.data_style.goods_title_size + 3) * 4 }rpx;`;
+                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title') + `line-height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;`;
                     data_style.goods_price_style = this.goods_trends_config(data_style, 'price') + `line-height: ${ item.data_style.goods_price_size * 2 }rpx;`;
                     const radius = !isEmpty(data_style.img_radius) ? data_style.img_radius : { radius: 4, radius_top_left: 4, radius_top_right: 4, radius_bottom_left: 4, radius_bottom_right: 4 };
                     data_style.get_img_radius = radius_computer(radius);
