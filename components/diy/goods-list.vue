@@ -413,17 +413,18 @@
                 const radius = form.theme == '6' ? '' : radius_computer(new_style.shop_radius);
                 const gradient = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') : '';
                 let size_style = ``;
-                // 如果不是平移的时候执行
-                if (new_style.rolling_fashion != 'translation') {
-                    if (['1', '4'].includes(form.theme)) {
-                        size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
-                    } else if (form.theme == '3') {
-                        size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
-                    } else if (form.theme == '5') {
+                if (['1', '4'].includes(form.theme)) {
+                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
+                } else if (form.theme == '3') {
+                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
+                } else if (form.theme == '5') {
+                    // 如果不是平移的时候执行
+                    if (new_style.rolling_fashion != 'translation') {
                         size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'};`;
+                    } else {
+                        size_style = `margin-right: ${ new_style.content_outer_spacing * 2 }rpx;width: 100%;height: 100%;`;
                     }
-                } else {
-                    size_style = `margin-right: ${ new_style.content_outer_spacing * 2 }rpx;width: 100%;height: 100%;`;
+                    
                 }
                 return `${radius} ${size_style} ${ gradient }`;
             },

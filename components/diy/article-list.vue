@@ -5,9 +5,9 @@
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(article_theme)" class="flex-wrap" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
                     <view v-for="(item, index) in data_list" :key="index" class="item oh" :style="article_style" :data-value="item.data.url" @tap="url_event">
-                        <view :class="article_theme == '0' ? 'flex-row oh' : 'flex-col oh'" :style="article_img_style">
+                        <view :class="article_theme == '0' ? 'flex-row oh' : 'flex-col oh ht-auto'" :style="article_img_style">
                             <template v-if="article_theme !== '3'">
-                                <view class="oh pr wh-auto ht-auto">
+                                <view class="oh pr flex-row">
                                     <template v-if="item.new_cover.length > 0">
                                         <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
                                     </template>
@@ -18,9 +18,9 @@
                                     <subscriptIndex :propValue="propValue"></subscriptIndex>
                                 </view>
                             </template>
-                            <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
+                            <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
                                 <div class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
-                                    <div class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                    <div v-if="field_show.includes('3')" class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</div>
                                     <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
                                 </div>
                                 <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
@@ -42,7 +42,7 @@
                             <view class="flex-row ht-auto" :style="article_spacing">
                                 <view v-for="(item, index) in item1.carousel_list" :key="index" class="item oh ht-auto" :style="article_style" :data-value="item.data.url" @tap="url_event">
                                     <view class="oh flex-col ht-auto" :style="article_img_style">
-                                        <view class="oh pr wh-auto ht-auto">
+                                        <view class="oh pr wh-auto ht-auto flex-row">
                                             <template v-if="item.new_cover.length > 0">
                                                 <image :src="item.new_cover[0].url" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
                                             </template>
@@ -52,9 +52,9 @@
                                             <!-- 角标 -->
                                             <subscriptIndex :propValue="propValue"></subscriptIndex>
                                         </view>
-                                        <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
+                                        <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
                                             <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                                <div class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                                <div v-if="field_show.includes('3')" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
                                                 <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
                                             </div>
                                             <view class="flex-row jc-sb gap-8 align-e margin-top">
@@ -294,7 +294,7 @@
                         // article_item_height: `height: ${new_style.article_height }px`,
                         article_style: this.content_radius + multicolumn_columns_width + gradient,
                         // 轮播高度
-                        carousel_height_computer: new_style.name_size * 2 + new_style.article_height + 'px',
+                        carousel_height_computer: new_style.article_height + 'px',
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
                         article_img_style: background_computer(article_data)
@@ -302,7 +302,6 @@
                     // 文章轮播数据
                     const cloneList = JSON.parse(JSON.stringify(this.data_list));
                     // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    console.log(new_style.rolling_fashion);
                     if (new_style.rolling_fashion != 'translation') {
                         if (cloneList.length > 0) {
                             // 每页显示的数量
