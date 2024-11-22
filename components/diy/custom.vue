@@ -167,6 +167,27 @@
                 indicator_location_style: '',
                 indicator_style: '',
                 slides_per_view: 1,
+                old_data_style: {
+                    color_list: [{ color: 'rgb(244, 252, 255)', color_percentage: undefined }],
+                    direction: '180deg',
+                    background_img_style: '2',
+                    background_img: [],
+                    radius: 0,
+                    radius_top_left: 0,
+                    radius_top_right: 0,
+                    radius_bottom_left: 0,
+                    radius_bottom_right: 0,
+                    padding: 0,
+                    padding_top: 0,
+                    padding_bottom: 0,
+                    padding_left: 0,
+                    padding_right: 0,
+                    margin: 0,
+                    margin_top: 0,
+                    margin_bottom: 0,
+                    margin_left: 0,
+                    margin_right: 0,
+                }
             };
         },
         watch: {
@@ -215,10 +236,11 @@
                     list = new_form.data_source_content.data_list;
                 }   
                 const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
-                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
+                const { margin_left = 0, margin_right = 0, padding_left = 0, padding_right = 0 } = new_style.common_style;
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
+                const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
-                const { padding_top, padding_bottom, margin_bottom, margin_top } = new_style.data_style;
+                const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == '2') {
@@ -236,8 +258,8 @@
                     custom_list_length: new_form.custom_list.length - 1,
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
-                    style_chunk_container: common_styles_computer(new_style.data_style) + 'box-sizing: border-box;', // 用于样式显示
-                    style_chunk_img_container: common_img_computer(new_style.data_style),
+                    style_chunk_container: common_styles_computer(new_data_style) + 'box-sizing: border-box;', // 用于样式显示
+                    style_chunk_img_container: common_img_computer(new_data_style),
                     style_chunk_width: width,
                     div_height: new_form.height,
                     data_source_content_list: new_list,
