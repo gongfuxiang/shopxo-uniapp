@@ -67,17 +67,17 @@
                 const { seckill_subscript_location, top_or_bottom_spacing, left_or_right_spacing } = subscript_style;
                 // 圆角根据图片的圆角来计算 对角线是同样的圆角
                 if (seckill_subscript_location == 'top-left') {
-                    location += `top: ${ top_or_bottom_spacing }px;left: ${ left_or_right_spacing }px;`;
+                    location += `top: ${ top_or_bottom_spacing * 2 }rpx;left: ${ left_or_right_spacing * 2 }rpx;`;
                 } else if (seckill_subscript_location == 'top-center') {
                     location += 'top: 0;left: 50%;transform: translateX(-50%);';
                 } else if (seckill_subscript_location == 'top-right') {
-                    location += `top: ${ top_or_bottom_spacing }px;right:${ left_or_right_spacing }px;`;
+                    location += `top: ${ top_or_bottom_spacing * 2 }rpx;right:${ left_or_right_spacing * 2 }rpx;`;
                 } else if (seckill_subscript_location == 'bottom-left') {
-                    location += `bottom: ${ top_or_bottom_spacing }px;left: ${ left_or_right_spacing }px;`;
+                    location += `bottom: ${ top_or_bottom_spacing * 2 }rpx;left: ${ left_or_right_spacing * 2 }rpx;`;
                 } else if (seckill_subscript_location == 'bottom-center') {
                     location += 'bottom: 0;left: 50%;transform: translateX(-50%);';
                 } else if (seckill_subscript_location == 'bottom-right') {
-                    location += `bottom: ${ top_or_bottom_spacing }px;right: ${ left_or_right_spacing }px;`;
+                    location += `bottom: ${ top_or_bottom_spacing * 2 }rpx;right: ${ left_or_right_spacing * 2 }rpx;`;
                 }
                 return location;
             },
