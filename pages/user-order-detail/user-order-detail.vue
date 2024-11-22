@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 地址 -->
                 <view v-if="(detail.order_model == 0 || detail.order_model == 2) && (detail.address_data || null) != null" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
-                    <view class="address-base oh">
+                    <view class="address-base padding-top-xs padding-bottom oh">
                         <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{ detail.address_data.alias }}</text>
                         <text>{{ detail.address_data.name }}</text>
                         <text class="fr">{{ detail.address_data.tel }}</text>
@@ -15,6 +15,13 @@
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
                             <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
                         </view>
+                    </view>
+                    <view v-if="(detail.address_data.extraction_contact_name || null) != null || (detail.address_data.extraction_contact_tel || null) != null || (detail.address_data.appoint_time || null) != null" class="padding-vertical-main br-t-dashed">
+                        <view>
+                            <text v-if="(detail.address_data.extraction_contact_name || null) != null" class="margin-right-xxl">{{detail.address_data.extraction_contact_name}}</text>
+                            <text v-if="(detail.address_data.extraction_contact_tel || null) != null">{{detail.address_data.extraction_contact_tel}}</text>
+                        </view>
+                        <view v-if="(detail.address_data.tel || null) != null" class="cr-red">{{detail.address_data.appoint_time}}</view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
                 </view>
@@ -68,11 +75,11 @@
                 <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7dikfm')}}</view>
                     <view class="panel-content oh padding-top-main">
+                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-bottom-sm" :src="detail.extraction_data.images" mode="aspectFill"></image>
                         <view>
                             <text>{{$t('user-order-detail.user-order-detail.o38952')}}</text>
                             <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || $t('user-order-detail.user-order-detail.hpq62x') }}</text>
                         </view>
-                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
                     </view>
                 </view>
 
@@ -112,9 +119,9 @@
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.ct34n5')}}</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.tips }}</view>
+                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b-dashed oh padding-vertical-main cr-base">
+                            <text>{{ item.name }}</text>
+                            <text v-if="(item.tips || null) != null">：{{ item.tips }}</text>
                         </view>
                     </view>
                 </view>

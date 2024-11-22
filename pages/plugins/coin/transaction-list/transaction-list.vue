@@ -59,7 +59,7 @@
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
-                        <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                     </view>
                 </view>
             </scroll-view>
@@ -159,6 +159,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 accounts_static_url: accounts_static_url,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 params: {},
 
@@ -350,6 +351,7 @@
                                 data_total: data.total,
                                 data_page_total: data.page_total,
                                 data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_list_loding_msg: '',
                                 data_page: this.data_page + 1,
                                 data_is_loading: 0,
                             });
@@ -373,8 +375,8 @@
                         this.setData({
                             data_list_loding_status: 2,
                             data_is_loading: 0,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

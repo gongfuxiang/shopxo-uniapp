@@ -6,7 +6,7 @@
         <view :class="'time-select-popup-mask ' + (propIsShow ? 'time-select-popup-show' : '')" @tap="_maskClose">
             <view class="time-select-popup-content" @click.stop="_stopFunc">
                 <view class="time-select-close-btn" v-if="propCloseBtn" @tap="_closeBtnClose">×</view>
-                <view class="time-select-title">
+                <view class="time-select-title padding-bottom-sm">
                     <view v-if="(propTitle || null) != null">{{ propTitle || this.$t('buy.buy.q8u066') }}</view>
                     <view v-if="(propSubhead || null) != null">{{ propSubhead }}</view>
                 </view>
@@ -48,7 +48,7 @@
             },
             propRangeType: {
                 type: Boolean,
-                default: false,
+                default: true,
             },
             propIsShow: {
                 type: Boolean,
@@ -170,6 +170,7 @@
                 }
                 this.time_active_index = e;
                 this.activeTimeArr = timeArr;
+                _data['value'] = this.propRangeType ? _data._dateRange : _data._date;
                 this._selectEvent(_data);
             },
             _handleData() {
@@ -443,7 +444,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        padding: 40rpx 10rpx 0 10rpx;
+        padding: 20rpx 10rpx 0 10rpx;
         transition: height 0.5s;
         border-top-right-radius: 20rpx;
         border-top-left-radius: 20rpx;

@@ -1,0 +1,11 @@
+/*
+* 列表
+*/
+.select-scroll-box {
+    height: calc(100vh - 186rpx);
+}
+
+.data-list .item .select-icon {
+    width: 35rpx;
+    height: 35rpx !important;
+}

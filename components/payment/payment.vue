@@ -338,6 +338,7 @@
                 // 请求支付接口
                 uni.showLoading({
                     title: this.$t('payment.payment.e1f54e'),
+                    mask: true
                 });
                 if (this.propPayUrl) {
                     uni.request({
@@ -394,6 +395,7 @@
                                             uni.showModal({
                                                 content: res.data.msg,
                                                 showCancel: false,
+                                                confirmText: self.$t('common.confirm'),
                                                 success(res) {
                                                     if (res.confirm) {
                                                         self.to_other(order_id);
@@ -426,7 +428,7 @@
                         },
                         fail: (res) => {
                             uni.hideLoading();
-                            this.order_item_pay_fail_handle(res.data.data, order_id, this.$t('common.internet_error_tips'));
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 } else {
@@ -776,6 +778,7 @@
                         uni.showModal({
                             content: msg,
                             showCancel: false,
+                            confirmText: this.$t('common.confirm'),
                             success(res) {
                                 if (res.confirm) {
                                     // 跳转支付页面

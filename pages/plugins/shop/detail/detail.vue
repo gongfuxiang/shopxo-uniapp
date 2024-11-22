@@ -111,8 +111,14 @@
             app.globalData.page_event_onload_handle(params);
 
             // 设置参数
+            params = app.globalData.launch_params_handle(params);
+            // 是否指定店铺id
+            var shop_id = app.globalData.data.plugins_shop_id || null;
+            if(shop_id != null) {
+                params['id'] = shop_id;
+            }
             this.setData({
-                params: app.globalData.launch_params_handle(params)
+                params: params
             });
         },
 

@@ -82,6 +82,10 @@
                                         <text data-event="copy" :data-value="item.user_address.name" @tap="text_event">{{item.user_address.name}}</text>
                                         <text class="margin-left-xl" data-event="copy" :data-value="item.user_address.tel" @tap="text_event">{{item.user_address.tel}}</text>
                                     </view>
+                                    <view v-if="(item.user_address.extraction_contact_name || null) != null || (item.user_address.extraction_contact_tel || null) != null" class="padding-vertical-xs">
+                                        <text v-if="(item.user_address.extraction_contact_name || null) != null" class="margin-right-xl">{{item.user_address.extraction_contact_name}}</text>
+                                        <text v-if="(item.user_address.extraction_contact_tel || null) != null">{{item.user_address.extraction_contact_tel}}</text>
+                                    </view>
                                     <view v-if="(item.user_address.appoint_time || null) != null" class="cr-red padding-vertical-xs">{{item.user_address.appoint_time}}</view>
                                     <view class="pr margin-top-xs">
                                         <view class="address-info">

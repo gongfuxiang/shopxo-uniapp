@@ -5,10 +5,10 @@
         </block>
         <block v-else>
             <view v-if="goods_list.length > 0" class="page-bottom-fixed">
-                <!-- 销售+自提 模式选择 -->
-                <view v-if="common_site_type == 4" class="buy-header-nav bg-white oh tc">
-                    <block v-for="(item, index) in buy_header_nav" :key="index">
-                        <view :class="'item fl cp ' + (site_model == item.value ? 'cr-main' : 'cr-base')" :data-value="item.value" @tap="buy_header_nav_event">{{ item.name }}</view>
+                <!-- 模式选择，站点类型选择 销售+自提 -->
+                <view v-if="buy_site_model_list.length > 1" class="buy-site-model bg-white oh tc" :class="'count-'+buy_site_model_list.length">
+                    <block v-for="(item, index) in buy_site_model_list" :key="index">
+                        <view :class="'item fl cp ' + (buy_site_model_value == item.value ? 'nav-active-line cr-main' : 'cr-base')" :data-ext="item.ext" :data-value="item.value" @tap="buy_site_model_event">{{ item.name }}</view>
                     </block>
                 </view>
 
@@ -30,10 +30,38 @@
                                 </view>
                             </view>
                             <view v-else class="padding-top-xl padding-bottom-xxxl cr-grey">
-                                {{ common_site_type == 0 || (common_site_type == 4 && site_model == 0) ? $t('buy.buy.6rk813') : $t('buy.buy.wq7gnb') }}
+                                {{ common_site_type == 0 || (common_site_type == 4 && buy_site_model_value == 0) ? $t('buy.buy.6rk813') : $t('buy.buy.wq7gnb') }}
                             </view>
                         </view>
                         <view class="address-divider spacing-mb"></view>
+                    </view>
+
+                    <!-- 客户输入的数据 -->
+                    <view v-if="((buy_extraction_contact_info || null) != null && (buy_extraction_contact_info.is_write || false) == true) || ((buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true)" class="oh padding-horizontal-main bg-white border-radius-main spacing-mb padding-top-main form-container">
+                        <!-- 时间选择 -->
+                        <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="form-gorup row padding-horizontal-0 padding-top-0">
+                            <view class="form-gorup-title margin-right">{{ buy_datetime_info.title }}</view>
+                            <view class="form-gorup-value tr">
+                                <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeType="buy_datetime_info.range_type" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
+                                    <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey va-m">{{ buy_datetime_info.placeholder }}</text>
+                                    <text v-else class="cr-base va-m">{{ buy_datetime_info.value }}</text>
+                                    <view class="dis-inline-block va-m lh-xs">
+                                        <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                                    </view>
+                                </component-time-select>
+                            </view>
+                        </view>
+                        <!-- 自提客户名称和电话 -->
+                        <block v-if="(buy_extraction_contact_info || null) != null && (buy_extraction_contact_info.is_write || false) == true">
+                            <view class="form-gorup row padding-horizontal-0 padding-top-0">
+                                <view class="form-gorup-title margin-right">{{$t('buy.buy.df3raf')}}</view>
+                                <input type="text" name="extraction_contact_name" :value="buy_extraction_contact_info.name" data-value="name" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('user-address-save.user-address-save.65507o')" />
+                            </view>
+                            <view class="form-gorup row padding-horizontal-0 padding-top-0">
+                                <view class="form-gorup-title margin-right">{{$t('buy.buy.hjwerf')}}</view>
+                                <input type="text" name="extraction_contact_tel" :value="buy_extraction_contact_info.tel" data-value="tel" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('user-address-save.user-address-save.65507o')" />
+                            </view>
+                        </block>
                     </view>
 
                     <!-- 商品数据 -->
@@ -108,8 +136,8 @@
                             </view>
                         </view>
                         <!-- 门店次卡 -->
-                        <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data[group.id] || null) != null" class="plugins-realstore-container-view">
-                            <block v-for="(item, index2) in plugins_realstore_data[group.id]['data']" :key="index2">
+                        <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data.user_card || null) != null && (plugins_realstore_data['user_card'][group.id] || null) != null" class="plugins-realstore-container-view">
+                            <block v-for="(item, index2) in plugins_realstore_data['user_card'][group.id]['data']" :key="index2">
                                 <view class="buy-data-item oh oh wh-auto">
                                     <text class="cr-base va-m">{{ $t('buy.buy.58rs1a') }}</text>
                                     <image class="image circle br va-m margin-left-xs" :src="item.images" mode="aspectFill"></image>
@@ -142,7 +170,9 @@
                     <view v-if="(plugins_points_data || null) != null && ((plugins_points_data.discount_price || 0) > 0 || (plugins_points_data.is_support_goods_exchange || 0) == 1)" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
                         <block v-if="(plugins_points_data.discount_price || 0) > 0">
                             <view class="select oh">
-                                <text v-if="plugins_points_data.discount_type == 1" class="va-m">{{ $t('buy.buy.33fugm') }}{{ plugins_points_data.use_integral }}{{ $t('buy.buy.6e4181') }}</text>
+                                <block v-if="plugins_points_data.discount_type == 1">
+                                    <text v-if="(plugins_points_data.use_msg_tips || null) != null" class="va-m">{{ plugins_points_data.use_msg_tips }}</text>
+                                </block>
                                 <view v-else class="dis-inline-block">
                                     <text class="va-m">{{ $t('buy.buy.33fugm') }}</text>
                                     <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" @confirm="points_use_value_confirm_event" :placeholder="$t('buy.buy.80y7sv')" />
@@ -156,30 +186,11 @@
                                     </view>
                                 </block>
                             </view>
-                            <view class="desc margin-top-xs">
-                                <text v-if="plugins_points_data.discount_type == 1">{{ $t('buy.buy.q800ri') }}{{ plugins_points_data.user_integral }}{{ $t('buy.buy.w96878') }}</text>
-                                <text v-else>{{ $t('buy.buy.q800ri') }}{{ plugins_points_data.user_integral }}{{ $t('buy.buy.186cxy') }}{{ plugins_points_data.use_integral }}{{ $t('buy.buy.w96878') }}</text>
-                            </view>
+                            <view v-if="(plugins_points_data.usable_msg_tips || null) != null" class="desc margin-top-xs">{{ plugins_points_data.usable_msg_tips }}</view>
                         </block>
                         <block v-else>
-                            <view v-if="(plugins_points_data.is_support_goods_exchange || 0) == 1" class="desc tr">
-                                <text>{{ $t('buy.buy.q800ri') }}{{ plugins_points_data.user_integral }}{{ $t('buy.buy.t04z1o') }}</text>
-                            </view>
+                            <view v-if="(plugins_points_data.not_msg_tips || null) != null" class="desc tr">{{ plugins_points_data.not_msg_tips }}</view>
                         </block>
-                    </view>
-
-                    <!-- 时间选择 -->
-                    <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item oh padding-horizontal-main bg-white border-radius-main spacing-mb">
-                        <text class="cr-base">{{ buy_datetime_info.title }}</text>
-                        <view class="right-value single-text dis-inline-block fr tr">
-                            <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
-                                <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey va-m">{{ buy_datetime_info.placeholder }}</text>
-                                <text v-else class="cr-base va-m">{{ buy_datetime_info.value }}</text>
-                                <view class="dis-inline-block va-m lh-xs">
-                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
-                                </view>
-                            </component-time-select>
-                        </view>
                     </view>
 
                     <!-- 留言 -->
@@ -312,8 +323,8 @@
                         <view class="not-use-tips tc">
                             <text class="cp cr-yellow text-size-sm" data-type="0" @tap="plugins_realstore_use_event">{{ $t('buy.buy.8vqfp3') }}</text>
                         </view>
-                        <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data[popup_plugins_realstore_group_id] || null) != null">
-                            <block v-for="(item, index) in plugins_realstore_data[popup_plugins_realstore_group_id]['data'][popup_plugins_realstore_card_index]['user_card']" :key="index">
+                        <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data.user_card || null) != null && (plugins_realstore_data['user_card'][popup_plugins_realstore_group_id] || null) != null">
+                            <block v-for="(item, index) in plugins_realstore_data['user_card'][popup_plugins_realstore_group_id]['data'][popup_plugins_realstore_card_index]['user_card']" :key="index">
                                 <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')">
                                     <view class="v-left fl">
                                         <view class="base single-text">
@@ -377,16 +388,18 @@
                 is_first: 1,
                 common_site_type: 0,
                 extraction_address: [],
-                site_model: 0,
-                buy_header_nav: [
-                    { name: this.$t('buy.buy.6424jr'), value: 0 },
-                    { name: this.$t('buy.buy.8787ev'), value: 2 },
-                ],
+                // 是否门店模式
+                is_realstore_model: false,
+                // 站点类型模式
+                buy_site_model_value: 0,
+                buy_site_model_list: [],
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 common_order_is_booking: 0,
                 // 下单时间选择
                 buy_datetime_info: {},
+                // 自提客户名称和电话
+                buy_extraction_contact_info: {},
                 // 优惠劵
                 plugins_coupon_data: null,
                 plugins_coupon_list: [],
@@ -399,7 +412,7 @@
                 actual_use_integral: 0,
                 plugins_points_status: false,
                 // 门店
-                plugins_realstore_data: [],
+                plugins_realstore_data: null,
                 plugins_choice_realstore_value: {},
                 popup_plugins_realstore_status: false,
                 popup_plugins_realstore_group_id: 0,
@@ -448,8 +461,12 @@
             // params['data'] = '{"buy_type":"goods","goods_data":"W3siZ29vZHNfaWQiOiI5Iiwic3RvY2siOjEsInNwZWMiOlt7InR5cGUiOiLpopzoibIiLCJ2YWx1ZSI6IueyieiJsiJ9LHsidHlwZSI6IuWwuueggSIsInZhbHVlIjoiTCJ9XX1"}';
             // ids 购物车主键ids
             if ((params.data || null) != null) {
+                params = JSON.parse(base64.decode(decodeURIComponent(params.data)));
+                var is_realstore_model = (params.realstore_id || null) != null;
                 this.setData({
-                    params: JSON.parse(base64.decode(decodeURIComponent(params.data))),
+                    params: params,
+                    is_realstore_model: is_realstore_model,
+                    buy_site_model_value: is_realstore_model ? parseInt(params.buy_use_type_index || 0) : 0,
                     plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1,
                     pay_url: app.globalData.get_request_url('pay', 'order'),
                     qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
@@ -522,7 +539,7 @@
                 }
 
                 // 是否门店订单
-                if ((this.params.realstore_id || null) != null) {
+                if (this.is_realstore_model) {
                     var realstore_order_page = '/pages/plugins/realstore/orderallot-list/orderallot-list';
                     this.setData({
                         to_page_back: {
@@ -548,7 +565,7 @@
                 var data = this.params;
                 data['address_id'] = this.address_id;
                 data['payment_id'] = this.payment_id;
-                data['site_model'] = this.site_model;
+                data['site_model'] = this.buy_site_model_value;
                 uni.request({
                     url: app.globalData.get_request_url('index', 'buy'),
                     method: 'POST',
@@ -592,11 +609,11 @@
                                 var temp_dt = data.buy_datetime_info || {};
                                 var datetime = {
                                     // 是否开启时间选择
-                                    is_select: (temp_dt.is_select || 0) == 1,
+                                    is_select: parseInt(temp_dt.is_select || 0) == 1,
                                     // 是否必选
-                                    required: (temp_dt.required || 0) == 1,
+                                    required: parseInt(temp_dt.required || 0) == 1,
                                     // 状态
-                                    status: data_dt.status || (temp_dt.status || 0) == 1 || false,
+                                    status: data_dt.status || parseInt(temp_dt.status || 0) == 1 || false,
                                     // 默认值
                                     value: data_dt.value || temp_dt.value || '',
                                     // 标题
@@ -607,12 +624,30 @@
                                     time_start: temp_dt.time_start || '',
                                     // 天结束时间
                                     time_end: temp_dt.time_end || '',
+                                    // 随机类型（区间还是固定时间, 0或1）
+                                    range_type: (temp_dt.range_type == undefined || parseInt(temp_dt.range_type || 0) == 1),
                                     // 可选最大天数
-                                    range_day: temp_dt.range_day || 2,
+                                    range_day: parseInt(temp_dt.range_day || 2),
                                     // 禁止选择的时间
                                     disabled: temp_dt.disabled || '',
                                     // 未选择错误提示
                                     error_msg: temp_dt.error_msg || this.$t('buy.buy.q8u066'),
+                                };
+                                
+                                // 自提客户信息
+                                var data_ct = this.buy_extraction_contact_info || {};
+                                var temp_ct = data.buy_extraction_contact_info || {};
+                                var extraction_contact = {
+                                    is_write: parseInt(temp_ct.is_write || 0) == 1,
+                                    // 状态
+                                    status: data_ct.status || (temp_ct.status || 0) == 1 || false,
+                                    // 默认值、姓名和电话
+                                    name: data_ct.name || temp_ct.name || '',
+                                    tel: data_ct.tel || temp_ct.tel || '',
+                                    // 是否必选
+                                    required: parseInt(temp_ct.required || 0) == 1,
+                                    // 未选择错误提示
+                                    error_msg: temp_ct.error_msg || this.$t('buy.buy.8fghje'),
                                 };
 
                                 // 商品数据处理
@@ -639,7 +674,9 @@
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
                                     extraction_address: data.base.extraction_address || [],
+                                    buy_site_model_list: data.buy_site_model_list || [],
                                     buy_datetime_info: datetime,
+                                    buy_extraction_contact_info: extraction_contact,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     plugins_points_data: data.plugins_points_data || null,
                                     plugins_realstore_data: data.plugins_realstore_data || null,
@@ -805,7 +842,7 @@
                 data['payment_id'] = this.payment_id;
                 data['payment_type'] = this.payment_type;
                 data['user_note'] = this.user_note_value;
-                data['site_model'] = this.site_model;
+                data['site_model'] = this.buy_site_model_value;
 
                 // 数据验证
                 var validation = [];
@@ -841,7 +878,19 @@
                         app.globalData.showToast(datetime.error_msg || this.$t('buy.buy.q8u066'));
                         return false;
                     }
-                    data['buy_datetime_value'] = datetime.value || '';
+                    data['appoint_time'] = datetime.value || '';
+                }
+
+                // 自提客户名称和电话
+                var extraction_contact = this.buy_extraction_contact_info || {};
+                if ((extraction_contact.is_write || false) == true) {
+                    // 是否必选
+                    if ((extraction_contact.required || false) == true && ((extraction_contact.name || null) == null || (extraction_contact.tel || null) == null)) {
+                        app.globalData.showToast(extraction_contact.error_msg || this.$t('buy.buy.8fghje'));
+                        return false;
+                    }
+                    data['extraction_contact_name'] = extraction_contact.name || '';
+                    data['extraction_contact_tel'] = extraction_contact.tel || '';
                 }
 
                 // 是否需要选择支付方式、并且未选择虚拟币支付方式
@@ -1029,9 +1078,9 @@
                 }
 
                 // 仅自提和快递需要选择地址
-                if (this.common_site_type == 0 || (this.common_site_type == 4 && this.site_model == 0)) {
+                if (this.common_site_type == 0 || (this.common_site_type == 4 && this.buy_site_model_value == 0)) {
                     app.globalData.url_open('/pages/user-address/user-address?is_back=1' + params);
-                } else if (this.common_site_type == 2 || (this.common_site_type == 4 && this.site_model == 2)) {
+                } else if (this.common_site_type == 2 || (this.common_site_type == 4 && this.buy_site_model_value == 2)) {
                     app.globalData.url_open('/pages/extraction-address/extraction-address?is_back=1&is_buy=1' + params);
                 } else {
                     app.globalData.showToast(this.$t('buy.buy.31616e'));
@@ -1039,15 +1088,28 @@
             },
 
             // 销售+自提 模式选择事件
-            buy_header_nav_event(e) {
+            buy_site_model_event(e) {
                 var value = e.currentTarget.dataset.value || 0;
-                if (value != this.site_model) {
+                if (value != this.buy_site_model_value) {
                     // 数据设置
-                    this.setData({
+                    var upd_data = {
                         address: null,
                         address_id: null,
-                        site_model: value,
-                    });
+                        buy_site_model_value: value,
+                    };
+
+                    // 是否门店模式下
+                    if (this.is_realstore_model) {
+                        // 覆盖选择类型索引值，门店模式下还有站点类型选择择标识是门店的类型列表（非系统类型列表）
+                        upd_data['params'] = {...this.params, ...{buy_use_type_index: value}};
+
+                        // 扩展状态则覆盖common_site_type公共类型数据
+                        var ext = e.currentTarget.dataset.ext;
+                        if(ext !== '' && ext !== undefined) {
+                            upd_data['common_site_type'] = parseInt(ext);
+                        }
+                    }
+                    this.setData(upd_data);
 
                     // 删除地址缓存
                     uni.removeStorageSync(app.globalData.data.cache_buy_user_address_select_key);
@@ -1111,10 +1173,19 @@
                 var temp = this.buy_datetime_info;
                 temp['status'] = !temp.status;
                 if (e != 'open' && e != 'close') {
-                    temp['value'] = ((e || null) != null ? e._date : '') || '';
+                    temp['value'] = ((e || null) != null ? e.value : '') || '';
                 }
                 this.setData({
                     buy_datetime_info: temp,
+                });
+            },
+
+            // 自提客户名称和电话输入事件
+            extraction_contact_event(e) {
+                var temp = this.buy_extraction_contact_info;
+                temp[e.currentTarget.dataset.value] = e.detail.value || '';
+                this.setData({
+                    buy_extraction_contact_info: temp,
                 });
             },
 
@@ -1139,7 +1210,7 @@
                 var type = e.currentTarget.dataset.type;
                 var group_id = this.popup_plugins_realstore_group_id;
                 var card_index = this.popup_plugins_realstore_card_index;
-                var id = this.plugins_realstore_data[group_id]['data'][card_index]['id'];
+                var id = this.plugins_realstore_data['user_card'][group_id]['data'][card_index]['id'];
                 var temp = this.plugins_choice_realstore_value;
                 if (type == 1) {
                     if (temp[group_id] == undefined) {

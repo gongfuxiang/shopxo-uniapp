@@ -113,9 +113,18 @@
 /**
 * 销售+自提 模式选择
 */
-.buy-header-nav .item {
+.buy-site-model .item {
     padding: 25rpx 0;
     width: 50%;
+}
+.buy-site-model.count-3 .item {
+    width: 33.33%;
+}
+.buy-site-model.count-4 .item {
+    width: 25%;
+}
+.buy-site-model.count-5 .item {
+    width: 20%;
 }
 
 /**

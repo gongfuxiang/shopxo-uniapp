@@ -13,11 +13,11 @@
                                     :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
                                 ></iconfont>
                             </view>
-                            <text class="va-m">{{ item.order_no }}</text>
-                            <text class="fr">{{ item.pay_price }}</text>
+                            <text class="va-m">{{ item.recharge_no }}</text>
+                            <text class="fr">{{ item.pay_money }}</text>
                         </view>
-                        <view :data-value="'/pages/user-order-detail/user-order-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
-                            <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="order_no,pay_price" :propIsTerse="true"></component-panel-content>
+                        <view :data-value="'/pages/plugins/wallet/user-recharge-detail/user-recharge-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                            <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="recharge_no,pay_money" :propIsTerse="true"></component-panel-content>
                         </view>
                         <view class="item-operation tr margin-top-main">
                             <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoice-saveinfo.89815t')}}</button>
@@ -151,7 +151,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'order', 'invoice'),
+                    url: app.globalData.get_request_url('index', 'recharge', 'invoice'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
@@ -257,7 +257,7 @@
                         return false;
                     }
                 }
-                app.globalData.url_open('/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?ids=' + ids + '&type=0&is_redirect=1');
+                app.globalData.url_open('/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?ids=' + ids + '&type=1&is_redirect=1');
             },
 
             // url事件
@@ -268,5 +268,5 @@
     };
 </script>
 <style scoped>
-    @import './order.css';
+    @import './recharge.css';
 </style>

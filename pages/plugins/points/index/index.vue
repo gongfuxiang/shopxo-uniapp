@@ -68,7 +68,7 @@
 
                         <!-- 商品兑换 -->
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                            <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" :propPriceField="(data_base.is_pure_exchange_modal || 0) == 1 ? '' : 'price'" propIntegral></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet"></component-goods-list>
                         </view>
 
                         <!-- 积分明细和商品兑换都没有的时候展示无数据提示 -->

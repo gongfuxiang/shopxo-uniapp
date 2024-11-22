@@ -23,7 +23,7 @@
                                         <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
                                             <view class="base-bottom">
                                                 <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                                <text class="sales-price va-m text-size-xss va-m">{{ item.show_price_symbol }}</text>
+                                                <text class="sales-price va-m text-size-xs va-m">{{ item.show_price_symbol }}</text>
                                                 <text class="sales-price va-m">{{ item[propPriceField] }}</text>
                                                 <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                             </view>
@@ -66,25 +66,11 @@
                                     <view class="goods-title multi-text">{{ item.title }}</view>
                                     <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-sm flex-row jc-sb align-c pr">
                                         <view :class="propIsOpenGridBtnSet ? 'open-grid-btn' : ''">
-                                            <block v-if="!propIntegral">
-                                                <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
-                                                    <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                                    <text class="sales-price va-m text-size-xss va-m">{{ item.show_price_symbol }}</text>
-                                                    <text class="sales-price va-m">{{ item[propPriceField] }}</text>
-                                                    <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
-                                                </block>
-                                            </block>
-                                            <block v-else>
-                                                <view class="flex-col">
-                                                    <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
-                                                        <view class="original-price single-text">
-                                                            <text class="text-size-xsss va-m">{{ item.show_price_symbol }}</text>
-                                                            <text class="text-size-xs va-m">{{ item[propPriceField] }}</text>
-                                                            <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
-                                                        </view>
-                                                    </block>
-                                                    <view class="cr-main text-size-xs"> {{ item.plugins_points_exchange_integral }}{{ $t('index.index.t26j9z') }}</view>
-                                                </view>
+                                            <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
+                                                <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
+                                                <text class="sales-price va-m text-size-xs va-m">{{ item.show_price_symbol }}</text>
+                                                <text class="sales-price va-m">{{ item[propPriceField] }}</text>
+                                                <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                             </block>
                                         </view>
                                         <block v-if="propIsOpenGridBtnSet">
@@ -145,7 +131,7 @@
                                                     <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
                                                         <view class="flex-1 flex-width">
                                                             <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                                            <text class="sales-price va-m text-size-xss va-m">{{ item.show_price_symbol }}</text>
+                                                            <text class="sales-price va-m text-size-xs va-m">{{ item.show_price_symbol }}</text>
                                                             <text class="sales-price va-m">{{ item[propPriceField] }}</text>
                                                             <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                                         </view>
@@ -277,11 +263,6 @@
                 default: () => {
                     return {};
                 },
-            },
-            // 积分列表时使用参数
-            propIntegral: {
-                type: Boolean,
-                default: false,
             },
             // 是否开启购物车按钮  ------ 滚动使用
             propOpenCart: {
