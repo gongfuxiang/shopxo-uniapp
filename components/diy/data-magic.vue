@@ -52,7 +52,7 @@
                     </view>
                 </template>
                 <template v-else>
-                    <view v-for="(item, index) in data_magic_list" :key="index" :class="'cr-main' + (is_unlimited_size ? '' : ' cube-selected')" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
+                    <view v-for="(item, index) in data_magic_list" :key="index" class="cr-main cube-selected" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
                         <view class="w h"  :style="item.data_style.background_img_style">
                             <template v-if="item.data_content.data_type == 'goods'">
                                 <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
@@ -68,13 +68,13 @@
                                         <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
                                     <view class="w h">
-                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index" :propIsUnlimitedSize="is_unlimited_size" @onCarouselChange="carousel_change"></magic-carousel>
+                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                     </view>
                                 </view>
                             </template>
                             <template v-else-if="item.data_content.data_type == 'images'">
                                 <div class="w h" :style="item.data_style.chunk_padding_data">
-                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" :propIsUnlimitedSize="is_unlimited_size" @onCarouselChange="carousel_change"></magic-carousel>
+                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                 </div>
                             </template>
                             <template v-else-if="item.data_content.data_type == 'custom'">
@@ -153,7 +153,7 @@
                 style_img_container: '',
                 div_width: 0,
                 magic_scale: 1,
-                is_unlimited_size: false,
+                // is_unlimited_size: false,
             };
         },
         computed: {
@@ -187,8 +187,6 @@
                 const density = !isEmpty(new_form.magic_cube_density) ? new_form.magic_cube_density : 4;
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
-                // 是否不限尺寸
-                const is_unlimited_size = new_form.style_actived === 9 && new_form.limit_size == '0';
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -202,8 +200,7 @@
                     magic_scale: width / 390,
                     div_width: sys_width,
                     cubeCellWidth: sys_width / density,
-                    container_size: is_unlimited_size ? '100%;' : container_height * 2 + 'rpx',
-                    is_unlimited_size: is_unlimited_size,
+                    container_size: container_height * 2 + 'rpx',
                 });
             },
             get_data_magic_list(data, new_style) {
