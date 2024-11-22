@@ -309,8 +309,4 @@
 </script>
 
 <style scoped lang="scss">
-    .main-content {
-        position: absolute;
-        overflow: hidden;
-    }
 </style>

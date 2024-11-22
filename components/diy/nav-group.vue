@@ -1,7 +1,7 @@
 <template>
     <view :style="style_container">
         <view class="pr" :style="style_img_container">
-            <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_height }" @change="slideChange">
+            <swiper class="swiper" circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_height }" @change="slideChange">
                 <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="swiper-item">
                     <view class="banner-img flex-row flex-wrap wh-auto" :class="'banner-img-' + propKey" :style="space">
                         <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="group_width + nav_title_space" :data-value="item1.link.page" @tap="url_open_event">
@@ -34,7 +34,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, radius_computer, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, radius_computer, padding_computer, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     export default {
@@ -118,7 +118,7 @@
                     slides_per_group: group, // 每个轮播图显示的个数
                     group_width: group_width, // 每个导航所占位置
                     nav_title_space: 'row-gap:' + (new_style.title_space || 0) * 2 + 'rpx', // 导航标题间距
-                    space: 'row-gap:' + (new_style.space || 0) * 2 + 'rpx', // 导航间距
+                    space: 'row-gap:' + (new_style.space || 0) * 2 + 'rpx;' + padding_computer(new_style.data_padding), // 导航间距
                     img_size: 'width:' + (new_style.img_size || 0) * 2 + 'rpx;height:' + (new_style.img_size || 0) * 2 + 'rpx;', // 图片大小
                     nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                     nav_content_list: this.get_nav_content_list(new_content, new_style),
@@ -195,8 +195,5 @@
     }
     .gap-x-10 {
         row-gap: 20rpx;
-    }
-    ::v-deep .uni-swiper-wrapper, ::v-deep .swiper-item {
-        overflow: unset !important;
     }
 </style>
