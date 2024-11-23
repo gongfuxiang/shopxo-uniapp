@@ -16,11 +16,11 @@
                         </template>
                         <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
                             <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title }}</view>
-                            <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
-                                <text class="num">{{ item.show_price_symbol }}</text>
+                            <view v-if="propIsShow.includes('price')" :style="propGoodStyle.goods_price_style">
+                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol }}</text>
                                 {{ item.min_price }}
                                 <template v-if="propIsShow.includes('price_unit')">
-                                    <text class="num">{{ item.show_price_unit }}</text>
+                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit }}</text>
                                 </template>
                             </view>
                         </view>
@@ -43,10 +43,10 @@
                                     <imageEmpty :propImageSrc="item.images" :propStyle="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></imageEmpty>
                                 </view>
                             </template>
-                            <view v-if="propIsShow.includes('price')" class="price-suspension text-line-1" :style="propGoodStyle.goods_price_style">
-                                {{ item.show_price_symbol }}{{ item.min_price }}
+                            <view v-if="propIsShow.includes('price')" class="pa" :style="propGoodStyle.goods_price_style + float_pirce_style">
+                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol }}</text>{{ item.min_price }}
                                 <template v-if="propIsShow.includes('price_unit')">
-                                    {{ item.show_price_unit }}
+                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit }}</text>
                                 </template>
                             </view>
                         </view>
@@ -71,11 +71,10 @@
                         </template>
                         <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
                             <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title }}</view>
-                            <view v-if="propIsShow.includes('price')" class="identifying" :style="propGoodStyle.goods_price_style">
-                                <text class="num">{{ item.show_price_symbol }}</text>
-                                {{ item.min_price }}
+                            <view v-if="propIsShow.includes('price')" :style="propGoodStyle.goods_price_style">
+                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol }}</text>{{ item.min_price }}
                                 <template v-if="propIsShow.includes('price_unit')">
-                                    <text class="num">{{ item.show_price_unit }}</text>
+                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit }}</text>
                                 </template>
                             </view>
                         </view>
@@ -88,7 +87,7 @@
 
 <script>
     const app = getApp();
-    import { gradient_computer, radius_computer, padding_computer, background_computer, isEmpty } from "@/common/js/common/common.js";
+    import { gradient_computer, radius_computer, padding_computer, background_computer, isEmpty, margin_computer } from "@/common/js/common/common.js";
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -137,6 +136,10 @@
                 style_container: '',
                 style_img_container: '',
                 block_size: '',
+                float_pirce_style: '',
+                old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
+                old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
+                old_margin: { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 },
             };
         },
         mounted() {
@@ -155,7 +158,7 @@
             isEmpty,
             init() {
                 if (!isEmpty(this.propGoodStyle)) {
-                    const { goods_color_list = [], goods_direction = '180deg', goods_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 }, goods_background_img = [], goods_background_img_style = '2', goods_chunk_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 }} = this.propGoodStyle;
+                    const { goods_color_list = [], goods_direction = '180deg', goods_radius = old_radius, goods_background_img = [], goods_background_img_style = '2', goods_chunk_padding = old_padding, goods_price_color_list = [], goods_price_direction = '180deg', goods_price_radius = old_radius, goods_price_padding = old_padding, goods_price_margin = old_margin, goods_price_location = 'center'} = this.propGoodStyle;
                     const style_data = {
                         color_list: goods_color_list,
                         direction: goods_direction,
@@ -165,7 +168,18 @@
                         background_img_style: goods_background_img_style,
                     }
                     const total_gap = this.propGoodStyle.data_goods_gap * (this.propValue.length - 1);
+                    const data = {
+                        color_list: goods_price_color_list,
+                        direction: goods_price_direction,
+                    }
+                    let location = 'left:50%;transform:translateX(-50%);bottom:0;'
+                    if (goods_price_location == 'left') {
+                        location = 'left:0;bottom:0;';
+                    } else if (goods_price_location == 'right') {
+                        location = 'right:0;bottom:0;';
+                    }
                     this.setData({
+                        float_pirce_style: gradient_computer(data) + radius_computer(goods_price_radius) + padding_computer(goods_price_padding) + margin_computer(goods_price_margin) + location,
                         style_container: gradient_computer(style_data) + radius_computer(goods_radius), // 用于样式显示
                         style_img_container: this.propFlex == 'col' ? background_computer(style_img_data) : padding_computer(goods_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                         block_size: this.propOuterflex == 'row' ? 'height:100%;width:calc((100% - ' + total_gap * 2 + 'rpx) / ' + this.propNum  + ');' : 'width: 100%;height:calc((100% - ' + total_gap * 2 + 'rpx) / ' + this.propNum  + ');'
@@ -187,22 +201,6 @@
 </script>
 
 <style scoped lang="scss">
-    .identifying .num {
-        font-size: 18rpx;
-        line-height: 18rpx;
-    }
-    .price-suspension {
-        width: calc(100% - 32rpx);
-        margin: 0 8rpx;
-        background: #fff;
-        font-size: 24rpx;
-        line-height: 34rpx;
-        color: #ea3323;
-        text-align: center;
-        position: absolute;
-        bottom: 8rpx;
-        border-radius: 16rpx;
-    }
     .w {
         width: 100%;
     }

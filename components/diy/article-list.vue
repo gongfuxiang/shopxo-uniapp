@@ -49,15 +49,18 @@
                                             <template v-else>
                                                 <image :src="item.data.cover" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
                                             </template>
+                                            <template v-if="field_show.includes('3') && name_float == '1'">
+                                                <view class="text-line-1" :style="article_name + float_name_style">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                            </template>
                                             <!-- 角标 -->
                                             <subscriptIndex :propValue="propValue"></subscriptIndex>
                                         </view>
-                                        <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
+                                        <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || (field_show.includes('3') && name_float == '0')" class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
                                             <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                                <div v-if="field_show.includes('3')" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
+                                                <div v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
                                                 <div v-if="field_show.includes('2')" class="desc text-line-1" :style="article_desc">{{ item.data.describe || '' }}</div>
                                             </div>
-                                            <view class="flex-row jc-sb gap-8 align-e margin-top">
+                                            <view :class="'flex-row jc-sb gap-8 align-e' + ((field_show.includes('3') && name_float == '0') || field_show.includes('2') ? ' margin-top' : '')">
                                                 <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                                 <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
                                                     <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
@@ -80,7 +83,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer, gradient_computer, margin_computer } from '@/common/js/common/common.js';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -153,6 +156,9 @@
                 carousel_height_computer: '',
                 // 文章内容高度
                 article_name_height_computer: '',
+                // 文章名称浮动样式
+                float_name_style: '',
+                name_float: '0',
                 // 图片大小
                 img_size: '',
                 // 文章轮播数据
@@ -179,6 +185,7 @@
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
                 this.setData({
+                    name_float: !isEmpty(new_content.name_float) ? new_content.name_float : '0',
                     // 判断是自动还是手动
                     data_list:
                         new_content.data_type == '0'
@@ -212,6 +219,7 @@
                     next_margin: new_style.rolling_fashion == 'translation' ? '-' + new_style.article_spacing_margin + 'px' : '0rpx',
                     // 文章内容高度
                     slides_per_group: new_style.rolling_fashion == 'translation' ?  Number(new_content.carousel_col) + 1 : 1,
+
                 });
                 // 默认数据
                 const product_style_list = [
@@ -285,6 +293,12 @@
                     // 计算间隔的空间。(gap * gap数量) / 模块数量
                     let gap = temp_carousel_col !== '0' ? (new_style.article_spacing * temp_carousel_col) / (Number(temp_carousel_col) + 1) : '0';
                     const multicolumn_columns_width = new_style.rolling_fashion == 'translation' ? `margin-right: ${ new_style.article_spacing }px;width:100%;` : `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);`;
+                    const { name_bg_color_list = [], name_bg_direction = '180deg', name_bg_radius, name_bg_padding, name_bg_margin } = new_style;
+                    const data = {
+                        color_list: name_bg_color_list,
+                        direction: name_bg_direction,
+                    }
+                    let location = 'position:absolute;bottom:0;left:0;right:0;'
                     // 轮播宽度
                     this.setData({
                         // 滚动时间
@@ -297,6 +311,7 @@
                         carousel_height_computer: new_style.article_height + 'px',
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
+                        float_name_style: gradient_computer(data) + (!isEmpty(name_bg_radius) ? radius_computer(name_bg_radius) : '') + (!isEmpty(name_bg_padding) ? padding_computer(name_bg_padding) : '' ) + (!isEmpty(name_bg_padding) ? margin_computer(name_bg_margin) : '') + location,
                         article_img_style: background_computer(article_data)
                     });
                     // 文章轮播数据

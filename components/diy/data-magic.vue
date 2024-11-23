@@ -213,6 +213,10 @@
                     data_style.indicator_location_style = get_indicator_location_style(data_style);
                     data_style.background_style = gradient_computer(data_style);
                     data_style.background_img_style = background_computer(data_style);
+                    // 商品价格处理
+                    data_style.goods_price_symbol_style = this.goods_trends_config(data_style, 'price_symbol');
+                    data_style.goods_price_unit_style = this.goods_trends_config(data_style, 'price_unit');
+
                     let fit = '';
                     if (data_content.img_fit == 'contain') {
                         fit = 'aspectFit';
