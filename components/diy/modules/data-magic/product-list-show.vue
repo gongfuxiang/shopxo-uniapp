@@ -158,7 +158,7 @@
             isEmpty,
             init() {
                 if (!isEmpty(this.propGoodStyle)) {
-                    const { goods_color_list = [], goods_direction = '180deg', goods_radius = old_radius, goods_background_img = [], goods_background_img_style = '2', goods_chunk_padding = old_padding, goods_price_color_list = [], goods_price_direction = '180deg', goods_price_radius = old_radius, goods_price_padding = old_padding, goods_price_margin = old_margin, goods_price_location = 'center'} = this.propGoodStyle;
+                    const { goods_color_list = [], goods_direction = '180deg', goods_radius = this.old_radius, goods_background_img = [], goods_background_img_style = '2', goods_chunk_padding = this.old_padding, goods_price_color_list = [], goods_price_direction = '180deg', goods_price_radius = this.old_radius, goods_price_padding = this.old_padding, goods_price_margin = this.old_margin, goods_price_location = 'center'} = this.propGoodStyle;
                     const style_data = {
                         color_list: goods_color_list,
                         direction: goods_direction,

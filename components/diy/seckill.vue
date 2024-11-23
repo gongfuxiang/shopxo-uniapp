@@ -73,12 +73,12 @@
                                     <view class="flex-row align-e gap-10 jc-sb">
                                         <view class="flex-col gap-5">
                                             <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
-                                                <text class="identifying">{{ item.show_price_symbol }}</text>
+                                                <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.seckill_pirce_title ?  form.seckill_pirce_title : ''}}</text>
+                                                <text :style="price_symbol">{{ item.show_price_symbol }}</text>
                                                 <text :style="price_style">{{ item.min_price }}</text>
-                                                <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
+                                                <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
                                             </view>
-                                            <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                            <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="original_price">
                                                 <text class="original-price text-line-1 flex-1">
                                                     {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                     <template v-if="is_show('original_price_unit')">
@@ -140,12 +140,12 @@
                                             <view class="flex-row align-e gap-10 jc-sb">
                                                 <view class="flex-col gap-5">
                                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</text>
-                                                        <text class="identifying">{{ item.show_price_symbol }}</text>
+                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.seckill_pirce_title ? form.seckill_pirce_title : ''}}</text>
+                                                        <text :style="price_symbol">{{ item.show_price_symbol }}</text>
                                                         <text :style="price_style">{{ item.min_price }}</text>
-                                                        <text v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</text>
+                                                        <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
                                                     </view>
-                                                    <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                                    <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="original_price">
                                                         <text class="original-price text-line-1 flex-1">
                                                             {{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                             <template v-if="is_show('original_price_unit')">
@@ -249,6 +249,10 @@
                 price_style: '',
                 button_style: '',
                 simple_desc: '',
+                price_symbol: '',
+                price_unit: '',
+                original_price: '',
+                // 商品列表
                 sckill_list: [],
             };
         },
@@ -364,10 +368,14 @@
                     price_style: this.trends_config(new_style, 'price'),
                     button_style: this.trends_config(new_style, 'button', 'gradient'),
                     simple_desc: this.trends_config(new_style, 'simple_desc', 'desc'),
+                    price_symbol: !isEmpty(new_style.shop_price_symbol_color) ? this.trends_config(new_style, 'price_symbol') : 'font-size: 18rpx;color: #EA3323;' ,
+                    price_unit: !isEmpty(new_style.shop_price_unit_color) ? this.trends_config(new_style, 'price_unit') : 'font-size: 18rpx;color: #EA3323;',
+                    original_price: this.trends_config(new_style, 'original_price'),
                     list: this.get_shop_content_list(new_list, new_form, new_style),
                     sckill_list: new_list,
                     img_size: img_style,
-                });        
+                });
+
             },
             get_shop_content_list(list, form, new_style) {
                 // 深拷贝一下，确保不会出现问题
@@ -553,9 +561,6 @@
 </script>
 
 <style scoped lang="scss">
-    .identifying {
-        font-size: 18rpx;
-    }
     .seckill-head {
         padding: 30rpx 26rpx;
         width: 100%;
