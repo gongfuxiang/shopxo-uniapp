@@ -28,6 +28,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propType: {
+                type: String,
+                default: 'outer',
+            },
         },
         data() {
             return {
@@ -45,9 +49,9 @@
             isEmpty,
             // 初始化数据
             init() {
-                if (!isEmpty(this.propValue) && !isEmpty(this.propValue.style.subscript_style)) {
+                if (!isEmpty(this.propValue)) {
                     const new_content = this.propValue.content || {};
-                    const new_style = this.propValue.style || {};
+                    const new_style = this.propType == 'outer' ? this.propValue.style || {} : { subscript_style: this.propValue.style || {} };
                     
                     // 视频比例
                     this.setData({

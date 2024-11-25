@@ -17,7 +17,7 @@
                             </block>
                             <block v-else>
                                 <block v-if="!isEmpty(item)">
-                                    <view class="oh re" :class="img_size">
+                                    <view class="oh pr" :class="img_size">
                                         <view v-if="!isEmpty(item.new_cover)" :style="img_size">
                                             <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                         </view>
@@ -117,7 +117,7 @@
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-index="index1" :data-split-index="index" :data-value="item.goods_url" @tap.stop="url_event">
                                     <view :class="layout_type" :style="layout_img_style">
                                         <block v-if="!isEmpty(item)">
-                                            <view class="oh re" :class="'flex-img' + theme">
+                                            <view class="oh pr" :class="'flex-img' + theme">
                                                 <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
                                                     <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                                 </view>
