@@ -52,16 +52,17 @@
                 if (!isEmpty(this.propValue)) {
                     const new_content = this.propValue.content || {};
                     const new_style = this.propType == 'outer' ? this.propValue.style || {} : { subscript_style: this.propValue.style || {} };
-                    
-                    // 视频比例
-                    this.setData({
-                        form: new_content,
-                        new_style: new_style,
-                        corner_marker: this.get_corner_marker(new_style),
-                        text_size: `font-size: ${ new_style.subscript_style.text_or_icon_size * 2 }rpx;color: ${ new_style.subscript_style.text_or_icon_color };`,
-                        corner_img_marker: common_img_computer(new_style.subscript_style),
-                        img_style: `height: ${new_style.subscript_style.img_height * 2}rpx; width: ${new_style.subscript_style.img_width * 2}rpx`,
-                    });
+                    if (!isEmpty(new_style.subscript_style)) {
+                        // 视频比例
+                        this.setData({
+                            form: new_content,
+                            new_style: new_style,
+                            corner_marker: this.get_corner_marker(new_style),
+                            text_size: `font-size: ${ new_style.subscript_style.text_or_icon_size * 2 }rpx;color: ${ new_style.subscript_style.text_or_icon_color };`,
+                            corner_img_marker: common_img_computer(new_style.subscript_style),
+                            img_style: `height: ${new_style.subscript_style.img_height * 2}rpx; width: ${new_style.subscript_style.img_width * 2}rpx`,
+                        });
+                    }
                 }
             },
             get_corner_marker(new_style) {
