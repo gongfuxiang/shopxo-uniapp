@@ -1,5 +1,5 @@
 <template>
-    <view v-if="data_source_content_list.length > 0 && form.data_source_direction == '0'">
+    <template v-if="data_source_content_list.length > 0 && form.data_source_direction == '0'">
         <view v-for="(item, index) in data_source_content_list" :key="index">
             <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container">
                 <view class="custom-container wh-auto ht-auto" :style="style_img_container">
@@ -8,7 +8,7 @@
             </view>
             
         </view>
-    </view>
+    </template>
     <div v-else-if="data_source_content_list.length > 0 && ['1', '2'].includes(form.data_source_direction)" class="oh pr">
         <swiper class="w flex" circular="true" :vertical="form.data_source_direction != '2'"  :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
             <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
@@ -22,13 +22,13 @@
             </swiper-item>
         </swiper>
     </div>
-    <view v-else>
+    <template v-else>
         <view :style="style_container">
             <view class="custom-container wh-auto ht-auto" :style="style_img_container">
                 <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
             </view>
         </view>
-    </view>
+    </template>
 </template>
 
 <script>
