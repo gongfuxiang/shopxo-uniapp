@@ -157,8 +157,6 @@ export default {
                 nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                 nav_content_list: this.get_nav_content_list(new_content, new_style),
             });
-            console.log(this.nav_content_list);
-            
             setTimeout(() => {
                 const query = uni.createSelectorQuery().in(this);
                 // 选择我们想要的元素
@@ -192,7 +190,6 @@ export default {
                         style: this.subscriptStyle,
                     } : item.subscript,
             }));
-            console.log(list);
             // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
             if (list.length > 0 && data.display_style == 'slide') {
                 // 存储数据显示
