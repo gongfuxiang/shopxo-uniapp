@@ -127,6 +127,8 @@ export default {
             let style = `background: ${ new_style?.search_bg_color || '' };border: 1px solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
             if (form.is_center == '1') {
                 style += `justify-content: center;`;
+            } else {
+                style += `padding-left: ${ new_style.search_padding_left ? new_style.search_padding_left : 15 }px;`;
             }
             return style;
         },

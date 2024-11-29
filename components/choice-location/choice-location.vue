@@ -1,22 +1,24 @@
 <template>
     <view :class="theme_view">
-        <view v-if="propIsShowAddressChoice" class="choice-location pr wh-auto flex-row gap-2 align-c" @tap="choose_user_location">
-            <view v-if="propIsLeftIconArrow" class="dis-inline-block va-m lh">
-                <block v-if="propLeftImgValue.length > 0">
-                    <image :src="propLeftImgValue[0].url" class="dis-block" mode="heightFix"></image>
-                </block>
-                <block v-else>
-                    <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
-                </block>
-            </view>
-            <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
-            <view v-if="propIsRightIconArrow" class="va-m lh dis-inline-block margin-left-xs">
-                <block v-if="propRightImgValue.length > 0">
-                    <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>
-                </block>
-                <block v-else>
-                    <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
-                </block>
+        <view v-if="propIsShowAddressChoice" class="choice-location pr wh-auto oh" :style="propLocationContainerStyle" @tap="choose_user_location">
+            <view class="flex-row gap-2 align-c oh" :style="propLocationImgContainerStyle">
+                <view v-if="propIsLeftIconArrow" class="dis-inline-block va-m lh">
+                    <block v-if="propLeftImgValue.length > 0">
+                        <image :src="propLeftImgValue[0].url" class="dis-block" mode="heightFix"></image>
+                    </block>
+                    <block v-else>
+                        <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
+                    </block>
+                </view>
+                <view class="va-m dis-inline-block margin-left-xs text-size-md single-text text" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
+                <view v-if="propIsRightIconArrow" class="va-m lh dis-inline-block margin-left-xs">
+                    <block v-if="propRightImgValue.length > 0">
+                        <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>
+                    </block>
+                    <block v-else>
+                        <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
+                    </block>
+                </view>
             </view>
         </view>
     </view>
@@ -91,6 +93,14 @@
             propRightIconValue: {
                 type: String,
                 default: 'icon-arrow-bottom',
+            },
+            propLocationContainerStyle: {
+                type: String,
+                default: '',
+            },
+            propLocationImgContainerStyle: {
+                type: String,
+                default: '',
             },
         },
         // 页面被展示

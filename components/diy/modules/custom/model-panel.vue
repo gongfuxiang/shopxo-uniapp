@@ -1,5 +1,5 @@
 <template>
-    <view class="wh-auto ht-auto re oh" :style="com_style" :data-value="form.link && form.link.page" @tap="url_event">
+    <view class="wh-auto ht-auto re oh" :style="com_style" :data-value="panel_url" @tap="url_event">
         <div class="wh-auto ht-auto" :style="com_img_style"></div>
     </view>
 </template>
@@ -36,6 +36,7 @@
                 text_title: '',
                 text_style: '',
                 com_style: '',
+                panel_url: '',
             };
         },
         watch: {
@@ -48,10 +49,19 @@
         },
         methods: {
             init() {
+                let url = '';
+                if (!isEmpty(this.propValue.link)) {
+                    url = this.propValue.link?.page || '';
+                } else if (!isEmpty(this.propSourceList.data)) {
+                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                } else {
+                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                }
                 this.setData({
                     form: this.propValue,
                     com_style: this.get_com_style(this.propValue, this.propScale),
                     com_img_style: this.get_com_img_style(this.propValue),
+                    panel_url: url,
                 });
             },
             get_com_style(form, scale) {

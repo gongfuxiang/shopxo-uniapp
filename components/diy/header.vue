@@ -49,9 +49,9 @@
                                                 </view>
                                             </view>
                                             <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c gap-10">
-                                                <view class="flex-row align-c gap-2">
+                                                <view :class="'flex-row align-c gap-2 ' + (form.content.positioning_name_float == '1' ? 'pa z-i' : '')">
                                                     <view class="flex-1">
-                                                        <component-choice-location :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
+                                                        <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
                                                     </view>
                                                 </view>
                                                 <template v-if="['5'].includes(form.content.theme) && !is_search_alone_row">
@@ -115,7 +115,7 @@
     import imageEmpty from '@/components/diy/modules/image-empty';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     import componentBadge from '@/components/badge/badge';
-    import { isEmpty, background_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { isEmpty, background_computer, gradient_computer, margin_computer, padding_computer, radius_computer } from '@/common/js/common/common.js';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -186,6 +186,9 @@
                 is_search_alone_row: false,
                 is_icon_alone_row: false,
                 data_alone_row_space: '0rpx',
+                // 定位设置
+                style_location_container: '',
+                style_location_img_container: '',
             };
         },
         watch: {
@@ -264,8 +267,37 @@
                     data_alone_row_space: new_style.data_alone_row_space * 2 + 'rpx',
                     is_search_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search'),
                     is_icon_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon'),
+                    style_location_container: this.get_style_location_container(new_style),
+                    style_location_img_container: this.get_style_location_img_container(new_style),
                 });
                 this.$emit('onImmersionModelCallBack', this.is_immersion_model);
+            },
+            // 定位设置
+            get_style_location_container(new_style) {
+                const style = {
+                    color_list: new_style.location_color_list,
+                    direction: new_style.location_direction,
+                }
+                const height = 32 - new_style.location_margin.margin_top - new_style.location_margin.margin_bottom;
+                return gradient_computer(style) + margin_computer(new_style.location_margin) + radius_computer(new_style.location_radius) + `color: ${new_style.location_color};height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
+            },
+            // 背景图片
+            get_style_location_img_container(new_style){
+                const { location_background_img, location_background_img_style, location_padding, location_border_direction, location_border_size, location_border_color } = new_style;
+                const style = {
+                    background_img: location_background_img,
+                    background_img_style: location_background_img_style,
+                }
+                let border = ``;
+                if (new_style.location_border_show == '1') {
+                    // 边框
+                    if (location_border_direction == 'all') {
+                        border += `border: ${location_border_size}px solid ${location_border_color};`;
+                    } else {
+                        border += `border-${location_border_direction}: ${location_border_size}px solid ${location_border_color};`;
+                    }
+                }
+                return background_computer(style) + padding_computer(location_padding) + border;
             },
             // 获取顶部导航高度
             get_nav_height() {
