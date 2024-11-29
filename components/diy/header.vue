@@ -297,7 +297,8 @@
                         border += `border-${location_border_direction}: ${location_border_size}px solid ${location_border_color};`;
                     }
                 }
-                return background_computer(style) + padding_computer(location_padding) + border;
+                const height = 32 - new_style.location_margin.margin_top - new_style.location_margin.margin_bottom;
+                return background_computer(style) + padding_computer(location_padding) + border + `height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
             },
             // 获取顶部导航高度
             get_nav_height() {
