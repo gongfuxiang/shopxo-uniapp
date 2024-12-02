@@ -287,7 +287,7 @@
                     direction: new_style?.location_direction || '',
                 }
                 const height = 32 - location_margin.margin_top - location_margin.margin_bottom;
-                return gradient_computer(style) + radius_computer(location_radius) + `color: ${new_style?.location_color || ''};height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
+                return gradient_computer(style) + radius_computer(location_radius) + `color: ${!isEmpty(new_style.location_color) ? new_style.location_color : new_style?.position_color || ''};height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
             },
             // 背景图片
             get_style_location_img_container(new_style){
