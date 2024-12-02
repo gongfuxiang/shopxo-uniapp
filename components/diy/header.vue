@@ -50,7 +50,7 @@
                                             </view>
                                             <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c gap-10">
                                                 <view :class="'flex-row align-c gap-2 ' + (form.content.positioning_name_float == '1' ? 'pa z-i' : '')">
-                                                    <view class="flex-1">
+                                                    <view :style="location_margin">
                                                         <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="form.style.position_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
                                                     </view>
                                                 </view>
@@ -189,6 +189,11 @@
                 // 定位设置
                 style_location_container: '',
                 style_location_img_container: '',
+                location_margin: '', // 悬浮之后有间距，所以要将margin设置成外padding
+                // 默认数据
+                old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
+                old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
+                old_margin: { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 },
             };
         },
         watch: {
@@ -253,6 +258,7 @@
                 new_text_style += `right:-${custom.width + 10}px;`;
                 // #endif
                 // #endif
+                const  { location_margin = this.old_margin } = new_style;
                 this.setData({
                     form: this.propValue,
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : new_style.immersive_style === '1' ? 'position:absolute;' : 'position:reactive;',
@@ -269,27 +275,29 @@
                     is_icon_alone_row: new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon'),
                     style_location_container: this.get_style_location_container(new_style),
                     style_location_img_container: this.get_style_location_img_container(new_style),
+                    location_margin: `padding: ${location_margin.margin_top * 2}rpx ${location_margin.margin_right * 2}rpx ${location_margin.margin_bottom * 2}rpx ${location_margin.margin_left * 2}rpx;`, // 悬浮之后有间距，所以要将margin设置成外padding
                 });
                 this.$emit('onImmersionModelCallBack', this.is_immersion_model);
             },
             // 定位设置
             get_style_location_container(new_style) {
+                const  { location_margin = this.old_margin,  location_radius = this.old_radius} = new_style;
                 const style = {
-                    color_list: new_style.location_color_list,
-                    direction: new_style.location_direction,
+                    color_list: new_style?.location_color_list || [],
+                    direction: new_style?.location_direction || '',
                 }
-                const height = 32 - new_style.location_margin.margin_top - new_style.location_margin.margin_bottom;
-                return gradient_computer(style) + margin_computer(new_style.location_margin) + radius_computer(new_style.location_radius) + `color: ${new_style.location_color};height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
+                const height = 32 - location_margin.margin_top - location_margin.margin_bottom;
+                return gradient_computer(style) + radius_computer(location_radius) + `color: ${new_style?.location_color || ''};height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
             },
             // 背景图片
             get_style_location_img_container(new_style){
-                const { location_background_img, location_background_img_style, location_padding, location_border_direction, location_border_size, location_border_color } = new_style;
+                const { location_background_img = [], location_background_img_style = '2', location_border_show = '0', location_padding = this.old_padding, location_margin = this.old_margin, location_border_direction = '', location_border_size = 0, location_border_color = '' } = new_style;
                 const style = {
                     background_img: location_background_img,
                     background_img_style: location_background_img_style,
                 }
                 let border = ``;
-                if (new_style.location_border_show == '1') {
+                if (location_border_show == '1') {
                     // 边框
                     if (location_border_direction == 'all') {
                         border += `border: ${location_border_size}px solid ${location_border_color};`;
@@ -297,7 +305,7 @@
                         border += `border-${location_border_direction}: ${location_border_size}px solid ${location_border_color};`;
                     }
                 }
-                const height = 32 - new_style.location_margin.margin_top - new_style.location_margin.margin_bottom;
+                const height = 32 - (location_margin.margin_top || 0) - (location_margin.margin_bottom || 0);
                 return background_computer(style) + padding_computer(location_padding) + border + `height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
             },
             // 获取顶部导航高度

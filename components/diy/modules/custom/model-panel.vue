@@ -4,7 +4,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, background_computer, gradient_handle } from '@/common/js/common/common.js';
+    import { radius_computer, background_computer, gradient_handle, isEmpty } from '@/common/js/common/common.js';
     
     export default {
         props: {
