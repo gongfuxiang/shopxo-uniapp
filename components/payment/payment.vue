@@ -3,7 +3,7 @@
         <!-- 支付二维码展示 -->
         <component-popup :propShow="popup_view_pay_qrcode_is_show" propPosition="bottom" @onclose="popup_view_pay_qrcode_event_close">
             <view class="padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
-                <block v-if="(popup_view_pay_data || null) == null || (popup_view_pay_data.qrcode_url || null) == null || (popup_view_pay_data.name || null) == null || (popup_view_pay_data.check_url || null) == null || (popup_view_pay_data.order_no || null) == null">
+                <block v-if="(popup_view_pay_data || null) == null || (popup_view_pay_data.qrcode_url || null) == null || (popup_view_pay_data.name || null) == null || (popup_view_pay_data.order_no || null) == null">
                     <text class="cr-grey">{{$t('payment.payment.973g2e')}}</text>
                 </block>
                 <block v-else>
@@ -59,6 +59,17 @@
                 </block>
             </view>
         </component-popup>
+
+        <!-- 支付中提示弹窗 -->
+        <view v-if="payment_confirm_modal_status" class="payment-confirm-modal">
+            <view class="content padding-xl margin-xxl tc bg-white border-radius-main">
+                <view class="padding-vertical-xxxxl">{{$t('common.payment_in_text')}}</view>
+                <view class="margin-top-lg">
+                    <button type="default" size="mini" class="bg-white br-black cr-black text-size-sm round margin-right-xxxxl" data-type="0" @tap="payment_confirm_event">{{$t('common.not_have_name')}}</button>
+                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round margin-left-xxxxl" data-type="1" @tap="payment_confirm_event">{{$t('order.order.s8g966')}}</button>
+                </view>
+            </view>
+        </view>
     </view>
 </template>
 <script>
@@ -75,9 +86,10 @@
                 // 弹窗开关
                 is_show_payment_popup: false,
                 popup_view_pay_qrcode_is_show: false,
-                // 定时器
-                popup_view_pay_timer: null,
+                // 支付弹窗展示数据
                 popup_view_pay_data: null,
+                // 定时器
+                pay_statuc_check_timer: null,
                 // 支付id
                 payment_id: 0,
                 submit_disabled_status: true,
@@ -86,6 +98,10 @@
                 // 打开url地址定时任务和状态
                 open_pay_url_timer: null,
                 open_pay_url_status: true,
+                // 支付返回数据
+                pay_response_data: {},
+                // 支付确认弹窗
+                payment_confirm_modal_status: false,
             };
         },
         props: {
@@ -230,9 +246,12 @@
             },
             // 支付二维码展示窗口事件
             popup_view_pay_qrcode_event_close(e) {
+                // 关闭弹窗
                 this.setData({
                     popup_view_pay_qrcode_is_show: false,
                 });
+                // 清除定时和支付数据
+                clearInterval(this.pay_statuc_check_timer);
             },
 
             // 选择支付方式
@@ -348,9 +367,13 @@
                         dataType: 'json',
                         success: (res) => {
                             uni.hideLoading();
+                            var data = res.data.data;
+                            this.setData({
+                                pay_response_data: data || {}
+                            });
                             if (res.data.code == 0) {
                                 // 是否直接支付成功
-                                if ((res.data.data.is_success || 0) == 1) {
+                                if ((data.is_success || 0) == 1) {
                                     // 数据设置
                                     this.order_item_pay_success_handle(data, order_id, false);
                                     app.globalData.showToast(this.$t('paytips.paytips.679rxu'), 'success');
@@ -359,11 +382,10 @@
                                     }, 2000);
                                 } else {
                                     // 支付方式类型
-                                    let payment_type = Number(res.data.data.is_payment_type || 0);
+                                    let payment_type = Number(data.is_payment_type || 0);
                                     switch (payment_type) {
                                         // 正常线上支付
                                         case 0:
-                                            var data = res.data.data;
                                             // #ifdef APP
                                             this.app_pay_handle(this, data, order_id);
                                             // #endif
@@ -416,13 +438,13 @@
                                 }
                             } else {
                                 // 是否返回html代码展示、则提示错误
-                                if (res.data.code == -6666 && (res.data.data || null) != null) {
+                                if (res.data.code == -6666 && (data || null) != null) {
                                     this.setData({
-                                        popup_view_pay_data: res.data.data,
+                                        popup_view_pay_data: data,
                                         popup_view_pay_html_is_show: true,
                                     });
                                 } else {
-                                    this.order_item_pay_fail_handle(res.data.data, order_id, res.data.msg);
+                                    this.order_item_pay_fail_handle(data, order_id, res.data.msg);
                                 }
                             }
                         },
@@ -478,7 +500,7 @@
                     }
                     // 显示加载层
                     uni.showLoading({
-                        title: this.$t('common.loading_in_text'),
+                        title: self.$t('common.loading_in_text'),
                         mask: true
                     });
                     // 设置打开url状态
@@ -557,43 +579,64 @@
             },
             // 小程序: 微信、支付宝、百度、头条、QQ
             mp_pay_handle(self, data, order_id) {
-                uni.requestPayment({
-                    // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
-                    orderInfo: data.data,
-                    // #endif
-                    // #ifdef MP-QQ
-                    package: data.data,
-                    // #endif
-                    // #ifdef MP-WEIXIN
-                    timeStamp: data.data.timeStamp,
-                    nonceStr: data.data.nonceStr,
-                    package: data.data.package,
-                    signType: data.data.signType,
-                    paySign: data.data.paySign,
-                    // #endif
-                    // #ifdef MP-TOUTIAO
-                    service: 5,
-                    // #endif
-                    success: (res) => {
-                        // #ifdef MP-ALIPAY
-                        if (res.resultCode != 9000) {
-                            self.order_item_pay_fail_handle(data, order_id, res.memo || self.$t('paytips.paytips.6y488i'));
-                            return false;
+                // 是否打开另一个小程序
+                if (typeof data.data != 'string' && (data.data.appid || null) != null && (data.data.path || null) != null && (data.data.order_no || null) != null) {
+                    uni.navigateToMiniProgram({
+                        appId: data.data.appid,
+                        path: data.data.path,
+                        extraData: data.data.extra_data || {},
+                        success(res) {
+                            // 支付状态验证
+                            self.pay_status_check_handle(self, data, order_id);
+
+                            // 提示弹窗
+                            self.setData({
+                                payment_confirm_modal_status: true,
+                            });
+                        },
+                        fail(res) {
+                            app.globalData.showToast(self.$t('paytips.paytips.6y488i'));
                         }
+                    });
+                } else {
+                    uni.requestPayment({
+                        // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
+                        orderInfo: data.data,
+                        // #endif
+                        // #ifdef MP-QQ
+                        package: data.data,
+                        // #endif
+                        // #ifdef MP-WEIXIN
+                        timeStamp: data.data.timeStamp,
+                        nonceStr: data.data.nonceStr,
+                        package: data.data.package,
+                        signType: data.data.signType,
+                        paySign: data.data.paySign,
                         // #endif
                         // #ifdef MP-TOUTIAO
-                        if (res.code != 0) {
-                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
-                            return false;
-                        }
+                        service: 5,
                         // #endif
-                        // 数据设置
-                        self.order_item_pay_success_handle(data, order_id);
-                    },
-                    fail: (res) => {
-                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
-                    },
-                });
+                        success: (res) => {
+                            // #ifdef MP-ALIPAY
+                            if (res.resultCode != 9000) {
+                                self.order_item_pay_fail_handle(data, order_id, res.memo || self.$t('paytips.paytips.6y488i'));
+                                return false;
+                            }
+                            // #endif
+                            // #ifdef MP-TOUTIAO
+                            if (res.code != 0) {
+                                self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                return false;
+                            }
+                            // #endif
+                            // 数据设置
+                            self.order_item_pay_success_handle(data, order_id);
+                        },
+                        fail: (res) => {
+                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                        },
+                    });
+                }
             },
             // QQ支付处理
             qq_pay_handle(self, data, order_id) {
@@ -662,52 +705,15 @@
                         }
                     }
                     // 二维码展示
-                    if ((data.data.qrcode_url || null) != null && (data.data.name || null) != null && (data.data.check_url || null) != null && (data.data.order_no || null) != null) {
+                    if ((data.data.qrcode_url || null) != null && (data.data.name || null) != null && (data.data.order_no || null) != null) {
                         status = true;
                         // 显示支付窗口
                         self.setData({
                             popup_view_pay_data: data.data,
                             popup_view_pay_qrcode_is_show: true,
                         });
-                        if (self.propQrcodeUrl) {
-                            // 定时校验支付状态
-                            var timer = setInterval(function () {
-                                uni.request({
-                                    url: self.propQrcodeUrl,
-                                    method: 'POST',
-                                    data: {
-                                        order_no: self.popup_view_pay_data.order_no,
-                                    },
-                                    dataType: 'json',
-                                    success: (res) => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            // 清除定时和支付数据
-                                            clearInterval(self.popup_view_pay_timer);
-                                            self.setData({
-                                                popup_view_pay_data: null,
-                                                popup_view_pay_qrcode_is_show: false,
-                                            });
-                                            // 数据设置
-                                            self.order_item_pay_success_handle(data, order_id);
-                                        } else {
-                                            // -300支付中、其它状态则提示错误
-                                            if (res.data.code != -300) {
-                                                clearInterval(self.popup_view_pay_timer);
-                                                app.globalData.showToast(res.data.msg);
-                                            }
-                                        }
-                                    },
-                                    fail: () => {
-                                        clearInterval(self.popup_view_pay_timer);
-                                        self.order_item_pay_fail_handle(data, order_id, self.$t('common.internet_error_tips'));
-                                    },
-                                });
-                            }, 3000);
-                            self.setData({
-                                popup_view_pay_timer: timer,
-                            });
-                        }
+                        // 状态验证
+                        self.pay_status_check_handle(self, data, order_id);
                     }
                     // 返回html表单
                     if ((data.data.html || null) != null) {
@@ -725,6 +731,64 @@
                     if (!status) {
                         app.globalData.showToast(data.payment.name + self.$t('payment.payment.2rw3qh'));
                     }
+                }
+            },
+
+            // 支付状态验证处理
+            pay_status_check_handle(self, data, order_id) {
+                // 先清除已存在的定时
+                clearInterval(self.pay_statuc_check_timer);
+                // 定时校验支付状态
+                var timer = setInterval(function () {
+                    uni.request({
+                        url: self.propQrcodeUrl,
+                        method: 'POST',
+                        data: {
+                            order_no: data.data.order_no,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            if (res.data.code == 0) {
+                                // 清除定时、支付数据、弹窗
+                                clearInterval(self.pay_statuc_check_timer);
+                                self.setData({
+                                    popup_view_pay_data: null,
+                                    popup_view_pay_qrcode_is_show: false,
+                                    payment_confirm_modal_status: false,
+                                });
+                                // 数据设置
+                                self.order_item_pay_success_handle(data, order_id);
+                            } else {
+                                // -333支付中、其它状态则提示错误
+                                if (res.data.code != -333) {
+                                    clearInterval(self.pay_statuc_check_timer);
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        },
+                        fail: () => {
+                            clearInterval(self.pay_statuc_check_timer);
+                            self.order_item_pay_fail_handle(data, order_id, self.$t('common.internet_error_tips'));
+                        },
+                    });
+                }, 3000);
+                self.setData({
+                    pay_statuc_check_timer: timer,
+                });
+            },
+
+            // 支付确认弹窗事件
+            payment_confirm_event(e) {
+                // 关闭弹窗清除定时任务
+                this.setData({
+                    payment_confirm_modal_status: false,
+                });
+                clearInterval(this.pay_statuc_check_timer);
+                // 回调处理
+                if(parseInt(e.currentTarget.dataset.type || 0) == 1) {
+                    this.order_item_pay_success_handle(this.pay_response_data, this.order_id);
+                } else {
+                    this.order_item_pay_fail_handle(this.pay_response_data, this.order_id, this.$t('paytips.paytips.6y488i'));
                 }
             },
 
@@ -804,7 +868,7 @@
             },
             // 页面卸载
             onUnload(e) {
-                clearInterval(this.popup_view_pay_timer);
+                clearInterval(this.pay_statuc_check_timer);
             },
             // 支付html展示窗口事件
             popup_view_pay_html_event_close(e) {
@@ -835,5 +899,24 @@
     }
     .payment-submit {
         padding: 40rpx;
+    }
+
+    /**
+     * 支付确认弹窗
+     */
+    .payment-confirm-modal {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+    }
+    .payment-confirm-modal .content {
+        margin-top: 60%;
+        z-index: 101;
     }
 </style>

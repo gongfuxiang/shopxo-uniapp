@@ -48,6 +48,7 @@
 		"auth_in_text": "授权中...",
 		"login_in_text": "登录中...",
 		"sending_in_text": "发送中...",
+        "payment_in_text": "支付中...",
 		"sending": "发送中",
 		"warm_tips": "温馨提示",
 		"no_relevant_data_tips": "没有相关数据",

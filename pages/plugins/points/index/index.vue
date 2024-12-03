@@ -72,7 +72,7 @@
                         </view>
 
                         <!-- 积分明细和商品兑换都没有的时候展示无数据提示 -->
-                        <block v-if="integral_list.length == 0 && ((data_base.goods_exchange_data || null) === null || data_base.goods_exchange_data.length == 0)">
+                        <block v-if="integral_list.length == 0 && (data_base.is_home_points_record || 0) != 1 && ((data_base.goods_exchange_data || null) === null || data_base.goods_exchange_data.length == 0)">
                             <!-- 提示信息 -->
                             <component-no-data :propStatus="0"></component-no-data>
                         </block>
@@ -298,30 +298,32 @@
 
             // 获取积分数据
             get_integral_data_list(is_mandatory) {
-                uni.request({
-                    url: app.globalData.get_request_url('index', 'userintegral'),
-                    method: 'POST',
-                    data: {
-                        page: this.integral_page,
-                    },
-                    dataType: 'json',
-                    success: (res) => {
-                        if(this.data_page > 1) {
-                            uni.hideLoading();
-                        }
-                        uni.stopPullDownRefresh();
-                        if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
-                                this.setData({
-                                    integral_list: res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data,
-                                });
+                if((this.data_base || null) != null && parseInt(this.data_base.is_home_points_record || 0) == 1) {
+                    uni.request({
+                        url: app.globalData.get_request_url('index', 'userintegral'),
+                        method: 'POST',
+                        data: {
+                            page: this.integral_page,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            if(this.data_page > 1) {
+                                uni.hideLoading();
                             }
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
+                            uni.stopPullDownRefresh();
+                            if (res.data.code == 0) {
+                                if (res.data.data.data.length > 0) {
+                                    this.setData({
+                                        integral_list: res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data,
+                                    });
+                                }
+                            }
+                        },
+                        fail: () => {
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
 
             // 弹层开启

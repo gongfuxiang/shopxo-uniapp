@@ -53,6 +53,7 @@
 		"not_more_list_data_tips": "No more list data available",
 		"login_in_text": "Logging in",
 		"sending_in_text": "Sending",
+        "payment_in_text": "Payment in progress",
 		"sending": "Sending",
 		"scan_name": "Scan it",
 		"not_have_name": "not have",
