@@ -74,6 +74,14 @@
         "not_supported_scan_tips": "H5 webpage does not support scanning codes",
         "copy_link": "Copy link"
 	},
+    "client": {
+        "weixin": "WeChat",
+        "alipay": "Alipay",
+        "baidu": "Baidu",
+        "qq": "QQ",
+        "toutiao": "Headlines/Tiktok",
+        "kuaishou": "Kwai"
+    },
 	"pages": {
 		"goods-category": "Product classification",
 		"cart": "shopping cart",
@@ -270,7 +278,7 @@
 			"i1deai": "Confirm login",
 			"t75ee8": "New User Registration",
 			"9d8gqi": "Retrieve password",
-			"tvl242": "Use authorization to automatically log in",
+			"tvl242": "Authorization to automatically log in",
 			"9q27d8": "Other login methods",
 			"t59dho": "Temporarily closed registration",
 			"hvunf8": "Confirm Registration",

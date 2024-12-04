@@ -304,13 +304,13 @@
                                     <button class="bg-yellow br-yellow cr-white round" type="default" size="mini" hover-class="none">{{ $t('common.cancel') }}</button>
                                 </navigator>
                                 <!-- #ifdef MP-WEIXIN || MP-TOUTIAO -->
-                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">{{ $t('login.login.tvl242') }}</button>
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">{{ $t('buy.buy.33fugm') }}{{client_text}}{{ $t('login.login.tvl242') }}</button>
                                 <!-- #endif -->
                                 <!-- #ifdef MP-QQ || MP-BAIDU || MP-KUAISHOU -->
-                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">{{ $t('login.login.tvl242') }}</button>
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">{{ $t('buy.buy.33fugm') }}{{client_text}}{{ $t('login.login.tvl242') }}</button>
                                 <!-- #endif -->
                                 <!-- #ifdef MP-ALIPAY -->
-                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">{{ $t('login.login.tvl242') }}</button>
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">{{ $t('buy.buy.33fugm') }}{{client_text}}{{ $t('login.login.tvl242') }}</button>
                                 <!-- #endif -->
                             </view>
                         </view>
@@ -440,7 +440,7 @@
                 form_input_email_value: '',
                 form_input_accounts_value: '',
                 form_input_image_verify_value: '',
-                verify_submit_text: this.$t('login.login.s665h5'),
+                verify_submit_text: '',
                 verify_loading: false,
                 verify_disabled: false,
                 form_submit_loading: false,
@@ -475,9 +475,10 @@
                 app_login_provider_list: [],
                 // 错误提示信息
                 error_msg: null,
-
                 // 登录方式弹窗状态
                 popup_login_status: false,
+                // 客户端名称
+                client_text: '',
             };
         },
 
@@ -580,6 +581,8 @@
                         success: this.$t('login.login.5p23c6'),
                         bind_platform: this.$t('login.login.876tdf'),
                     },
+                    verify_submit_text: this.$t('login.login.s665h5'),
+                    client_text: this.$t('client.'+this.client_value),
                 });
             },
 
@@ -721,6 +724,9 @@
                     success: (res) => {
                         this.user_auth_code(res.userInfo);
                     },
+                    fail: (res) => {
+                        app.globalData.user_login_handle(this, 'user_auth_back_event');
+                    }
                 });
                 // #endif
                 // #ifdef MP-QQ

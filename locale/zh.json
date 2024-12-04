@@ -74,6 +74,14 @@
         "not_supported_scan_tips": "H5网页不支持扫码",
         "copy_link": "复制链接"
 	},
+    "client": {
+        "weixin": "微信",
+        "alipay": "支付宝",
+        "baidu": "百度",
+        "qq": "QQ",
+        "toutiao": "头条/抖音",
+        "kuaishou": "快手"
+    },
 	"pages": {
 		"goods-category": "商品分类",
 		"cart": "购物车",
@@ -267,7 +275,7 @@
 			"i1deai": "确认登录",
 			"t75ee8": "新用户注册",
 			"9d8gqi": "找回密码",
-			"tvl242": "使用授权自动登录",
+			"tvl242": "授权自动登录",
 			"9q27d8": "其他登录方式",
 			"t59dho": "暂时关闭了注册",
 			"hvunf8": "确认注册",
