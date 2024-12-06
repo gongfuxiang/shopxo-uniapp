@@ -56,7 +56,7 @@
                                                 </view>
                                                 <template v-if="['5'].includes(form.content.theme) && !is_search_alone_row">
                                                     <view class="flex-1">
-                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true" :propLocationMargin="location_margin" propSearchType="header" :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" @onBack="choice_location_back"></componentDiySearch>
+                                                        <componentDiySearch :propValue="form" :propIsPageSettings="true" :propLocationMargin="location_margin" propSearchType="header" :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propIconLocationSize="location_left_size" :propIconArrowSize="location_right_size" @onBack="choice_location_back"></componentDiySearch>
                                                     </view>
                                                 </template>
                                             </view>
