@@ -1,32 +1,37 @@
 <template>
     <view :style="style_container">
         <view :style="style_img_container">
-            <view class="search wh-auto pr" :style="style">
-                <view class="box oh flex-row align-c gap-10" :style="box_style" @tap="search_tap">
-                    <view v-if="form.is_icon_show == '1'" class="search-icon" @tap.stop="search_icon_tap">
-                        <template v-if="form.icon_img.length > 0">
-                            <view class="img-box">
-                                <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
-                            </view>
+            <view class="search wh-auto pr">
+                <view class="box oh flex-row align-c" :style="box_style">
+                    <view v-if="form.positioning_name_float == '1' && propSearchType == 'header'" :style="propLocationMargin">
+                        <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIconLocationSize="form.style.location_left_icon_size" :propIconArrowSize="form.style.location_right_icon_size" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
+                    </view>
+                    <view class="oh flex-1 ht-auto flex-row align-c gap-10" @tap.stop="search_tap">
+                        <view v-if="form.is_icon_show == '1'" class="search-icon" @tap.stop="search_icon_tap">
+                            <template v-if="form.icon_img.length > 0">
+                                <view class="img-box">
+                                    <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
+                                </view>
+                            </template>
+                            <template v-else>
+                                <view>
+                                    <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-search-max'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
+                                </view>
+                            </template>
+                        </view>
+                        <template v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'">
+                            <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
+                                <swiper-item v-for="(item, index) in form.hot_word_list" :key="index">
+                                    <view class="flex-row align-c wh-auto ht-auto" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">
+                                        {{ item.value }}
+                                    </view>
+                                </swiper-item>
+                            </swiper>
                         </template>
                         <template v-else>
-                            <view>
-                                <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-search-max'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
-                            </view>
+                            <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                         </template>
                     </view>
-                    <template v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'">
-                        <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
-                            <swiper-item v-for="(item, index) in form.hot_word_list" :key="index">
-                                <view class="flex-row align-c wh-auto ht-auto" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">
-                                    {{ item.value }}
-                                </view>
-                            </swiper-item>
-                        </swiper>
-                    </template>
-                    <template v-else>
-                        <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
-                    </template>
                 </view>
                 <view v-if="form.is_search_show == '1'" class="pa search-outer-botton flex-row align-c jc-c">
                     <view class="search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="serch_button_event">
@@ -49,9 +54,13 @@
 </template>
 
 <script>
+import componentChoiceLocation from '@/components/choice-location/choice-location';
 const app = getApp();
 import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
 export default {
+    components: {
+        componentChoiceLocation,
+    },
     props: {
         propValue: {
             type: Object,
@@ -71,6 +80,26 @@ export default {
         propIndex: {
             type: Number,
             default: 1000000,
+        },
+        propSearchType: {
+            type: String,
+            default: 'search',
+        },
+        propBaseColor: {
+            type: String,
+            default: '',
+        },
+        propLocationMargin: {
+            type: String,
+            default: '',
+        },
+        propLocationContainerStyle: {
+            type: String,
+            default: '',
+        },
+        propLocationImgContainerStyle: {
+            type: String,
+            default: '',
         },
     },
     data() {
@@ -105,7 +134,7 @@ export default {
             this.setData({
                 form: new_form,
                 new_style: new_style,
-                style: this.get_style(new_style), // 内部样式
+                // style: this.get_style(new_style), // 内部样式
                 style_container: this.propIsPageSettings ? '' : common_styles_computer(common_style), // 全局样式
                 style_img_container: this.propIsPageSettings ? '' : common_img_computer(common_style, this.propIndex),
                 search_button_radius: radius_computer(search_button_radius), // 按钮圆角
@@ -114,15 +143,15 @@ export default {
                 search_button: this.get_search_button(new_style), // 搜索按钮显示
             });
         },
-        get_style(new_style) {
-            let common_styles = '';
-            if (new_style.text_style == 'italic') {
-                common_styles += `font-style: italic`;
-            } else if (new_style.text_style == '500') {
-                common_styles += `font-weight: 500`;
-            }
-            return common_styles;
-        },
+        // get_style(new_style) {
+        //     let common_styles = '';
+        //     if (new_style.text_style == 'italic') {
+        //         common_styles += `font-style: italic`;
+        //     } else if (new_style.text_style == '500') {
+        //         common_styles += `font-weight: 500`;
+        //     }
+        //     return common_styles;
+        // },
         get_box_style(new_style, form) {
             let style = `background: ${ new_style?.search_bg_color || '' };border: 1px solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
             if (form.is_center == '1') {
@@ -171,6 +200,10 @@ export default {
                 keywords: this.form.hot_word_list[actived_index].value,
             })
         },
+        // 位置回调
+        onBack(e) {
+            this.$emit('onBack', e);
+        },
     },
 };
 </script>
@@ -179,7 +212,7 @@ export default {
 .search {
     .box {
         height: 64rpx;
-        padding: 12rpx 30rpx;
+        // padding: 12rpx 30rpx;
     }
     .swiper_style {
         height: 64rpx;
