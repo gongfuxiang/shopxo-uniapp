@@ -1,14 +1,18 @@
 <template>
     <view class="ou" :style="style_container">
-        <view class="flex-col ou" :style="style_img_container">
-            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsPaddingStyle="tabs_padding_style" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-            <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
+        <view class="flex-col ou wh-auto" :style="style_img_container">
+            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <view :style="carousel_container">
+                <view :style="carousel_img_container">
+                    <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
+                </view>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, padding_computer, isEmpty } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, isEmpty, gradient_computer, margin_computer, background_computer, radius_computer } from '@/common/js/common/common.js';
     import componentDiyTabs from '@/components/diy/tabs';
     import componentDiycarousel from '@/components/diy/carousel';
     export default {
@@ -63,6 +67,12 @@
                     margin_right: 0,
                 },
                 tabs_padding_style: '',
+                // 选项卡内容
+                tabs_container: '',
+                tabs_img_container: '',
+                // 轮播图内容
+                carousel_container: '',
+                carousel_img_container: '',
                 // top_up: '0',
             };
         },
@@ -84,20 +94,37 @@
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
+                const { tabs_bg_color_list = [], tabs_bg_direction = '', tabs_bg_background_img_style = '', tabs_bg_background_img = [], tabs_radius = this.old_radius, tabs_padding = this.old_padding, carousel_content_color_list = [], carousel_content_direction = '', carousel_content_background_img_style = '', carousel_content_background_img = [], carousel_content_margin = this.old_margin, carousel_content_padding = this.old_padding, carousel_content_radius = this.old_radius } = new_style;
+                // 选项卡背景设置
+                const tabs_data = {
+                    color_list: tabs_bg_color_list,
+                    direction: tabs_bg_direction,
+                    background_img_style: tabs_bg_background_img_style,
+                    background_img: tabs_bg_background_img,
+                }
+                // 商品区域背景设置
+                const carousel_content_data = {
+                    color_list: carousel_content_color_list,
+                    direction: carousel_content_direction,
+                    background_img_style: carousel_content_background_img_style,
+                    background_img: carousel_content_background_img,
+                }
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
                     style_img_container: common_img_computer(new_style.common_style) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
-                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) + 'box-sizing: border-box;' : '',
+                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
+                    tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
+                    carousel_container: gradient_computer(carousel_content_data) + margin_computer(carousel_content_margin) + radius_computer(carousel_content_radius) + 'overflow: hidden;',
+                    carousel_img_container: background_computer(carousel_content_data) + padding_computer(carousel_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                     spacing_common_style: {
                         padding: 0,
-                        padding_top: new_style.common_style.padding_top,
-                        padding_bottom: 10,
+                        padding_top: new_style.common_style.padding_top + new_style.common_style.margin_top,
+                        padding_bottom: 0,
                         padding_left: new_style.common_style.padding_left,
                         padding_right: new_style.common_style.padding_right,
                         margin: 0,
-                        margin_top: new_style.common_style.margin_top,
-                        margin_bottom: 0,
+                        margin_top: 0,
                         margin_left: new_style.common_style.margin_left,
                         margin_right: new_style.common_style.margin_right,
                     },

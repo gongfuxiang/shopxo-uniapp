@@ -1,9 +1,11 @@
 <template>
     <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
-        <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style + 'padding-bottom:24rpx;'" :propsTabsPaddingStyle="tabs_padding_style" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
-            <view class="oh">
-                <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+        <view class="flex-col ou" :style="style_img_container">
+            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <view :style="shop_container">
+                <view :style="shop_img_container">
+                    <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+                </view>
             </view>
         </view>
     </view>
@@ -11,7 +13,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, radius_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list';
     // 状态栏高度
@@ -65,13 +67,22 @@
                 style_container: '',
                 style_img_container: '',
                 goods_tabs: {},
-                tabs_padding_style: '',
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_top: 0,
                 tabs_background: 'background:transparent',
                 custom_nav_height: 33,
                 diy_key: '',
+                // 选项卡背景设置
+                tabs_container: '',
+                tabs_img_container: '',
+                // 商品区域背景设置
+                shop_container: '',
+                shop_img_container: '',
+                // 默认数据
+                old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
+                old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
+                old_margin: { margin: 0, margin_top: 10, margin_bottom: 0, margin_left: 0, margin_right: 0 },
                 // #ifdef MP
                 nav_safe_space: bar_height + 5,
                 // #endif
@@ -148,22 +159,41 @@
                     padding_top: new_style.common_style.padding_top,
                     padding_left: new_style.common_style.padding_left,
                     padding_right: new_style.common_style.padding_right,
-                    margin_top: new_style.common_style.margin_top,
-                    margin_left: new_style.common_style.margin_left,
-                    margin_right: new_style.common_style.margin_right,
                 };
-                let new_tabs_style = padding_computer(tabs_style_obj) + margin_computer(tabs_style_obj) + `position:relative;left: -${tabs_style_obj.padding_left * 2}rpx;right: -${tabs_style_obj.padding_right * 2}rpx;width:100%;`;
+                let new_tabs_style = padding_computer(tabs_style_obj) + `position:relative;left: -${tabs_style_obj.padding_left * 2}rpx;right: -${tabs_style_obj.padding_right * 2}rpx;width:100%;`;
+                // 如果是历史数据的话，就执行默认添加下边距
+                if (isEmpty(new_style.tabs_padding)) {
+                    new_tabs_style += 'padding-bottom: 20rpx;';
+                }
                 let common_style = Object.assign({}, new_style.common_style, {
                     padding_top: 0,
-                    margin_top: 0,
+
                 });
+                const { tabs_bg_color_list = [], tabs_bg_direction = '', tabs_bg_background_img_style = '', tabs_bg_background_img = [], tabs_radius = this.old_radius, tabs_padding = this.old_padding, shop_content_color_list = [], shop_content_direction = '', shop_content_background_img_style = '', shop_content_background_img = [], shop_content_margin = this.old_margin, shop_content_padding = this.old_padding, shop_content_radius = this.old_radius } = new_style;
+                // 选项卡背景设置
+                const tabs_data = {
+                    color_list: tabs_bg_color_list,
+                    direction: tabs_bg_direction,
+                    background_img_style: tabs_bg_background_img_style,
+                    background_img: tabs_bg_background_img,
+                }
+                // 商品区域背景设置
+                const shop_content_data = {
+                    color_list: shop_content_color_list,
+                    direction: shop_content_direction,
+                    background_img_style: shop_content_background_img_style,
+                    background_img: shop_content_background_img,
+                }
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style, this.propIndex),
+                    style_img_container: common_img_computer(common_style, this.propIndex) + 'gap:' + (new_style?.shop_content_spacing || 0) * 2 + 'rpx',
                     tabs_style: new_tabs_style,
-                    tabs_padding_style: !isEmpty(new_style.tabs_padding) ? padding_computer(new_style.tabs_padding) + 'box-sizing: border-box;': '',
+                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
+                    tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
+                    shop_container: gradient_computer(shop_content_data) + margin_computer(shop_content_margin) + radius_computer(shop_content_radius) + 'overflow: hidden;',
+                    shop_img_container: background_computer(shop_content_data) + padding_computer(shop_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                 });
             },
             tabs_click_event(index) {
@@ -188,8 +218,10 @@
                     .select('.goods-tabs-' + this.propKey)
                     .boundingClientRect((res) => {
                         if ((res || null) != null) {
+                            let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
+                            const new_style = new_data.style || {};
                             this.setData({
-                                tabs_top: res.top,
+                                tabs_top: res.top - (new_style.common_style?.margin_top || 0),
                             });
                         }
                     })
