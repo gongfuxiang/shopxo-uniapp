@@ -4,22 +4,25 @@
             <view class="search wh-auto pr">
                 <view class="box oh flex-row align-c" :style="box_style">
                     <view v-if="form.positioning_name_float == '1' && propSearchType == 'header'" :style="propLocationMargin">
-                        <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIconLocationSize="form.style.location_left_icon_size" :propIconArrowSize="form.style.location_right_icon_size" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
+                        <component-choice-location :propLocationContainerStyle="propLocationContainerStyle" :propLocationImgContainerStyle="propLocationImgContainerStyle" :propBaseColor="propBaseColor" :propTextDefaultName="form.positioning_name" :propIsLeftIconArrow="form.is_location_left_icon_show == '1'" :propLeftImgValue="form.location_left_img" :propLeftIconValue="'icon-' + form.location_left_icon" :propIconLocationSize="propIconLocationSize" :propIconArrowSize="propIconArrowSize" :propIsRightIconArrow="form.is_location_right_icon_show == '1'" :propRightImgValue="form.location_right_img" :propRightIconValue="'icon-' + form.location_right_icon" :propTextMaxWidth="['4'].includes(form.theme) ? '300rpx' : '150rpx'" @onBack.stop="choice_location_back"></component-choice-location>
                     </view>
-                    <view class="oh flex-1 ht-auto flex-row align-c gap-10" @tap.stop="search_tap">
-                        <view v-if="form.is_icon_show == '1'" class="search-icon" @tap.stop="search_icon_tap">
-                            <template v-if="form.icon_img.length > 0">
-                                <view class="img-box">
-                                    <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
-                                </view>
-                            </template>
-                            <template v-else>
-                                <view>
-                                    <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-search-max'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
-                                </view>
-                            </template>
+                    <view :class="'oh flex-1 ht-auto flex-row align-c gap-10' + (form.is_center == '1' ? ' tips-float' : '')" @tap.stop="search_tap">
+                        <view v-if="form.is_icon_show == '1'" class="pr">
+                            <view class="search-icon-before" :style="(form.positioning_name_float == '1' && propSearchType == 'header') || form.is_center == '1' ? '' : 'left: -' + (new_style.search_padding_left ? new_style.search_padding_left * 2 : 30) + 'rpx;'" @tap.stop="search_icon_tap"></view>
+                            <view class="wh-auto ht-auto">
+                                <template v-if="form.icon_img.length > 0">
+                                    <view class="img-box">
+                                        <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
+                                    </view>
+                                </template>
+                                <template v-else>
+                                    <view>
+                                        <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-search-max'" size="28rpx" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
+                                    </view>
+                                </template>
+                            </view>
                         </view>
-                        <template v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'">
+                        <view v-if="!isEmpty(form.hot_word_list) && form.is_hot_word_show == '1'" :style="form.is_center == '1' ? `min-width:100px;` : 'width:100%;'">
                             <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :vertical="true" :duration="500" class="swiper_style" @change="slideChange">
                                 <swiper-item v-for="(item, index) in form.hot_word_list" :key="index">
                                     <view class="flex-row align-c wh-auto ht-auto" :style="{ color: !isEmpty(item.color) ? item.color : !isEmpty(new_style.hot_words_color) ? new_style.hot_words_color : '#999' }" :data-value="item.value" @tap.stop="serch_event">
@@ -27,7 +30,7 @@
                                     </view>
                                 </swiper-item>
                             </swiper>
-                        </template>
+                        </view>
                         <template v-else>
                             <text v-if="form.is_tips_show == '1'" :class="[propIsPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</text>
                         </template>
@@ -101,6 +104,14 @@ export default {
             type: String,
             default: '',
         },
+        propIconLocationSize: {
+            type: String,
+            default: '',
+        },
+        propIconArrowSize: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -154,10 +165,10 @@ export default {
         // },
         get_box_style(new_style, form) {
             let style = `background: ${ new_style?.search_bg_color || '' };border: 1px solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
-            if (form.is_center == '1') {
-                style += `justify-content: center;`;
-            } else {
-                style += `padding-left: ${ new_style.search_padding_left ? new_style.search_padding_left : 15 }px;`;
+            if (form.positioning_name_float == '1' && this.propSearchType == 'header') {
+                style += `padding-left: ${ (new_style.search_padding_left? new_style.search_padding_left : 15) * 2 }rpx;`;
+            } else if (form.is_center != '1') {
+                style += `padding-left: ${ (new_style.search_padding_left ? new_style.search_padding_left : 15) * 2 }rpx;`;
             }
             return style;
         },
@@ -243,14 +254,18 @@ export default {
     .search-icon {
         position: relative;
     }
-
-    .search-icon::before {
-        content: '';
+    .search-icon-before {
         position: absolute;
+        z-index: 10; // 确保悬浮在内容上层
         top: -10px;
         right: -10px;
         bottom: -10px;
-        left: -16px
+        left: -10px
+    }
+    .tips-float {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 </style>
