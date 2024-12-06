@@ -129,48 +129,43 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data_list: temp_data_list,
-                                    data_total: res.data.data.total,
-                                    data_page_total: res.data.data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0
-                                });
-                                
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
-                                });
+                            // 数据列表
+                            var data = res.data.data;
+                            if (this.data_page <= 1) {
+                                var temp_data_list = data.data_list || [];
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0
-                                });
+                                var temp_data_list = this.data_list || [];
+                                var temp_data = data.data_list;
+                                for (var i in temp_data) {
+                                    temp_data_list.push(temp_data[i]);
+                                }
                             }
+                        
+                            this.setData({
+                                data_list: temp_data_list,
+                                data_total: data.total,
+                                data_page_total: data.page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_list_loding_msg: '',
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+                        
+                            // 是否还有数据
+                            this.setData({
+                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
-                                data_is_loading: 0
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            app.globalData.is_login_check(res.data, this, 'get_data_list');
                         }
                     },
                     fail: () => {
@@ -180,9 +175,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_is_loading: 0
+                            data_is_loading: 0,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
