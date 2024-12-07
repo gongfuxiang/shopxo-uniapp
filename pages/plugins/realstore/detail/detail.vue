@@ -173,13 +173,13 @@
                                                                 <view v-if="is_base_mode != 1" class="tc flex-row align-c">
                                                                     <block v-if="(item.is_error || 0) == 0">
                                                                         <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                                            <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
+                                                                            <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
                                                                         </view>
                                                                         <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
                                                                             {{ item.buy_number }}
                                                                         </view>
                                                                         <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                            <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                                            <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
                                                                         </view>
                                                                     </block>
                                                                     <block v-else>

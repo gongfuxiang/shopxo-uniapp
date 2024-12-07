@@ -30,7 +30,7 @@
                                         </block>
                                         <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                             <view v-if="propOpenCart" class="bg-white right-cart-icon pr" :data-index="index" @tap.stop="goods_cart_event">
-                                                <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
                                                 <view class="cart-badge-icon pa">
                                                     <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                 </view>
@@ -81,7 +81,7 @@
                                         <block v-else>
                                             <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                 <view v-if="propOpenCart" class="bg-white pr" :data-index="index" @tap.stop="goods_cart_event">
-                                                    <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                    <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
                                                     <view class="cart-badge-icon pa">
                                                         <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                     </view>

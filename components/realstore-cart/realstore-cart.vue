@@ -45,11 +45,11 @@
                                                     <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
                                                     <view class="tc fr flex-row align-c">
                                                         <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
-                                                            <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                         <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
                                                         <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
-                                                            <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                     </view>
                                                 </view>

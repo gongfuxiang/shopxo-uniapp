@@ -20,7 +20,7 @@
                         <iconfont name="icon-ellipsis" size="40rpx" color="#999"></iconfont>
                     </view>
                     <view v-if="(item.is_error || 0) == 0" class="dis-inline-block pa right-xxxxl bottom-xxxxl" :data-index="index" @tap.stop="goods_cart_event">
-                        <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                        <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
                         <view class="pa top-0-xxxl right-xs">
                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                         </view>
