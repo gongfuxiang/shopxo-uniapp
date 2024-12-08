@@ -505,6 +505,18 @@
             ]
         },
         {
+            "root": "pages/cashier",
+            "pages": [
+                {
+                    "path": "cashier",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/seckill",
             "pages": [
                 {
