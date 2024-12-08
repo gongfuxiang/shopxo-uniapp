@@ -905,7 +905,7 @@
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
             search_icon_event(e) {
-                this.$refs.realstore_cart.search_icon_handle();
+                this.$refs.realstore_cart.search_icon_handle(e);
             },
 
             // 剪切板

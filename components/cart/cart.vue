@@ -56,7 +56,7 @@
                                     <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                         <!-- 选择 -->
                                         <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
-                                            <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
+                                            <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
                                             <view>
@@ -155,7 +155,7 @@
                                     <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                                         <view class="cart-selected flex-row align-c">
                                             <view @tap="selected_event" data-type="all">
-                                                <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
+                                                <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="40rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
                                             </view>
                                             <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
                                             <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
@@ -210,7 +210,7 @@
                                             <view class="padding-sm pr">
                                                 <!-- 选择 -->
                                                 <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
-                                                    <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
+                                                    <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                                 </view>
                                                 <view>
                                                     <view class="cp">
@@ -292,7 +292,7 @@
                                     <text class="cr-base">{{ item.name }}</text>
                                     <text v-if="(item.distance || null) != null" class="cr-grey margin-left-xs">({{ item.distance }})</text>
                                     <view v-if="(plugins_realstore_info || null) != null && plugins_realstore_info.id == item.id" class="fr">
-                                        <iconfont name="icon-zhifu-yixuan" size="24rpx" propClass="lh-il cr-main"></iconfont>
+                                        <iconfont name="icon-zhifu-yixuan" size="30rpx" propClass="lh-il cr-main"></iconfont>
                                     </view>
                                 </view>
                             </view>
@@ -1548,8 +1548,9 @@
     }
     .scroll-box-popup .cart-selected {
         background-color: #fff;
-        height: 36rpx;
+        height: 46rpx;
         border-radius: 50%;
+        padding: 0 4rpx;
     }
     .scroll-box-popup .alias {
         margin-left: 20rpx;

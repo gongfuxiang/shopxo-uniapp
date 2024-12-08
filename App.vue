@@ -1695,7 +1695,7 @@
                 var status = arr.indexOf(value.substr(0, 6)) != -1;
                 if(!status) {
                     // 是否打开插件地址
-                    if(arr.indexOf(value.substr(0, 15) == 'plugin-private:')) {
+                    if(value.substr(0, 17) == 'plugin-private://') {
                         status = true;
                     }
                 }
@@ -1771,7 +1771,7 @@
                                 }
                             }
                         } else {
-                            this.showToast(i18n.t('shopxo-uniapp.app.1244fe') + '（'+value + '）');
+                            this.url_open('/pages/goods-search/goods-search?keywords='+value);
                         }
                     }
                 }

@@ -524,7 +524,7 @@
                 if(!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var user = app.globalData.get_user_info(this);
+                var user = app.globalData.get_user_info(this, 'cart_stock_event', e);
                 if(user != false) {
                     var index = e.currentTarget.dataset.index;
                     var type = parseInt(e.currentTarget.dataset.type) || 0;
@@ -720,19 +720,19 @@
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
             search_icon_handle(e) {
-                var user = app.globalData.get_user_info(this, 'search_icon_handle');
+                var user = app.globalData.get_user_info(this, 'search_icon_handle', e);
                 if (user != false) {
                     // 门店状态
                     if (!this.is_status_check()) {
                         return false;
                     }
-        
+
                     // 调用扫码
                     var self = this;
                     uni.scanCode({
                         success: function (res) {
                             uni.showLoading({
-                                title: this.$t('common.processing_in_text'),
+                                title: self.$t('common.processing_in_text'),
                                 mask: true,
                             });
                             uni.request({
@@ -756,13 +756,13 @@
                                         if (app.globalData.is_login_check(res.data)) {
                                             app.globalData.showToast(res.data.msg);
                                         } else {
-                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                            app.globalData.showToast(self.$t('common.sub_error_retry_tips'));
                                         }
                                     }
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                    app.globalData.showToast(self.$t('common.internet_error_tips'));
                                 },
                             });
                         },
