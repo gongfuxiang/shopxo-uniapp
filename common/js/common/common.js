@@ -14,6 +14,28 @@ export function is_obj_empty(obj) {
 }
 
 /**
+ * 获取嵌套对象的属性值
+ * 
+ * 该函数旨在通过指定的属性路径获取嵌套对象中的属性值它接受一个对象和一个属性路径字符串作为参数，
+ * 并返回对应路径的属性值如果输入的路径无效或对象中不存在该路径，则返回空字符串
+ * 
+ * @param {Object} obj - 要从中获取属性的嵌套对象
+ * @param {string} path - 属性路径，使用点号分隔的字符串表示
+ * @returns {string} - 返回指定路径的属性值，如果路径无效则返回空字符串
+ */
+export function get_nested_property(obj, path) {
+    // 检查路径参数是否为字符串且非空，若不满足条件则返回空字符串
+    if (typeof path !== 'string' || !path) return '';
+    
+    // 将属性路径字符串拆分为属性键数组
+    const keys = path.split('.');
+    
+    // 使用reduce方法遍历属性键数组，逐层访问对象属性
+    // 如果当前对象存在且拥有下一个属性键，则继续访问；否则返回空字符串
+    return keys.reduce((o, key) => (o && o[key] ? o[key] : ''), obj) || '';
+}
+
+/**
  * 指示器的样式
  *
  * @param style_object 样式对象

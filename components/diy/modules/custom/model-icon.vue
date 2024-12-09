@@ -4,7 +4,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, gradient_handle, isEmpty } from '@/common/js/common/common.js';
+    import { radius_computer, padding_computer, gradient_handle, isEmpty, get_nested_property } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -58,11 +58,23 @@
                     icon_class_value = this.propValue.icon_class;
                 } else {
                     if (!isEmpty(this.propSourceList)) {
-                        // 不输入商品， 文章和品牌时，从外层处理数据
-                        let icon = this.propSourceList[this.propValue.data_source_id];
-                        // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
-                        if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
-                            icon = this.propSourceList.data[this.propValue.data_source_id];
+                        let icon = '';
+                        // 获取数据源ID
+                        const data_source_id = this.propValue.data_source_id;
+                        if (!data_source_id.includes('.')) {
+                            // 不输入商品， 文章和品牌时，从外层处理数据
+                            icon = this.propSourceList[data_source_id];
+                            // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+                            if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
+                                icon = this.propSourceList.data[data_source_id];
+                            }
+                        } else {
+                            // 不输入商品， 文章和品牌时，从外层处理数据
+                            icon = get_nested_property(this.propSourceList, data_source_id);
+                            // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+                            if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
+                                icon = get_nested_property(this.propSourceList.data, data_source_id);
+                            }
                         }
                         icon_class_value = icon;
                     } else {
@@ -73,9 +85,9 @@
                 if (!isEmpty(this.propValue.icon_link)) {
                     url = this.propValue.icon_link?.page || '';
                 } else if (!isEmpty(this.propSourceList.data)) {
-                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                    url = get_nested_property(this.propSourceList.data, this.propValue?.data_source_link);
                 } else {
-                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                    url = get_nested_property(this.propSourceList, this.propValue?.data_source_link);
                 }
                 this.setData({
                     form: this.propValue,

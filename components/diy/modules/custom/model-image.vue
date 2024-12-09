@@ -4,7 +4,7 @@
     </view>
 </template>
 <script>
-    import { percentage_count, radius_computer, isEmpty } from '@/common/js/common/common.js';
+    import { percentage_count, radius_computer, isEmpty, get_nested_property } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -69,9 +69,9 @@
                 if (!isEmpty(this.propValue.link)) {
                     url = this.propValue.link?.page || '';
                 } else if (!isEmpty(this.propSourceList.data)) {
-                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
+                    url = get_nested_property(this.propSourceList.data, this.propValue?.data_source_link || '');
                 } else {
-                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                    url = get_nested_property(this.propSourceList, this.propValue?.data_source_link || '');
                 }
                 this.setData({
                     form: this.propValue,
@@ -86,16 +86,34 @@
                     return form.img[0];
                 } else {
                     if (!isEmpty(this.propSourceList)) {
-                        // 不输入商品， 文章和品牌时，从外层处理数据
-                        let image_url = this.propSourceList[form.data_source_id];
-                        // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
-                        if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
-                            // 判断是否是同一标志
-                            if (form.data_source_id == this.propImgParams) {
-                                // 如果是符合条件的标志，先判断新的图片是否存在，存在就取新的图片，否则的话取原来的图片
-                                image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : this.propSourceList.data[this.propImgParams];
-                            } else {
-                                image_url = this.propSourceList.data[form.data_source_id];
+                        let image_url = '';
+                        // 获取数据源ID
+                        const data_source_id = form.data_source_id;
+                        if (!data_source_id.includes('.')) {
+                            // 不输入商品， 文章和品牌时，从外层处理数据
+                            image_url = this.propSourceList[data_source_id];
+                            // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+                            if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
+                                // 判断是否是同一标志
+                                if (data_source_id == this.propImgParams) {
+                                    // 如果是符合条件的标志，先判断新的图片是否存在，存在就取新的图片，否则的话取原来的图片
+                                    image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : this.propSourceList.data[data_source_id];
+                                } else {
+                                    image_url = this.propSourceList.data[data_source_id];
+                                }
+                            }
+                        } else {
+                            // 不输入商品， 文章和品牌时，从外层处理数据
+                            image_url = get_nested_property(this.propSourceList, data_source_id);
+                            // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+                            if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
+                                // 判断是否是同一标志
+                                if (data_source_id == this.propImgParams) {
+                                    // 如果是符合条件的标志，先判断新的图片是否存在，存在就取新的图片，否则的话取原来的图片
+                                    image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : get_nested_property(this.propSourceList.data, data_source_id);
+                                } else {
+                                    image_url = get_nested_property(this.propSourceList.data, data_source_id);
+                                }
                             }
                         }
                         return image_url;
