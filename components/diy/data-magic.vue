@@ -238,7 +238,7 @@
 
                     if (data_content.data_type == 'goods') {
                         data_content.list = this.commodity_list(data_content.goods_list, data_content.goods_num, data_content, data_style);
-                    } else if (data_content.data_type == 'custom' && ['1', '2'].includes(data_content.data_source_direction)) {
+                    } else if (data_content.data_type == 'custom' && ['vertical-scroll', 'horizontal'].includes(data_content.data_source_direction)) {
                         // 是自定义并且是轮播状态的时候，添加数据
                         const list = this.data_source_content_list(data_content);
                         const carousel_col = data_content?.data_source_carousel_col || 1;
@@ -252,8 +252,8 @@
             },
             // 数据来源的内容
             data_source_content_list(data_content){
-                if (['goods', 'article', 'brand'].includes(data_content.data_source)) {
-                    if (data_content.data_source_content.data_type == '0') {
+                if (data_content.is_custom_data == '1') {
+                    if (Number(data_content.data_source_content.data_type) === 0) {
                         return data_content.data_source_content.data_list;
                     } else {
                         return data_content.data_source_content.data_auto_list.map((item) => ({

@@ -32,10 +32,14 @@
                 type: Number,
                 default: 1
             },
-            propSourceType: {
+            propIsCustom: {
+                type: Boolean,
+                default: false
+            },
+            propImgParams: {
                 type: String,
                 default: ''
-            }
+            },
         },
         data() {
             return {
@@ -85,11 +89,11 @@
                         // 不输入商品， 文章和品牌时，从外层处理数据
                         let image_url = this.propSourceList[form.data_source_id];
                         // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
-                        if (['goods', 'article', 'brand'].includes(this.propSourceType) && !isEmpty(this.propSourceList.data)) {
+                        if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
                             // 判断是否是同一标志
-                            if (form.data_source_id == this.keyMap[this.propSourceType]) {
+                            if (form.data_source_id == this.propImgParams) {
                                 // 如果是符合条件的标志，先判断新的图片是否存在，存在就取新的图片，否则的话取原来的图片
-                                image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : this.propSourceList.data[this.keyMap[this.propSourceType]];
+                                image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : this.propSourceList.data[this.propImgParams];
                             } else {
                                 image_url = this.propSourceList.data[form.data_source_id];
                             }

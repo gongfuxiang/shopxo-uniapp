@@ -5,7 +5,7 @@
                 <view v-for="(item, index) in data_source_content_list" :key="index">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container">
                         <view class="wh-auto ht-auto" :style="style_chunk_img_container">
-                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
+                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                         </view>
                     </view>
                 </view>
@@ -16,7 +16,7 @@
                         <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'">
                             <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width">
                                 <div class="w h" :style="style_chunk_img_container">
-                                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
+                                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                 </div>
                             </view>
                         </view>
@@ -88,70 +88,12 @@
                 div_height: 0,
                 custom_list_length: 0,
                 source_list: {
-                    goods: {
-                        // 存放手动输入的id
-                        data_ids: [],
-                        // 手动输入
-                        data_list: [],
-                        // 自动
-                        data_auto_list: [],
-                        // 商品类型
-                        data_type: '0',
-                        // 商品分类
-                        category_ids: [],
-                        // 品牌
-                        brand_ids: [],
-                        // 显示数量
-                        number: 4,
-                        // 排序类型
-                        order_by_type: '0',
-                        // 排序规则
-                        order_by_rule: '0',
-                    },
-                    article: {
-                        // 存放手动输入的id
-                        data_ids: [],
-                        // 手动输入
-                        data_list: [],
-                        // 自动
-                        data_auto_list: [],
-                        data_type: '0',
-                        number: 4,
-                        order_by_type: '0',
-                        order_by_rule: '0',
-                        // 文章封面
-                        is_cover: '0',
-                        // 分类id
-                        category_ids: [],
-                    },
-                    brand: {
-                        // 存放手动输入的id
-                        data_ids: [],
-                        // 手动输入
-                        data_list: [],
-                        // 自动
-                        data_auto_list: [],
-                        // 商品类型
-                        data_type: '0',
-                        // 商品分类
-                        category_ids: [],
-                        // 品牌
-                        brand_ids: [],
-                        // 显示数量
-                        number: 4,
-                        // 排序类型
-                        order_by_type: '0',
-                        // 排序规则
-                        order_by_rule: '0',
-                    }, 
-                    common: {
-                        // 存放手动输入的id
-                        data_ids: [],
-                        // 手动输入
-                        data_list: [],
-                        // 自动
-                        data_auto_list: [],
-                    }
+                    // 存放手动输入的id
+                    data_ids: [],
+                    // 手动输入
+                    data_list: [],
+                    // 自动
+                    data_auto_list: [],
                 },
                 data_source_content_list: [],
                 data_source: '',
@@ -167,6 +109,7 @@
                 indicator_location_style: '',
                 indicator_style: '',
                 slides_per_view: 1,
+                show_data: { data_key: 'id', data_name: 'name' },
                 old_data_style: {
                     color_list: [{ color: 'rgb(244, 252, 255)', color_percentage: undefined }],
                     direction: '180deg',
@@ -208,12 +151,7 @@
                 if (!Object.keys(new_form.data_source_content).includes('data_auto_list') && !Object.keys(new_form.data_source_content).includes('data_list')) {
                     //深拷贝一下，保留历史数据
                     const data = JSON.parse(JSON.stringify(new_form.data_source_content));
-                    // 判断是否有符合条件的数据源，如何没有的话取公共数据源
-                    if (!isEmpty(this.source_list[new_form.data_source])) {
-                        new_form.data_source_content = this.source_list[new_form.data_source];
-                    } else {
-                        new_form.data_source_content = this.source_list['common'];
-                    }
+                    new_form.data_source_content = this.source_list;
                     // 如果老数组中有数据，将数据放到新数组中
                     if (!isEmpty(data)) {
                         new_form.data_source_content.data_list = [ data ];
@@ -272,6 +210,7 @@
                     swiper_height: swiper_height,
                     swiper_width: swiper_width,
                     slides_per_view: new_style.rolling_fashion == 'translation' ? (new_form.data_source_direction != 'horizontal' ? col : new_form.data_source_carousel_col ) : 1,
+                    show_data: new_form?.show_data || { data_key: 'id', data_name: 'name' }
                 });
             },
             get_list(list, form, new_style) {

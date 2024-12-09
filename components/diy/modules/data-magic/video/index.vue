@@ -2,7 +2,7 @@
     <!-- 视频 -->
     <view class="wh-auto ht-auto" :style="style_container">
         <view class="video pr wh-auto ht-auto">
-            <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" style="object-fit: cover"></video>
+            <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" :style="'object-fit: cover;' + video_style"></video>
         </view>
     </view>
 </template>
@@ -25,6 +25,7 @@
                 style_container: '',
                 video_img: '',
                 video: '',
+                video_style: '',
             };
         },
         created() {
@@ -38,7 +39,8 @@
                 this.setData({
                     video_img: new_content.video_img.length > 0 ? new_content.video_img[0].url : '',
                     video: new_content.video.length > 0 ? new_content.video[0].url : '',
-                    style_container: padding_computer(this.propDataStyle.chunk_padding) + radius_computer(this.propDataStyle.img_radius) + 'box-sizing: border-box;',
+                    style_container: padding_computer(this.propDataStyle.chunk_padding)  + 'box-sizing: border-box;',
+                    video_style: radius_computer(this.propDataStyle.img_radius),
                 });
             }
         },
