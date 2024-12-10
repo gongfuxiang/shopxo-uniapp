@@ -102,7 +102,7 @@
                     if (data_source_id.length > 0) {
                         // 遍历取出所有的值
                         data_source_id.forEach(source_id => {
-                            const sourceList = option.filter((item) => item.field == source_id);
+                            const sourceList = option.find((item) => item.field == source_id);
                             // 根据数据源ID是否包含点号来区分处理方式
                             if (source_id.includes(';')) {
                                 const ids = source_id.split(';');
