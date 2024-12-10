@@ -129,7 +129,11 @@
             propGoodStyle: {
                 type: Object,
                 default: () => {},
-            }
+            },
+            propKey: {
+                type: [String, Number],
+                default: '',
+            },
         },
         data() {
             return {
@@ -141,6 +145,12 @@
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
                 old_margin: { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 },
             };
+        },
+        watch: {
+            propKey(val) {
+                // 初始化
+                this.init();
+            },
         },
         mounted() {
             this.init();

@@ -36,6 +36,50 @@ export function get_nested_property(obj, path) {
 }
 
 /**
+ * 根据数据源链接ID和属性源列表生成自定义链接
+ * 
+ * @param {string} data_source_link_id - 数据源链接ID，可以是单个ID或多个ID以分号分隔
+ * @param {object} propSourceList - 包含数据源的属性列表
+ * @param {object} source_link_option - 链接生成的可选配置，包括首尾添加的字符串和连接符
+ * @returns {string} 生成的自定义链接URL
+ */
+export function get_custom_link(data_source_link_id, propSourceList, source_link_option) {
+    let url = '';
+    if (!data_source_link_id) {
+        return '';
+    }
+    // 判断数据源链接ID是否包含分号，包含则表示有多个ID
+    if (data_source_link_id.includes(';')) {
+        // 分割数据源链接ID，处理多个ID
+        const ids = data_source_link_id.split(';');
+        let source_url = '';
+        // 遍历每个ID，获取对应的属性值并拼接成URL
+        ids.forEach((item, index) => {
+            // 判断数据源列表是否为空
+            if (!isEmpty(propSourceList.data)) {
+                // 从数据源列表的data属性中获取嵌套属性值，并使用指定的连接符连接
+                source_url += get_nested_property(propSourceList.data, item) + (index != ids.length -1 ? (source_link_option?.join || '') : '');
+            } else {
+                // 直接从数据源列表中获取嵌套属性值，并使用指定的连接符连接
+                source_url += get_nested_property(propSourceList, item) + (index != ids.length -1 ? (source_link_option?.join || '') : '');
+            }
+        });
+        url = source_url;
+    } else {
+        // 处理单个ID的情况
+        if (!isEmpty(propSourceList.data)) {
+            // 从数据源列表的data属性中获取嵌套属性值作为URL
+            url = get_nested_property(propSourceList.data, data_source_link_id);
+        } else {
+            // 直接从数据源列表中获取嵌套属性值作为URL
+            url = get_nested_property(propSourceList, data_source_link_id);
+        }
+    }
+    // 返回最终的URL，添加首尾的可选字符串
+    return (source_link_option?.first || '') + url + (source_link_option?.last || '');
+}
+
+/**
  * 指示器的样式
  *
  * @param style_object 样式对象

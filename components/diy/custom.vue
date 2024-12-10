@@ -5,7 +5,7 @@
                 <view v-for="(item, index) in data_source_content_list" :key="index">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container">
                         <view class="wh-auto ht-auto" :style="style_chunk_img_container">
-                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                         </view>
                     </view>
                 </view>
@@ -16,7 +16,7 @@
                         <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'">
                             <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width">
                                 <div class="w h" :style="style_chunk_img_container">
-                                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                 </div>
                             </view>
                         </view>
@@ -37,7 +37,7 @@
             <template v-else>
                 <view :style="style_chunk_container">
                     <view class="wh-auto ht-auto" :style="style_chunk_img_container">
-                        <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
+                        <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                     </view>
                 </view>
             </template>

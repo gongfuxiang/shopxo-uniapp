@@ -11,6 +11,10 @@
     import { padding_computer, radius_computer } from '@/common/js/common/common.js';
     export default {
         props: {
+            propKey: {
+                type: [String, Number],
+                default: '',
+            },
             propValue: {
                 type: Object,
                 default: () => ({}),
@@ -27,6 +31,12 @@
                 video: '',
                 video_style: '',
             };
+        },
+        watch: {
+            propKey(val) {
+                // 初始化
+                this.init();
+            },
         },
         created() {
             this.init();
