@@ -4,7 +4,7 @@
     </view>
 </template>
 <script>
-    import { percentage_count, radius_computer, isEmpty } from '@/common/js/common/common.js';
+    import { percentage_count, radius_computer, isEmpty, get_nested_property, get_custom_link } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -32,10 +32,14 @@
                 type: Number,
                 default: 1
             },
-            propSourceType: {
+            propIsCustom: {
+                type: Boolean,
+                default: false
+            },
+            propImgParams: {
                 type: String,
                 default: ''
-            }
+            },
         },
         data() {
             return {
@@ -61,44 +65,67 @@
         },
         methods: {
             init() {
-                let url = '';
-                if (!isEmpty(this.propValue.link)) {
-                    url = this.propValue.link?.page || '';
-                } else if (!isEmpty(this.propSourceList.data)) {
-                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
-                } else {
-                    url = this.propSourceList[this.propValue?.data_source_link] || '';
-                }
                 this.setData({
                     form: this.propValue,
                     img: this.get_img_url(this.propValue),
                     image_style: this.get_image_style(this.propValue, this.propScale),
                     border_style: this.get_border_style(this.propValue, this.propScale),
-                    img_url: url,
+                    img_url: this.get_img_link(),
                 });
+            },
+            get_img_link() {
+                let url = '';
+                if (!isEmpty(this.propValue.link)) {
+                    url = this.propValue.link?.page || '';
+                } else {
+                    // 获取数据源ID
+                    const data_source_link_id = !isEmpty(this.propValue?.data_source_link_field?.id || '') ? this.propValue?.data_source_link_field?.id : this.propValue.data_source_link;
+                    // 数据源内容
+                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option)
+                }
+                return url;
             },
             get_img_url(form) {
                 if (!isEmpty(form.img[0])) {
                     return form.img[0];
                 } else {
                     if (!isEmpty(this.propSourceList)) {
-                        // 不输入商品， 文章和品牌时，从外层处理数据
-                        let image_url = this.propSourceList[form.data_source_id];
-                        // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
-                        if (['goods', 'article', 'brand'].includes(this.propSourceType) && !isEmpty(this.propSourceList.data)) {
-                            // 判断是否是同一标志
-                            if (form.data_source_id == this.keyMap[this.propSourceType]) {
-                                // 如果是符合条件的标志，先判断新的图片是否存在，存在就取新的图片，否则的话取原来的图片
-                                image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : this.propSourceList.data[this.keyMap[this.propSourceType]];
-                            } else {
-                                image_url = this.propSourceList.data[form.data_source_id];
-                            }
+                        let image_url = '';
+                        // 获取数据源ID
+                        const data_source_id = !isEmpty(form?.data_source_field?.id || '') ? form?.data_source_field?.id : form.data_source_id;
+                        // 数据源内容
+                        const option = form?.data_source_field?.option || {};
+                        if (data_source_id.includes(';')) {
+                            const ids = data_source_id.split(';');
+                            let url = '';
+                            ids.forEach((item, index) => {
+                                url += this.data_handling(item) + (index != ids.length - 1 ? (option?.join || '') : '');
+                            });
+                            image_url = url;
+                        } else {
+                            image_url = this.data_handling(data_source_id);
                         }
-                        return image_url;
+                        return (option?.first || '') + image_url + (option?.last || '');
                     } else {
                         return '';
                     }
                 }
+            },
+            data_handling(data_source_id) {
+                // 不输入商品， 文章和品牌时，从外层处理数据
+                let image_url = get_nested_property(this.propSourceList, data_source_id);
+                // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+                if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
+                    // 判断是否是同一标志
+                    if (data_source_id == this.propImgParams) {
+                        // 如果是符合条件的标志，先判断新的图片是否存在，存在就取新的图片，否则的话取原来的图片
+                        image_url = !isEmpty(this.propSourceList.new_cover)? this.propSourceList.new_cover[0]?.url || '' : get_nested_property(this.propSourceList.data, data_source_id);
+                    } else {
+                        image_url = get_nested_property(this.propSourceList.data, data_source_id);
+                    }
+                }
+                return image_url;
             },
             get_image_style(form, scale) {
                 return `width: ${percentage_count(form.img_width, form.com_width)}; height: ${percentage_count(form.img_height, form.com_height)};transform: rotate(${form.img_rotate}deg); ${radius_computer(form.img_radius, scale, true)};`;

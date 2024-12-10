@@ -21,20 +21,20 @@
                                             <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
                                         <view class="w h">
-                                            <magic-carousel :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                            <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'images'">
                                     <div class="w h" :style="item.data_style.chunk_padding_data">
-                                        <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                        <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                     </div>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'custom'">
-                                    <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
+                                    <customIndex :propKey="propKey + index" :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
                                 </template>
                                 <template v-else>
-                                    <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
+                                    <videoIndex :propKey="propKey + index" :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
                                 </template>
                                 <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
                                     <template v-if="item.data_style.indicator_style == 'num'">
@@ -68,20 +68,20 @@
                                         <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                     </view>
                                     <view class="w h">
-                                        <magic-carousel :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
+                                        <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                     </view>
                                 </view>
                             </template>
                             <template v-else-if="item.data_content.data_type == 'images'">
                                 <div class="w h" :style="item.data_style.chunk_padding_data">
-                                    <magic-carousel :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
+                                    <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                 </div>
                             </template>
                             <template v-else-if="item.data_content.data_type == 'custom'">
-                                <customIndex :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
+                                <customIndex :propKey="propKey + index" :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
                             </template>
                             <template v-else>
-                                <videoIndex :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
+                                <videoIndex :propKey="propKey + index" :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
                             </template>
                             <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
                                 <template v-if="item.data_style.indicator_style == 'num'">
@@ -105,8 +105,8 @@
 <script>
     const app = getApp();
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
-    import customIndex from '@/components/diy/modules/data-magic/custom';
-    import videoIndex from '@/components/diy/modules/data-magic/video';
+    import customIndex from '@/components/diy/modules/data-magic/custom/index.vue';
+    import videoIndex from '@/components/diy/modules/data-magic/video/index.vue';
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer, get_indicator_location_style, get_indicator_style } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -122,7 +122,7 @@
                 default: () => ({}),
             },
             propKey: {
-                type: [String,Number],
+                type: [String, Number],
                 default: '',
             },
             // 组件渲染的下标
@@ -238,7 +238,7 @@
 
                     if (data_content.data_type == 'goods') {
                         data_content.list = this.commodity_list(data_content.goods_list, data_content.goods_num, data_content, data_style);
-                    } else if (data_content.data_type == 'custom' && ['1', '2'].includes(data_content.data_source_direction)) {
+                    } else if (data_content.data_type == 'custom' && ['vertical-scroll', 'horizontal'].includes(data_content.data_source_direction)) {
                         // 是自定义并且是轮播状态的时候，添加数据
                         const list = this.data_source_content_list(data_content);
                         const carousel_col = data_content?.data_source_carousel_col || 1;
@@ -252,8 +252,8 @@
             },
             // 数据来源的内容
             data_source_content_list(data_content){
-                if (['goods', 'article', 'brand'].includes(data_content.data_source)) {
-                    if (data_content.data_source_content.data_type == '0') {
+                if (data_content.is_custom_data == '1') {
+                    if (Number(data_content.data_source_content.data_type) === 0) {
                         return data_content.data_source_content.data_list;
                     } else {
                         return data_content.data_source_content.data_auto_list.map((item) => ({

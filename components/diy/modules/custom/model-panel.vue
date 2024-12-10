@@ -4,7 +4,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, background_computer, gradient_handle, isEmpty } from '@/common/js/common/common.js';
+    import { radius_computer, background_computer, gradient_handle, isEmpty, get_custom_link } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -52,10 +52,12 @@
                 let url = '';
                 if (!isEmpty(this.propValue.link)) {
                     url = this.propValue.link?.page || '';
-                } else if (!isEmpty(this.propSourceList.data)) {
-                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
                 } else {
-                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                    // 获取数据源ID
+                    const data_source_link_id = !isEmpty(this.propValue?.data_source_link_field?.id || '') ? this.propValue?.data_source_link_field?.id : this.propValue.data_source_link;
+                    // 数据源内容
+                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option);
                 }
                 this.setData({
                     form: this.propValue,

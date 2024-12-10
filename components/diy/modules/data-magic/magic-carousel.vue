@@ -10,7 +10,7 @@
                     </template>
                     <template v-else>
                         <view class="ht-auto" :style="shop_spacing">
-                            <product-list-show :propOuterflex="propValue.data_content.goods_outerflex" :propFlex="propValue.data_content.goods_flex" :propNum="show_num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
+                            <product-list-show :propKey="propKey" :propOuterflex="propValue.data_content.goods_outerflex" :propFlex="propValue.data_content.goods_flex" :propNum="show_num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
                         </view>
                     </template>
                 </swiper-item>
@@ -53,7 +53,11 @@
             propDataIndex: {
                 type: Number,
                 default: () => 0,
-            }
+            },
+            propKey: {
+                type: [String, Number],
+                default: '',
+            },
         },
         data() {
             return {
@@ -64,6 +68,12 @@
                 shop_spacing: '',
                 next_margin: '0rpx',
             };
+        },
+        watch: {
+            propKey(val) {
+                // 初始化
+                this.init();
+            },
         },
         mounted() {
             this.init();

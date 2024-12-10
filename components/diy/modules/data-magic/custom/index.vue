@@ -3,7 +3,7 @@
         <view v-for="(item, index) in data_source_content_list" :key="index">
             <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container">
                 <view class="custom-container wh-auto ht-auto" :style="style_img_container">
-                    <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
+                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                 </view>
             </view>
             
@@ -15,7 +15,7 @@
                 <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container + swiper_width">
                         <div class="w h" :style="style_img_container">
-                            <dataRendering :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataRendering>
+                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                         </div>
                     </view>
                 </view>
@@ -25,7 +25,7 @@
     <view v-else>
         <view :style="style_container">
             <view class="custom-container wh-auto ht-auto" :style="style_img_container">
-                <dataRendering :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
+                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
             </view>
         </view>
     </view>
@@ -41,6 +41,10 @@ export default {
         dataRendering
     },
     props: {
+        propKey: {
+            type: String,
+            default: '',
+        },
         propValue: {
             type: Object,
             default: () => {
@@ -77,7 +81,14 @@ export default {
             // 轮播高度
             swiper_height: 0,
             swiper_width: 'width: 100%;',
+            show_data: { data_key: 'id', data_name: 'name' },
         };
+    },
+    watch: {
+        propKey(val) {
+            // 初始化
+            this.init();
+        },
     },
     computed: {
         get_percentage_count() {
@@ -138,7 +149,6 @@ export default {
                 // 横向的时候，根据选择的行数和每行显示的个数来区分具体是显示多少个
                 const swiper_width = (new_form.data_source_direction == 'horizontal' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / new_form.data_source_carousel_col }%;`: 'width: 100%;';
                 this.setData({
-                    propKey: Math.random(),
                     form: new_form,
                     new_style: new_style,
                     div_width: width,
@@ -151,6 +161,7 @@ export default {
                     slides_per_view: new_style.rolling_fashion == 'translation' ? (new_form.data_source_direction != 'horizontal' ? col : new_form.data_source_carousel_col) : 1,
                     swiper_height: swiper_height,
                     swiper_width: swiper_width,
+                    show_data: new_form?.show_data || { data_key: 'id', data_name: 'name' }
                 });
             }
         },

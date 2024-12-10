@@ -11,7 +11,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, isEmpty, gradient_handle } from '@/common/js/common/common.js';
+    import { radius_computer, padding_computer, isEmpty, gradient_handle, get_nested_property, get_custom_link } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -36,10 +36,14 @@
                 type: Number,
                 default: 1
             },
-            propSourceType: {
+            propIsCustom: {
+                type: Boolean,
+                default: false
+            },
+            propTitleParams: {
                 type: String,
-                default: ''
-            }
+                default: 'name'
+            },
         },
         data() {
             return {
@@ -68,10 +72,13 @@
                 let url = '';
                 if (!isEmpty(this.propValue.text_link)) {
                     url = this.propValue.text_link?.page || '';
-                } else if (!isEmpty(this.propSourceList.data)) {
-                    url = this.propSourceList.data[this.propValue?.data_source_link] || '';
                 } else {
-                    url = this.propSourceList[this.propValue?.data_source_link] || '';
+                    // 获取数据源ID
+                    const data_source_link_id = !isEmpty(this.propValue?.data_source_link_field?.id || '') ? this.propValue?.data_source_link_field?.id : this.propValue.data_source_link;
+                    // 数据源内容
+                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    // 调用方法处理数据显示
+                    url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option);
                 }
                 this.setData({
                     form: this.propValue,
@@ -86,16 +93,44 @@
                 if (!isEmpty(form.text_title)) {
                     text = form.text_title;
                 } else {
-                    text = this.propSourceList[form.data_source_id];
+                    let text_title = '';
+                    // 获取数据源ID
+                    const data_source_id = !isEmpty(form?.data_source_field?.id || '') ? form?.data_source_field?.id : [ form.data_source_id ];
+                    // 数据源内容
+                    const option = form?.data_source_field?.option || [];
+                    // 多选判断
+                    if (data_source_id.length > 0) {
+                        // 遍历取出所有的值
+                        data_source_id.forEach(source_id => {
+                            const sourceList = option.filter((item) => item.field == source_id);
+                            // 根据数据源ID是否包含点号来区分处理方式
+                            if (source_id.includes(';')) {
+                                const ids = source_id.split(';');
+                                let source_text = '';
+                                ids.forEach((item, index) => {
+                                    source_text += this.data_handling(item) + (index != ids.length - 1 ? (sourceList?.join || '') : '');
+                                });
+                                text_title += (sourceList?.first || '') + source_text + (sourceList?.last || '');
+                            } else {
+                                text_title += (sourceList?.first || '') + this.data_handling(source_id) + (sourceList?.last || '');
+                            }
+                        });
+                    }
                     // 如果是商品的标题或者是品牌的名称，需要判断是否有新的标题，没有的话就取原来的标题
-                    if (['goods', 'article', 'brand'].includes(this.propSourceType) && !isEmpty(this.propSourceList.data)) {
-                        // 其他的切换为从data中取数据
-                        if (form.data_source_id == this.keyMap[this.propSourceType]) {
-                            // 如果是符合条件的标志，先判断新的标题是否存在，存在就取新的标题，否则的话取原来的标题
-                            text = !isEmpty(this.propSourceList.new_title) ? this.propSourceList.new_title : this.propSourceList.data[this.keyMap[this.propSourceType]];
-                        } else {
-                            text = this.propSourceList.data[form.data_source_id];
-                        }
+                    text = text_title;
+                }
+                return text;
+            },
+            data_handling(data_source_id) {
+                let text = get_nested_property(this.propSourceList, data_source_id);
+                // 如果是商品的标题或者是品牌的名称，需要判断是否有新的标题，没有的话就取原来的标题
+                if (this.propIsCustom && !isEmpty(this.propSourceList.data)) {
+                    // 其他的切换为从data中取数据
+                    if (data_source_id == this.propTitleParams) {
+                        // 如果是符合条件的标志，先判断新的标题是否存在，存在就取新的标题，否则的话取原来的标题
+                        text = !isEmpty(this.propSourceList.new_title) ? this.propSourceList.new_title : get_nested_property(this.propSourceList.data, data_source_id);
+                    } else {
+                        text = get_nested_property(this.propSourceList.data, data_source_id);
                     }
                 }
                 return text;
