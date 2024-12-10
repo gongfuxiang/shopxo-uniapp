@@ -60,7 +60,7 @@
                     if (!isEmpty(this.propSourceList)) {
                         let icon = '';
                         // 获取数据源ID
-                        const data_source_id = !isEmpty(this.propValue?.data_source_field?.id || '') ? this.propValue?.data_source_field?.id : this.propValue.data_source_id;
+                        const data_source_id = this.propValue?.data_source_field?.id || '';
                         // 数据源内容
                         const option = this.propValue?.data_source_field?.option || {};
                         if (data_source_id.includes(';')) {
@@ -93,7 +93,7 @@
                     url = this.propValue.icon_link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = !isEmpty(this.propValue?.data_source_link_field?.id || '') ? this.propValue?.data_source_link_field?.id : this.propValue.data_source_link;
+                    const data_source_link_id = this.propValue?.data_source_link_field?.id || '';
                     // 数据源内容
                     const source_link_option = this.propValue?.data_source_link_field?.option || {};
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option)
