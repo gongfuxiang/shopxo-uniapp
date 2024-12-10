@@ -74,7 +74,7 @@
                     url = this.propValue.text_link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = !isEmpty(this.propValue?.data_source_link_field?.id || '') ? this.propValue?.data_source_link_field?.id : this.propValue.data_source_link;
+                    const data_source_link_id = this.propValue?.data_source_link_field?.id || '';
                     // 数据源内容
                     const source_link_option = this.propValue?.data_source_link_field?.option || {};
                     // 调用方法处理数据显示
@@ -95,7 +95,7 @@
                 } else {
                     let text_title = '';
                     // 获取数据源ID
-                    const data_source_id = !isEmpty(form?.data_source_field?.id || '') ? form?.data_source_field?.id : [ form.data_source_id ];
+                    const data_source_id = form?.data_source_field?.id || [];
                     // 数据源内容
                     const option = form?.data_source_field?.option || [];
                     // 多选判断
