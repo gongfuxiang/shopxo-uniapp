@@ -32,7 +32,7 @@ export function get_nested_property(obj, path) {
     
     // 使用reduce方法遍历属性键数组，逐层访问对象属性
     // 如果当前对象存在且拥有下一个属性键，则继续访问；否则返回空字符串
-    return keys.reduce((o, key) => (o && o[key] ? o[key] : ''), obj) || '';
+    return keys.reduce((o, key) => (o != null && o[key] != null ? o[key] : ''), obj) ?? '';
 }
 
 /**
@@ -344,6 +344,10 @@ export function background_computer(new_style) {
  * 这些样式包括渐变色、内边距、外边距、圆角和阴影等，为组件提供了一套完整的外观定义。
  *
  * @param new_style  组件的新样式对象，包含了需要计算的样式属性。
+ * @param scale      一个缩放比例，用于控制样式的缩放，默认为1。
+ * @param scale      用于控制样式的缩放比例，默认为1，表示不进行缩放。
+ * @param is_custom  一个布尔值，用于判断是否为自定义样式，默认为false。
+ * @param index      用于标识组件的索引，默认为0。
  * @returns 返回一个字符串，包含了计算后的样式定义，可以被直接应用于组件的样式属性。
  */
 export function common_styles_computer(new_style) {

@@ -6,11 +6,27 @@
                 <view class="flex-row gap-10 jc-sb align-c" :style="propsTabsImgContainer">
                     <view class="tabs flex-1 flex-width">
                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
-                            <view class="flex-row">
+                            <view class="flex-row" :style="'height:' + tabs_height">
                                 <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
                                     <view class="nowrap flex-col jc-c align-c" :style="tabs_sign_spacing">
-                                        <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
-                                        <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title + tabs_padding_bottom">{{ item.title }}</view>
+                                        <template v-if="!isEmpty(item.img)">
+                                            <image :src="item.img[0].url" class="img" :style="tabs_theme_style.tabs_top_img" mode="aspectFit" />
+                                        </template>
+                                        <template v-if="item.tabs_type == '1'">
+                                            <template v-if="!isEmpty(item.tabs_icon)">
+                                                <view class="title" :style="index == active_index ? ['2', '4'].includes(tabs_theme_index) ? tabs_check : `` :  '' + tabs_padding_bottom">
+                                                    <iconfont :name="'icon-' + item.tabs_icon" :color="index == active_index ? tabs_icon_checked_color : tabs_icon_color" propContainerDisplay="flex" :size="index == active_index ? tabs_icon_checked_size : tabs_icon_size"></iconfont>
+                                                </view>
+                                            </template>
+                                            <template v-else>
+                                                <view class="title" :style="index == active_index ? new_style.is_tabs_img_background == '1' && ['2', '4'].includes(tabs_theme_index) ? tabs_check : `` : tabs_padding_bottom">
+                                                    <imageEmpty :propImageSrc="item.tabs_img[0]" :propStyle="index == active_index ? tabs_theme_style.tabs_img_checked : tabs_theme_style.tabs_img" propImgFit="heightFix" propErrorStyle="width: 40rpx;height: 40rpx;"></imageEmpty>
+                                                </view>
+                                            </template>
+                                        </template>
+                                        <template v-else>
+                                            <view class="title" :style="index == active_index ? ['2', '4'].includes(tabs_theme_index) ? tabs_theme_style.tabs_title_checked + tabs_check : tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title + tabs_padding_bottom">{{ item.title }}</view>
+                                        </template>
                                         <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
                                         <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''" propContainerDisplay="flex" size="40rpx"></iconfont>
                                         <view class="bottom_line" :class="tabs_bottom_line_theme" :style="tabs_check"></view>
@@ -51,15 +67,19 @@
 
 <script>
     const app = getApp();
-    import { gradient_computer, isEmpty } from '@/common/js/common/common.js';
+    import { gradient_computer, isEmpty, radius_computer } from '@/common/js/common/common.js';
     import componentPopup from '@/components/popup/popup';
-
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
     bar_height = 0;
     // #endif
     export default {
+        components: {
+            componentPopup,
+            imageEmpty,
+        },
         props: {
             propValue: {
                 type: Object,
@@ -109,11 +129,9 @@
                 default: '',
             }
         },
-        components: {
-            componentPopup,
-        },
         data() {
             return {
+                new_style: {},
                 tabs_theme_index: '',
                 tabs_theme: '',
                 tabs_check: '',
@@ -126,7 +144,14 @@
                 tabs_theme_style: {
                     tabs_title_checked: '',
                     tabs_title: '',
+                    tabs_img_checked: '',
+                    tabs_img: '',
+                    tabs_top_img: ''
                 },
+                tabs_icon_checked_size: '',
+                tabs_icon_size: '',
+                tabs_icon_checked_color: '',
+                tabs_icon_color: '',
                 icon: {
                     more_icon_class: '',
                     more_icon_size: '',
@@ -137,6 +162,11 @@
                 propIsBar: false,
                 tabs_bottom_line_theme: '',
                 tabs_sticky: '',
+                tabs_height: '100%',
+                // 默认数据
+                old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
+                old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
+                old_margin: { margin: 0, margin_top: 10, margin_bottom: 0, margin_left: 0, margin_right: 0 },
             };
         },
         watch: {
@@ -178,12 +208,38 @@
                     more_icon_size: new_style.more_icon_size,
                     more_icon_color: new_style.more_icon_color,
                 };
+                const tabs_top_img_height = new_style?.tabs_top_img_height || 39;
+                const tabs_top_img_radius = new_style?.tabs_top_img_radius || { radius: 100, radius_top_left: 100, radius_top_right: 100, radius_bottom_left: 100, radius_bottom_right: 100}
                 // 标题样式
                 const new_tabs_theme_style = {
-                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;line-height: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
+                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;line-height: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};`,
                     tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;line-height: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
+                    tabs_img_checked: `height: ${(new_style?.tabs_img_height || 0) * 2}rpx;` + radius_computer(new_style?.tabs_img_radius || this.old_radius),
+                    tabs_img: `height: ${(new_style?.tabs_img_height || 0) * 2}rpx;` + radius_computer(new_style?.tabs_img_radius || this.old_radius),
+                    tabs_top_img: `height: ${tabs_top_img_height * 2 }rpx; width: 100%;box-sizing: border-box;` + radius_computer(tabs_top_img_radius),
                 };
+                const { tabs_size_checked, tabs_size, tabs_icon_size_checked = 0, tabs_icon_size = 0, tabs_img_height = 0, tabs_sign_spacing = 0 } = new_style || {};
+                let default_height = 0;
+                if (new_content.tabs_theme == '2') {
+                    default_height = 12; // 选中的时候,风格二的内间距
+                } else if (new_content.tabs_theme == '4') {
+                    const top_index = new_content?.tabs_list?.findIndex((item) => !isEmpty(item.img)) ?? -1;
+                    default_height = 4 + (top_index > -1 ? tabs_top_img_height + tabs_sign_spacing : 0); // 选中的时候,风格二的内间距 加上上边图片的大小和上边图片之间的间距
+                }
+                // 筛选出所有的icon
+                const is_icon = new_content?.tabs_list?.findIndex((item) => item.tabs_type === '1' && !isEmpty(item.tabs_icon)) ?? -1;
+                // 如果有icon，则取选中的icon大小和未选中的icon大小取最大值，作为图标的高度
+                let icon_height = 0;
+                if (is_icon > -1) {
+                    icon_height = Math.max(tabs_icon_size_checked + default_height, tabs_icon_size);
+                }
+                // 筛选出所有的图片, 没有选择图标的时候默认是图片
+                const is_img = new_content?.tabs_list?.findIndex((item) => item.tabs_type === '1' && isEmpty(item.tabs_icon)) ?? -1;
+                // 选项卡高度 五个值，作为判断依据，因为图片没有未选中的大小设置，所以高度判断的时候只取选中的高度, 其余的icon和标题都分别取选中和未选中的大小对比，取出最大的值，作为选项卡的高度，避免选项卡切换时会出现抖动问题
+                const height = Math.max(tabs_size_checked + default_height, tabs_size, icon_height, is_img > -1 ? (tabs_img_height + default_height) : '');
+                // 参数设置
                 this.setData({
+                    new_style: new_style,
                     tabs_spacing: Number(new_style.tabs_spacing),
                     tabs_sign_spacing: !isEmpty(new_style.tabs_sign_spacing) ? `row-gap:${new_style.tabs_sign_spacing * 2}rpx;` : 'row-gap:8rpx;',
                     tabs_list: new_content.tabs_list,
@@ -195,9 +251,14 @@
                     tabs_check: new_tabs_check,
                     icon_tabs_check: `${new_tabs_check};line-height: 1;background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
                     icon: new_icon,
+                    tabs_icon_checked_size: (new_style?.tabs_icon_size_checked || 0) * 2 + 'rpx',
+                    tabs_icon_size: (new_style?.tabs_icon_size || 0) * 2 + 'rpx',
+                    tabs_icon_checked_color: new_style?.tabs_icon_color_checked || '',
+                    tabs_icon_color: new_style?.tabs_icon_color || '',
                     tabs_theme_style: new_tabs_theme_style,
                     tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
                     tabs_theme_1_style: new_style.tabs_one_theme == '1',
+                    tabs_height: ['2', '4'].includes(new_content.tabs_theme) ? height * 2 + 'rpx' : '100%;',
                 });
             },
             // 获取选项卡主题
@@ -301,8 +362,8 @@
                 display: none;
             }
             .img {
-                width: 78rpx;
-                height: 78rpx;
+                // width: 78rpx;
+                // height: 78rpx;
                 border-radius: 100%;
                 border: 2rpx solid transparent;
                 display: none;
@@ -338,9 +399,9 @@
             &.tabs-style-3 {
                 &.active {
                     .title {
-                        background: #ff2222;
+                        // background: #ff2222;
                         border-radius: 40rpx;
-                        padding: 12rpx 24rpx;
+                        padding: 6px 12px;
                         color: #fff;
                     }
                 }
@@ -364,7 +425,7 @@
                         font-size: 22rpx;
                         background: #ff5e5e;
                         border-radius: 40rpx;
-                        padding: 4rpx 14rpx;
+                        padding: 2px 7px;
                         color: #fff;
                     }
                     .img {
