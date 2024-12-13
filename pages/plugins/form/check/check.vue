@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="padding-main">
+        <view class="padding-main page-content">
             <form @submit="form_submit" class="form-container">
                 <view class="border-radius-main bg-white padding-main padding-bottom-xxxxl spacing-mb">
                     <view class="title fw-b text-size margin-vertical-xxxl">{{$t('common.verification_text')}}</view>
@@ -10,7 +10,7 @@
                             <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
                         </view>
                         <!-- #endif -->
-                        <input type="text" class="wh-auto check-value" :placeholder="$t('common.verification_message')" placeholder-class="cr-grey-c" :value="check_value" @input="check_event" />
+                        <input type="text" class="wh-auto check-value" :placeholder="$t('common.verification_mobile_message')" placeholder-class="cr-grey-c" :value="check_value" @input="check_event" />
                     </view>
                 </view>
                 <view class="padding-main">
@@ -19,6 +19,19 @@
                 <view class="padding-lg margin-top-xl text-size-lg tc">
                     <text v-if="(error_msg || null) != null" class="cr-red">{{error_msg}}</text>
                     <text v-if="(success_msg || null) != null" class="cr-green">{{success_msg}}</text>
+                </view>
+                <view class="bottom-fixed padding-xl tc">
+                    <button type="default" size="mini" class="bg-main-light br-main cr-main text-size-lg circle padding-0 refresh-submit" @tap="refresh_data_event">{{$t('common.refresh_text')}}</button>
+                    <view class="bottom-line-exclude flex-row jc-sb margin-top-xl">
+                        <block v-if="stats_data.length > 0">
+                            <block v-for="(item, index) in stats_data">
+                                <view>
+                                    <view class="cr-grey">{{item.name}}</view>
+                                    <view class="fw-b text-size-lg" :class="item.type == 1 ? 'cr-green' : (item.type == 0 ? 'cr-yellow' : '')">{{item.value}}</view>
+                                </view>
+                            </block>
+                        </block>
+                    </view>
                 </view>
             </form>
         </view>
@@ -37,7 +50,8 @@
                 form_submit_loading: false,
                 check_value: '',
                 error_msg: '',
-                success_msg: ''
+                success_msg: '',
+                stats_data: []
             };
         },
         components: {
@@ -60,6 +74,9 @@
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+
+            // 刷新数据
+            this.refresh_data_event('init');
         },
 
         methods: {
@@ -97,10 +114,10 @@
                     success_msg: ''
                 });
                 var form_data = {
-                    extraction_code: this.check_value
+                    value: this.check_value
                 }
                 var validation = [
-                    { fields: 'extraction_code', msg: this.$t('common.verification_message') }
+                    { fields: 'value', msg: this.$t('common.verification_mobile_message') }
                 ];
                 if (app.globalData.fields_check(form_data, validation)) {
                     uni.showLoading({
@@ -111,24 +128,26 @@
                     });
                     var temp_code = this.check_value;
                     uni.request({
-                        url: app.globalData.get_request_url('verification', 'adminorder', 'shop'),
+                        url: app.globalData.get_request_url('check', 'index', 'form'),
                         method: 'POST',
                         data: form_data,
                         dataType: 'json',
                         success: (res) => {
                             uni.hideLoading();
-                            if (res.data.code == 0) {
+                            var data = res.data;
+                            if (data.code == 0) {
                                 this.setData({
                                     form_submit_loading: false,
                                     check_value: '',
                                     error_msg: '',
-                                    success_msg: res.data.msg+'（'+temp_code+'）',
+                                    stats_data: data.data.stats_data || [],
+                                    success_msg: data.msg+'（'+data.data.username+'）',
                                 });
                             } else {
-                                if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
+                                if (app.globalData.is_login_check(data, this, 'form_submit')) {
                                     this.setData({
                                         form_submit_loading: false,
-                                        error_msg: res.data.msg+'（'+temp_code+'）',
+                                        error_msg: data.msg+'（'+temp_code+'）',
                                         success_msg: '',
                                     });
                                 }
@@ -144,6 +163,28 @@
                         },
                     });
                 }
+            },
+            
+            // 刷新数据
+            refresh_data_event(e) {
+                uni.request({
+                    url: app.globalData.get_request_url('stats', 'index', 'form'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0) {
+                            this.setData({
+                                stats_data: res.data.data || []
+                            });
+                            if(e != 'init') {
+                                app.globalData.showToast(res.data.msg, 'success');
+                            }
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    }
+                });
             }
         }
     };
@@ -153,5 +194,13 @@
         height: 100rpx;
         line-height: 100rpx;
         font-size: 44rpx;
+    }
+    .page-content {
+        padding-top: 12vh;
+    }
+    .refresh-submit {
+        width: 140rpx;
+        height: 140rpx;
+        line-height: 140rpx;
     }
 </style>

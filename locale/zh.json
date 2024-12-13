@@ -39,6 +39,7 @@
 		"return": "返回",
 		"view_text": "查看",
         "detail_text": "详情",
+        "refresh_text": "刷新",
         "yes_text": "是",
         "no_text": "否",
         "place_order_text": "下单",
@@ -71,6 +72,7 @@
 		"apply_time": "申请时间",
         "verification_text": "核销码",
         "verification_message": "请输入核销码",
+        "verification_mobile_message": "请输入核销码或手机",
         "not_supported_scan_tips": "H5网页不支持扫码",
         "copy_link": "复制链接"
 	},

@@ -1698,6 +1698,13 @@
                 {
                     "path": "check/check",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }

@@ -39,6 +39,7 @@
 		"return": "Return",
 		"view_text": "Check",
         "detail_text": "Detail",
+        "refresh_text": "Refresh",
         "yes_text": "Yes",
         "no_text": "NO",
         "place_order_text": "Place Order",
@@ -71,6 +72,7 @@
 		"apply_time": "Application time",
         "verification_text": "Verification code",
         "verification_message": "Please enter the verification code",
+        "verification_mobile_message": "Please enter the verification code or mobile number",
         "not_supported_scan_tips": "H5 webpage does not support scanning codes",
         "copy_link": "Copy link"
 	},
