@@ -10,7 +10,7 @@
                         <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
                     </block>
                 </view>
-                <view :class="'va-m dis-inline-block margin-left-xs single-text text' + (propType == 'header' ? 'text-size-md' : 'text-size-xs')" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
+                <view :class="'va-m dis-inline-block margin-left-xs single-text text' + (propType == 'header' ? ' text-size-md' : ' text-size-xs')" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
                 <view v-if="propIsRightIconArrow" class="va-m lh dis-inline-block margin-left-xs">
                     <block v-if="propRightImgValue.length > 0">
                         <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>

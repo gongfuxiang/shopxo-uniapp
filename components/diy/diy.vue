@@ -10,8 +10,8 @@
                     <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
                         <view v-for="item in tabs_data" :key="item.key">
                             <template v-if="item.is_enable == '1'">
-                                <componentDiyTabs v-if="item.key == 'tabs'" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-                                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="temp_header_top" :propScrollTop="scroll_top" :propTabsIsTop="temp_is_header_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
+                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+                                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="temp_header_top" :propScrollTop="scroll_top" :propTabsIsTop="temp_is_header_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
                             </template>
                         </view>
                         <template v-if="is_tabs_type">
@@ -288,38 +288,41 @@
 
             // 初始化
             init() {
-                let header = this.propValue.header;
+                const { header = {}, diy_data = [], tabs_data = []} = this.propValue;
                 let header_style = header.com_data.style;
-                let diy_data = JSON.parse(JSON.stringify(this.propValue.diy_data));
                 let new_diy_index = 0;
+                let new_tabs_data = [];
                 let new_diy_data = [];
-                diy_data.forEach((item) => {
-                    // 判断是否是商品列表
-                    if (item.com_name == 'float-window') {
-                        item.index = -1;
-                    } else {
-                        if (new_diy_index == 0) {
-                            // 判断是否开启沉浸模式和是否开启安全距离 如果为true则除了选项卡和选项卡轮播外， 第一个组件则加上安全距离样式的padding_top加上顶部导航的高度和安全距离的高度
-                            if (header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1') {
-                                let new_data = JSON.parse(JSON.stringify(item));
-                                // 顶部导航的高度
-                                let header_top_height = (header.com_data.content.data_alone_row_value.length > 0 ? parseInt(header.com_data.style.data_alone_row_space || 5) : 0) + 33 + (header.com_data.content.data_alone_row_value.length > 0 ? 33 : 0);
-                                new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
-                                item = new_data;
-                            }
-                        }
-                        item.index = new_diy_index;
-                        new_diy_data.push(item);
+                if (tabs_data.length > 0) {
+                    tabs_data.forEach((item) => {
+                        // 修改item的内容
+                        item = this.get_index_content(new_diy_index, header, header_style, item);
+                        new_tabs_data.push(item);
                         new_diy_index++;
-                    }
-                });
+                    });
+                    new_diy_data = diy_data;
+                } else {
+                    new_tabs_data = tabs_data;
+                    // 过滤数据 
+                    diy_data.forEach((item) => {
+                        // 判断是否是商品列表
+                        if (item.com_name == 'float-window') {
+                            item.index = -1;
+                        } else {
+                            // 修改item的内容
+                            item = this.get_index_content(new_diy_index, header, header_style, item);
+                            new_diy_data.push(item);
+                            new_diy_index++;
+                        }
+                    });
+                }
                 const { padding_right = 0, padding_left = 0} = header.com_data.style.common_style;
                 // tabs选项卡数据过滤
                 this.setData({
                     header_data: header,
                     footer_data: this.propValue.footer,
                     diy_data: new_diy_data,
-                    tabs_data: this.propValue.tabs_data,
+                    tabs_data: new_tabs_data,
                     page_style: common_styles_computer(header.com_data.style.common_style),
                     page_img_style: background_computer(header.com_data.style.common_style),
                     // 内间距
@@ -344,7 +347,21 @@
                     is_immersion_model: bool,
                 });
             },
-
+            get_index_content(new_diy_index, header, header_style, item) {
+                item.index = new_diy_index;
+                if (new_diy_index == 0) {
+                    // 判断是否开启沉浸模式和是否开启安全距离 如果为true则除了选项卡和选项卡轮播外， 第一个组件则加上安全距离样式的padding_top加上顶部导航的高度和安全距离的高度
+                    if (header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1') {
+                        let new_data = JSON.parse(JSON.stringify(item));
+                        // 顶部导航的高度
+                        let header_top_height = (header.com_data.content.data_alone_row_value.length > 0 ? parseInt(header.com_data.style.data_alone_row_space || 5) : 0) + 33 + (header.com_data.content.data_alone_row_value.length > 0 ? 33 : 0);
+                        new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
+                        return new_data;
+                    }
+                    return item;
+                }
+                return item;
+            },
             // 选项卡回调更新数据
             tabs_click_event(tabs_id, bool, params = {}) {
                 let new_data = [];

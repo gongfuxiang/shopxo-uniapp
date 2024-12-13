@@ -1,10 +1,10 @@
 <template>
-    <view class="ou" :style="style_container">
-        <view class="flex-col ou wh-auto" :style="style_img_container">
+    <view class="ou" :style="style_container + swiper_bg_style">
+        <view class="flex-col ou wh-auto" :style="style_img_container + carousel_img_container">
             <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <view :style="carousel_container">
                 <view :style="carousel_img_container">
-                    <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play"></componentDiycarousel>
+                    <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play" @slideChange="slideChange"></componentDiycarousel>
                 </view>
             </view>
         </view>
@@ -48,7 +48,12 @@
             propContentPadding: {
                 type: String,
                 default: '',
-            }
+            },
+            // 组件渲染的下标
+            propIndex: {
+                type: Number,
+                default: 1000000,
+            },
         },
         data() {
             return {
@@ -74,6 +79,10 @@
                 carousel_container: '',
                 carousel_img_container: '',
                 // top_up: '0',
+                actived_index: 0,
+                // 轮播图背景
+                swiper_bg_style: '',
+                swiper_bg_img_style: '',
             };
         },
         created() {
@@ -112,7 +121,7 @@
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
-                    style_img_container: common_img_computer(new_style.common_style) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
                     carousel_container: gradient_computer(carousel_content_data) + margin_computer(carousel_content_margin) + radius_computer(carousel_content_radius) + 'overflow: hidden;',
@@ -128,6 +137,8 @@
                         margin_left: new_style.common_style.margin_left,
                         margin_right: new_style.common_style.margin_right,
                     },
+                    swiper_bg_style: this.get_swiper_bg_style(new_content, 0),
+                    swiper_bg_img_style: this.get_swiper_bg_img_style(new_content, 0),
                 });
             },
             // tab点击
@@ -141,6 +152,35 @@
             // 视频播放
             video_play(url, popup_width, popup_height) {
                 this.$emit('onVideoPlay', url, popup_width, popup_height);
+            },
+            get_swiper_bg_style(form, actived_index) {
+                const style = form?.carousel_list?.[actived_index]?.style;
+                if (style && !isEmpty(style.color_list)) {
+                    const color_list = style.color_list;
+                    const list = color_list.filter((item) => !isEmpty(item.color));
+                    if (list.length > 0) {
+                        try {
+                            return gradient_computer(style);
+                        } catch (error) {
+                            return '';
+                        }
+                    }
+                    return '';
+                }
+                return '';
+            },
+            get_swiper_bg_img_style(form, actived_index) {
+                if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
+                    return background_computer(form.carousel_list[actived_index].style);
+                }
+                return '';
+            },
+            slideChange(index) {
+                this.setData({
+                    actived_index: index,
+                    swiper_bg_style: this.get_swiper_bg_style(this.propValue.content || {}, index),
+                    swiper_bg_img_style: this.get_swiper_bg_img_style(this.propValue.content || {}, index),
+                });
             },
         },
     };

@@ -1,6 +1,6 @@
 <template>
-    <view class="pr" :style="style_container">
-        <view class="pr re" :style="style_img_container">
+    <view class="pr" :style="style_container + swiper_bg_style">
+        <view class="pr re" :style="style_img_container + swiper_bg_img_style">
             <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
@@ -129,6 +129,9 @@
                 // hackReset: true,
                 // 轮播图的高度
                 swiper_height: 50,
+                // 轮播时的背景样式
+                swiper_bg_style: '',
+                swiper_bg_img_style: '',
             };
         },
         watch: {
@@ -179,6 +182,8 @@
                     img_fit: fit, // 图片风格 默认为aspectFill
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑   
                     swiper_height: new_form.height * scale + 'px', // 轮播图高度
+                    swiper_bg_style: this.get_swiper_bg_style(new_form, 0),
+                    swiper_bg_img_style: this.get_swiper_bg_img_style(new_form, 0),
                 });
                 // 风格二显示逻辑
                 if (new_form.carousel_type == 'card') {
@@ -198,17 +203,37 @@
                         });
                     // });
                 }
-                // this.setData({
-                //     hackReset: false,
-                // });
-                // this.$nextTick(() => {
-                //     this.setData({
-                //         hackReset: true,
-                //     });
-                // });
+            },
+            get_swiper_bg_style(form, actived_index) {
+                if (!this.propIsCommon) {
+                    return '';
+                }
+                const style = form?.carousel_list?.[actived_index]?.style;
+                if (style && !isEmpty(style.color_list)) {
+                    const color_list = style.color_list;
+                    const list = color_list.filter((item) => !isEmpty(item.color));
+                    if (list.length > 0) {
+                        try {
+                            return gradient_computer(style);
+                        } catch (error) {
+                            return '';
+                        }
+                    }
+                    return '';
+                }
+                return '';
+            },
+            get_swiper_bg_img_style(form, actived_index) {
+                if (!this.propIsCommon) {
+                    return '';
+                }
+                if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
+                    return background_computer(form.carousel_list[actived_index].style);
+                }
+                return '';
             },
             get_seat_list(form) {
-                if (form.carousel_list.length > 3) {
+                if (form.carousel_list.length > 3 || form.carousel_type !== 'card') {
                     return [];
                 } else {
                     let seat_list = [];
@@ -231,19 +256,22 @@
             },
             slideChange(e) {
                 let actived_index = e.detail.current;
-                if (e.detail.current > this.form.carousel_list.length - 1) {
+                if (e.detail.current > this.form.carousel_list.length - 1 && this.form.carousel_type == 'card') {
                     const seat_length = this.seat_list.length;
                     if (seat_length == 2 && e.detail.current == 3) {
                         actived_index = 1;
-                    } else if (seat_length == 3) {
-                        actived_index = 0;
                     } else {
-                        actived_index = e.detail.current - this.seat_list.length;
+                        actived_index = 0;
                     }
+                }
+                if (!this.propIsCommon) {
+                    this.$emit('slideChange', actived_index);
                 }
                 this.setData({
                     animationData: e.detail.current,
                     actived_index: actived_index,
+                    swiper_bg_style: this.get_swiper_bg_style(this.form, actived_index),
+                    swiper_bg_img_style: this.get_swiper_bg_img_style(this.form, actived_index),
                 });
             },
             get_video_style(new_style) {
