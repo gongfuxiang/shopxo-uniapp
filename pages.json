@@ -77,6 +77,13 @@
                 "enablePullDownRefresh": true,
                 "navigationBarTitleText": ""
             }
+        },
+        {
+            "path": "pages-drug/drug/drug-order-list",
+            "style": {
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": ""
+            }
         }
     ],
     "subPackages": [
@@ -1680,6 +1687,18 @@
                     "path": "orderannex/orderannex",
                     "style": {
                         "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/form",
+            "pages": [
+                {
+                    "path": "check/check",
+                    "style": {
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 }

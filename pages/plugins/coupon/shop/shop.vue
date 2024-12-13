@@ -199,6 +199,32 @@
                         uni.showLoading({
                             title: this.$t('common.processing_in_text'),
                         });
+                        uni.request({
+                            url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
+                            method: 'POST',
+                            data: {
+                                coupon_id: value,
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    app.globalData.showToast(res.data.msg, 'success');
+                                    temp_list[index] = res.data.data.coupon;
+                                    this.setData({
+                                        data_list: temp_list,
+                                    });
+                                } else {
+                                    if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
+                            },
+                        });
                     }
                 }
             },
