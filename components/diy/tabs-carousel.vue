@@ -170,7 +170,7 @@
                 return '';
             },
             get_swiper_bg_img_style(form, actived_index) {
-                if (!isEmpty(form.carousel_list[actived_index].style.background_img)) {
+                if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
                     return background_computer(form.carousel_list[actived_index].style);
                 }
                 return '';
