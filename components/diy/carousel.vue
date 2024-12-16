@@ -1,6 +1,7 @@
 <template>
-    <view class="pr" :style="style_container + swiper_bg_style">
-        <view class="pr re" :style="style_img_container + swiper_bg_img_style">
+    <view class="pr re" :style="style_container + swiper_bg_style">
+        <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
+        <view class="pr re" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
             <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
@@ -66,7 +67,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer, get_indicator_location_style, get_indicator_style } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer, get_indicator_location_style, get_indicator_style, background_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -228,12 +229,12 @@
                     return '';
                 }
                 if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
-                    return background_computer(form.carousel_list[actived_index].style);
+                    return background_computer(form.carousel_list[actived_index].style) + (form?.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.8;` : '');
                 }
                 return '';
             },
             get_seat_list(form) {
-                if (form.carousel_list.length > 3 || form.carousel_type !== 'card') {
+                if (form.carousel_list.length > 3) {
                     return [];
                 } else {
                     let seat_list = [];
@@ -246,7 +247,7 @@
                             seat_list.push(...list);
                             break;
                         case 3:
-                            seat_list.push(...list.slice(0, 1));
+                            seat_list.push(...list);
                             break;
                         default:
                             break;
@@ -256,10 +257,10 @@
             },
             slideChange(e) {
                 let actived_index = e.detail.current;
-                if (e.detail.current > this.form.carousel_list.length - 1 && this.form.carousel_type == 'card') {
+                if (e.detail.current > this.form.carousel_list.length - 1) {
                     const seat_length = this.seat_list.length;
-                    if (seat_length == 2 && e.detail.current == 3) {
-                        actived_index = 1;
+                    if (this.form.carousel_list.length > 1) {
+                        actived_index = actived_index - seat_length;
                     } else {
                         actived_index = 0;
                     }

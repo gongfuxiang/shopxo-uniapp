@@ -1,6 +1,7 @@
 <template>
-    <view class="ou" :style="style_container + swiper_bg_style">
-        <view class="flex-col ou wh-auto" :style="style_img_container + carousel_img_container">
+    <view class="ou re" :style="style_container + swiper_bg_style">
+        <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
+        <view class="flex-col ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
             <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <view :style="carousel_container">
                 <view :style="carousel_img_container">
@@ -100,6 +101,7 @@
             },
         },
         methods: {
+            isEmpty,
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
@@ -171,7 +173,7 @@
             },
             get_swiper_bg_img_style(form, actived_index) {
                 if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
-                    return background_computer(form.carousel_list[actived_index].style);
+                    return background_computer(form.carousel_list[actived_index].style) + (form?.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.8;` : '');
                 }
                 return '';
             },

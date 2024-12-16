@@ -104,7 +104,8 @@
                         type = Object.keys(obj)[index];
                     }
                 }
-                if((type || null) == null) {
+                
+                if((type || null) != null) {
                     // 是否需要展示弹窗提示
                     if (!this.popup_status && this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
                         // 当前缓存用户
