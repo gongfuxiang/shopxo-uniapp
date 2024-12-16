@@ -101,6 +101,7 @@
             },
         },
         methods: {
+            isEmpty,
             init() {
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
