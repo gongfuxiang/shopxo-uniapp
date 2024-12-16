@@ -168,8 +168,8 @@
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 const scale = width / 390;
                 this.setData({
-                    form: this.propValue.content,
-                    new_style: this.propValue.style,
+                    form: new_form,
+                    new_style: new_style,
                     seat_list: this.get_seat_list(new_form),
                     new_list: new_form.carousel_list.concat(this.get_seat_list(new_form)),
                     popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
@@ -229,7 +229,7 @@
                     return '';
                 }
                 if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
-                    return background_computer(form.carousel_list[actived_index].style) + (form?.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.8;` : '');
+                    return background_computer(form.carousel_list[actived_index].style) + (form?.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
                 }
                 return '';
             },

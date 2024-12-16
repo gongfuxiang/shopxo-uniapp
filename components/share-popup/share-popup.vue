@@ -200,7 +200,6 @@
                 // 分享参数
                 var provider = e.currentTarget.dataset.provider;
                 var scene = e.currentTarget.dataset.scene || null;
-
                 // 分享基础数据
                 var share = app.globalData.share_content_handle(this.share_info || {});
                 var img = this.images || share.img;
@@ -213,7 +212,7 @@
                 // #ifdef APP
                 // 分享到好友，是否走微信小程序，则获取微信小程序原始id
                 if (scene == 'WXSceneSession') {
-                    var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id', null);
+                    var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id') || null;
                     if (weixin_original_id != null) {
                         type = 5;
                         miniProgram = {
@@ -230,7 +229,6 @@
                 this.setData({
                     popup_status: false,
                 });
-
                 // 调用分享组件
                 uni.share({
                     provider: provider,
