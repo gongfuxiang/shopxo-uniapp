@@ -1,7 +1,7 @@
 <template>
     <view class="pr re" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
-        <view class="pr re" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? `background-image: url('');` : '')">
+        <view class="pr re" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
             <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
