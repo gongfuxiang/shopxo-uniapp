@@ -12,8 +12,8 @@
                             <view class="text-size single-text">
                                 {{ item.title }}
                             </view>
-                            <view v-if="item.title != item.content" class="margin-top-sm cr-grey multi-text">
-                                {{ item.content }}
+                            <view v-if="item.title != item.content" class="margin-top-sm multi-text">
+                                <mp-html :content="item.content" />
                             </view>
                         </view>
                     </view>

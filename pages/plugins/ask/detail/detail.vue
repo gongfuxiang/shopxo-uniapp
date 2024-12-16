@@ -10,7 +10,9 @@
                         <view class="fw-b padding-horizontal-xs">·</view>
                         {{ info.access_count || '0' }}{{ $t('detail.detail.e6ga1y') }}
                     </view>
-                    <view v-if="info.title != info.content" class="text-size-md">{{ info.content }}</view>
+                    <view v-if="info.title != info.content">
+                        <mp-html :content="info.content" />
+                    </view>
                     <block v-if="(info.goods_data || null) !== null">
                         <view :data-value="info.goods_data.goods_url" @tap="url_event" class="cp">
                             <view class="goods-link spacing-mt bg-grey-f9 padding-main border-radius-sm">
@@ -41,7 +43,9 @@
                         </view>
                         <view v-if="(info.reply_time_date || null) != null" class="cr-grey-9 text-size-xs">{{ $t('detail.detail.7rg4bb') }}{{ info.reply_time_date }}</view>
                     </view>
-                    <view class="text-size-md padding-top-main">{{ info.reply }}</view>
+                    <view class="padding-top-main">
+                        <mp-html :content="info.reply" />
+                    </view>
                 </view>
                 <view class="padding-main br-t-dashed">
                     <!-- 评论内容 -->

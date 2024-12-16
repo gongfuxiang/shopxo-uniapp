@@ -24,11 +24,15 @@
                             </view>
                             <view v-if="detail_data.content" class="spacing-mb">
                                 <view class="cr-grey-9">{{$t('user-detail.user-detail.7cufw6')}}</view>
-                                <view class="margin-top-xs">{{ detail_data.content }}</view>
+                                <view class="margin-top-xs">
+                                    <mp-html :content="detail_data.content" />
+                                </view>
                             </view>
                             <view v-if="detail_data.reply" class="spacing-mb">
                                 <view class="cr-grey-9">{{$t('user-detail.user-detail.u411r2')}}</view>
-                                <view class="margin-top-xs">{{ detail_data.reply }}</view>
+                                <view class="margin-top-xs">
+                                    <mp-html :content="detail_data.reply" />
+                                </view>
                             </view>
                             <view v-if="detail_data.reply_time_time" class="spacing-mb">
                                 <view class="cr-grey-9">{{$t('user-detail.user-detail.teo6qd')}}</view>

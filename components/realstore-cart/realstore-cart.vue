@@ -13,7 +13,7 @@
                                 <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
                                     <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                     <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
-                                        <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                        <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}({{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
                                         <view class="va-m dis-inline-block margin-left-xs">
                                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                         </view>

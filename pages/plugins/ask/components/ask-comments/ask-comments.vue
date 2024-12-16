@@ -47,7 +47,9 @@
                                 <text class="username fw-b">{{ item.user.user_name_view }}</text>
                                 <text class="cr-grey-9 margin-left-main">{{ item.add_time }}</text>
                             </view>
-                            <view class="margin-top-sm comments-content">{{ item.content }}</view>
+                            <view class="margin-top-sm comments-content">
+                                <mp-html :content="item.content" />
+                            </view>
                             <view class="ask-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
                                 <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-askcommentsid="item.id" @tap="modal_open_event">
                                     <iconfont name="icon-message-square" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>

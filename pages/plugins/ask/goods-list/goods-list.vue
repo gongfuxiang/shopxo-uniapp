@@ -11,7 +11,7 @@
                         <view :data-value="item.url" @tap="url_event" class="flex-row cp">
                             <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.00n7i3')}}</view>
                             <view class="flex-1 flex-width">
-                                <view class="fw-b">{{ item.content }}</view>
+                                <mp-html :content="item.content" />
                                 <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
                                     <image v-for="(img, i) in item.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
                                 </view>
@@ -22,7 +22,9 @@
                         <view class="ask flex-row spacing-mt">
                             <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.rw12i7')}}</view>
                             <view class="flex-1 flex-width">
-                                <view class="cr-base padding-bottom-main">{{ item.reply }}</view>
+                                <view class="padding-bottom-main">
+                                    <mp-html :content="item.reply" />
+                                </view>
                             </view>
                         </view>
                     </block>

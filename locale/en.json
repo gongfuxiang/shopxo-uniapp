@@ -73,6 +73,7 @@
         "verification_text": "Verification code",
         "verification_message": "Please enter the verification code",
         "verification_mobile_message": "Please enter the verification code or mobile number",
+        "unique_message": "The unique identifier is empty",
         "not_supported_scan_tips": "H5 webpage does not support scanning codes",
         "copy_link": "Copy link"
 	},
@@ -1672,7 +1673,7 @@
 	"realstore-cart": {
 		"realstore-cart": {
 			"v437n6": "Do you have any purchased items?",
-			"6bmc34": "Switch（",
+			"6bmc34": "Switch",
 			"d1kk7x": "Please select the order type",
 			"2dc65q": "Please add the product first",
 			"50lf68": "Loading",

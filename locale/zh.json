@@ -73,6 +73,7 @@
         "verification_text": "核销码",
         "verification_message": "请输入核销码",
         "verification_mobile_message": "请输入核销码或手机",
+        "unique_message": "唯一标识为空",
         "not_supported_scan_tips": "H5网页不支持扫码",
         "copy_link": "复制链接"
 	},
@@ -1655,7 +1656,7 @@
 	"realstore-cart": {
 		"realstore-cart": {
 			"v437n6": "没有已加购的商品？",
-			"6bmc34": "切换(",
+			"6bmc34": "切换",
 			"d1kk7x": "请选择下单类型",
 			"2dc65q": "请先加购商品",
 			"50lf68": "加载中",
