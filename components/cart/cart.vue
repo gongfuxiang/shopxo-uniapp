@@ -53,9 +53,9 @@
                         <uni-swipe-action>
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                                    <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
+                                    <view class="flex-row align-c" :class="'cart-goods-item padding-main pr wh-auto ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')" style="box-sizing: border-box;">
                                         <!-- 选择 -->
-                                        <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
+                                        <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i">
                                             <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
