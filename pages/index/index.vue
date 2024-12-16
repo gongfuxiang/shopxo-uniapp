@@ -448,7 +448,8 @@
             this.init();
             // 初始化配置
             this.init_config();
-
+            debugger;
+            console.log(this.$refs.common);
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
