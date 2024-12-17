@@ -503,7 +503,7 @@
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
+                this.$refs.common.on_show({object: this, method: 'init'});
             }
         },
 

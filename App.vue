@@ -722,11 +722,14 @@
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
                                         var data = res.data.data;
-                                        var client_type = this.application_client_type();
+                                        var client_type = self.application_client_type();
                                         if ((data.is_user_exist || 0) == 1 || client_type == 'weixin') {
-                                            uni.setStorageSync(self.data.cache_user_info_key, data);
-                                            if (typeof object === 'object' && (method || null) != null) {
-                                                object[method](params);
+                                            // 存在数据非微信 或 微信小程序是否强制填写基础信息
+                                            if(((data.is_user_exist || 0) == 1 && client_type != 'weixin') || !self.is_weixin_force_user_base_handle(self, data, object, method, params)) {
+                                                uni.setStorageSync(self.data.cache_user_info_key, data);
+                                                if (typeof object === 'object' && (method || null) != null) {
+                                                    object[method](params);
+                                                }
                                             }
                                         } else {
                                             uni.setStorageSync(self.data.cache_user_login_key, data);
@@ -758,6 +761,21 @@
                         self.showToast(i18n.t('login.login.3nmrg2'));
                     },
                 });
+            },
+
+            // 微信小程序是否强制填写基础信息
+            is_weixin_force_user_base_handle(self, data, object, method, params) {
+                var status = parseInt(self.get_config('config.common_app_is_weixin_force_user_base', 0));
+                if(status == 1) {
+                    var obj = self.get_page_object();
+                    var user_base = obj.$vm.$refs.common.$refs.user_base;
+                    var res = user_base.form_write_field_check_data(data, true);
+                    if(res.popup_status) {
+                        user_base.user_base_open(object, method, params);
+                    }
+                    return res.popup_status;
+                }
+                return false;
             },
 
             /**

@@ -32,18 +32,24 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 数据加载
-            if ((this.$refs.cart || null) != null) {
-                this.$refs.cart.init();
-            }
-
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            // 初始化
+            this.init();
         },
 
         methods: {
+            // 初始化
+            init() {
+                // 数据加载
+                if ((this.$refs.cart || null) != null) {
+                    this.$refs.cart.init();
+                }
+
+                // 公共onshow事件
+                if ((this.$refs.common || null) != null) {
+                    this.$refs.common.on_show({object: this, method: 'init'});
+                }
+            },
+
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({

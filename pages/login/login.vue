@@ -21,8 +21,8 @@
                         <view v-if="current_opt_form == 'bind_verify'" class="form-content">
                             <form @submit="form_submit_bind_mobile">
                                 <view class="tc">
-                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
+                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="user.avatar || home_site_logo_square || '/static/images/common/user.png'" mode="widthFix"></image>
+                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view || '' }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
                                     <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto" />
@@ -40,8 +40,8 @@
                         <view v-if="current_opt_form == 'bind_email'" class="form-content">
                             <form @submit="form_submit_bind_email">
                                 <view class="tc">
-                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
+                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="user.avatar || home_site_logo_square || '/static/images/common/user.png'" mode="widthFix"></image>
+                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view || '' }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
                                     <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="email" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
@@ -62,8 +62,8 @@
                             <!-- 确认绑定方式 -->
                             <view v-if="current_opt_form == 'bind' || current_opt_form == 'success'" class="form-content">
                                 <view class="tc">
-                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
+                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="user.avatar || home_site_logo_square || '/static/images/common/user.png'" mode="widthFix"></image>
+                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view || '' }}</view>
                                 </view>
                                 <block v-if="current_opt_form == 'bind'">
                                     <view v-if="(common_user_verify_bind_mobile_list.length > 0 && common_user_verify_bind_mobile_list.indexOf(client_value) != -1) || (common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1)" class="margin-top-xxxl padding-top-xxxl">
@@ -91,8 +91,8 @@
 
                         <!-- 账户绑定展示用户头像和名称 -->
                         <view v-if="current_opt_form == 'bind_platform'" class="padding-top-xxxxl margin-top-xxxxl tc">
-                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                            <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
+                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="user.avatar || home_site_logo_square || '/static/images/common/user.png'" mode="widthFix"></image>
+                            <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view || '' }}</view>
                         </view>
 
                         <!-- 默认站点logo -->
@@ -422,7 +422,6 @@
                 // 多语言
                 system_locale: '',
                 application_locale: '',
-
                 // 语言选择
                 popup_language_status: false,
                 language_list: '',
@@ -430,7 +429,6 @@
                 // 实际提交的语言字段
                 language: '',
                 home_use_multilingual_status: 0,
-
                 theme_view: app.globalData.get_theme_value_view(),
                 login_static_url: login_static_url,
                 params: null,
@@ -1096,7 +1094,6 @@
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),
                     });
-                    var self = this;
                     uni.request({
                         url: app.globalData.get_request_url('onekeyusermobilebind', 'user'),
                         method: 'POST',

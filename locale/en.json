@@ -263,6 +263,7 @@
 			"tfl656": "Confirm Binding",
 			"483nho": "Return to previous page",
 			"31r6p2": "Mobile verification code",
+            "8fghjs": "Get your phone number",
 			"p3kxy2": "Get your phone number and log in with one click",
 			"54l805": "Bind existing account",
 			"q11t73": "Register an account and bind it",
@@ -315,6 +316,7 @@
 			"btu2c1": "Please agree to the agreement first",
 			"no8ts6": "Used to improve member info",
 			"3nmrg2": "privilege grant failed",
+            "tghjer": "Please obtain a mobile phone number",
 			"4c5n8o": "Please fill in your phone number",
 			"xak8g1": "Please fill in the email address",
 			"ku05ty": "Please fill in your phone or email address",
@@ -1732,8 +1734,9 @@
 	},
 	"user-base": {
 		"user-base": {
-			"g5663y": "Get your nickname and profile picture",
-			"913g4e": "Obtain user avatars, nicknames, and complete personal info, mainly used to provide users with a recognizable user center interface",
+			"g5663y": "Get your",
+            "913g4e": "Get users",
+            "yujeaf": "Improve personal information, mainly used to provide users with a recognizable user center interface",
 			"o19lj3": "Enter a nickname of 1-16 characters",
 			"8u9on2": "Alipay users",
 			"t8i9l4": "Baidu users",

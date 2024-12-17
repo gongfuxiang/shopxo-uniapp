@@ -92,39 +92,39 @@
         },
         methods: {
             // 显示响应方法
-            on_show() {
+            on_show(params = {}) {
                 //隐藏系统tabbar
                 if(app.globalData.data.is_use_native_tabbar != 1) {
                     app.globalData.system_hide_tabbar();
                 }
 
                 // 初始化配置
-                this.init_config();
+                this.init_config(false, params);
             },
 
             // 初始化配置
-            init_config(status) {
+            init_config(status = false, params = {}) {
                 if ((status || false) == true) {
                     // 初始化数据
-                    this.init();
+                    this.init(params);
                 } else {
-                    app.globalData.is_config(this, 'init_config');
+                    app.globalData.is_config(this, 'init_config', params);
                 }
             },
 
             // 初始化数据
-            init() {
+            init(params = {}) {
                 // 系统底部菜单
                 this.footer_init();
-                
+
                 // app管理
                 if (this.propIsAppAdmin && (this.$refs.app_admin || null) != null) {
-                    this.$refs.app_admin.init();
+                    this.$refs.app_admin.init(params);
                 }
 
                 // 用户头像和昵称设置提示
                 if (this.propIsUserBase && (this.$refs.user_base || null) != null) {
-                    this.$refs.user_base.init();
+                    this.$refs.user_base.init(params);
                 }
 
                 // #ifdef MP-WEIXIN
