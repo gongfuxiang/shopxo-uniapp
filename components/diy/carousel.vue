@@ -229,7 +229,7 @@
                     return '';
                 }
                 if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
-                    return background_computer(form.carousel_list[actived_index].style) + (form?.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
+                    return background_computer(form.carousel_list[actived_index].style) + (form?.carousel_list[actived_index].is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
                 }
                 return '';
             },
