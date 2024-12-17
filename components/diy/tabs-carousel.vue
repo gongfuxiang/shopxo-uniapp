@@ -1,5 +1,5 @@
 <template>
-    <view class="ou re" :style="style_container + swiper_bg_style">
+    <view class="ou pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="flex-col ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
             <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
@@ -172,8 +172,17 @@
                 return '';
             },
             get_swiper_bg_img_style(form, actived_index) {
-                if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
-                    return background_computer(form.carousel_list[actived_index].style) + (form?.carousel_list[actived_index].is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
+                const { carousel_img, style = {} } = form?.carousel_list[actived_index] || {};
+                // 如果是自定义的图片 判断图片是否存在
+                if (!isEmpty(carousel_img) && style?.background_type == 'carousel') {
+                    // 如果是使用轮播图，判断轮播图是否存在
+                    const data = {
+                        background_img: carousel_img,
+                        background_img_style: style?.background_img_style || '2',
+                    }
+                    return background_computer(data) + (style.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
+                } else if (!isEmpty(style?.background_img)) {
+                    return background_computer(style) + (style.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
                 }
                 return '';
             },

@@ -1,7 +1,7 @@
 <template>
-    <view class="pr re" :style="style_container + swiper_bg_style">
+    <view class="pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
-        <view class="pr re" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
+        <view class="pr" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
             <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
@@ -228,8 +228,17 @@
                 if (!this.propIsCommon) {
                     return '';
                 }
-                if (!isEmpty(form.carousel_list[actived_index]?.style?.background_img)) {
-                    return background_computer(form.carousel_list[actived_index].style) + (form?.carousel_list[actived_index].is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
+                const { carousel_img, style = {} } = form?.carousel_list[actived_index] || {};
+                // 如果是自定义的图片 判断图片是否存在
+                if (!isEmpty(carousel_img) && style?.background_type == 'carousel') {
+                    // 如果是使用轮播图，判断轮播图是否存在
+                    const data = {
+                        background_img: carousel_img,
+                        background_img_style: style?.background_img_style || '2',
+                    }
+                    return background_computer(data) + (style.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
+                } else if (!isEmpty(style?.background_img)) {
+                    return background_computer(style) + (style.is_background_img_blur == '1' ? `filter: blur(14px);opacity: 0.6;` : '');
                 }
                 return '';
             },
