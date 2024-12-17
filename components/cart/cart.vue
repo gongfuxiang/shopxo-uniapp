@@ -995,7 +995,7 @@
                     uni.request({
                         url: app.globalData.get_request_url('index', 'buy'),
                         method: 'POST',
-                        data: data,
+                        data: {...data, ...{is_cart_init: 1}},
                         dataType: 'json',
                         success: (res) => {
                             if (res.data.code == 0) {

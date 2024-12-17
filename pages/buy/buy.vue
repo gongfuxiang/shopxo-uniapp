@@ -400,6 +400,8 @@
                 buy_datetime_info: {},
                 // 自提客户名称和电话
                 buy_extraction_contact_info: {},
+                // 订单是否已进入支付
+                is_order_submit_payment: 0,
                 // 优惠劵
                 plugins_coupon_data: null,
                 plugins_coupon_list: [],
@@ -517,6 +519,11 @@
 
             // 获取数据
             init() {
+                // 订单是否已经提交进入支付
+                if(this.is_order_submit_payment == 1) {
+                    uni.stopPullDownRefresh();
+                    return false;
+                }
                 // 订单参数信息是否正确
                 if (this.params == null) {
                     this.setData({
@@ -954,6 +961,9 @@
                 } else {
                     this.$refs.payment.pay_handle(res.data.order_ids.join(','), res.data.payment_id, this.payment_list);
                 }
+                this.setData({
+                    is_order_submit_payment: 1
+                });
             },
 
             // 支付方式选择

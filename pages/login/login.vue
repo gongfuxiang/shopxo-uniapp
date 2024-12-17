@@ -66,8 +66,8 @@
                                     <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
                                 </view>
                                 <block v-if="current_opt_form == 'bind'">
-                                    <view class="margin-top-xxxl padding-top-xxxl">
-                                        <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">{{ $t('login.login.31r6p2') }}</button>
+                                    <view v-if="(common_user_verify_bind_mobile_list.length > 0 && common_user_verify_bind_mobile_list.indexOf(client_value) != -1) || (common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1)" class="margin-top-xxxl padding-top-xxxl">
+                                        <button v-if="common_user_verify_bind_mobile_list.length > 0 && common_user_verify_bind_mobile_list.indexOf(client_value) != -1" class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">{{ $t('login.login.31r6p2') }}</button>
                                         <button v-if="common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ $t('login.login.p3kxy2') }}</button>
                                     </view>
                                     <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
@@ -453,6 +453,7 @@
                 // 基础配置
                 is_refreshed_base_data: 0,
                 is_exist_base_data: 0,
+                common_user_verify_bind_mobile_list: [],
                 common_user_onekey_bind_mobile_list: [],
                 home_site_logo_square: null,
                 home_user_login_type: [],
@@ -678,6 +679,7 @@
                 if ((status || false) == true) {
                     this.setData({
                         home_site_logo_square: app.globalData.get_config('config.home_site_logo_square'),
+                        common_user_verify_bind_mobile_list: app.globalData.get_config('config.common_user_verify_bind_mobile_list', []),
                         common_user_onekey_bind_mobile_list: app.globalData.get_config('config.common_user_onekey_bind_mobile_list', []),
                         home_user_login_type: app.globalData.get_config('config.home_user_login_type'),
                         home_user_reg_type: app.globalData.get_config('config.home_user_reg_type'),
