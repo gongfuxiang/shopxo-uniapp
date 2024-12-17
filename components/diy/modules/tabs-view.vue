@@ -10,7 +10,7 @@
                                 <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
                                     <view class="nowrap flex-col jc-c align-c" :style="tabs_sign_spacing">
                                         <view v-if="tabs_theme_index == '4'" :class="'img oh ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
-                                            <imageEmpty :propImageSrc="item.img[0]" propImgFit="heightFix" propErrorStyle="width: 78rpx;height: 78rpx;"></imageEmpty>
+                                            <imageEmpty :propImageSrc="item.img[0]" propImgFit="aspectFit" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
                                             <!-- <image :src="item.img[0].url" class="img" mode="aspectFit" /> -->
                                         </view>
                                         <template v-if="item.tabs_type == '1'">
