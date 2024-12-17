@@ -4,7 +4,7 @@
         <view v-if="propIsTerse" class="content margin-top cp">
             <block v-if="data != null && data_field.length > 0">
                 <block v-for="(item, index) in data_field" :key="index">
-                    <view v-if="(item.is_hide || 0) == 0 " class="single-text margin-top-xs">
+                    <view v-if="(item.is_hide || 0) == 0" class="single-text margin-top-xs">
                         <text class="cr-grey margin-right-xl">{{ item.name }}</text>
                         <text class="cr-base">
                             <block v-if="item.type == 'images'">
@@ -18,8 +18,8 @@
                     </view>
                 </block>
                 <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
-                    <text class="cr-grey-c margin-right-sm">{{$t('common.view_more')}}</text>
-                    <iconfont :name="'icon-arrow-'+(more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
+                    <text class="cr-grey-c margin-right-sm">{{ $t('common.view_more') }}</text>
+                    <iconfont :name="'icon-arrow-' + (more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                 </view>
             </block>
             <slot></slot>
@@ -27,11 +27,11 @@
         <!-- 详情面板数据 -->
         <view v-else class="padding-horizontal-main padding-top-main">
             <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view v-if="(propTitle || null) != null" class="br-b padding-bottom-main fw-b text-size">{{propTitle}}</view>
+                <view v-if="(propTitle || null) != null" class="br-b padding-bottom-main fw-b text-size">{{ propTitle }}</view>
                 <view class="panel-content oh">
                     <block v-if="data != null && data_field.length > 0">
                         <block v-for="(item, index) in data_field" :key="index">
-                            <view v-if="(item.is_hide || 0) == 0 " class="item br-b-f5 oh padding-vertical-main">
+                            <view v-if="(item.is_hide || 0) == 0" class="item br-b-f5 oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <block v-if="item.type == 'images'">
@@ -45,8 +45,8 @@
                             </view>
                         </block>
                         <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap="item_more_event" class="margin-top-sm tc">
-                            <text class="cr-grey-c margin-right-sm">{{$t('common.view_more')}}</text>
-                            <iconfont :name="'icon-arrow-'+(more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
+                            <text class="cr-grey-c margin-right-sm">{{ $t('common.view_more') }}</text>
+                            <iconfont :name="'icon-arrow-' + (more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                         </view>
                     </block>
                     <slot></slot>
@@ -57,18 +57,18 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "@/components/no-data/no-data";
+    import componentNoData from '@/components/no-data/no-data';
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 data: null,
                 data_field: [],
-                more_status: false
+                more_status: false,
             };
         },
         components: {
-            componentNoData
+            componentNoData,
         },
         props: {
             // 标题
@@ -115,24 +115,19 @@
             propIsTerse: {
                 type: Boolean,
                 default: false,
-            }
+            },
         },
         // 属性值改变监听
         watch: {
             // 数据改变
-        	propData(value, old_value) {
-                this.data = this.value;
-        	},
-
-            // 字段改变
-            propDataField(value, old_value) {
-                this.data_field = this.value;
-            }
+            propData(value, old_value) {
+                this.data = value;
+            },
         },
         // 页面被展示
-        created: function(e) {        
+        created: function (e) {
             this.setData({
-                data: this.propData
+                data: this.propData,
             });
             this.data_field_handle(this.propDataField);
         },
@@ -143,15 +138,15 @@
                 var exclude = (this.propExcludeField || null) == null ? [] : this.propExcludeField.split(',');
                 var temp_data = [];
                 var index = 0;
-                for(var i in data) {
-                    if((exclude.length == 0 && appoint.length > 0 && appoint.indexOf(data[i]['field']) != -1) || (appoint.length == 0 && (exclude.length == 0 || exclude.indexOf(data[i]['field']) == -1))) {
-                        data[i]['is_hide'] = (data[i]['is_hide'] || 0) == 0 ? ((index >= this.propIsItemShowMax && this.propIsItemShowMax > 0) ? 1 : 0) : 0;
+                for (var i in data) {
+                    if ((exclude.length == 0 && appoint.length > 0 && appoint.indexOf(data[i]['field']) != -1) || (appoint.length == 0 && (exclude.length == 0 || exclude.indexOf(data[i]['field']) == -1))) {
+                        data[i]['is_hide'] = (data[i]['is_hide'] || 0) == 0 ? (index >= this.propIsItemShowMax && this.propIsItemShowMax > 0 ? 1 : 0) : 0;
                         temp_data.push(data[i]);
                         index++;
                     }
                 }
                 this.setData({
-                    data_field: temp_data
+                    data_field: temp_data,
                 });
             },
 
@@ -164,10 +159,10 @@
             item_more_event(e) {
                 this.data_field_handle(this.data_field);
                 this.setData({
-                    more_status: !this.more_status
+                    more_status: !this.more_status,
                 });
-            }
-        }
+            },
+        },
     };
 </script>
 <style scoped>

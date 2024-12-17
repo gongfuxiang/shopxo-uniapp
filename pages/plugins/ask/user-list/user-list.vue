@@ -2,20 +2,18 @@
     <view :class="theme_view">
         <view class="page-bottom-fixed">
             <view v-if="data_list.length > 0" class="padding-main">
-                <view v-for="(item, index) in data_list" :key="index">
-                    <view :data-value="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" @tap="url_event" class="padding-main border-radius-main bg-white oh cp spacing-mb">
-                        <view class="margin-bottom-xs flex-row jc-sb align-c">
-                            <text class="cr-base text-size">{{ item.add_time_time }}</text>
-                            <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply == 1 ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply == 1 ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</text>
-                        </view>
-                        <view class="spacing-mt">
-                            <view class="text-size single-text">
-                                {{ item.title }}
-                            </view>
-                            <view v-if="item.title != item.content" class="margin-top-sm cr-grey multi-text">
-                                {{ item.content }}
-                            </view>
-                        </view>
+                <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
+                    <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
+                        <text class="cr-grey-9">{{ item.add_time_time }}</text>
+                        <text class="ask-status margin-left-xs" :class="item.is_reply == 1 ? 'cr-green' : 'cr-grey-c'">{{ item.is_reply_name }}</text>
+                    </view>
+                    <view :data-value="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
+                        <component-panel-content :propData="item" :propDataField="field_list" :propIsItemShowMax="6" propExcludeField="add_time_time,is_reply" :propIsTerse="true"></component-panel-content>
+                    </view>
+                    <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
+                    <view class="item-operation tr margin-top-main">
+                        <button class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" hover-class="none">{{ $t('common.del') }}</button>
+                        <button v-if="item.is_reply == 0" class="btn round cr-main br-main bg-white text-size-md" type="default" size="mini" :data-value="'/pages/plugins/ask/form/form?id=' + item.id" @tap="url_event" hover-class="none">{{ $t('common.edit') }}</button>
                     </view>
                 </view>
             </view>
@@ -28,7 +26,7 @@
 
             <view class="bottom-fixed" :style="bottom_fixed_style">
                 <view class="bottom-line-exclude">
-                    <button class="item bg-white br-main cr-main round text-size" type="default" data-value="/pages/plugins/ask/form/form" @tap="url_event" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
+                    <button class="item bg-white br-main cr-main round text-size" type="default" data-value="/pages/plugins/ask/form/form" @tap="url_event" hover-class="none">{{ $t('goods-detail.goods-detail.7ulh8b') }}</button>
                 </view>
             </view>
         </view>
@@ -42,6 +40,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentPanelContent from '@/components/panel-content/panel-content';
 
     export default {
         data() {
@@ -62,6 +61,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentPanelContent,
         },
 
         onLoad(params) {
@@ -84,7 +84,7 @@
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
-        
+
         // 下拉刷新
         onPullDownRefresh() {
             this.setData({
@@ -124,7 +124,7 @@
                 });
 
                 // 加载loding
-                if(this.data_page > 1) {
+                if (this.data_page > 1) {
                     uni.showLoading({
                         title: this.$t('common.loading_in_text'),
                     });
@@ -139,40 +139,34 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data_list: temp_data_list,
-                                    data_total: res.data.data.total,
-                                    data_page_total: res.data.data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0,
-                                });
-
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            if (this.data_page <= 1) {
+                                var temp_data_list = res.data.data.data_list;
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
+                                var temp_data_list = this.data_list || [];
+                                var temp_data = res.data.data.data;
+                                for (var i in temp_data) {
+                                    temp_data_list.push(temp_data[i]);
+                                }
                             }
+                            this.setData({
+                                data_list: temp_data_list,
+                                field_list: res.data.data.field_list || [],
+                                data_total: res.data.data.total,
+                                data_page_total: res.data.data.page_total,
+                                data_list_loding_status: 3,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+
+                            // 是否还有数据
+                            this.setData({
+                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -184,7 +178,7 @@
                         }
                     },
                     fail: () => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
@@ -192,6 +186,36 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 删除留言
+            delete_event(e) {
+                const value = e.currentTarget.dataset.value;
+                uni.request({
+                    url: app.globalData.get_request_url('delete', 'ask', 'ask'),
+                    method: 'POST',
+                    data: {
+                        ids: value,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0) {
+                            this.setData({
+                                data_page: 1,
+                            });
+                            this.get_data_list(1);
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
+                        }
+                    },
+                    fail: () => {
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
@@ -205,7 +229,7 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
         },
     };
 </script>
