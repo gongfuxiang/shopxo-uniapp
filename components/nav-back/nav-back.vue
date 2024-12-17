@@ -81,7 +81,6 @@
             this.setData({
                 is_show_back: this.propIsShowBack && !app.globalData.is_tabbar_pages()
             });
-            console.log(this.is_show_back, this.propIsShowBack)
         },
         mounted() {
             var self = this;
