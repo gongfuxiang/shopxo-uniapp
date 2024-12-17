@@ -3,7 +3,7 @@
         <block v-if="is_first == 0">
             <block v-if="(plugins_realstore_info || null) != null">
                 <!-- 顶部导航 -->
-                <component-nav-back propClass="bg-white" propColor="#333" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true">
+                <component-nav-back propClass="bg-white" propColor="#333" :propFixed="false" :propIsShowBack="propSourceType == 'page'">
                     <template slot="right" class="flex-1 cart-right-title">
                         <view class="cart-top-nav tc auto">
                             <view class="cart-top-nav-content bg-grey-f7 round padding-xss cr-black">
@@ -35,7 +35,7 @@
             </block>
             <block v-else>
                 <!-- #ifndef MP-TOUTIAO -->
-                <component-nav-back propClass="bg-white" propColor="#333" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true" :propIsRightSlot="false"></component-nav-back>
+                <component-nav-back propClass="bg-white" propColor="#333" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType == 'page'" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
         </block>
@@ -491,6 +491,7 @@
                     }
                 } else {
                     this.setData({
+                        is_first: 0,
                         user: null,
                         data_list: [],
                         plugins_realstore_info: null,
