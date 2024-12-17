@@ -9,9 +9,10 @@
                             <view class="flex-row" :style="'height:' + tabs_height">
                                 <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
                                     <view class="nowrap flex-col jc-c align-c" :style="tabs_sign_spacing">
-                                        <template v-if="!isEmpty(item.img)">
-                                            <image :src="item.img[0].url" class="img" :style="tabs_theme_style.tabs_top_img" mode="aspectFit" />
-                                        </template>
+                                        <view v-if="tabs_theme_index == '4'" :class="'img oh ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
+                                            <imageEmpty :propImageSrc="item.img[0]" propImgFit="heightFix" propErrorStyle="width: 78rpx;height: 78rpx;"></imageEmpty>
+                                            <!-- <image :src="item.img[0].url" class="img" mode="aspectFit" /> -->
+                                        </view>
                                         <template v-if="item.tabs_type == '1'">
                                             <template v-if="!isEmpty(item.tabs_icon)">
                                                 <view class="title" :style="index == active_index ? ['2', '4'].includes(tabs_theme_index) ? tabs_check : `` :  '' + tabs_padding_bottom">
@@ -216,15 +217,16 @@
                     tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;line-height: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
                     tabs_img_checked: `height: ${(new_style?.tabs_img_height || 0) * 2}rpx;` + radius_computer(new_style?.tabs_img_radius || this.old_radius),
                     tabs_img: `height: ${(new_style?.tabs_img_height || 0) * 2}rpx;` + radius_computer(new_style?.tabs_img_radius || this.old_radius),
-                    tabs_top_img: `height: ${tabs_top_img_height * 2 }rpx; width: 100%;box-sizing: border-box;` + radius_computer(tabs_top_img_radius),
+                    tabs_top_img: `height: ${tabs_top_img_height * 2 }rpx;width: ${tabs_top_img_height * 2 }rpx;box-sizing: border-box;` + radius_computer(tabs_top_img_radius),
                 };
                 const { tabs_size_checked, tabs_size, tabs_icon_size_checked = 0, tabs_icon_size = 0, tabs_img_height = 0, tabs_sign_spacing = 0 } = new_style || {};
                 let default_height = 0;
                 if (new_content.tabs_theme == '2') {
                     default_height = 12; // 选中的时候,风格二的内间距
                 } else if (new_content.tabs_theme == '4') {
-                    const top_index = new_content?.tabs_list?.findIndex((item) => !isEmpty(item.img)) ?? -1;
-                    default_height = 4 + (top_index > -1 ? tabs_top_img_height + tabs_sign_spacing : 0); // 选中的时候,风格二的内间距 加上上边图片的大小和上边图片之间的间距
+                    // const top_index = new_content?.tabs_list?.findIndex((item) => !isEmpty(item.img)) ?? -1;
+                    // default_height = 4 + (top_index > -1 ? tabs_top_img_height + tabs_sign_spacing : 0); // 选中的时候,风格二的内间距 加上上边图片的大小和上边图片之间的间距
+                    default_height = 4 + tabs_top_img_height + tabs_sign_spacing;
                 }
                 // 筛选出所有的icon
                 const is_icon = new_content?.tabs_list?.findIndex((item) => item.tabs_type === '1' && !isEmpty(item.tabs_icon)) ?? -1;
@@ -422,15 +424,18 @@
                 align-items: center;
                 &.active {
                     .title {
-                        font-size: 22rpx;
-                        background: #ff5e5e;
+                        // font-size: 22rpx;
+                        // background: #ff5e5e;
                         border-radius: 40rpx;
                         padding: 2px 7px;
-                        color: #fff;
+                        // color: #fff;
                     }
                     .img {
                         border-color: #ff5e5e;
                     }
+                }
+                .img-no-empty {
+                    width: 100% !important;
                 }
                 .img {
                     display: block;
