@@ -156,7 +156,7 @@
                                 editor_path_type: data.editor_path_type,
                                 is_show_email_notice: data.is_show_email_notice,
                                 is_show_mobile_notice: data.is_show_mobile_notice,
-                                category_id_index: (data.ask_category_list || []).length > 0 ? data.ask_category_list.findIndex((item) => item.id === data.data.category_id) : -1,
+                                category_id_index: (data.ask_category_list || []).length > 0 && data.data != null ? data.ask_category_list.findIndex((item) => item.id === data.data.category_id) : -1,
                             });
                             console.log(this.category_id_index);
                         } else {
