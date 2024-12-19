@@ -1103,18 +1103,20 @@
              * status [string]  状态 默认error [正确success, 错误error]
              */
             showToast(msg, status) {
-                if ((status || 'error') == 'success') {
-                    uni.showToast({
-                        icon: 'success',
-                        title: msg,
-                        duration: 3000,
-                    });
-                } else {
-                    uni.showToast({
-                        icon: 'none',
-                        title: msg,
-                        duration: 3000,
-                    });
+                if ((msg || null) != null) {
+                    if ((status || 'error') == 'success') {
+                        uni.showToast({
+                            icon: 'success',
+                            title: msg,
+                            duration: 3000,
+                        });
+                    } else {
+                        uni.showToast({
+                            icon: 'none',
+                            title: msg,
+                            duration: 3000,
+                        });
+                    }
                 }
             },
 
