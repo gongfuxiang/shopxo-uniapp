@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <form v-if="data_list_loding_status == 3" @submit="formSubmit" class="form-container">
-            <view class="padding-main oh">
+            <view class="padding-main oh page-bottom-fixed">
                 <view class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
                     <view class=""> 标题 <text class="form-group-tips-must">*</text></view>
                     <view class="flex-row align-c flex-1 flex-width">
@@ -46,8 +46,10 @@
                         </label>
                     </checkbox-group>
                 </view> -->
-                <view class="sub-btn">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('form.form.4yd066') }}</button>
+                <view class="bottom-fixed">
+                    <view class="bottom-line-exclude">
+                        <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('form.form.4yd066') }}</button>
+                    </view>
                 </view>
             </view>
         </form>
@@ -158,7 +160,6 @@
                                 is_show_mobile_notice: data.is_show_mobile_notice,
                                 category_id_index: (data.ask_category_list || []).length > 0 && data.data != null ? data.ask_category_list.findIndex((item) => item.id === data.data.category_id) : -1,
                             });
-                            console.log(this.category_id_index);
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,

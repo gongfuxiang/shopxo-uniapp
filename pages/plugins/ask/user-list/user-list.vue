@@ -8,7 +8,7 @@
                         <text class="ask-status margin-left-xs" :class="item.is_reply == 1 ? 'cr-green' : 'cr-grey-c'">{{ item.is_reply_name }}</text>
                     </view>
                     <view :data-value="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
-                        <component-panel-content :propData="item" :propDataField="field_list" :propIsItemShowMax="6" propExcludeField="add_time_time,is_reply" :propIsTerse="true"></component-panel-content>
+                        <component-panel-content :propData="item" :propDataField="field_list" :propIsItemShowMax="4" propExcludeField="add_time_time,is_reply" :propIsTerse="true"></component-panel-content>
                     </view>
                     <view class="item-operation tr margin-top-main">
                         <button class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" hover-class="none">{{ $t('common.del') }}</button>
