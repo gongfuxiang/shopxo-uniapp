@@ -2,20 +2,24 @@
     <view :style="style_container">
         <view class="w h re" :style="style_img_container">
             <template v-if="data_source_content_list.length > 0 && form.data_source_direction == 'vertical'">
-                <view v-for="(item, index) in data_source_content_list" :key="index">
-                    <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container">
-                        <view class="wh-auto ht-auto" :style="style_chunk_img_container">
-                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
+                    <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
+                        <view v-for="(item1, index1) in item.split_list" :key="index1">
+                            <view :style="style_chunk_container">
+                                <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                </view>
+                            </view>
                         </view>
                     </view>
                 </view>
             </template>
             <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr">
-                <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'"  :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+                <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                     <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
-                        <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'">
-                            <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width">
-                                <div class="w h" :style="style_chunk_img_container">
+                        <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
+                            <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
+                                <div class="wh-auto ht-auto oh" :style="style_chunk_img_container">
                                     <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                 </div>
                             </view>
@@ -36,7 +40,7 @@
             </div>
             <template v-else>
                 <view :style="style_chunk_container">
-                    <view class="wh-auto ht-auto" :style="style_chunk_img_container">
+                    <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
                         <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                     </view>
                 </view>
@@ -130,7 +134,9 @@
                     margin_bottom: 0,
                     margin_left: 0,
                     margin_right: 0,
-                }
+                },
+                content_outer_spacing_magin: '0rpx',
+                gap_width: '',
             };
         },
         watch: {
@@ -173,9 +179,12 @@
                     }
                 } else {
                     list = new_form.data_source_content?.data_list || [];
-                }   
+                } 
+                // 数组处理
                 const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                // 初始化数据
                 const { margin_left = 0, margin_right = 0, padding_left = 0, padding_right = 0 } = new_style.common_style;
+                // 自定义组件宽度
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
@@ -183,12 +192,18 @@
                 let swiper_height = 0;
                 // 商品数量大于列数的时候，高度是列数，否则是当前的数量
                 const col = new_list.length > Number(new_form.data_source_carousel_col) ? Number(new_form.data_source_carousel_col) : new_list.length;
+                // 间距
+                const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
                     swiper_height = new_form.height * (width / 390) + padding_top + padding_bottom + margin_bottom + margin_top;
                 } else {
-                    swiper_height = (new_form.height * (width / 390) + padding_top + padding_bottom + margin_bottom + margin_top) * col;
+                    swiper_height = (new_form.height * (width / 390) + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
                 }
+                // 拿到对应的数量
+                const model_number = Number(new_form.data_source_carousel_col);
+                // 计算间隔的空间。(gap * gap数量) / 模块数量
+                let gap = (new_style.column_gap * (model_number - 1)) / model_number;
                 // 横向的时候，根据选择的行数和每行显示的个数来区分具体是显示多少个
                 const swiper_width = (new_form.data_source_direction == 'horizontal' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / new_form.data_source_carousel_col }%;`: 'width: 100%;';
                 this.setData({
@@ -209,6 +224,8 @@
                     indicator_location_style: get_indicator_location_style(new_style),
                     swiper_height: swiper_height,
                     swiper_width: swiper_width,
+                    content_outer_spacing_magin: space_between + 'px',
+                    gap_width: `width: calc(${100 / model_number}% - ${gap}px);`,
                     slides_per_view: new_style.rolling_fashion == 'translation' ? (new_form.data_source_direction != 'horizontal' ? col : new_form.data_source_carousel_col ) : 1,
                     show_data: new_form?.show_data || { data_key: 'id', data_name: 'name' }
                 });
@@ -216,7 +233,7 @@
             get_list(list, form, new_style) {
                 // 深拷贝一下，确保不会出现问题
                 const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation') {
+                if (new_style.rolling_fashion != 'translation' && form.data_source_direction != 'vertical') {
                     // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
                     if (cloneList.length > 0) {
                         // 每页显示的数量

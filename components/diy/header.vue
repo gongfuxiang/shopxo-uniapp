@@ -51,7 +51,7 @@
                                             <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c">
                                                 <view v-if="form.content.positioning_name_float !== '1'" class="flex-row align-c gap-2">
                                                     <view :style="location_margin">
-                                                        <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIconLocationSize="location_left_size" :propIconArrowSize="location_right_size" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="['4'].includes(form.content.theme) ? '300rpx' : '150rpx'" @onBack="choice_location_back"></component-choice-location>
+                                                        <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIconLocationSize="location_left_size" :propIconArrowSize="location_right_size" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="location_name_style" @onBack="choice_location_back"></component-choice-location>
                                                     </view>
                                                 </view>
                                                 <template v-if="['5'].includes(form.content.theme) && !is_search_alone_row">
@@ -73,7 +73,7 @@
                                         <view v-if="is_search_alone_row || is_icon_alone_row" class="model-head-content flex-row align-c gap-16">
                                             <template v-if="['3', '5'].includes(form.content.theme) && is_search_alone_row">
                                                 <view class="flex-1">
-                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>
+                                                    <componentDiySearch :propValue="form" :propIsPageSettings="true" :propLocationMargin="location_margin" propSearchType="header" :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propIconLocationSize="location_left_size" :propIconArrowSize="location_right_size" @onBack="choice_location_back"></componentDiySearch>
                                                 </view>
                                             </template>
                                             <view v-if="!isEmpty(form.content.icon_setting) && is_icon_alone_row" class="flex-row align-c z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
@@ -193,6 +193,7 @@
                 location_right_size: '24rpx',
                 location_margin: '', // 悬浮之后有间距，所以要将margin设置成外padding
                 location_color: '', // 定位颜色
+                location_name_style: '', // 定位样式
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
@@ -281,9 +282,25 @@
                     location_left_size: !isEmpty(new_style.location_left_icon_size) ? new_style.location_left_icon_size * 2 + 'rpx' : '24rpx',
                     location_right_size: !isEmpty(new_style.location_right_icon_size) ? new_style.location_right_icon_size * 2 + 'rpx' : '24rpx',
                     location_color: !isEmpty(new_style.location_color) ? new_style.location_color : new_style?.position_color || '',
+                    location_name_style: this.get_location_name_style(new_content),
                     location_margin: `padding: ${location_margin.margin_top * 2}rpx ${location_margin.margin_right * 2}rpx ${location_margin.margin_bottom * 2}rpx ${location_margin.margin_left * 2}rpx;`, // 悬浮之后有间距，所以要将margin设置成外padding
                 });
                 this.$emit('onImmersionModelCallBack', this.is_immersion_model);
+            },
+            get_location_name_style (new_content) {
+                const is_search_alone_row = new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search');
+                const is_icon_alone_row = new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon');
+                let width = 0;
+                if (is_search_alone_row && is_icon_alone_row) {
+                    width = 200;
+                } else if (is_search_alone_row || is_icon_alone_row) {
+                    width = 100;
+                }
+                if (new_content.theme == '4') {
+                    return `${ (150 + width) * 2 }rpx;`;
+                } else {
+                    return `${ (100 + width) * 2 }rpx;`;
+                }
             },
             // 定位设置
             get_style_location_container(new_style) {
