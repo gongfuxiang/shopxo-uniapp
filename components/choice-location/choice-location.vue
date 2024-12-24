@@ -7,7 +7,7 @@
                         <image :src="propLeftImgValue[0].url" class="dis-block" mode="heightFix"></image>
                     </block>
                     <block v-else>
-                        <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor"></iconfont>
+                        <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor" :propContainerDisplay="propContainerDisplay"></iconfont>
                     </block>
                 </view>
                 <view :class="'va-m dis-inline-block margin-left-xs single-text text' + (propType == 'header' ? ' text-size-md' : ' text-size-xs')" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
@@ -16,7 +16,7 @@
                         <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>
                     </block>
                     <block v-else>
-                        <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor"></iconfont>
+                        <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor" :propContainerDisplay="propContainerDisplay"></iconfont>
                     </block>
                 </view>
             </view>
@@ -106,6 +106,10 @@
                 type: String,
                 default: '',
             },
+            propContainerDisplay: {
+                type: String,
+                default: 'inline-block',
+            }
         },
         // 页面被展示
         created: function () {
