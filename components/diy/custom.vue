@@ -1,50 +1,54 @@
 <template>
     <view :style="style_container">
-        <view class="w h re" :style="style_img_container">
-            <template v-if="data_source_content_list.length > 0 && form.data_source_direction == 'vertical'">
-                <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
-                    <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
-                        <view v-for="(item1, index1) in item.split_list" :key="index1">
-                            <view :style="style_chunk_container">
-                                <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+        <view :style="style_img_container">
+            <view :style="style_content_container">
+                <view class="w h re" :style="style_content_img_container">
+                    <template v-if="data_source_content_list.length > 0 && form.data_source_direction == 'vertical'">
+                        <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
+                            <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
+                                <view v-for="(item1, index1) in item.split_list" :key="index1">
+                                    <view :style="style_chunk_container">
+                                        <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                        </view>
+                                    </view>
                                 </view>
                             </view>
                         </view>
-                    </view>
-                </view>
-            </template>
-            <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr">
-                <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
-                    <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
-                        <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
-                            <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
-                                <div class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
-                                </div>
+                    </template>
+                    <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr">
+                        <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+                            <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
+                                <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
+                                    <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
+                                        <div class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                        </div>
+                                    </view>
+                                </view>
+                            </swiper-item>
+                        </swiper>
+                        <div v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
+                            <block v-if="new_style.indicator_style == 'num'">
+                                <view :style="indicator_style" class="dot-item">
+                                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
+                                    <text>/{{ data_source_content_list.length }}</text>
+                                </view>
+                            </block>
+                            <block v-else>
+                                <view v-for="(item, index) in data_source_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
+                            </block>
+                        </div>
+                    </div>
+                    <template v-else>
+                        <view :style="style_chunk_container">
+                            <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                             </view>
                         </view>
-                    </swiper-item>
-                </swiper>
-                <div v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
-                    <block v-if="new_style.indicator_style == 'num'">
-                        <view :style="indicator_style" class="dot-item">
-                            <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
-                            <text>/{{ data_source_content_list.length }}</text>
-                        </view>
-                    </block>
-                    <block v-else>
-                        <view v-for="(item, index) in data_source_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
-                    </block>
-                </div>
-            </div>
-            <template v-else>
-                <view :style="style_chunk_container">
-                    <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                        <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
-                    </view>
+                    </template>
                 </view>
-            </template>
+            </view>
         </view>
     </view>
 </template>
@@ -101,6 +105,9 @@
                 },
                 data_source_content_list: [],
                 data_source: '',
+                // 内容样式
+                style_content_container: '',
+                style_content_img_container: '',
                 // 数据样式
                 style_chunk_container: '',
                 style_chunk_img_container: '',
@@ -187,6 +194,7 @@
                 // 自定义组件宽度
                 const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
+                const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
                 const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
@@ -214,6 +222,8 @@
                     custom_list_length: new_form.custom_list.length - 1,
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                    style_content_container: common_styles_computer(new_data_content_style) + 'box-sizing: border-box;', // 用于样式显示
+                    style_content_img_container: common_img_computer(new_data_content_style),
                     style_chunk_container: common_styles_computer(new_data_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_chunk_img_container: common_img_computer(new_data_style),
                     style_chunk_width: width,
