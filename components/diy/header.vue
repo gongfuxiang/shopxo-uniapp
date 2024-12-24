@@ -314,22 +314,17 @@
             },
             // 背景图片
             get_style_location_img_container(new_style){
-                const { location_background_img = [], location_background_img_style = '2', location_border_show = '0', location_padding = this.old_padding, location_margin = this.old_margin, location_border_direction = '', location_border_size = 0, location_border_color = '' } = new_style;
+                const { location_background_img = [], location_background_img_style = '2', location_border_show = '0', location_padding = this.old_padding, location_margin = this.old_margin, location_border_size = this.old_padding, location_border_color = '', location_border_style = 'solid' } = new_style;
                 const style = {
                     background_img: location_background_img,
                     background_img_style: location_background_img_style,
                 }
                 let border = ``;
                 if (location_border_show == '1') {
-                    // 边框
-                    if (location_border_direction == 'all') {
-                        border += `border: ${location_border_size}px solid ${location_border_color};`;
-                    } else {
-                        border += `border-${location_border_direction}: ${location_border_size}px solid ${location_border_color};`;
-                    }
+                    border += `border-width: ${location_border_size.padding_top}px ${location_border_size.padding_right}px ${location_border_size.padding_bottom}px ${location_border_size.padding_left}px;border-style: ${ location_border_style };border-color: ${location_border_color};`
                 }
                 const height = 32 - (location_margin.margin_top || 0) - (location_margin.margin_bottom || 0);
-                return background_computer(style) + padding_computer(location_padding) + border + `height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
+                return background_computer(style) + padding_computer(location_padding) + border + `height: ${ height * 2}rpx;line-height: ${height * 2}rpx;box-sizing: border-box;`;
             },
             // 获取顶部导航高度
             get_nav_height() {
