@@ -108,7 +108,7 @@
             },
             propContainerDisplay: {
                 type: String,
-                default: '',
+                default: 'inline-block',
             }
         },
         // 页面被展示
