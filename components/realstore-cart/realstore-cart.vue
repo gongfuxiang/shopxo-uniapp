@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="propStatus">
+        <view v-if="!propIsBaseMode && propStatus">
             <!-- 购物车弹层背景 -->
             <view v-if="cart_status" class="plugins-realstore-cart-mask wh-auto ht-auto pf" @tap="cart_switch_event"></view>
             <!-- 购物车列表 -->
@@ -197,6 +197,10 @@
                 type: String,
                 default: app.globalData.currency_symbol(),
             },
+            propIsBaseMode: {
+                type: Boolean,
+                default: false,
+            },
             propStatus: {
                 type: Boolean,
                 default: true,
@@ -212,106 +216,109 @@
         methods: {
             // 获取数据
             init(params) {
-                // 获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
-                var tabbar_height = app.globalData.is_tabbar_pages() ? (app.globalData.app_tabbar_height_value()*2) : 0;
-                // 门店信息
-                var info = params.info || null;
-                if(info != null && (params.source || null) != null) {
-                    this.setData({
-                        params: params,
-                        info: info,
-                        base: params.base || null,
-                        source: params.source,
-                        realstore_cart_content_style: 'bottom: '+tabbar_height+'rpx',
-                    });
+                // 非基础模式
+                if(!this.propIsBaseMode) {
+                    // 获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
+                    var tabbar_height = app.globalData.is_tabbar_pages() ? (app.globalData.app_tabbar_height_value()*2) : 0;
+                    // 门店信息
+                    var info = params.info || null;
+                    if(info != null && (params.source || null) != null) {
+                        this.setData({
+                            params: params,
+                            info: info,
+                            base: params.base || null,
+                            source: params.source,
+                            realstore_cart_content_style: 'bottom: '+tabbar_height+'rpx',
+                        });
 
-                    // 商品来源
-                    var index = this.get_buy_use_type_index();
-                    if(this.source == 'goods' && (params.realstore_id || null) == null) {
-                        // 调用父级需要重新加载数据
-                        this.$emit('RefreshLoadingEvent', {buy_use_type_index: index, realstore_id: this.info.id});
-                    } else {
-                        // 非系统购物车来源
-                        if(this.source != 'system-cart') {
-                            // 店铺状态正常、是否指定商品、如果不存在操作按钮、不可以加入购物车则置空
-                            var cart_status = false;
-                            var cart_type = '';
-                            var cart_text = '';
-                            var realstore_goods_data = params.realstore_goods_data || null;
-                            if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null) {
-                                // 是否存在错误
-                                if((realstore_goods_data.buy_button.error || null) != null) {
-                                    cart_text = realstore_goods_data.buy_button.error;
-                                    // 是否展示型、门店存在客服电话则展示电话号码
-                                    if((realstore_goods_data.buy_button.data || null) != null && (realstore_goods_data.buy_button['data'][0] || null) != null && realstore_goods_data.buy_button['data'][0]['type'] == 'show') {
-                                        var cart_value = ((info.service_data || null) == null ? info.contacts_tel : (info.service_data.service_tel || info.contacts_tel)) || null;
-                                        if(cart_value != null) {
-                                            cart_status = true;
-                                            cart_type = 'show';
-                                            cart_text = this.$t('cart.cart.31h34v');
-                                        }
-                                    }
-                                } else {
-                                    // 匹配是否可以加入购物车操作
-                                    if(realstore_goods_data.buy_button.data.length > 0) {
-                                        var buy_button = realstore_goods_data.buy_button.data;
-                                        var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
-                                        for(var i in buy_button) {
-                                            if(arr.indexOf(buy_button[i]['type']) != -1) {
+                        // 商品来源
+                        var index = this.get_buy_use_type_index();
+                        if(this.source == 'goods' && (params.realstore_id || null) == null) {
+                            // 调用父级需要重新加载数据
+                            this.$emit('RefreshLoadingEvent', {buy_use_type_index: index, realstore_id: this.info.id});
+                        } else {
+                            // 非系统购物车来源
+                            if(this.source != 'system-cart') {
+                                // 店铺状态正常、是否指定商品、如果不存在操作按钮、不可以加入购物车则置空
+                                var cart_status = false;
+                                var cart_type = '';
+                                var cart_text = '';
+                                var realstore_goods_data = params.realstore_goods_data || null;
+                                if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null) {
+                                    // 是否存在错误
+                                    if((realstore_goods_data.buy_button.error || null) != null) {
+                                        cart_text = realstore_goods_data.buy_button.error;
+                                        // 是否展示型、门店存在客服电话则展示电话号码
+                                        if((realstore_goods_data.buy_button.data || null) != null && (realstore_goods_data.buy_button['data'][0] || null) != null && realstore_goods_data.buy_button['data'][0]['type'] == 'show') {
+                                            var cart_value = ((info.service_data || null) == null ? info.contacts_tel : (info.service_data.service_tel || info.contacts_tel)) || null;
+                                            if(cart_value != null) {
                                                 cart_status = true;
-                                                cart_type = buy_button[i]['type'];
-                                                cart_text = this.$t('realstore-cart.realstore-cart.b27ln3');
-                                                break;
+                                                cart_type = 'show';
+                                                cart_text = this.$t('cart.cart.31h34v');
+                                            }
+                                        }
+                                    } else {
+                                        // 匹配是否可以加入购物车操作
+                                        if(realstore_goods_data.buy_button.data.length > 0) {
+                                            var buy_button = realstore_goods_data.buy_button.data;
+                                            var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
+                                            for(var i in buy_button) {
+                                                if(arr.indexOf(buy_button[i]['type']) != -1) {
+                                                    cart_status = true;
+                                                    cart_type = buy_button[i]['type'];
+                                                    cart_text = this.$t('realstore-cart.realstore-cart.b27ln3');
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            this.setData({
-                                realstore_goods_data: realstore_goods_data,
-                                realstore_goods_data_cart_status: cart_status,
-                                realstore_goods_data_cart_type: cart_type,
-                                realstore_goods_data_cart_value: cart_value,
-                                realstore_goods_data_cart_loading: false,
-                                realstore_goods_data_cart_text: cart_text,
-                            });
+                                this.setData({
+                                    realstore_goods_data: realstore_goods_data,
+                                    realstore_goods_data_cart_status: cart_status,
+                                    realstore_goods_data_cart_type: cart_type,
+                                    realstore_goods_data_cart_value: cart_value,
+                                    realstore_goods_data_cart_loading: false,
+                                    realstore_goods_data_cart_text: cart_text,
+                                });
 
-                            // 是否需要弹出下单类型选择
-                            // 打开开关，并且店铺必须存在下单类型
-                            var cache_index = this.get_cache_buy_use_type_index();
-                            if((this.base || null) != null && parseInt(this.base.is_tips_user_choice_buy_use_type || 0) == 1 && (cache_index === null || cache_index === '') && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 1 && (this.info.status_info || null) != null && this.info.status_info.status == 1) {
-                                // 门店、商品是否开启了弹窗提示
-                                var key = 'is_tips_user_choice_buy_use_type_'+this.params.source+'_detail';
-                                if(parseInt(this.base[key] || 0) == 1) {
-                                    // 配置的间隔时间（秒）
-                                    var interval_time = parseInt(this.base.tips_user_choice_buy_use_type_interval_time || 0);
-                                    // 缓存的间隔时间（秒）
-                                    var cache_time = parseInt(uni.getStorageSync(this.cache_buy_use_type_interval_time_key+this.info.id) || 0);
-                                    // 当前时间（秒）
-                                    var current_time = Date.parse(new Date()) / 1000;
-                                    // 配置时间为空 或 缓存时间为空 或 当前时间大于缓存+配置时间
-                                    if (interval_time == 0 || (cache_time == 0 || current_time > cache_time+interval_time)) {
-                                        // 倒序处理展示、系统默认在店在最前面，目的是让在店在最后面展示
-                                        var temp = [];
-                                        this.info.buy_use_type_list.forEach((v, i) => {
-                                            v['key'] = i;
-                                            temp.unshift(v);
-                                        });
-                                        this.setData({
-                                            buy_use_type_choice_list: temp,
-                                            buy_use_type_choice_status: true
-                                        });
+                                // 是否需要弹出下单类型选择
+                                // 打开开关，并且店铺必须存在下单类型
+                                var cache_index = this.get_cache_buy_use_type_index();
+                                if((this.base || null) != null && parseInt(this.base.is_tips_user_choice_buy_use_type || 0) == 1 && (cache_index === null || cache_index === '') && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 1 && (this.info.status_info || null) != null && this.info.status_info.status == 1) {
+                                    // 门店、商品是否开启了弹窗提示
+                                    var key = 'is_tips_user_choice_buy_use_type_'+this.params.source+'_detail';
+                                    if(parseInt(this.base[key] || 0) == 1) {
+                                        // 配置的间隔时间（秒）
+                                        var interval_time = parseInt(this.base.tips_user_choice_buy_use_type_interval_time || 0);
+                                        // 缓存的间隔时间（秒）
+                                        var cache_time = parseInt(uni.getStorageSync(this.cache_buy_use_type_interval_time_key+this.info.id) || 0);
+                                        // 当前时间（秒）
+                                        var current_time = Date.parse(new Date()) / 1000;
+                                        // 配置时间为空 或 缓存时间为空 或 当前时间大于缓存+配置时间
+                                        if (interval_time == 0 || (cache_time == 0 || current_time > cache_time+interval_time)) {
+                                            // 倒序处理展示、系统默认在店在最前面，目的是让在店在最后面展示
+                                            var temp = [];
+                                            this.info.buy_use_type_list.forEach((v, i) => {
+                                                v['key'] = i;
+                                                temp.unshift(v);
+                                            });
+                                            this.setData({
+                                                buy_use_type_choice_list: temp,
+                                                buy_use_type_choice_status: true
+                                            });
+                                        }
                                     }
                                 }
+
+                                // 设置下单类型
+                                this.setData({
+                                    buy_use_type_index: index,
+                                });
+
+                                // 获取购物车数据
+                                this.get_cart_data();
                             }
-
-                            // 设置下单类型
-                            this.setData({
-                                buy_use_type_index: index,
-                            });
-
-                            // 获取购物车数据
-                            this.get_cart_data();
                         }
                     }
                 }

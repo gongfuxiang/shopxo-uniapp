@@ -103,7 +103,9 @@
                     </view>
                     <!-- 门店基础模式 - 商品 -->
                     <view v-if="is_base_mode == 1 && (is_base_mode_show_type == 0 || (is_base_mode_show_type == 2 && nav_base_index == 0))" class="padding-horizontal-main border-radius-main bg-white">
-                        <view v-if="is_base_mode_show_type == 0" class="fw-b title-left-border margin-bottom-sm margin-top-main">{{$t('goods-detail.goods-detail.dfge45')}}</view>
+                        <view v-if="is_base_mode_show_type == 0" class="padding-top-sm margin-bottom-sm margin-top-main">
+                            <view class="fw-b title-left-border">{{$t('goods-detail.goods-detail.dfge45')}}</view>
+                        </view>
                         <scroll-view :scroll-y="true" class="cr-base text-size-sm" :style="content_style">
                             <view class="right-content-actual base-mode-goods">
                                 <mp-html :content="info.describe" />
@@ -205,7 +207,7 @@
                     </block>
 
                     <!-- 基础模式底部导航 -->
-                    <view v-if="is_base_mode == 1" class="bg-white pf left-0 bottom-0 wh-auto padding-main bs-bb br-top-shadow">
+                    <view v-if="is_base_mode == 1" class="plugins-realstore-detail-base-mode-nav z-i-deep bg-white pf left-0 bottom-0 wh-auto padding-main bs-bb br-top-shadow">
                         <view class="bottom-line-exclude button-list">
                             <view :class="'button-left tc '+(is_service_info == 1 ? '' : 'wh-auto')">
                                 <!-- #ifndef MP-KUAISHOU -->
@@ -237,9 +239,7 @@
         </view>
 
         <!-- 门店购物车 -->
-        <block v-if="is_base_mode != 1">
-            <component-realstore-cart ref="realstore_cart" :propCurrencySymbol="currency_symbol" :propStatus="is_cart_nav" v-on:CartSuccessEvent="goods_opt_cart_back_event" v-on:BuyTypeSwitchEvent="buy_type_switch_event" v-on:CartDataBackEvent="cart_data_back_event"></component-realstore-cart>
-        </block>
+        <component-realstore-cart ref="realstore_cart" :propIsBaseMode="is_base_mode == 1" :propCurrencySymbol="currency_symbol" :propStatus="is_cart_nav" v-on:CartSuccessEvent="goods_opt_cart_back_event" v-on:BuyTypeSwitchEvent="buy_type_switch_event" v-on:CartDataBackEvent="cart_data_back_event"></component-realstore-cart>
 
         <!-- 客服弹窗 -->
         <component-popup :propShow="popup_service_status" propPosition="bottom" @onclose="popup_service_close_event">
@@ -594,7 +594,7 @@
                                 // 获取数据、仅首次调用，获取列表接口
                                 if (this.is_first == 1) {
                                     // 是否基础模式
-                                    if(this.is_base_mode != 1 || is_base_mode_show_type != 0) {
+                                    if(this.is_base_mode != 1 || this.is_base_mode_show_type != 0) {
                                         this.get_data_list();
                                     }
                                     // 非首次记录
@@ -736,11 +736,11 @@
             content_actual_size_handle() {
                 // 基础模式内容高度处理
                 var value = 0;
-                if(this.is_base_mode == 1 && (this.is_base_mode_show_type == 0 || this.is_base_mode_show_type == 2)) {
-                    value = (this.is_base_mode_show_type == 0) ? 58 : 92;
+                if(this.is_base_mode == 1) {
+                    value = (this.is_base_mode_show_type == 1) ? 110 : 220;
                 }
                 // 内容高度
-                value += (this.client_type == 'h5') ? 370 : 328;
+                value += (this.client_type == 'h5') ? 370 : 352;
                 // 桌码
                 if(this.tablecode != null) {
                     value += 44;

@@ -89,7 +89,7 @@ page {
     padding-bottom: calc(145rpx + env(safe-area-inset-bottom));
 }
 .right-content-actual.base-mode-goods {
-    padding-bottom: calc(166rpx + env(safe-area-inset-bottom));
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
 }
 .goods-list-top-nav {
     position: sticky;

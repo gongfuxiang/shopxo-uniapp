@@ -33,7 +33,8 @@ iframe,
 .pa-w,
 .plugins-realstore-cart-content,
 .tabs-content,
-.header-around {
+.header-around,
+.plugins-realstore-detail-base-mode-nav {
     max-width: 1600rpx !important;
     margin: 0 auto !important;
 }
@@ -46,7 +47,8 @@ iframe,
 .nav-more-view,
 .quick-movable-container,
 .online-service-movable-container,
-.plugins-realstore-cart-content {
+.plugins-realstore-cart-content,
+.plugins-realstore-detail-base-mode-nav {
     left: auto !important;
 }
 iframe,
