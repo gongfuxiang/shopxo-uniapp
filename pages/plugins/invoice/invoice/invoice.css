@@ -1,6 +1,15 @@
 /*
 * 导航
 */
-.nav-base .item {
-    width: 20%;
+.scroll-box-ece-nav.top-notice {
+    height: calc(100vh - 154rpx);
+}
+
+/*
+* 发票内容
+*/
+.item-operation .btn {
+    padding: 0 48rpx;
+    height: 60rpx;
+    line-height: 60rpx;
 }

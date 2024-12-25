@@ -1,0 +1,20 @@
+.map-container {
+    height: 100vh;
+}
+.team {
+    left: 20rpx;
+    bottom: calc(env(safe-area-inset-bottom) + 20rpx);
+    width: calc(100% - 40rpx);
+    background-color: rgb(255 255 255 / 0.85);
+}
+.team .base .avatar {
+    width: 80rpx;
+    height: 80rpx;
+}
+.team .tel {
+    right: 20rpx;
+    top: calc(50% - 27rpx);
+    line-height: 54rpx;
+    height: 54rpx;
+    width: 54rpx;
+}

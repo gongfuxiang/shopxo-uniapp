@@ -2,12 +2,15 @@
 * 位置和搜索
 */
 .nav-location {
-    width: 200rpx;
-    height: 60rpx;
-    line-height: 60rpx;
+    max-width: 260rpx;
+    height: 56rpx;
+    line-height: 56rpx;
 }
 .nav-search {
-    width: calc(100% - 210rpx);
+    width: calc(100% - 260rpx);
+}
+.nav-search.map {
+    width: 100%;
 }
 
 /**
@@ -15,4 +18,20 @@
 */
 .scroll-box {
     height: calc(100vh - 180rpx);
+}
+.scroll-box.map {
+    height: calc(100vh - 682rpx);
+}
+
+/**
+* 地图
+*/
+.map-container {
+    height: 500rpx;
+}
+.map-container .map-center-icon {
+    top: calc(50% - 30rpx);
+    left: calc(50% - 30rpx);
+    width: 60rpx;
+    height: 60rpx;
 }

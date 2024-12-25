@@ -1,0 +1,19 @@
+.collection .qrcode {
+    margin-bottom: 80rpx;
+    margin-top: 52rpx;
+}
+
+.collection .code {
+    margin-bottom: 52rpx;
+}
+
+.collection .code .num {
+    padding: 20rpx 28rpx;
+    word-break: break-all;
+    text-align: left;
+}
+
+.collection .code .copy {
+    padding: 40rpx;
+    color: #635BFF;
+}

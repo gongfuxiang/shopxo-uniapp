@@ -1,0 +1,46 @@
+.admin-img {
+    width: 68rpx;
+    height: 68rpx !important;
+}
+
+/**
+ * 商品链接
+ */
+.goods-link .img {
+    width: 80rpx;
+    height: 80rpx;
+}
+
+.goods-link .title {
+    min-height: 40rpx;
+    line-height: 40rpx;
+}
+
+
+/**
+ * 猜你喜欢
+ */
+.guess-like {
+    position: relative;
+    text-align: center;
+    display: inline-block;
+}
+
+.guess-like::before,
+.guess-like::after {
+    content: "";
+    width: 76px;
+    height: 1px;
+    background: #dddddd;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.guess-like::before {
+    left: calc(100% + 20rpx);
+}
+
+.guess-like::after {
+    right: calc(100% + 20rpx);
+}

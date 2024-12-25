@@ -1,0 +1,38 @@
+.scroll-box {
+    height: calc(100vh - 40px);
+}
+
+.status .ask-status {
+    padding: 4rpx 10rpx;
+}
+
+.ask-bg-green {
+    background-color: #5FB95E;
+}
+
+.ask-bg-yellow {
+    background-color: #FAAD14;
+}
+
+.status .num {
+    margin-left: 16rpx;
+}
+
+.ask-hot {
+    width: 32rpx;
+    height: 32rpx;
+    line-height: 32rpx;
+    color: #FFB868;
+}
+
+.hot-bg-0 {
+    background: linear-gradient(150deg, #FC6761 0%, #ED4540 100%);
+}
+
+.hot-bg-1 {
+    background: linear-gradient(150deg, #FFA12A 0%, #FF8605 100%);
+}
+
+.hot-bg-2 {
+    background: linear-gradient(150deg, #FFCE90 0%, #FFAA4E 100%);
+}

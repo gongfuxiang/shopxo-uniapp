@@ -11,6 +11,7 @@
 	export default {
 		data() {
 			return {
+                theme_view: app.globalData.get_theme_value_view(),
 				statusbar_height: 0,
                 nav_style: ''
 			}
@@ -54,9 +55,9 @@
                 // 设置样式
                 this.nav_style = 'opacity:'+opacity+';';
                 // #ifdef MP
-                this.nav_style += 'height:'+(this.propHeight+this.statusbar_height)+'rpx;';
+                this.nav_style += 'height:'+(this.propHeight+this.statusbar_height)+'px;';
                 // #endif
-                // #ifdef H5
+                // #ifdef H5 || APP
                 this.nav_style += 'height:44px;';
                 // #endif
 			}
@@ -65,7 +66,7 @@
 		},
 		mounted() {
             // 获取系统状态栏高度
-			this.statusbar_height = app.globalData.px_to_rpx(app.globalData.get_system_info('statusBarHeight', 0));
+			this.statusbar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
 		}
 	}
 </script>

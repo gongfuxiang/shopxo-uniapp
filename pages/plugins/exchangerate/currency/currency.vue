@@ -1,52 +1,71 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 货币列表 -->
         <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item padding-main border-radius-main bg-white oh spacing-mb" @tap="selected_event" :data-index="index">
-                    <image v-if="common_site_type != 1" class="icon fl margin-right-sm" :src="common_static_url+'select' + (item.id == data_default.id ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
-                    <view :class="'value fl single-text ' + (item.id == data_default.id ? 'cr-main' : 'cr-base')">{{item.name}} / {{item.symbol}}</view>
+                <view :class="'item padding-main border-radius-main bg-white oh pr spacing-mb '+(item.id == data_default.id ? 'br-main' : 'br')" @tap="selected_event" :data-index="index">
+                    <image v-if="(item.icon || null) != null" class="icon va-m margin-right" :src="item.icon" mode="aspectFit"></image>
+                    <text class="va-m">{{item.name}}</text>
+                    <text class="cr-grey fr">{{item.symbol}}</text>
+                    <view v-if="item.id == data_default.id" class="checked pa bg-main lh-sm tc padding-top-xs padding-left-xs">
+                        <iconfont name="icon-checked" size="32rpx" color="#fff"></iconfont>
+                    </view>
                 </view>
             </block>
         </view>
-        <view v-else>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
 
         <!-- 结尾 -->
         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-
-    var common_static_url = app.globalData.get_static_url('common');
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
     export default {
         data() {
             return {
-                common_static_url: common_static_url,
+                theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_list: [],
                 data_default: null,
-                data_base: null,
-                common_site_type: 0
+                data_base: null
             };
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine
         },
-        props: {},
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -66,9 +85,6 @@
             // 获取数据
             get_data_list() {
                 var self = this;
-                uni.showLoading({
-                    title: '加载中...'
-                });
                 if (self.data_list.length <= 0) {
                     self.setData({
                         data_list_loding_status: 1
@@ -80,7 +96,6 @@
                     data: {},
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -103,14 +118,13 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         self.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -122,7 +136,7 @@
                 var temp_list = this.data_list;
                 var data = temp_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast('数据有误');
+                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
                     return false;
                 }
                 
@@ -130,7 +144,7 @@
                 if (data.id != this.data_default.id) {
                     var self = this;
                     uni.showLoading({
-                        title: '处理中...'
+                        title: this.$t('common.processing_in_text')
                     });
                     uni.request({
                         url: app.globalData.get_request_url("setcurrency", "index", "exchangerate"),
@@ -160,7 +174,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         }
                     });
                 }

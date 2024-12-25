@@ -1,94 +1,103 @@
 <template>
-    <view class="page-bottom-fixed">
-        <form @submit="form_submit" class="form-container">
-            <view class="padding-main oh">
-                <view class="form-gorup bg-white form-container-upload oh">
-                    <view class="form-gorup-title">logo图片<text class="form-group-tips">选传，建议300x300px</text></view>
-                    <view class="oh">
-                        <view class="form-upload-data fl">
+    <view :class="theme_view">
+        <view class="page-bottom-fixed">
+            <form @submit="form_submit" class="form-container">
+                <view class="padding-main oh border-radius-main">
+                    <view class="form-gorup bg-white form-container-upload oh">
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.u439pg')}}<text class="form-group-tips">{{$t('extraction-apply.extraction-apply.bflosr')}}</text></view>
+                        <view class="form-upload-data oh">
                             <block v-if="(extraction_data.logo || null) != null">
                                 <view class="item fl">
                                     <text class="delete-icon" @tap="upload_delete_event">x</text>
                                     <image :src="extraction_data.logo" @tap="upload_show_event" mode="aspectFill"></image>
                                 </view>
                             </block>
-                        </view>
-                        <image class="upload-icon" :src="common_static_url+'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
-                    </view>
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">别名</view>
-                    <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" placeholder="别名格式最多 16 个字符">
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
-                    <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" placeholder="联系人格式 2~16 个字符之间">
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
-                    <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" placeholder="座机 或 手机">
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
-                    <view class="select-address oh">
-                        <view class="section fl">
-                            <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
-                                <view :class="'name ' + ((province_value == null) ? 'cr-grey' : 'cr-base' )">{{((province_list[province_value] || null) == null) ? default_province : province_list[province_value]['name']}}</view>
-                            </picker>
-                        </view>
-                        <view class="section fl">
-                            <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
-                                <view :class="'name ' + ((city_value == null) ? 'cr-grey' : 'cr-base' )">{{((city_list[city_value] || null) == null) ? default_city : city_list[city_value]['name']}}</view>
-                            </picker>
-                            <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择省份">请先选择省份</text>
-                        </view>
-                        <view class="section fl">
-                            <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
-                                <view :class="'name ' + ((county_value == null) ? 'cr-grey' : 'cr-base' )">{{((county_list[county_value] || null) == null) ? default_county : county_list[county_value]['name']}}</view>
-                            </picker>
-                            <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择城市">请先选择城市</text>
+                            <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
                         </view>
                     </view>
-                </view>
 
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text></view>
-                    <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" placeholder="详细地址格式 1~80 个字符之间">
-                </view>
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.9t81k8')}}</view>
+                        <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.wt1w0m')" />
+                    </view>
 
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">地理位置<text class="form-group-tips-must">必选</text></view>
-                    <view @tap="choose_location_event" class="form-gorup-text">
-                        <view v-if="(user_location || null) == null" class="cr-gray">请选择地理位置</view>
-                        <view v-else class="cr-base">{{user_location.lng}}, {{user_location.lat}}</view>
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">{{$t('user-detail.user-detail.k5867n')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.73efnt')" />
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">{{$t('user-detail.user-detail.gfe703')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.qixk24')" />
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.cy87k6')}}<text class="form-group-tips-must">*</text></view>
+                        <view class="select-address oh">
+                            <view class="section fl">
+                                <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
+                                    <view :class="'name ' + (province_value == null ? 'cr-grey' : 'cr-base')">{{ (province_list[province_value] || null) == null ? default_province : province_list[province_value]['name'] }}</view>
+                                </picker>
+                            </view>
+                            <view class="section fl">
+                                <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
+                                    <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
+                                </picker>
+                                <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.liqbru')">{{$t('extraction-apply.extraction-apply.liqbru')}}</text>
+                            </view>
+                            <view class="section fl">
+                                <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
+                                    <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
+                                </picker>
+                                <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.r4q86m')">{{$t('extraction-apply.extraction-apply.r4q86m')}}</text>
+                            </view>
+                        </view>
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.gxo73a')" />
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.47v7m0')}}<text class="form-group-tips-must">*</text></view>
+                        <view @tap="choose_location_event" class="form-gorup-text">
+                            <view v-if="(user_location.status || 0) == 1" class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
+                            <view v-else class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
+                        </view>
+                    </view>
+
+                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb">{{$t('extraction-apply.extraction-apply.5y2yzu')}}</view>
+                    <view class="bottom-fixed" :style="bottom_fixed_style">
+                        <view class="bottom-line-exclude">
+                            <button class="item bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
+                        </view>
                     </view>
                 </view>
-                
-                <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="notice-content-blue spacing-mb">
-                    注意：编辑信息将重新审核后方可生效
-                </view>
-                <view class="bottom-fixed padding-main">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
-                </view>
-            </view>
-        </form>
+            </form>
+        </view>
+
+        <!-- 位置选择 -->
+        <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onBack="user_back_choice_location"></component-choice-location>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-
+    import componentCommon from '@/components/common/common';
+    import componentChoiceLocation from '@/components/choice-location/choice-location';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
-                params: null,
+                params: {},
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 extraction_data: {},
                 province_list: [],
                 city_list: [],
@@ -97,37 +106,49 @@
                 city_id: null,
                 county_id: null,
                 editor_path_type: '',
-                default_province: "请选择省",
-                default_city: "请选择市",
-                default_county: "请选择区/县",
+                default_province: this.$t('extraction-apply.extraction-apply.s3h5o3'),
+                default_city: this.$t('extraction-apply.extraction-apply.4s4s15'),
+                default_county: this.$t('extraction-apply.extraction-apply.fk4gw5'),
                 province_value: null,
                 city_value: null,
                 county_value: null,
-                user_location_cache_key: app.globalData.data.cache_userlocation_key,
-                user_location: null,
-                form_submit_disabled_status: false
+                user_location: {},
+                form_submit_disabled_status: false,
             };
         },
 
-        components: {},
-        props: {},
-
-        onLoad(params) {
-            this.setData({
-                params: params
-            });
+        components: {
+            componentCommon,
+            componentChoiceLocation
         },
 
-        onReady: function() {
-            // 清除位置缓存信息
-            uni.removeStorage({
-                key: this.user_location_cache_key
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params || {},
             });
+
+            // 清除位置缓存信息
+            app.globalData.choice_user_location_remove();
+
+            // 初始数据
             this.init();
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 用户位置初始化
             this.user_location_init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -135,26 +156,14 @@
 
         methods: {
             init() {
-                var user = app.globalData.get_user_info(this, "init");
+                var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: "/pages/login/login?event_callback=init"
-                        });
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: '请先绑定手机号码'
-                        });
-                        return false;
-                    } else {
-                        this.get_province_list();
-                        this.applyinfo_init();
-                    }
+                    this.get_province_list();
+                    this.applyinfo_init();
                 } else {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '请先授权用户信息'
+                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
                 }
             },
@@ -163,27 +172,27 @@
             applyinfo_init() {
                 var self = this;
                 uni.request({
-                    url: app.globalData.get_request_url("applyinfo", "extraction", "distribution"),
+                    url: app.globalData.get_request_url('applyinfo', 'extraction', 'distribution'),
                     method: 'POST',
-                    data: {},
+                    data: {is_lang: 0},
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var extraction_data = data.extraction_data || null;
                             self.setData({
                                 extraction_data: extraction_data || {},
-                                editor_path_type: data.editor_path_type || ''
+                                editor_path_type: data.editor_path_type || '',
                             });
-                            
+
                             // 数据设置
                             if (extraction_data != null) {
                                 self.setData({
                                     province_id: extraction_data.province || null,
                                     city_id: extraction_data.city || null,
-                                    county_id: extraction_data.county || null
+                                    county_id: extraction_data.county || null,
                                 });
-                                
+
                                 // 地理位置
                                 var lng = extraction_data.lng || 0;
                                 var lat = extraction_data.lat || 0;
@@ -192,18 +201,18 @@
                                         user_location: {
                                             lng: lng,
                                             lat: lat,
-                                            address: extraction_data.address || ''
-                                        }
+                                            address: extraction_data.address || '',
+                                        },
                                     });
                                 }
                             }
-                            
+
                             // 获取城市、区县
                             self.get_city_list();
                             self.get_county_list();
-                            
+
                             // 半秒后初始化数据
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 self.init_region_value();
                             }, 500);
                         } else {
@@ -213,17 +222,17 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("获取数据失败");
-                    }
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.h8f437'));
+                    },
                 });
             },
 
             // 地区数据初始化
             init_region_value() {
                 this.setData({
-                    province_value: this.get_region_value("province_list", "province_id"),
-                    city_value: this.get_region_value("city_list", "city_id"),
-                    county_value: this.get_region_value("county_list", "county_id")
+                    province_value: this.get_region_value('province_list', 'province_id'),
+                    city_value: this.get_region_value('city_list', 'city_id'),
+                    county_value: this.get_region_value('county_list', 'county_id'),
                 });
             },
 
@@ -245,23 +254,23 @@
             get_province_list() {
                 var self = this;
                 uni.request({
-                    url: app.globalData.get_request_url("index", "region"),
+                    url: app.globalData.get_request_url('index', 'region'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             self.setData({
-                                province_list: data
+                                province_list: data,
                             });
                         } else {
                             app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("省份获取失败");
-                    }
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.fo7y6c'));
+                    },
                 });
             },
 
@@ -271,25 +280,25 @@
 
                 if (self.province_id) {
                     uni.request({
-                        url: app.globalData.get_request_url("index", "region"),
+                        url: app.globalData.get_request_url('index', 'region'),
                         method: 'POST',
                         data: {
-                            pid: self.province_id
+                            pid: self.province_id,
                         },
                         dataType: 'json',
-                        success: res => {
+                        success: (res) => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
                                 self.setData({
-                                    city_list: data
+                                    city_list: data,
                                 });
                             } else {
                                 app.globalData.showToast(res.data.msg);
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast("城市获取失败");
-                        }
+                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.b6qg7b'));
+                        },
                     });
                 }
             },
@@ -301,25 +310,25 @@
                 if (self.city_id) {
                     // 加载loding
                     uni.request({
-                        url: app.globalData.get_request_url("index", "region"),
+                        url: app.globalData.get_request_url('index', 'region'),
                         method: 'POST',
                         data: {
-                            pid: self.city_id
+                            pid: self.city_id,
                         },
                         dataType: 'json',
-                        success: res => {
+                        success: (res) => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
                                 self.setData({
-                                    county_list: data
+                                    county_list: data,
                                 });
                             } else {
                                 app.globalData.showToast(res.data.msg);
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast("区/县获取失败");
-                        }
+                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.5s5734'));
+                        },
                     });
                 }
             },
@@ -335,7 +344,7 @@
                         city_value: null,
                         county_value: null,
                         city_id: null,
-                        county_id: null
+                        county_id: null,
                     });
                     this.get_city_list();
                 }
@@ -350,7 +359,7 @@
                         city_value: index,
                         city_id: data.id,
                         county_value: null,
-                        county_id: null
+                        county_id: null,
                     });
                     this.get_county_list();
                 }
@@ -363,7 +372,7 @@
                     var data = this.county_list[index];
                     this.setData({
                         county_value: index,
-                        county_id: data.id
+                        county_id: data.id,
                     });
                 }
             },
@@ -378,55 +387,52 @@
 
             // 选择地理位置
             choose_location_event(e) {
-                uni.navigateTo({
-                    url: '/pages/common/open-setting-location/open-setting-location'
+                if ((this.$refs.choice_location || null) != null) {
+                    this.$refs.choice_location.choose_user_location();
+                }
+            },
+
+            // 选择用户地理位置回调
+            user_back_choice_location(e) {
+                this.setData({
+                    user_location: e
                 });
             },
 
             // 地址信息初始化
             user_location_init() {
-                var result = uni.getStorageSync(this.user_location_cache_key) || null;
-                var data = null;
-                if (result != null) {
-                    data = {
-                        name: result.name || null,
-                        address: result.address || null,
-                        lat: result.latitude || null,
-                        lng: result.longitude || null
-                    };
-                }
                 this.setData({
-                    user_location: data
+                    user_location: app.globalData.choice_user_location_init()
                 });
             },
 
             // 数据提交
             form_submit(e) {
                 var self = this;
-                
+
                 // 表单数据
                 var form_data = e.detail.value;
-                
+
                 // 数据校验
                 var validation = [
-                    { fields: "name", msg: "请填写联系人" },
-                    { fields: "tel", msg: "请填写联系电话" },
-                    { fields: "province", msg: "请选择省份" },
-                    { fields: "city", msg: "请选择城市" },
-                    { fields: "county", msg: "请选择区县" },
-                    { fields: "address", msg: "请填写详细地址" },
-                    { fields: "lng", msg: "请选择地理位置" },
-                    { fields: "lat", msg: "请选择地理位置" }
+                    { fields: 'name', msg: this.$t('extraction-apply.extraction-apply.q15b4n') },
+                    { fields: 'tel', msg: this.$t('extraction-apply.extraction-apply.3or25c') },
+                    { fields: 'province', msg: this.$t('extraction-apply.extraction-apply.m99d2g') },
+                    { fields: 'city', msg: this.$t('extraction-apply.extraction-apply.03587o') },
+                    { fields: 'county', msg: this.$t('extraction-apply.extraction-apply.pt8436') },
+                    { fields: 'address', msg: this.$t('extraction-apply.extraction-apply.v1g617') },
+                    { fields: 'lng', msg: this.$t('extraction-apply.extraction-apply.8831v6') },
+                    { fields: 'lat', msg: this.$t('extraction-apply.extraction-apply.8831v6') },
                 ];
-                
+
                 // logo
                 form_data['logo'] = (this.extraction_data || null) != null ? this.extraction_data.logo || '' : '';
-                
+
                 // 地区
-                form_data["province"] = self.province_id;
-                form_data["city"] = self.city_id;
-                form_data["county"] = self.county_id;
-                
+                form_data['province'] = self.province_id;
+                form_data['city'] = self.city_id;
+                form_data['county'] = self.county_id;
+
                 // 地理位置
                 var lng = 0;
                 var lat = 0;
@@ -442,22 +448,22 @@
                         lat = self.extraction_data.lat || 0;
                     }
                 }
-                form_data["lng"] = lng;
-                form_data["lat"] = lat;
-                
+                form_data['lng'] = lng;
+                form_data['lat'] = lat;
+
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {
                     if ((self.extraction_data || null) != null && (self.extraction_data.status || 0) == 1) {
                         uni.showModal({
-                            title: '温馨提示',
-                            content: '数据需重新审核后方可生效',
-                            confirmText: '确认',
-                            cancelText: '暂不',
-                            success: result => {
+                            title: this.$t('common.warm_tips'),
+                            content: this.$t('extraction-apply.extraction-apply.rm14pu'),
+                            confirmText: this.$t('common.confirm'),
+                            cancelText: this.$t('common.not_yet'),
+                            success: (result) => {
                                 if (result.confirm) {
                                     self.request_data_save(form_data);
                                 }
-                            }
+                            },
                         });
                     } else {
                         self.request_data_save(form_data);
@@ -469,41 +475,41 @@
             request_data_save(data) {
                 var self = this;
                 self.setData({
-                    form_submit_disabled_status: true
+                    form_submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '处理中...'
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("applysave", "extraction", "distribution"),
+                    url: app.globalData.get_request_url('applysave', 'extraction', 'distribution'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
                             app.globalData.showToast(res.data.msg, 'success');
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 uni.navigateBack();
                             }, 1000);
                         } else {
                             self.setData({
-                                form_submit_disabled_status: false
+                                form_submit_disabled_status: false,
                             });
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
                         self.setData({
-                            form_submit_disabled_status: false
+                            form_submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
@@ -511,7 +517,7 @@
             upload_show_event(e) {
                 uni.previewImage({
                     current: this.extraction_data.logo,
-                    urls: [this.extraction_data.logo]
+                    urls: [this.extraction_data.logo],
                 });
             },
 
@@ -519,17 +525,17 @@
             upload_delete_event(e) {
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复、继续吗？',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
                     success(res) {
                         if (res.confirm) {
                             var temp_data = self.extraction_data || {};
                             temp_data['logo'] = '';
                             self.setData({
-                                extraction_data: temp_data
+                                extraction_data: temp_data,
                             });
                         }
-                    }
+                    },
                 });
             },
 
@@ -544,7 +550,7 @@
                         var length = res.tempFilePaths.length;
                         var count = 0;
                         self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                    }
+                    },
                 });
             },
 
@@ -552,14 +558,14 @@
             upload_one_by_one(img_paths, success, fail, count, length) {
                 var self = this;
                 uni.uploadFile({
-                    url: app.globalData.get_request_url("index", "ueditor"),
+                    url: app.globalData.get_request_url('index', 'ueditor'),
                     filePath: img_paths[count],
                     name: 'upfile',
                     formData: {
                         action: 'uploadimage',
-                        path_type: self.editor_path_type
+                        path_type: self.editor_path_type,
                     },
-                    success: function(res) {
+                    success: function (res) {
                         success++;
                         if (res.statusCode == 200) {
                             var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
@@ -567,19 +573,19 @@
                                 var temp_data = self.extraction_data || {};
                                 temp_data['logo'] = data.data.url;
                                 self.setData({
-                                    extraction_data: temp_data
+                                    extraction_data: temp_data,
                                 });
                             } else {
                                 app.globalData.showToast(data.msg);
                             }
                         }
                     },
-                    fail: function(e) {
+                    fail: function (e) {
                         fail++;
                     },
-                    complete: function(e) {
+                    complete: function (e) {
                         count++;
-                        
+
                         // 下一张
                         if (count >= length) {
                             // 上传完毕，作一下提示
@@ -588,10 +594,10 @@
                             // 递归调用，上传下一张
                             self.upload_one_by_one(img_paths, success, fail, count, length);
                         }
-                    }
+                    },
                 });
-            }
-        }
+            },
+        },
     };
 </script>
 <style>

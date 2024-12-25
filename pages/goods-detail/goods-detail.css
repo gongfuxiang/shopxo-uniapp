@@ -1,12 +1,11 @@
 .page {
-    padding-bottom: 110rpx;
+    padding-bottom: 130rpx;
 }
 
 /**
  * 顶部导航内容
  */
-.top-nav-left-icon,
-.top-nav-right-icon {
+.top-nav-left-icon {
     top: 28px;
     z-index: 11;
 }
@@ -14,11 +13,7 @@
     left: auto;
     margin-left: 20rpx;
 }
-.top-nav-right-icon {
-    right: 20rpx;
-}
-.top-nav-left-icon .icon,
-.top-nav-right-icon .icon {
+.top-nav-left-icon .icon {
     background: rgb(255 255 255 / 70%);
     width: 25px;
     height: 25px;
@@ -30,7 +25,7 @@
 }
 .top-nav {
     position: absolute;
-    bottom: 24rpx;
+    bottom: 0;
     width: calc(100% - 40rpx);
     /* #ifdef H5 || APP */
     bottom: 6px;
@@ -43,7 +38,7 @@
     margin-left: calc(50% - 170rpx);
 }
 .top-nav-content text {
-    font-size: 32rpx;
+    font-size: 30rpx;
     /* #ifdef H5 || APP */
     font-size: 14px;
     /* #endif */
@@ -52,15 +47,10 @@
     margin-right: 30rpx;
 }
 .top-nav-content .nav-active {
-    font-weight: 700;
-    padding-bottom: 5rpx;
-    padding-bottom: 5rpx;
+    font-weight: 500;
+    padding-bottom: 2rpx;
     border-style: solid;
     border-width: 0 0 2px 0;
-    font-size: 34rpx;
-    /* #ifdef H5 || APP */
-    font-size: 16px;
-    /* #endif */
 }
 
 /**
@@ -103,51 +93,14 @@
 /**
  * 购买操作导航
  */
-.goods-buy-nav {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    height: 100rpx;
-    z-index: 2;
-}
-.goods-buy-nav .bus-items {
-    width: 45%;
-}
-.goods-buy-nav .bus-items .item  {
-    position: relative;
-}
-.goods-buy-nav .bus-items-1 .item {
-    width: 100%;
-}
-.goods-buy-nav .bus-items-2 .item {
-    width: 50%;
-}
-.goods-buy-nav .bus-items-3 .item {
-    width: 33.33%;
-}
-.goods-buy-nav .bus-items-4 .item {
-    width: 25%;
-}
-.goods-buy-nav .bus-items-5 .item {
-    width: 20%;
-}
-.goods-buy-nav .btn-items {
-    width: calc(55% - 10rpx);
-    padding: 15rpx 0;
-}
-.goods-buy-nav .bus-items,
-.goods-buy-nav .btn-items {
-    height: 100rpx;
-}
-.goods-buy-nav .btn-items .item {
+.goods-buy-nav .btn-items .btn {
     height: 70rpx;
     line-height: 70rpx;
-    font-size: 24rpx;
     padding: 0 10rpx;
     margin-right: 15rpx;
     position: relative;
 }
-.goods-buy-nav image {
+.goods-buy-nav .image {
     width: 40rpx;
     height: 40rpx;
     margin: 10rpx 0 5rpx 0;
@@ -161,35 +114,35 @@
     left: calc(50% + 25rpx);
     z-index: 1;
 }
-.goods-buy-nav-btn-number-0 .item,
-.goods-buy-nav-btn-number-1 .item {
+.goods-buy-nav-btn-number-0 .btn,
+.goods-buy-nav-btn-number-1 .btn {
     width: calc(100% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-2 .item {
+.goods-buy-nav-btn-number-2 .btn {
     width: calc(50% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-3 .item {
+.goods-buy-nav-btn-number-3 .btn {
     width: calc(33.33% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-4 .item {
+.goods-buy-nav-btn-number-4 .btn {
     width: calc(25% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-5 .item {
+.goods-buy-nav-btn-number-5 .btn {
     width: calc(20% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-6 .item {
+.goods-buy-nav-btn-number-6 .btn {
     width: calc(16.66% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-7 .item {
+.goods-buy-nav-btn-number-7 .btn {
     width: calc(14.28% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-8 .item {
+.goods-buy-nav-btn-number-8 .btn {
     width: calc(12.5% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-9 .item {
+.goods-buy-nav-btn-number-9 .btn {
     width: calc(11.11% - 15rpx) !important;
 }
-.goods-buy-nav-btn-number-10 .item {
+.goods-buy-nav-btn-number-10 .btn {
     width: calc(10% - 15rpx) !important;
 }
 
@@ -200,22 +153,18 @@
     position: relative;
     min-height: 86rpx;
 }
-.goods-base-content .goods-title {
-    font-size: 36rpx;
-    line-height: 52rpx;
+.goods-base-content .goods-title-content .goods-title {
+    font-size: 30rpx;
+    line-height: 40rpx;
     font-weight: bold;
-    width: calc(100% - 100rpx);
+    width: calc(100% - 200rpx);
 }
-.goods-base-content .goods-share {
-    top: calc(50% - 40rpx);
-    right: 20rpx;
+.goods-base-content image {
+    width: 40rpx;
+    height: 40rpx;
 }
-.goods-base-content .goods-share image {
-    width: 50rpx;
-    height: 50rpx;
-}
-.goods-base-content .base-grid view {
-    width: calc(33.33% - 1px);
+.goods-base-content .collect {
+    width: 76rpx;
 }
 
 /**
@@ -245,24 +194,42 @@
 /**
  * 基础价格信息
  */
-.goods-base-price {
-    height: 145rpx;
-    overflow: hidden;
+.goods-base-price,
+.price-content,
+.goods-base-right-opt {
+    min-height: 145rpx;
+}
+.price-content {
+    width: calc(100% - 200rpx);
+}
+.goods-base-right-opt {
+    width: 200rpx;
 }
 .price-content,
-.countdown-content {
+.goods-base-right-opt {
     box-sizing: border-box;
     position: relative;
     height: 100%;
 }
+.goods-base-right-opt image {
+    width: 40rpx;
+    height: 40rpx;
+}
+.goods-base-right-opt .collect {
+    width: 76rpx;
+}
 .price-content .price-icon {
-    margin-right: 5rpx;
-    padding: 1px 5px;
-    background: #FF5722;
+    padding: 0px 8rpx;
     color: #fff;
+    border: 1px solid #FF5722;
+    background: #FF5722;
+    font-size: 24rpx;
 }
 .price-content .sales-price {
     font-size: 42rpx;
+}
+.price-content .item:not(:last-child) {
+    margin-bottom: 10rpx;
 }
 
 /**
@@ -277,44 +244,41 @@
 /**
  * 价格信息与秒杀结合
  */
-.goods-base-price-countdown .price-content {
-    background: #f9534e;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    width: 60%;
-    float: left;
-}
-.goods-base-price-countdown .price-icon { 
-    margin-right: 0;
-    padding: 0px 10rpx;
-    border: 1px solid #fff;
-    background: transparent;
-    position: absolute;
-    right: 20rpx;
-    bottom: 20rpx;
-    font-size: 24rpx;
-}
-.goods-base-price-countdown .sales-price {
-    color: #fff;
-}
-.goods-base-price-countdown .original-price {
-    color: #ffcece;
-}
-.goods-base-price-countdown .countdown-content {
-    background: #e84742;
-    width: 40%;
+.countdown-content {
+    width: 38%;
 }
 .countdown-content .time-title {
     font-size: 38rpx;
     margin-bottom: 10rpx;
 }
-
-/**
- * 栏目右侧内容
- */
-.column-right-view {
-    width: calc(100% - 190rpx);
-    margin-right: 50rpx;
+.goods-base-price-countdown {
+    background: #e84742 !important;
+}
+.goods-base-price-countdown .price-content {
+    background: #f9534e;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 60%;
+    min-height: 164rpx;
+}
+.goods-base-price-countdown .price-content .price-icon {
+    border-color: #fff;
+    color: #fff;
+    background: transparent;
+}
+.goods-base-price-countdown .price-content .sales-price,
+.goods-base-price-countdown .price-content .sales-price-unit {
+    color: #fff !important;
+}
+.goods-base-price-countdown .price-content .original-price,
+.goods-base-price-countdown .price-content .unit{
+    color: #ffcece !important;
+}
+.price-content .price-icon.seckill {
+    position: absolute;
+    right: 20rpx;
+    bottom: 20rpx;
+    margin-right: 0;
 }
 
 /*
@@ -336,6 +300,7 @@
 .goods-parameters .content-item .item:nth-child(2n) {
     float: right;
 }
+
 /**
  * 商品参数弹窗
  */
@@ -345,19 +310,21 @@
     overflow-x: hidden;
 }
 .popup-params-container .item .name {
-	width: 220rpx;
+    width: 220rpx;
 }
 .popup-params-container .item .value {
-	width: calc(100% - 240rpx);
+    width: calc(100% - 240rpx);
 }
 
 /*
-* icon
+* 标题icon
 */
-.goods-icon-container .item {
-    border: 1px solid #3bb4f2;
-    color: #3bb4f2;
-    padding: 4rpx 16rpx;
+.goods-title-icon-item {
+    background: #666;
+    color: #fff;
+    padding: 0 8rpx;
+    line-height: 26rpx;
+    font-weight: 400;
 }
 
 /*
@@ -419,6 +386,7 @@
 .plugins-salerecords-tips-top-center {
     top: 13%;
 }
+
 /* #ifdef MP-ALIPAY  */
 .plugins-salerecords-tips-top-left {
     top: 5%;
@@ -429,6 +397,7 @@
 .plugins-salerecords-tips-top-center {
     top: 5%;
 }
+
 /* #endif  */
 .plugins-salerecords-tips-bottom-left {
     left: 5%;
@@ -449,9 +418,65 @@
 /*
 * 优惠劵 - 插件
 */
-.plugins-coupon-container-view .item {
-    padding: 5rpx 15rpx;
-    display: inline-table;
+.coupon-padding {
+    padding: 2rpx;
+}
+.mini-coupon {
+    position: relative;
+    display: inline-block;
+    height: 40rpx;
+    line-height: 40rpx;
+    border-radius: 4rpx;
+    padding: 0 16rpx;
+}
+.mini-coupon::before,
+.mini-coupon::after {
+    content: '';
+    width: 14rpx;
+    height: 14rpx;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.mini-coupon::before {
+    left: -8rpx;
+}
+.mini-coupon::after {
+    right: -8rpx;
+}
+.mini-coupon-br::before,
+.mini-coupon-br::after {
+    border: 1px solid #FE5500;
+}
+.coupon-srcoll {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.coupon-srcoll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+.received-coupon {
+    background: #FFEBE0;
+    border: 2rpx solid #FE5500;
+    color: #FE5500;
+}
+.not-received-coupon {
+    background: #FE5500;
+    border: 2rpx solid #FE5500;
+    color: #fff;
+}
+.received-coupon .divider-l::before {
+    background: red;
+}
+.not-received-coupon .divider-l::before {
+    background: #fff;
+}
+.plugins-coupon-container-view .item-title {
+    min-width: 70rpx;
 }
 .plugins-coupon-container-view .item:not(:last-child) {
     margin-right: 10rpx;
@@ -475,43 +500,6 @@
 }
 .plugins-coupon-container .v-left .base .price {
     font-size: 46rpx;
-}
-
-/**
- * 批发 - 插件
- */
-.plugins-wholesale-container-view .item {
-    padding: 5rpx 15rpx;
-    color: #ff6633;
-    border: 1px dashed #ff9e7e;
-    display: inline-table;
-}
-.plugins-wholesale-container-view .item:not(:last-child) {
-    margin-right: 10rpx;
-}
-.plugins-wholesale-container {
-    max-height: 50vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-top: 20rpx;
-}
-.plugins-wholesale-container .item {
-    width: calc(50% - 50rpx);
-    margin-bottom: 20rpx;
-}
-.plugins-wholesale-container .item:nth-child(2n) {
-    margin-left: 10rpx;
-}
-.plugins-wholesale-container .item:nth-child(2n+1) {
-    margin-right: 10rpx;
-}
-.plugins-wholesale-container .spec-tips {
-    color: #ffbf00;
-    border: 1px solid #333;
-    background: #333;
-    padding: 2rpx 10rpx;
-    top: 22rpx;
-    left: 20rpx;
 }
 
 /**
@@ -572,9 +560,6 @@
 /**
  * 商品服务 - 插件
  */
-.plugins-goodsservice-view-container .content {
-    width: calc(100% - 30rpx);
-}
 .plugins-goodsservice-view-container .item image {
     width: 32rpx;
     height: 32rpx !important;

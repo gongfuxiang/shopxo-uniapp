@@ -1,10 +1,10 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="goods-spec-choice-content">
@@ -23,18 +23,19 @@
                         </view>
                     </view>
                 </view>
-                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">确定</button>
+                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">{{$t('index.index.7w75zb')}}</button>
             </view>
         </component-popup>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentPopup from "../../components/popup/popup";
+    import componentPopup from "@/components/popup/popup";
 
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 popup_status: false,
                 goods_id: 0,
                 spec: [],
@@ -188,7 +189,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -221,7 +222,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -296,7 +297,7 @@
                         }
                     }
                     if (active_count < sku_count) {
-                        app.globalData.showToast('请选择规格');
+                        app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
                         return false;
                     }
                 }

@@ -1,16 +1,16 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white spacing-mb">
-                    <navigator :url="'/pages/plugins/realstore/detail/detail?id=' + item.realstore_info.id" hover-class="none">
+                    <view :data-value="'/pages/plugins/realstore/detail/detail?id=' + item.realstore_info.id" @tap="url_event" class="cp">
                         <image class="logo fl radius" :src="item.realstore_info.logo" mode="aspectFill"></image>
                         <view class="base">
                             <view class="single-text fw-b">{{item.realstore_info.name}}</view>
                             <view class="multi-text cr-grey margin-top-sm">{{item.realstore_info.describe}}</view>
                         </view>
-                    </navigator>
-                    <button class="br-yellow cr-yellow bg-white fr round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+                    </view>
+                    <button class="br-yellow cr-yellow bg-white fr round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                 </view>
             </view>
             <view v-else>
@@ -20,16 +20,21 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
 
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -41,14 +46,27 @@
         },
 
         components: {
+            componentCommon,
             componentNoData,
             componentBottomLine
         },
-        props: {},
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -67,16 +85,7 @@
             init() {
                 var user = app.globalData.get_user_info(this, "init");
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: "/pages/login/login?event_callback=init"
-                        });
-                        return false;
-                    } else {
-                        // 获取数据
-                        this.get_data_list();
-                    }
+                    this.get_data_list();
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
@@ -105,9 +114,11 @@
                 });
                 
                 // 加载loding
-                uni.showLoading({
-                    title: '加载中...'
-                });
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
                 
                 // 获取数据
                 uni.request({
@@ -118,7 +129,9 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             if (res.data.data.data.length > 0) {
@@ -161,13 +174,15 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_is_loading: 0
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -180,10 +195,10 @@
             // 取消
             cancel_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '取消后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.pn78ns'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: result => {
                         if (result.confirm) {
                             // 参数
@@ -192,7 +207,7 @@
                             
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...'
+                                title: this.$t('common.processing_in_text')
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("delete", "favor", "realstore"),
@@ -221,18 +236,23 @@
                                         if (app.globalData.is_login_check(res.data)) {
                                             app.globalData.showToast(res.data.msg);
                                         } else {
-                                            app.globalData.showToast('提交失败，请重试！');
+                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                         }
                                     }
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('服务器请求出错');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 }
                             });
                         }
                     }
                 });
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };

@@ -1,12 +1,12 @@
 <template>
-    <view>
-        <view v-if="detail != null">
+    <view :class="theme_view">
+        <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                            <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main flex-row align-c">
+                            <view class="padding-right-main cr-grey divider-r-f5">{{ item.name }}</view>
+                            <view class="padding-left-main">{{ item.value }}</view>
                         </view>
                     </view>
                 </view>
@@ -14,45 +14,61 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
 
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 detail: null,
-                detail_list: []
+                detail_list: [],
             };
         },
 
         components: {
+            componentCommon,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
         },
-        props: {},
 
         onLoad(params) {
-            //params['id'] = 1;
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
-                params: params
+                params: params,
             });
             this.init();
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
@@ -64,45 +80,41 @@
 
         methods: {
             init() {
-                uni.showLoading({
-                    title: '加载中...'
-                });
                 this.setData({
-                    data_list_loding_status: 1
+                    data_list_loding_status: 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("detail", "walletlog", "wallet"),
+                    url: app.globalData.get_request_url('detail', 'walletlog', 'wallet'),
                     method: 'POST',
                     data: {
-                        id: this.params.id
+                        id: this.params.id,
                     },
                     dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
+                    success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-									{ name: "业务类型", value: data.data.business_type_name || '' },
-                                    { name: "操作类型", value: data.data.operation_type_name || '' },
-                                    { name: "金额类型", value: data.data.money_type_name || '' },
-                                    { name: "操作金额", value: data.data.operation_money + ' 元' || '' },
-                                    { name: "原始金额", value: data.data.original_money + ' 元' || '' },
-                                    { name: "最新金额", value: data.data.latest_money+' 元' || '' },
-                                    { name: "变更说明", value: data.data.msg || '' },
-                                    { name: "操作时间", value: data.data.add_time_time || '' },
-								],
+                                    { name: this.$t('invoice.invoice.l3832z'), value: data.data.business_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.tdf3wo'), value: data.data.operation_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.744os7'), value: data.data.money_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.ruq60b'), value: data.data.operation_money || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.4q7pfq'), value: data.data.original_money || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.r814ne'), value: data.data.latest_money || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.0ghn6g'), value: data.data.msg || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.i2kze7'), value: data.data.add_time || '' },
+                                ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
-                                data_list_loding_msg: ''
+                                data_list_loding_msg: '',
                             });
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
                                 data_bottom_line_status: false,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'init')) {
                                 app.globalData.showToast(res.data.msg);
@@ -110,19 +122,17 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
-            }
-        }
+            },
+        },
     };
 </script>
-<style>
-</style>
+<style></style>

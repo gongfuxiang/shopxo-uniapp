@@ -1,55 +1,84 @@
 page {
     background: #fff;
-    
 }
+
 /**
  * 基础
  */
-.content {
-    padding-top: 8%;
-}
 .content .icon {
-    width: 150rpx;
-    height: 150rpx !important;
+    width: 130rpx;
+    height: 130rpx !important;
+}
+.dom-content {
+    min-height: 100vh;
 }
 
 /**
  * 表单内容
  */
 .form-content {
-    padding: 2% 40rpx 0 40rpx;
+    padding: 34rpx;
 }
 .form-content .form-item,
 .form-content .code,
 .form-content .verify {
-    border-bottom: solid 1px #f7f7f7;
+    height: 50px;
+    line-height: 50px;
+    background: #F9F9F9;
+    border-radius: 25px;
+    border: 0;
+}
+.form-content .code input,
+.form-content .verify input {
+    height: 50px;
+    line-height: 50px;
 }
 .form-content .form-item,
 .form-content .code input,
 .form-content .verify input {
-    font-size: 28rpx;
-    color: #4e4e4e;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 0;
+    padding: 0 36rpx;
+    box-sizing: border-box;
+}
+.form-content .form-item ::v-deep .input-placeholder,
+.form-content .form-item ::v-deep .uni-input-input,
+.form-content .form-item ::v-deep .input-placeholder,
+.form-content .code input ::v-deep .input-placeholder,
+.form-content .verify input ::v-deep .input-placeholder {
+    font-size: 30rpx;
 }
 .form-content .code input,
 .form-content .verify input {
     width: 63%;
 }
+.form-content .form-item ::v-deep .uni-input-input:-webkit-autofill {
+    /* //这个地方的颜色是字体颜色，可以根据实际情况修改 */
+    /* -webkit-text-fill-color: #ededed !important;  */
+    /* //设置input输入框的背景颜色为透明色 */
+    -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
+    /* //设置input输入框的背景颜色为透明色 */
+    background-color: #f9f9f9;
+    background-image: none;
+    transition: background-color 50000s ease-in-out 0s;
+}
+.form-content .code ::v-deep .uni-input-input:-webkit-autofill {
+    /* //设置input输入框的背景颜色为透明色 */
+    background-color: #f9f9f9;
+    background-image: none;
+    transition: background-color 50000s ease-in-out 0s;
+}
 .form-content .code .verify-submit {
-    width: 35%;
-    height: 35px;
-    line-height: 35px;
-    top: 0;
-    right: 0;
+    padding: 0 12px;
+    height: 28px;
+    line-height: 28px;
+    top: 11px;
+    right: 36rpx;
 }
 .form-content .verify .verify-image {
     width: 35%;
-    height: 35px;
-    line-height: 35px;
+    height: 50px;
+    line-height: 50px;
     top: 0;
-    right: 0;
+    right: 36rpx;
 }
 .opt-type-list text:not(:last-child) {
     margin-right: 50rpx;
@@ -59,16 +88,20 @@ page {
  * 第三方登录 - 插件
  */
 .plugins-thirdpartylogin .item {
-    width: 35rpx;
-    height: 35rpx;
+    width: 76rpx;
+    height: 76rpx;
     padding: 5rpx;
 }
 .plugins-thirdpartylogin .item:not(:last-child) {
-    margin-right: 10rpx;
+    margin-right: 54rpx;
 }
 .plugins-thirdpartylogin .item image {
-    width: 25rpx !important;
-    height: 25rpx !important;
+    width: 50rpx !important;
+    height: 50rpx !important;
+}
+.plugins-thirdpartylogin .item.more-submit image {
+    width: 76rpx !important;
+    height: 76rpx !important;
 }
 .plugins-thirdpartylogin-bind image {
     width: 40rpx !important;
@@ -76,4 +109,29 @@ page {
 }
 .plugins-thirdpartylogin-bind button {
     line-height: 40rpx;
+}
+.popup-login .content,
+.popup-login .footer .cancel-btn {
+    border-radius: 32rpx;
+}
+.popup-login .content .item:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+.popup-login .content .item image {
+    width: 36rpx !important;
+    height: 36rpx !important;
+}
+.popup-login .content .item .login-width {
+    width: 180rpx;
+}
+
+/**
+ * 多语言
+ */
+.popup-language {
+    height: 100vh;
+}
+.popup-language .list {
+    height: calc(100vh - 95rpx);
+    overflow-y: auto;
 }

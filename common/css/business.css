@@ -1,34 +1,3 @@
-/**
- * 商品评价
- */
-.goods-comment-item {
-    padding-bottom: 10rpx;
-}
-.goods-comment-item .avatar {
-    width: 50rpx;
-    height: 50rpx;
-    border-radius: 50%;
-    border: 1px solid #e2e2e2;
-}
-.goods-comment-item .base-nav {
-    width: calc(100% - 90rpx);
-    line-height: 50rpx;
-}
-.goods-comment-item .base-nav text:not(:last-child) {
-    margin-right: 5rpx;
-}
-.goods-comment-item .base-content .content,
-.goods-comment-item .base-content .reply {
-    line-height: 46rpx;
-}
-.goods-comment-item .base-content .images image {
-    width: 100rpx;
-    height: 100rpx;
-}
-.goods-comment-item .base-content .images image:not(:last-child) {
-    margin-right: 10rpx;
-}
-
 /*
 * 面板信息 - 文本
 */
@@ -40,7 +9,7 @@
     width: 25%;
 }
 .panel-item .panel-content .item .content {
-    width: calc(75% - 44rpx);
+    width: calc(75% - 52rpx);
     min-height: 46rpx;
     word-wrap: break-word;
     word-break: normal;
@@ -60,7 +29,7 @@
     margin: 20rpx 20rpx 0 0;
 }
 .panel-item .panel-content-images .item:last-child {
-    margin-right: 0;;
+    margin-right: 0;
 }
 .panel-item .panel-content-images .item image {
     width: 120rpx;

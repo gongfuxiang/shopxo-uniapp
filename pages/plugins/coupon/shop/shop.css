@@ -1,0 +1,11 @@
+/**
+ * 领券中心
+ */
+.coupon-content .item {
+    padding: 0 24rpx 24rpx 24rpx;
+}
+
+.popup-bottom {
+    box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    z-index: 2;
+}

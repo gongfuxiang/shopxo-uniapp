@@ -1,28 +1,87 @@
 /*
 * 基础
 */
-.submit-container {
-    right: 20rpx;
-    bottom: 20rpx;
+.wallet-bg {
+    /* #ifdef H5 || APP */
+    top: -80rpx !important;
+    /* #endif */
+}
+
+.wallet-head .content {
+    border-radius: 24rpx;
+    padding: 24rpx;
+}
+
+.transfer-accounts {
+    border: 2rpx solid #fff;
+    height: 48rpx;
+    line-height: 48rpx;
+    padding: 0 28rpx;
+}
+
+.transfer-icon {
+    position: relative;
+    top: 6rpx;
+}
+
+.content-padding-1 {
+    padding: 2rpx;
+    left: -4rpx;
+    right: -4rpx;
+    top: -4rpx;
+}
+
+.filter-blur {
+    backdrop-filter: blur(40rpx);
+}
+
+.filter-blur-child {
+    top: 0;
+    bottom: 0;
+    filter: blur(0rpx);
+}
+
+.effective {
+    font-size: 72rpx;
+}
+
+.freeze,
+.give {
+    font-size: 42rpx;
+    text-shadow: 0px 1px 4px rgba(234, 44, 44, 0.46);
 }
 
 /*
 * 导航
 */
-.nav .item {
-    width: calc(50% - 70rpx);
-    margin-bottom: 20rpx;
+.nav .active {
+    width: 64px;
+    height: 4px;
+    bottom: 0;
 }
-.nav .item:nth-child(2n) {
-    margin-right: 20rpx;
-    margin-left: 10rpx;
-}
-.nav .item:nth-child(2n+1) {
-    margin-left: 20rpx;
-    margin-right: 10rpx;
-}
-.nav .item image {
-    width: 80rpx;
-    height: 80rpx;
-    margin: 0 auto;
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .wallet-bg {
+        /* #ifdef H5 */
+        top: -540rpx !important;
+        /* #endif */
+    }
+
+    .filter-blur-child {
+        /* #ifdef H5 */
+        left: -30rpx;
+        top: -30px;
+        right: -30px;
+        bottom: -30px;
+        /* #endif */
+    }
+
+    .wallet-child-bg {
+        /* #ifdef H5 */
+        height: 100% !important;
+        /* #endif */
+    }
 }

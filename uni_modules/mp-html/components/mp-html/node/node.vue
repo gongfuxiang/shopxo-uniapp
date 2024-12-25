@@ -1,15 +1,15 @@
 <template>
-  <view :id="attrs.id" :class="'_block _'+name+' '+attrs.class" :style="attrs.style">
+  <view :id="attrs.id" :class="'_block _'+name+' '+(attrs.class || '')" :style="attrs.style">
     <block v-for="(n, i) in childs" v-bind:key="i">
       <!-- 图片 -->
       <!-- 占位图 -->
       <image v-if="n.name==='img'&&((opts[1]&&!ctrl[i])||ctrl[i]<0)" class="_img" :style="n.attrs.style" :src="ctrl[i]<0?opts[2]:opts[1]" mode="widthFix" />
       <!-- 显示图片 -->
       <!-- #ifdef H5 || APP-PLUS -->
-      <img v-if="n.name==='img'" :id="n.attrs.id" :class="'_img '+n.attrs.class" :style="(ctrl[i]===-1?'display:none;':'')+n.attrs.style" :src="n.attrs.src||(ctrl.load?n.attrs['data-src']:'')" :data-i="i" @load="imgLoad" @error="mediaError" @tap.stop="imgTap" @longpress="imgLongTap"/>
+      <img v-if="n.name==='img'" :id="n.attrs.id" :class="'_img '+(n.attrs.class || '')" :style="(ctrl[i]===-1?'display:none;':'')+n.attrs.style" :src="n.attrs.src||(ctrl.load?n.attrs['data-src']:'')" :data-i="i" @load="imgLoad" @error="mediaError" @tap.stop="imgTap" @longpress="imgLongTap"/>
       <!-- #endif -->
       <!-- #ifndef H5 || APP-PLUS -->
-      <image v-if="n.name==='img'" :id="n.attrs.id" :class="'_img '+n.attrs.class" :style="(ctrl[i]===-1?'display:none;':'')+'width:'+(ctrl[i]||1)+'px;height:1px;'+n.attrs.style" :src="n.attrs.src" :mode="n.h?'':'widthFix'" :lazy-load="opts[0]" :webp="n.webp" :show-menu-by-longpress="opts[3]&&!n.attrs.ignore" :image-menu-prevent="!opts[3]||n.attrs.ignore" :data-i="i" @load="imgLoad" @error="mediaError" @tap.stop="imgTap" @longpress="imgLongTap" />
+      <image v-if="n.name==='img'" :id="n.attrs.id" :class="'_img '+(n.attrs.class || '')" :style="(ctrl[i]===-1?'display:none;':'')+'width:'+(ctrl[i]||1)+'px;height:1px;'+n.attrs.style" :src="n.attrs.src" :mode="n.h?'':'widthFix'" :lazy-load="opts[0]" :webp="n.webp" :show-menu-by-longpress="opts[3]&&!n.attrs.ignore" :image-menu-prevent="!opts[3]||n.attrs.ignore" :data-i="i" @load="imgLoad" @error="mediaError" @tap.stop="imgTap" @longpress="imgLongTap" />
       <!-- #endif -->
       <!-- 文本 -->
       <!-- #ifndef MP-BAIDU || MP-ALIPAY || MP-TOUTIAO -->
@@ -17,15 +17,15 @@
       <!-- #endif -->
       <text v-else-if="n.name==='br'">\n</text>
       <!-- 链接 -->
-      <view v-else-if="n.name==='a'" :id="n.attrs.id" :class="(n.attrs.href?'_a ':'')+n.attrs.class" hover-class="_hover" :style="'display:inline;'+n.attrs.style" :data-i="i" @tap.stop="linkTap">
+      <view v-else-if="n.name==='a'" :id="n.attrs.id" :class="(n.attrs.href?'_a ':'')+(n.attrs.class || '')" hover-class="_hover" :style="'display:inline;'+n.attrs.style" :data-i="i" @tap.stop="linkTap">
         <node name="span" :childs="n.children" :opts="opts" style="display:inherit" />
       </view>
       <!-- 视频 -->
       <!-- #ifdef APP-PLUS -->
-      <view v-else-if="n.html" :id="n.attrs.id" :class="'_video '+n.attrs.class" :style="n.attrs.style" v-html="n.html" />
+      <view v-else-if="n.html" :id="n.attrs.id" :class="'_video '+(n.attrs.class || '')" :style="n.attrs.style" v-html="n.html" />
       <!-- #endif -->
       <!-- #ifndef APP-PLUS -->
-      <video v-else-if="n.name==='video'" :id="n.attrs.id" :class="n.attrs.class" :style="n.attrs.style" :autoplay="n.attrs.autoplay" :controls="n.attrs.controls" :loop="n.attrs.loop" :muted="n.attrs.muted" :poster="n.attrs.poster" :src="n.src[ctrl[i]||0]" :data-i="i" @play="play" @error="mediaError" />
+      <video v-else-if="n.name==='video'" :id="n.attrs.id" :class="(n.attrs.class || '')" :style="n.attrs.style" :autoplay="n.attrs.autoplay" :controls="n.attrs.controls" :loop="n.attrs.loop" :muted="n.attrs.muted" :poster="n.attrs.poster" :src="n.src[ctrl[i]||0]" :data-i="i" @play="play" @error="mediaError" />
       <!-- #endif -->
       <!-- #ifdef H5 || APP-PLUS -->
       <iframe v-else-if="n.name==='iframe'" :style="n.attrs.style" :allowfullscreen="n.attrs.allowfullscreen" :frameborder="n.attrs.frameborder" :src="n.attrs.src" />
@@ -33,9 +33,9 @@
       <!-- #endif -->
       <!-- #ifndef MP-TOUTIAO -->
       <!-- 音频 -->
-      <audio v-else-if="n.name==='audio'" :id="n.attrs.id" :class="n.attrs.class" :style="n.attrs.style" :author="n.attrs.author" :controls="n.attrs.controls" :loop="n.attrs.loop" :name="n.attrs.name" :poster="n.attrs.poster" :src="n.src[ctrl[i]||0]" :data-i="i" @play="play" @error="mediaError" />
+      <audio v-else-if="n.name==='audio'" :id="n.attrs.id" :class="(n.attrs.class || '')" :style="n.attrs.style" :author="n.attrs.author" :controls="n.attrs.controls" :loop="n.attrs.loop" :name="n.attrs.name" :poster="n.attrs.poster" :src="n.src[ctrl[i]||0]" :data-i="i" @play="play" @error="mediaError" />
       <!-- #endif -->
-      <view v-else-if="(n.name==='table'&&n.c)||n.name==='li'" :id="n.attrs.id" :class="'_'+n.name+' '+n.attrs.class" :style="n.attrs.style">
+      <view v-else-if="(n.name==='table'&&n.c)||n.name==='li'" :id="n.attrs.id" :class="'_'+n.name+' '+(n.attrs.class || '')" :style="n.attrs.style">
         <node v-if="n.name==='li'" :childs="n.children" :opts="opts" />
         <view v-else v-for="(tbody, x) in n.children" v-bind:key="x" :class="'_'+tbody.name+' '+tbody.attrs.class" :style="tbody.attrs.style">
           <node v-if="tbody.name==='td'||tbody.name==='th'" :childs="tbody.children" :opts="opts" />
@@ -60,7 +60,7 @@
       <rich-text v-else-if="!n.c" :id="n.attrs.id" :style="n.f+';display:inline'" :preview="false" :nodes="[n]" />
       <!-- #endif -->
       <!-- 继续递归 -->
-      <view v-else-if="n.c===2" :id="n.attrs.id" :class="'_block _'+n.name+' '+n.attrs.class" :style="n.f+';'+n.attrs.style">
+      <view v-else-if="n.c===2" :id="n.attrs.id" :class="'_block _'+n.name+' '+(n.attrs.class || '')" :style="n.f+';'+n.attrs.style">
         <node v-for="(n2, j) in n.children" v-bind:key="j" :style="n2.f" :name="n2.name" :attrs="n2.attrs" :childs="n2.children" :opts="opts" />
       </view>
       <node v-else :style="n.f" :name="n.name" :attrs="n.attrs" :childs="n.children" :opts="opts" />
@@ -284,26 +284,7 @@ export default {
         if (href[0] === '#') {
           // 跳转锚点
           this.root.navigateTo(href.substring(1)).catch(() => { })
-        } else if (href.split('?')[0].includes('://')) {
-          // 复制外部链接
-          if (this.root.copyLink) {
-            // #ifdef H5
-            window.open(href)
-            // #endif
-            // #ifdef MP
-            uni.setClipboardData({
-              data: href,
-              success: () =>
-                uni.showToast({
-                  title: '链接已复制'
-                })
-            })
-            // #endif
-            // #ifdef APP-PLUS
-            plus.runtime.openWeb(href)
-            // #endif
-          }
-        } else {
+        } else if (href.substr(0, 7) == '/pages/') {
           // 跳转页面
           uni.navigateTo({
             url: href,
@@ -314,6 +295,35 @@ export default {
               })
             }
           })
+        } else {
+            // 复制外部链接
+            if (this.root.copyLink) {
+              if (href.split('?')[0].includes('://')) {
+                  // #ifdef H5
+                  window.open(href)
+                  // #endif
+                  // #ifdef MP
+                  uni.setClipboardData({
+                    data: href,
+                    success: () =>
+                      uni.showToast({
+                        title: '复制成功'
+                      })
+                  })
+                  // #endif
+                  // #ifdef APP-PLUS
+                  plus.runtime.openWeb(href)
+                  // #endif
+              } else {
+                  uni.setClipboardData({
+                    data: href,
+                    success: () =>
+                      uni.showToast({
+                        title: '复制成功'
+                      })
+                  })
+              }
+            }
         }
       }
     },

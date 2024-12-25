@@ -26,19 +26,19 @@
     width: calc(20% - 33.33rpx);
 }
 .nav-sort-content .item .icon {
-    width: 30rpx;
-    height: 30rpx !important;
+    width: 26rpx;
+    height: 26rpx !important;
+}
+.screening-submit,
+.show-type-submit {
+    width: 46rpx;
+    height: 46rpx !important;
+    top: 20rpx;
 }
 .screening-submit {
-    width: 50rpx;
-    height: 50rpx !important;
-    top: 15rpx;
-    right: 80rpx;
+    right: 82rpx;
 }
 .show-type-submit {
-    width: 50rpx;
-    height: 50rpx !important;
-    top: 15rpx;
     right: 16rpx;
 }
 
@@ -97,9 +97,6 @@
 }
 .map-content .item {
     margin-bottom: 20rpx;
-}
-.map-content .item:not(:last-child) {
-    margin-right: 20rpx;
 }
 .map-text-item .item,
 .map-images-text-item .item {

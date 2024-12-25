@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 排序 -->
         <view class="nav-sort bg-white oh pr">
             <view class="nav-sort-content">
@@ -34,52 +34,66 @@
                 <view class="search-map padding-main bg-base">
                     <view class="padding-main border-radius-main bg-white">
                         <view class="map-item map-base br-b">
-                            <text>筛选出</text>
+                            <text>{{$t('goods-search.goods-search.j8o278')}}</text>
                             <text class="cr-main"> {{data_total}} </text>
-                            <text>条数据</text>
-                            <text class="fr cr-red" @tap="map_remove_event">清除</text>
+                            <text>{{$t('goods-search.goods-search.t9nikq')}}</text>
+                            <text class="fr cr-red" @tap="map_remove_event">{{$t('goods-search.goods-search.pxk051')}}</text>
                         </view>
                         <!-- 搜索关键字 -->
-                        <input type="text" confirm-type="done" placeholder="其实搜索很简单^_^ !" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
+                        <input type="text" confirm-type="done" :placeholder="$t('search.search.723rbx')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
                     </view>
 
                     <!-- 分类 -->
                     <view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav pr br-b">
-                            <text>分类</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
+                            <text>{{$t('common.category')}}</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">{{$t('common.more')}}</text>
                         </view>
                         <view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.category_list" :key="index">
-                                <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="category_list">{{item.name}}</view>
+                                <view :class="'item fl radius ' + (item.active == 1 ? 'cr-main br-main' : 'cr-base')" @tap="map_item_event" :data-value="item.id" data-field="category_list">{{item.name}}</view>
                             </block>
                         </view>
+                        <block v-for="(item, index) in search_map_list.category_list" :key="index">
+                            <view v-if="item.active == 1 && (item.items || null) != null && item.items.length > 0" class="map-category-two map-text-item padding-bottom">
+                                <view class="bg-grey-f7 oh radius padding-sm">
+                                    <block v-for="(item2, index2) in item.items" :key="index2">
+                                        <view :class="'item fl radius ' + (item2.active == 1 ? 'cr-main' : 'cr-base')" @tap="map_item_event" :data-pvalue="item.id" :data-value="item2.id" data-field="category_list">{{item2.name}}</view>
+                                    </block>
+                                </view>
+                            </view>
+                        </block>
                     </view>
 
                     <view class="search-submit padding-main pa">
-                        <button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">确认</button>
+                        <button form-type="submit" class="btn bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">{{$t('common.confirm')}}</button>
                     </view>
                 </view>
             </form>
         </component-popup>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentPopup from "../../../../components/popup/popup";
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-    import componentGoodsList from "../../../../components/goods-list/goods-list";
+    import componentCommon from '@/components/common/common';
+    import componentPopup from "@/components/popup/popup";
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentGoodsList from "@/components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -92,11 +106,11 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [
-                    { name: "综合", field: "default", sort: "asc", "icon": null },
-                    { name: "销量", field: "sales_count", sort: "asc", "icon": "default" },
-                    { name: "热度", field: "access_count", sort: "asc", "icon": "default" },
-                    { name: "价格", field: "min_price", sort: "asc", "icon": "default" },
-                    { name: "最新", field: "id", sort: "asc", "icon": "default" }
+                    { name: this.$t('goods-category.goods-category.x69aow'), field: "default", sort: "asc", "icon": null },
+                    { name: this.$t('goods-category.goods-category.at5p35'), field: "sales_count", sort: "asc", "icon": "default" },
+                    { name: this.$t('goods-category.goods-category.283ot0'), field: "access_count", sort: "asc", "icon": "default" },
+                    { name: this.$t('goods-category.goods-category.g2u3lf'), field: "min_price", sort: "asc", "icon": "default" },
+                    { name: this.$t('goods-category.goods-category.5p4ksj'), field: "id", sort: "asc", "icon": "default" }
                 ],
                 // 数据展示样式（0图文、1九方格）
                 data_show_type_value: 1,
@@ -113,14 +127,18 @@
         },
 
         components: {
+            componentCommon,
             componentPopup,
             componentNoData,
             componentBottomLine,
             componentGoodsList
         },
-        props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
                 post_data: {
@@ -135,8 +153,16 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 初始化配置
             this.init_config();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新
@@ -158,22 +184,9 @@
                     app.globalData.is_config(this, 'init_config');
                 }
             },
-
-            // 搜索
-            search_event() {
-                this.setData({
-                    data_list: [],
-                    data_page: 1
-                });
-                this.get_data_list(1);
-            },
             
             // 初始化
             get_data() {
-                uni.showLoading({
-                    title: '加载中...',
-                    mask: true
-                });
                 var post_data = this.request_map_handle();
                 uni.request({
                     url: app.globalData.get_request_url("index", "search", "shop"),
@@ -181,7 +194,6 @@
                     data: post_data,
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -190,6 +202,11 @@
                             if((this.params.category_id || 0) != 0 && category.length > 0) {
                                 for(var i in category) {
                                     category[i]['active'] = (category[i]['id'] == this.params.category_id) ? 1 : 0;
+                                    if((category[i]['items'] || null) != null && category[i]['items'].length > 0) {
+                                        for(var x in category[i]['items']) {
+                                            category[i]['items'][x]['active'] = (category[i]['items'][x]['id'] == this.params.category_id) ? 1 : 0;
+                                        }
+                                    }
                                 }
                             }
                             this.setData({
@@ -201,20 +218,6 @@
                             });
 
                             if((this.shop || null) != null) {
-                                // 基础自定义分享
-                                var shop_id = this.shop.id;
-                                var category_id = this.params.category_id || 0;
-                                var keywords = this.params.keywords || '';
-                                this.setData({
-                                    share_info: {
-                                        title: this.shop.seo_title || this.shop.name,
-                                        desc: this.shop.seo_desc || this.shop.describe,
-                                        path: '/pages/plugins/shop/search/search',
-                                        query: 'shop_id='+shop_id+'&category_id='+category_id+'&keywords='+keywords,
-                                        img: this.shop.logo
-                                    }
-                                });
-
                                 // 获取列表数据
                                 this.get_data_list(1);
                             } else {
@@ -229,17 +232,13 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
-
-                        // 分享菜单处理
-                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -253,6 +252,9 @@
                         return false;
                     }
                 }
+
+                // 基础自定义分享
+                this.share_info_handle();
                 
                 // 是否加载中
                 if(this.data_is_loading == 1) {
@@ -261,10 +263,11 @@
                 this.setData({data_is_loading: 1});
                 
                 // 获取数据
-                uni.showLoading({
-                    title: '加载中...',
-                    mask: true
-                });
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
                 var post_data = this.request_map_handle();
                 uni.request({
                     url: app.globalData.get_request_url("datalist", "search", "shop"),
@@ -272,7 +275,9 @@
                     data: post_data,
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -321,13 +326,15 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_is_loading: 0
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -346,15 +353,20 @@
                 var temp_list = this.search_map_list;
                 for (var i in temp_field) {
                     if (temp_list[i] != null != null && temp_list[i].length > 0) {
-                        var temp = {};
-                        var index = 0;
+                        var value = '';
                         for (var k in temp_list[i]) {
                             if ((temp_list[i][k]['active'] || 0) == 1) {
-                                temp[index] = temp_list[i][k]['id'];
-                                index++;
+                                value = temp_list[i][k]['id'];
+                                if((temp_list[i][k]['items'] || null) != null) {
+                                    for(var x in temp_list[i][k]['items']) {
+                                        if ((temp_list[i][k]['items'][x]['active'] || 0) == 1) {
+                                            value = temp_list[i][k]['items'][x]['id'];
+                                        }
+                                    }
+                                }
                             }
                         }
-                        post_data[temp_field[i]['form_key']] = app.globalData.get_length(temp) > 0 ? JSON.stringify(temp) : '';
+                        post_data[temp_field[i]['form_key']] = value;
                     }
                 }
                 
@@ -367,6 +379,28 @@
                 return post_data;
             },
 
+            // 分享设置处理
+            share_info_handle() {
+                if((this.shop || null) != null) {
+                    // 基础自定义分享
+                    var shop_id = this.shop.id;
+                    var category_id = this.params.category_id || 0;
+                    var keywords = this.post_data.wd || '';
+                    this.setData({
+                        share_info: {
+                            title: this.shop.seo_title || this.shop.name,
+                            desc: this.shop.seo_desc || this.shop.describe,
+                            path: '/pages/plugins/shop/search/search',
+                            query: 'shop_id='+shop_id+'&category_id='+category_id+'&keywords='+keywords,
+                            img: this.shop.logo
+                        }
+                    });
+                }
+
+                // 分享菜单处理
+                app.globalData.page_share_handle(this.share_info);
+            },
+
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
@@ -376,10 +410,13 @@
             form_submit_event(e) {
                 this.setData({
                     post_data: e.detail.value,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
-                this.popup_form_event_close();
                 this.get_data_list(1);
+                this.popup_form_event_close();
             },
 
             // 筛选条件关闭
@@ -417,7 +454,10 @@
                 this.setData({
                     search_nav_sort_index: index,
                     search_nav_sort_list: temp_search_nav_sort,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
             },
@@ -436,13 +476,37 @@
 
             // 条件-选择事件
             map_item_event(e) {
-                var index = e.currentTarget.dataset.index;
+                var pvalue = e.currentTarget.dataset.pvalue;
+                var value = e.currentTarget.dataset.value;
                 var field = e.currentTarget.dataset.field;
-                var temp_list = this.search_map_list;                
-                if ((temp_list[field] || null) != null && (temp_list[field][index] || null) != null) {
-                    temp_list[field][index]['active'] = (temp_list[field][index]['active'] || 0) == 0 ? 1 : 0;
+                var temp_list = this.search_map_list;
+                if ((temp_list[field] || null) != null) {
+                    if(pvalue === undefined) {
+                        for(var i in temp_list[field]) {
+                            temp_list[field][i]['active'] = (temp_list[field][i]['id'] == value) ? (temp_list[field][i]['active'] == 1 ? 0 : 1) : 0;
+                            // 当前没有选中则取消子级数据的选中
+                            if(temp_list[field][i]['active'] == 0 && (temp_list[field][i]['items'] || null) != null) {
+                                for(var x in temp_list[field][i]['items']) {
+                                    temp_list[field][i]['items'][x]['active'] = 0;
+                                }
+                            }
+                        }
+                    } else {
+                        for(var i in temp_list[field]) {
+                            temp_list[field][i]['active'] = (temp_list[field][i]['id'] == pvalue) ? 1 : 0;
+                            if((temp_list[field][i]['items'] || null) != null) {
+                                for(var x in temp_list[field][i]['items']) {
+                                    temp_list[field][i]['items'][x]['active'] = (temp_list[field][i]['items'][x]['id'] == value) ? (temp_list[field][i]['items'][x]['active'] == 1 ? 0 : 1) : 0;
+                                    // 选中父级
+                                    if(temp_list[field][i]['items'][x]['active'] == 1) {
+                                        temp_list[field][i]['active'] = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     this.setData({
-                        search_map_list: temp_list
+                        search_map_list: temp_list,
                     });
                 }
             },
@@ -460,6 +524,11 @@
                     if((temp_list[i] || null) != null && temp_list[i].length > 0) {
                         for(var k in temp_list[i]) {
                             temp_list[i][k]['active'] = 0;
+                            if((temp_list[i][k]['items'] || null) != null) {
+                                for(var x in temp_list[i][k]['items']) {
+                                    temp_list[i][k]['items'][x]['active'] = 0;
+                                }
+                            }
                         }
                     }
                 }
@@ -478,7 +547,10 @@
                     is_show_popup_form: false,
                     search_nav_sort_list: temp_search_nav_sort,
                     search_nav_sort_index: 0,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
             },

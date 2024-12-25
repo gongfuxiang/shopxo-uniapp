@@ -1,0 +1,77 @@
+.coin-dropdown {
+    --height: 72rpx;
+    height: var(--height);
+    line-height: var(--height);
+    padding: 0 52rpx 0 20rpx;
+    background: #F6F6F6;
+    border-radius: 36rpx;
+    width: 180rpx;
+}
+
+.coin-dropdown-icon {
+    right: 24rpx;
+    top: 2rpx;
+    padding: 0;
+}
+
+.coin-list-img {
+    --size: 40rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}
+
+.coin-num {
+    --height: 72rpx;
+    display: inline-block;
+}
+
+.num.input-br {
+    border: 2rpx solid #F6F6F6;
+}
+
+.coin-num .num {
+    height: var(--height);
+    line-height: var(--height);
+    padding: 0 20rpx 0 20rpx;
+    border-radius: 36rpx;
+    width: 196rpx;
+}
+
+.coin-center-convert {
+    --size: 82rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -54rpx;
+    width: var(--size);
+    height: var(--size);
+    border: 2rpx solid #e1e1e1;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.convert-icon {
+    transition: all 0.5s ease-in-out;
+}
+
+.convert_true {
+    transform: rotate3d(1, 0, 0, 180deg);
+}
+
+.convert_false {
+    transform: rotate3d(1, 0, 0, 0deg);
+}
+
+.convert-btn {
+    background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%);
+    transition: all 0.3s ease-in-out;
+}
+
+.convert-btn:active {
+    background: linear-gradient(107deg, #168ACA 0%, #022A97 100%);
+}
+
+.coin-content-list-img {
+    --size: 36rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}

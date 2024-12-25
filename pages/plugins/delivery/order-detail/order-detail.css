@@ -35,3 +35,14 @@
     padding: 0 15rpx;
     line-height: 40rpx;
 }
+
+/**
+ * 图片列表
+ */
+.images-list .item-images {
+    width: 80rpx;
+    height: 80rpx;
+}
+.images-list .item-images:not(:last-child) {
+    margin-right: 10rpx;
+}

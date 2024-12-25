@@ -1,291 +1,336 @@
 <template>
-    <view>
-        <view v-if="(info || null) != null">
-            <view class="pr">
+    <view :class="theme_view">
+        <view class="pr">
+            <block v-if="(info || null) != null">
+                <!-- 头部背景 -->
+                <image :src="info.banner" mode="widthFix" class="header-bg wh-auto pa top-0 left-0 right-0" />
                 <!-- 头部 -->
-                <view class="header" :style="'background-image: url('+info.banner+');'">
-                    <!-- 顶部 -->
-                    <view v-if="is_single_page == 0" class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
-                        <!-- 返回 -->
-                        <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                        <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
-                            <uni-icons type="arrowleft" size="46rpx" color="#fff"></uni-icons>
-                        </view>
-                        <!-- #endif -->
-                        <!-- 搜索 -->
-                        <view :class="'fr va-m '+(is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
-                            <!-- #ifndef H5 -->
-                            <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="is_realstore_top_search_scan == 1" :propIsOnEvent="true" :propIsRequired="false" :propIcon="is_realstore_top_search_scan == 1 ? 'scan' : 'search'" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
-                            <!-- #endif -->
-                            <!-- #ifdef H5 -->
-                            <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#9A9A9A" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
-                            <!-- #endif -->
-                        </view>
-                    </view>
-                    <!-- 桌码 -->
-                    <view v-if="(tablecode || null) != null" class="tablecode dis-inline-block margin-left-main round cr-red">
-                        {{tablecode.name}}({{tablecode.code}})
-                    </view>
-                </view>
-                <!-- 头部基础内容 -->
-                <view class="header-content margin-main padding-main border-radius-main bg-white pa br">
-                    <view class="base oh">
-                        <!-- 基础内容 -->
-                        <image :src="info.logo" mode="widthFix" class="logo circle fl br" :data-value="info.logo" @tap="image_show_event"></image>
-                        <view class="base-right fr">
-                            <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
-                                <text class="va-m margin-right-xs">{{info.buy_use_type_list[buy_use_type_index]['name']}}</text>
-                                <view class="dis-inline-block va-m">
-                                    <uni-icons type="arrowdown" size="32rpx" color="#fff"></uni-icons>
-                                </view>
-                            </view>
-                            <view :class="'title fw-b text-size single-text '+((info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
-                                <text v-if="(info.alias || null) != null" class="va-m title-icon round br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{info.alias}}</text>
-                                <text class="va-m">{{info.name}}</text>
-                            </view>
-                            <view class="margin-top-xs text-size-xs cr-grey">
-                                <view v-if="(info.status_info.time || null) != null">营业时间：{{info.status_info.time}}</view>
-                                <view v-if="(info.distance || null) != null">距离您{{info.distance}}</view>
-                            </view>
-                        </view>
-                    </view>
-                    <!-- 地址 -->
-                    <view class="margin-top-sm oh cp">
-                        <view class="dis-inline-block va-m">
-                            <uni-icons type="location-filled" size="32rpx" color="#8d8d8d"></uni-icons>
-                        </view>
-                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-sm va-m" :data-value="info.province_name+info.city_name+info.county_name+info.address" @tap="text_copy_event">{{info.province_name}}{{info.city_name}}{{info.county_name}}{{info.address}}</view>
-                    </view>
-                    <!-- 右侧操作 -->
-                    <view class="icon-list pa">
-                        <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item bg-green circle dis-inline-block tc cp" @tap="header_service_event">
-                            <uni-icons type="chatbubble-filled" size="32rpx" color="#fff"></uni-icons>
-                        </view>
-                        <!-- #ifndef MP-KUAISHOU -->
-                        <view v-if="(info.lat != 0 && info.lng != 0)" class="icon-item bg-blue circle dis-inline-block tc cp" @tap="address_map_event">
-                            <uni-icons type="paperplane-filled" size="32rpx" color="#fff"></uni-icons>
-                        </view>
-                        <!-- #endif -->
-                        <view :class="'icon-item circle dis-inline-block tc cp pr '+((favor_info.status == 1) ? 'bg-red' : 'bg-gray')" @tap="favor_event">
-                            <uni-icons type="heart-filled" size="32rpx" color="#fff"></uni-icons>
-                            <view class="badge-icon pa">
-                                <component-badge :propNumber="favor_info.count"></component-badge>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-                
-                <!-- 在线客服 -->
-                <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
-                    <view v-if="(info.chat_info || null) != null" class="item padding-main br-t single-text">
-                        <text class="va-m">客服：</text>
-                        <view class="dis-inline-block chat-info cp" @tap="chat_event">
-                            <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
-                            <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{info.chat_info.name}}</text>
-                        </view>
-                    </view>
-                    <view v-if="(info.service_qq || null) != null" class="item padding-main br-t single-text">
-                        <text>Q Q：</text>
-                        <text class="cp" @tap="text_copy_event" :data-value="info.service_qq">{{info.service_qq}}</text>
-                    </view>
-                    <view v-if="(info.service_tel || null) != null" class="item padding-main br-t single-text">
-                        <text>电话：</text>
-                        <text class="cp" @tap="tel_event" :data-value="info.service_tel">{{info.service_tel}}</text>
-                    </view>
-                    <view v-if="(info.service_weixin_qrcode || null) != null || (info.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
-                        <view v-if="(info.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                            <image class="radius cp" :src="info.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_weixin_qrcode"></image>
-                            <view>长按微信咨询</view>
-                        </view>
-                        <view v-if="(info.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                            <image class="radius cp" :src="info.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_line_qrcode"></image>
-                            <view>长按line咨询</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            
-            <!-- 内容 -->
-            <view class="content oh">
-                <!-- 左侧 -->
-                <scroll-view :scroll-y="true" class="left-content fl ht-auto bg-white">
-                    <view class="left-content-actual">
-                        <view :class="'item tc cr-base text-size-sm cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">全部</view>
-                        <block v-if="(goods_category || null) != null && goods_category.length > 0">
-                            <block v-for="(item, index) in goods_category" :key="index">
-                                <view :class="'item tc cr-base text-size-sm pr cp ' + (nav_active_index == index ? 'active cr-main border-color-main fw-b' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
-                                    <text>{{item.name}}</text>
-                                    <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
-                                        <component-badge :propNumber="item.buy_number"></component-badge>
-                                    </view>
-                                </view>
-                            </block>
-                        </block>
-                    </view>
-                </scroll-view>
-                <!-- 右侧 -->
-                <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                    <view class="right-content-actual pr">
-                        <!-- 二级分类 -->
-                        <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal">
-                            <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-'+nav_active_item_index">
-                                <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_index == -1) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">全部</view>
-                                <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
-                                    <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_index != -1 && nav_active_item_index == ci) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :id="'two-nav-item-'+ci" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{cv.name}}</view>
+                <view class="header pr z-i">
+                    <component-nav-back :propIsShowBack="is_realstore_top_nav_back == 1" :propFixed="false" propColor="#333">
+                        <template slot="right" :class="is_top_search_width ? 'top-search-width' : 'flex-1 flex-width'">
+                            <view v-if="is_base_mode != 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
+                                <block v-if="client_type == 'h5'">
+                                    <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
                                 </block>
-                            </scroll-view>
-                        </view>
-                        <!-- 右侧商品列表 -->
-                        <block v-if="(data_list || null) != null && data_list.length > 0">
-                            <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                <view :data-value="'/pages/goods-detail/goods-detail?id='+item.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" @tap="url_event">
-                                    <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                    <view class="goods-base fr">
-                                        <view class="goods-base-content">
-                                            <view class="goods-title text-size-sm single-text">{{item.title}}</view>
-                                            <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-red text-size-xs margin-top-xs multi-text">{{item.simple_desc}}</view>
+                                <block v-else>
+                                    <component-search
+                                        @onsearch="search_button_event"
+                                        @onicon="search_icon_event"
+                                        :propIsIconOnEvent="is_realstore_top_search_scan == 1"
+                                        :propIsOnEvent="true"
+                                        :propIsRequired="false"
+                                        :propIcon="is_realstore_top_search_scan == 1 ? 'icon-scan' : 'icon-qiandao-yixuan'"
+                                        propPlaceholderClass="cr-grey-c"
+                                        propBgColor="#fff"
+                                        propIconColor="#333"
+                                        :propPlaceholder="$t('detail.detail.q42ger')"
+                                    ></component-search>
+                                </block>
+                            </view>
+                        </template>
+                        <template slot="content">
+                            <!-- 桌码 -->
+                            <view v-if="(tablecode || null) != null" class="tablecode dis-inline-block margin-left-main round cr-red"> {{ tablecode.name }}({{ tablecode.code }}) </view>
+                        </template>
+                    </component-nav-back>
+                </view>
+                <view class="pr">
+                    <view class="header-top pr">
+                        <!-- 头部基础内容 -->
+                        <view class="header-content padding-horizontal-main">
+                            <view class="padding-main border-radius-main bg-white pr z-i-deep">
+                                <view class="base flex-row">
+                                    <!-- 基础内容 -->
+                                    <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
+                                    <view class="base-right padding-left-sm flex-1 flex-width">
+                                        <view v-if="is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main tl" @tap="buy_use_type_event">
+                                            <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_index]['name'] }}</text>
+                                            <view class="dis-inline-block va-m pr">
+                                                <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
+                                            </view>
                                         </view>
-                                        <view class="margin-top-sm oh">
-                                            <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{item.min_price}}</view>
-                                            <view class="tc fr">
-                                                <block v-if="(item.is_error || 0) == 0">
-                                                    <view v-if="(item.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                        <uni-icons type="minus" size="46rpx" color="#f00"></uni-icons>
-                                                    </view>
-                                                    <view v-if="(item.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{item.buy_number}}</view>
-                                                    <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                        <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
-                                                    </view>
-                                                </block>
-                                                <block v-else>
-                                                    <text class="cr-grey text-size-xs">{{item.is_error_msg}}</text>
-                                                </block>
+                                        <view :class="'title ' + (is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')" @tap="realstore_switch_event">
+                                            <view class="dis-inline-block va-m single-text title-content" :class="is_realstore_switch == 1 ? 'switch' : ''">
+                                                <text v-if="(info.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
+                                                <text class="va-m fw-b text-size">{{ info.name }}</text>
+                                            </view>
+                                            <view v-if="is_realstore_switch == 1" class="dis-inline-block va-m margin-left-xs">
+                                                <iconfont name="icon-transfer" size="36rpx" color="#666"></iconfont>
+                                            </view>
+                                        </view>
+                                        <view class="margin-top-xs text-size-xss cr-grey tl">
+                                            <view v-if="(info.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ info.status_info.time }}</view>
+                                            <view v-if="(info.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ info.distance }}</view>
+                                        </view>
+                                    </view>
+                                </view>
+                                <view class="margin-top-sm cp br-t-dashed padding-top-sm">
+                                    <view class="flex-row jc-sb align-c">
+                                        <!-- 地址 -->
+                                        <view class="flex-row align-c flex-1 flex-width">
+                                            <iconfont name="icon-map-address" size="28rpx" propClass="pr top-xs"></iconfont>
+                                            <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
+                                                {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
+                                            </view>
+                                            <!-- #ifndef MP-KUAISHOU -->
+                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green br-green padding-horizontal-xs margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
+                                            <!-- #endif -->
+                                        </view>
+                                        <!-- 右侧操作 -->
+                                        <view class="icon-list margin-left-main">
+                                            <view v-if="(data_base || null) != null && is_service_info == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
+                                                <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
+                                            </view>
+                                            <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
+                                                <iconfont name="icon-mendian-sc" size="26rpx"></iconfont>
+                                                <view class="badge-icon pa">
+                                                    <component-badge :propNumber="favor_info.count"></component-badge>
+                                                </view>
                                             </view>
                                         </view>
                                     </view>
                                 </view>
                             </view>
-                        </block>
-                        <block v-else>
-                            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                        </view>
+                    </view>
+
+                    <!-- 门店基础模式 -->
+                    <view v-if="is_base_mode == 1 && is_base_mode_show_type == 2" class="nav-base bg-white fw-b margin-bottom-sm margin-top-sm">
+                        <block v-for="(item, index) in nav_base_list" :key="index">
+                            <view v-if="nav_base_index == index" class="item fl tc padding-horizontal-main cr-main nav-active-line" :data-index="index" @tap="nav_base_event">{{ item.name }}</view>
+                            <view v-else class="item fl tc padding-horizontal-main" :data-index="index" @tap="nav_base_event">{{ item.name }}</view>
                         </block>
                     </view>
-                </scroll-view>
-            </view>
-
-            <!-- 购物车列表 -->
-            <block v-if="cart_status">
-                <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
-                <view class="cart-content bg-white border-radius-main pa oh">
-                    <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
-                        <view class="oh br-b padding-vertical-main padding-horizontal-main">
-                            <text class="va-m text-size-xs cr-base">已选商品</text>
-                            <view class="dis-inline-block margin-left-xl text-size-xs">
-                                <text class="cr-red">没有已加购的商品？</text>
-                                <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
-                            </view>
-                            <view class="fr cp" @tap="cart_all_delete_event">
-                                <view class="dis-inline-block va-m">
-                                    <uni-icons type="trash" size="24rpx" color="#f00"></uni-icons>
-                                </view>
-                                <text class="cr-red va-m text-size-xs margin-left-xs">清空</text>
-                            </view>
+                    <!-- 门店基础模式 - 商品 -->
+                    <view v-if="is_base_mode == 1 && (is_base_mode_show_type == 0 || (is_base_mode_show_type == 2 && nav_base_index == 0))" class="padding-horizontal-main border-radius-main bg-white">
+                        <view v-if="is_base_mode_show_type == 0" class="padding-top-sm margin-bottom-sm margin-top-main">
+                            <view class="fw-b title-left-border">{{$t('goods-detail.goods-detail.dfge45')}}</view>
                         </view>
-                        <scroll-view :scroll-y="true" class="cart-list goods-list">
-                            <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.goods_id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
-                                    <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                    <view class="goods-base fr">
-                                        <view class="goods-base-content">
-                                            <view class="goods-title text-size-sm single-text">{{goods.title}}</view>
-                                            <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-sm">
-                                                <block v-for="(sv, si) in goods.spec" :key="si">
-                                                    <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
-                                                    <text>{{sv.value}}</text>
-                                                </block>
-                                            </view>
-                                        </view>
-                                        <view class="margin-top-sm oh">
-                                            <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{goods.price}}</view>
-                                            <view class="tc fr">
-                                                <view v-if="(goods.stock || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-                                                    <uni-icons type="minus" size="46rpx" color="#f00"></uni-icons>
-                                                </view>
-                                                <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.stock}}</view>
-                                                <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-                                                    <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
-                                                </view>
-                                            </view>
-                                        </view>
-                                    </view>
-                                </navigator>
+                        <scroll-view :scroll-y="true" class="cr-base text-size-sm" :style="content_style">
+                            <view class="right-content-actual base-mode-goods">
+                                <mp-html :content="info.describe" />
                             </view>
                         </scroll-view>
-                    </block>
-                    <block v-else>
-                        <component-no-data propStatus="0" propMsg="请先选购商品"></component-no-data>
-                        <view class="padding-bottom-xxxl margin-bottom-xxxl tc text-size-xs margin-top-xxl">
-                            <text class="cr-red">没有已加购的商品？</text>
-                            <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
+                    </view>
+                    <block v-if="is_base_mode == 0 || (is_base_mode_show_type == 1 || (is_base_mode_show_type == 2 && nav_base_index == 1))">
+                        <!-- 左侧分类和右侧商品 -->
+                        <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
+                            <!-- 左侧 -->
+                            <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
+                                <view class="left-content-actual text-size-sm">
+                                    <view :class="'item tc cr-base cp ' + (nav_active_index == -1 ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
+                                    <block v-if="(goods_category || null) != null && goods_category.length > 0">
+                                        <block v-for="(item, index) in goods_category" :key="index">
+                                            <view :class="'item tc cr-base pr cp ' + (nav_active_index == index ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
+                                                <text>{{ item.name }}</text>
+                                                <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
+                                                    <component-badge :propNumber="item.buy_number"></component-badge>
+                                                </view>
+                                            </view>
+                                        </block>
+                                    </block>
+                                </view>
+                            </scroll-view>
+                            <!-- 右侧 -->
+                            <scroll-view :scroll-y="true" class="right-content ht-auto goods-list flex-1 flex-width" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
+                                <view :class="'right-content-actual pr '+(is_base_mode == 1 ? 'base-mode-goods' : '')">
+                                    <!-- 操作导航 -->
+                                    <view class="goods-list-top-nav bg-white">
+                                        <!-- 排序 -->
+                                        <view class="nav-sort-content oh">
+                                            <block v-for="(item, index) in search_nav_sort_list" :key="index">
+                                                <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
+                                                    <text class="cr-base va-m text-size-sm">{{item.name}}</text>
+                                                    <image v-if="(item.icon || null) != null" class="sort-icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                                                </view>
+                                            </block>
+                                        </view>
+                                        <!-- 二级分类 -->
+                                        <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal padding-horizontal-main padding-bottom-main">
+                                            <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
+                                                <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
+                                                <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
+                                                    <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'two-nav-item-' + ci" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{ cv.name }}</view>
+                                                </block>
+                                            </scroll-view>
+                                        </view>
+                                    </view>
+                                    <!-- 右侧商品列表 -->
+                                    <block v-if="(data_list || null) != null && data_list.length > 0">
+                                        <block v-for="(item, index) in data_list" :key="index">
+                                            <view :class="'goods-item bg-white padding-main border-radius-main oh spacing-mb '+((item.is_highlight || 0) == 1 ? 'item-highlight' : '')">
+                                                <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
+                                                    <view class="flex-row jc-sb">
+                                                        <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
+                                                        <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                                            <view class="goods-base-content">
+                                                                <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
+                                                                <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
+                                                            </view>
+                                                            <view class="margin-top-sm oh flex-row jc-sb align-c">
+                                                                <view class="single-text sales-price va-b va-m">
+                                                                    <text class="text-size-xss">{{ currency_symbol }}</text>
+                                                                    <text class="text-size-lg">{{ item.min_price }}</text>
+                                                                </view>
+                                                                <view v-if="is_base_mode != 1" class="tc flex-row align-c">
+                                                                    <block v-if="(item.is_error || 0) == 0">
+                                                                        <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
+                                                                            <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
+                                                                        </view>
+                                                                        <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
+                                                                            {{ item.buy_number }}
+                                                                        </view>
+                                                                        <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
+                                                                            <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
+                                                                        </view>
+                                                                    </block>
+                                                                    <block v-else>
+                                                                        <text class="cr-grey-c text-size-xs">{{ item.is_error_msg }}</text>
+                                                                    </block>
+                                                                </view>
+                                                            </view>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </block>
+                                    </block>
+                                    <block v-else>
+                                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propBackBtn="false"></component-no-data>
+                                    </block>
+                                </view>
+                            </scroll-view>
                         </view>
-                    </block>
-                </view>
-            </block>
 
-            <!-- 购物车底部导航 -->
-            <view class="botton-nav round pa bg-main-pair oh">
-                <view class="cart dis-inline-block va-m margin-left-xxl pr cp" @tap="cart_event">
-                    <uni-icons type="cart" size="32rpx" color="#fff"></uni-icons>
-                    <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
-                        <component-badge :propNumber="cart.buy_number"></component-badge>
+                        <!-- 商品购买 -->
+                        <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_spec_cart_back_event"></component-goods-buy>
+                    </block>
+
+                    <!-- 基础模式底部导航 -->
+                    <view v-if="is_base_mode == 1" class="plugins-realstore-detail-base-mode-nav z-i-deep bg-white pf left-0 bottom-0 wh-auto padding-main bs-bb br-top-shadow">
+                        <view class="bottom-line-exclude button-list">
+                            <view :class="'button-left tc '+(is_service_info == 1 ? '' : 'wh-auto')">
+                                <!-- #ifndef MP-KUAISHOU -->
+                                <view v-if="info.lat != 0 && info.lng != 0" propClass="item" @tap="address_map_event">
+                                    <view>
+                                        <iconfont name="icon-map-navigator" class="lh-sm" size="26rpx"></iconfont>
+                                    </view>
+                                    <view class="cr-base text-size-md">{{$t('detail.detail.688i26')}}</view>
+                                </view>
+                                <!-- #endif -->
+                                <view class="item" @tap="share_event">
+                                    <view>
+                                        <iconfont name="icon-share-square" propClass="lh-sm" size="26rpx"></iconfont>
+                                    </view>
+                                    <view class="cr-base text-size-md">{{$t('common.share')}}</view>
+                                </view>
+                            </view>
+                            <view v-if="is_service_info == 1" class="button-right">
+                                <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('cart.cart.31h34v')}}</button>
+                            </view>
+                        </view>
                     </view>
                 </view>
-                <view class="cart-total-price single-text dis-inline-block fw-b cr-white va-m margin-left-xl">
-                    <text class="text-size-sm">{{currency_symbol}}</text>
-                    <text class="text-size-lg">{{(cart || null) == null ? 0 : (cart.total_price || 0)}}</text>
+            </block>
+            <block v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            </block>
+        </view>
+
+        <!-- 门店购物车 -->
+        <component-realstore-cart ref="realstore_cart" :propIsBaseMode="is_base_mode == 1" :propCurrencySymbol="currency_symbol" :propStatus="is_cart_nav" v-on:CartSuccessEvent="goods_opt_cart_back_event" v-on:BuyTypeSwitchEvent="buy_type_switch_event" v-on:CartDataBackEvent="cart_data_back_event"></component-realstore-cart>
+
+        <!-- 客服弹窗 -->
+        <component-popup :propShow="popup_service_status" propPosition="bottom" @onclose="popup_service_close_event">
+            <view class="padding-top-main bg-white">
+                <view class="padding-horizontal-main">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_service_close_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
                 </view>
-                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm pa radius-0 '+((info.status_info.status == 1) ? 'bg-main cr-white' : 'bg-gray cr-gray')">{{info.status_info.status == 1 ? '去结算' : info.status_info.msg}}</button>
+                <view class="popup-service-container">
+                    <view v-if="(info || null) != null && (data_base || null) != null && is_service_info == 1" class="header-service">
+                        <view v-if="(info.chat_info || null) != null" class="item padding-main single-text">
+                            <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
+                            <view class="dis-inline-block chat-info cp" @tap="chat_event">
+                                <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
+                                <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
+                            </view>
+                        </view>
+                        <block v-if="(info.service_data || null) != null">
+                            <view v-if="(info.service_data.service_qq || null) != null" class="item padding-main br-t-f9 single-text">
+                                <text>Q Q：</text>
+                                <text class="cp" @tap="text_copy_event" :data-value="info.service_data.service_qq">{{ info.service_data.service_qq }}</text>
+                            </view>
+                            <view v-if="(info.service_data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
+                                <text>{{$t('order.order.7dxbm5')}}</text>
+                                <text class="cp" @tap="tel_event" :data-value="info.service_data.service_tel">{{ info.service_data.service_tel }}</text>
+                            </view>
+                            <view v-if="(info.service_data.service_weixin_qrcode || null) != null || (info.service_data.service_line_qrcode || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
+                                <view v-if="(info.service_data.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                    <image class="radius cp" :src="info.service_data.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_weixin_qrcode"></image>
+                                    <view>{{$t('detail.detail.54k10s')}}</view>
+                                </view>
+                                <view v-if="(info.service_data.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                    <image class="radius cp" :src="info.service_data.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_line_qrcode"></image>
+                                    <view>{{$t('detail.detail.vj4nom')}}</view>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                </view>
             </view>
+        </component-popup>
 
-            <!-- 购物车抛物线 -->
-            <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
+        <!-- 分享弹窗 -->
+        <component-share-popup ref="share"></component-share-popup>
 
-            <!-- 商品购买 -->
-            <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
-        </view>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        <!-- 公共 -->
+        <component-common ref="common" @onFooterHeight="footer_height_value_event" :propIsFooterSeat="false"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../../../common/js/lib/base64.js';
-    import componentGoodsBuy from "../../../../components/goods-buy/goods-buy";
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentSearch from "../../../../components/search/search";
-    import componentBadge from "../../../../components/badge/badge";
-    import componentPopup from "../../../../components/popup/popup";
-    import componentCartParaCurve from '../../../../components/cart-para-curve/cart-para-curve';
+    import componentCommon from '@/components/common/common';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentSearch from '@/components/search/search';
+    import componentBadge from '@/components/badge/badge';
+    import componentPopup from '@/components/popup/popup';
+    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
+    import componentSharePopup from '@/components/share-popup/share-popup';
 
     var common_static_url = app.globalData.get_static_url('common');
+    var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     export default {
         data() {
             return {
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
+                status_bar_height: status_bar_height,
                 common_static_url: common_static_url,
+                client_type: app.globalData.application_client_type(),
+                currency_symbol: app.globalData.currency_symbol(),
+                is_top_search_width: false,
+                // #ifdef MP-WEIXIN || MP-QQ || MP-ALIPAY || MP-BAIDU || MP-KUAISHOU || APP
+                is_top_search_width: true,
+                // #endif
+                content_style: '',
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
-                currency_symbol: app.globalData.data.currency_symbol,
-                cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
+                is_base_mode: 0,
+                is_base_mode_show_type: 0,
+                is_cart_nav: false,
                 buy_use_type_index: 0,
                 params: null,
                 is_first: 1,
                 scroll_top: 0,
                 scroll_top_old: 0,
-                user: null,
                 info: null,
                 goods_category: [],
                 data_list: [],
@@ -293,76 +338,134 @@
                 data_page_total: 0,
                 data_page: 1,
                 cart: null,
-                goods_count: 0,
                 data_base: null,
                 favor_user: [],
                 tablecode: null,
-                category: [],
-                goods_list: [],
                 search_keywords_value: '',
                 nav_active_index: -1,
                 nav_active_item_index: -1,
-                cart_status: false,
-                popup_spec_status: false,
-                goods_choose_data: {},
-                header_service_status: false,
+                popup_service_status: false,
+                // 基础导航
+                nav_base_index: 0,
+                nav_base_list: [
+                    { name: this.$t('goods-detail.goods-detail.dfge45'), value: 0 },
+                    { name: this.$t('goods-detail.goods-detail.567uhg'), value: 1 },
+                ],
+                // 下单类型
+                buy_use_type_index: 0,
+                // 排序导航
+                search_nav_sort_index: 0,
+                search_nav_sort_list: [{
+                		name: this.$t('goods-category.goods-category.x69aow'),
+                		field: 'default',
+                		sort: 'asc',
+                		icon: null
+                	},
+                	{
+                		name: this.$t('goods-category.goods-category.at5p35'),
+                		field: 'sales_count',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: this.$t('goods-category.goods-category.283ot0'),
+                		field: 'access_count',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: this.$t('goods-category.goods-category.g2u3lf'),
+                		field: 'min_price',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: this.$t('goods-category.goods-category.5p4ksj'),
+                		field: 'id',
+                		sort: 'asc',
+                		icon: 'default'
+                	}
+                ],
                 // 收藏信息
                 favor_info: {
-                    "text": "收藏",
-                    "status": 0,
-                    "count": 0
+                    text: this.$t('goods-detail.goods-detail.dco1sc'),
+                    status: 0,
+                    count: 0,
                 },
-                // 用户位置信息
-                user_location: null,
+                // 门店客服信息展示
+                is_service_info: 0,
+                // 是否支持门店切换
+                is_realstore_switch: 0,
                 // 自定义分享信息
                 share_info: {},
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // #ifdef MP-TOUTIAO
+                is_realstore_top_nav_back : 0,
+                // #endif
                 is_realstore_top_search_scan: app.globalData.data.is_realstore_top_search_scan || 0,
-                // 临时操作数据
-                temp_opt_data: null,
+                // 底部菜单高度
+                footer_height_value: 0,
             };
         },
 
         components: {
+            componentCommon,
+            componentNavBack,
             componentGoodsBuy,
             componentNoData,
             componentSearch,
             componentBadge,
             componentPopup,
-            componentCartParaCurve
+            componentRealstoreCart,
+            componentSharePopup
         },
-        props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            params = app.globalData.launch_params_handle(params);
+            // 是否指定门店id
+            var realstore_id = app.globalData.data.plugins_realstore_id || null;
+            if(realstore_id != null) {
+                params['id'] = realstore_id;
+            }
             this.setData({
-                params: app.globalData.launch_params_handle(params),
-                user: app.globalData.get_user_cache_info()
+                params: params,
             });
         },
 
         onShow() {
-            // 类型选择
-            this.setData({
-                buy_use_type_index: this.get_buy_use_type_index()
-            });
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
 
-            // 用户位置初始化
-            this.user_location_init();
-
-            // 获取数据
-            this.get_detail_init();
+            // 门店选择初始化
+            this.realstore_choice_init();
 
             // 初始化配置
             this.init_config();
+
+            // 获取数据
+            var self = this;
+            setTimeout(function() {
+                self.get_detail_init();
+            }, 100);
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.setData({
-                data_page: 1
+                data_page: 1,
+                data_list_loding_status: (this.data_list_loding_status == 2) ? 1 : this.data_list_loding_status
             });
             this.reset_scroll();
             this.get_detail_init();
@@ -373,38 +476,79 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol')
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
             },
 
+            // 门店选择初始化
+            realstore_choice_init() {
+                var key = app.globalData.data.cache_realstore_detail_choice_key;
+                var res = uni.getStorageSync(key) || null;
+                if(res != null && (res.data || null) != null && res.status == 1) {
+                    uni.setStorageSync(key, {
+                        data: res.data,
+                        status: 0
+                    });
+                    this.setData({
+                        params: {...this.params, ...{id: res.data.id}},
+                        info: res.data,
+                        is_first: 1,
+                        data_list: [],
+                        data_total: 0,
+                        data_page: 1,
+                        data_page_total: 0,
+                        data_is_loading: 0,
+                        data_list_loding_status: 1,
+                        data_bottom_line_status: false
+                    });
+                    this.source_goods_remove();
+                    this.reset_scroll();
+                }
+            },
+
             // 获取数据-初始化
-            get_detail_init() {
+            get_detail_init(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'get_detail_init');
+                    return false;
+                }
+
+                // 请求数据
                 uni.request({
-                    url: app.globalData.get_request_url("index", "detail", "realstore"),
+                    url: app.globalData.get_request_url('index', 'detail', 'realstore'),
                     method: 'POST',
-                    data: this.request_params_merge({
-                        "id": this.params.id || 0
-                    }, 'init'),
+                    data: this.$refs.realstore_cart.request_params_merge(
+                        {
+                            id: ((this.info || null) == null) ? (this.params.id || 0) : (this.info.id || 0),
+                        }, 'init'),
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            // 门店数据
                             var data = res.data.data;
+                            // 基础配置
+                            var data_base = data.base || {};
+
                             this.setData({
-                                data_base: data.base || null,
+                                is_service_info: parseInt(data_base.is_service_info || 0),
+                                is_realstore_switch: parseInt(data_base.is_realstore_switch || 0),
+                                is_base_mode: parseInt(data.is_base_mode || 0),
+                                is_base_mode_show_type: parseInt(data.is_base_mode_show_type || 0),
+                                is_cart_nav: true,
+                                data_base: data_base,
                                 info: data.info || null,
                                 goods_category: data.goods_category || [],
                                 favor_user: data.favor_user || [],
                                 tablecode: data.tablecode || null
                             });
-
-                            // 下单类型是否存在索引
-                            this.setData({
-                                buy_use_type_index: this.get_buy_use_type_index()
-                            });
+                            
+                            // 样式处理
+                            this.content_actual_size_handle();
 
                             // 收藏处理
                             if ((this.info || null) != null) {
@@ -412,11 +556,18 @@
                                 var status = this.favor_user.indexOf(this.info.id) != -1 ? 1 : 0;
                                 this.setData({
                                     favor_info: {
-                                        "count": this.info.favor_count || 0,
-                                        "status": status,
-                                        "text": (status == 1 ? '已' : '') + '收藏'
-                                    }
+                                        count: this.info.favor_count || 0,
+                                        status: status,
+                                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
+                                    },
                                 });
+
+                                // #ifndef MP-ALIPAY
+                                // 标题名称
+                                uni.setNavigationBarTitle({
+                                    title: this.info.name,
+                                });
+                                // #endif
 
                                 // 基础自定义分享
                                 this.setData({
@@ -424,35 +575,38 @@
                                         title: this.info.seo_title || this.info.name,
                                         desc: this.info.seo_desc || this.info.describe,
                                         path: '/pages/plugins/realstore/detail/detail',
-                                        query: 'id='+this.info.id,
-                                        img: this.info.logo
-                                    }
+                                        query: 'id=' + this.info.id,
+                                        img: this.info.logo,
+                                    },
                                 });
 
-                                // 标题名称
-                                uni.setNavigationBarTitle({
-                                    title: this.info.name
+                                // 是否基础模式
+                                if(this.is_base_mode != 1) {
+                                    // 获取购物车数据
+                                    this.get_cart_data();
+                                }
+
+                                // 下单类型索引
+                                this.setData({
+                                    buy_use_type_index: this.get_buy_use_type_index(),
                                 });
-                                
-                                // 获取数据、仅首次调用
-                                // 获取列表接口和购物车
-                                if(this.is_first == 1) {
-                                    this.get_data_list();
-                                    this.get_cart_data(this.is_first);
-                                    this.setData({is_first: 0});
-                                } else {
-                                    // 非首次赋值购物车数据
+
+                                // 获取数据、仅首次调用，获取列表接口
+                                if (this.is_first == 1) {
+                                    // 是否基础模式
+                                    if(this.is_base_mode != 1 || this.is_base_mode_show_type != 0) {
+                                        this.get_data_list();
+                                    }
+                                    // 非首次记录
                                     this.setData({
-                                        cart: data.cart || null,
+                                        is_first: 0,
                                     });
-                                    // 购物车更新列表数据处理
-                                    this.cart_data_list_handle();
                                 }
                             }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg,
                             });
                         }
 
@@ -463,10 +617,10 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
@@ -481,41 +635,47 @@
                 }
 
                 // 是否加载中
-                if(this.data_is_loading == 1) {
+                if (this.data_is_loading == 1) {
                     return false;
                 }
-                this.setData({data_is_loading: 1});
-
-                // 加载loding
-                uni.showLoading({
-                    title: '加载中...',
-                    mask: true
+                this.setData({
+                    data_is_loading: 1,
                 });
 
+                // 请求参数
+                var post_data = {
+                    id: this.info.id || 0,
+                    page: this.data_page,
+                    keywords: this.search_keywords_value,
+                };
                 // 分类id
                 var temp_category = this.goods_category;
-                if(this.nav_active_item_index != -1) {
-                    var category_id = temp_category[this.nav_active_index]['items'][this.nav_active_item_index]['id'];
+                if (this.nav_active_item_index != -1) {
+                    post_data['category_id'] = temp_category[this.nav_active_index]['items'][this.nav_active_item_index]['id'];
                 } else {
-                    var category_id = (this.nav_active_index == -1) ? 0 : temp_category[this.nav_active_index]['id'];
+                    post_data['category_id'] = this.nav_active_index == -1 ? 0 : temp_category[this.nav_active_index]['id'];
+                }
+                // 排序
+                var temp_index = this.search_nav_sort_index;
+                var temp_search_nav_sort = this.search_nav_sort_list;
+                post_data['order_by_type'] = temp_search_nav_sort[temp_index]['sort'] == 'desc' ? 'asc' : 'desc';
+                post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
+                // 指定商品
+                if((this.params.source_goods_id || null) != null) {
+                    post_data['source_goods_id'] = this.params.source_goods_id;
                 }
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("datalist", "detail", "realstore"),
+                    url: app.globalData.get_request_url('datalist', 'detail', 'realstore'),
                     method: 'POST',
-                    data: this.request_params_merge({
-                        id: this.info.id || 0,
-                        page: this.data_page,
-                        keywords: this.search_keywords_value,
-                        category_id: category_id
-                    }, 'data'),
+                    data: this.$refs.realstore_cart.request_params_merge(post_data, 'data'),
                     dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
+                    success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            // 列表数据处理
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;
@@ -532,22 +692,22 @@
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
-                                    data_is_loading: 0
+                                    data_is_loading: 0,
                                 });
-                                
+
                                 // 是否还有数据
                                 this.setData({
-                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_is_loading: 0
+                                    data_is_loading: 0,
                                 });
                                 if (this.data_page <= 1) {
                                     this.setData({
                                         data_list: [],
-                                        data_bottom_line_status: false
+                                        data_bottom_line_status: false,
                                     });
                                 }
                             }
@@ -555,590 +715,197 @@
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
-                                data_is_loading: 0
+                                data_is_loading: 0,
                             });
                             app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错',
-                            data_is_loading: 0
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                            data_is_loading: 0,
                         });
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 样式处理
+            content_actual_size_handle() {
+                // 基础模式内容高度处理
+                var value = 0;
+                if(this.is_base_mode == 1) {
+                    value = (this.is_base_mode_show_type == 1) ? 110 : 220;
+                }
+                // 内容高度
+                value += (this.client_type == 'h5') ? 370 : 352;
+                // 桌码
+                if(this.tablecode != null) {
+                    value += 44;
+                }
+
+                // 减去内容高度、底部菜单高度
+                this.setData({
+                    content_style: 'height: calc(100vh - '+value+'rpx - '+(this.status_bar_height+this.footer_height_value)+'px);',
                 });
             },
 
             // 收藏事件
             favor_event(e) {
-                if(!app.globalData.is_single_page_check()) {
+                if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
                 var user = app.globalData.get_user_info(this, 'favor_event');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=favor_event"
-                        });
-                        return false;
-                    } else {
-                        uni.showLoading({
-                            title: '处理中...'
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url("reversal", "favor", "realstore"),
-                            method: 'POST',
-                            data: {
-                                "id": this.info.id
-                            },
-                            dataType: 'json',
-                            success: res => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    this.setData({
-                                        favor_info: res.data.data
-                                    });
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('reversal', 'favor', 'realstore'),
+                        method: 'POST',
+                        data: {
+                            id: this.info.id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                this.setData({
+                                    favor_info: res.data.data,
+                                });
+                                app.globalData.showToast(res.data.msg, 'success');
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
+                                    app.globalData.showToast(res.data.msg);
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
                             }
-                        });
-                    }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 
             // 列表数据操作
             buy_number_event(e) {
-                if(!app.globalData.is_single_page_check()) {
+                if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var user = app.globalData.get_user_info(this);
+                var user = app.globalData.get_user_info(this, 'buy_number_event', e);
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=buy_number_event"
-                        });
-                        return false;
-                    } else {
-                        var index = e.currentTarget.dataset.index;
-                        var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_goods = this.data_list[index];
-                        this.setData({goods_choose_data: temp_goods});
-
-                        // 是否存在多规格
-                        if((temp_goods.is_exist_many_spec || 0) != 0) {
-                            // 是否购物车中操作
-                            if(type == 0) {
-                                this.setData({
-                                    cart_status: true
-                                });
-                                app.globalData.showToast('不同规格的商品需在购物车减购');
-                            } else {
-                                if((this.$refs.goods_buy || null) != null) {
-                                    var buy_params = this.params;
-                                    buy_params['buy_event_type'] = 'cart';
-                                    buy_params['buy_use_type_index'] = this.buy_use_type_index;
-                                    buy_params['realstore_id'] = this.info.id;
-                                    this.$refs.goods_buy.init(temp_goods, buy_params);
-                                }
+                    var index = e.currentTarget.dataset.index;
+                    var type = parseInt(e.currentTarget.dataset.type) || 0;
+                    var temp_goods = this.data_list[index];
+                    // 是否存在多规格
+                    if ((temp_goods.is_exist_many_spec || 0) != 0) {
+                        // 是否购物车中操作
+                        if (type == 0) {
+                            this.$refs.realstore_cart.cart_event(true);
+                            app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
+                        } else {
+                            if ((this.$refs.goods_buy || null) != null) {
+                                var buy_params = this.params;
+                                buy_params['buy_event_type'] = 'cart';
+                                buy_params['buy_use_type_index'] = this.get_buy_use_type_index();
+                                buy_params['realstore_id'] = this.info.id;
+                                this.$refs.goods_buy.init(temp_goods, buy_params);
                             }
-                            return false;
                         }
-
-                        // 数据操作处理
-                        this.buy_number_event_handle(e, type, temp_goods);
+                        return false;
                     }
+
+                    // 数据操作处理
+                    this.buy_number_event_handle(e, type, temp_goods);
                 }
             },
 
-            // 加入购物车成功回调
-            goods_cart_back_event(e) {
+            // 多规格加入购物车成功回调
+            goods_spec_cart_back_event(params) {
                 // 重新获取购物车数据
                 this.get_cart_data();
+                // 更新列表数据处理
+                this.cart_data_list_handle(params, 1);
             },
 
-            // 列表数量事件处理
-            buy_number_event_handle(e, type, goods, spec = '') {
-                var res = this.buy_number_handle(type, goods, 'buy_number');
-                if(res === false) {
-                    return false;
-                }
-
-                // 数据临时记录
-                this.setData({
-                    temp_opt_data: {
-                        pos: e,
-                        goods: goods,
-                        type: type,
-                    }
-                });
-
-                // 为0或减操作则查询
-                var cart_item = null;
-                if(type == 0 || (type == 1 && goods['buy_number'] > 0)) {
-                    var cart_data = this.cart.data;
-                    var params_spec = ((spec || null) == null || typeof(spec) != 'object') ? '' : JSON.stringify(spec);
-                    for(var i in cart_data) {                        
-                        if(goods['id'] == cart_data[i]['goods_id']) {
-                            var cart_spec = ((cart_data[i]['spec'] || null) == null || typeof(cart_data[i]['spec']) != 'object') ? '' : JSON.stringify(cart_data[i]['spec']);
-                            if(type == 0 || (type == 1 && cart_spec == params_spec)) {
-                                cart_item = cart_data[i];
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                // 操作类型
-                if(res == 0) {
-                    if(cart_item == null) {
-                        app.globalData.showToast('购物车id有误');
-                        return false;
-                    }
-                    this.cart_delete(cart_item.id);                    
-                } else if(cart_item == null) {
-                    this.cart_save(goods['id'], res, spec);
-                } else {
-                    var number = (type == 0) ? parseInt(cart_item['stock'])-res : res+parseInt(cart_item['stock']);
-                    this.cart_update(cart_item.id, goods['id'], number);
-                }
-                return true;
+            // 购物车操作成功回调
+            goods_opt_cart_back_event(params) {
+                // 更新列表数据处理
+                this.cart_data_list_handle(params);
             },
 
-            // 购物车抛物线动画
-            cart_para_curve_handle() {
-                if((this.temp_opt_data || null) != null && (this.temp_opt_data.type || 0) == 1) {
-                    if((this.$refs.cart_para_curve || null) != null) {
-                        var self = this;
-                        uni.createSelectorQuery().select('.botton-nav .cart').boundingClientRect().exec(function(res) {
-                            self.$refs.cart_para_curve.init(res, self.temp_opt_data.pos, self.temp_opt_data.goods.images);
-                        });
-                    }
-                }
-            },
-
-            // 购物车数量操作
-            cart_buy_number_event(e) {
-                if(!app.globalData.is_single_page_check()) {
-                    return false;
-                }
-                var user = app.globalData.get_user_info(this);
-                if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=cart_buy_number_event"
-                        });
-                        return false;
-                    } else {
-                        var index = e.currentTarget.dataset.index;
-                        var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_data = this.cart.data;
-                        var temp_goods = temp_data[index];
-                        
-                        // 数据操作处理
-                        var res = this.buy_number_handle(type, temp_goods, 'stock');
-                        if(res === false) {
-                            return false;
-                        }
-
-                        // 数据临时记录
-                        this.setData({
-                            temp_opt_data: {
-                                pos: e,
-                                goods: temp_goods,
-                                type: type,
-                            }
-                        });
-
-                        // 操作类型
-                        if(res == 0) {
-                            this.cart_delete(temp_goods['id']);
-                        } else {
-                            var number = (type == 0) ? parseInt(temp_goods['stock'])-res : res+parseInt(temp_goods['stock']);
-                            this.cart_update(temp_goods['id'], temp_goods['goods_id'], number);
-                        }
-                    }
-                }
-            },
-
-            // 批量删除操作
-            cart_all_delete_event(e) {
-                uni.showModal({
-                    title: '温馨提示',
-                    content: '挑了这么久，真的要清空吗？',
-                    confirmText: '确认',
-                    cancelText: '暂不',
-                    success: result => {
-                        if (result.confirm) {
-                            var ids = [];
-                            var temp_data = this.cart.data;
-                            for (var i in temp_data) {                
-                                ids.push(temp_data[i]['id']);
-                            }
-                            this.cart_delete(ids.join(','));
-                        }
-                    }
-                });
-            },
-
-            // 数量操作处理
-            buy_number_handle(type, goods, buy_number_field) {
-                // 门店状态
-                if(type == 1 && !this.is_status_check()) {
-                    return false;
-                }
-
-                // 加减处理
-                var buy_number = parseInt(goods[buy_number_field]) || 0;
-                if(type == 0) {
-                    buy_number -= 1;
-                } else {
-                    buy_number += 1;
-                }
-                if(buy_number < 0) {
-                    buy_number = 0;
-                }
-                
-                // 数据校验
-                var buy_min_number = parseInt(goods['buy_min_number']) || 1;
-                var buy_max_number = parseInt(goods['buy_max_number']) || 0;
-                var spec_buy_min_number = parseInt(goods['spec_buy_min_number']) || 0;
-                var spec_buy_max_number = parseInt(goods['spec_buy_max_number']) || 0;
-                var inventory = parseInt(goods['inventory']);
-                var inventory_unit = goods['inventory_unit'];
-                
-                // 最小起购数量
-                var min = (spec_buy_min_number > 0) ? spec_buy_min_number : buy_min_number;
-                if (min > 0) {
-                    if(type == 0) {
-                        if(buy_number < min) {
-                            buy_number = 0;
-                        }
-                    } else {
-                        if(buy_number < min) {
-                            buy_number = min;
-                        }
-                    }
-                }
-                
-                // 最大购买数量
-                var max = (spec_buy_max_number > 0) ? spec_buy_max_number : buy_max_number;
-                if (max > 0 && buy_number > max) {
-                    buy_number = max;
-                    app.globalData.showToast('限购' + max + inventory_unit);
-                	return false;
-                }
-                
-                // 数量是否改变
-                if (goods[buy_number_field] == buy_number) {
-                    app.globalData.showToast('数量未改变');
-                    return false;
-                }
-                
-                // 操作数量
-                var opt_number = 1;
-                if(type == 0) {
-                    if(buy_number <= 0) {
-                        opt_number = 0;
-                    }
-                } else {
-                    if(buy_number > goods['buy_number']) {
-                        opt_number = buy_number-goods['buy_number'];
-                    }
-                }
-                return opt_number;
-            },
-            
-            // 购物车添加
-            cart_save(goods_id, buy_number, spec = '') {
-                uni.request({
-                    url: app.globalData.get_request_url('save', 'cart'),
-                    method: 'POST',
-                    data: {
-                        "goods_id": goods_id,
-                        "stock": buy_number,
-                        "spec": spec
-                    },
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.cart_para_curve_handle();
-                            this.get_cart_data();
-                        } else {
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            // 购物车更新
-            cart_update(cart_id, goods_id, buy_number) {
-                uni.request({
-                    url: app.globalData.get_request_url("stock", "cart"),
-                    method: 'POST',
-                    data: {
-                        "id": cart_id,
-                        "goods_id": goods_id,
-                        "stock": buy_number
-                    },
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.cart_para_curve_handle();
-                            this.get_cart_data();
-                        } else {
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
-                            } else {
-                                app.globalData.showToast('提交失败，请重试！');
-                            }
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            // 购物车删除
-            cart_delete(cart_id) {
-                uni.request({
-                    url: app.globalData.get_request_url('delete', 'cart'),
-                    method: 'POST',
-                    data: {
-                        "id": cart_id
-                    },
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.get_cart_data();
-                        } else {
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
-                            } else {
-                                app.globalData.showToast('提交失败，请重试！');
-                            }
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            // 获取购物车数据、参数是否首次请求
-            get_cart_data(is_first = 0) {
-                uni.request({
-                    url: app.globalData.get_request_url("cartdata", "detail", "realstore"),
-                    method: 'POST',
-                    data: this.request_params_merge({
-                        "id": this.info.id || 0
-                    }, 'cart'),
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.setData({
-                                cart: res.data.data
-                            });
-                            this.cart_data_list_handle();
-
-                            // 首次判断是否需要开启购物车
-                            if(is_first == 1 && (this.params.is_show_cart || 0) == 1) {
-                                this.setData({
-                                    cart_status: true
-                                });
-                            }
-                        } else {
-                            app.globalData.showToast('请求失败，请重试！');
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            // 购物车更新列表数据处理
-            cart_data_list_handle() {
-                var temp_cart = this.cart || null;
-                if(temp_cart != null) {
-                    var temp_data_list = this.data_list;
-                    if(temp_data_list.length > 0) {
-                        for(var i in temp_data_list) {
-                            temp_data_list[i]['buy_number'] = 0;
-                            if(temp_cart.data.length > 0) {
-                                for(var k in temp_cart.data) {
-                                    if(temp_cart.data[k]['goods_id'] == temp_data_list[i]['id']) {
-                                        temp_data_list[i]['buy_number'] += parseInt(temp_cart.data[k]['stock']);
-                                    }
+            // 购物车数据获取成功回调
+            cart_data_back_event(params) {
+                var temp_data_list = this.data_list;
+                if (temp_data_list.length > 0) {
+                    for (var i in temp_data_list) {
+                        // 非追加则赋值0
+                        temp_data_list[i]['buy_number'] = 0;
+                        // 对应商品叠加数量
+                        if((params || null) != null && (params.data || null) != null && params.data.length > 0) {
+                            for (var x in params.data) {
+                                if (params.data[x]['goods_id'] == temp_data_list[i]['id']) {
+                                    temp_data_list[i]['buy_number'] += parseInt(params.data[x]['stock'] || 0);
                                 }
                             }
                         }
                     }
                     this.setData({
-                        data_list: temp_data_list
+                        data_list: temp_data_list,
                     });
                 }
             },
 
-            // 门店状态判断
-            is_status_check() {
-                if((this.info || null) == null) {
-                    app.globalData.showToast('门店信息有误');
-                    return false;
-                } else {
-                    if(this.info.status_info.status != 1) {
-                        app.globalData.showToast(this.info.status_info.msg);
-                        return false;
+            // 更新列表数据处理
+            // params 操作数据
+            // is_append 是否追加数据（0否、1是）
+            cart_data_list_handle(params, is_append = 0) {
+                var temp_data_list = this.data_list;
+                if (temp_data_list.length > 0) {
+                    for (var i in temp_data_list) {
+                        // 非追加则赋值0
+                        if(is_append == 0 && (params.type || null) != 'save') {
+                            temp_data_list[i]['buy_number'] = 0;
+                        }
+                        // 对应商品叠加数量
+                        if (params.goods_id == temp_data_list[i]['id']) {
+                            temp_data_list[i]['buy_number'] += parseInt(params.stock || 0);
+                        }
                     }
+                    this.setData({
+                        data_list: temp_data_list,
+                    });
                 }
-                return true;
+            },
+
+            // 获取购物车数据
+            get_cart_data() {
+                this.$refs.realstore_cart.init({...{source: 'realstore', base: this.data_base, info: this.info}, ...this.params});
+            },
+
+            // 列表数量事件处理
+            buy_number_event_handle(e, type, goods, spec = '') {
+                // 调用门店购物车方法处理
+                this.$refs.realstore_cart.goods_opt_handle(type, goods, spec, 'buy_number', e);
             },
 
             // 搜索事件
             search_button_event(e) {
                 this.setData({
                     search_keywords_value: e || '',
-                    data_page: 1
+                    data_page: 1,
                 });
+                this.source_goods_remove();
                 this.reset_scroll();
                 this.get_data_list(1);
             },
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
             search_icon_event(e) {
-                var user = app.globalData.get_user_info(this);
-                if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=cart_buy_number_event"
-                        });
-                        return false;
-                    } else {
-                        // 门店状态
-                        if(!this.is_status_check()) {
-                            return false;
-                        }
-
-                        // 调用扫码
-                        var self = this;
-                        uni.scanCode({
-                            success: function (res) {
-                                uni.showLoading({
-                                    title: '处理中...',
-                                    mask: true
-                                });
-                                uni.request({
-                                    url: app.globalData.get_request_url("scan", "detail", "realstore"),
-                                    method: 'POST',
-                                    data: self.request_params_merge({
-                                        value: res.result
-                                    }, 'buy'),
-                                    dataType: 'json',
-                                    success: res => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            if(res.data.data.is_error == 1) {
-                                                app.globalData.showToast(res.data.data.is_error_msg);
-                                            } else {
-                                                // 加入购物车
-                                                self.cart_save(res.data.data.goods_id, 1, res.data.data.spec);
-                                            }
-                                        } else {
-                                            if (app.globalData.is_login_check(res.data)) {
-                                                app.globalData.showToast(res.data.msg);
-                                            } else {
-                                                app.globalData.showToast('提交失败，请重试！');
-                                            }
-                                        }
-                                    },
-                                    fail: () => {
-                                        uni.hideLoading();
-                                        app.globalData.showToast('服务器请求出错');
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }
-            },
-
-            // 购物车状态
-            cart_event(e) {
-                this.setData({
-                    cart_status: !this.cart_status
-                });
-            },
-
-            // 购物车结算
-            buy_submit_event(e) {
-                if(!app.globalData.is_single_page_check()) {
-                    return false;
-                }
-
-                // 门店状态
-                if(!this.is_status_check()) {
-                    return false;
-                }
-
-                // 获取购物车数据
-                var ids = [];
-                if((this.cart || null) != null) {
-                    var temp_data = this.cart.data || [];
-                    for (var i in temp_data) {
-                        ids.push(temp_data[i]['id']);
-                    }
-                }
-                if (ids.length <= 0) {
-                    app.globalData.showToast('请先选购商品');
-                    return false;
-                }
-
-                // 起步价
-                var starting_price = parseFloat(this.info.starting_price) || 0;
-                if(starting_price > 0 && this.cart.total_price < starting_price) {
-                    // 是否限制类型
-                    var limit_type = this.info.starting_price_limit_type_list || [];
-                    if(limit_type.length > 0) {
-                        var buy_use_type = this.info.buy_use_type_list[this.buy_use_type_index];
-                        if(limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
-                            app.globalData.showToast(buy_use_type['name']+'起步价'+starting_price+'元');
-                            return false;
-                        }
-                    } else {
-                        app.globalData.showToast('起步价'+starting_price+'元');
-                        return false;
-                    }
-                }
-
-                // 进入订单确认页面
-                var data = this.request_params_merge({
-                    "buy_type": "cart",
-                    "ids": ids.join(',')
-                }, 'buy');
-                uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data)))
-                });
+                this.$refs.realstore_cart.search_icon_handle(e);
             },
 
             // 剪切板
@@ -1148,20 +915,18 @@
 
             // 地图查看
             address_map_event(e) {
-                var info = this.info;
+                var info = this.info || {};
                 if (info.lat == 0 || info.lng == 0) {
-                    app.globalData.showToast("地址有误");
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                     return false;
                 }
-            
-                // 打开地图
                 var address = (info.province_name || '') + (info.city_name || '') + (info.county_name || '') + (info.address || '');
                 app.globalData.open_location(info.lng, info.lat, info.name, address);
             },
 
             // 电话
             tel_event(e) {
-                app.globalData.call_tel(this.info.service_tel || null);
+                app.globalData.call_tel(e);
             },
 
             // 图片预览
@@ -1179,172 +944,161 @@
                 this.setData({
                     nav_active_index: e.currentTarget.dataset.index,
                     nav_active_item_index: e.currentTarget.dataset.itemindex,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
+                this.source_goods_remove();
                 this.reset_scroll();
                 this.get_data_list(1);
             },
-            
+
             // 重置滑动位置
             reset_scroll() {
                 this.setData({
-                    scroll_top: this.scroll_top_old
+                    scroll_top: this.scroll_top_old,
                 });
                 this.$nextTick(() => {
                     this.setData({
-                        scroll_top: 0
+                        scroll_top: 0,
                     });
                 });
             },
-            
+
             // 滑动事件位置记录
             scroll_event(e) {
                 this.setData({
-                    scroll_top_old: e.detail.scrollTop
+                    scroll_top_old: e.detail.scrollTop,
                 });
             },
-            
+
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
             },
-            
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0]
-                    });
-                } else {
-                    uni.navigateBack();
-                }
+
+            // 排序事件
+            nav_sort_event(e) {
+            	var index = e.currentTarget.dataset.index || 0;
+            	var temp_search_nav_sort = this.search_nav_sort_list;
+            	var temp_sort = temp_search_nav_sort[index]['sort'] == 'desc' ? 'asc' : 'desc';
+            	for (var i in temp_search_nav_sort) {
+            		if (i != index) {
+            			if (temp_search_nav_sort[i]['icon'] != null) {
+            				temp_search_nav_sort[i]['icon'] = 'default';
+            			}
+            			temp_search_nav_sort[i]['sort'] = 'desc';
+            		}
+            	}
+            	temp_search_nav_sort[index]['sort'] = temp_sort;
+            	if (temp_search_nav_sort[index]['icon'] != null) {
+            		temp_search_nav_sort[index]['icon'] = temp_sort;
+            	}
+
+            	this.setData({
+            		search_nav_sort_index: index,
+            		search_nav_sort_list: temp_search_nav_sort,
+            		data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
+            	});
+                this.source_goods_remove();
+                this.reset_scroll();
+            	this.get_data_list(1);
             },
-            
-            // 地址信息初始化
-            user_location_init() {
-                var result = uni.getStorageSync(app.globalData.data.cache_userlocation_key) || null;
-                var data = null;
-                if (result != null) {
-                    data = {
-                        name: result.name || null,
-                        address: result.address || null,
-                        lat: result.latitude || null,
-                        lng: result.longitude || null
-                    };
+
+            // 来源商品清空
+            source_goods_remove() {
+                // 存在参数指定来源商品id则清空
+                if((this.params.source_goods_id || null) != null) {
+                    var temp_params = this.params;
+                    delete temp_params['source_goods_id'];
+                    this.setData({
+                        params: temp_params
+                    });
                 }
-                this.setData({
-                    user_location: data
-                });
             },
 
             // 使用类型事件
             buy_use_type_event(e) {
-                var self = this;
-                uni.showActionSheet({
-                    itemList: this.info.buy_use_type_list.map(function(v) {return v.name}),
-                    success: function (res) {
-                        self.setData({
-                            buy_use_type_index: res.tapIndex,
-                            data_page: 1
-                        });
-                        uni.setStorageSync(self.cache_buy_use_type_index_key, res.tapIndex);
-                        self.reset_scroll();
-                        self.get_data_list(1);
-                        self.get_cart_data();
-                    }
+                this.$refs.realstore_cart.buy_use_type_event();
+            },
+
+            // 下单类型切换事件回调
+            buy_type_switch_event(params) {
+                this.setData({
+                    buy_use_type_index: params.index,
+                    data_page: 1,
                 });
+                this.reset_scroll();
+                this.get_data_list(1);
             },
 
             // 获取使用类型数据索引、默认在店0
             get_buy_use_type_index() {
-                var index = uni.getStorageSync(this.cache_buy_use_type_index_key);
-                if((this.info || null) != null) {
-                    // 用户未设置类型则使用默认的
-                    if(index === null || index === '') {
-                        // 是否默认类型
-                        if(this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
-                            // 不在店铺设置的类型列表则默认0
-                            var temp_index = null;
-                            for(var i in this.info.buy_use_type_list) {
-                                if(this.info.buy_use_type_list[i]['index'] == this.info.default_buy_use_type) {
-                                    temp_index = i;
-                                }
-                            }
-                            if(temp_index !== null) {
-                                index = temp_index;
-                            }
-                        }
-                    }
-
-                    // 不在店铺设置的类型列表则默认0
-                    if(this.info.buy_use_type_list[index] == undefined) {
-                        index = 0;
-                    }
-                }
-                return index || 0;
+                return this.$refs.realstore_cart.get_buy_use_type_index();
             },
 
-            // 请求参数处理
-            // 默认增加使用类型参数
-            // 下单 buy / 初始化 init / 获取数据 data / 获取购物车 cart
-            request_params_merge(data, type = 'init') {
-                // 用户使用类型
-                var index = this.buy_use_type_index;
-                if((this.info || null) != null && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0) {
-                    if(this.info.buy_use_type_list[index] == undefined) {
-                        index = 0;
-                    }
-                    data['buy_use_type_index'] = index;
+            // 商品事件
+            goods_event(e) {
+                // 是否可以打开商品页面
+                if(app.globalData.data.is_realstore_forbid_to_goods_detail != 1) {
+                    // 商品数据缓存处理
+                    var goods = this.data_list[e.currentTarget.dataset.index];
+                    app.globalData.goods_data_cache_handle(goods.id, goods);
+
+                    // 调用公共打开url地址
+                    app.globalData.url_event(e);
                 }
-
-                // 初始化
-                if(type == 'init') {
-                    // 桌码
-                    if((this.params.tablecode_id || null) != null) {
-                        data['tablecode_id'] = this.params.tablecode_id;
-                    }
-                }
-
-                // 初始化、获取数据
-                if(type == 'init' || type == 'data' || type == 'cart') {
-                    // 用户选择的位置
-                    var lng = 0;
-                    var lat = 0;
-                    if((this.user_location || null) != null) {
-                        lng = this.user_location.lng || 0;
-                        lat = this.user_location.lat || 0;
-                    }
-                    data['lng'] = lng;
-                    data['lat'] = lat;
-                }
-
-                // 提交订单
-                if(type == 'buy') {
-                    // 门店id
-                    data['realstore_id'] = this.info.id;
-
-                    // 桌码
-                    if((this.tablecode || null) != null) {
-                        data['tablecode_id'] = this.tablecode.id;
-                    }
-                }
-
-                return data;
             },
 
-            // url事件
-            url_event(e) {
-                app.globalData.url_event(e);
+            // 门店切换事件
+            realstore_switch_event (e) {
+                if(this.is_realstore_switch == 1) {
+                    app.globalData.url_open('/pages/plugins/realstore/search/search?is_choice_mode=1&show_type_mode=1');
+                }
             },
 
-            // 客服服务事件
-            header_service_event(e) {
+            // 开启客服弹层
+            popup_service_open_event(e) {
                 this.setData({
-                    header_service_status: !this.header_service_status
+                    popup_service_status: true,
                 });
+            },
+
+            // 关闭客服弹层
+            popup_service_close_event(e) {
+                this.setData({
+                    popup_service_status: false,
+                });
+            },
+
+            // 分享开启弹层
+            share_event(e) {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init({
+                        share_info: this.share_info
+                    });
+                }
+            },
+
+            // 基础导航事件
+            nav_base_event(e) {
+                this.setData({
+                    nav_base_index: e.currentTarget.dataset.index,
+                });
+            },
+
+            // 底部菜单高度
+            footer_height_value_event(value) {
+                this.setData({
+                    footer_height_value: value
+                });
+                this.content_actual_size_handle();
             }
-        }
+        },
     };
 </script>
 <style>

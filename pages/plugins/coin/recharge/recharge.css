@@ -1,0 +1,137 @@
+/* 
+ * 顶部
+*/
+.recharge-title {
+    background: radial-gradient(60% 70% at 90% 79%, rgba(33, 125, 239, 0.85) 0%, #A6C8F3 100%);
+    padding-top: 130rpx;
+    /* #ifndef H5  */
+    padding-top: calc(var(--status-bar-height) + 5px + 130rpx);
+    /* #endif */
+}
+
+.coin-dropdown {
+    --height: 48rpx;
+    display: inline-block;
+    height: var(--height);
+    line-height: var(--height);
+    padding: 0 64rpx 0 32rpx;
+    background: rgba(255, 255, 255, 0.23);
+    border-radius: 12px;
+}
+
+.coin-dropdown-icon {
+    right: -36rpx;
+    top: 2rpx;
+    padding: 0;
+}
+
+.recharge-qrcode {
+    background-color: #fff;
+    border-radius: 40rpx;
+    text-align: center;
+    padding: 20rpx;
+}
+
+.recharge-qrcode .img {
+    width: 160rpx !important;
+    height: 160rpx !important;
+}
+
+/* 
+ * 内容
+*/
+.recharge-content {
+    margin-top: -32rpx;
+    border-radius: 32rpx 32rpx 0 0;
+    min-height: calc(100vh - 528rpx);
+    /* #ifndef H5  */
+    min-height: calc(100vh - 528rpx - var(--status-bar-height) - 5px);
+    /* #endif */
+}
+
+.recharge-content-input-bg {
+    background-color: #fafafc;
+}
+
+.recharge-price-item {
+    --size: -10rpx;
+    margin-left: var(--size);
+    margin-right: var(--size);
+    width: calc(100% - var(--size));
+}
+
+.recharge-price-list {
+    background: #F5F7F9;
+    border: 2rpx solid #F5F7F9;
+    border-radius: 16rpx;
+    padding: 20rpx 0;
+    margin: 18rpx 10rpx;
+    width: calc((100% / 3) - 24rpx);
+}
+
+.recharge-price-badge {
+    background: linear-gradient(107deg, #8A18DF 0%, #8D17DD 100%), #D8D8D8;
+    border-radius: 16rpx 0px 16rpx 0px;
+    padding: 2rpx 20rpx;
+    position: absolute;
+    left: 0;
+    top: -20rpx;
+    max-width: calc(100% - 20px);
+}
+
+.recharge-price-list.active {
+    background: rgba(8, 140, 226, 0.06);
+    border-radius: 8px;
+    border: 1px solid #2FB0FB;
+}
+
+.recharge-price-name {
+    font-size: 44rpx;
+}
+
+.recharge-price-img {
+    --size: 36rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}
+
+.recharge-btn {
+    background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%);
+    transition: all 0.3s ease-in-out;
+}
+
+.recharge-btn:active {
+    background: linear-gradient(107deg, #168ACA 0%, #022A97 100%);
+}
+
+.recharge-content-tips .item::before {
+    content: '';
+    width: 12rpx;
+    height: 12rpx;
+    border-radius: 12rpx;
+    background: #30B3FC;
+    position: absolute;
+    left: 0;
+    top: 12rpx;
+}
+
+.coin-content-list-img {
+    --size: 28rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}
+
+/* 
+ * 虚拟币弹窗
+*/
+.popup_coin_status_container .scroll-y {
+    height: 40vh;
+    overflow-y: auto;
+    padding-right: 20rpx;
+}
+
+.coin-list-img {
+    --size: 40rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}

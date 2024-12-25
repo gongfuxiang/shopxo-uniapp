@@ -1,87 +1,128 @@
 <template>
-    <view>
-        <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
-            <view class="popup-mask" :style="'z-index: '+propIndex+';'" v-if="propMask || true" @tap="on_mask_tap"></view>
-            <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom')+ ' '+(propIsBar ? 'popup-bar' : '')" :style="'left:'+popup_content_left_value+'px'">
+    <view :class="theme_view + ' ' + propMostClass">
+        <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : 'popup-hide') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
+            <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
+            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="popup_content_style + this.propStyle">
                 <slot></slot>
             </view>
         </view>
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
             return {
-                popup_content_left_value: 'auto'
+                theme_view: app.globalData.get_theme_value_view(),
+                popup_content_style: '',
             };
         },
         components: {},
         props: {
+            // 最外层的class
+            propMostClass: {
+                type: String,
+                default: '',
+            },
+            // 内层class
             propClassname: {
-            	type: String,
-            	default: ''
+                type: String,
+                default: '',
             },
             propShow: {
-            	type: Boolean,
-            	default: false
+                type: Boolean,
+                default: false,
             },
             propPosition: {
-            	type: String,
-            	default: 'bottom'
+                type: String,
+                default: 'bottom',
             },
             propMask: {
-            	type: Boolean,
-            	default: true
+                type: Boolean,
+                default: true,
             },
             propAnimation: {
-            	type: Boolean,
-            	default: true
+                type: Boolean,
+                default: true,
             },
             propDisablescroll: {
-            	type: Boolean,
-            	default: false
+                type: Boolean,
+                default: false,
             },
             propIsBar: {
-            	type: Boolean,
-            	default: false
+                type: Boolean,
+                default: false,
+            },
+            // 弹窗是否需要圆角 默认需要
+            propIsRadius: {
+                type: Boolean,
+                default: true,
             },
             propIndex: {
                 type: Number,
-                default: 100
-            }
+                default: 100,
+            },
+            // 需要携带单位后缀
+            propTop: {
+                type: [String, Number],
+                default: '',
+            },
+            propBottom: {
+                type: String,
+                default: '',
+            },
+            propStyle: {
+                type: String,
+                default: '',
+            },
         },
         // 属性值改变监听
         watch: {
             // 监听状态
-        	propShow(value, old_value) {
-                this.left_handle();
-        	}
+            propShow(value, old_value) {
+                this.init_handle();
+            },
         },
         // 组建创建
-        created: function() {
-            this.left_handle();
+        created: function () {
+            this.init_handle();
         },
         methods: {
             // 事件处理
             on_mask_tap: function on_mask_tap() {
-                this.$emit('onclose', {
-                    detail: {}
-                }, {});
+                this.$emit(
+                    'onclose',
+                    {
+                        detail: {},
+                    },
+                    {}
+                );
             },
-            // 左边距位置处理
-            left_handle() {
+            // 初初始化处理
+            init_handle() {
+                // 弹窗从底部弹出，获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
+                var tabbar_height = app.globalData.data.is_use_native_tabbar != 1 && this.propPosition == 'bottom' && app.globalData.is_tabbar_pages() ? app.globalData.app_tabbar_height_value() * 2 + 20 : 0;
+
+                // 左边距位置处理
+                var left = 0;
+                // #ifdef H5
                 // 处理内容左边距、避免父级设置内边距影响
                 var width = uni.getSystemInfoSync().windowWidth;
-                var left = 0;
-                if(width > 800) {
-                    left = (width-800)/2;
+                if (width > 800) {
+                    left = (width - 800) / 2;
                 }
-                this.popup_content_left_value = left;
-            }
-        }
+                // #endif
+                this.setData({
+                    popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;',
+                });
+            },
+        },
     };
 </script>
 <style>
+    .popup {
+        opacity: 0;
+    }
     .popup-content {
         position: fixed;
         background: #fff;
@@ -121,6 +162,12 @@
         width: 100vw;
         transform: translateY(100%);
     }
+    .popup-show {
+        opacity: 1;
+    }
+    .popup-hide {
+        transition: all 1s linear;
+    }
     .popup-show .popup-content {
         transform: none;
     }
@@ -130,7 +177,7 @@
     }
     .popup.animation .popup-mask,
     .popup.animation .popup-content {
-        transition: all 0.25s linear;
+        transition: all 0.35s linear;
     }
     .popup-top {
         border-bottom-right-radius: 20rpx;
@@ -147,6 +194,9 @@
     .popup-right {
         border-top-left-radius: 20rpx;
         border-bottom-left-radius: 20rpx;
+    }
+    .popup-radius-0 {
+        border-radius: 0 !important;
     }
     .popup-bar {
         /* #ifdef H5 || APP */

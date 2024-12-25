@@ -3,11 +3,8 @@
 */
 .address-base,
 .address-detail {
-    padding-right: 40rpx;;
-}
-.address-detail .icon {
-    width: 30rpx;
-    height: 35rpx !important;
+    padding-right: 40rpx;
+    ;
 }
 .address-detail .text {
     width: calc(100% - 40rpx);
@@ -35,8 +32,8 @@
     color: #3bb4f2;
 }
 .goods-image {
-    width: 160rpx;
-    height: 160rpx;
+    width: 168rpx;
+    height: 168rpx;
     margin-right: 20rpx;
 }
 .buy-number {
@@ -44,52 +41,45 @@
     bottom: 0;
 }
 .goods-base {
-    min-height: 160rpx;
+    min-height: 168rpx;
     margin-left: 180rpx;
 }
 
 /**
 * 导航
 */
-.buy-nav {
-    position: fixed;
-    left: 0;
-    bottom: 0;
+.bottom-fixed .nav-base {
+    width: 60%;
 }
-.buy-nav,
-.nav-base {
-    height: 100rpx;
-    line-height: 100rpx;
+.bottom-fixed .nav-submit {
+    width: 40%;
 }
-.nav-submit button {
-    height: 72rpx;
-    line-height: 72rpx;
-}
-.nav-base {
-    width: calc(60% - 20rpx);
-}
-.nav-submit {
-    width: calc(40% - 40rpx);
+.bottom-fixed .nav-submit .btn {
+    height: 70rpx;
+    line-height: 70rpx;
 }
 
 /**
 * 支付方式
 */
-.payment-list .item {
-    width: calc(50% - 10rpx);
-}
-.payment-list .item:nth-child(2n) {
-    float: right;
-}
-.payment-list .item:nth-child(2n+1) {
-    float: left;
-}
 .payment-list .item-content {
-    padding: 20rpx 10rpx;
+    padding: 20rpx 0;
 }
-.payment-list .item-content image {
-    width: 50rpx;
-    height: 50rpx !important;
+.payment-list .item-content .icon {
+    width: 40rpx;
+    height: 40rpx !important;
+}
+.pay-tips {
+    height: 32rpx;
+    line-height: 32rpx;
+    display: inline-block;
+    position: absolute;
+    top: 12rpx;
+    color: #fff;
+    padding: 0 12rpx;
+    border-radius: 16rpx 0 16rpx 0;
+    font-size: 20rpx;
+    background: #D8D8D8 linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
 }
 
 /**
@@ -109,38 +99,46 @@
 /**
 * 留言
 */
-.content-textarea-container {
+.content-textarea-container .content {
     height: 100rpx;
 }
-.content-textarea-container view,
-.content-textarea-container textarea {
+.content-textarea-container .textarea-view,
+.content-textarea-container .textarea {
     height: 100% !important;
 }
-.content-textarea-container textarea {
+.content-textarea-container .textarea {
     padding: 5rpx 0;
 }
 
 /**
 * 销售+自提 模式选择
 */
-.buy-header-nav .item {
+.buy-site-model .item {
     padding: 25rpx 0;
     width: 50%;
+}
+.buy-site-model.count-3 .item {
+    width: 33.33%;
+}
+.buy-site-model.count-4 .item {
+    width: 25%;
+}
+.buy-site-model.count-5 .item {
+    width: 20%;
 }
 
 /**
  * 数据列表项
  */
-.buy-data-item {
-    padding: 0 40rpx 0 20rpx;
+.buy-data-item,
+.buy-data-item .right-value {
     line-height: 80rpx;
 }
-.buy-data-item-group {
-    padding: 0 40rpx 0 0;
-}
 .buy-data-item .right-value {
-    width: calc(100% - 300rpx);
-    min-height: 80rpx;
+    width: calc(100% - 260rpx);
+}
+.buy-data-item .right-value .right-value-content {
+    width: calc(100% - 32rpx);
 }
 
 /*
@@ -176,11 +174,6 @@
 .plugins-points-buy-container {
     padding: 20rpx;
 }
-.plugins-points-buy-container .select .icon {
-    width: 35rpx;
-    height: 35rpx !important;
-    vertical-align: middle;
-}
 .plugins-points-buy-container .select .sales-price {
     margin-left: 30rpx;
     font-size: 28rpx;
@@ -190,13 +183,29 @@
     color: #F37B1D;
 }
 
+.plugins-points-use-value {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    width: 130rpx;
+    height: 38rpx;
+    line-height: 38rpx;
+}
+
+.plugins-points-use-submit {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    height: 42rpx !important;
+    line-height: 42rpx !important;
+}
+
 /**
  * 门店次卡-页面选择
  */
 .plugins-realstore-container-view .image {
-    width: 40rpx;
-    height: 40rpx !important;
+    width: 34rpx;
+    height: 34rpx !important;
 }
+
 /*
  * 门店次卡-弹窗选择
  */
@@ -235,4 +244,12 @@
     background: #dfdfdf !important;
     color: #c0c0c0 !important;
     cursor: no-drop !important;
+}
+
+
+/**
+ * 留言快捷选择 - 智能工具箱
+ */
+.plugins-intellectstools-data-note-fast .note-fast-data-list {
+    width: calc(100% - 112rpx);
 }

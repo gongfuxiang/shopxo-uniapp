@@ -1,0 +1,15 @@
+.avatar {
+    width: 80rpx;
+    height: 80rpx;
+}
+.input-height {
+    min-height: 200rpx;
+}
+.sub-btn {
+    padding: 40rpx 66rpx;
+}
+.sub-btn button {
+    height: 88rpx;
+    line-height: 88rpx;
+    padding: 0;
+}

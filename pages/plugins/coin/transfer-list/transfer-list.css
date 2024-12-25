@@ -1,0 +1,18 @@
+.transfer-accounts .nav {
+    z-index: 102;
+}
+.scroll-box {
+    height: calc(100vh - 88rpx);
+}
+
+.convert-group-row .title {
+    min-width: 140rpx;
+}
+
+/* 
+ * 钱包弹窗
+*/
+.popup_accounts_container .item {
+    background-color: #f4f4f4;
+    border-radius: 30rpx;
+}

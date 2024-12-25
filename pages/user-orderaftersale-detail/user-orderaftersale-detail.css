@@ -18,7 +18,7 @@
 * 类型选择
 */
 .choose-type .choose-item {
-    width: calc(50% - 55rpx);
+    width: calc(50% - 60rpx);
     -webkit-transition: border-color .2s ease-in;
     -moz-transition: border-color .2s ease-in;
     -ms-transition: border-color .2s ease-in;
@@ -60,88 +60,4 @@
     line-height: 60rpx;
     padding: 0 20rpx;
     font-size: 24rpx;
-}
-
-/**
-* 搜索
-*/
-.search input {
-    width: calc(100% - 328rpx);
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    height: 52rpx;
-    line-height: 52rpx;
-    border-width: 1px;
-    border-style: solid;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-.search-btn {
-    top: 20rpx;
-    right: 20rpx;
-}
-.search-btn button {
-    width: 150rpx;
-    padding: 0;
-    height: 57rpx;
-    line-height: 57rpx;
-}
-.search-btn button:first-child {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    background: #ff8c00;
-    border: 1px solid #ff8c00;
-}
-.search-btn button:last-child {
-    background: #483E39;
-    border: 1px solid #483E39;
-    margin-left: 20rpx;
-}
-
-/**
-* 头部
-*/
-.header {
-    padding: 20rpx 10rpx;
-    font-size: 24rpx;
-}
-.shop-logo {
-    width: 280rpx;
-}
-.base-bottom image {
-    width: 28rpx;
-    height: 28rpx;
-}
-.header .base {
-    width: calc(100% - 320rpx);
-}
-.shop-title {
-    line-height: 40rpx;
-}
-
-/**
-* 客服
-*/
-.plugins-intellectstools-service {
-    width: 400rpx;
-    left: 40rpx;
-    top: 380rpx;
-    z-index: 2;
-    font-size: 24rpx;
-    -webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
-    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
-}
-.plugins-intellectstools-service .item:first-child {
-    border-top: 0 !important;
-}
-.plugins-intellectstools-service .qrcode .item:not(:last-child) {
-    margin-right: 20rpx;
-}
-.plugins-intellectstools-service image {
-    width: 130rpx;
-    height: 130rpx;
-}
-.plugins-intellectstools-service .chat-info image {
-    width: 40rpx;
-    height: 40rpx;
 }

@@ -1,0 +1,19 @@
+.note {
+    background-color: #fafafc;
+}
+
+.accounts-btn,
+.transfer-btn {
+    background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%);
+}
+
+.accounts-btn,
+.transfer-btn:active {
+    background: linear-gradient(107deg, #168ACA 0%, #022A97 100%);
+}
+
+.coin-content-list-img {
+    --size: 80rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}

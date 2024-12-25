@@ -1,16 +1,21 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(propStatus || false)" class="data-bottom-line">
-            <view class="left"></view>
-            <view class="msg">{{propMsg || '我是有底线的'}}</view>
-            <view class="right"></view>
+            <view class="bottom-exclude">
+                <view class="item left"></view>
+                <view class="item msg">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</view>
+                <view class="item right"></view>
+            </view>
         </view>
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {},
         props: {
@@ -25,7 +30,10 @@
         padding: 40rpx;
         overflow: hidden;
     }
-    .data-bottom-line view {
+    .data-bottom-line .bottom-exclude {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    .data-bottom-line .item {
         width: 33.3%;
     }
     .data-bottom-line .left,

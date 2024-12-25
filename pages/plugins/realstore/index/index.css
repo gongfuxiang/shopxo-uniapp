@@ -1,14 +1,21 @@
 /**
+* 头部
+*/
+page {
+    background-color: #F7EDE1;
+}
+
+/**
 * 位置和搜索
 */
 .nav-location {
-    width: 200rpx;
-    height: 30px;
-    line-height: 30px;
-    font-size: 12px;
+    line-height: 95rpx;
+}
+.nav-location .icon-arrow-down {
+    top: 34rpx;
 }
 .nav-search {
-    width: calc(100% - 210rpx);
+    margin-top: 80rpx;
 }
 
 /**
@@ -18,13 +25,52 @@
     background: rgba(0, 0, 0, 0.6);
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
 }
+
 .choice-location-tips .content {
-    margin-top: 42%;
+    margin-top: 30%;
     width: 520rpx;
 }
+
 .choice-location-tips .content .close {
     top: 20rpx;
     right: 20rpx;
+}
+
+/**
+ * 已选门店
+ */
+.user-choice-realstore .logo {
+    width: 100rpx;
+}
+.user-choice-realstore .address-content {
+    max-width: calc(100% - 100rpx);
+}
+.user-choice-realstore .checked {
+    top: 0;
+    right: 0;
+    width: 50rpx;
+    height: 38rpx;
+    border-bottom-left-radius: 100rpx;
+}
+
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .realstore-nav-bg {
+        /* #ifdef H5 */
+        background-size: cover;
+        /* #endif */
+    }
+}
+
+@media only screen and (max-width:960px) {
+    .realstore-nav-bg {
+        /* #ifdef H5 */
+        background-size: auto 100%;
+        /* #endif */
+    }
 }

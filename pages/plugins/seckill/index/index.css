@@ -1,0 +1,66 @@
+/**
+ * 秒杀导航
+ */
+.title {
+    width: 142rpx;
+}
+
+.seckill-right-title {
+    padding-right: 40rpx;
+}
+
+.nav_seckill .item {
+    width: 176rpx;
+    padding: 26rpx 0;
+    opacity: 0.5;
+    flex-basis: 176rpx;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.nav_seckill .item.active {
+    opacity: 1;
+}
+
+.nav_seckill .item .time {
+    line-height: 50rpx;
+}
+
+.nav_seckill .item .state {
+    margin-top: 4rpx;
+    padding: 0 14rpx;
+    display: inline-flex;
+}
+
+.nav_seckill .item.active .state {
+    font-size: 22rpx;
+    background-color: #fff;
+}
+
+/**
+ * 规则弹窗
+ */
+.rule {
+    padding: 42rpx 26rpx;
+    max-height: 50vh;
+}
+
+.rule .item {
+    padding-bottom: 100rpx;
+    max-height: calc(50vh - 164rpx);
+}
+
+.rule button {
+    margin: 20rpx 70rpx 42rpx 70rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+ * 内容
+ */
+.scroll-y {
+    /* #ifdef H5 */
+    height: calc(100vh - 248rpx) !important;
+    /* #endif */
+}

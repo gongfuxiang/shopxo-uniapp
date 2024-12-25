@@ -1,54 +1,50 @@
 <template>
-    <view>
-        <view v-if="(data_base || null) != null">
-            <!-- 轮播 -->
-            <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <component-banner :propData="slider_list" propSize="mini"></component-banner>
+    <view :class="theme_view">
+        <!-- 轮播 -->
+        <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
+            <component-banner :propData="slider_list" propSize="mini"></component-banner>
+        </view>
+
+        <!-- 分类 -->
+        <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="scroll-view-horizontal bg-white oh" scroll-x="true">
+            <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == 0 ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" data-value="0">{{$t('common.all')}}</view>
+            <block v-for="(item, index) in activity_category" :key="index">
+                <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == item.id ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
+            </block>
+        </scroll-view>
+
+        <!-- 列表 -->
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
+            <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <view :data-value="'/pages/plugins/activity/detail/detail?id=' + item.id" @tap="url_event" class="item oh cp spacing-mb">
+                        <image :src="item.cover" mode="widthFix" class="wh-auto border-radius-main"></image>
+                    </view>
+                </block>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
 
-            <!-- 分类 -->
-            <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
-                <block v-for="(item, index) in activity_category" :key="index">
-                    <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
-                </block>
-            </scroll-view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
 
-            <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <view class="item border-radius-main bg-white oh spacing-mb">
-                            <navigator :url="'/pages/plugins/activity/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.cover" mode="aspectFit"></image>
-                                <view class="padding-main tc">
-                                    <view class="single-text fw-b cr-base">{{item.title}}</view>
-                                    <view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
-                                </view>
-                            </navigator>
-                        </view>
-                    </block>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </scroll-view>
-        </view>
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentBanner from "../../../../components/slider/slider";
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-
+    import componentCommon from '@/components/common/common';
+    import componentBanner from '@/components/slider/slider';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
@@ -63,30 +59,44 @@
                 activity_category: [],
                 nav_active_value: 0,
                 // 自定义分享信息
-                share_info: {}
+                share_info: {},
             };
         },
 
         components: {
+            componentCommon,
             componentBanner,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
         },
-        props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
-                params: params
+                params: params,
             });
-            
+
             // 数据加载
             this.get_data();
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.setData({
-                data_page: 1
+                data_page: 1,
             });
             this.get_data_list(1);
         },
@@ -94,23 +104,19 @@
         methods: {
             // 初始化
             get_data() {
-                uni.showLoading({
-                    title: '加载中...'
-                });
                 uni.request({
-                    url: app.globalData.get_request_url("index", "index", "activity"),
+                    url: app.globalData.get_request_url('index', 'index', 'activity'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
+                    success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
                                 data_base: data.base || null,
                                 slider_list: data.slider_list || [],
-                                activity_category: data.activity_category || []
+                                activity_category: data.activity_category || [],
                             });
 
                             if ((this.data_base || null) != null) {
@@ -119,39 +125,37 @@
                                     share_info: {
                                         title: this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
-                                        path: '/pages/plugins/activity/index/index'
-                                    }
+                                        path: '/pages/plugins/activity/index/index',
+                                    },
                                 });
 
                                 // 标题
-                                if((this.data_base.application_name || null) != null) {
+                                if ((this.data_base.application_name || null) != null) {
                                     uni.setNavigationBarTitle({
-                                        title: this.data_base.application_name
+                                        title: this.data_base.application_name,
                                     });
                                 }
                             }
-                            
+
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
-                        
+
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 2
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                    },
                 });
             },
 
@@ -166,27 +170,33 @@
                 }
 
                 // 是否加载中
-                if(this.data_is_loading == 1) {
+                if (this.data_is_loading == 1) {
                     return false;
                 }
-                this.setData({data_is_loading: 1});
-                
-                // 加载loding
-                uni.showLoading({
-                    title: '加载中...'
+                this.setData({
+                    data_is_loading: 1,
                 });
+
+                // 加载loding
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("datalist", "index", "activity"),
+                    url: app.globalData.get_request_url('datalist', 'index', 'activity'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        category_id: this.nav_active_value || 0
+                        category_id: this.nav_active_value || 0,
                     },
                     dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
+                    success: (res) => {
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -206,22 +216,22 @@
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
-                                    data_is_loading: 0
+                                    data_is_loading: 0,
                                 });
-                                
+
                                 // 是否还有数据
                                 this.setData({
-                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_is_loading: 0
+                                    data_is_loading: 0,
                                 });
                                 if (this.data_page <= 1) {
                                     this.setData({
                                         data_list: [],
-                                        data_bottom_line_status: false
+                                        data_bottom_line_status: false,
                                     });
                                 }
                             }
@@ -229,20 +239,22 @@
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
-                                data_is_loading: 0
+                                data_is_loading: 0,
                             });
                             app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_is_loading: 0
+                            data_is_loading: 0,
                         });
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
@@ -255,11 +267,19 @@
             nav_event(e) {
                 this.setData({
                     nav_active_value: e.currentTarget.dataset.value || 0,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
-        }
+        },
     };
 </script>
 <style>

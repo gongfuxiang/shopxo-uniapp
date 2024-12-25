@@ -1,0 +1,17 @@
+/*
+* 列表
+*/
+.data-list .item .base .avatar {
+    width: 40rpx;
+    height: 40rpx !important;
+}
+
+/* 
+ * 隐藏滚动条
+ */
+ scroll-view ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    color: transparent;
+}

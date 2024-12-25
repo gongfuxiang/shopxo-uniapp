@@ -1,94 +1,100 @@
 <template>
-    <view>
+    <view :class="theme_view">
+        <!-- 公告 -->
+        <view v-if="(data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0" class="padding-horizontal-main padding-vertical-sm bg-white">
+            <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.invoice_desc.join('')" background-color="transparent" color="#666" />
+        </view>
         <!-- 导航 -->
-        <view class="nav-base bg-white">
+        <view v-if="nav_status_list.length > 0" class="nav-base bg-white flex-row jc-sa align-c">
             <block v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item fl tc cr-gray ' + (nav_status_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">{{item.name}}</view>
+                <view :class="'item tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
-
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                    <view class="base oh br-b padding-bottom-main">
-                        <text class="cr-base">{{item.add_time}}</text>
-                        <text class="fr cr-main">{{item.status_name}}</text>
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0 ? 'top-notice' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view class="page-bottom-fixed">
+                <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
+                        <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
+                            <text class="cr-grey-9">{{ item.add_time }}</text>
+                            <text class="cr-black" :class="item.status == 0 || item.status == 1 ? 'cr-black' : item.status == 2 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
+                        </view>
+                        <view :data-value="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
+                            <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
+                        </view>
+                        <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
+                        <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
+                            <button class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                            <button v-if="item.status == 0 || item.status == 3" class="btn round cr-main br-main bg-white text-size-md" type="default" size="mini" :data-value="'/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id='+item.id" @tap="url_event" hover-class="none">{{$t('common.edit')}}</button>
+                        </view>
                     </view>
-                    <view class="content margin-top">
-                        <navigator :url="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv,fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-gray margin-right-xl">{{fv.name}}</text>
-                                    <text class="cr-base">{{item[fv.field]}}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-gray">{{fv.unit}}</text>
-                                </view>
-                            </block>
-                        </navigator>
-                    </view>
-                    <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="item.status == 0 || item.status == 3" class="round cr-base bg-white br" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">编辑</button>
-                        <button class="round cr-red br-red bg-white" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
+
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                </view>
+
+                <!-- 添加发票 -->
+                <view v-if="(data_base.is_invoice_order || 0) == 1 || (data_base.is_invoice_recharge || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
+                    <view class="bottom-line-exclude flex-row gap-10">
+                        <button v-if="(data_base.is_invoice_order || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
+                        <button v-if="(data_base.is_invoice_recharge || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/recharge/recharge" @tap="url_event">{{$t('invoice.invoice.bh8yt3')}}</button>
                     </view>
                 </view>
             </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-            </view>
-            
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentPanelContent from "@/components/panel-content/panel-content";
 
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
+                field_list: [],
                 data_base: null,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
                 params: null,
-                nav_status_list: [
-                    { name: "全部", value: "-1" },
-                    { name: "待审核", value: "0" },
-                    { name: "待开票", value: "1" },
-                    { name: "已开票", value: "2" },
-                    { name: "已拒绝", value: "3" },
-                ],
+                nav_status_list: [],
                 nav_status_index: 0,
-                content_list: [
-                    {name: "业务类型", field: "business_type_name"},
-                    {name: "申请类型", field: "apply_type_name"},
-                    {name: "发票类型", field: "invoice_type_name"},
-                    {name: "发票金额", field: "total_price", unit: "元"},
-                    {name: "发票抬头", field: "invoice_title"}
-                ]
             };
         },
 
         components: {
+            componentCommon,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentPanelContent
         },
-        props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
             // 是否指定状态
             var nav_status_index = 0;
             if ((params.status || null) != null) {
                 for (var i in this.nav_status_list) {
-                    if (this.nav_status_list[i]['value'] == params.status) {
+                    if (this.nav_status_list[i]['id'] == params.status) {
                         nav_status_index = i;
                         break;
                     }
@@ -96,12 +102,21 @@
             }
             this.setData({
                 params: params,
-                nav_status_index: nav_status_index
+                nav_status_index: nav_status_index,
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 初始化配置
             this.init();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -110,31 +125,58 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.setData({
-                data_page: 1
+                data_page: 1,
             });
             this.get_data_list(1);
         },
 
         methods: {
-            init() {
+            // 初始化
+            init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: "/pages/login/login?event_callback=init"
-                        });
-                        return false;
-                    } else {
-                        // 获取数据
-                        this.get_data_list();
-                    }
-                } else {
-                    this.setData({
-                        data_list_loding_status: 0,
-                        data_bottom_line_status: false
-                    });
+                    this.get_data_base();
                 }
+            },
+            // 获取公共数据
+            get_data_base() {
+                uni.request({
+                    url: app.globalData.get_request_url('center', 'user', 'invoice'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                nav_status_list: data.nav || [],
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: false,
+                                data_page: 1,
+                            });
+                            this.get_data_list();
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_base')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_bottom_line_status: false,
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                    },
+                });
             },
 
             // 获取数据
@@ -146,93 +188,144 @@
                         return false;
                     }
                 }
-                
+
                 // 是否加载中
-                if(this.data_is_loading == 1) {
+                if (this.data_is_loading == 1) {
                     return false;
                 }
                 this.setData({
                     data_is_loading: 1,
-                    data_list_loding_status: 1
+                    data_list_loding_status: 1,
                 });
-                
+
                 // 加载loding
-                uni.showLoading({
-                    title: '加载中...'
-                });
-                
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
+
                 // 请求数据
                 var data = {
-                    page: this.data_page
+                    page: this.data_page,
                 };
-                
+
                 // 状态
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['id'];
                 if (status != -1) {
                     data['status'] = status;
                 }
-                
+
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("index", "user", "invoice"),
+                    url: app.globalData.get_request_url('index', 'user', 'invoice'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
+                    success: (res) => {
+                        if (this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data_base: res.data.data.base || null,
-                                    data_list: temp_data_list,
-                                    data_total: res.data.data.total,
-                                    data_page_total: res.data.data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0
-                                });
-                                
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
-                                });
+                            // 数据列表
+                            var data = res.data.data;
+                            if (this.data_page <= 1) {
+                                var temp_data_list = data.data_list || [];
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_list: [],
-                                    data_bottom_line_status: false,
-                                    data_is_loading: 0
-                                });
+                                var temp_data_list = this.data_list || [];
+                                var temp_data = data.data_list;
+                                for (var i in temp_data) {
+                                    temp_data_list.push(temp_data[i]);
+                                }
                             }
+                    
+                            this.setData({
+                                field_list: data.field_list || [],
+                                data_list: temp_data_list,
+                                data_total: data.total,
+                                data_page_total: data.page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_list_loding_msg: '',
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+                    
+                            // 是否还有数据
+                            this.setData({
+                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
-                                data_is_loading: 0
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if (this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_is_loading: 0
+                            data_is_loading: 0,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                    },
+                });
+            },
+
+            // 删除
+            delete_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            // 参数
+                            var value = e.currentTarget.dataset.value;
+                            var index = e.currentTarget.dataset.index;
+
+                            // 加载loding
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('delete', 'user', 'invoice'),
+                                method: 'POST',
+                                data: {
+                                    ids: value,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        var temp_data_list = this.data_list;
+                                        temp_data_list.splice(index, 1);
+                                        this.setData({
+                                            data_list: temp_data_list,
+                                        });
+                                        if (temp_data_list.length == 0) {
+                                            this.setData({
+                                                data_list_loding_status: 0,
+                                                data_bottom_line_status: false,
+                                            });
+                                        }
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
                 });
             },
 
@@ -245,71 +338,19 @@
             nav_event(e) {
                 this.setData({
                     nav_status_index: e.currentTarget.dataset.index || 0,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
             },
 
-            // 编辑事件
-            edit_event(e) {
-                uni.navigateTo({
-                    url: '/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id=' + e.currentTarget.dataset.value
-                });
-            },
-
-            // 删除
-            delete_event(e) {
-                uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
-                    success: result => {
-                        if (result.confirm) {
-                            // 参数
-                            var value = e.currentTarget.dataset.value;
-                            var index = e.currentTarget.dataset.index;
-                            
-                            // 加载loding
-                            uni.showLoading({
-                                title: '处理中...'
-                            });
-                            uni.request({
-                                url: app.globalData.get_request_url("delete", "user", "invoice"),
-                                method: 'POST',
-                                data: {
-                                    ids: value
-                                },
-                                dataType: 'json',
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        var temp_data_list = this.data_list;
-                                        temp_data_list.splice(index, 1);
-                                        this.setData({
-                                            data_list: temp_data_list
-                                        });
-                                        if (temp_data_list.length == 0) {
-                                            this.setData({
-                                                data_list_loding_status: 0,
-                                                data_bottom_line_status: false
-                                            });
-                                        }
-                                        app.globalData.showToast(res.data.msg, 'success');
-                                    } else {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    app.globalData.showToast('服务器请求出错');
-                                }
-                            });
-                        }
-                    }
-                });
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
-        }
+        },
     };
 </script>
 <style>

@@ -1,5 +1,5 @@
 {
-    "name" : "shopxo",
+    "name" : "ShopXO",
     "appid" : "__UNI__50E3C11",
     "description" : "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
     "versionName" : "1.0.0",
@@ -15,46 +15,169 @@
             "autoclose" : true,
             "delay" : 0
         },
-        "modules" : {},
+        "modules" : {
+            "Payment" : {},
+            "Barcode" : {},
+            "OAuth" : {},
+            "Maps" : {},
+            "Geolocation" : {},
+            "Share" : {},
+            "VideoPlayer" : {},
+            "Camera" : {}
+        },
         "distribute" : {
             "android" : {
                 "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
-                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
-                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
-                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
-                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "targetSdkVersion" : 30,
+                "minSdkVersion" : 23
             },
-            "ios" : {},
-            "sdkConfigs" : {}
+            "ios" : {
+                "dSYMs" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "获取用户手机相册用于提供相册图片素材",
+                    "NSPhotoLibraryAddUsageDescription" : "将图片保存至手机相册",
+                    "NSCameraUsageDescription" : "获取用户手机相册用于快捷拍照功能",
+                    "NSLocationWhenInUseUsageDescription" : "该应用需要您的地理位置，以便为你提供当前位置信息",
+                    "NSLocationAlwaysUsageDescription" : "该应用需要您的地理位置，以便为你提供当前位置信息",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "该应用需要持续获取用户地理位置，以便为您提供实时的位置信息"
+                }
+            },
+            "sdkConfigs" : {
+                "payment" : {
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
+                    },
+                    "weixin" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appid" : "wx3bac19ff90c0a976",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
+                    },
+                    "paypal" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "returnURL_ios" : "com.shopxo.mm://paypal",
+                        "returnURL_android" : "com.shopxo.mm://paypal"
+                    }
+                },
+                "ad" : {},
+                "oauth" : {
+                    "univerify" : {},
+                    "apple" : {},
+                    "weixin" : {
+                        "appid" : "wx3bac19ff90c0a976",
+                        "appsecret" : "91f132b39c5c575fe61b04993c57c734",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
+                    },
+                    "qq" : {
+                        "appid" : "102076195",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
+                    },
+                    "google" : {
+                        "clientid" : "510187709509-fq3t5grcfh81t4ub491tiadrtfjbaes1.apps.googleusercontent.com"
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "name" : "amapu9VF72Gg",
+                        "appkey_ios" : "f55e9099897821681f5c74051e4527bd",
+                        "appkey_android" : "ebe9f1d84f8ceb8b3c4ba6ead2bfa78b"
+                    }
+                },
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx3bac19ff90c0a976",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
+                    },
+                    "qq" : {
+                        "appid" : "102076195",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
+                    }
+                },
+                "push" : {}
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                },
+                "ios" : {
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                    },
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
+            }
         }
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "requiredPrivateInfos" : [ "chooseLocation", "getLocation", "chooseAddress", "onLocationChange", "startLocationUpdate", "startLocationUpdateBackground" ],
+        "requiredPrivateInfos" : [
+            "chooseLocation",
+            "getLocation",
+            "chooseAddress",
+            "onLocationChange",
+            "startLocationUpdate",
+            "startLocationUpdateBackground"
+        ],
         "appid" : "wxda7779770f53e901",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
-            "minified" : true
+            "minified" : true,
+            "ignoreDevUnusedFiles" : false,
+            "ignoreUploadUnusedFiles" : false
         },
         "usingComponents" : true,
         "permission" : {
@@ -62,14 +185,19 @@
                 "desc" : "你的位置将用于小程序中相应业务位置服务使用"
             }
         },
-        "plugins" : {
-            // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
-            // "live-player-plugin" : {
-            //     "version" : "1.3.0",
-            //     "provider" : "wx2b03c6e691cd7370"
-            // }
-        }
+        "__usePrivacyCheck__" : true,
+        "plugins" : {}
     },
+    // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
+    // "routePlan" : {
+    //     "version" : "1.0.19",
+    //     "provider" : "wx50b5593e81dd937a"
+    // },
+    // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
+    // "live-player-plugin" : {
+    //     "version" : "1.3.5",
+    //     "provider" : "wx2b03c6e691cd7370"
+    // }
     "mp-alipay" : {
         "usingComponents" : true,
         "appid" : "2021001173639600"
@@ -96,7 +224,15 @@
         "appid" : "1110736292",
         "setting" : {
             "urlCheck" : false
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置将用于小程序中相应业务位置服务使用"
+            }
         }
+    },
+    "mp-kuaishou" : {
+        "appid" : "ks669910446353970565"
     },
     "h5" : {
         "sdkConfigs" : {
@@ -111,11 +247,12 @@
             "port" : 8082
         },
         "router" : {
-            "mode" : "history",
+            "mode" : "hash",
             "base" : "./"
         },
         "title" : "ShopXO",
         "template" : "template.h5.html"
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "locale" : "auto"
 }

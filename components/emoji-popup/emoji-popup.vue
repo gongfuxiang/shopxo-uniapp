@@ -1,10 +1,10 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
             <view class="emoji-popup bg-white">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="emoji-popup-content oh tc">
@@ -21,10 +21,11 @@
 <script>
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
-    import componentPopup from "../../components/popup/popup";
+    import componentPopup from "@/components/popup/popup";
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 popup_status: false,
                 emoji_list: []

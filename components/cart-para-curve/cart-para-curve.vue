@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="cart_icon_data != null && (cart_icon_data.status || 0) == 1" class="cart-para-curve-container pf round" :style="cart_icon_data.style">
             <image v-if="(cart_icon_data.icon || null) != null" class="cart-para-curve-icon round br" :src="cart_icon_data.icon"></image>
             <view v-else class="cart-para-curve-icon bg-red padding dis-inline-block round br"></view>
@@ -11,6 +11,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 cart_icon_data: null
             };
         },
@@ -30,8 +31,8 @@
             },
         },
         methods: {
-            // 初始（购物车对象、当前点击对象、图标）
-            init(cart, pos, icon = '') {
+            // 初始（购物车对象、当前点击对象、图标、支持tabbar位置）
+            init(cart, pos, icon = '', tabbar_pos = null) {
                 if((pos || null) != null) {
                     var self = this;
                     var btn_size = this.propBtnHeight;
@@ -52,16 +53,18 @@
                             // 默认购物车
                             default :
                                 // 无购物车菜单则结束执行
-                                var tabbar = app.globalData.data.tabbar_pages;
-                                var tabbar_cart_pos = tabbar.indexOf('/pages/cart/cart');
-                                if(tabbar_cart_pos == -1) {
-                                    return false;
+                                var tabbar = app.globalData.app_tabbar_pages();
+                                if(tabbar_pos === null) {
+                                    tabbar_pos = tabbar.indexOf('/pages/cart/cart');
+                                    if(tabbar_pos == -1) {
+                                        return false;
+                                    }
                                 }
                                 // 计算购物车菜单位置
                                 var tabbar_count = tabbar.length;
                                 var cart_top = info.screenHeight;
                                 var cart_width = info.screenWidth/tabbar_count;
-                                var cart_left = cart_width*tabbar_cart_pos;
+                                var cart_left = cart_width*tabbar_pos;
                         }
                     } else {
                         var temp = cart[0];
@@ -69,8 +72,14 @@
                         var cart_left = temp.left;
                         var cart_top = temp.top;
                     }
+                    /* #ifndef MP-ALIPAY */
                     var left = pos.changedTouches[0].clientX + btn_width/2 - btn_size/2;
                     var top = pos.changedTouches[0].clientY - btn_size;
+                    /* #endif */
+                    /* #ifdef MP-ALIPAY */
+                    var left = pos.detail.clientX + btn_width/2 - btn_size/2;
+                    var top = pos.detail.clientY - btn_size;
+                    /* #endif */
                     var x = cart_left + cart_width/2 - btn_size/2 - left;
                     var y = cart_top - btn_size - top;
                      if(self.cart_icon_data == null || (self.cart_icon_data.status || 0) == 0) {

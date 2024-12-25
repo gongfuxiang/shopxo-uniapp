@@ -1,70 +1,56 @@
 <template>
-    <view>
-        <!-- 评分 -->
-        <view v-if="goods_score != null" class="score-container oh padding-main">
-            <view class="score fl tc">
-                <view class="cr-base">综合评分</view>
-                <view class="value cr-main">{{goods_score.avg || '0.0'}}</view>
-            </view>
-            <view class="progress fr tc border-radius-main">
-                <block v-if="goods_score.avg > 0">
-                    <block v-for="(item, index) in goods_score.rating" :key="index">
-                        <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{item.name}}</view>
-                    </block>
-                </block>
-                <text v-else class="cr-gray">暂无评分</text>
-            </view>
-        </view>
-
-        <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view class="padding-horizontal-main goods-comment">
-                <view v-for="(item, index) in data_list" :key="index" class="goods-comment-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="oh nav br-b padding-bottom-sm">
-                        <image class="avatar dis-block fl" :src="item.user.avatar || static_url+'default-user.png'" mode="aspectFit"></image>
-                        <view class="base-nav fr">
-                            <text class="va-m">{{item.user.user_name_view}}</text>
-                            <view class="dis-inline-block va-m margin-left-sm">
-                                <uni-rate :value="item.rating" :readonly="true" :is-fill="false" :size="14" />
-                            </view>
-                            <view class="fr">
-                                <text class="cr-grey">{{item.add_time_date}}</text>
-                            </view>
-                        </view>
+    <view :class="theme_view">
+        <!-- 提示信息 -->
+        <block v-if="data_list_loding_status == 1">
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </block>
+        <block v-else>
+            <!-- 评分 -->
+            <view v-if="goods_score != null" class="score-container oh padding-main">
+                <view class="bg-white border-radius-main padding-main flex-row jc-sb align-c">
+                    <view class="score tc">
+                        <view class="cr-base">{{$t('goods-comment.goods-comment.dfmjxd')}}</view>
+                        <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
                     </view>
-                    <view class="base-content oh padding-sm">
-                        <view class="content cr-base text-size-sm">{{item.content}}</view>
-                        <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
-                            <block v-for="(iv, ix) in item.images" :key="ix">
-                                <image class="br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
+                    <view class="progress tc border-radius-main flex-1 flex-width">
+                        <block v-if="goods_score.avg > 0">
+                            <block v-for="(item, index) in goods_score.rating" :key="index">
+                                <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
                             </block>
-                        </view>
-                        <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{item.msg}}</view>
-                        <view v-if="item.is_reply == 1 && (item.reply || null) != null" class="reply br-t-dashed margin-top-lg padding-top-lg text-size-sm">
-                            <text class="cr-base">管理员回复：</text>
-                            <text class="reply-desc cr-main-pair">{{item.reply}}</text>
-                        </view>
+                        </block>
+                        <text v-else class="cr-grey">{{$t('goods-comment.goods-comment.1qh8s8')}}</text>
                     </view>
                 </view>
-
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
-        </scroll-view>
+
+            <!-- 列表 -->
+            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+                <view class="padding-horizontal-main goods-comment">
+                    <!-- 评价 -->
+                    <component-goods-comments :propData="data_list" :propIsReply="true" propClass="bg-white padding-main border-radius-main"></component-goods-comments>
+
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </view>
+            </scroll-view>
+        </block>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../components/no-data/no-data";
-    import componentBottomLine from "../../components/bottom-line/bottom-line";
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentGoodsComments from "@/components/goods-comments/goods-comments";
 
-    var static_url = app.globalData.get_static_url('home');
+    var static_url = app.globalData.get_static_url("home");
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 static_url: static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
@@ -74,25 +60,38 @@
                 data_page: 1,
                 goods_score: null,
                 params: null,
-                progress_class: ['progress-bar-danger', 'progress-bar-warning', 'progress-bar-secondary', '', 'progress-bar-success'],
+                progress_class: ["progress-bar-danger", "progress-bar-warning", "progress-bar-secondary", "", "progress-bar-success"],
             };
         },
         components: {
+            componentCommon,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentGoodsComments,
         },
-        props: {},
 
         onLoad(params) {
-            //params['goods_id']=9;
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
-                params: params
+                params: params,
             });
         },
-        
+
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
-            
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
@@ -100,7 +99,7 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.setData({
-                data_page: 1
+                data_page: 1,
             });
             this.get_data_list(1);
         },
@@ -117,15 +116,15 @@
             get_goods_score() {
                 uni.request({
                     url: app.globalData.get_request_url("goodsscore", "goods"),
-                    method: 'POST',
+                    method: "POST",
                     data: {
-                        goods_id: this.params.goods_id
+                        goods_id: this.params.goods_id,
                     },
-                    dataType: 'json',
-                    success: res => {
+                    dataType: "json",
+                    success: (res) => {
                         if (res.data.code == 0) {
                             this.setData({
-                                goods_score: res.data.data || null
+                                goods_score: res.data.data || null,
                             });
                         } else {
                             if (res.data.code != -400) {
@@ -134,8 +133,8 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
@@ -146,10 +145,9 @@
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_bottom_line_status: false,
-                        data_list_loding_status: 2
+                        data_list_loding_status: 2,
                     });
                 } else {
-                    var self = this;
                     // 分页是否还有数据
                     if ((is_mandatory || 0) == 0) {
                         if (this.data_bottom_line_status == true) {
@@ -159,30 +157,23 @@
                     }
 
                     // 是否加载中
-                    if(this.data_is_loading == 1) {
+                    if (this.data_is_loading == 1) {
                         return false;
                     }
                     this.setData({
                         data_is_loading: 1,
-                        data_list_loding_status: 1
                     });
 
-                    // 加载loding
-                    uni.showLoading({
-                        title: '加载中...'
-                    });
                     uni.request({
                         url: app.globalData.get_request_url("comments", "goods"),
-                        method: 'POST',
+                        method: "POST",
                         data: {
                             goods_id: this.params.goods_id,
-                            page: this.data_page
+                            page: this.data_page,
                         },
-                        dataType: 'json',
-                        success: res => {
-                            uni.hideLoading();
+                        dataType: "json",
+                        success: (res) => {
                             uni.stopPullDownRefresh();
-
                             if (res.data.code == 0) {
                                 if (res.data.data.data.length > 0) {
                                     if (this.data_page <= 1) {
@@ -200,44 +191,43 @@
                                         data_page_total: res.data.data.page_total,
                                         data_list_loding_status: 3,
                                         data_page: this.data_page + 1,
-                                        data_is_loading: 0
+                                        data_is_loading: 0,
                                     });
-                                    
+
                                     // 是否还有数据
                                     this.setData({
-                                        data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                        data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
                                     });
                                 } else {
                                     this.setData({
                                         data_list_loding_status: 0,
-                                        data_is_loading: 0
+                                        data_is_loading: 0,
                                     });
                                     if (this.data_page <= 1) {
                                         this.setData({
                                             data_list: [],
-                                            data_bottom_line_status: false
+                                            data_bottom_line_status: false,
                                         });
                                     }
                                 }
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_is_loading: 0
+                                    data_is_loading: 0,
                                 });
-                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                if (app.globalData.is_login_check(res.data, this, "get_data_list")) {
                                     app.globalData.showToast(res.data.msg);
                                 }
                             }
                         },
                         fail: () => {
-                            uni.hideLoading();
                             uni.stopPullDownRefresh();
                             this.setData({
                                 data_list_loding_status: 2,
-                                data_is_loading: 0
+                                data_is_loading: 0,
                             });
-                            app.globalData.showToast('服务器请求出错');
-                        }
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
                     });
                 }
             },
@@ -252,13 +242,13 @@
                 var index = e.currentTarget.dataset.index;
                 var ix = e.currentTarget.dataset.ix;
                 uni.previewImage({
-                    current: this.data_list[index]['images'][ix],
-                    urls: this.data_list[index]['images']
+                    current: this.data_list[index]["images"][ix],
+                    urls: this.data_list[index]["images"],
                 });
-            }
-        }
+            },
+        },
     };
 </script>
 <style>
-    @import './goods-comment.css';
+    @import "./goods-comment.css";
 </style>

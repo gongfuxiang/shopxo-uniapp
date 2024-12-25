@@ -1,0 +1,32 @@
+.cash .nav {
+    z-index: 102;
+}
+
+.scroll-box {
+    height: calc(100vh - 88rpx);
+}
+
+.convert-group-row .title {
+    min-width: 140rpx;
+}
+
+.recharge-del-btn {
+    padding: 0 60rpx;
+    font-size: 28rpx;
+    margin: 0 0 0 20rpx;
+    color: #0079ff !important;
+    background-color: #fff;
+    border: 2rpx solid #0079ff;
+}
+
+.recharge-del-btn:active {
+    opacity: 0.7;
+}
+
+/* 
+ * 钱包弹窗
+*/
+.popup_accounts_container .item {
+    background-color: #f4f4f4;
+    border-radius: 30rpx;
+}

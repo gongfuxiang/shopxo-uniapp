@@ -1,0 +1,14 @@
+/*
+* 商品信息
+*/
+.goods .goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods .goods-item:last-child {
+    border-bottom: 0;
+}
+.goods .goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}

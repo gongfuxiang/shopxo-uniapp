@@ -1,0 +1,838 @@
+/******************** 红色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-red .border-color-main-pair {
+	border-color: #F6C133 !important;
+}
+.theme-red .border-color-main-light {
+	border-color: #ffdbe2 !important;
+}
+.theme-red .border-color-main {
+	border-color: #ff0036 !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-red .br-main-pair {
+	border: 1px solid #F6C133 !important;
+}
+.theme-red .br-main-light {
+	border: solid 1px #ffdbe2 !important;
+}
+.theme-red .br-main {
+	border: 1px solid #ff0036 !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-red .br-dashed-main-pair {
+	border: dashed 1px #F6C133 !important;
+}
+.theme-red .br-dashed-main-light {
+	border: dashed 1px #ffdbe2 !important;
+}
+.theme-red .br-dashed-main {
+	border: dashed 1px #ff0036 !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-red .cr-main-pair {
+	color: #F6C133 !important;
+}
+.theme-red .cr-main-light {
+	color: #ffdbe2 !important;
+}
+.theme-red .cr-main {
+	color: #ff0036 !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-red .bg-main-pair {
+	background-color: #F6C133 !important;
+}
+.theme-red .bg-main-light {
+	background-color: #ffdbe2 !important;
+}
+.theme-red .bg-main {
+	background-color: #ff0036 !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-red .nav-active-line::before {
+	background: #ff0036;
+}
+.theme-red button[disabled].bg-main-pair {
+	background-color: #d0cbca !important;
+    border-color: #d0cbca !important;
+	color: #eaeaea !important;
+}
+.theme-red button[disabled].bg-main-light {
+	background-color: #ffe9ed !important;
+    border-color: #ffe9ed !important;
+	color: #ffa5b7 !important;
+}
+.theme-red button[disabled].bg-main {
+	background-color: #ffa7ba !important;
+    border-color: #ffa7ba !important;
+	color: #fff5f7 !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-red .title-left-border::before {
+	background: linear-gradient(180deg, #ff0036 0%, #ffdbe2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-red .nav-left-border::before {
+	background: #ff0036;
+}
+
+
+
+
+/******************** 黄色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-yellow .border-color-main-pair {
+    border-color: #FF0036 !important;
+}
+.theme-yellow .border-color-main-light {
+    border-color: #ffebd2 !important;
+}
+.theme-yellow .border-color-main {
+    border-color: #f6c133 !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-yellow .br-main-pair {
+    border: 1px solid #FF0036 !important;
+}
+.theme-yellow .br-main-light {
+    border: solid 1px #ffebd2 !important;
+}
+.theme-yellow .br-main {
+    border: 1px solid #f6c133 !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-yellow .br-dashed-main-pair {
+    border: dashed 1px #FF0036 !important;
+}
+.theme-yellow .br-dashed-main-light {
+    border: dashed 1px #ffebd2 !important;
+}
+.theme-yellow .br-dashed-main {
+    border: dashed 1px #f6c133 !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-yellow .cr-main-pair {
+    color: #FF0036 !important;
+}
+.theme-yellow .cr-main-light {
+    color: #ffebd2 !important;
+}
+.theme-yellow .cr-main {
+    color: #f6c133 !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-yellow .nav-active-line::before {
+    background: #f6c133;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-yellow .bg-main-pair {
+    background-color: #FF0036 !important;
+}
+.theme-yellow .bg-main-light {
+    background-color: #ffebd2 !important;
+}
+.theme-yellow .bg-main {
+    background-color: #f6c133 !important;
+}
+.theme-yellow button[disabled].bg-main-pair {
+    background-color: #b5a29c !important;
+    border-color: #b5a29c !important;
+    color: #8c766f !important;
+}
+.theme-yellow button[disabled].bg-main-light {
+    background-color: #fbebd6 !important;
+    border-color: #fbebd6 !important;
+    color: #ffcc40 !important;
+}
+.theme-yellow button[disabled].bg-main {
+    background-color: #fdd178 !important;
+    border-color: #fdd178 !important;
+    color: #fff7e7 !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-yellow .title-left-border::before {
+    background: linear-gradient(180deg, #f6c133 0%, #ffebd2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-yellow .nav-left-border::before {
+    background: #f6c133;
+}
+
+
+
+
+
+/******************** 黑色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-black .border-color-main-pair {
+	border-color: #D3B881 !important;
+}
+.theme-black .border-color-main-light {
+	border-color: #dcdcdc !important;
+}
+.theme-black .border-color-main {
+	border-color: #333333 !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-black .br-main-pair {
+	border: 1px solid #D3B881 !important;
+}
+.theme-black .br-main-light {
+	border: solid 1px #dcdcdc !important;
+}
+.theme-black .br-main {
+	border: 1px solid #333333 !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-black .br-dashed-main-pair {
+	border: dashed 1px #D3B881 !important;
+}
+.theme-black .br-dashed-main-light {
+	border: dashed 1px #dcdcdc !important;
+}
+.theme-black .br-dashed-main {
+	border: dashed 1px #333333 !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-black .cr-main-pair {
+	color: #D3B881 !important;
+}
+.theme-black .cr-main-light {
+	color: #dcdcdc !important;
+}
+.theme-black .cr-main {
+	color: #333333 !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-black .bg-main-pair {
+	background-color: #D3B881 !important;
+}
+.theme-black .bg-main-light {
+	background-color: #dcdcdc !important;
+}
+.theme-black .bg-main {
+	background-color: #333333 !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-black .nav-active-line::before {
+	background: #333333;
+}
+.theme-black button[disabled].bg-main-pair {
+	background-color: #bdece8 !important;
+    border-color: #bdece8 !important;
+	color: #edfbf9 !important;
+}
+.theme-black button[disabled].bg-main-light {
+	background-color: #efefef !important;
+    border-color: #efefef !important;
+	color: #b7b7b7 !important;
+}
+.theme-black button[disabled].bg-main {
+	background-color: #c7c7c7 !important;
+    border-color: #c7c7c7 !important;
+	color: #e2e2e2 !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-black .title-left-border::before {
+	background: linear-gradient(180deg, #333333 0%, #dcdcdc 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-black .nav-left-border::before {
+	background: #333333;
+}
+
+
+
+
+
+/******************** 绿色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-green .border-color-main-pair {
+	border-color: #20A5A2 !important;
+}
+.theme-green .border-color-main-light {
+	border-color: #cce8d2 !important;
+}
+.theme-green .border-color-main {
+	border-color: #20a53a !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-green .br-main-pair {
+	border: 1px solid #20A5A2 !important;
+}
+.theme-green .br-main-light {
+	border: solid 1px #cce8d2 !important;
+}
+.theme-green .br-main {
+	border: 1px solid #20a53a !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-green .br-dashed-main-pair {
+	border: dashed 1px #20A5A2 !important;
+}
+.theme-green .br-dashed-main-light {
+	border: dashed 1px #cce8d2 !important;
+}
+.theme-green .br-dashed-main {
+	border: dashed 1px #20a53a !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-green .cr-main-pair {
+	color: #20A5A2 !important;
+}
+.theme-green .cr-main-light {
+	color: #cce8d2 !important;
+}
+.theme-green .cr-main {
+	color: #20a53a !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-green .bg-main-pair {
+	background-color: #20A5A2 !important;
+}
+.theme-green .bg-main-light {
+	background-color: #cce8d2 !important;
+}
+.theme-green .bg-main {
+	background-color: #20a53a !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-green .nav-active-line::before {
+	background: #20a53a;
+}
+.theme-green button[disabled].bg-main-pair {
+	background-color: #cfaae2 !important;
+    border-color: #cfaae2 !important;
+	color: #e6deea !important;
+}
+.theme-green button[disabled].bg-main-light {
+	background-color: #daeade !important;
+    border-color: #daeade !important;
+	color: #9dcaa6 !important;
+}
+.theme-green button[disabled].bg-main {
+	background-color: #a8c5ae !important;
+    border-color: #a8c5ae !important;
+	color: #d8eadc !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-green .title-left-border::before {
+	background: linear-gradient(180deg, #20a53a 0%, #cce8d2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-green .nav-left-border::before {
+	background: #20a53a;
+}
+
+
+
+
+/******************** 橙色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-orange .border-color-main-pair {
+	border-color: #F6C133 !important;
+}
+.theme-orange .border-color-main-light {
+	border-color: #fde4d1 !important;
+}
+.theme-orange .border-color-main {
+	border-color: #fe6f04 !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-orange .br-main-pair {
+	border: 1px solid #F6C133 !important;
+}
+.theme-orange .br-main-light {
+	border: solid 1px #fde4d1 !important;
+}
+.theme-orange .br-main {
+	border: 1px solid #fe6f04 !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-orange .br-dashed-main-pair {
+	border: dashed 1px #F6C133 !important;
+}
+.theme-orange .br-dashed-main-light {
+	border: dashed 1px #fde4d1 !important;
+}
+.theme-orange .br-dashed-main {
+	border: dashed 1px #fe6f04 !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-orange .cr-main-pair {
+	color: #F6C133 !important;
+}
+.theme-orange .cr-main-light {
+	color: #fde4d1 !important;
+}
+.theme-orange .cr-main {
+	color: #fe6f04 !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-orange .bg-main-pair {
+	background-color: #F6C133 !important;
+}
+.theme-orange .bg-main-light {
+	background-color: #fde4d1 !important;
+}
+.theme-orange .bg-main {
+	background-color: #fe6f04 !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-orange .nav-active-line::before {
+	background: #fe6f04;
+}
+.theme-orange button[disabled].bg-main-pair {
+	background-color: #b5a29c !important;
+    border-color: #b5a29c !important;
+	color: #8c766f !important;
+}
+.theme-orange button[disabled].bg-main-light {
+	background-color: #fbe9dc !important;
+    border-color: #fbe9dc !important;
+	color: #f7c49e !important;
+}
+.theme-orange button[disabled].bg-main {
+	background-color: #f7cdad !important;
+    border-color: #f7cdad !important;
+	color: #f7efea !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-orange .title-left-border::before {
+	background: linear-gradient(180deg, #fe6f04 0%, #fde4d1 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-orange .nav-left-border::before {
+	background: #fe6f04;
+}
+
+
+
+
+/******************** 蓝色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-blue .border-color-main-pair {
+	border-color: #16CEFF !important;
+}
+.theme-blue .border-color-main-light {
+	border-color: #d1e4ff !important;
+}
+.theme-blue .border-color-main {
+	border-color: #1677ff !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-blue .br-main-pair {
+	border: 1px solid #16CEFF !important;
+}
+.theme-blue .br-main-light {
+	border: solid 1px #d1e4ff !important;
+}
+.theme-blue .br-main {
+	border: 1px solid #1677ff !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-blue .br-dashed-main-pair {
+	border: dashed 1px #16CEFF !important;
+}
+.theme-blue .br-dashed-main-light {
+	border: dashed 1px #d1e4ff !important;
+}
+.theme-blue .br-dashed-main {
+	border: dashed 1px #1677ff !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-blue .cr-main-pair {
+	color: #16CEFF !important;
+}
+.theme-blue .cr-main-light {
+	color: #d1e4ff !important;
+}
+.theme-blue .cr-main {
+	color: #1677ff !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-blue .bg-main-pair {
+	background-color: #16CEFF !important;
+}
+.theme-blue .bg-main-light {
+	background-color: #d1e4ff !important;
+}
+.theme-blue .bg-main {
+	background-color: #1677ff !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-blue .nav-active-line::before {
+	background: #1677ff;
+}
+.theme-blue button[disabled].bg-main-pair {
+	background-color: #efcbf5 !important;
+    border-color: #efcbf5 !important;
+	color: #faf1fb !important;
+}
+.theme-blue button[disabled].bg-main-light {
+	background-color: #e3eefd !important;
+    border-color: #e3eefd !important;
+	color: #b9d3f7 !important;
+}
+.theme-blue button[disabled].bg-main {
+	background-color: #bcd3f5 !important;
+    border-color: #bcd3f5 !important;
+	color: #eef4fd !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-blue .title-left-border::before {
+	background: linear-gradient(180deg, #1677ff 0%, #d1e4ff 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-blue .nav-left-border::before {
+	background: #1677ff;
+}
+
+
+
+
+/******************** 棕色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-brown .border-color-main-pair {
+	border-color: #8B1313 !important;
+}
+.theme-brown .border-color-main-light {
+	border-color: #eadcd2 !important;
+}
+.theme-brown .border-color-main {
+	border-color: #8B4513 !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-brown .br-main-pair {
+	border: 1px solid #8B1313 !important;
+}
+.theme-brown .br-main-light {
+	border: solid 1px #eadcd2 !important;
+}
+.theme-brown .br-main {
+	border: 1px solid #8B4513 !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-brown .br-dashed-main-pair {
+	border: dashed 1px #8B1313 !important;
+}
+.theme-brown .br-dashed-main-light {
+	border: dashed 1px #eadcd2 !important;
+}
+.theme-brown .br-dashed-main {
+	border: dashed 1px #8B4513 !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-brown .cr-main-pair {
+	color: #8B1313 !important;
+}
+.theme-brown .cr-main-light {
+	color: #eadcd2 !important;
+}
+.theme-brown .cr-main {
+	color: #8B4513 !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-brown .bg-main-pair {
+	background-color: #8B1313 !important;
+}
+.theme-brown .bg-main-light {
+	background-color: #eadcd2 !important;
+}
+.theme-brown .bg-main {
+	background-color: #8B4513 !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-brown .nav-active-line::before {
+	background: #8B4513;
+}
+.theme-brown button[disabled].bg-main-pair {
+	background-color: #a6ded9 !important;
+    border-color: #a6ded9 !important;
+	color: #dff1ef !important;
+}
+.theme-brown button[disabled].bg-main-light {
+	background-color: #f1e6de !important;
+    border-color: #f1e6de !important;
+	color: #d6bdad !important;
+}
+.theme-brown button[disabled].bg-main {
+	background-color: #e4cdbc !important;
+    border-color: #e4cdbc !important;
+	color: #f9f4f0 !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-brown .title-left-border::before {
+	background: linear-gradient(180deg, #8B4513 0%, #eadcd2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-brown .nav-left-border::before {
+	background: #8B4513;
+}
+
+
+
+
+/******************** 紫色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-purple .border-color-main-pair {
+	border-color: #3C8CEC !important;
+}
+.theme-purple .border-color-main-light {
+	border-color: #d6cbfb !important;
+}
+.theme-purple .border-color-main {
+	border-color: #623cec !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-purple .br-main-pair {
+	border: 1px solid #3C8CEC !important;
+}
+.theme-purple .br-main-light {
+	border: solid 1px #d6cbfb !important;
+}
+.theme-purple .br-main {
+	border: 1px solid #623cec !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-purple .br-dashed-main-pair {
+	border: dashed 1px #3C8CEC !important;
+}
+.theme-purple .br-dashed-main-light {
+	border: dashed 1px #d6cbfb !important;
+}
+.theme-purple .br-dashed-main {
+	border: dashed 1px #623cec !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-purple .cr-main-pair {
+	color: #3C8CEC !important;
+}
+.theme-purple .cr-main-light {
+	color: #d6cbfb !important;
+}
+.theme-purple .cr-main {
+	color: #623cec !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-purple .bg-main-pair {
+	background-color: #3C8CEC !important;
+}
+.theme-purple .bg-main-light {
+	background-color: #d6cbfb !important;
+}
+.theme-purple .bg-main {
+	background-color: #623cec !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-purple .nav-active-line::before {
+	background: #623cec;
+}
+.theme-purple button[disabled].bg-main-pair {
+	background-color: #d8aed8 !important;
+    border-color: #d8aed8 !important;
+	color: #efe4ef !important;
+}
+.theme-purple button[disabled].bg-main-light {
+	background-color: #dcd6f1 !important;
+    border-color: #dcd6f1 !important;
+	color: #b2a7dc !important;
+}
+.theme-purple button[disabled].bg-main {
+	background-color: #bdb0ef !important;
+    border-color: #bdb0ef !important;
+	color: #e7e4f1 !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-purple .title-left-border::before {
+	background: linear-gradient(180deg, #623cec 0%, #d6cbfb 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-purple .nav-left-border::before {
+	background: #623cec;
+}

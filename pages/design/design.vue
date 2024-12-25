@@ -1,11 +1,11 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null">
             <!-- 搜索 -->
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
                 <view class="padding-main bg-white">
-                    <component-search propPlaceholder="输入商品名称搜索"></component-search>
+                    <component-search propClass="br" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                 </view>
             </block>
 
@@ -21,21 +21,26 @@
         <view v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentLayout from "../../components/layout/layout";
-    import componentSearch from "../../components/search/search";
-    import componentNoData from "../../components/no-data/no-data";
-    import componentBottomLine from "../../components/bottom-line/bottom-line";
-
+    import componentCommon from '@/components/common/common';
+    import componentLayout from "@/components/layout/layout";
+    import componentSearch from "@/components/search/search";
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                load_status: 0,
                 params: null,
                 data: null,
                 layout_data: [],
@@ -45,21 +50,34 @@
         },
 
         components: {
+            componentCommon,
             componentLayout,
             componentSearch,
             componentNoData,
             componentBottomLine
         },
-        props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
-                params: params
+                params: app.globalData.launch_params_handle(params),
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.get_data();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
         },
 
         // 下拉刷新
@@ -69,25 +87,48 @@
 
         methods: {
             // 获取数据
-            get_data() {
+            get_data(params = {}) {
+                // 还没有数据则读取缓存
+                var cache_key = app.globalData.data.cache_design_page_data_key+(this.params.id || 0);
+                if (this.load_status == 0) {
+                    // 本地缓存数据
+                    var upd_data = uni.getStorageSync(cache_key) || null;
+                    if (upd_data != null) {
+                        // 先使用缓存数据展示
+                        this.setData(upd_data);
+
+                        // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
+                        params['is_cache'] = 0;
+                    }
+                } else {
+                    // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
+                    params['is_cache'] = 0;
+                }
                 uni.request({
                     url: app.globalData.get_request_url("index", "design"),
                     method: 'POST',
-                    data: {
-                        "id": this.params.id || 0
-                    },
+                    data: {...this.params, ...params},
                     dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            this.setData({
+                            var upd_data = {
                                 data: (data.data || null) != null && data.data.length != 0 ? data.data : null,
                                 layout_data: data.layout_data || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
-                            });
+                            };
+                            this.setData(upd_data);
+
+                            // 存储缓存
+                            uni.setStorageSync(cache_key, upd_data);
+
+                            // 是否需要重新加载数据
+                            if (parseInt(data.is_result_data_cache || 0) == 1) {
+                                this.get_data({ is_cache: 0 });
+                            }
 
                             if ((this.data || null) != null) {
                                 // 基础自定义分享
@@ -106,7 +147,7 @@
                                     title: this.data.name
                                 });
                             }
-                            
+
                             // 分享菜单处理
                             app.globalData.page_share_handle(this.share_info);
                         } else {
@@ -116,15 +157,20 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
+
+                        // 非首次状态
+                        this.setData({
+                            load_status: 1
+                        });
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            load_status: 1,
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }

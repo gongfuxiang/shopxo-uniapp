@@ -2,3 +2,15 @@
     width: 80rpx;
     height: 80rpx !important;
 }
+
+/**
+ * 表单排版
+ */
+.form-container .form-gorup:not(:last-child) {
+    border-bottom: 2rpx solid #F5F5F5;
+}
+
+.bottom-fixed button {
+    height: 88rpx;
+    line-height: 88rpx;
+}

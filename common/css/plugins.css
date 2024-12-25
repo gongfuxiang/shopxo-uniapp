@@ -12,12 +12,8 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.plugins-coupon-container .v-left .base {
-    color: #D2364C;
-}
 .plugins-coupon-container .v-left .base .symbol {
     font-family: Verdana, Tahoma;
-    font-weight: 700;
 }
 .plugins-coupon-container .v-left .base .price {
     font-weight: 700;
@@ -35,7 +31,6 @@
     margin-top: 10rpx;
 }
 .plugins-coupon-container .v-right {
-    background: #d2364c;
     width: 140rpx;
     height: 180rpx;
     color: #fff;
@@ -126,6 +121,7 @@
 .plugins-label-bottom-right {
     right: 0;
 }
+
 /**
  * 商品列表标签处理
  */
@@ -147,7 +143,7 @@
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%); 
+    -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
 }
 
@@ -162,6 +158,7 @@
 .plugins-blog-list .base {
     width: calc(100% - 220rpx);
 }
+
 /*
  * 博客 - 滚动
  */
@@ -172,9 +169,10 @@
 .plugins-blog-rolling-list .item .blog-title {
     left: 0;
     bottom: 0;
-    width: calc(100% - 36rpx);
-    background-color: rgba(0,0,0,.5);
+    width: calc(100% - 26rpx);
+    background-color: rgba(0, 0, 0, .5);
 }
+
 /**
  * 博客 - 九方格
  */
@@ -192,64 +190,73 @@
 }
 .plugins-blog-grid-list .item .blog-img {
     width: 100%;
-    height: 230rpx !important;
+    height: 220rpx !important;
 }
 
 /**
 * 门店 - 数据列表
 */
 .plugins-realstore-data-list .item .address-content {
-    width: calc(100% - 220rpx);
+    width: calc(100% - 150rpx);
 }
-.plugins-realstore-data-list .item .icon-list {
+
+.plugins-realstore-data-list .item .address-distance {
     right: 20rpx;
-    bottom: 20rpx;
+    bottom: 18rpx;
+}
+
+.plugins-realstore-data-list .item .icon-list {
+    right: 24rpx;
+    top: 36rpx;
 }
 .plugins-realstore-data-list .item .icon-list .icon-item {
-    width: 50rpx;
-    height: 50rpx;
-    line-height: 50rpx;
+    width: 46rpx;
+    height: 46rpx;
+    line-height: 46rpx;
 }
 .plugins-realstore-data-list .item .icon-item .badge-icon {
     top: -10px;
     right: 2px;
 }
+.plugins-realstore-data-list .item .icon-list .icon-item {
+    background: rgba(226, 44, 8, 0.08);
+    border-radius: 8rpx;
+    color: #E46248;
+}
 .plugins-realstore-data-list .item .icon-list .icon-item:not(:last-child) {
-    margin-right: 15rpx;
+    margin-right: 26rpx;
 }
 .plugins-realstore-data-list .item .logo {
-    width: 110rpx;
-    height: 110rpx !important;
+    width: 100rpx;
+    height: 100rpx !important;
 }
 .plugins-realstore-data-list .item .base-right {
-    width: calc(100% - 130rpx);
+    padding-left: 14rpx;
 }
 .plugins-realstore-data-list .item .base-right .title {
     width: calc(100% - 110rpx);
-}
-.plugins-realstore-data-list .item .base-right .status-icon {
-    border-top-left-radius: 50rpx;
-    border-bottom-left-radius: 50rpx;
-    top: 20rpx;
-    right: -1px;
-    padding: 5rpx 20rpx;
-    box-shadow: -1px 1px 3px rgb(0 0 0 / 10%);
 }
 
 /**
  * 多商户 - 数据列表
  */
 .plugins-shop-data-list .item .logo {
-    width: 120rpx;
-    height: 120rpx !important;
+    width: 100rpx;
+    height: 100rpx !important;
+}
+.plugins-shop-data-list .item .item-right-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .plugins-shop-data-list .item .right-content {
-    width: calc(100% - 190rpx);
+    padding-left: 14rpx;
     margin-right: 50rpx;
 }
 .plugins-shop-data-list .item .auth-icon .icon {
-    width: 36rpx;
-    height: 36rpx !important;
+    width: 28rpx;
+    height: 28rpx !important;
     margin-right: 10rpx;
 }
 .plugins-shop-data-list .item .desc {

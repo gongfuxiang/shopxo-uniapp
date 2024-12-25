@@ -1,0 +1,42 @@
+.convert .nav {
+    z-index: 102;
+}
+
+.scroll-box {
+    height: calc(100vh - 88rpx);
+}
+
+.recharge-apy-btn,
+.recharge-del-btn {
+    padding: 0 60rpx;
+    font-size: 28rpx;
+    margin: 0 0 0 20rpx;
+}
+
+.recharge-apy-btn:active,
+.recharge-del-btn:active {
+    opacity: 0.7;
+}
+
+.recharge-del-btn {
+    color: #0079ff !important;
+    background-color: #fff;
+    border: 2rpx solid #0079ff;
+}
+
+.recharge-apy-btn {
+    background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%), #0079FF;
+    color: #fff !important;
+}
+
+.convert-group-row .title {
+    min-width: 140rpx;
+}
+
+/* 
+ * 钱包弹窗
+*/
+.popup_accounts_container .item {
+    background-color: #f4f4f4;
+    border-radius: 30rpx;
+}

@@ -14,11 +14,10 @@
 .progress {
     overflow: hidden;
     height: 40rpx;
-    margin-top: 35rpx;
     background-color: #eee;
-    width: calc(100% - 200rpx);
+    margin-left: 24rpx;
 }
-.progress .cr-gray {
+.progress .cr-grey {
     font-size: 24rpx;
     line-height: 40rpx;
 }

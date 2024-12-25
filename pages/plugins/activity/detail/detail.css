@@ -4,6 +4,7 @@
 .base-container {
     height: 280rpx;
     background-size: cover;
+    background-position: center;
 }
 .base-container .text {
     top: 0;

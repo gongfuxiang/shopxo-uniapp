@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="data_list_loding_status == 3">
             <view class="map-container pr">
                 <map class="wh-auto ht-auto"
@@ -47,9 +47,9 @@
                                     </view>
                                 </view>
                                 <view class="text-size-xs margin-top-sm">
-                                    <text class="cr-grey">下单总数</text>
+                                    <text class="cr-grey">{{$t('map.map.ivy154')}}</text>
                                     <text class="cr-base fw-b margin-left-sm">{{item.order_count}}</text>
-                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">查看订单</button>
+                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">{{$t('map.map.557z8x')}}</button>
                                 </view>
                             </view>
                         </view>
@@ -64,16 +64,20 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-
+    import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
     var plugins_static_url = app.globalData.get_static_url('distribution', true);
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
@@ -92,11 +96,15 @@
         },
 
         components: {
+            componentCommon,
             componentNoData
         },
-        props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params
             });
@@ -105,21 +113,23 @@
             this.init();
         },
 
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+        },
+
         methods: {
             // 获取数据
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: "/pages/login/login?event_callback=init"
-                        });
-                        return false;
-                    } else {
-                        // 位置权限、回调并获取数据
-                        app.globalData.get_location_check('scope.userLocation', this, 'location_back_handle');
-                    }
+                    // 位置权限、回调并获取数据
+                    app.globalData.get_location_check('scope.userLocation', this, 'location_back_handle');
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
@@ -165,15 +175,15 @@
                             });
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                                 data_list_loding_msg: res.data.msg
                             });
                         }
                     },
                     fail: () => {
                         this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_status: 3,
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
                     }
                 });
@@ -206,9 +216,7 @@
                     });
                 } else {
                     if(app.globalData.data.is_distribution_map_force_location == 1) {
-                        uni.navigateTo({
-                            url: '/pages/common/open-setting-location/open-setting-location?is_check_success_back=1'
-                        });
+                        app.globalData.url_open('/pages/common/open-setting-location/open-setting-location?is_check_success_back=1');
                     } else {
                         // 获取数据
                         self.get_data();
@@ -232,7 +240,7 @@
                     } else {
                         this.setData({
                             map_center_icon_status: 1,
-                        })
+                        });
                     }
                 }
             },
@@ -295,9 +303,7 @@
             // 用户订单事件
             user_order_event(e) {
                 var value = e.currentTarget.dataset.value;
-                uni.navigateTo({
-                    url: '/pages/plugins/distribution/order/order?uid='+value
-                });
+                app.globalData.url_open('/pages/plugins/distribution/order/order?uid='+value);
             }
         }
     };

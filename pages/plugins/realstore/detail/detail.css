@@ -1,58 +1,17 @@
-/**
- * 头部
- */
-.header {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-bottom-left-radius: 100rpx;
-    border-bottom-right-radius: 100rpx;
-    height: 310rpx;
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
-    height: 360rpx;
-    /* #endif */
-}
-/**
- * 顶部
- */
-.header-top {
-    padding-right: 250rpx;
-    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
-    padding-top: 20rpx !important;
-    padding-right: 20rpx;
-    /* #endif */
-    /* #ifdef H5 || APP */
-    padding-right: 20rpx;
-    /* #endif */
-    padding-bottom: 10px;
-}
-.nav-back {
-    width: 60rpx;
-    background: rgb(0 0 0 / 60%);
-    height: 60rpx;
-    line-height: 60rpx;
-}
-.nav-search {
-    width: calc(100% - 90rpx);
-    /* #ifdef MP-ALIPAY || MP-TOUTIAO || H5 || APP */
-    width: 100%;
-    /* #endif */
+page {
+    background: #fff;
 }
 
 /**
  * 头部内容
  */
 .header-content {
-    top: 140rpx;
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
-    top: 200rpx;
-    /* #endif */
-    width: calc(100% - 80rpx);
+    margin-top: 20rpx;
     box-shadow: 0 0 8px rgb(0 0 0 / 6%);
-    min-height: 172rpx;
+    min-height: 242rpx;
 }
 .header-content .address-content {
-    width: calc(100% - 220rpx);
+    max-width: calc(100% - 100rpx);
 }
 .header-content .icon-list {
     right: 20rpx;
@@ -63,6 +22,12 @@
     height: 50rpx;
     line-height: 50rpx;
 }
+.header-content .icon-list .icon-item.red {
+    background-color: rgba(226, 44, 8, 0.08);
+}
+.header-content .icon-list .icon-item.green {
+    background-color: #EEF9E9;
+}
 .header-content .icon-item .badge-icon {
     top: -10px;
     right: 2px;
@@ -71,22 +36,19 @@
     margin-right: 15rpx;
 }
 .header-content .logo {
-    width: 110rpx;
-    height: 110rpx !important;
-}
-.header-content .base-right {
-    width: calc(100% - 130rpx);
+    width: 100rpx;
 }
 .header-content .base-right .title-length-limit {
-    width: calc(100% - 110rpx);
+    max-width: calc(100% - 100rpx);
+}
+.header-content .base-right .title-length-limit .title-content.switch {
+    max-width: calc(100% - 44rpx);
 }
 .header-content .base-right .use-type-icon {
-    border-top-left-radius: 50rpx;
-    border-bottom-left-radius: 50rpx;
-    top: 20rpx;
-    right: -1px;
-    padding: 5rpx 20rpx;
-    box-shadow: -1px 1px 3px rgb(0 0 0 / 10%);
+    border-top-left-radius: 8rpx;
+    border-bottom-left-radius: 8rpx;
+    right: 0;
+    padding: 5rpx 10rpx 5rpx 20rpx;
 }
 
 /**
@@ -101,43 +63,19 @@
 }
 
 /**
- * 中间内容
- */
-.content {
-    margin-top: 95rpx;
-    height: calc(100vh - 455rpx);
-    /* #ifdef H5 || APP */
-    height: calc(100vh - 505rpx);
-    /* #endif */
-    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
-    height: calc(100vh - 415rpx);
-    /* #endif */
-}
-
-/**
 * 左侧导航
 */
 .left-content-actual {
-    padding-bottom: 120rpx;
+    padding-bottom: 160rpx;
 }
 .left-content {
-    width: 180rpx;
+    width: 186rpx;
 }
 .left-content .item {
     height: 80rpx;
     line-height: 80rpx;
     padding: 0 10rpx;
-    border-left: 3px solid #fff;
-    border-right: 3px solid #fff;
     overflow: hidden;
-}
-.left-content .item:not(:last-child) {
-    border-bottom: 1px solid #f1f1f1 !important;
-}
-.left-content .active {
-    background: #f5f5f5;
-    border-width: 0 0 0 3px;
-    border-right: 3px solid #f5f5f5 !important;
 }
 .left-content .badge-icon {
     top: -16rpx;
@@ -148,25 +86,29 @@
 *  右侧内容
 */
 .right-content-actual {
-    padding-bottom: calc(105rpx + env(safe-area-inset-bottom));
+    padding-bottom: calc(145rpx + env(safe-area-inset-bottom));
 }
-.right-content {
-    width: calc(100% - 220rpx);    
+.right-content-actual.base-mode-goods {
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
 }
-.right-content-actual .word-list {
+.goods-list-top-nav {
     position: sticky;
     top: 0;
     right: 0;
-    background: #f5f5f5;
-    z-index: 1;
-    padding: 0 1px 20rpx 1px;
+    z-index: 3;
+}
+.nav-sort-content .sort-item {
+    height: 80rpx;
+    line-height: 80rpx;
+    width: 20%;
+}
+.nav-sort-content .sort-item .sort-icon {
+    width: 26rpx;
+    height: 26rpx !important;
 }
 .goods-list .goods-img {
     width: 160rpx;
     height: 160rpx !important;
-}
-.goods-list .goods-base {
-    width: calc(100% - 180rpx);
 }
 .goods-list .goods-base-content {
     min-height: 100rpx;
@@ -182,73 +124,40 @@
 .goods-list .goods-base .buy-number {
     min-width: 32rpx;
 }
-
-/**
- * 底部导航
- */
-.botton-nav {
-    width: calc(100% - 40rpx);
-    left: auto;
-    bottom: calc(20rpx + env(safe-area-inset-bottom));
-    line-height: 80rpx;
-    z-index: 6;
-    max-width: calc(800px - 40rpx);
-    margin-left: 20rpx;
-}
-.botton-nav .cart .badge-icon {
-    top: -20rpx;
-    right: -2rpx;
-}
-.botton-nav .cart-total-price {
-    width: calc(100% - 260rpx);
-}
-.botton-nav button {
-    top: 0;
-    right: 0;
-    line-height: 88rpx;
-    height: 88rpx;
-    border: 0;
-    /* #ifdef MP-QQ */
-    padding-top: 0;
-    padding-bottom: 0;
-    /* #endif */
+.goods-list .goods-item.item-highlight {
+    box-shadow: 0rpx 8rpx 12rpx 0px rgba(0, 0, 0, 0.06);
+    background: #F7FBF6 !important;
 }
 
 /**
- * 购物车
+ * 独立模式下底部操作导航
  */
-.cart-mask {
-    left: 0;
-    top: 0;
-    background: rgb(0, 0, 0, 0.6);
-    z-index: 5;
+.button-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.cart-content {
-    left: 20rpx;
-    bottom: calc(130rpx + env(safe-area-inset-bottom));
-    width: calc(100% - 40rpx);
-    z-index: 6;
-    max-width: calc(800px - 40rpx);
+.button-list .item {
+    height: 70rpx;
+    padding: 0 40rpx;
 }
-.cart-content .cart-list {
-    max-height: 60vh;
+.button-list .button-left {
+    display: flex;
+    width: 50%;
+    justify-content: space-evenly;
 }
-.cart-content .cart-list .goods-img {
-    width: 120rpx;
-    height: 120rpx !important;
+.button-list .button-right {
+    display: flex;
+    width: 50%;
 }
-.cart-content .cart-list .goods-base {
-    width: calc(100% - 140rpx);
-}
-.cart-content .cart-list .goods-base-content {
-    min-height: 60rpx;
+.button-list .button-right button {
+    line-height: 70rpx;
+    padding: 0;
 }
 
 /**
- * 客服弹窗
+ * 阴影效果
  */
-.header-service {
-    left: auto;
-    right: 20rpx;
-    top: 435rpx;
+.box-shadow {
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
 }

@@ -4,22 +4,23 @@
 .home-top-nav-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
-    min-height: calc(var(--status-bar-height) + 130rpx);
-    /* #ifdef H5 */
-    min-height: calc(var(--status-bar-height) + 160rpx);
+    padding-top: calc(var(--status-bar-height) + 5px);
+}
+.home-top-nav {
+    min-height: 56rpx;
+    /* #ifdef MP-ALIPAY */
+    padding-left: 60rpx;
     /* #endif */
-    padding-top: calc(var(--status-bar-height) + 8px);
+}
+.home-top-nav-location {
+    max-width: calc(100% - 200rpx);
 }
 .home-top-nav-logo {
     text-align: left;
-    padding: 2px 250rpx 10rpx 20rpx;
-    height: 37px;
-    /* #ifdef H5 || MP-TOUTIAO || APP */
-    padding-top: 0;
-    /* #endif */
+    height: 56rpx;
 }
 .home-top-nav-logo-image {
-    width: 240rpx;
+    width: 56rpx;
     height: 100% !important;
 }
 .home-top-nav-logo-title {
@@ -33,18 +34,12 @@
 /**
  * 右侧图标导航
  */
-/* #ifdef H5 || MP-TOUTIAO || APP */
+/* #ifdef H5 || APP */
 .nav-top-right-icon {
-    top: -34px;
-    right: 28rpx;
-    z-index: 12;
-    line-height: 28px;
-    /* #ifdef MP-TOUTIAO */
-    top: 2px;
-    /* #endif */
+    line-height: 56rpx;
 }
 .nav-top-right-icon .item:not(:last-child) {
-    margin-right: 20rpx;
+    margin-right: 40rpx;
 }
 .nav-top-right-icon .badge-icon {
     top: -10px;
@@ -56,37 +51,35 @@
  * 搜索
  */
 .search-fixed-seat {
-    padding-top: 70rpx;
-	/* #ifdef MP-TOUTIAO */
-	padding-top: 60rpx;
-	/* #endif */
+    padding-top: 78rpx;
+}
+.search-fixed-seat.nav-enable-search {
+    padding-top: 146rpx;
 }
 .search-content-fixed {
     position: fixed !important;
     top: 0;
     z-index: 11;
-    padding-bottom: 20rpx;
     width: 100%;
+}
+.search-content-fixed-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
-    padding-top: 25px;
-    /* #ifdef H5 || APP */
+    background-position: top;
+    padding-bottom: 6rpx;
+    /* #ifdef H5 */
     padding-top: 15rpx !important;
-    padding-bottom: 15rpx !important;
     /* #endif */
 }
-/* #ifdef H5 || MP-TOUTIAO || APP */
+.search-content-fixed-content.nav-enable-search {
+    padding-bottom: 24rpx;
+}
+
+/* #ifdef H5 || MP-TOUTIAO */
 .search-content-fixed .nav-top-right-icon {
-    top: 9px !important;
+    top: 8px !important;
 }
 /* #endif */
-
-/**
- * 轮播
- */
-.banner-content {
-    margin-top: 26rpx;
-}
 
 /**
  * 推荐文章
@@ -101,20 +94,31 @@
 .article-list .right-content swiper {
     height: 40rpx;
 }
+.notice {
+    margin: 20rpx 0 14rpx 0;
+}
 
 /*
  * 限时秒杀 - 插件
  */
-.plugins-seckill-data .icon {
-    max-width: 200rpx;
-    max-height: 160rpx;
+
+.plugins-seckill-data {
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-color: #fff;
+
 }
-.plugins-seckill-data .goods-list swiper {
-    height: 435rpx !important;
+.plugins-seckill-data .icon {
+    max-width: 140rpx;
+    max-height: 34rpx;
+}
+.plugins-seckill-data .goods-list .swiper {
+    height: 310rpx !important;
 }
 .plugins-seckill-data .goods-list .item .goods-img {
     width: 100%;
-    height: 240rpx;
+    height: 210rpx;
 }
 .plugins-seckill-data .goods-list .goods-base .icon {
     right: 20rpx;
@@ -126,9 +130,6 @@
  */
 .plugins-salerecords swiper {
     height: 506rpx;
-}
-.plugins-salerecords swiper-item {
-    border-bottom: 1px solid #f7f7f7;
 }
 .plugins-salerecords image {
     width: 40rpx !important;
@@ -157,14 +158,13 @@
 /**
  * 首页中间广告- 插件
  */
+.plugins-homemiddleadv {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20rpx;
+}
 .plugins-homemiddleadv .item {
-    width: calc(50% - 10rpx);
-}
-.plugins-homemiddleadv .item:nth-of-type(2n + 1) {
-    float: left;
-}
-.plugins-homemiddleadv .item:nth-of-type(2n) {
-    float: right;
+    flex: 1 1 calc(50% - 20rpx);
 }
 
 /**
@@ -175,12 +175,17 @@
     left: 0;
     top: 0;
     z-index: 20;
-    background-color: rgb(0 0 0 / 0.7);
+    background-color: rgb(0 0 0 / 0.3);
 }
 .plugins-popupscreen .close {
     right: 10%;
     top: 0;
     z-index: 1;
+    width: 46rpx;
+    height: 46rpx;
+    line-height: 46rpx;
+    background-color: rgb(4 4 4 / 0.3);
+    border: solid 1px #a9a9a9;
 }
 .plugins-popupscreen .content {
     margin-top: calc(50vh - 200rpx) !important;
