@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
     <view class="article-tabs ou" :class="'article-tabs-' + propKey" :style="style_container">
-        <view class="flex-col ou" :style="style_img_container">
+        <view class="ou" :style="style_img_container">
             <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="article_container">
                 <view :style="article_img_container">
