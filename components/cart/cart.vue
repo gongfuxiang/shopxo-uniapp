@@ -56,7 +56,7 @@
                                     <view class="cart-goods-item flex-row align-c bs-bb padding-main pr wh-auto" :class="(common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                         <!-- 选择 -->
                                         <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i">
-                                            <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
+                                            <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
                                             <view>

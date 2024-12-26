@@ -182,7 +182,7 @@
                                 <block v-if="plugins_points_data.is_pure_exchange_modal == undefined || plugins_points_data.is_pure_exchange_modal != 1 || plugins_points_data.discount_type != 1">
                                     <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
                                     <view class="fr cp" @tap="points_event">
-                                        <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
+                                        <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="40rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
                                     </view>
                                 </block>
                             </view>
@@ -228,7 +228,7 @@
                                         </view>
                                     </view>
                                     <view>
-                                        <iconfont :name="plugins_coin_payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                        <iconfont :name="plugins_coin_payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="40rpx"></iconfont>
                                     </view>
                                 </view>
                             </block>
@@ -243,7 +243,7 @@
                                         <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}</text>
                                     </view>
                                     <view>
-                                        <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                        <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="40rpx"></iconfont>
                                     </view>
                                 </view>
                             </view>

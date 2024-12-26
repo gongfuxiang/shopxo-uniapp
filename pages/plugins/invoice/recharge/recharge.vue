@@ -9,7 +9,7 @@
                                 <iconfont
                                     propClass="margin-right-sm pr top-xs"
                                     :name="select_ids.indexOf(item.id) != -1 ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'"
-                                    size="34rpx"
+                                    size="40rpx"
                                     :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
                                 ></iconfont>
                             </view>
