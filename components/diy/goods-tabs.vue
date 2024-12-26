@@ -107,13 +107,9 @@
                     if (new_tabs_background_img.length > 0) {
                         new_tabs_background_img += 'background-position: top left;';
                     }
-                    this.setData({
-                        tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
-                    });
+                    this.tabs_background = (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img;
                 } else {
-                    this.setData({
-                        tabs_background: 'background:transparent',
-                    });
+                    this.tabs_background = 'background:transparent';
                 }
             },
             propKey(val) {
@@ -167,7 +163,6 @@
                 }
                 let common_style = Object.assign({}, new_style.common_style, {
                     padding_top: 0,
-
                 });
                 const { tabs_bg_color_list = [], tabs_bg_direction = '', tabs_bg_background_img_style = '', tabs_bg_background_img = [], tabs_radius = this.old_radius, tabs_padding = this.old_padding, shop_content_color_list = [], shop_content_direction = '', shop_content_background_img_style = '', shop_content_background_img = [], shop_content_margin = this.old_margin, shop_content_padding = this.old_padding, shop_content_radius = this.old_radius } = new_style;
                 // 选项卡背景设置
@@ -176,14 +171,14 @@
                     direction: tabs_bg_direction,
                     background_img_style: tabs_bg_background_img_style,
                     background_img: tabs_bg_background_img,
-                }
+                };
                 // 商品区域背景设置
                 const shop_content_data = {
                     color_list: shop_content_color_list,
                     direction: shop_content_direction,
                     background_img_style: shop_content_background_img_style,
                     background_img: shop_content_background_img,
-                }
+                };
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     goods_tabs: new_data,

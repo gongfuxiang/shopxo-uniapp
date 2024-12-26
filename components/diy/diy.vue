@@ -252,6 +252,9 @@
                 data_alone_row_space: 0,
                 content_padding: '',
                 outer_container_padding: 0,
+
+                // 滚动延迟器
+                scroll_throttle_timeout: null,
             };
         },
         watch: {
@@ -288,7 +291,7 @@
 
             // 初始化
             init() {
-                const { header = {}, diy_data = [], tabs_data = []} = this.propValue;
+                const { header = {}, diy_data = [], tabs_data = [] } = this.propValue;
                 let header_style = header.com_data.style;
                 let new_diy_index = 0;
                 let new_tabs_data = [];
@@ -303,7 +306,7 @@
                     new_diy_data = diy_data;
                 } else {
                     new_tabs_data = tabs_data;
-                    // 过滤数据 
+                    // 过滤数据
                     diy_data.forEach((item) => {
                         // 判断是否是商品列表
                         if (item.com_name == 'float-window') {
@@ -316,7 +319,7 @@
                         }
                     });
                 }
-                const { padding_right = 0, padding_left = 0} = header.com_data.style.common_style;
+                const { padding_right = 0, padding_left = 0 } = header.com_data.style.common_style;
                 // tabs选项卡数据过滤
                 this.setData({
                     header_data: header,
@@ -326,7 +329,7 @@
                     page_style: common_styles_computer(header.com_data.style.common_style),
                     page_img_style: background_computer(header.com_data.style.common_style),
                     // 内间距
-                    content_padding: `padding: 0px ${padding_right}px 0px ${padding_left}px;` +'box-sizing:border-box;',
+                    content_padding: `padding: 0px ${padding_right}px 0px ${padding_left}px;` + 'box-sizing:border-box;',
                     outer_container_padding: padding_right + padding_left,
                     // 判断顶部导航是否置顶
                     is_header_top: parseInt(header.com_data.style.up_slide_display) == 1 ? true : false,
@@ -563,27 +566,37 @@
 
             // 页面滚动事件
             on_scroll_event(e) {
-                this.setData({
-                    scroll_top: e.detail.scrollTop,
-                });
-                // 判断顶部导航是否置顶
-                // #ifdef H5 || MP-TOUTIAO
-                if (!this.is_header_top) {
-                    if (e.detail.scrollTop >= this.sticky_top + 33 + (this.is_search_alone_row ? 0 : 33 + this.data_alone_row_space)) {
-                        this.setData({
-                            temp_sticky_top: 0,
-                            temp_header_top: 0,
-                            temp_is_header_top: true,
-                        });
-                    } else {
-                        this.setData({
-                            temp_header_top: this.header_top,
-                            temp_sticky_top: this.sticky_top,
-                            temp_is_header_top: false,
-                        });
-                    }
+                const scroll_num = e.detail.scrollTop;
+                if ((scroll_num - 20) / (this.sticky_top + 33) <= 1.5) {
+                    // 更新数据的逻辑
+                    this.scroll_top = scroll_num;
                 }
-                // #endif
+                this.scroll_timer_compute(scroll_num);
+            },
+
+            scroll_timer_compute(scroll_num) {
+                // 使用节流技术减少事件触发的处理次数
+                if (!this.scroll_throttle_timeout) {
+                    const self = this;
+                    this.scroll_throttle_timeout = setTimeout(() => {
+                        // 判断顶部导航是否置顶
+                        // #ifdef H5 || MP-TOUTIAO
+                        if (!self.is_header_top) {
+                            if (scroll_num >= self.sticky_top + 33 + (self.is_search_alone_row ? 0 : 33 + self.data_alone_row_space)) {
+                                self.temp_sticky_top = 0;
+                                self.temp_header_top = 0;
+                                self.temp_is_header_top = true;
+                            } else {
+                                self.temp_header_top = self.header_top;
+                                self.temp_sticky_top = self.sticky_top;
+                                self.temp_is_header_top = false;
+                            }
+                        }
+                        // #endif
+                        // 清除定时器
+                        this.scroll_throttle_timeout = null;
+                    }, 10); // 可以根据实际情况调整延时时间
+                }
             },
 
             // 底部菜单高度
