@@ -464,7 +464,9 @@
             },
             // 滚动到顶部
             on_scroll_upper_event() {
-                this.head_scroll_top = 0;
+                setTimeout(() => {
+                    this.head_scroll_top = 0;
+                });
             },
 
             // 查询商品
