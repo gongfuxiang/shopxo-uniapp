@@ -600,7 +600,7 @@
                         this.scroll_top = scroll_num;
                         // 清除定时器
                         this.scroll_throttle_timeout = null;
-                    }, 50); // 可以根据实际情况调整延时时间
+                    }, 1); // 可以根据实际情况调整延时时间
                 }
             },
 
