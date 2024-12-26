@@ -4,7 +4,7 @@
             <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" lower-threshold="60">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
-                    <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
+                    <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
                 </view>
                 <view :style="content_padding">
                     <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
@@ -254,6 +254,7 @@
                 outer_container_padding: 0,
 
                 // 滚动延迟器
+                head_scroll_top: 0,
                 scroll_throttle_timeout: null,
             };
         },
@@ -569,10 +570,11 @@
                 const scroll_num = e.detail.scrollTop;
                 if (scroll_num / (this.sticky_top + 33) <= 1) {
                     // 更新数据的逻辑
-                    this.scroll_top = scroll_num;
+                    this.head_scroll_top = scroll_num;
                 } else {
-                    this.scroll_top = this.sticky_top + 100;
+                    this.head_scroll_top = this.sticky_top + 100;
                 }
+                this.scroll_top = scroll_num;
                 this.scroll_timer_compute(scroll_num);
             },
 
