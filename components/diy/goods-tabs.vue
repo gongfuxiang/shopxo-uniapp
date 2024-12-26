@@ -2,9 +2,11 @@
     <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
             <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
-            <view :style="shop_container">
-                <view :style="shop_img_container">
-                    <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+            <view :style="shop_margin_top">
+                <view :style="shop_container">
+                    <view :style="shop_img_container">
+                        <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+                    </view>
                 </view>
             </view>
         </view>
@@ -77,6 +79,7 @@
                 tabs_container: '',
                 tabs_img_container: '',
                 // 商品区域背景设置
+                shop_margin_top: '',
                 shop_container: '',
                 shop_img_container: '',
                 // 默认数据
@@ -186,10 +189,11 @@
                     top_up: new_content.tabs_top_up,
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style, this.propIndex) + 'gap:' + (new_style?.shop_content_spacing || 0) * 2 + 'rpx',
+                    style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
+                    shop_margin_top: 'margin-top:' + (new_style?.shop_content_spacing || 0) * 2 + 'rpx;',
                     shop_container: gradient_computer(shop_content_data) + margin_computer(shop_content_margin) + radius_computer(shop_content_radius) + 'overflow: hidden;',
                     shop_img_container: background_computer(shop_content_data) + padding_computer(shop_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                 });

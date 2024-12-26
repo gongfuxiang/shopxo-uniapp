@@ -1,11 +1,13 @@
 <template>
     <view class="ou pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
-        <view class="flex-col ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
+        <view class="ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
             <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-            <view :style="carousel_container">
-                <view :style="carousel_img_container">
-                    <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play" @slideChange="slideChange"></componentDiycarousel>
+            <view :style="carousel_margin_top">
+                <view :style="carousel_container">
+                    <view :style="carousel_img_container">
+                        <componentDiycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play" @slideChange="slideChange"></componentDiycarousel>
+                    </view>
                 </view>
             </view>
         </view>
@@ -77,6 +79,7 @@
                 tabs_container: '',
                 tabs_img_container: '',
                 // 轮播图内容
+                carousel_margin_top: '',
                 carousel_container: '',
                 carousel_img_container: '',
                 // top_up: '0',
@@ -123,7 +126,8 @@
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
-                    style_img_container: common_img_computer(new_style.common_style, this.propIndex) + 'gap:' + new_style.data_spacing * 2 + 'rpx',
+                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                    carousel_margin_top: 'margin-top:' + new_style.data_spacing * 2 + 'rpx',
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
                     carousel_container: gradient_computer(carousel_content_data) + margin_computer(carousel_content_margin) + radius_computer(carousel_content_radius) + 'overflow: hidden;',

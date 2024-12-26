@@ -3,9 +3,11 @@
     <view class="article-tabs ou" :class="'article-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
             <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
-            <view :style="article_container">
-                <view :style="article_img_container">
-                    <componentDiyArticleList :propKey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+            <view :style="article_margin_top">
+                <view :style="article_container">
+                    <view :style="article_img_container">
+                        <componentDiyArticleList :propKey="diy_key" :propValue="article_tabs" :propIsCommonStyle="false"></componentDiyArticleList>
+                    </view>
                 </view>
             </view>
         </view>
@@ -75,6 +77,7 @@
                 custom_nav_height: 33,
                 diy_key: '',
                 // 选项卡背景设置
+                article_margin_top: '',
                 tabs_container: '',
                 tabs_img_container: '',
                 // 商品区域背景设置
@@ -193,8 +196,9 @@
                     top_up: new_content.tabs_top_up,
                     article_tabs: new_data,
                     style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style, this.propIndex) + 'gap:' + (new_style?.shop_content_spacing || 0) * 2 + 'rpx',
+                    style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
+                    article_margin_top:  'margin-top:' + (new_style?.article_content_spacing || 0) * 2 + 'rpx',
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
                     article_container: gradient_computer(article_content_data) + margin_computer(article_content_margin) + radius_computer(article_content_radius) + 'overflow: hidden;',
