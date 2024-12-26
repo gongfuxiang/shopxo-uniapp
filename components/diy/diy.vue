@@ -568,11 +568,15 @@
             // 页面滚动事件
             on_scroll_event(e) {
                 const scroll_num = e.detail.scrollTop;
-                if (scroll_num / (this.sticky_top + 33) <= 1) {
-                    // 更新数据的逻辑
-                    this.head_scroll_top = scroll_num;
+                if (scroll_num == 0) {
+                    this.head_scroll_top = 0;
                 } else {
-                    this.head_scroll_top = this.sticky_top + 100;
+                    if (scroll_num / (this.sticky_top + 33) <= 1) {
+                        // 更新数据的逻辑
+                        this.head_scroll_top = scroll_num;
+                    } else {
+                        this.head_scroll_top = this.sticky_top + 100;
+                    }
                 }
                 this.scroll_timer_compute(scroll_num);
 
