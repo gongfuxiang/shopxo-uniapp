@@ -574,8 +574,22 @@
                 } else {
                     this.head_scroll_top = this.sticky_top + 100;
                 }
-                this.scroll_top = scroll_num;
                 this.scroll_timer_compute(scroll_num);
+
+                // 判断顶部导航是否置顶
+                // #ifdef H5 || MP-TOUTIAO
+                if (!this.is_header_top) {
+                    if (scroll_num >= this.sticky_top + 33 + (this.is_search_alone_row ? 0 : 33 + this.data_alone_row_space)) {
+                        this.temp_sticky_top = 0;
+                        this.temp_header_top = 0;
+                        this.temp_is_header_top = true;
+                    } else {
+                        this.temp_header_top = this.header_top;
+                        this.temp_sticky_top = this.sticky_top;
+                        this.temp_is_header_top = false;
+                    }
+                }
+                // #endif
             },
 
             scroll_timer_compute(scroll_num) {
@@ -583,23 +597,10 @@
                 if (!this.scroll_throttle_timeout) {
                     const self = this;
                     this.scroll_throttle_timeout = setTimeout(() => {
-                        // 判断顶部导航是否置顶
-                        // #ifdef H5 || MP-TOUTIAO
-                        if (!self.is_header_top) {
-                            if (scroll_num >= self.sticky_top + 33 + (self.is_search_alone_row ? 0 : 33 + self.data_alone_row_space)) {
-                                self.temp_sticky_top = 0;
-                                self.temp_header_top = 0;
-                                self.temp_is_header_top = true;
-                            } else {
-                                self.temp_header_top = self.header_top;
-                                self.temp_sticky_top = self.sticky_top;
-                                self.temp_is_header_top = false;
-                            }
-                        }
-                        // #endif
+                        this.scroll_top = scroll_num;
                         // 清除定时器
                         this.scroll_throttle_timeout = null;
-                    }, 10); // 可以根据实际情况调整延时时间
+                    }, 50); // 可以根据实际情况调整延时时间
                 }
             },
 
