@@ -30,7 +30,7 @@
                                                                 <view v-if="(propScrollTop - 5) / (header_top + 33) < 1" class="logo-style" :style="up_slide_old_logo_style">
                                                                     <image class="logo-style" :src="form.content.logo[0].url" mode="heightFix" />
                                                                 </view>
-                                                                <view :class="['logo-style left-0', {'pa': (propScrollTop - 5) / (header_top + 33) < 1 }]" :style="'opacity:0;' + up_slide_opacity">
+                                                                <view :class="['logo-style left-0', { pa: (propScrollTop - 5) / (header_top + 33) < 1 }]" :style="'opacity:0;' + up_slide_opacity">
                                                                     <image class="logo-style" :src="form.style.up_slide_logo[0].url" mode="heightFix" />
                                                                 </view>
                                                             </template>
@@ -141,7 +141,7 @@
             componentDiySearch,
             imageEmpty,
             componentChoiceLocation,
-            componentBadge
+            componentBadge,
         },
         data() {
             return {
@@ -210,14 +210,12 @@
                     // 背景图
                     const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
                     const up_slide_opacity = 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';';
-                    this.setData({
-                        up_slide_opacity: up_slide_opacity,
-                        // 原来的logo要比新的隐藏的快，所以要比原来的logo快一点
-                        up_slide_old_logo_style: 'opacity:' + ((newVal - 5) / (this.header_top + 33) > 1 ? 0 : (1 - (newVal - 5) / (this.header_top + 33)).toFixed(2)) + ';',
-                        // 20是大小误差
-                        up_slide_style: gradient_computer(gradient) + up_slide_opacity,
-                        up_slide_img_style: background_computer(back),
-                    });
+                    this.up_slide_opacity = up_slide_opacity;
+                    // 来的logo要比新的隐藏的快，所以要比原来的logo快一点
+                    this.up_slide_old_logo_style = 'opacity:' + ((newVal - 5) / (this.header_top + 33) > 1 ? 0 : (1 - (newVal - 5) / (this.header_top + 33)).toFixed(2)) + ';';
+                    // =0是大小误差
+                    this.up_slide_style = gradient_computer(gradient) + up_slide_opacity;
+                    this.up_slide_img_style = background_computer(back);
                 }
             },
             propKey(val) {
@@ -262,7 +260,7 @@
                 new_text_style += `right:-${custom.width + 10}px;`;
                 // #endif
                 // #endif
-                const  { location_margin = this.old_margin } = new_style;
+                const { location_margin = this.old_margin } = new_style;
                 this.setData({
                     form: this.propValue,
                     position: new_style.up_slide_display == '1' ? 'position:fixed;' : new_style.immersive_style === '1' ? 'position:absolute;' : 'position:reactive;',
@@ -287,7 +285,7 @@
                 });
                 this.$emit('onImmersionModelCallBack', this.is_immersion_model);
             },
-            get_location_name_style (new_content) {
+            get_location_name_style(new_content) {
                 const is_search_alone_row = new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search');
                 const is_icon_alone_row = new_content.data_alone_row_value && new_content.data_alone_row_value.includes('icon');
                 let width = 0;
@@ -297,34 +295,34 @@
                     width = 100;
                 }
                 if (new_content.theme == '4') {
-                    return `${ (150 + width) * 2 }rpx;`;
+                    return `${(150 + width) * 2}rpx;`;
                 } else {
-                    return `${ (100 + width) * 2 }rpx;`;
+                    return `${(100 + width) * 2}rpx;`;
                 }
             },
             // 定位设置
             get_style_location_container(new_style) {
-                const  { location_margin = this.old_margin,  location_radius = this.old_radius} = new_style;
+                const { location_margin = this.old_margin, location_radius = this.old_radius } = new_style;
                 const style = {
                     color_list: new_style?.location_color_list || [],
                     direction: new_style?.location_direction || '',
-                }
+                };
                 const height = 32 - location_margin.margin_top - location_margin.margin_bottom;
-                return gradient_computer(style) + radius_computer(location_radius) + `height: ${ height * 2}rpx;line-height: ${height * 2}rpx;`;
+                return gradient_computer(style) + radius_computer(location_radius) + `height: ${height * 2}rpx;line-height: ${height * 2}rpx;`;
             },
             // 背景图片
-            get_style_location_img_container(new_style){
+            get_style_location_img_container(new_style) {
                 const { location_background_img = [], location_background_img_style = '2', location_border_show = '0', location_padding = this.old_padding, location_margin = this.old_margin, location_border_size = this.old_padding, location_border_color = '', location_border_style = 'solid' } = new_style;
                 const style = {
                     background_img: location_background_img,
                     background_img_style: location_background_img_style,
-                }
+                };
                 let border = ``;
                 if (location_border_show == '1') {
-                    border += `border-width: ${location_border_size.padding_top}px ${location_border_size.padding_right}px ${location_border_size.padding_bottom}px ${location_border_size.padding_left}px;border-style: ${ location_border_style };border-color: ${location_border_color};`
+                    border += `border-width: ${location_border_size.padding_top}px ${location_border_size.padding_right}px ${location_border_size.padding_bottom}px ${location_border_size.padding_left}px;border-style: ${location_border_style};border-color: ${location_border_color};`;
                 }
                 const height = 32 - (location_margin.margin_top || 0) - (location_margin.margin_bottom || 0);
-                return background_computer(style) + padding_computer(location_padding) + border + `height: ${ height * 2}rpx;line-height: ${height * 2}rpx;box-sizing: border-box;`;
+                return background_computer(style) + padding_computer(location_padding) + border + `height: ${height * 2}rpx;line-height: ${height * 2}rpx;box-sizing: border-box;`;
             },
             // 获取顶部导航高度
             get_nav_height() {

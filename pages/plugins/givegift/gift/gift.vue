@@ -535,8 +535,6 @@
                     edit_data: this.data_list[index],
                     edit_item_index: index
                 });
-                
-                console.log(this.edit_data)
             },
 
             // 编辑弹层关闭

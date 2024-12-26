@@ -77,13 +77,6 @@
                 "enablePullDownRefresh": true,
                 "navigationBarTitleText": ""
             }
-        },
-        {
-            "path": "pages-drug/drug/drug-order-list",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
         }
     ],
     "subPackages": [
@@ -506,18 +499,6 @@
                     "path": "about",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/cashier",
-            "pages": [
-                {
-                    "path": "cashier",
-                    "style": {
-                        "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 }
@@ -1390,13 +1371,6 @@
                 {
                     "path": "user-detail/user-detail",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
-                        "titlePenetrate": "YES",
-                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
@@ -1697,6 +1671,25 @@
             "pages": [
                 {
                     "path": "check/check",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/allocation",
+            "pages": [
+                {
+                    "path": "cashier/cashier",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",

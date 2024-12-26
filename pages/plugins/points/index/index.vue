@@ -38,7 +38,7 @@
                                 <!-- 分享 -->
                                 <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" @tap="share_event">{{$t('common.share')}}</button>
                             </view>
-                            <view v-if="(user || null) !== null" class="points-integral br-t-dashed">
+                            <view v-if="(data_base.is_home_points_record || 0) == 1 && (user || null) !== null" class="points-integral br-t-dashed">
                                 <component-title :propTitle="$t('index.index.i73nwk')" propMoreUrl="/pages/user-integral/user-integral"></component-title>
                                 <view v-if="integral_list.length > 0">
                                     <view class="item">
@@ -56,10 +56,10 @@
                                         </view>
                                     </view>
                                 </view>
-                                <view v-else>
+                                <block v-else>
                                     <!-- 提示信息 -->
-                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                                </view>
+                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propLoadingLogoTop="35%"></component-no-data>
+                                </block>
                             </view>
                         </view>
 
@@ -183,11 +183,6 @@
             // 获取数据
             this.get_data();
 
-            // 已登录则获取积分明细
-            if(this.user != null) {
-                this.get_integral_data_list();
-            }
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -223,9 +218,6 @@
                             this.setData({
                                 data_base: data.base || null,
                                 user_integral: data.user_integral || null,
-                                data_list_loding_msg: '',
-                                data_list_loding_status: 0,
-                                data_bottom_line_status: true,
                             });
                             if ((this.data_base || null) != null) {
                                 // 基础自定义分享
@@ -247,6 +239,17 @@
                                 }
                                 // #endif
                             }
+                            
+                            // 已登录则获取积分明细
+                            if(this.user != null && (this.data_base || null) != null && parseInt(this.data_base.is_home_points_record || 0) == 1) {
+                                this.get_integral_data_list();
+                            } else {
+                                this.setData({
+                                    data_list_loding_msg: '',
+                                    data_list_loding_status: 3,
+                                    data_bottom_line_status: true,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
@@ -264,7 +267,6 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -302,19 +304,16 @@
                     uni.request({
                         url: app.globalData.get_request_url('index', 'userintegral'),
                         method: 'POST',
-                        data: {
-                            page: this.integral_page,
-                        },
+                        data: {},
                         dataType: 'json',
                         success: (res) => {
-                            if(this.data_page > 1) {
-                                uni.hideLoading();
-                            }
-                            uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
                                 if (res.data.data.data.length > 0) {
                                     this.setData({
                                         integral_list: res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data,
+                                        data_list_loding_msg: '',
+                                        data_list_loding_status: 0,
+                                        data_bottom_line_status: true,
                                     });
                                 }
                             }

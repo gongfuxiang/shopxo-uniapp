@@ -111,13 +111,9 @@
                     if (new_tabs_background_img.length > 0) {
                         new_tabs_background_img += 'background-position: top left;';
                     }
-                    this.setData({
-                        tabs_background: (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img,
-                    });
+                    this.tabs_background = (new_tabs_background.length > 0 ? new_tabs_background : 'background:#fff;') + new_tabs_background_img;
                 } else {
-                    this.setData({
-                        tabs_background: 'background:transparent',
-                    });
+                    this.tabs_background = 'background:transparent';
                 }
             },
             propKey(val) {
@@ -185,14 +181,14 @@
                     direction: tabs_bg_direction,
                     background_img_style: tabs_bg_background_img_style,
                     background_img: tabs_bg_background_img,
-                }
+                };
                 // 文章区域背景设置
                 const article_content_data = {
                     color_list: article_content_color_list,
                     direction: article_content_direction,
                     background_img_style: article_content_background_img_style,
                     background_img: article_content_background_img,
-                }
+                };
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     article_tabs: new_data,

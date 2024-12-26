@@ -13,19 +13,19 @@
                     <view v-if="info.title != info.content">
                         <mp-html :content="info.content" />
                     </view>
-                    <block v-if="(info.goods_data || null) !== null">
-                        <view :data-value="info.goods_data.goods_url" @tap="url_event" class="cp">
+                    <block v-if="(info.goods || null) !== null">
+                        <view :data-value="info.goods.goods_url" @tap="url_event" class="cp">
                             <view class="goods-link spacing-mt bg-grey-f9 padding-main border-radius-sm">
                                 <view class="flex-row jc-sb">
                                     <view class="img border-radius-sm oh margin-right-main">
-                                        <image :src="info.goods_data.images" mode="widthFix" class="wh-auto"></image>
+                                        <image :src="info.goods.images" mode="widthFix" class="wh-auto"></image>
                                     </view>
                                     <view class="flex-1 flex-width flex-row jc-sb align-c">
                                         <view class="flex-1 flex-width padding-right-sm">
-                                            <view class="title multi-text">{{ info.goods_data.title }}</view>
+                                            <view class="title multi-text">{{ info.goods.title }}</view>
                                             <view class="flex-row align-c margin-top-xs">
-                                                <text class="cr-red fw-b margin-right-main">{{ currency_symbol }}{{ info.goods_data.price }}</text>
-                                                <text class="text-size-xs cr-grey-9 original-price">{{ currency_symbol }}{{ info.goods_data.original_price }}</text>
+                                                <text class="cr-red fw-b margin-right-main">{{ currency_symbol }}{{ info.goods.price }}</text>
+                                                <text class="text-size-xs cr-grey-9 original-price">{{ currency_symbol }}{{ info.goods.original_price }}</text>
                                             </view>
                                         </view>
                                         <iconfont name="icon-arrow-right" color="#999"></iconfont>

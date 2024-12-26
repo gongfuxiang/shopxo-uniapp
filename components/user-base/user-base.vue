@@ -70,6 +70,7 @@
                 pages: [],
                 client: [],
                 interval_time: 0,
+                is_weixin_force: false,
                 form_submit_disabled_status: true,
                 back_object: null,
                 back_method: null,
@@ -100,6 +101,7 @@
                         pages: app.globalData.get_config('config.common_app_user_base_popup_pages', []),
                         client: app.globalData.get_config('config.common_app_user_base_popup_client', []),
                         interval_time: parseInt(app.globalData.get_config('config.common_app_user_base_popup_interval_time', 1800)),
+                        is_weixin_force: this.client_value == 'weixin' && parseInt(app.globalData.get_config('config.common_app_is_weixin_force_user_base', 0)) == 1,
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -135,8 +137,8 @@
                         var user = app.globalData.get_user_cache_info() || null;
                         // 需要填写字段数据
                         var result = this.form_write_field_check_data(user);
-                        // 微信小程序是否强制填写基础信息、强制则不验证时间
-                        if(this.client_value != 'weixin' || parseInt(app.globalData.get_config('config.common_app_is_weixin_force_user_base', 0)) != 1) {
+                        // 非微信 或者 微信小程序是否强制填写基础信息、强制则不验证时间
+                        if(this.client_value != 'weixin' || !this.is_weixin_force) {
                             // 间隔时间
                             var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
                             var current_time = Date.parse(new Date()) / 1000;
@@ -146,9 +148,9 @@
                         }
 
                         // 1秒后再提示用户填写信息
-                        var self = this;
                         clearTimeout(this.timer);
-                        this.timer = setTimeout(function () {
+                        var self = this;
+                        var timer = setTimeout(function () {
                             self.setData({
                                 ...result,
                                 ...{
@@ -158,6 +160,9 @@
                                 }
                             });
                         }, 500);
+                        this.setData({
+                            timer: timer
+                        });
                     }
                 }
             },
@@ -206,6 +211,7 @@
 
             // 基础信息填写打开
             user_base_open(object, method, params) {
+                clearTimeout(this.timer);
                 this.setData({
                     popup_status: true,
                     back_object: object,

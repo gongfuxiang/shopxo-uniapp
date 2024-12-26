@@ -955,10 +955,15 @@
                             app.globalData.url_open(self.to_appoint_page, true);
                         },
                         fail(res) {
-                            app.globalData.url_open(this.to_appoint_page, true);
+                            app.globalData.url_open(self.to_appoint_page, true);
                         },
                     });
+                } else if(res.data.order_status == 2) {
+                    // 线下支付（开启线下订单正常进入流程）
+                    app.globalData.url_open(this.to_appoint_page, true);
+                    
                 } else {
+                    // 调起支付
                     this.$refs.payment.pay_handle(res.data.order_ids.join(','), res.data.payment_id, this.payment_list);
                 }
                 this.setData({

@@ -191,7 +191,7 @@
                             this.setData({
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                                 data_base: base,
                                 info: info,
                                 right_list: data.right_list || [],
