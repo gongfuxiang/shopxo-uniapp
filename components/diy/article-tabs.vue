@@ -93,6 +93,8 @@
                 // #ifdef APP
                 nav_safe_space: bar_height + 0,
                 // #endif
+                // 选项卡默认数据
+                tabs_index: 0,
             };
         },
         watch: {
@@ -149,18 +151,20 @@
                 let new_content = this.propValue.content || {};
                 let new_style = this.propValue.style || {};
                 let new_data = JSON.parse(JSON.stringify(this.propValue));
+
+                const new_tabs_data = new_data.content.tabs_list[this.tabs_index] || {};
                 new_data.content.theme = new_data.content.article_theme;
-                new_data.content.data_type = new_data.content.tabs_list[0].data_type;
-                new_data.content.category = new_data.content.tabs_list[0].category;
+                new_data.content.data_type = new_tabs_data.data_type;
+                new_data.content.category = new_tabs_data.category;
                 new_data.content.carousel_col = new_data.content.article_carousel_col;
-                new_data.content.data_list = new_data.content.tabs_list[0].data_list;
-                new_data.content.data_auto_list = new_data.content.tabs_list[0].data_auto_list;
-                new_data.content.data_ids = new_data.content.tabs_list[0].data_ids;
-                new_data.content.number = new_data.content.tabs_list[0].number;
-                new_data.content.sort = new_data.content.tabs_list[0].sort;
-                new_data.content.sort_rules = new_data.content.tabs_list[0].sort_rules;
+                new_data.content.data_list = new_tabs_data.data_list;
+                new_data.content.data_auto_list = new_tabs_data.data_auto_list;
+                new_data.content.data_ids = new_tabs_data.data_ids;
+                new_data.content.number = new_tabs_data.number;
+                new_data.content.sort = new_tabs_data.sort;
+                new_data.content.sort_rules = new_tabs_data.sort_rules;
                 new_data.content.field_show = new_data.content.field_show;
-                new_data.content.is_cover = new_data.content.tabs_list[0].is_cover;
+                new_data.content.is_cover = new_tabs_data.is_cover;
                 let tabs_style_obj = {
                     padding_top: new_style.common_style.padding_top,
                     padding_left: new_style.common_style.padding_left,
@@ -217,6 +221,7 @@
                 new_data.content.field_show = new_data.content.field_show;
                 new_data.content.is_cover = new_data.content.tabs_list[index].is_cover;
                 this.setData({
+                    tabs_index: index,
                     article_tabs: new_data,
                     diy_key: Math.random(),
                 });

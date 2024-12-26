@@ -92,6 +92,8 @@
                 // #ifdef APP
                 nav_safe_space: bar_height + 0,
                 // #endif
+                // 选项卡默认数据
+                tabs_index: 0,
             };
         },
         watch: {
@@ -146,15 +148,16 @@
                 let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
                 const new_content = new_data.content || {};
                 const new_style = new_data.style || {};
+                const new_tabs_data = new_data.content.tabs_list[this.tabs_index] || {};
                 // 产品的值
-                new_data.content.data_type = new_data.content.tabs_list[0].data_type;
-                new_data.content.category = new_data.content.tabs_list[0].category;
-                new_data.content.brand = new_data.content.tabs_list[0].brand;
-                new_data.content.number = new_data.content.tabs_list[0].number;
-                new_data.content.sort = new_data.content.tabs_list[0].sort;
-                new_data.content.sort_rules = new_data.content.tabs_list[0].sort_rules;
-                new_data.content.data_list = new_data.content.tabs_list[0].data_list;
-                new_data.content.data_auto_list = new_data.content.tabs_list[0].data_auto_list;
+                new_data.content.data_type = new_tabs_data.data_type;
+                new_data.content.category = new_tabs_data.category;
+                new_data.content.brand = new_tabs_data.brand;
+                new_data.content.number = new_tabs_data.number;
+                new_data.content.sort = new_tabs_data.sort;
+                new_data.content.sort_rules = new_tabs_data.sort_rules;
+                new_data.content.data_list = new_tabs_data.data_list;
+                new_data.content.data_auto_list = new_tabs_data.data_auto_list;
                 let tabs_style_obj = {
                     padding_top: new_style.common_style.padding_top,
                     padding_left: new_style.common_style.padding_left,
@@ -207,6 +210,7 @@
                 new_data.content.data_list = new_data.content.tabs_list[index].data_list;
                 new_data.content.data_auto_list = new_data.content.tabs_list[index].data_auto_list;
                 this.setData({
+                    tabs_index: index,
                     goods_tabs: new_data,
                     diy_key: Math.random(),
                 });
