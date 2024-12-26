@@ -209,10 +209,10 @@
                     const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
                     // 背景图
                     const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
-                    const up_slide_opacity = 'opacity:' + ((newVal - 20) / (this.header_top + 33) > 1 ? 1 : ((newVal - 20) / (this.header_top + 33)).toFixed(2)) + ';';
+                    const up_slide_opacity = 'opacity:' + ((newVal - 20) / this.header_top > 1 ? 1 : ((newVal - 20) / this.header_top).toFixed(2)) + ';';
                     this.up_slide_opacity = up_slide_opacity;
                     // 来的logo要比新的隐藏的快，所以要比原来的logo快一点
-                    this.up_slide_old_logo_style = 'opacity:' + ((newVal - 5) / (this.header_top + 33) > 1 ? 0 : (1 - (newVal - 5) / (this.header_top + 33)).toFixed(2)) + ';';
+                    this.up_slide_old_logo_style = 'opacity:' + ((newVal - 5) / this.header_top > 1 ? 0 : (1 - (newVal - 5) / this.header_top).toFixed(2)) + ';';
                     // =0是大小误差
                     this.up_slide_style = gradient_computer(gradient) + up_slide_opacity;
                     this.up_slide_img_style = background_computer(back);

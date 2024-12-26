@@ -567,9 +567,11 @@
             // 页面滚动事件
             on_scroll_event(e) {
                 const scroll_num = e.detail.scrollTop;
-                if ((scroll_num - 20) / (this.sticky_top + 33) <= 1) {
+                if (scroll_num / (this.sticky_top + 33) <= 1) {
                     // 更新数据的逻辑
                     this.scroll_top = scroll_num;
+                } else {
+                    this.scroll_top = this.sticky_top + 100;
                 }
                 this.scroll_timer_compute(scroll_num);
             },
