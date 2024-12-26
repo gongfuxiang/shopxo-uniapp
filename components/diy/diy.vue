@@ -1,7 +1,7 @@
 <template>
     <view :style="page_style">
         <view :style="page_img_style">
-            <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" lower-threshold="60">
+            <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation>
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
                     <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
