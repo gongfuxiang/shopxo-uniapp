@@ -567,8 +567,10 @@
 
             // 页面滚动事件
             on_scroll_event(e) {
+                console.log(1);
                 const scroll_num = e.detail.scrollTop;
-                if (scroll_num <= 10) {
+                console.log(scroll_num);
+                if (scroll_num <= 20) {
                     this.head_scroll_top = 0;
                 } else {
                     if (scroll_num / (this.sticky_top + 33) <= 1) {
