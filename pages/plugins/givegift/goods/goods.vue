@@ -37,23 +37,23 @@
                         </view>
 
                         <view class="oh margin-top-xl">
-                            <view class="fl margin-top-sm">不限领取</view>
+                            <view class="fl margin-top-sm">{{$t('givegift-gift.givegift-gift.8yghjd')}}</view>
                             <view class="fr">
                                 <switch name="is_no_limit_receive" :checked="true" />
                             </view>
                         </view>
 
                         <view class="oh margin-top-xl right-width">
-                            <view class="fl margin-top-sm">留言提示</view>
+                            <view class="fl margin-top-sm">{{$t('givegift-gift.givegift-gift.567uye')}}</view>
                             <view class="fr">
-                                <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" placeholder="留言提示,格式最多200个字符" name="message_tips" />
+                                <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.givegift-gift.rtyu33')" name="message_tips" />
                             </view>
                         </view>
                     </view>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto" :disabled="form_submit_disabled_status">提交支付</button>
+                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto" :disabled="form_submit_disabled_status">{{$t('common.submit_payment')}}</button>
                     </view>
                 </view>
             </form>
@@ -151,13 +151,13 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 加载数据
-            this.init();
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+
+            // 初始化
+            this.init();
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -170,14 +170,11 @@
 
         methods: {
             init(e) {
-                var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
-                    this.setData({
-                        pay_url: app.globalData.get_request_url('pay', 'gift', 'givegift'),
-                        qrcode_url: app.globalData.get_request_url('paycheck', 'gift', 'givegift'),
-                    });
-                    this.get_data();
-                }
+                this.setData({
+                    pay_url: app.globalData.get_request_url('pay', 'gift', 'givegift'),
+                    qrcode_url: app.globalData.get_request_url('paycheck', 'gift', 'givegift'),
+                });
+                this.get_data();
             },
 
             // 获取数据
@@ -288,51 +285,63 @@
 
             // 数据提交
             form_submit(e) {
-                var form_data = e.detail.value;
-                form_data['goods_id'] = this.goods.id;
-                this.setData({
-                    form_submit_disabled_status: true,
-                });
-                uni.showLoading({
-                    title: this.$t('common.processing_in_text'),
-                });
-                uni.request({
-                    url: app.globalData.get_request_url('create', 'gift', 'givegift'),
-                    method: 'POST',
-                    data: form_data,
-                    dataType: 'json',
-                    success: (res) => {
-                        uni.hideLoading();
-                        if (res.data.code == 0) {
-                            var data = res.data.data;
-                            this.setData({
-                                is_show_payment_popup: this.is_show_payment_popup ? false : true,
-                                temp_pay_value: data.order_id,
-                                pay_price: data.total_price,
-                                payment_id: data.payment_user_id || this.default_payment_id,
-                            });
-                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, {
-                                order_ids: data.order_id,
-                            });
-                        } else {
+                // 是否登录
+                var user = app.globalData.get_user_info(this, 'form_submit', e);
+                if(user !== false) {
+                    var form_data = e.detail.value;
+                    form_data['goods_id'] = this.goods.id;
+                    this.setData({
+                        form_submit_disabled_status: true,
+                    });
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('create', 'gift', 'givegift'),
+                        method: 'POST',
+                        data: form_data,
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                var data = res.data.data;
+                                if(parseInt(data.is_success || 0) == 1) {
+                                    app.globalData.showToast(res.data.msg, 'success');
+                                    var self = this;
+                                    setTimeout(function() {
+                                        app.globalData.url_open(self.to_appoint_page, true);
+                                    }, 1500);
+                                } else {
+                                    this.setData({
+                                        is_show_payment_popup: this.is_show_payment_popup ? false : true,
+                                        temp_pay_value: data.order_id,
+                                        pay_price: data.total_price,
+                                        payment_id: data.payment_user_id || this.default_payment_id,
+                                    });
+                                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, {
+                                        order_ids: data.order_id,
+                                    });
+                                }
+                            } else {
+                                this.setData({
+                                    form_submit_disabled_status: false,
+                                });
+                                if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
+                                    app.globalData.showToast(res.data.msg);
+                                } else {
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                }
+                            }
+                        },
+                        fail: () => {
                             this.setData({
                                 form_submit_disabled_status: false,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
-                                app.globalData.showToast(res.data.msg);
-                            } else {
-                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
-                            }
-                        }
-                    },
-                    fail: () => {
-                        this.setData({
-                            form_submit_disabled_status: false,
-                        });
-                        uni.hideLoading();
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
 
             // 支付窗口关闭

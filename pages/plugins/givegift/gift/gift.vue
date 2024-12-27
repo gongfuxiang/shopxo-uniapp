@@ -19,7 +19,7 @@
                             <image :src="item.goods.images" mode="aspectFill" class="radius goods-images fl"></image>
                             <view class="goods-title multi-text fr">{{item.goods.title}}</view>
                         </view>
-                        <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
+                        <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="status_name" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>
@@ -57,13 +57,13 @@
                             <view class="border-radius-main spacing-mb oh">
                                 <view class="form-gorup">
                                     <view class="flex-row jc-sb align-c padding-top-sm">
-                                        <view class="form-gorup-title">留言提示</view>
-                                        <input type="text" name="message_tips" :value="edit_data.message_tips || ''" class="br-b-f5 tr message-tips" placeholder-class="cr-grey-c" placeholder="留言提示,格式最多200个字符" />
+                                        <view class="form-gorup-title">{{$t('givegift-gift.givegift-gift.567uye')}}</view>
+                                        <input type="text" name="message_tips" :value="edit_data.message_tips || ''" class="br-b-f5 tr message-tips" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.givegift-gift.rtyu33')" />
                                     </view>
                                 </view>
                                 <view class="form-gorup">
                                     <view class="flex-row jc-sb align-c padding-bottom-sm">
-                                        <view class="form-gorup-title">不限领取</view>
+                                        <view class="form-gorup-title">{{$t('givegift-gift.givegift-gift.8yghjd')}}</view>
                                         <switch name="is_no_limit_receive" :checked="edit_data.is_no_limit_receive == 1" />
                                     </view>
                                 </view>
@@ -225,7 +225,6 @@
                                 payment_list: data.payment_list || [],
                                 default_payment_id: data.default_payment_id || 0,
                                 nav_status_list: data.nav_status_list || [],
-                                field_list: data.field_list || [],
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
                                 data_page: 1,
@@ -318,6 +317,7 @@
                                     data_list: temp_data_list,
                                     data_total: data.data_total,
                                     data_page_total: data.page_total,
+                                    field_list: data.field_list || [],
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,

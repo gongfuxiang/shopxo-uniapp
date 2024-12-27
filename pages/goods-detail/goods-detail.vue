@@ -94,8 +94,8 @@
                         <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
                         <!-- 积分兑换 -->
                         <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
-                            <text class="text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
-                            <text class="text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
+                            <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
+                            <text class="points-price-unit text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
                         </view>
                     </block>
                 </view>

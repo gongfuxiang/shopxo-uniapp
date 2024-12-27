@@ -18,7 +18,7 @@
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
                     <view class="margin-top">
-                        <component-panel-content :propData="item" :propDataField="field_list" :propIsTerse="true"></component-panel-content>
+                        <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="status_name" :propIsTerse="true"></component-panel-content>
                     </view>
                     <view v-if="item.status == 0" class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/givegift/receive/receive?code='+item.code" hover-class="none">{{$t('common.link')}}</button>
@@ -133,7 +133,6 @@
                             var data = res.data.data;
                             this.setData({
                                 nav_status_list: data.nav_status_list || [],
-                                field_list: data.field_list || [],
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
                                 data_page: 1,
@@ -225,6 +224,7 @@
                                     data_list: temp_data_list,
                                     data_total: data.data_total,
                                     data_page_total: data.page_total,
+                                    field_list: data.field_list || [],
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,

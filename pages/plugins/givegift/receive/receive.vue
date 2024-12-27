@@ -27,13 +27,13 @@
                         </view>
                         <view v-if="(data.desc || null) != null" class="margin-top-lg cr-red">{{data.desc}}</view>
                         <view class="margin-top-xxl padding-bottom-sm">
-                            <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" placeholder="给Ta留言表示感谢！" name="user_message" />
+                            <input type="text" class="br round padding-horizontal lh-xxl ht-xxl" placeholder-class="cr-grey-c" :placeholder="$t('givegift-gift.givegift-gift.34rrr3')" name="user_message" />
                         </view>
                     </view>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto">我要领取</button>
+                        <button type="default" form-type="submit" class="item bg-main br-main cr-white text-size round wh-auto">{{$t('common.my_want_receive')}}</button>
                     </view>
                 </view>
             </form>
@@ -97,13 +97,13 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 加载数据
-            this.init();
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+
+            // 加载数据
+            this.get_data();
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -115,13 +115,6 @@
         },
 
         methods: {
-            init(e) {
-                var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
-                    this.get_data();
-                }
-            },
-
             // 获取数据
             get_data() {
                 uni.request({
@@ -176,18 +169,23 @@
 
             // 数据提交
             form_submit(e) {
-                this.setData({
-                    form_data: e.detail.value || {}
-                });
+                // 是否登录
+                var user = app.globalData.get_user_info(this, 'form_submit', e);
+                if(user !== false) {
+                    // 设置表单数据
+                    this.setData({
+                        form_data: e.detail.value || {}
+                    });
 
-                // 是否多规格
-                var goods = this.data.goods;
-                if(goods.is_exist_many_spec == 1) {
-                    if ((this.$refs.goods_spec_choice || null) != null) {
-                        this.$refs.goods_spec_choice.init(goods.id, goods['specifications']['choose'], goods.buy_min_number);
+                    // 是否多规格
+                    var goods = this.data.goods;
+                    if(goods.is_exist_many_spec == 1) {
+                        if ((this.$refs.goods_spec_choice || null) != null) {
+                            this.$refs.goods_spec_choice.init(goods.id, goods['specifications']['choose'], goods.buy_min_number);
+                        }
+                    } else {
+                        this.buy_handle();
                     }
-                } else {
-                    this.buy_handle();
                 }
             },
 

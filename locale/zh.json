@@ -33,6 +33,8 @@
 		"please_input": "请输入",
 		"settlement": "结算",
 		"confirm_sub": "确认提交",
+        "submit_payment": "提交支付",
+        "my_want_receive": "我要领取",
 		"clear": "清空",
 		"all": "全部",
 		"share": "分享",
@@ -1892,6 +1894,14 @@
             "8tfgh2": "卡密兑换",
             "6redfg": "使用数据",
             "fu3rf1": "请输入卡密key"
+    	}
+    },
+    "givegift-gift": {
+    	"givegift-gift": {
+    		"8yghjd": "不限领取",
+            "567uye": "留言提示",
+    		"rtyu33": "留言提示,格式最多200个字符",
+            "34rrr3": "给Ta留言表示感谢！"
     	}
     }
 }
