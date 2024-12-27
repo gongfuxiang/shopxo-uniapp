@@ -698,7 +698,7 @@
                     right_style = 'padding-bottom: calc(120rpx + '+bottom_style_value+'rpx);';
                 }
                 this.setData({
-                    category_content_style: 'height:calc(100vh - ' + this.search_height+'px - ' + this.window_bottom_height+'px - ' + this.footer_height_value+'rpx' + ');',
+                    category_content_style: 'height:calc(100vh - ' + (this.search_height + this.window_bottom_height + this.footer_height_value)+'px);',
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
                     botton_nav_style: 'bottom: calc(20rpx);',
@@ -1369,7 +1369,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: parseInt(value)*2
+                    footer_height_value: value
                 });
                 this.content_actual_size_handle();
             }
