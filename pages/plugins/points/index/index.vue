@@ -29,18 +29,20 @@
                                         <image class="avatar dis-block circle" @tap="preview_event" :src="user.avatar || avatar_default" mode="widthFix"></image>
                                         <view class="padding-left-main">
                                             <view class="text-size fw-b">{{ user.user_name_view }}</view>
-                                            <view class="desc margin-top-sm cr-grey">{{$t('index.index.b46kge')}}<text class="cr-black fw-b padding-horizontal-xs">
-                                                    {{ user_integral.integral || 0 }}
-                                                </text>{{$t('index.index.t26j9z')}}</view>
+                                            <view class="desc margin-top-sm cr-grey">
+                                                <text>{{$t('index.index.b46kge')}}</text>
+                                                <text class="cr-black fw-b padding-horizontal-xs">{{ user_integral.integral || 0 }}</text>
+                                                <text>{{$t('index.index.t26j9z')}}</text>
+                                            </view>
                                         </view>
                                     </block>
                                 </view>
                                 <!-- 分享 -->
                                 <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" @tap="share_event">{{$t('common.share')}}</button>
                             </view>
-                            <view v-if="(data_base.is_home_points_record || 0) == 1 && (user || null) !== null" class="points-integral br-t-dashed">
-                                <component-title :propTitle="$t('index.index.i73nwk')" propMoreUrl="/pages/user-integral/user-integral"></component-title>
-                                <view v-if="integral_list.length > 0">
+                            <block v-if="(data_base.is_home_points_record || 0) == 1 && (user || null) !== null">
+                                <view v-if="integral_list.length > 0" class="points-integral br-t-dashed">
+                                    <component-title :propTitle="$t('index.index.i73nwk')" propMoreUrl="/pages/user-integral/user-integral"></component-title>
                                     <view class="item">
                                         <view v-for="(item, index) in integral_list" class="list" :key="index">
                                             <view class="flex-row jc-sb align-c">
@@ -58,9 +60,9 @@
                                 </view>
                                 <block v-else>
                                     <!-- 提示信息 -->
-                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propLoadingLogoTop="35%"></component-no-data>
+                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propLoadingLogoTop="26%"></component-no-data>
                                 </block>
-                            </view>
+                            </block>
                         </view>
 
                         <!-- 公告信息 -->
