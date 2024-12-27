@@ -307,19 +307,20 @@
                         data: {},
                         dataType: 'json',
                         success: (res) => {
-                            if (res.data.code == 0) {
-                                if (res.data.data.data.length > 0) {
-                                    this.setData({
-                                        integral_list: res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data,
-                                        data_list_loding_msg: '',
-                                        data_list_loding_status: 0,
-                                        data_bottom_line_status: true,
-                                    });
-                                }
-                            }
+                            var integral_list = (res.data.code == 0 && res.data.data.data.length > 0) ? (res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data) : [];
+                            this.setData({
+                                integral_list: integral_list,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                            });
                         },
                         fail: () => {
-                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                            this.setData({
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                            });
                         },
                     });
                 }
