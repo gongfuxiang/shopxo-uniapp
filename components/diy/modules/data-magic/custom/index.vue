@@ -137,7 +137,7 @@ export default {
             if (!isEmpty(this.propValue)) {
                 const new_form = this.propValue.data_content;
                 const new_style = this.propValue.data_style;
-                const { data_color_list = [], data_direction = '180deg', data_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 }, data_background_img = [], data_background_img_style = '2', data_chunk_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 }, data_chunk_margin = { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 } } = new_style;
+                const { data_color_list = [], data_direction = '180deg', data_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 }, data_background_img = [], data_background_img_style = '2', data_chunk_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 }, data_chunk_margin = { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 }, data_content_style = {} } = new_style;
                 const style_data = {
                     color_list: data_color_list,
                     direction: data_direction,
@@ -166,8 +166,12 @@ export default {
                 // 计算宽度
                 const { padding_left, padding_right, padding_top, padding_bottom } = data_chunk_padding;
                 const { margin_left, margin_right, margin_bottom, margin_top } = data_chunk_margin;
-                const width = new_form.width - padding_left - padding_right - margin_left - margin_right - (this.propDataSpacing / 2);
-                const new_scale = (width / new_form.width) * this.propMagicScale;
+                const old_width = new_form.width * this.propMagicScale;
+                // 内容左右间距
+                const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0);
+                const width = old_width - padding_left - padding_right - margin_left - margin_right - content_spacing - (this.propDataSpacing / 2);
+                // 计算缩放比例
+                const new_scale = width / old_width;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 判断是平移还是整屏滚动

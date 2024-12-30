@@ -190,9 +190,16 @@
                 // 数组处理
                 const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
                 // 初始化数据
-                const { margin_left = 0, margin_right = 0, padding_left = 0, padding_right = 0 } = new_style.common_style;
+                const { common_style, data_content_style, data_style } = new_style;
+                // 外层左右间距
+                const outer_spacing = (common_style?.margin_left || 0) + (common_style?.margin_right || 0) + (common_style?.padding_left || 0) + (common_style?.padding_right || 0);
+                // 内容左右间距
+                const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0);
+                // 数据左右间距
+                const internal_spacing = (data_style?.margin_left || 0) + (data_style?.margin_right || 0) + (data_style?.padding_left || 0) + (data_style?.padding_right || 0);
                 // 自定义组件宽度
-                const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
+                const width = sys_width - outer_spacing - content_spacing - internal_spacing - this.propOuterContainerPadding;
+
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
