@@ -83,7 +83,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer, gradient_computer, margin_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer, gradient_computer, margin_computer, box_shadow_computer, border_computer, old_margin } from '@/common/js/common/common.js';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -270,25 +270,27 @@
                     background_img_style: new_style?.article_background_img_style || '',
                     background_img: new_style?.article_background_img || '',
                 }
+                const article_margin = new_style.value?.margin || old_margin;
+                const margin_width = article_margin.margin_left + article_margin.margin_right;
                 // 渐变效果
-                const gradient = gradient_handle(new_style?.article_color_list || [], new_style?.article_direction || '');
+                const all_style = gradient_handle(new_style?.article_color_list || [], new_style?.article_direction || '') + margin_computer(article_margin) + box_shadow_computer(new_style) + border_computer(new_style);
                 // 文章样式
                 if (this.article_theme == '0') {
                     this.setData({
                         img_size: img_style,
-                        article_style:  this.content_radius + gradient,
+                        article_style:  this.content_radius + all_style,
                         article_img_style: this.content_spacing + this.content_padding + background_computer(article_data)
                     });
                 } else if (this.article_theme == '1') {
                     this.setData({
                         img_size: img_style,
-                        article_style: `width: calc(50% - ${new_style.article_spacing / 2}px);` + this.content_radius + gradient,
+                        article_style: `width: calc(50% - ${new_style.article_spacing + (margin_width * 2) / 2}px);` + this.content_radius + all_style,
                         article_img_style: background_computer(article_data)
                     });
                 } else if (this.article_theme == '2') {
                     this.setData({
                         img_size: img_style,
-                        article_style: this.content_radius + gradient,
+                        article_style: this.content_radius + all_style,
                         article_img_style: background_computer(article_data)
                     });
                 } else if (this.article_theme == '3') {
@@ -299,8 +301,8 @@
                     // 更新轮播图的key，确保更换时能重新更新轮播图
                     const temp_carousel_col = new_content.carousel_col || '1';
                     // 计算间隔的空间。(gap * gap数量) / 模块数量
-                    let gap = temp_carousel_col !== '0' ? (new_style.article_spacing * temp_carousel_col) / (Number(temp_carousel_col) + 1) : '0';
-                    const multicolumn_columns_width = new_style.rolling_fashion == 'translation' ? `margin-right: ${ new_style.article_spacing }px;width:100%;` : `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);`;
+                    let gap = temp_carousel_col !== '0' ? ((new_style.article_spacing * temp_carousel_col - 1) + (margin_width * temp_carousel_col)) / temp_carousel_col : '0';
+                    const multicolumn_columns_width = new_style.rolling_fashion == 'translation' ? `margin-right: ${ new_style.article_spacing + article_margin.margin_right }px;width:100%;` : `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);`;
                     const { name_bg_color_list = [], name_bg_direction = '180deg', name_bg_radius, name_bg_padding, name_bg_margin } = new_style;
                     const data = {
                         color_list: name_bg_color_list,
@@ -314,7 +316,7 @@
                         // 是否滚动修改
                         is_roll: new_style.is_roll,
                         // article_item_height: `height: ${new_style.article_height }px`,
-                        article_style: this.content_radius + multicolumn_columns_width + gradient,
+                        article_style: this.content_radius + all_style + multicolumn_columns_width,
                         // 轮播高度
                         carousel_height_computer: new_style.article_height + 'px',
                         // 文章内容高度
@@ -396,7 +398,6 @@
     }
     .style2 {
         .item {
-            width: calc(50% - 10rpx);
             .img {
                 width: 100%;
             }

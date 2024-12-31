@@ -1,4 +1,10 @@
 const app = getApp();
+// 数据的默认值，避免没有值的时候报错
+export const old_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 };
+export const old_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 };
+export const old_margin = { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 };
+export const old_border_and_box_shadow = { border_is_show: '0', border_color: '#FF3F3F', border_style: 'solid',border_size: { padding: 1, padding_top: 1, padding_right: 1, padding_bottom: 1, padding_left: 1, }, box_shadow_color: '', box_shadow_x: 0, box_shadow_y: 0, box_shadow_blur: 0, box_shadow_spread: 0 };
+
 /**
  * 判断一个对象是否为空。
  *
@@ -337,6 +343,30 @@ export function background_computer(new_style) {
         return '';
     }
 }
+
+/**
+ * 计算并返回边框的样式字符串
+ * 
+ * 此函数根据传入的新样式对象，决定是否显示边框以及边框的样式细节
+ * 如果边框需要显示，函数会构造相应的边框样式字符串，包括边框的宽度、样式和颜色；
+ * 如果边框不需要显示，则返回空字符串
+ * 
+ * @param {Object} new_style - 新样式对象，包含边框的相关属性
+ * @returns {String} 边框样式字符串或空字符串
+ */
+export const border_computer = (new_style) => {
+    // 从新样式对象中解构边框的相关属性，并设置默认值
+    const { border_is_show = '0', border_color = '', border_style = 'solid', border_size = { padding: 0, padding_bottom: 0, padding_left: 0, padding_right: 0, padding_top: 0 } } = new_style;
+    
+    // 根据边框是否需要显示的标志，决定是否构造并返回边框样式字符串
+    if (border_is_show == '1') {
+       return `border-width: ${border_size.padding_top}px ${border_size.padding_right}px ${border_size.padding_bottom}px ${border_size.padding_left}px;border-style: ${ border_style };border-color: ${border_color};`
+    }
+    
+    // 如果边框不需要显示，返回空字符串
+    return '';
+};
+
 /**
  * 计算并组合组件的常用样式。
  *
@@ -351,7 +381,7 @@ export function background_computer(new_style) {
  * @returns 返回一个字符串，包含了计算后的样式定义，可以被直接应用于组件的样式属性。
  */
 export function common_styles_computer(new_style) {
-    return gradient_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + `overflow:hidden;`;
+    return gradient_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + border_computer(new_style) + `overflow:hidden;`;
 }
 export function common_img_computer(new_style, index, bool) {
     return padding_computer(new_style, 1, false, index, bool) + background_computer(new_style) + `overflow:hidden;box-sizing: border-box;`;

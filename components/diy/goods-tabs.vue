@@ -1,7 +1,7 @@
 <template>
     <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="shop_margin_top">
                 <view :style="shop_container">
                     <view :style="shop_img_container">
@@ -15,7 +15,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, radius_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, old_border_and_box_shadow, border_computer, box_shadow_computer, radius_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list';
     // 状态栏高度
@@ -97,11 +97,12 @@
                 // #endif
                 // 选项卡默认数据
                 tabs_index: 0,
+                sticky_top: 0,
             };
         },
         watch: {
             propScrollTop(newVal) {
-                if (newVal + this.propTop + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
+                if (newVal + this.sticky_top + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
                     let new_style = this.propValue.style || {};
                     let tabs_bg = new_style.common_style.color_list;
                     let new_tabs_background = '';
@@ -116,6 +117,12 @@
                 } else {
                     this.tabs_background = 'background:transparent';
                 }
+            },
+            propTop(val) {
+                let new_style = this.propValue.style || {};
+                this.setData({
+                    sticky_top: val + (new_style?.tabs_margin?.margin_top || 0),
+                });
             },
             propKey(val) {
                 // 初始化
@@ -185,16 +192,18 @@
                     background_img_style: shop_content_background_img_style,
                     background_img: shop_content_background_img,
                 };
+                const shop_content = new_style?.shop_content || old_border_and_box_shadow;
+                const tabs_content = new_style?.tabs_content || old_border_and_box_shadow;
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     goods_tabs: new_data,
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
-                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
+                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(new_style?.tabs_margin || old_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
                     shop_margin_top: 'margin-top:' + (new_style?.shop_content_spacing || 0) * 2 + 'rpx;',
-                    shop_container: gradient_computer(shop_content_data) + margin_computer(shop_content_margin) + radius_computer(shop_content_radius) + 'overflow: hidden;',
+                    shop_container: gradient_computer(shop_content_data) + margin_computer(shop_content_margin) + radius_computer(shop_content_radius) + box_shadow_computer(shop_content) + border_computer(shop_content) + 'overflow: hidden;',
                     shop_img_container: background_computer(shop_content_data) + padding_computer(shop_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                 });
             },

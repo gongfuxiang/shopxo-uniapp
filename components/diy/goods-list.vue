@@ -181,7 +181,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, old_margin, margin_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     import componentBadge from '@/components/badge/badge';
@@ -416,23 +416,26 @@
             },
             // 不同风格下的样式
             get_layout_style(new_style, form) {
+                const { shop_margin = old_margin } = new_style;
                 const radius = form.theme == '6' ? '' : radius_computer(new_style.shop_radius);
-                const gradient = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') : '';
+                const style = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') + margin_computer(shop_margin) + border_computer(new_style) + box_shadow_computer(new_style) : '';
                 let size_style = ``;
+                const shop_left_right_width = shop_margin.margin_left + shop_margin.margin_right;
                 if (['1', '4'].includes(form.theme)) {
-                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
+                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 2 + (shop_left_right_width * 4) + 'rpx'}) / 2);`;
                 } else if (form.theme == '3') {
-                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
+                    size_style = `width: calc((100% - ${new_style.content_outer_spacing * 4 +  (shop_left_right_width * 6) + 'rpx'}) / 3);`;
                 } else if (form.theme == '5') {
                     // 如果不是平移的时候执行
                     if (new_style.rolling_fashion != 'translation') {
                         size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'};`;
                     } else {
-                        size_style = `margin-right: ${ new_style.content_outer_spacing * 2 }rpx;width: 100%;height: 100%;`;
+                        size_style = `margin-right: ${ (new_style.content_outer_spacing * 2) + (shop_margin.margin_right * 2) }rpx;width: 100%;height: 100%;`;
                     }
-                    
+                } else if (form.theme == '0') {
+                    size_style = `width: calc(100% - ${ shop_left_right_width }px);`;
                 }
-                return `${radius} ${size_style} ${ gradient }`;
+                return `${radius} ${ style } ${size_style}`;
             },
             get_layout_img_style(new_style, form) {
                 const padding = ['0', '4'].includes(form.theme) ? padding_computer(new_style.shop_padding) + 'box-sizing: border-box;' : '';

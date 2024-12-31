@@ -2,7 +2,7 @@
     <!-- 文章列表 -->
     <view class="article-tabs ou" :class="'article-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="propTop" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="article_margin_top">
                 <view :style="article_container">
                     <view :style="article_img_container">
@@ -16,7 +16,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, radius_computer, isEmpty, box_shadow_computer, border_computer, old_border_and_box_shadow } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentDiyArticleList from '@/components/diy/article-list'; // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -98,12 +98,13 @@
                 // #endif
                 // 选项卡默认数据
                 tabs_index: 0,
+                sticky_top: 0,
             };
         },
         watch: {
             // 监听滚动距离
             propScrollTop(newVal) {
-                if (newVal + this.propTop + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
+                if (newVal + this.sticky_top + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
                     let new_style = this.propValue.style || {};
                     let tabs_bg = new_style.common_style.color_list;
                     let new_tabs_background = '';
@@ -118,6 +119,12 @@
                 } else {
                     this.tabs_background = 'background:transparent';
                 }
+            },
+            propTop(val) {
+                let new_style = this.propValue.style || {};
+                this.setData({
+                    sticky_top: val + (new_style?.tabs_margin?.margin_top || 0),
+                });
             },
             propKey(val) {
                 this.setData({
@@ -192,6 +199,8 @@
                     background_img_style: article_content_background_img_style,
                     background_img: article_content_background_img,
                 };
+                const article_content = new_style?.article_content || old_border_and_box_shadow;
+                const tabs_content = new_style?.tabs_content || old_border_and_box_shadow;
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     article_tabs: new_data,
@@ -199,9 +208,9 @@
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                     article_margin_top:  'margin-top:' + (new_style?.article_content_spacing || 0) * 2 + 'rpx',
-                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + 'overflow: hidden;',
+                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(new_style?.tabs_margin || old_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
-                    article_container: gradient_computer(article_content_data) + margin_computer(article_content_margin) + radius_computer(article_content_radius) + 'overflow: hidden;',
+                    article_container: gradient_computer(article_content_data) + margin_computer(article_content_margin) + radius_computer(article_content_radius) + box_shadow_computer(article_content) + border_computer(article_content) + 'overflow: hidden;',
                     article_img_container: background_computer(article_content_data) + padding_computer(article_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                 });
             },
@@ -236,7 +245,7 @@
                             let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
                             const new_style = new_data.style || {};
                             this.setData({
-                                tabs_top: res.top - (new_style.common_style?.margin_top || 0),
+                                tabs_top: res.top - (new_style.common_style?.margin_top || 0) + (new_style?.tabs_margin?.margin_top || 0),
                             });
                         }
                     })
