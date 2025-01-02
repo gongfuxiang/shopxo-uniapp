@@ -19,6 +19,15 @@ export function is_obj_empty(obj) {
     return Object.keys(obj).length === 0;
 }
 
+export const border_width = (style) => {
+    if (!style) { return 0; }
+    if (style.border_is_show == '1') {
+        const { padding_left = 0, padding_right = 0 } = style.border_size || {};
+        return padding_left + padding_right;
+    } else {
+        return 0;
+    }
+}
 /**
  * 获取嵌套对象的属性值
  * 

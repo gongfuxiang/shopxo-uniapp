@@ -5,11 +5,61 @@
                 <!-- 风格9 -->
                 <template v-if="form.style_actived == 7">
                     <view class="flex-row align-c jc-c style-size flex-wrap">
-                        <view v-for="(item, index) in data_magic_list" :key="index" :style="item.data_style.background_style + content_radius + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
-                            <view class="w h"  :style="item.data_style.background_img_style">
+                        <view v-for="(item, index) in data_magic_list" :key="index" :style=" + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
+                            <view class="w h flex-row" :style="item.data_style.background_style + content_radius">
+                                <view class="re flex-1 oh" :style="item.data_style.background_img_style">
+                                    <template v-if="item.data_content.data_type == 'goods'">
+                                        <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;'">
+                                            <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
+                                                <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
+                                                    <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
+                                                        <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
+                                                    </view>
+                                                </template>
+                                                <template v-else>
+                                                    <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
+                                                </template>
+                                                <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                            </view>
+                                            <view class="w h flex-1 oh flex-row">
+                                                <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                            </view>
+                                        </view>
+                                    </template>
+                                    <template v-else-if="item.data_content.data_type == 'images'">
+                                        <div class="w h flex-1 oh flex-row">
+                                            <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                        </div>
+                                    </template>
+                                    <template v-else-if="item.data_content.data_type == 'custom'">
+                                        <customIndex :propKey="propKey + index" :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
+                                    </template>
+                                    <template v-else>
+                                        <videoIndex :propKey="propKey + index" :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
+                                    </template>
+                                    <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
+                                        <template v-if="item.data_style.indicator_style == 'num'">
+                                            <view :style="item.data_style.indicator_styles" class="dot-item">
+                                                <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text
+                                                ><text>/{{ item.data_content.list.length }}</text>
+                                            </view>
+                                        </template>
+                                        <template v-else>
+                                            <view v-for="(item3, index3) in item.data_content.list" :key="index3" :style="item.data_style.indicator_styles + style_actived_color(item, index3)" class="dot-item" />
+                                        </template>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </template>
+                <template v-else>
+                    <view v-for="(item, index) in data_magic_list" :key="index" class="cr-main cube-selected" :style="selected_style(item) + ';margin:' + spacing + ';'">
+                        <view class="w h flex-row" :style="item.data_style.background_style + content_radius">
+                            <view class="re flex-1 oh" :style="item.data_style.background_img_style">
                                 <template v-if="item.data_content.data_type == 'goods'">
-                                    <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
-                                        <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
+                                    <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;'">
+                                        <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                             <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
                                                 <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
                                                     <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
@@ -20,14 +70,14 @@
                                             </template>
                                             <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
-                                        <view class="w h">
-                                            <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                        <view class="w h oh flex-row">
+                                            <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'images'">
-                                    <div class="w h" :style="item.data_style.chunk_padding_data">
-                                        <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                    <div class="w h oh flex-row">
+                                        <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                     </div>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'custom'">
@@ -39,60 +89,14 @@
                                 <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
                                     <template v-if="item.data_style.indicator_style == 'num'">
                                         <view :style="item.data_style.indicator_styles" class="dot-item">
-                                            <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text
-                                            ><text>/{{ item.data_content.list.length }}</text>
+                                            <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text>
+                                            <text>/{{ item.data_content.list.length }}</text>
                                         </view>
                                     </template>
                                     <template v-else>
                                         <view v-for="(item3, index3) in item.data_content.list" :key="index3" :style="item.data_style.indicator_styles + style_actived_color(item, index3)" class="dot-item" />
                                     </template>
                                 </view>
-                            </view>
-                        </view>
-                    </view>
-                </template>
-                <template v-else>
-                    <view v-for="(item, index) in data_magic_list" :key="index" class="cr-main cube-selected" :style="selected_style(item) + item.data_style.background_style + content_radius + ';margin:' + spacing + ';'">
-                        <view class="w h"  :style="item.data_style.background_img_style">
-                            <template v-if="item.data_content.data_type == 'goods'">
-                                <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;' + item.data_style.chunk_padding_data">
-                                    <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
-                                        <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
-                                            <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
-                                                <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
-                                            </view>
-                                        </template>
-                                        <template v-else>
-                                            <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
-                                        </template>
-                                        <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
-                                    </view>
-                                    <view class="w h">
-                                        <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
-                                    </view>
-                                </view>
-                            </template>
-                            <template v-else-if="item.data_content.data_type == 'images'">
-                                <div class="w h" :style="item.data_style.chunk_padding_data">
-                                    <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
-                                </div>
-                            </template>
-                            <template v-else-if="item.data_content.data_type == 'custom'">
-                                <customIndex :propKey="propKey + index" :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
-                            </template>
-                            <template v-else>
-                                <videoIndex :propKey="propKey + index" :propValue="item.data_content" :propDataStyle="item.data_style"></videoIndex>
-                            </template>
-                            <view v-if="item.data_style.is_show == '1' && item.data_content.list.length > 1" :class="['left', 'right'].includes(item.data_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="item.data_style.indicator_location_style">
-                                <template v-if="item.data_style.indicator_style == 'num'">
-                                    <view :style="item.data_style.indicator_styles" class="dot-item">
-                                        <text class="num-active" :style="{ color: item.data_style.actived_color }">{{ item.actived_index + 1 }}</text>
-                                        <text>/{{ item.data_content.list.length }}</text>
-                                    </view>
-                                </template>
-                                <template v-else>
-                                    <view v-for="(item3, index3) in item.data_content.list" :key="index3" :style="item.data_style.indicator_styles + style_actived_color(item, index3)" class="dot-item" />
-                                </template>
                             </view>
                         </view>
                     </view>
@@ -107,7 +111,7 @@
     import magicCarousel from '@/components/diy/modules/data-magic/magic-carousel.vue';
     import customIndex from '@/components/diy/modules/data-magic/custom/index.vue';
     import videoIndex from '@/components/diy/modules/data-magic/video/index.vue';
-    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer, get_indicator_location_style, get_indicator_style } from '@/common/js/common/common.js';
+    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, percentage_count, isEmpty, padding_computer, margin_computer, old_border_and_box_shadow, old_margin, old_padding, box_shadow_computer, border_computer, get_indicator_location_style, get_indicator_style, border_width } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
@@ -186,7 +190,8 @@
                 const container_height = !isEmpty(new_form.container_height) ? new_form.container_height : sys_width;
                 const density = !isEmpty(new_form.magic_cube_density) ? new_form.magic_cube_density : 4;
                 const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
+                console.log(border_width(new_style.common_style));
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right - border_width(new_style.common_style) - this.propOuterContainerPadding;
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -201,6 +206,7 @@
                     div_width: sys_width,
                     cubeCellWidth: sys_width / density,
                     container_size: container_height * 2 + 'rpx',
+
                 });
             },
             get_data_magic_list(data, new_style) {
@@ -211,8 +217,14 @@
                     // 指示器样式
                     data_style.indicator_styles = get_indicator_style(data_style);
                     data_style.indicator_location_style = get_indicator_location_style(data_style);
-                    data_style.background_style = gradient_computer(data_style);
-                    data_style.background_img_style = background_computer(data_style);
+                    // 获取当前的margin
+                    const chunk_margin = data_style?.chunk_margin || old_margin;
+                    // 计算左右间距
+                    const left_right_width_margin = (chunk_margin?.margin_left || 0) + (chunk_margin?.margin_right || 0);
+                    // 计算上下间距
+                    const top_bottom_height_margin = (chunk_margin?.margin_top || 0) + (chunk_margin?.margin_bottom || 0);
+                    data_style.background_style = gradient_computer(data_style) + margin_computer(data_style?.chunk_margin || old_margin) + `width: calc(100% - ${ left_right_width_margin }px);height:calc(100% - ${ top_bottom_height_margin }px);` + box_shadow_computer(data_style?.data_common_style || old_border_and_box_shadow) + border_computer(data_style?.data_common_style || old_border_and_box_shadow);
+                    data_style.background_img_style = background_computer(data_style) + padding_computer(data_style?.chunk_padding || old_padding);
                     // 商品价格处理
                     data_style.goods_price_symbol_style = this.goods_trends_config(data_style, 'price_symbol');
                     data_style.goods_price_unit_style = this.goods_trends_config(data_style, 'price_unit');

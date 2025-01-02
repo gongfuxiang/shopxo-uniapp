@@ -6,34 +6,54 @@
                 <!-- 风格3 -->
                 <template v-if="form.style_actived == 2">
                     <view class="flex-row align-c jc-c style-size">
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="three" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
-                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="three flex-row" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
+                            <view class="wh-auto flex-row" :style="content_img_container">
+                                <view class="flex-1" :style="content_img_style_container">
+                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                </view>
+                            </view>
                         </view>
                     </view>
                 </template>
                 <!-- 风格9 -->
                 <template v-else-if="form.style_actived == 8">
                     <view class="flex-row align-c jc-c style-size flex-wrap">
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" :class="[{ 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
-                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" :class="['flex-row', { 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
+                            <view class="wh-auto flex-row" :style="content_img_container">
+                                <view class="flex-1" :style="content_img_style_container">
+                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                </view>
+                            </view>
                         </view>
                     </view>
                 </template>
                 <template v-else-if="form.style_actived == 10">
                     <template v-if="form.limit_size == '0'">
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
-                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
+                            <view class="wh-auto flex-row" :style="content_img_container">
+                                <view class="flex-1" :style="content_img_style_container">
+                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="wh-autoidthFix" :style="content_img_radius"></image>
+                                </view>
+                            </view>
                         </view>
                     </template>
                     <template v-else>
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main" :style="img_spacing + selected_style(item) + ';height:' + form.image_height * 2 + 'rpx;'" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
-                            <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item) + ';height:' + form.image_height * 2 + 'rpx;'" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
+                            <view class="wh-auto flex-row" :style="content_img_container">
+                                <view class="flex-1" :style="content_img_style_container">
+                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                </view>
+                            </view>
                         </view>
                     </template>
                 </template>
                 <template v-else>
-                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
-                        <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                    <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main flex-row" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
+                        <view class="wh-auto flex-row" :style="content_img_container">
+                            <view class="flex-1" :style="content_img_style_container">
+                                <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                            </view>
+                        </view>
                     </view>
                 </template>
             </view>
@@ -42,7 +62,7 @@
 </template>
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, radius_computer, percentage_count, isEmpty } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, percentage_count, isEmpty, margin_computer, padding_computer, old_padding, old_margin } from '@/common/js/common/common.js';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
@@ -76,6 +96,8 @@
                 container_size: '',
                 div_width: 0,
                 img_fit: '',
+                content_img_container: '',
+                content_img_style_container: '',
             };
         },
         watch: {
@@ -128,6 +150,8 @@
                     div_width: sys_width,
                     container_size: container_height * 2 + 'rpx',
                     cube_cell: sys_width / density,
+                    content_img_container: common_styles_computer(new_style) + margin_computer(new_style?.margin || old_margin) + 'box-sizing: border-box;',
+                    content_img_style_container: common_img_computer(new_style) + padding_computer(new_style?.padding || old_padding) + 'box-sizing: border-box;',
                 });
             },
             getSelectedWidth(item) {

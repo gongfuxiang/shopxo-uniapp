@@ -1,6 +1,6 @@
 <template>
-    <view class="wh-auto ht-auto oh" :style="style_container">
-        <view class="wh-auto ht-auto" :style="style_img_container">
+    <view class="flex-1 oh" :style="style_container">
+        <view class="pr oh wh-auto ht-auto" :style="style_img_container">
             <swiper circular="true" :autoplay="propValue.data_style.is_roll == '1'" :interval="propValue.data_style.interval_time * 1000" :duration="500" :vertical="propValue.data_style.rotation_direction == 'vertical'" :next-margin="next_margin" :display-multiple-items="slides_per_view" class="swiper" style="height: 100%" @change="carousel_change">
                 <swiper-item v-for="(item1, index1) in propValue.data_content.list" :key="index1">
                     <template v-if="propType === 'img'">
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { gradient_computer, radius_computer, padding_computer, background_computer, isEmpty } from "@/common/js/common/common.js";
+    import { gradient_computer, radius_computer, padding_computer, background_computer, isEmpty, border_computer, box_shadow_computer, old_border_and_box_shadow, old_margin, old_radius, old_padding, margin_computer } from "@/common/js/common/common.js";
     const app = getApp();
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import productListShow from '@/components/diy/modules/data-magic/product-list-show.vue';
@@ -81,7 +81,7 @@
         methods: {
             init() {
                 if (!isEmpty(this.propValue)) {
-                    const { data_color_list = [], data_direction = '180deg', data_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 }, data_background_img = [], data_background_img_style = '2', data_chunk_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 }} = this.propValue.data_style;
+                    const { data_color_list = [], data_direction = '180deg', data_chunk_margin = old_margin, data_radius = old_radius, data_pattern = old_border_and_box_shadow, data_background_img = [], data_background_img_style = '2', data_chunk_padding = old_padding } = this.propValue.data_style;
                     const style_data = {
                         color_list: data_color_list,
                         direction: data_direction,
@@ -115,8 +115,9 @@
                             slides_per_view = 1; // 能够同时显示的slides数量
                         }
                     }
+                    
                     this.setData({
-                        style_container: gradient_computer(style_data) + radius_computer(data_radius), // 用于样式显示
+                        style_container: gradient_computer(style_data) + radius_computer(data_radius) + margin_computer(data_chunk_margin) + box_shadow_computer(data_pattern) + border_computer(data_pattern), // 用于样式显示
                         style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                         next_margin: rolling_fashion == 'translation' && rotation_direction == 'horizontal' ? `-${ data_goods_gap * 2 }rpx` : '0rpx',
                         shop_spacing: this.propType === 'img' ? 'margin-right: 0px;' : `margin-right: ${ data_goods_gap * 2 }rpx;`,

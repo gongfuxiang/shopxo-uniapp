@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width } from '@/common/js/common/common.js';
     import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
     const app = getApp();
     var system = app.globalData.get_system_info(null, null, true);
@@ -192,11 +192,11 @@
                 // 初始化数据
                 const { common_style, data_content_style, data_style } = new_style;
                 // 外层左右间距
-                const outer_spacing = (common_style?.margin_left || 0) + (common_style?.margin_right || 0) + (common_style?.padding_left || 0) + (common_style?.padding_right || 0);
+                const outer_spacing = (common_style?.margin_left || 0) + (common_style?.margin_right || 0) + (common_style?.padding_left || 0) + (common_style?.padding_right || 0) + border_width(common_style);
                 // 内容左右间距
-                const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0);
+                const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0) + border_width(data_content_style);
                 // 数据左右间距
-                const internal_spacing = (data_style?.margin_left || 0) + (data_style?.margin_right || 0) + (data_style?.padding_left || 0) + (data_style?.padding_right || 0);
+                const internal_spacing = (data_style?.margin_left || 0) + (data_style?.margin_right || 0) + (data_style?.padding_left || 0) + (data_style?.padding_right || 0) + border_width(data_style);
                 // 自定义组件宽度
                 const width = sys_width - outer_spacing - content_spacing - internal_spacing - this.propOuterContainerPadding;
 

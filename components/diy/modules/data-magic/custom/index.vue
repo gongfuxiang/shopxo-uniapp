@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { padding_computer, isEmpty, margin_computer, gradient_computer, radius_computer, background_computer, common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
+import { padding_computer, isEmpty, margin_computer, gradient_computer, radius_computer, background_computer, common_styles_computer, common_img_computer, border_width, box_shadow_computer, border_computer, old_border_and_box_shadow, old_margin, old_padding, old_radius } from '@/common/js/common/common.js';
 import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
 const app = getApp();
 
@@ -137,7 +137,7 @@ export default {
             if (!isEmpty(this.propValue)) {
                 const new_form = this.propValue.data_content;
                 const new_style = this.propValue.data_style;
-                const { data_color_list = [], data_direction = '180deg', data_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 }, data_background_img = [], data_background_img_style = '2', data_chunk_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 }, data_chunk_margin = { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 }, data_content_style = {} } = new_style;
+                const { data_common_style = {}, data_color_list = [], data_direction = '180deg', data_radius = old_radius, data_background_img = [], data_background_img_style = '2', data_chunk_padding = old_padding, data_chunk_margin = old_margin, data_content_style = {}, data_pattern = old_border_and_box_shadow } = new_style;
                 const style_data = {
                     color_list: data_color_list,
                     direction: data_direction,
@@ -167,11 +167,18 @@ export default {
                 const { padding_left, padding_right, padding_top, padding_bottom } = data_chunk_padding;
                 const { margin_left, margin_right, margin_bottom, margin_top } = data_chunk_margin;
                 const old_width = new_form.width * this.propMagicScale;
+                // 数据宽度
+                const data_style = padding_left + padding_right + margin_left + margin_right + border_width(data_pattern);
+                // 通用样式
+                const chunk_padding = new_style?.chunk_padding || old_padding;
+                const chunk_margin = new_style?.chunk_margin || old_margin;
+                const common_styles = (chunk_margin?.margin_left || 0) + (chunk_margin?.margin_right || 0) + (chunk_padding?.padding_left || 0) + (chunk_padding?.padding_right || 0) + border_width(data_common_style);
                 // 内容左右间距
-                const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0);
-                const width = old_width - padding_left - padding_right - margin_left - margin_right - content_spacing - (this.propDataSpacing / 2);
+                const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0) + border_width(data_content_style);
+                // 当前容器的宽度 减去 左右两边的padding值 再减去 数据间距的一半 再除以 容器的宽度 得到比例 再乘以数据魔方的比例
+                const width = old_width - data_style - content_spacing - common_styles - (this.propDataSpacing / 2);
                 // 计算缩放比例
-                const new_scale = width / old_width;
+                const new_scale = width / new_form.width;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 判断是平移还是整屏滚动
@@ -199,7 +206,7 @@ export default {
                     custom_list_length: new_form.custom_list.length - 1,
                     style_content_container: common_styles_computer(content_style),
                     style_content_img_container: common_img_computer(content_style),
-                    style_container: gradient_computer(style_data) + radius_computer(data_radius) + margin_computer(data_chunk_margin), // 用于样式显示
+                    style_container: gradient_computer(style_data) + radius_computer(data_radius) + margin_computer(data_chunk_margin) + box_shadow_computer(data_pattern) + border_computer(data_pattern), // 用于样式显示
                     style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                     data_source_content_list: new_list,
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',

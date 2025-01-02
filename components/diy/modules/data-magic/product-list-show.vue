@@ -87,7 +87,7 @@
 
 <script>
     const app = getApp();
-    import { gradient_computer, radius_computer, padding_computer, background_computer, isEmpty, margin_computer } from "@/common/js/common/common.js";
+    import { gradient_computer, radius_computer, padding_computer, background_computer, isEmpty, margin_computer, box_shadow_computer, border_computer, old_margin, old_border_and_box_shadow, old_padding } from "@/common/js/common/common.js";
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -141,9 +141,6 @@
                 style_img_container: '',
                 block_size: '',
                 float_pirce_style: '',
-                old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
-                old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
-                old_margin: { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 },
             };
         },
         watch: {
@@ -168,7 +165,7 @@
             isEmpty,
             init() {
                 if (!isEmpty(this.propGoodStyle)) {
-                    const { goods_color_list = [], goods_direction = '180deg', goods_radius = this.old_radius, goods_background_img = [], goods_background_img_style = '2', goods_chunk_padding = this.old_padding, goods_price_color_list = [], goods_price_direction = '180deg', goods_price_radius = this.old_radius, goods_price_padding = this.old_padding, goods_price_margin = this.old_margin, goods_price_location = 'center'} = this.propGoodStyle;
+                    const { goods_color_list = [], goods_direction = '180deg', goods_radius = old_radius, goods_background_img = [], goods_background_img_style = '2', goods_chunk_padding = old_padding, goods_price_color_list = [], goods_price_direction = '180deg', goods_price_radius = old_radius, goods_price_padding = old_padding, goods_price_margin = old_margin, goods_price_location = 'center', goods_chunk_margin = old_margin} = this.propGoodStyle;
                     const style_data = {
                         color_list: goods_color_list,
                         direction: goods_direction,
@@ -177,7 +174,7 @@
                         background_img: goods_background_img,
                         background_img_style: goods_background_img_style,
                     }
-                    const total_gap = this.propGoodStyle.data_goods_gap * (this.propValue.length - 1);
+                    
                     const data = {
                         color_list: goods_price_color_list,
                         direction: goods_price_direction,
@@ -188,11 +185,21 @@
                     } else if (goods_price_location == 'right') {
                         location = 'right:0;bottom:0;';
                     }
+                    // 左右间距
+                    const shop_left_right_width_margin = goods_chunk_margin?.margin_left || 0 + goods_chunk_margin?.margin_right || 0;
+                    // 上下间距
+                    const shop_top_bottom_width_margin = goods_chunk_margin?.margin_top || 0 + goods_chunk_margin?.margin_bottom || 0;
+                    // 内容间距
+                    const total_gap = this.propGoodStyle.data_goods_gap * (this.propValue.length - 1);
+                    // 总的宽度
+                    const all_width = total_gap + (shop_left_right_width_margin.value * this.propNum);
+                    // 总的高度
+                    const all_height = total_gap + (shop_top_bottom_width_margin.value * this.propNum);
                     this.setData({
                         float_pirce_style: gradient_computer(data) + radius_computer(goods_price_radius) + padding_computer(goods_price_padding) + margin_computer(goods_price_margin) + location,
-                        style_container: gradient_computer(style_data) + radius_computer(goods_radius), // 用于样式显示
+                        style_container: gradient_computer(style_data) + radius_computer(goods_radius) + margin_computer(goods_chunk_margin) + border_computer(this.propGoodStyle) + box_shadow_computer(this.propGoodStyle), // 用于样式显示
                         style_img_container: this.propFlex == 'col' ? background_computer(style_img_data) : padding_computer(goods_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
-                        block_size: this.propOuterflex == 'row' ? 'height:100%;width:calc((100% - ' + total_gap * 2 + 'rpx) / ' + this.propNum  + ');' : 'width: 100%;height:calc((100% - ' + total_gap * 2 + 'rpx) / ' + this.propNum  + ');'
+                        block_size: this.propOuterflex == 'row' ?  'height:calc(100% - ' +  shop_top_bottom_width_margin.value + 'px);width:calc((100% - ' + all_width + 'px) / ' + this.propNum  + ');' : 'width:calc(100% - ' +  shop_left_right_width_margin.value + 'px);height:calc((100% - ' + all_height + 'px) / ' + this.propNum  + ');',
                     });
                 } else {
                     return '';
