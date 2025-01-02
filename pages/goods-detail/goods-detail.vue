@@ -76,7 +76,7 @@
             <view class="goods-base-price bg-white oh spacing-mb" :class="plugins_seckill_is_valid ? 'goods-base-price-countdown' : ''">
                 <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
                 <block v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
-                    <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                    <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsAlone="true"></component-wholesale-rules>
                 </block>
                 <!-- 价格 -->
                 <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="plugins_seckill_is_valid ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
@@ -97,6 +97,10 @@
                             <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
                             <text class="points-price-unit text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
                         </view>
+                    </block>
+                    <block v-else>
+                        <!-- 批发开启了隐藏价格，则价格容器这里展示批发价格信息 -->
+                        <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
                     </block>
                 </view>
                 <block v-if="plugins_seckill_is_valid">
