@@ -66,9 +66,7 @@
             this.get_data();
 
             // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            this.init_common();
 
             // 设置顶部导航的默认颜色
             this.set_navigation_bar_color();
@@ -80,6 +78,14 @@
         },
 
         methods: {
+            // 初始化公共
+            init_common() {
+                // 公共onshow事件
+                if ((this.$refs.common || null) != null) {
+                    this.$refs.common.on_show();
+                }
+            },
+
             // 获取数据
             get_data(params = {}) {
                 // 还没有数据则读取缓存
@@ -96,6 +102,9 @@
 
                         // 设置顶部导航的默认颜色
                         this.set_navigation_bar_color();
+
+                        // 公共onshow事件
+                        this.init_common();
                     }
                 } else {
                     // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
@@ -145,6 +154,9 @@
 
                                 // 设置顶部导航的默认颜色
                                 this.set_navigation_bar_color();
+
+                                // 公共onshow事件
+                                this.init_common();
                             }
 
                             // 分享菜单处理

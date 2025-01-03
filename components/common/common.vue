@@ -149,8 +149,9 @@
 
             // 底部菜单初始化
             footer_init(status = 0) {
+                var is_use_native_tabbar = app.globalData.data.is_use_native_tabbar == 1;
                 var upd_data = {
-                    is_tabbar: (app.globalData.data.is_use_native_tabbar == 1) ? false : app.globalData.is_tabbar_pages()
+                    is_tabbar: is_use_native_tabbar ? false : app.globalData.is_tabbar_pages()
                 };
                 if(upd_data['is_tabbar']) {
                     upd_data['key'] = Math.random();
@@ -159,7 +160,7 @@
                 this.setData(upd_data);
 
                 // 如果没有菜单数据则读取一次
-                if(upd_data['is_tabbar'] && status == 0 && upd_data['app_tabbar'] == null) {
+                if(!is_use_native_tabbar && status == 0 && (upd_data['app_tabbar'] || null) == null) {
                     app.globalData.init_config(0, this, 'footer_init', 1);
                 }
             },
