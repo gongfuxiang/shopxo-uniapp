@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) != null">
+        <block v-if="(data || null) != null">
             <!-- 搜索 -->
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
@@ -17,10 +17,10 @@
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </block>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
@@ -75,9 +75,7 @@
             this.get_data();
 
             // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
+            this.init_common();
         },
 
         // 下拉刷新
@@ -86,6 +84,14 @@
         },
 
         methods: {
+            // 初始化公共
+            init_common() {
+                // 公共onshow事件
+                if ((this.$refs.common || null) != null) {
+                    this.$refs.common.on_show();
+                }
+            },
+
             // 获取数据
             get_data(params = {}) {
                 // 还没有数据则读取缓存
@@ -99,6 +105,9 @@
 
                         // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
                         params['is_cache'] = 0;
+
+                        // 公共onshow事件
+                        this.init_common();
                     }
                 } else {
                     // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
@@ -146,6 +155,9 @@
                                 uni.setNavigationBarTitle({
                                     title: this.data.name
                                 });
+
+                                // 公共onshow事件
+                                this.init_common();
                             }
 
                             // 分享菜单处理
