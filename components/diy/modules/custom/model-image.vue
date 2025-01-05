@@ -138,7 +138,7 @@
                 return style;
             },
             url_event(e) {
-                this.$emit('url_event', e);
+                this.$emit('url_event', this.img_url);
             },
         },
     };

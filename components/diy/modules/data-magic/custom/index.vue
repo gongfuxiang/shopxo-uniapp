@@ -263,7 +263,7 @@ export default {
                     }
                 }
             }
-            app.globalData.url_event(e);
+            app.globalData.url_open(e);
         },
     },
 };
