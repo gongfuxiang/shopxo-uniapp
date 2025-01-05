@@ -15,7 +15,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, old_border_and_box_shadow, border_computer, box_shadow_computer, radius_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, old_border_and_box_shadow, old_margin, old_radius, old_padding, border_computer, box_shadow_computer, radius_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list';
     // 状态栏高度
@@ -82,10 +82,6 @@
                 shop_margin_top: '',
                 shop_container: '',
                 shop_img_container: '',
-                // 默认数据
-                old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
-                old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
-                old_margin: { margin: 0, margin_top: 10, margin_bottom: 0, margin_left: 0, margin_right: 0 },
                 // #ifdef MP
                 nav_safe_space: bar_height + 5,
                 // #endif
@@ -177,7 +173,7 @@
                 let common_style = Object.assign({}, new_style.common_style, {
                     padding_top: 0,
                 });
-                const { tabs_bg_color_list = [], tabs_bg_direction = '', tabs_bg_background_img_style = '', tabs_bg_background_img = [], tabs_radius = this.old_radius, tabs_padding = this.old_padding, shop_content_color_list = [], shop_content_direction = '', shop_content_background_img_style = '', shop_content_background_img = [], shop_content_margin = this.old_margin, shop_content_padding = this.old_padding, shop_content_radius = this.old_radius } = new_style;
+                const { tabs_bg_color_list = [], tabs_bg_direction = '', tabs_bg_background_img_style = '', tabs_bg_background_img = [], tabs_radius = old_radius, tabs_padding = old_padding, shop_content_color_list = [], shop_content_direction = '', shop_content_background_img_style = '', shop_content_background_img = [], shop_content_margin = old_margin, shop_content_padding = old_padding, shop_content_radius = old_radius } = new_style;
                 // 选项卡背景设置
                 const tabs_data = {
                     color_list: tabs_bg_color_list,
