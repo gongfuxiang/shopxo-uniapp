@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" :data-value="text_url" @tap="url_event">
+    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
         <view :style="text_style" class="break">
             <template v-if="form.is_rich_text == '1'">
                 <view class="rich-text-content" :innerHTML="text_title"></view>

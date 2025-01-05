@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" :data-value="icon_url" @tap="url_event">
+    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" @tap="url_event">
         <iconfont :name="'icon-' + icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'" propContainerDisplay="flex"></iconfont>
     </view>
 </template>

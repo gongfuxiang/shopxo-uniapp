@@ -1,5 +1,5 @@
 <template>
-    <view class="wh-auto ht-auto re oh" :style="com_style" :data-value="panel_url" @tap="url_event">
+    <view class="wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
         <div class="wh-auto ht-auto" :style="com_img_style"></div>
     </view>
 </template>

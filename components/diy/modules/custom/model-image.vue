@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer pr wh-auto ht-auto" :style="border_style" :data-value="img_url" @tap="url_event">
+    <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_event">
         <imageEmpty :propImageSrc="img" :propStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
     </view>
 </template>
