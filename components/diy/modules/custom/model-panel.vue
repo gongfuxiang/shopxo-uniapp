@@ -81,7 +81,7 @@
                 return background_computer(data);
             },
             url_event(e) {
-                this.$emit('url_event', e);
+                this.$emit('url_event', this.panel_url);
             },
         },
     };  
