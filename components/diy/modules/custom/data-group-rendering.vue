@@ -16,9 +16,6 @@
             <template v-else-if="item.key == 'panel'">
                 <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList"  :propSourceList="propSourceList" :propIsCustom="propIsCustom" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-panel>
             </template>
-            <template v-else-if="item.key == 'custom-group'">
-                <model-custom-group :propKey="propKey" :propValue="item.com_data" :propFieldList="propFieldList" :propScale="propScale" :propDataWidth="item.com_data.com_width" :propDataHeight="item.com_data.custom_height" :propSourceList="propSourceList" :propIsCustom="propIsCustom"></model-custom-group>
-            </template>
         </view>
     </view>
 </template>
@@ -29,7 +26,6 @@ import modelLines from '@/components/diy/modules/custom/model-lines.vue';
 import modelImage from '@/components/diy/modules/custom/model-image.vue';
 import modelIcon from '@/components/diy/modules/custom/model-icon.vue';
 import modelPanel from '@/components/diy/modules/custom/model-panel.vue';
-import modelCustomGroup from '@/components/diy/modules/custom/model-custom-group.vue';
 export default {
     components: {
         modelText,
@@ -37,7 +33,6 @@ export default {
         modelImage,
         modelIcon,
         modelPanel,
-        modelCustomGroup
     },
     props: {
         propCustomList: {

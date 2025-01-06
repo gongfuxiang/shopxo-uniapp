@@ -14,19 +14,19 @@
                     </view>
                 </view>
             </view>
-            <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr">
+            <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr">
                 <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                     <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
                         <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                             <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
-                                <div class="wh-auto ht-auto oh" :style="style_img_container">
+                                <view class="wh-auto ht-auto oh" :style="style_img_container">
                                     <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
-                                </div>
+                                </view>
                             </view>
                         </view>
                     </swiper-item>
                 </swiper>
-            </div>
+            </view>
             <view v-else>
                 <view :style="style_container">
                     <view class="wh-auto ht-auto oh" :style="style_img_container">
@@ -164,8 +164,8 @@ export default {
                 }
                 const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
                 // 计算宽度
-                const { padding_left, padding_right, padding_top, padding_bottom } = data_chunk_padding;
-                const { margin_left, margin_right, margin_bottom, margin_top } = data_chunk_margin;
+                const { padding_left, padding_right } = data_chunk_padding;
+                const { margin_left, margin_right } = data_chunk_margin;
                 const old_width = new_form.width * this.propMagicScale;
                 // 数据宽度
                 const data_style = padding_left + padding_right + margin_left + margin_right + border_width(data_pattern);
@@ -175,28 +175,31 @@ export default {
                 const common_styles = (chunk_margin?.margin_left || 0) + (chunk_margin?.margin_right || 0) + (chunk_padding?.padding_left || 0) + (chunk_padding?.padding_right || 0) + border_width(data_common_style);
                 // 内容左右间距
                 const content_spacing = (data_content_style?.margin_left || 0) + (data_content_style?.margin_right || 0) + (data_content_style?.padding_left || 0) + (data_content_style?.padding_right || 0) + border_width(data_content_style);
+                const carousel_col = Number(new_form.data_source_carousel_col);
+                // 数据间距
+                const data_spacing = ['vertical', 'horizontal'].includes(new_form.data_source_direction) ? new_style.column_gap * (carousel_col - 1) : 0;
                 // 当前容器的宽度 减去 左右两边的padding值 再减去 数据间距的一半 再除以 容器的宽度 得到比例 再乘以数据魔方的比例
-                const width = old_width - data_style - content_spacing - common_styles - (this.propDataSpacing / 2);
+                const width = old_width - data_style - content_spacing - common_styles - data_spacing - (this.propDataSpacing / 2);
                 // 计算缩放比例
-                const new_scale = width / new_form.width;
+                // 比例增加最小值判断
+                const scale_number = width / new_form.width;
+                const new_scale = scale_number > 0 ? scale_number : 0;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 判断是平移还是整屏滚动
                 let swiper_height = 0;
                 // 商品数量大于列数的时候，高度是列数，否则是当前的数量
-                const col = new_list.length > Number(new_form.data_source_carousel_col) ? Number(new_form.data_source_carousel_col) : new_list.length;
+                const col = new_list.length > carousel_col ? carousel_col : new_list.length;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
-                    swiper_height = new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top;
+                    swiper_height = new_form.height * new_scale;
                 } else {
-                    swiper_height = (new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
+                    swiper_height = (new_form.height * new_scale) * col + ((carousel_col - 1) * space_between);
                 }
-                // 拿到对应的数量
-                const model_number = Number(new_form.data_source_carousel_col);
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
-                let gap = (new_style.column_gap * (model_number - 1)) / model_number;
+                let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;
                 // 横向的时候，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                const swiper_width = (new_form.data_source_direction == 'horizontal' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / new_form.data_source_carousel_col }%;`: 'width: 100%;';
+                const swiper_width = (new_form.data_source_direction == 'horizontal' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / carousel_col }%;`: 'width: 100%;';
                 const content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.defalt_style;
                 this.setData({
                     form: new_form,
@@ -210,12 +213,12 @@ export default {
                     style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                     data_source_content_list: new_list,
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',
-                    slides_per_view: new_style.rolling_fashion == 'translation' ? (new_form.data_source_direction != 'horizontal' ? col : new_form.data_source_carousel_col) : 1,
+                    slides_per_view: new_style.rolling_fashion == 'translation' ? (new_form.data_source_direction != 'horizontal' ? col : carousel_col) : 1,
                     swiper_height: swiper_height,
                     swiper_width: swiper_width,
                     show_data: new_form?.show_data || { data_key: 'id', data_name: 'name' },
                     content_outer_spacing_magin: space_between + 'px',
-                    gap_width: `width: calc(${100 / model_number}% - ${gap}px);`,
+                    gap_width: `width: calc(${100 / carousel_col}% - ${gap}px);`,
                 });
             }
         },

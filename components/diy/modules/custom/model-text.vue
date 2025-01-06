@@ -1,5 +1,5 @@
 <template>
-    <view class="img-outer wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
+    <view v-if="is_show" class="img-outer wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
         <view :style="text_style" class="break">
             <template v-if="form.is_rich_text == '1'">
                 <view class="rich-text-content" :innerHTML="text_title"></view>
@@ -11,7 +11,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, isEmpty, gradient_handle, get_nested_property, get_custom_link } from '@/common/js/common/common.js';
+    import { radius_computer, padding_computer, isEmpty, gradient_handle, get_nested_property, get_custom_link, get_is_eligible } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -40,10 +40,18 @@
                 type: Boolean,
                 default: false
             },
+            propCustomGroupFieldId: {
+                type: String,
+                default: ''
+            },
             propTitleParams: {
                 type: String,
                 default: 'name'
             },
+            propFieldList: {
+                type: Array,
+                default: []
+            }
         },
         data() {
             return {
@@ -56,7 +64,8 @@
                     goods: 'title',
                     article: 'title',
                     brand: 'name'
-                }
+                },
+                is_show: true,
             };
         },
         watch: {
@@ -69,24 +78,31 @@
         },
         methods: {
             init() {
+                const new_form = this.propValue;
                 let url = '';
-                if (!isEmpty(this.propValue.text_link)) {
-                    url = this.propValue.text_link?.page || '';
+                if (!isEmpty(new_form.text_link)) {
+                    url = new_form.text_link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = this.propValue?.data_source_link_field?.id || '';
+                    const data_source_link_id = new_form?.data_source_link_field?.id || '';
                     // 数据源内容
-                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    const source_link_option = new_form?.data_source_link_field?.option || {};
                     // 调用方法处理数据显示
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option);
                 }
                 this.setData({
-                    form: this.propValue,
-                    text_title: this.get_text_title(this.propValue),
-                    text_style: this.get_text_style(this.propValue, this.propScale),
-                    com_style: this.get_com_style(this.propValue, this.propScale),
+                    form: new_form,
+                    text_title: this.get_text_title(new_form),
+                    text_style: this.get_text_style(new_form, this.propScale),
+                    com_style: this.get_com_style(new_form, this.propScale),
                     text_url: url,
+                    is_show: this.get_is_show(new_form),
                 });
+            },
+            get_is_show(form) {
+                // 取出条件判断的内容
+                const condition = form?.condition || { field: '', type: '', value: '' };
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
             },
             get_text_title(form) {
                 let text = '';

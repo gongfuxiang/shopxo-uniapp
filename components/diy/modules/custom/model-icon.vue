@@ -1,10 +1,10 @@
 <template>
-    <view class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" @tap="url_event">
+    <view v-if="is_show" class="img-outer pr oh flex-row align-c wh-auto ht-auto" :style="com_style" @tap="url_event">
         <iconfont :name="'icon-' + icon_class" :color="form.icon_color" :size="form.icon_size * scale + 'px'" propContainerDisplay="flex"></iconfont>
     </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, gradient_handle, isEmpty, get_nested_property, get_custom_link } from '@/common/js/common/common.js';
+    import { radius_computer, padding_computer, gradient_handle, isEmpty, get_nested_property, get_custom_link, get_is_eligible } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -32,6 +32,14 @@
             propIsCustom: {
                 type: Boolean,
                 default: false
+            },
+            propCustomGroupFieldId: {
+                type: String,
+                default: ''
+            },
+            propFieldList: {
+                type: Array,
+                default: []
             }
         },
         data() {
@@ -41,6 +49,7 @@
                 scale: 1,
                 icon_class: '',
                 icon_url: '',
+                is_show: true,
             };
         },
         watch: {
@@ -53,16 +62,17 @@
         },
         methods: {
             init() {
+                const new_form = this.propValue;
                 let icon_class_value = '';
-                if (!isEmpty(this.propValue.icon_class)) {
-                    icon_class_value = this.propValue.icon_class;
+                if (!isEmpty(new_form.icon_class)) {
+                    icon_class_value = new_form.icon_class;
                 } else {
                     if (!isEmpty(this.propSourceList)) {
                         let icon = '';
                         // 获取数据源ID
-                        const data_source_id = this.propValue?.data_source_field?.id || '';
+                        const data_source_id = new_form?.data_source_field?.id || '';
                         // 数据源内容
-                        const option = this.propValue?.data_source_field?.option || {};
+                        const option = new_form?.data_source_field?.option || {};
                         if (data_source_id.includes(';')) {
                             const ids = data_source_id.split(';');
                             let url = '';
@@ -80,22 +90,28 @@
                     }
                 }
                 this.setData({
-                    form: this.propValue,
+                    form: new_form,
                     scale: this.propScale,
-                    com_style: this.get_com_style(this.propValue, this.propScale),
+                    com_style: this.get_com_style(new_form, this.propScale),
                     icon_class: icon_class_value,
-                    icon_url: this.get_icon_link(),
+                    icon_url: this.get_icon_link(new_form),
+                    is_show: this.get_is_show(new_form),
                 });
             },
-            get_icon_link() {
+            get_is_show(form) {
+                // 取出条件判断的内容
+                const condition = form?.condition || { field: '', type: '', value: '' };
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
+            },
+            get_icon_link(new_form) {
                 let url = '';
-                if (!isEmpty(this.propValue.icon_link)) {
-                    url = this.propValue.icon_link?.page || '';
+                if (!isEmpty(new_form.icon_link)) {
+                    url = new_form.icon_link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = this.propValue?.data_source_link_field?.id || '';
+                    const data_source_link_id = new_form?.data_source_link_field?.id || '';
                     // 数据源内容
-                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    const source_link_option = new_form?.data_source_link_field?.option || {};
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option)
                 }
                 return url;

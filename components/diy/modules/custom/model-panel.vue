@@ -1,10 +1,10 @@
 <template>
-    <view class="wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
+    <view v-if="is_show" class="wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
         <div class="wh-auto ht-auto" :style="com_img_style"></div>
     </view>
 </template>
 <script>
-    import { radius_computer, background_computer, gradient_handle, isEmpty, get_custom_link } from '@/common/js/common/common.js';
+    import { radius_computer, background_computer, gradient_handle, isEmpty, get_custom_link, get_is_eligible } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -28,6 +28,18 @@
             propScale: {
                 type: Number,
                 default: 1
+            },
+            propIsCustom: {
+                type: Boolean,
+                default: false
+            },
+            propCustomGroupFieldId: {
+                type: String,
+                default: ''
+            },
+            propFieldList: {
+                type: Array,
+                default: []
             }
         },
         data() {
@@ -37,6 +49,7 @@
                 text_style: '',
                 com_style: '',
                 panel_url: '',
+                is_show: true,
             };
         },
         watch: {
@@ -49,22 +62,29 @@
         },
         methods: {
             init() {
+                const new_form = this.propValue;
                 let url = '';
-                if (!isEmpty(this.propValue.link)) {
-                    url = this.propValue.link?.page || '';
+                if (!isEmpty(new_form.link)) {
+                    url = new_form.link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = this.propValue?.data_source_link_field?.id || '';
+                    const data_source_link_id = new_form?.data_source_link_field?.id || '';
                     // 数据源内容
-                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    const source_link_option = new_form?.data_source_link_field?.option || {};
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option);
                 }
                 this.setData({
-                    form: this.propValue,
-                    com_style: this.get_com_style(this.propValue, this.propScale),
-                    com_img_style: this.get_com_img_style(this.propValue),
+                    form: new_form,
+                    com_style: this.get_com_style(new_form, this.propScale),
+                    com_img_style: this.get_com_img_style(new_form),
                     panel_url: url,
+                    is_show: this.get_is_show(new_form),
                 });
+            },
+            get_is_show(form) {
+                // 取出条件判断的内容
+                const condition = form?.condition || { field: '', type: '', value: '' };
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
             },
             get_com_style(form, scale) {
                 let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, scale, true)}; transform: rotate(${form.panel_rotate}deg);`;

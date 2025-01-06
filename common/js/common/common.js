@@ -28,6 +28,202 @@ export const border_width = (style) => {
         return 0;
     }
 }
+
+/**
+ * 根据指定的条件类型和值，判断字段值是否满足条件
+ * @param fieldValue 字段值，可以是任何类型
+ * @param type 条件类型，如'contains', 'is-empty', 'greater-than'等
+ * @param value 用于比较的值，可以是数字或字符串
+ * @returns 返回一个布尔值，表示字段值是否满足指定的条件
+ */
+export const custom_condition_judg = (fieldValue, type, value) => {
+    // 处理 null 或 undefined 的情况
+    if (fieldValue == null) {
+        return true;
+    }
+
+    // 提前计算并缓存转换结果
+    const stringValue = String(fieldValue);
+    const valueStr = String(value);
+    const numberValue = Number(value);
+    switch (type) {
+        case 'contains':
+        case 'does-not-contain':
+            // 处理包含和不包含的逻辑, 如果值为空，直接返回为空
+            if (!isEmpty(valueStr)) {
+                const result = stringValue.includes(valueStr);
+                return type === 'contains' ? result : !result;
+            } else {
+                return true;
+            }
+        case 'is-empty':
+        case 'is-not-empty':
+            // 处理为空和不为空的逻辑
+            const is_Empty = ['', '{}', '[]'].includes(stringValue.trim()) || (Array.isArray(fieldValue) && fieldValue.length === 0);
+            return type === 'is-empty' ? is_Empty : !is_Empty;
+        case 'greater-than':
+        case 'less-than':
+        case 'equal':
+            // 根据字段值的类型，进行数字间的比较
+            if (typeof fieldValue === 'number') {
+                return compare_numbers(fieldValue, numberValue, type);
+            } else if (Array.isArray(fieldValue)) {
+                // 如果字段值是数组，比较数组长度和指定值
+                const valueLength = fieldValue.length;
+                return compare_numbers(valueLength, numberValue, type);
+            } else {
+                // 将字段值转换为数字进行比较, 如果是字符串的话，直接为NAN，比对不会成功，为空的时候会转为0 == 0会成功，其他情况下不会成功
+                const numericFieldValue = +stringValue;
+                return compare_numbers(numericFieldValue, numberValue, type);
+            }
+        default:
+            return true;
+    }
+}
+
+/**
+ * 比较两个数字的大小
+ * @param a 第一个数字
+ * @param b 第二个数字
+ * @param type 比较类型，如'greater-than', 'less-than', 'equal'等
+ * @returns 根据比较类型返回比较结果
+ */
+const compare_numbers = (a, b, type) => {
+    switch (type) {
+        case 'greater-than': return a > b;
+        case 'less-than': return a < b;
+        case 'equal': return a === b;
+        default: return false;
+    }
+}
+
+/**
+ * 根据新的样式对象计算指示器的位置样式
+ * 
+ * 此函数根据指示器的新位置和当前位置以及底部距离来生成相应的CSS样式
+ * 它处理的是一个包含指示器位置信息的对象，并返回一个字符串形式的CSS样式
+ * 
+ * @param new_style 包含指示器新位置和当前位置及底部距离的样式对象
+ * @returns 返回计算出的指示器位置CSS样式字符串
+ */
+export const get_indicator_location = (new_style) => {
+    // 解构指示器的位置信息
+    const { indicator_new_location = '',  indicator_location = '', indicator_bottom = 0 } = new_style;
+    let styles = '';
+    // 根据指示器的新位置是水平方向（left或right）还是垂直方向（默认）来决定如何设置样式
+    if (['left', 'right'].includes(indicator_new_location)) {
+        // 如果是水平方向，根据指示器的当前位置设置top、center或bottom样式
+        if (indicator_location == 'flex-start') {
+            styles += `top: 0px;`;
+        } else if (indicator_location == 'center') {
+            styles += `top: 50%; transform: translateY(-50%);`;
+        } else {
+            styles += `bottom: 0px;`;
+        }
+    } else {
+        // 如果是垂直方向，根据指示器的当前位置设置left、center或right样式
+        if (indicator_location == 'flex-start') {
+            styles += `left: 0px;`;
+        } else if (indicator_location == 'center') {
+            styles += `left: 50%; transform: translateX(-50%);`;
+        } else {
+            styles += `right: 0px;`;
+        }
+    }
+    // 如果有位置的处理，就使用指示器的位置处理，否则的话就用下边距处理
+    styles += `${ !isEmpty(indicator_new_location) ? `${indicator_new_location}: ${ indicator_bottom }px;` : `bottom: ${ indicator_bottom }px;` }`;
+    // 返回计算出的指示器位置样式
+    return styles;
+}
+
+/**
+ * 判断给定条件是否符合资格，主要用于自定义内部各个组件是否符合显示条件
+ * @param field_list 字段列表，包含各个字段的数据
+ * @param condition 条件数据，包括字段、类型和值
+ * @param props 额外属性，包含自定义组和数据源等信息
+ * @returns 返回一个布尔值，表示是否符合条件
+ */
+export const get_is_eligible = (field_list, condition, sourceList, isCustom, customGroupFieldId) => {
+    try {
+        // 获取对应条件字段的字段数据
+        let option = {};
+        if (field_list) {
+            // 判断是否是自定义组并且 自定义组选则了对应的数据源
+            if (!isCustom && !isEmpty(customGroupFieldId)) {
+                // 取出对应自定义组的内容
+                const group_option_list = field_list.find(item => item.field === customGroupFieldId);
+                // 取出自定义组内部数据源参数的详细数据
+                const new_field_list = group_option_list?.data || [];
+                // 通过对应条件，筛选出对应的数据
+                option = new_field_list.find(item => item.field === condition.field);
+            } else {
+                option = field_list.find(item => item.field === condition.field);
+            }
+        }
+        // 获取到字段的真实数据, option的使用主要是为了获取的他的中间参数和前缀，后缀等拼接在一起
+        const field_value = custom_condition_data(condition.field || '', option || {}, sourceList, isCustom);
+        // 判断条件字段是否为空并且是显示面板才会生效，则直接返回true
+        if (!isEmpty(condition.field) && !isEmpty(condition.type)) {
+            return custom_condition_judg(field_value, condition.type, condition.value);
+        } else {
+            return true;
+        }
+    } catch (error) {
+        return true; // 或者根据业务需求返回适当的默认值
+    }
+}
+
+/**
+ * 根据数据源ID和配置选项来处理和返回特定格式的数据
+ * 
+ * @param data_source_id 数据源ID字符串，可以包含多个用分号分隔的ID
+ * @param option 配置选项，包含数据处理的额外参数
+ * @param sourceList 数据源列表，用于查找和处理数据
+ * @param isCustom 是否为自定义模式，用于确定数据处理的方式
+ * @returns 返回处理后的数据字符串
+ */
+export const custom_condition_data = (data_source_id, option, sourceList, isCustom) => {
+    let data_value = '';
+    if (data_source_id.includes(';')) {
+        // 当数据源ID包含多个用分号分隔的ID时
+        // 取出所有的字段，使用;分割
+        const ids = data_source_id.split(';');
+        let text = '';
+        // 遍历每个ID，处理数据并合并
+        ids.forEach((item, index) => {
+            text += data_handling(item, sourceList, isCustom) + (index != ids.length - 1 ? (option?.join || '') : '');
+        });
+        data_value = text;
+    } else {
+        // 不输入商品， 文章和品牌时，从外层处理数据
+        // 当数据源ID不包含分号时，直接处理数据
+        data_value = data_handling(data_source_id, sourceList, isCustom);
+    }
+    // 根据配置选项，添加前缀和后缀到处理后的数据
+    return (option?.first || '') + data_value + (option?.last || '');
+}
+
+/**
+ * 数据处理函数
+ * 该函数根据数据源ID和一个数据对象，返回对应的图标路径
+ * 主要用于从复杂的数据结构中提取图标信息，根据是否是自定义图标，
+ * 从不同的数据层级中获取信息
+ * 
+ * @param data_source_id 数据源ID，用于定位图标在数据结构中的位置
+ * @param sourceList 包含图标数据的对象，可以是多层嵌套结构
+ * @param isCustom 布尔值，指示是否为自定义图标，影响数据获取的方式
+ * @returns 返回找到的图标路径，如果没有找到或数据为空，则返回空值
+ */
+const data_handling = (data_source_id, sourceList, isCustom) => {
+    // 不输入商品， 文章和品牌时，从外层处理数据
+    let new_data = get_nested_property(sourceList, data_source_id);
+    // 如果是商品,品牌，文章的图片， 其他的切换为从data中取数据
+    if (!isEmpty(sourceList.data) && isCustom) {
+        new_data = get_nested_property(sourceList.data, data_source_id);
+    }
+    return new_data;
+}
+
 /**
  * 获取嵌套对象的属性值
  * 

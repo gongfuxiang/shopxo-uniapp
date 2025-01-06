@@ -27,9 +27,9 @@
                                         </view>
                                     </template>
                                     <template v-else-if="item.data_content.data_type == 'images'">
-                                        <div class="w h flex-1 oh flex-row">
+                                        <view class="w h flex-1 oh flex-row">
                                             <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
-                                        </div>
+                                        </view>
                                     </template>
                                     <template v-else-if="item.data_content.data_type == 'custom'">
                                         <customIndex :propKey="propKey + index" :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>
@@ -76,9 +76,9 @@
                                     </view>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'images'">
-                                    <div class="w h oh flex-row">
+                                    <view class="w h oh flex-row">
                                         <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
-                                    </div>
+                                    </view>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'custom'">
                                     <customIndex :propKey="propKey + index" :propValue="item" :propMagicScale="magic_scale" :propDataSpacing="new_style.image_spacing" :propDataIndex="index" @onCarouselChange="carousel_change"></customIndex>

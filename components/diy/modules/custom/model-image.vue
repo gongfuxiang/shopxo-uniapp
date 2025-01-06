@@ -1,10 +1,10 @@
 <template>
-    <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_event">
+    <view v-if="is_show" class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_event">
         <imageEmpty :propImageSrc="img" :propStyle="image_style" propErrorStyle="width: 60rpx;height: 60rpx;"></imageEmpty>
     </view>
 </template>
 <script>
-    import { percentage_count, radius_computer, isEmpty, get_nested_property, get_custom_link } from '@/common/js/common/common.js';
+    import { percentage_count, radius_computer, isEmpty, get_nested_property, get_custom_link, get_is_eligible } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
@@ -40,6 +40,14 @@
                 type: String,
                 default: ''
             },
+            propCustomGroupFieldId: {
+                type: String,
+                default: ''
+            },
+            propFieldList: {
+                type: Array,
+                default: []
+            }
         },
         data() {
             return {
@@ -53,6 +61,7 @@
                     article: 'cover',
                     brand: 'logo'
                 },
+                is_show: true,
             };
         },
         watch: {
@@ -65,13 +74,20 @@
         },
         methods: {
             init() {
+                const new_form = this.propValue;
                 this.setData({
-                    form: this.propValue,
-                    img: this.get_img_url(this.propValue),
-                    image_style: this.get_image_style(this.propValue, this.propScale),
-                    border_style: this.get_border_style(this.propValue, this.propScale),
+                    form: new_form,
+                    img: this.get_img_url(new_form),
+                    image_style: this.get_image_style(new_form, this.propScale),
+                    border_style: this.get_border_style(new_form, this.propScale),
                     img_url: this.get_img_link(),
+                    is_show: this.get_is_show(new_form),
                 });
+            },
+            get_is_show(form) {
+                // 取出条件判断的内容
+                const condition = form?.condition || { field: '', type: '', value: '' };
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
             },
             get_img_link() {
                 let url = '';
