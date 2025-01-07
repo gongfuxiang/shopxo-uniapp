@@ -16,11 +16,11 @@
                             </view>
                         </view>
                     </template>
-                    <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr">
+                    <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh wh-auto ht-auto">
                         <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                             <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
-                                <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
-                                    <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
+                                <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto ' : 'wh-auto ht-auto flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
+                                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
                                             <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                         </view>
@@ -208,19 +208,19 @@
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
-                // const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
+                const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
                 // 商品数量大于列数的时候，高度是列数，否则是当前的数量
                 const col = new_list.length > carousel_col ? carousel_col : new_list.length;
-                // 比例增加最小值判断
-                const scale_number = (width / 390) > 0 ? width / 390 : 0;
+                const scale_number = width / 390;
+                const new_scale = scale_number > 0 ? scale_number : 0;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
-                    swiper_height = new_form.height * (scale_number);
+                    swiper_height = new_form.height * new_scale;
                 } else {
-                    swiper_height = (new_form.height * (scale_number)) * col + ((carousel_col - 1) * space_between);
+                    swiper_height = (new_form.height * new_scale) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;
@@ -230,7 +230,7 @@
                     form: new_form,
                     new_style: new_style,
                     div_width: width,
-                    scale: scale_number,
+                    scale: new_scale,
                     custom_list_length: new_form.custom_list.length - 1,
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),

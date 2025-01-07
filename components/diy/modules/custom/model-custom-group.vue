@@ -16,7 +16,7 @@
                             </view>
                         </view>
                     </template>
-                    <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh pr wh-auto ht-auto">
+                    <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh wh-auto ht-auto">
                         <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                             <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
                                 <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto ' : 'wh-auto ht-auto flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
@@ -201,7 +201,7 @@
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
-                // const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
+                const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
                 // 商品数量大于列数的时候，高度是列数，否则是当前的数量
                 const col = new_list.length > carousel_col ? carousel_col : new_list.length;
@@ -211,7 +211,7 @@
                 if (new_form.data_source_direction == 'horizontal') {
                     swiper_height = this.propDataHeight * custom_scale;
                 } else {
-                    swiper_height = (this.propDataHeight * custom_scale) * col + ((carousel_col - 1) * space_between);
+                    swiper_height = (this.propDataHeight * custom_scale) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;
