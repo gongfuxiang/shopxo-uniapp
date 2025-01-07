@@ -19,10 +19,10 @@
                                 </view>
                             </template>
                             <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
-                                <div class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
-                                    <div v-if="field_show.includes('3')" class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</div>
-                                    <div v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="article_desc">{{ item.data.describe || '' }}</div>
-                                </div>
+                                <view class="flex-col" :class="article_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
+                                    <view v-if="field_show.includes('3')" class="title" :class="article_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                    <view v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="article_desc">{{ item.data.describe || '' }}</view>
+                                </view>
                                 <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
                                     <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
@@ -56,10 +56,10 @@
                                             <subscriptIndex :propValue="propValue"></subscriptIndex>
                                         </view>
                                         <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || (field_show.includes('3') && name_float == '0')" class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                            <div class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                                <div v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</div>
-                                                <div v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="article_desc">{{ item.data.describe || '' }}</div>
-                                            </div>
+                                            <view class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
+                                                <view v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                                <view v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="article_desc">{{ item.data.describe || '' }}</view>
+                                            </view>
                                             <view :class="'flex-row jc-sb gap-8 align-e' + ((field_show.includes('3') && name_float == '0') || field_show.includes('2') ? ' margin-top' : '')">
                                                 <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                                 <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">

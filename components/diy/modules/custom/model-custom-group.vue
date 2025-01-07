@@ -16,19 +16,19 @@
                             </view>
                         </view>
                     </template>
-                    <div v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh wh-auto ht-auto">
+                    <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh wh-auto ht-auto">
                         <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                             <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
                                 <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto ' : 'wh-auto ht-auto flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
-                                        <div class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                        <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
                                             <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
-                                        </div>
+                                        </view>
                                     </view>
                                 </view>
                             </swiper-item>
                         </swiper>
-                        <div v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
+                        <view v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
                             <block v-if="new_style.indicator_style == 'num'">
                                 <view :style="indicator_style" class="dot-item">
                                     <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
@@ -38,8 +38,8 @@
                             <block v-else>
                                 <view v-for="(item, index) in data_source_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
                             </block>
-                        </div>
-                    </div>
+                        </view>
+                    </view>
                     <template v-else>
                         <view :style="style_chunk_container">
                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">

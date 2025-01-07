@@ -38,13 +38,13 @@
                     <view class="coupon-theme-3" :style="'gap:' + theme_style.spacing">
                         <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="left" :style="'background: ' + theme_style.background_inside">
-                                <div class="price-before" :style="'border-right: 2rpx dashed ' + theme_style.border_style">
+                                <view class="price-before" :style="'border-right: 2rpx dashed ' + theme_style.border_style">
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                         <text class="number">{{ item.discount_value }}</text>
                                         <text v-if="item.type == '1'" class="symbol self-e">折</text>
                                     </view>
-                                </div>
+                                </view>
                                 <view class="text padding-left-xs padding-right-sm">
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                     <view class="desc text-line-1" :style="'color:' + theme_style.desc_color">{{ item.use_limit_type_name }}</view>
@@ -52,7 +52,7 @@
                                 </view>
                             </view>
                             <view class="right" :class="item.status_operable_name.length > 3 ? ' long-name' : ' short-name'">
-                                <div class="right-before" :style="'background: ' + theme_style.background"></div>
+                                <view class="right-before" :style="'background: ' + theme_style.background"></view>
                                 <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">
                                     <text class="text">{{ item.status_operable_name }}</text>
                                     <iconfont name="icon-arrow-right-round" class="icon" propContainerDisplay="flex"></iconfont>

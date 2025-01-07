@@ -1,6 +1,6 @@
 <template>
     <view v-if="is_show" class="wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
-        <div class="wh-auto ht-auto" :style="com_img_style"></div>
+        <view class="wh-auto ht-auto" :style="com_img_style"></view>
     </view>
 </template>
 <script>

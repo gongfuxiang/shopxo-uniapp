@@ -5,7 +5,7 @@
                 <!-- 风格9 -->
                 <template v-if="form.style_actived == 7">
                     <view class="flex-row align-c jc-c style-size flex-wrap">
-                        <view v-for="(item, index) in data_magic_list" :key="index" :style=" + 'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
+                        <view v-for="(item, index) in data_magic_list" :key="index" :style="'margin:' + spacing + ';' + ([0, 1].includes(index) ? 'width:calc(50% - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')' : 'width:calc((100% / 3) - ' + outer_spacing + ');height:calc(50% - ' + outer_spacing + ')')" class="style9">
                             <view class="w h flex-row" :style="item.data_style.background_style + content_radius">
                                 <view class="re flex-1 oh" :style="item.data_style.background_img_style">
                                     <template v-if="item.data_content.data_type == 'goods'">
