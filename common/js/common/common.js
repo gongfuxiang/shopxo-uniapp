@@ -145,6 +145,12 @@ export const get_indicator_location = (new_style) => {
  */
 export const get_is_eligible = (field_list, condition, sourceList, isCustom, customGroupFieldId) => {
     try {
+        // 条件加特殊标识，避免选择的时候出现重复的
+        let new_field = condition.field;
+        // 如果包含{|}，则取第一个字段
+        if (condition.field.includes('{|}')) {
+            new_field = condition.field.split('{|}')[0];
+        }
         // 获取对应条件字段的字段数据
         let option = {};
         if (field_list) {
@@ -160,11 +166,16 @@ export const get_is_eligible = (field_list, condition, sourceList, isCustom, cus
                 option = field_list.find(item => item.field === condition.field);
             }
         }
-        // 获取到字段的真实数据, option的使用主要是为了获取的他的中间参数和前缀，后缀等拼接在一起
-        const field_value = custom_condition_data(condition.field || '', option || {}, sourceList, isCustom);
-        // 判断条件字段是否为空并且是显示面板才会生效，则直接返回true
-        if (!isEmpty(condition.field) && !isEmpty(condition.type)) {
-            return custom_condition_judg(field_value, condition.type, condition.value);
+        // 找不到对应的字段，就直接返回为成功，条件不存在
+        if (!isEmpty(option)) {
+            // 获取到字段的真实数据, option的使用主要是为了获取的他的中间参数和前缀，后缀等拼接在一起
+            const field_value = custom_condition_data(condition.field || '', option || {}, sourceList, isCustom);
+            // 判断条件字段是否为空并且是显示面板才会生效，则直接返回true
+            if (!isEmpty(condition.field) && !isEmpty(condition.type)) {
+                return custom_condition_judg(field_value, condition.type, condition.value);
+            } else {
+                return true;
+            }
         } else {
             return true;
         }

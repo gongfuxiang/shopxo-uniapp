@@ -11,7 +11,7 @@
     </view>
 </template>
 <script>
-    import { radius_computer, padding_computer, isEmpty, gradient_handle, get_nested_property, get_custom_link, get_is_eligible } from '@/common/js/common/common.js';
+    import { radius_computer, padding_computer, isEmpty, gradient_handle, get_nested_property, get_custom_link, get_is_eligible, custom_condition_data } from '@/common/js/common/common.js';
     
     export default {
         props: {
@@ -92,7 +92,7 @@
                 }
                 this.setData({
                     form: new_form,
-                    text_title: this.get_text_title(new_form),
+                    text_title: (new_form?.text_captions || '') + this.get_text_title(new_form),
                     text_style: this.get_text_style(new_form, this.propScale),
                     com_style: this.get_com_style(new_form, this.propScale),
                     text_url: url,
@@ -107,7 +107,32 @@
             get_text_title(form) {
                 let text = '';
                 if (!isEmpty(form.text_title)) {
-                    text = form.text_title;
+                    // 存储待处理的文本标题
+                    let new_title = JSON.parse(JSON.stringify((form.text_title)));
+                    let new_field_list = this.propFieldList;
+                    // 判断是否是自定义组
+                    if (!this.propIsCustom && !isEmpty(this.propCustomGroupFieldId)) {
+                        // 取出对应自定义组的内容
+                        const group_option_list = new_field_list.find((item) => item.field === this.propCustomGroupFieldId);
+                        // 取出自定义组内部数据源参数的详细数据
+                        new_field_list = group_option_list?.data || [];
+                    }
+                    // 遍历字段列表，替换文本标题中的占位符
+                    if (!isEmpty(new_field_list)) {
+                        new_field_list.forEach((item) => {
+                            const new_field = '${' +  item.field + '}';
+                            if (form.text_title.includes(new_field)) {
+                                // 获取到字段的真实数据
+                                const field_value = custom_condition_data(item.field, item, this.propSourceList, this.propIsCustom);
+                                // 使用正则表达式替换文本标题
+                                const regular = new RegExp(`\\$\\{\\s*${item.field}\\s*\\}`, 'g');
+                                // 替换后的内容赋值给原内容, 确保后续可以继续替换
+                                new_title = new_title.replace(regular, field_value);
+                            }
+                        });
+                    }
+                    // 将内容替换为处理后的标题
+                    text = new_title;
                 } else {
                     let text_title = '';
                     // 获取数据源ID
@@ -116,8 +141,9 @@
                     const option = form?.data_source_field?.option || [];
                     // 多选判断
                     if (data_source_id.length > 0) {
+                        text_title += form?.data_split?.left || '';
                         // 遍历取出所有的值
-                        data_source_id.forEach(source_id => {
+                        data_source_id.forEach((source_id, index) => {
                             const sourceList = option.find((item) => item.field == source_id);
                             // 根据数据源ID是否包含点号来区分处理方式
                             if (source_id.includes(';')) {
@@ -130,7 +156,11 @@
                             } else {
                                 text_title += (sourceList?.first || '') + this.data_handling(source_id) + (sourceList?.last || '');
                             }
+                            if (index < data_source_id.length - 1) {
+                                text_title += form?.data_split?.middle || '';
+                            }
                         });
+                        text_title += form?.data_split?.right || '';
                     }
                     // 如果是商品的标题或者是品牌的名称，需要判断是否有新的标题，没有的话就取原来的标题
                     text = text_title;
