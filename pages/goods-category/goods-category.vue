@@ -1205,7 +1205,7 @@
 
             // 获取购物车数据
             get_cart_data() {
-                if (this.user != 2) {
+                if (this.user != null) {
                     uni.request({
                         url: app.globalData.get_request_url('index', 'cart'),
                         method: 'POST',
