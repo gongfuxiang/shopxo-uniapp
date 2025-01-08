@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 批发规则展示 -->
-        <view v-if="(data || null) != null" class="plugins-wholesale-container scroll-view-horizontal">
+        <view v-if="(data || null) != null" class="plugins-wholesale-container scroll-view-horizontal" :class="propIsAlone ? 'is-alone' : ''">
             <scroll-view scroll-x="true">
                 <view :class="'plugins-wholesale-container-rules-view wh-auto padding-main item-number-'+data.rules.length" @tap="popup_wholesale_event">
                     <view v-for="(item, index) in data.rules" :key="index" class="item">
@@ -78,7 +78,12 @@ export default {
         propData: {
             type: [Array, Object, String],
             default: {},
-        }
+        },
+        // 是否独立行
+        propIsAlone: {
+            type: Boolean,
+            default: false,
+        },
     },
     // 属性值改变监听
     watch: {
@@ -120,7 +125,7 @@ export default {
     /**
      * 批发 - 插件
      */
-    .plugins-wholesale-container {
+    .plugins-wholesale-container.is-alone {
         background: linear-gradient(to bottom, #fafafa 0%, #fff 100%);
     }
     .plugins-wholesale-container-rules-view {

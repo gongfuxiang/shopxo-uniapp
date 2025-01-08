@@ -967,9 +967,9 @@
              */
             app_tabbar_pages() {
                 var temp_tabbar = this.data.system_tabbar;
-                var app_tabber = this.get_config('app_tabber') || null;
-                if(app_tabber != null && (app_tabber.content || null) != null && (app_tabber.content.nav_content || null) != null) {
-                    temp_tabbar = app_tabber.content.nav_content.map(function(v) {
+                var app_tabbar = this.get_config('app_tabbar') || null;
+                if(app_tabbar != null && (app_tabbar.content || null) != null && (app_tabbar.content.nav_content || null) != null) {
+                    temp_tabbar = app_tabbar.content.nav_content.map(function(v) {
                         if((v.link || null) != null && (v.link.page || null) != null) {
                             return v.link.page;
                         }

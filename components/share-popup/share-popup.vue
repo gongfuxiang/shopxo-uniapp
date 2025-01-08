@@ -142,7 +142,16 @@
 
             // url链接地址复制分享
             share_url_copy_event() {
-                app.globalData.text_copy_event(app.globalData.get_page_url());
+                var url = app.globalData.get_page_url();
+                // 增加分享标识
+                if(url.indexOf('referrer') == -1) {
+                    var uid = app.globalData.get_user_cache_info('id') || null;
+                    if(uid != null) {
+                        var join = url.indexOf('?') == -1 ? '?' : '&';
+                        url += join+'referrer='+uid;
+                    }
+                }
+                app.globalData.text_copy_event(url);
             },
 
             // 基础分享事件

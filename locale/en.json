@@ -33,6 +33,8 @@
 		"please_input": "Please enter",
 		"settlement": "balance",
 		"confirm_sub": "Confirm submission",
+        "submit_payment": "Submit payment",
+        "my_want_receive": "I want to claim it",
 		"clear": "empty",
 		"all": "All",
 		"share": "Share",
@@ -1911,5 +1913,13 @@
             "6redfg": "Use data",
             "fu3rf1": "Please enter the card password key"
     	}
+    },
+    "givegift-gift": {
+        "givegift-gift": {
+            "8yghjd": "Unlimited collection",
+            "567uye": "Message reminder",
+            "rtyu33": "Message prompt, maximum format of 200 characters",
+            "34rrr3": "Leave a message for Ta to express gratitude!"
+        }
     }
 }

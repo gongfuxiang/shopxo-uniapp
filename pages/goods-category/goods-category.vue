@@ -22,7 +22,7 @@
                     </block>
                     <view class="category-container">
                         <!-- 分类内容 -->
-                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + (search_height + window_bottom_height) + 'px);'">
+                        <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="category_content_style">
                             <block v-if="category_show_level == 1">
                                 <!-- 一级模式 -->
                                 <scroll-view scroll-y class="ht-auto" :show-scrollbar="false">
@@ -450,6 +450,7 @@
                 window_bottom_height: (app.globalData.data.is_use_native_tabbar == 1) ? (uni.getWindowInfo().windowBottom || 50) : 0,
                 // #endif
                 // 样式
+                category_content_style: '',
                 left_content_actual_style: '',
                 right_content_actual_style: '',
                 botton_nav_style: '',
@@ -684,28 +685,24 @@
 
             // 内容实际大小处理
             content_actual_size_handle() {
-                // 是否使用原生菜单
-                var left_style_value = 0;
-                var botton_style_value = 0;
-                if(app.globalData.data.is_use_native_tabbar != 1) {
-                    left_style_value = this.footer_height_value+20;
-                    botton_style_value = this.footer_height_value;
-                }
+                // 底部加点距离
+                var bottom_style_value = 20;
                 // 左侧
                 var left_style = '';
                 if(this.category_goods_is_show_cart_nav == 1) {
-                    left_style = 'height: calc(100% - 120rpx - '+left_style_value+'rpx);';
+                    left_style = 'height: calc(100% - 120rpx - '+bottom_style_value+'rpx);';
                 }
                 // 右侧
                 var right_style = '';
                 if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 1) {
-                    right_style = 'padding-bottom: calc(120rpx + '+left_style_value+'rpx);';
+                    right_style = 'padding-bottom: calc(120rpx + '+bottom_style_value+'rpx);';
                 }
                 this.setData({
+                    category_content_style: 'height:calc(100vh - ' + (this.search_height + this.window_bottom_height + this.footer_height_value)+'px);',
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
-                    botton_nav_style: 'bottom: calc(20rpx + '+botton_style_value+'rpx);',
-                    cart_content_style: 'bottom: calc(150rpx + '+botton_style_value+'rpx);',
+                    botton_nav_style: 'bottom: calc(20rpx);',
+                    cart_content_style: 'bottom: calc(150rpx);',
                 });
             },
 
@@ -1208,7 +1205,7 @@
 
             // 获取购物车数据
             get_cart_data() {
-                if (this.user != 2) {
+                if (this.user != null) {
                     uni.request({
                         url: app.globalData.get_request_url('index', 'cart'),
                         method: 'POST',
@@ -1333,6 +1330,7 @@
                             this.setData({
                                 search_height: res.height,
                             });
+                            this.content_actual_size_handle();
                         }
                     })
                     .exec();
@@ -1371,7 +1369,7 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: parseInt(value)*2
+                    footer_height_value: value
                 });
                 this.content_actual_size_handle();
             }

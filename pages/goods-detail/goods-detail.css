@@ -267,7 +267,9 @@
     background: transparent;
 }
 .goods-base-price-countdown .price-content .sales-price,
-.goods-base-price-countdown .price-content .sales-price-unit {
+.goods-base-price-countdown .price-content .sales-price-unit,
+.goods-base-price-countdown .price-content .points-price-value,
+.goods-base-price-countdown .price-content .points-price-unit {
     color: #fff !important;
 }
 .goods-base-price-countdown .price-content .original-price,

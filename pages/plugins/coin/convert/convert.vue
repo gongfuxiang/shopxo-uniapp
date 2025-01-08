@@ -73,7 +73,7 @@
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
-                                    <iconfont :name="coin_index == index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                    <iconfont :name="coin_index == index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="40rpx"></iconfont>
                                 </view>
                             </view>
                         </view>

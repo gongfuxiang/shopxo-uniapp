@@ -1,25 +1,29 @@
 <template>
     <view :class="theme_view">
-        <block v-if="data_list_loding_status == 3">
-            <view class="padding-horizontal-main padding-vertical-xxxxl margin-main tc bg-white border-radius-main">
-                <view class="padding-vertical-xxxxl">
-                    <text class="fw-b cr-price text-size-xxl">{{payment_currency_symbol}}{{data.pay_price}}</text>
-                </view>
-                <view class="margin-top-sm padding-bottom-xxxxl">
-                    <view :class="'cr-'+(pay_status == 1 ? 'green' : (pay_status == 2 ? 'red' : 'grey'))">{{pay_msg}}</view>
-                </view>
-                <view v-if="pay_status == 2" class="margin-top-xxxxl padding-vertical-xxxxl">
-                    <button class="bg-green br-green cr-white round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" @tap="pay_handle">重新发起支付</button>
+        <view class="page bg-white">
+            <view class="content padding-horizontal-main tc">
+                <block v-if="data_list_loding_status == 3">
+                    <view class="padding-vertical-xxxxl">
+                        <text class="cr-price fw-b text-size-lg">{{payment_currency_symbol}}</text>
+                        <text class="cr-price fw-b text-size-xxl">{{data.pay_price}}</text>
+                    </view>
+                    <view class="margin-top-sm padding-bottom-xxxxl">
+                        <view :class="'cr-'+(pay_status == 1 ? 'green' : (pay_status == 2 ? 'red' : 'grey'))">{{pay_msg}}</view>
+                    </view>
+                    <view v-if="pay_status == 2" class="margin-top-xxxxl padding-vertical-xxxxl">
+                        <button class="bg-green br-green cr-white round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" @tap="pay_handle">重新发起支付</button>
+                    </view>
+                </block>
+                <block v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                </block>
+                
+                <view v-if="is_back_btn && pay_status != 0" class="margin-top-xxxxl padding-top-xxxxl tc">
+                    <button class="bg-white br-main cr-main round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" open-type="launchApp" app-parameter="wechat">返回APP</button>
                 </view>
             </view>
-            <view v-if="is_back_btn && pay_status != 0" class="margin-top-xxxxl padding-top-xxxxl tc">
-                <button class="bg-white br-main cr-main round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" open-type="launchApp" app-parameter="wechat">返回APP</button>
-            </view>
-        </block>
-        <block v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </block>
+        </view>
 
         <!-- 公共 -->
         <component-common ref="common" :propIsAppAdmin="false"></component-common>
@@ -83,36 +87,54 @@
         },
 
         methods: {
-            // 初始化
+            // // 初始化
             get_data() {
-                uni.request({
-                    url: app.globalData.get_request_url("paydata", "cashier"),
-                    method: "POST",
-                    data: this.params,
-                    dataType: "json",
+                var self = this;
+                var action = 'login';
+                // #ifdef MP-BAIDU
+                action = 'getLoginCode';
+                // #endif
+                uni[action]({
                     success: (res) => {
-                        uni.stopPullDownRefresh();
-                        if (res.data.code == 0 && (res.data.data || null) != null) {
-                            this.setData({
-                                data_list_loding_status: 3,
-                                data_list_loding_msg: '',
-                                data: res.data.data,
-                            });
-
-                            // 直接调起支付
-                            this.pay_handle();
-                        } else {
-                            this.setData({
-                                data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg,
+                        if (res.code) {
+                            uni.request({
+                                url: app.globalData.get_request_url("paydata", "cashier", "allocation"),
+                                method: 'POST',
+                                data: {...self.params, ...{authcode: res.code}},
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.stopPullDownRefresh();
+                                    if (res.data.code == 0 && (res.data.data || null) != null) {
+                                        this.setData({
+                                            data_list_loding_status: 3,
+                                            data_list_loding_msg: '',
+                                            data: res.data.data,
+                                        });
+                                    
+                                        // 直接调起支付
+                                        this.pay_handle();
+                                    } else {
+                                        this.setData({
+                                            data_list_loding_status: 0,
+                                            data_list_loding_msg: res.data.msg,
+                                        });
+                                    }
+                                },
+                                fail: () => {
+                                    uni.stopPullDownRefresh();
+                                    this.setData({
+                                        data_list_loding_status: 0,
+                                        data_list_loding_msg: self.$t('common.internet_error_tips'),
+                                    });
+                                },
                             });
                         }
                     },
-                    fail: () => {
+                    fail: (e) => {
                         uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                            data_list_loding_status: 0,
+                            data_list_loding_msg: self.$t('login.login.3nmrg2'),
                         });
                     },
                 });
@@ -151,4 +173,5 @@
     };
 </script>
 <style>
+    @import './cashier.css';
 </style>

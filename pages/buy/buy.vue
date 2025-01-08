@@ -182,7 +182,7 @@
                                 <block v-if="plugins_points_data.is_pure_exchange_modal == undefined || plugins_points_data.is_pure_exchange_modal != 1 || plugins_points_data.discount_type != 1">
                                     <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
                                     <view class="fr cp" @tap="points_event">
-                                        <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
+                                        <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="40rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
                                     </view>
                                 </block>
                             </view>
@@ -212,7 +212,7 @@
                     </view>
                     
                     <!-- 支付选择 -->
-                    <view v-if="(total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0) || plugins_coin_is_valid" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
+                    <view v-if="total_price > 0 && ((common_order_is_booking != 1 && payment_list.length > 0) || plugins_coin_is_valid)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
                         <!-- 虚拟币支付 -->
                         <block v-if="plugins_coin_is_valid">
                             <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
@@ -228,13 +228,13 @@
                                         </view>
                                     </view>
                                     <view>
-                                        <iconfont :name="plugins_coin_payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                        <iconfont :name="plugins_coin_payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="40rpx"></iconfont>
                                     </view>
                                 </view>
                             </block>
                         </block>
                         <!-- 支付方式 -->
-                        <view v-if="total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0" :class="(plugins_coin_is_valid ? 'br-t-f9' : '')">
+                        <view v-if="common_order_is_booking != 1 && payment_list.length > 0" :class="(plugins_coin_is_valid ? 'br-t-f9' : '')">
                             <view v-for="(item, index) in payment_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" :data-index="index" @tap="payment_event">
                                     <view class="item-content pr flex-1 flex-width">
@@ -243,7 +243,7 @@
                                         <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}</text>
                                     </view>
                                     <view>
-                                        <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                        <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="40rpx"></iconfont>
                                     </view>
                                 </view>
                             </view>
