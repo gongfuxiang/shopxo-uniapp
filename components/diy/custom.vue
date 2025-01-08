@@ -204,23 +204,24 @@
                 const data_spacing = ['vertical', 'horizontal'].includes(new_form.data_source_direction) ? new_style.column_gap * (carousel_col - 1) : 0;
                 // 自定义组件宽度
                 const width = sys_width - outer_spacing - content_spacing - internal_spacing - data_spacing - this.propOuterContainerPadding;
-
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
                 const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
-                // 商品数量大于列数的时候，高度是列数，否则是当前的数量
-                const col = new_list.length > carousel_col ? carousel_col : new_list.length;
                 const scale_number = width / 390;
                 const new_scale = scale_number > 0 ? scale_number : 0;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
+                let col = Number(new_form.data_source_carousel_col);
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
                     swiper_height = new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top;
                 } else {
+                    // 商品数量大于列数的时候，高度是列数，否则是当前的数量
+                    col = new_list.length > carousel_col ? carousel_col : new_list.length;
                     swiper_height = (new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
+
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;

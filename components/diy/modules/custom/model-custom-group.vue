@@ -203,14 +203,15 @@
                 // 判断是平移还是整屏滚动
                 const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
-                // 商品数量大于列数的时候，高度是列数，否则是当前的数量
-                const col = new_list.length > carousel_col ? carousel_col : new_list.length;
+                let col = Number(new_form.data_source_carousel_col);
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
                     swiper_height = this.propDataHeight * custom_scale + padding_top + padding_bottom + margin_bottom + margin_top;
                 } else {
+                    // 商品数量大于列数的时候，高度是列数，否则是当前的数量
+                    col = new_list.length > carousel_col ? carousel_col : new_list.length;
                     swiper_height = (this.propDataHeight * custom_scale + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
