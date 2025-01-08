@@ -1,7 +1,7 @@
 <template>
     <view :style="page_style">
         <view :style="page_img_style">
-            <scroll-view :scroll-y="true" class="ht scroll-view" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation>
+            <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
                     <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
@@ -462,6 +462,12 @@
                     this.get_goods_list();
                 }
             },
+            // 滚动到顶部
+            on_scroll_upper_event() {
+                setTimeout(() => {
+                    this.head_scroll_top = 0;
+                });
+            },
 
             // 查询商品
             get_goods_list(is_mandatory) {
@@ -567,7 +573,7 @@
 
             // 页面滚动事件
             on_scroll_event(e) {
-                const scroll_num = e.detail.scrollTop;
+                const scroll_num = parseInt(e.detail.scrollTop);
                 if (scroll_num <= 20) {
                     this.head_scroll_top = 0;
                 } else {
@@ -578,7 +584,6 @@
                         this.head_scroll_top = this.sticky_top + 100;
                     }
                 }
-                this.scroll_timer_compute(scroll_num);
 
                 // 判断顶部导航是否置顶
                 // #ifdef H5 || MP-TOUTIAO
@@ -594,6 +599,7 @@
                     }
                 }
                 // #endif
+                this.scroll_timer_compute(scroll_num);
             },
 
             scroll_timer_compute(scroll_num) {
