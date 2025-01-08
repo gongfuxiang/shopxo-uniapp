@@ -2,7 +2,7 @@
     <!-- 选项卡 -->
     <view class="tabs-container pr">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style + (top_up == '1' ? propContentPadding : '')">
-            <view class="tabs-content wh-auto bs-bb" :style="style_container">
+            <view class="tabs-contents bs-bb" :style="style_container">
                 <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
                     <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
                 </view>
@@ -209,5 +209,8 @@
             right: 0;
             max-width: 100%;
         }
+    }
+    .tabs-contents {
+        max-width: 800px !important;
     }
 </style>

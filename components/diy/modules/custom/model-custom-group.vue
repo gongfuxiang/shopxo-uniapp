@@ -209,9 +209,9 @@
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
-                    swiper_height = this.propDataHeight * custom_scale;
+                    swiper_height = this.propDataHeight * custom_scale + padding_top + padding_bottom + margin_bottom + margin_top;
                 } else {
-                    swiper_height = (this.propDataHeight * custom_scale) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
+                    swiper_height = (this.propDataHeight * custom_scale + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;

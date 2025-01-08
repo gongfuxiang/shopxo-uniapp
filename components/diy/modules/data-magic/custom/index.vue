@@ -164,8 +164,8 @@ export default {
                 }
                 const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
                 // 计算宽度
-                const { padding_left, padding_right } = data_chunk_padding;
-                const { margin_left, margin_right } = data_chunk_margin;
+                const { padding_left, padding_right, padding_top, padding_bottom } = data_chunk_padding;
+                const { margin_left, margin_right, margin_bottom, margin_top } = data_chunk_margin;
                 const old_width = new_form.width * this.propMagicScale;
                 // 数据宽度
                 const data_style = padding_left + padding_right + margin_left + margin_right + border_width(data_pattern);
@@ -192,9 +192,9 @@ export default {
                 const col = new_list.length > carousel_col ? carousel_col : new_list.length;
                 // 轮播图高度控制
                 if (new_form.data_source_direction == 'horizontal') {
-                    swiper_height = new_form.height * new_scale;
+                    swiper_height = new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top;
                 } else {
-                    swiper_height = (new_form.height * new_scale) * col + ((carousel_col - 1) * space_between);
+                    swiper_height = (new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((carousel_col - 1) * space_between);
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;
