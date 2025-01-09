@@ -1,6 +1,6 @@
 <template>
     <movable-area class="float-window-movable-container">
-        <movable-view :x="x" :y="y" direction="all" class="float-window-spread flex-row align-c jc-c" @tap="url_open">
+        <movable-view :x="x" :y="y" direction="all" class="float-window-spread flex-row align-c jc-c" @tap="btn_event">
             <block v-if="style.float_style == 'diffuse'">
                 <view class="ring" :style="content_style"></view>
                 <view class="ring" :style="content_style"></view>
@@ -14,6 +14,7 @@
                 </block>
             </view>
         </movable-view>
+        <component-quick-nav ref="quick_nav" :propIsBtn="false"></component-quick-nav>
     </movable-area>
 </template>
 
@@ -22,10 +23,12 @@
     import { isEmpty } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import componentOnlineService from '@/components/online-service/online-service';
+    import componentQuickNav from '@/components/quick-nav/quick-nav';
     export default {
         components: {
             imageEmpty,
-            componentOnlineService
+            componentOnlineService,
+            componentQuickNav
         },
         props: {
             propValue: {
@@ -83,11 +86,22 @@
                     y: y
                 });
             },
-            url_open() {
+            // 按钮事件
+            btn_event() {
                 const { button_jump, button_link } = this.form;
-                // 如果是指定链接，并且链接不为空的情况下跳转
-                if (button_jump == 'link' && !isEmpty(button_link)) {
-                    app.globalData.url_open(button_link.page);
+                switch(button_jump) {
+                    // 链接
+                    case 'link' :
+                        if (!isEmpty(button_link)) {
+                            app.globalData.url_open(button_link.page);
+                        }
+                        break;
+                    // 快捷导航
+                    case 'quick_nav' :
+                        if ((this.$refs.quick_nav || null) != null) {
+                            this.$refs.quick_nav.quick_open_event();
+                        }
+                        break;
                 }
             },
         },

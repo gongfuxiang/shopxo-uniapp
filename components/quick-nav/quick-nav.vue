@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 开启事件 -->
-        <movable-area v-if="quick_status == 1" :class="'quick-movable-container ' + common_ent" :style="'height: calc(100% - ' + height_dec + 'rpx);top:' + top + 'rpx;'">
+        <movable-area v-if="propIsBtn && quick_status == 1" :class="'quick-movable-container ' + common_ent" :style="'height: calc(100% - ' + height_dec + 'rpx);top:' + top + 'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit" @tap="quick_open_event">
                 <image class="image" :src="common_static_url + 'quick-icon.png'" mode="widthFix"></image>
             </movable-view>
@@ -59,6 +59,10 @@
             componentNoData,
         },
         props: {
+            propIsBtn: {
+                type: Boolean,
+                default: true,
+            },
             propIsBar: {
                 type: Boolean,
                 default: false,
