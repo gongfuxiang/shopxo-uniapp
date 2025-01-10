@@ -16,11 +16,11 @@
                             </view>
                         </view>
                     </template>
-                    <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh wh-auto ht-auto">
+                    <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh ht-auto">
                         <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                             <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
-                                <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto ' : 'wh-auto ht-auto flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
-                                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
+                                <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
+                                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
                                             <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
@@ -223,7 +223,7 @@
                     new_style: new_style,
                     custom_scale: custom_scale,
                     custom_list_length: new_form.custom_list.length - 1,
-                    style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;width:100%;height:100%;overflow: auto;', // 用于样式显示
+                    style_container: common_styles_computer(new_style.common_style) + (new_form.is_scroll_bar == '1' ? 'overflow: auto;' : '') + 'box-sizing: border-box;width:100%;height:100%;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     style_content_container: common_styles_computer(new_data_content_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_content_img_container: common_img_computer(new_data_content_style),
