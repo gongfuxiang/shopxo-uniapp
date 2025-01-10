@@ -261,16 +261,6 @@
                             </view>
                         </block>
                     </block>
-
-                    <!-- 弹屏广告 - 插件 -->
-                    <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
-                        <view class="content pr">
-                            <view class="close pa cp round padding-sm tc" @tap.stop="plugins_popupscreen_close_event">
-                                <iconfont name="icon-close-o" size="28rpx" color="#cacaca"></iconfont>
-                            </view>
-                            <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
-                        </view>
-                    </view>
                 </view>
             </block>
 
@@ -392,11 +382,6 @@
                 plugins_label_data: null,
                 // 首页中间广告插件
                 plugins_homemiddleadv_data: null,
-                // 弹屏广告、这里设置一天后可以再次显示
-                plugins_popupscreen_data: null,
-                plugins_popupscreen_status: 0,
-                plugins_popupscreen_cache_key: 'plugins_popupscreen_cache_key',
-                plugins_popupscreen_timer: null,
                 // 哀悼灰度插件
                 plugins_mourning_data_is_app: app.globalData.is_app_mourning(),
                 // 标签插件
@@ -554,7 +539,6 @@
                                 plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                                 plugins_homemiddleadv_data: (data.plugins_homemiddleadv_data || null) == null || data.plugins_homemiddleadv_data.length <= 0 ? null : data.plugins_homemiddleadv_data,
-                                plugins_popupscreen_data: data.plugins_popupscreen_data || null,
                                 plugins_mourning_data_is_app: parseInt(data.plugins_mourning_data || 0) == 1,
                                 plugins_blog_data: data.plugins_blog_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
@@ -573,9 +557,6 @@
 
                             // 设置顶部导航的默认颜色
                             this.set_navigation_bar_color();
-
-                            // 弹屏广告插件处理
-                            this.plugins_popupscreen_handle();
 
                             // 是否需要重新加载数据
                             if (parseInt(data.is_result_data_cache || 0) == 1) {
@@ -659,48 +640,6 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            },
-
-            // 弹屏广告插件处理
-            plugins_popupscreen_handle() {
-                if (this.plugins_popupscreen_data != null) {
-                    // 不存在关闭缓存或者超过间隔时间则显示
-                    var cv = parseInt(uni.getStorageSync(this.plugins_popupscreen_cache_key)) || 0;
-                    var pv = parseInt(this.plugins_popupscreen_data.interval_time) || 86400;
-                    if (cv == 0 || cv + pv < app.globalData.get_timestamp()) {
-                        // 是否开启自动关闭
-                        var timer = null;
-                        var ct = parseInt(this.plugins_popupscreen_data.close_time) || 0;
-                        if (ct > 0) {
-                            var self = this;
-                            timer = setTimeout(function () {
-                                self.setData({
-                                    plugins_popupscreen_status: 0,
-                                });
-                                uni.setStorage({
-                                    key: self.plugins_popupscreen_cache_key,
-                                    data: app.globalData.get_timestamp(),
-                                });
-                            }, ct * 1000);
-                        }
-                        this.setData({
-                            plugins_popupscreen_status: 1,
-                            plugins_popupscreen_timer: timer,
-                        });
-                    }
-                }
-            },
-
-            // 弹屏广告 - 插件 关闭事件
-            plugins_popupscreen_close_event(e) {
-                this.setData({
-                    plugins_popupscreen_status: 0,
-                });
-                uni.setStorage({
-                    key: this.plugins_popupscreen_cache_key,
-                    data: app.globalData.get_timestamp(),
-                });
-                clearInterval(this.plugins_popupscreen_timer);
             },
 
             // 轮播改变、背景色处理

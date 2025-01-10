@@ -1000,17 +1000,41 @@
              */
             is_tabbar_pages_handle(pages, url = null) {
                 var value = (url == null) ? '/'+this.current_page() : url;
-                if ((value || null) == null) {
-                    return false;
+                if ((value || null) != null) {
+                    if(pages.indexOf(value) != -1) {
+                        return true;
+                    } else {
+                        // 存在参数，去掉参数再检索是否存在页面的tabbar
+                        if(value.indexOf('?') != -1) {
+                            var temp = value.split('?');
+                            if(pages.indexOf(temp[0]) != -1) {
+                                return true;
+                            }
+                        }
+                    }
                 }
-                if(pages.indexOf(value) != -1) {
-                    return true;
-                } else {
-                    // 存在参数，去掉参数再检索是否存在页面的tabbar
-                    if(value.indexOf('?') != -1) {
-                        var temp = value.split('?');
-                        if(pages.indexOf(temp[0]) != -1) {
+                return false;
+            },
+
+            /**
+             * 当前地址是否存为首页
+             * url    url地址
+             */
+            is_tabbar_home(url = null) {
+                var pages = this.app_tabbar_pages() || [];
+                if(pages.length > 0) {
+                    var value = (url == null) ? '/'+this.current_page() : url;
+                    if ((value || null) != null) {
+                        if(pages[0] == value) {
                             return true;
+                        } else {
+                            // 存在参数，去掉参数再检索是否存在页面的tabbar
+                            if(value.indexOf('?') != -1) {
+                                var temp = value.split('?');
+                                if(pages[0] == temp[0]) {
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }

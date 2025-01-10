@@ -37,6 +37,9 @@
 
         <!-- 用户基础 -->
         <component-user-base ref="user_base" :propIsGrayscale="propIsGrayscale"></component-user-base>
+
+        <!-- 弹屏广告 -->
+        <component-popupscreen ref="popupscreen" :propIsGrayscale="propIsGrayscale"></component-popupscreen>
     </view>
 </template>
 <script>
@@ -44,6 +47,7 @@
     import componentDiyFooter from '@/components/diy/footer';
     import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentUserBase from '@/components/user-base/user-base';
+    import componentPopupscreen from '@/components/popupscreen/popupscreen';
     export default {
         data() {
             return {
@@ -79,11 +83,17 @@
                 type: Boolean,
                 default: true,
             },
+            // 是否引入弹屏广告
+            propIsPopupscreen: {
+                type: Boolean,
+                default: true,
+            },
         },
         components: {
             componentDiyFooter,
             componentAppAdmin,
-            componentUserBase
+            componentUserBase,
+            componentPopupscreen
         },
         // 页面被展示
         created: function () {
@@ -128,6 +138,11 @@
                 // 用户头像和昵称设置提示
                 if (this.propIsUserBase && (this.$refs.user_base || null) != null) {
                     this.$refs.user_base.init(params);
+                }
+
+                // 弹屏广告
+                if (this.propIsPopupscreen && (this.$refs.popupscreen || null) != null) {
+                    this.$refs.popupscreen.init(params);
                 }
 
                 // #ifdef MP-WEIXIN
