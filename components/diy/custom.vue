@@ -221,7 +221,6 @@
                     // 商品数量大于列数的时候，高度是列数，否则是当前的数量
                     col = new_list.length > carousel_col ? carousel_col : new_list.length;
                     swiper_height = (new_form.height * new_scale + padding_top + padding_bottom + margin_bottom + margin_top) * col + ((Number(new_form.data_source_carousel_col) - 1) * space_between);
-
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;
