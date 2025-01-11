@@ -324,7 +324,7 @@
             this.setData({
                 params: params,
                 post_data: {
-                    wd: (params.keywords || '').replace(/\+/g, ' ')
+                    wd: params.keywords || ''
                 }
             });
         },
