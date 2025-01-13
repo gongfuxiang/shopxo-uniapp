@@ -9,7 +9,7 @@
                                 <view v-for="(item1, index1) in item.split_list" :key="index1">
                                     <view :style="style_chunk_container">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
+                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -22,7 +22,7 @@
                                 <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
+                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -100,6 +100,19 @@
             propFieldList: {
                 type: Array,
                 default: []
+            },
+            propGroupSourceList: {
+                type: Array,
+                default: () => {
+                    return [];
+                }
+            },
+            propShowData: {
+                type: Object,
+                default: () => ({
+                    data_key: 'id',
+                    data_name: 'name',
+                })
             }
         },
         data() {
@@ -177,9 +190,19 @@
             init() {
                 const new_form = this.propValue;
                 const new_style = this.propValue.data_style;
-                const list = this.get_data_source_content_list(this.propSourceList, new_form);
-                // 数据来源的内容
-                const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                const data_source_id = new_form?.data_source_field?.id || '';
+                // 自定义组的数据源内容切换, 判断是取自定义组数据源内容还是取自定义数据源内容
+                const is_data_source_id = this.propFieldList.filter((item) => item.field == data_source_id);
+                let new_list = [];
+                // 如果自定义组选择了数据源，就按照自定义组的数据源的方式走，否则的话就按照自定义的数据走
+                if (is_data_source_id.length > 0) {
+                    const list = this.get_data_source_content_list(this.propSourceList, new_form);
+                    // 数据来源的内容
+                    new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                } else {
+                    // 自定义数据，专门为自定义组使用的数据
+                    new_list = this.propGroupSourceList;
+                }
                 // 初始化数据
                 const { common_style, data_content_style, data_style } = new_style;
                 const old_width = this.propDataWidth * this.propScale;
@@ -246,11 +269,11 @@
             get_is_show(form) {
                 // 取出条件判断的内容
                 const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, false, this.propCustomGroupFieldId);
             },
             get_data_source_content_list(sourceList, form) {
                 if (!isEmpty(sourceList)) {
-                    const data_source_id = form.data_source_field.id;
+                    const data_source_id = form?.data_source_field.id || '';
                     let list = this.get_nested_property(sourceList, data_source_id);
                     // 如果是自定义标题，进一步处理嵌套对象中的数据
                     if (sourceList.data) {

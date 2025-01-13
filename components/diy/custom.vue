@@ -9,7 +9,7 @@
                                 <view v-for="(item1, index1) in item.split_list" :key="index1">
                                     <view :style="style_chunk_container">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -22,7 +22,7 @@
                                 <view :class="form.data_source_direction != 'horizontal' ? 'ht-auto ' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                         </view>
                                     </view>
                                 </view>

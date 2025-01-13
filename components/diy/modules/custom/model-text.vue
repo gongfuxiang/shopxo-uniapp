@@ -40,6 +40,10 @@
                 type: Boolean,
                 default: false
             },
+            propIsCustomGroup: {
+                type: Boolean,
+                default: false
+            },
             propCustomGroupFieldId: {
                 type: String,
                 default: ''
@@ -102,7 +106,7 @@
             get_is_show(form) {
                 // 取出条件判断的内容
                 const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
             },
             get_text_title(form) {
                 let text = '';
@@ -111,7 +115,7 @@
                     let new_title = JSON.parse(JSON.stringify((form.text_title)));
                     let new_field_list = this.propFieldList;
                     // 判断是否是自定义组
-                    if (!this.propIsCustom && !isEmpty(this.propCustomGroupFieldId)) {
+                    if (this.propIsCustomGroup && !isEmpty(this.propCustomGroupFieldId)) {
                         // 取出对应自定义组的内容
                         const group_option_list = new_field_list.find((item) => item.field === this.propCustomGroupFieldId);
                         // 取出自定义组内部数据源参数的详细数据

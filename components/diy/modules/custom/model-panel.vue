@@ -33,6 +33,10 @@
                 type: Boolean,
                 default: false
             },
+            propIsCustomGroup: {
+                type: Boolean,
+                default: false
+            },
             propCustomGroupFieldId: {
                 type: String,
                 default: ''
@@ -84,7 +88,7 @@
             get_is_show(form) {
                 // 取出条件判断的内容
                 const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
             },
             get_com_style(form, scale) {
                 let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, scale, true)}; transform: rotate(${form.panel_rotate}deg);`;

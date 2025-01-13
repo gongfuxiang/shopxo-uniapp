@@ -36,6 +36,10 @@
                 type: Boolean,
                 default: false
             },
+            propIsCustomGroup: {
+                type: Boolean,
+                default: false
+            },
             propImgParams: {
                 type: String,
                 default: ''
@@ -87,7 +91,7 @@
             get_is_show(form) {
                 // 取出条件判断的内容
                 const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propCustomGroupFieldId);
+                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
             },
             get_img_link() {
                 let url = '';

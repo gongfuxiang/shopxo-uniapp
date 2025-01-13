@@ -143,7 +143,7 @@ export const get_indicator_location = (new_style) => {
  * @param props 额外属性，包含自定义组和数据源等信息
  * @returns 返回一个布尔值，表示是否符合条件
  */
-export const get_is_eligible = (field_list, condition, sourceList, isCustom, customGroupFieldId) => {
+export const get_is_eligible = (field_list, condition, sourceList, isCustom, isCustomGroup, customGroupFieldId) => {
     try {
         // 条件加特殊标识，避免选择的时候出现重复的
         let new_field = condition.field;
@@ -155,23 +155,23 @@ export const get_is_eligible = (field_list, condition, sourceList, isCustom, cus
         let option = {};
         if (field_list) {
             // 判断是否是自定义组并且 自定义组选则了对应的数据源
-            if (!isCustom && !isEmpty(customGroupFieldId)) {
+            if (isCustomGroup && !isEmpty(customGroupFieldId)) {
                 // 取出对应自定义组的内容
                 const group_option_list = field_list.find(item => item.field === customGroupFieldId);
                 // 取出自定义组内部数据源参数的详细数据
                 const new_field_list = group_option_list?.data || [];
                 // 通过对应条件，筛选出对应的数据
-                option = new_field_list.find(item => item.field === condition.field);
+                option = new_field_list.find(item => item.field === new_field);
             } else {
-                option = field_list.find(item => item.field === condition.field);
+                option = field_list.find(item => item.field === new_field);
             }
         }
         // 找不到对应的字段，就直接返回为成功，条件不存在
         if (!isEmpty(option)) {
             // 获取到字段的真实数据, option的使用主要是为了获取的他的中间参数和前缀，后缀等拼接在一起
-            const field_value = custom_condition_data(condition.field || '', option || {}, sourceList, isCustom);
+            const field_value = custom_condition_data(new_field || '', option || {}, sourceList, isCustom);
             // 判断条件字段是否为空并且是显示面板才会生效，则直接返回true
-            if (!isEmpty(condition.field) && !isEmpty(condition.type)) {
+            if (!isEmpty(new_field) && !isEmpty(condition.type)) {
                 return custom_condition_judg(field_value, condition.type, condition.value);
             } else {
                 return true;
