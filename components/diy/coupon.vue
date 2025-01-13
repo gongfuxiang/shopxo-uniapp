@@ -394,7 +394,7 @@
                 .number {
                     font-size: 52rpx;
                     line-height: 48rpx;
-                    font-weight: 500;
+                    font-weight: bold;
                     padding: 0 8rpx;
                     box-sizing: border-box;
                 }
@@ -448,7 +448,7 @@
 
                 .number {
                     font-size: 52rpx;
-                    font-weight: 500;
+                    font-weight: bold;
                     padding: 0 8rpx;
                     box-sizing: border-box;
                 }
@@ -456,7 +456,7 @@
 
             .name {
                 font-size: 16rpx;
-                font-weight: 500;
+                font-weight: bold;
                 margin-bottom: 8rpx;
             }
 
@@ -539,13 +539,13 @@
 
                     .name {
                         font-size: 36rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                         line-height: 50rpx;
                     }
 
                     .desc {
                         font-size: 28rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                         line-height: 40rpx;
                     }
 
@@ -708,7 +708,7 @@
 
             .title {
                 font-size: 32rpx;
-                font-weight: 500;
+                font-weight: bold;
                 line-height: 44rpx;
             }
 
@@ -764,12 +764,12 @@
 
                     .symbol {
                         font-size: 24rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                     }
 
                     .number {
                         font-size: 48rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                         line-height: 40rpx;
                         padding-left: 8rpx;
                         box-sizing: border-box;
@@ -799,7 +799,7 @@
                 .coupon-btn {
                     position: relative;
                     font-size: 24rpx;
-                    font-weight: 500;
+                    font-weight: bold;
                     text-align: center;
                     letter-spacing: 4rpx;
                 }
@@ -863,12 +863,12 @@
 
                     .symbol {
                         font-size: 40rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                     }
 
                     .number {
                         font-size: 64rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                         line-height: 64rpx;
                         padding-left: 8rpx;
                         box-sizing: border-box;
@@ -888,7 +888,7 @@
                     position: relative;
                     font-size: 28rpx;
                     line-height: 44rpx;
-                    font-weight: 500;
+                    font-weight: bold;
                     text-align: center;
                 }
             }
@@ -945,12 +945,12 @@
 
                     .symbol {
                         font-size: 24rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                     }
 
                     .number {
                         font-size: 48rpx;
-                        font-weight: 500;
+                        font-weight: bold;
                         line-height: 40rpx;
                         padding-left: 8rpx;
                         box-sizing: border-box;
@@ -984,7 +984,7 @@
                     padding: 8rpx;
                     width: 100%;
                     font-size: 20rpx;
-                    font-weight: 500;
+                    font-weight: bold;
                     text-align: center;
                     letter-spacing: 4rpx;
                     height: 100%;

@@ -93,8 +93,8 @@
                 let common_styles = '';
                 if (title_weight == 'italic') {
                     common_styles += `font-style: italic`;
-                } else if (title_weight == '500') {
-                    common_styles += `font-weight: 500`;
+                } else if (['bold', '500'].includes(title_weight)) {
+                    common_styles += `font-weight: bold`;
                 }
                 // 是否居中
                 this.setData({
@@ -117,8 +117,8 @@
                 let common_styles = '';
                 if (new_style.subtitle_weight == 'italic') {
                     common_styles += `font-style: italic`;
-                } else if (new_style.subtitle_weight == '500') {
-                    common_styles += `font-weight: 500`;
+                } else if (['bold', '500'].includes(new_style.subtitle_weight)) {
+                    common_styles += `font-weight: bold;`;
                 }
                 return `color:${new_style.subtitle_color}; font-size: ${new_style.subtitle_size * 2}rpx; ${common_styles}`;
             },

@@ -189,8 +189,8 @@
                 let style = `font-size: ${form.text_size * scale }px;line-height: ${ (typeof form.line_text_size === "number" ? form.line_text_size : form.text_size) * scale }px;color: ${form.text_color}; text-align: ${form.text_location}; transform: rotate(${form.text_rotate}deg);text-decoration: ${form.text_option};${padding_computer(form.text_padding, scale, true)};box-sizing: border-box;`;
                 if (form.text_weight == 'italic') {
                     style += `font-style: italic`;
-                } else if (form.text_weight == '500') {
-                    style += `font-weight: 500`;
+                } else if (['bold', '500'].includes(form.text_weight)) {
+                    style += `font-weight: bold;`;
                 }
                 return style;
             },
