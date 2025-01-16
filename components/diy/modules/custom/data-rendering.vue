@@ -1,6 +1,6 @@
 <template>
     <view class="wh-auto pr" :style="'height:' + propDataHeight * propScale + 'px;'">
-        <view v-for="(item, index) in propCustomList" :key="item.id" class="main-content" :style="{ left: get_percentage_count(item.location.x), top: get_percentage_count(item.location.y), width: get_percentage_count(item.com_data.com_width), height: get_percentage_count(item.com_data.com_height), 'z-index': propCustomList.length - 1 > 0 ? (propCustomList.length - 1) - index : 0 }">
+        <view v-for="(item, index) in propCustomList" :key="item.id" :class="'main-content ' + get_animation_class(item.com_data)" :style="{ left: get_percentage_count(item.location.x), top: get_percentage_count(item.location.y), width: get_percentage_count(item.com_data.com_width), height: get_percentage_count(item.com_data.com_height), 'z-index': propCustomList.length - 1 > 0 ? (propCustomList.length - 1) - index : 0 }">
             <template v-if="item.key == 'text'">
                 <model-text :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" :propTitleParams="propShowData.data_name" @url_event="url_event"></model-text>
             </template>
@@ -114,6 +114,16 @@ export default {
                 return num * this.propScale + 'px';
             };
         },
+        get_animation_class() {
+            return (data) => {
+                const { type = 'none', number = 'infinite' } = data?.animation_style || {};
+                if (type != 'none') {
+                    return type + (number == 'infinite' ? `-${number}` : '');
+                } else {
+                    return '';
+                }
+            };
+        }
     },
     methods: {
         url_event(e) {

@@ -3128,4 +3128,5 @@
     @import './common/css/plugins.css';
     @import './common/css/lib.css';
     @import './common/css/theme.css';
+    @import './common/css/animation.css';
 </style>
