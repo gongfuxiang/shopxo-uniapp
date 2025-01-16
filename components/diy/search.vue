@@ -36,19 +36,36 @@
                         </template>
                     </view>
                 </view>
-                <view v-if="form.is_search_show == '1'" class="pa search-outer-botton flex-row align-c jc-c">
-                    <view class="search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="serch_button_event">
-                        <template v-if="form.search_type === 'text'">
-                            <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
-                        </template>
-                        <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
-                            <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="heightFix"></image>
-                        </template>
-                        <template v-else>
-                            <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
-                                <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx" propContainerDisplay="flex"></iconfont>
-                            </view>
-                        </template>
+                <view class="flex-row align-c pa search-outer-botton oh" :style="right_icon_style">
+                    <view v-if="form.is_right_icon_show == '1' && (form.right_icon_img.length > 0 || !isEmpty(form.right_icon_class))" class="pr margin-right-main">
+                        <view class="search-icon-before" @tap.stop="search_right_icon_tap"></view>
+                        <view class="wh-auto ht-auto">
+                            <template v-if="form.right_icon_img.length > 0">
+                                <view class="img-box">
+                                    <image :src="form.right_icon_img[0].url" class="img" mode="heightFix"></image>
+                                </view>
+                            </template>
+                            <template v-else>
+                                <view>
+                                    <iconfont :name="!isEmpty(form.right_icon_class) ? 'icon-' + form.right_icon_class : 'icon-search-max'" size="28rpx" :color="new_style.right_icon_color" propContainerDisplay="flex"></iconfont>
+                                </view>
+                            </template>
+                        </view>
+                    </view>
+                    <view v-if="form.is_search_show == '1'" class="flex-row align-c jc-c">
+                        <view class="search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="serch_button_event">
+                            <template v-if="form.search_type === 'text'">
+                                <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
+                            </template>
+                            <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
+                                <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="heightFix"></image>
+                            </template>
+                            <template v-else>
+                                <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
+                                    <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx" propContainerDisplay="flex"></iconfont>
+                                </view>
+                            </template>
+                        </view>
                     </view>
                 </view>
             </view>
@@ -125,6 +142,7 @@ export default {
             box_style: '',
             search_button: '',
             keywords: '',
+            right_icon_style: '',
         };
     },
     watch: {
@@ -152,6 +170,7 @@ export default {
                 box_style: this.get_box_style(new_style, new_form), // 搜索框设置
                 search_box_style: `border: 1px solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,
                 search_button: this.get_search_button(new_style), // 搜索按钮显示
+                right_icon_style: `border-radius: 0px ${ new_style.search_button_radius?.radius_top_right || 0 }px ${ new_style.search_button_radius?.radius_bottom_right || 0 }px 0px;`,
             });
         },
         // get_style(new_style) {
@@ -204,6 +223,13 @@ export default {
                 return;
             }
             app.globalData.url_open(this.form.icon_link.page);
+        },
+        search_right_icon_tap() {
+            if (isEmpty(this.form.right_icon_link)) {
+                this.search_tap();
+                return;
+            }
+            app.globalData.url_open(this.form.right_icon_link.page);
         },
         slideChange(e) {
             let actived_index = e.detail.current;
