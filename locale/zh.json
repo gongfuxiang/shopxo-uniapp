@@ -129,6 +129,7 @@
         "about": "关于我们",
 		"plugins-seckill-index": "限时秒杀",
 		"plugins-coupon-index": "领券中心",
+        "plugins-coupon-detail": "优惠券",
 		"plugins-coupon-shop": "店铺领券中心",
 		"plugins-coupon-user": "我的卡券",
 		"plugins-membershiplevelvip-index": "会员VIP",
