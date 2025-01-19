@@ -290,7 +290,7 @@
                 </block>
 
                 <!-- 商品评价 -->
-                <view v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
+                <view v-if="common_is_goods_detail_show_comments == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
                             <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.znz76d')}}</text>
@@ -372,9 +372,9 @@
                         <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.2j44o2')}}</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
-                        <block v-if="(common_is_goods_detail_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
+                        <block v-if="(common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
                             <!-- 是否详情展示相册 -->
-                            <block v-if="common_is_goods_detail_show_photo == 1 && goods_photo.length > 0">
+                            <block v-if="common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0">
                                 <view v-for="(item, index) in goods_photo" :key="index" class="goods-detail-photo">
                                     <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
                                 </view>
@@ -707,8 +707,8 @@
                 currency_symbol: app.globalData.currency_symbol(),
                 plugins_is_goods_detail_poster: 0,
                 common_app_is_use_mobile_detail: 0,
-                common_is_goods_detail_show_photo: 0,
-                common_is_show_goods_comments: 1,
+                common_is_goods_detail_content_show_photo: 0,
+                common_is_goods_detail_show_comments: 1,
                 common_app_customer_service_tel: null,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
@@ -898,8 +898,8 @@
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
-                        common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
-                        common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
+                        common_is_goods_detail_content_show_photo: app.globalData.get_config('config.common_is_goods_detail_content_show_photo'),
+                        common_is_goods_detail_show_comments: app.globalData.get_config('config.common_is_goods_detail_show_comments', 1),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     });
@@ -935,13 +935,12 @@
 
                             // 基础数据
                             var plugins_seckill_data = data.plugins_seckill_data || null;
-                            var is_guess_you_like = app.globalData.data.is_goods_detail_bottom_guess_you_like;
                             var upd_data = {
                                 random_value: Math.random(),
                                 data_loading_status: 1,
                                 goods_bottom_nav_status: true,
                                 goods_bottom_opt_nav_status: true,
-                                guess_you_like: (is_guess_you_like == 1) ? (data.guess_you_like || []) : [],
+                                guess_you_like: data.guess_you_like || [],
                                 nav_more_list: data.nav_more_list || [],
                                 buy_button: data.buy_button || null,
                                 buy_left_nav: data.buy_left_nav || [],

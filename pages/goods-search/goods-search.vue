@@ -32,14 +32,14 @@
                     </block>
                 </view>
                 <image class="screening-submit pa cp" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
-                <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
+                <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'list' : 'grid')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
             </view>
         </view>
 
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main oh">
-                <component-goods-list :propData="{style_type: data_show_type_value, goods_list: data_list, random: random_value}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
+                <component-goods-list :propData="{style_type: (data_show_type_value) == 0 ? 1 : 0, goods_list: data_list, random: random_value}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
                     :propIsCartParaCurve="true"></component-goods-list>
             </view>
             <view v-else>
@@ -200,6 +200,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 data_list: [],
@@ -251,8 +252,8 @@
                         icon: 'default'
                     }
                 ],
-                // 数据展示样式（0图文、1九方格）
-                data_show_type_value: 1,
+                // 数据展示样式（0九方格、1图文）
+                data_show_type_value: 0,
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 // 搜素条件
@@ -358,7 +359,8 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol')
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
+                        data_show_type_value: parseInt(app.globalData.get_config('config.home_search_goods_show_type', 0))
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
