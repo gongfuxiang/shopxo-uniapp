@@ -76,7 +76,7 @@
 <script>
 import componentChoiceLocation from '@/components/choice-location/choice-location';
 const app = getApp();
-import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, old_padding } from '@/common/js/common/common.js';
+import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, padding_computer, old_padding } from '@/common/js/common/common.js';
 export default {
     components: {
         componentChoiceLocation,
