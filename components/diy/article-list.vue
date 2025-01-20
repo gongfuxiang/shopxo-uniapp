@@ -318,7 +318,7 @@
                         // article_item_height: `height: ${new_style.article_height }px`,
                         article_style: this.content_radius + all_style + multicolumn_columns_width,
                         // 轮播高度
-                        carousel_height_computer: new_style.article_height + 'px',
+                        carousel_height_computer: new_style.article_height * scale + 'px',
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
                         float_name_style: gradient_computer(data) + (!isEmpty(name_bg_radius) ? radius_computer(name_bg_radius) : '') + (!isEmpty(name_bg_padding) ? padding_computer(name_bg_padding) : '' ) + (!isEmpty(name_bg_padding) ? margin_computer(name_bg_margin) : '') + location,
