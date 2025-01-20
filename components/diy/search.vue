@@ -55,13 +55,13 @@
                     <view v-if="form.is_search_show == '1'" class="flex-row align-c jc-c">
                         <view class="search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="serch_button_event">
                             <template v-if="form.search_type === 'text'">
-                                <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
+                                <view class="text-size-xs" :style="search_button_style">{{ form.search_tips }}</view>
                             </template>
                             <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
                                 <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="heightFix"></image>
                             </template>
                             <template v-else>
-                                <view :class="['padding-vertical-xs text-size-xs', propIsPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
+                                <view class="text-size-xs" :style="search_button_style">
                                     <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </template>
@@ -76,7 +76,7 @@
 <script>
 import componentChoiceLocation from '@/components/choice-location/choice-location';
 const app = getApp();
-import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
+import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, old_padding } from '@/common/js/common/common.js';
 export default {
     components: {
         componentChoiceLocation,
@@ -143,6 +143,7 @@ export default {
             search_button: '',
             keywords: '',
             right_icon_style: '',
+            search_button_style: '',
         };
     },
     watch: {
@@ -163,6 +164,7 @@ export default {
             this.setData({
                 form: new_form,
                 new_style: new_style,
+                search_button_style: padding_computer(new_style?.search_botton_padding || old_padding),
                 // style: this.get_style(new_style), // 内部样式
                 style_container: this.propIsPageSettings ? '' : common_styles_computer(common_style), // 全局样式
                 style_img_container: this.propIsPageSettings ? '' : common_img_computer(common_style, this.propIndex),
