@@ -1,5 +1,5 @@
 <template>
-    <view class="flex-1 oh" :style="style_container">
+    <view class="wh-auto ht-auto oh" :style="style_container">
         <view class="pr oh wh-auto ht-auto" :style="style_img_container">
             <swiper circular="true" :autoplay="propValue.data_style.is_roll == '1'" :interval="propValue.data_style.interval_time * 1000" :duration="500" :vertical="propValue.data_style.rotation_direction == 'vertical'" :next-margin="next_margin" :display-multiple-items="slides_per_view" class="swiper" style="height: 100%" @change="carousel_change">
                 <swiper-item v-for="(item1, index1) in propValue.data_content.list" :key="index1">
@@ -9,7 +9,7 @@
                         </view>
                     </template>
                     <template v-else>
-                        <view class="ht-auto" :style="shop_spacing">
+                        <view class="wh-auto ht-auto" :style="shop_spacing">
                             <product-list-show :propKey="propKey" :propOuterflex="propValue.data_content.goods_outerflex" :propFlex="propValue.data_content.goods_flex" :propNum="show_num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
                         </view>
                     </template>

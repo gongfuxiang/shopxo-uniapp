@@ -58,7 +58,7 @@
                                         <view class="flex-row jc-sb align-e">
                                             <view>
                                                 <view v-if="show_content" class="flex-row align-c text-size-xss">
-                                                    <view v-if="is_show('sales_count')" class="pr-5" :style="sold_number_style">已售{{ item.sales_count }}件</view>
+                                                    <view v-if="is_show('sales_count') && !isEmpty(item.sales_count)" class="pr-5" :style="sold_number_style">已售{{ item.sales_count || 0 }}件</view>
                                                     <!-- <view v-if="is_show('sales_count')" :class="['pr-5', {'br-r-e': is_show('sales_count') && is_show('4')}]" :style="sold_number_style>已售{{ item.sales_count }}件</view> -->
                                                     <!-- <view v-if="is_show('4')" class="pl-5" :style="score_style">评分0</view> -->
                                                 </view>

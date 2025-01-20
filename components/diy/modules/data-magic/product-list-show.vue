@@ -1,7 +1,7 @@
 <template>
-    <view :class="['align-c w h', (propOuterflex == 'row' ? 'flex-row' : 'flex-col')]" :style="'gap:' + propGoodStyle.data_goods_gap + 'px;'">
+    <view :class="['align-c flex-1 w h', (propOuterflex == 'row' ? 'flex-row' : 'flex-col')]" :style="'gap:' + propGoodStyle.data_goods_gap + 'px;'">
         <template v-if="propFlex === 'row'">
-            <view v-for="(item, index) in propValue" :key="index" :style="block_size">
+            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h">
                 <view class="w h oh" :style="style_container">
                     <view class="w h flex-row gap-10" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                         <template v-if="!isEmpty(item.new_cover)">
@@ -15,12 +15,12 @@
                             </view>
                         </template>
                         <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
-                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title }}</view>
+                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title || '' }}</view>
                             <view v-if="propIsShow.includes('price')" :style="propGoodStyle.goods_price_style">
-                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol }}</text>
-                                {{ item.min_price }}
+                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol || '' }}</text>
+                                {{ item.min_price || '' }}
                                 <template v-if="propIsShow.includes('price_unit')">
-                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit }}</text>
+                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit || '' }}</text>
                                 </template>
                             </view>
                         </view>
@@ -29,7 +29,7 @@
             </view>
         </template>
         <template v-else-if="propFlex === 'col_price_float'">
-            <view v-for="(item, index) in propValue" :key="index" :style="block_size">
+            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h">
                 <view class="w h oh" :style="style_container">
                     <view class="w h flex-col gap-10" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                         <view class="w h flex-1 pr oh">
@@ -44,19 +44,19 @@
                                 </view>
                             </template>
                             <view v-if="propIsShow.includes('price')" class="pa" :style="propGoodStyle.goods_price_style + float_pirce_style">
-                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol }}</text>{{ item.min_price }}
+                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol || ''}}</text>{{ item.min_price  || ''}}
                                 <template v-if="propIsShow.includes('price_unit')">
-                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit }}</text>
+                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit || ''}}</text>
                                 </template>
                             </view>
                         </view>
-                        <view v-if="propIsShow.includes('title')" class="text-line-1 tl w" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 2) + 'rpx;'">{{ item.title }}</view>
+                        <view v-if="propIsShow.includes('title')" class="text-line-1 tl w" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 2) + 'rpx;'">{{ item.title || '' }}</view>
                     </view>
                 </view>
             </view>
         </template>
         <template v-else>
-            <view v-for="(item, index) in propValue" :key="index" :style="block_size">
+            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h">
                 <view class="w h oh" :style="style_container">
                     <view class="w h flex-col" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                         <template v-if="!isEmpty(item.new_cover)">
@@ -70,11 +70,11 @@
                             </view>
                         </template>
                         <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
-                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title }}</view>
+                            <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title || '' }}</view>
                             <view v-if="propIsShow.includes('price')" :style="propGoodStyle.goods_price_style">
-                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol }}</text>{{ item.min_price }}
+                                <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol || ''}}</text>{{ item.min_price || '' }}
                                 <template v-if="propIsShow.includes('price_unit')">
-                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit }}</text>
+                                    <text :style="propGoodStyle.goods_price_unit_style">{{ item.show_price_unit || ''}}</text>
                                 </template>
                             </view>
                         </view>

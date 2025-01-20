@@ -12,8 +12,8 @@
                                         <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;'">
                                             <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                                 <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
-                                                    <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
-                                                        <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
+                                                    <view v-if="item.data_content.heading_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
+                                                        <image :src="item.data_content.heading_title_img[0].url" class="wh-auto ht-auto" mode="aspectFit" />
                                                     </view>
                                                 </template>
                                                 <template v-else>
@@ -61,8 +61,8 @@
                                     <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;'">
                                         <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                             <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
-                                                <view v-if="item.data_content.heading_title_img.length > 0" class="re" :style="'height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
-                                                    <image :src="item.data_content.heading_title_img[0].url" mode="aspectFit" />
+                                                <view v-if="item.data_content.heading_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
+                                                    <image :src="item.data_content.heading_title_img[0].url" class="wh-auto ht-auto" mode="aspectFit" />
                                                 </view>
                                             </template>
                                             <template v-else>
@@ -71,7 +71,7 @@
                                             <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
                                         </view>
                                         <view class="w h oh flex-row">
-                                            <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
+                                            <magic-carousel class="flex-1" :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                         </view>
                                     </view>
                                 </template>
@@ -237,8 +237,8 @@
                     } 
                     data_content.fit = fit;
                     // 商品名称和价格样式
-                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title') + `line-height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;`;
-                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price') + `line-height: ${ item.data_style.goods_price_size * 2 }rpx;`;
+                    data_style.goods_title_style = this.goods_trends_config(data_style, 'title') + `line-height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;`;
+                    data_style.goods_price_style = this.goods_trends_config(data_style, 'price') + `line-height: ${ item.data_style.goods_price_size * 2 }rpx;height: ${ (item.data_style.goods_title_size + 3) * 2 }rpx;`;
                     const radius = !isEmpty(data_style.img_radius) ? data_style.img_radius : { radius: 4, radius_top_left: 4, radius_top_right: 4, radius_bottom_left: 4, radius_bottom_right: 4 };
                     data_style.get_img_radius = radius_computer(radius);
 
