@@ -53,18 +53,20 @@
                         </view>
                     </view>
                     <view v-if="form.is_search_show == '1'" class="flex-row align-c jc-c">
-                        <view class="search-botton flex-row align-c jc-c z-i" :style="search_button" @tap.stop="serch_button_event">
-                            <template v-if="form.search_type === 'text'">
-                                <view class="text-size-xs" :style="search_button_style">{{ form.search_tips }}</view>
-                            </template>
-                            <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
-                                <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="heightFix"></image>
-                            </template>
-                            <template v-else>
-                                <view class="text-size-xs" :style="search_button_style">
-                                    <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx" propContainerDisplay="flex"></iconfont>
-                                </view>
-                            </template>
+                        <view class="search-botton flex-row align-c jc-c z-i" :style="search_button_style" @tap.stop="serch_button_event">
+                            <view class="oh" :style="search_button_img_style">
+                                <template v-if="form.search_type === 'text'">
+                                    <view class="text-size-xs">{{ form.search_tips }}</view>
+                                </template>
+                                <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
+                                    <image :src="form.search_botton_img[0].url" class="img" :style="search_button_height" mode="heightFix"></image>
+                                </template>
+                                <template v-else>
+                                    <view class="text-size-xs">
+                                        <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="28rpx" propContainerDisplay="flex"></iconfont>
+                                    </view>
+                                </template>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -76,7 +78,7 @@
 <script>
 import componentChoiceLocation from '@/components/choice-location/choice-location';
 const app = getApp();
-import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, padding_computer, old_padding } from '@/common/js/common/common.js';
+import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, padding_computer, old_padding, old_radius, old_margin, margin_computer } from '@/common/js/common/common.js';
 export default {
     components: {
         componentChoiceLocation,
@@ -140,10 +142,11 @@ export default {
             style_img_container: '',
             search_button_radius: '',
             box_style: '',
-            search_button: '',
             keywords: '',
             right_icon_style: '',
             search_button_style: '',
+            search_button_img_style: '',
+            search_button_height: '',
         };
     },
     watch: {
@@ -164,16 +167,50 @@ export default {
             this.setData({
                 form: new_form,
                 new_style: new_style,
-                search_button_style: padding_computer(new_style?.search_botton_padding || old_padding),
+                search_button_img_style: this.get_search_button_img_style(new_style),
+                search_button_height: this.get_search_button_height(new_style),
                 // style: this.get_style(new_style), // 内部样式
                 style_container: this.propIsPageSettings ? '' : common_styles_computer(common_style), // 全局样式
                 style_img_container: this.propIsPageSettings ? '' : common_img_computer(common_style, this.propIndex),
                 search_button_radius: radius_computer(search_button_radius), // 按钮圆角
                 box_style: this.get_box_style(new_style, new_form), // 搜索框设置
                 search_box_style: `border: 1px solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,
-                search_button: this.get_search_button(new_style), // 搜索按钮显示
+                search_button_style: this.get_search_button_style(new_form, new_style), // 搜索按钮显示
                 right_icon_style: `border-radius: 0px ${ new_style.search_button_radius?.radius_top_right || 0 }px ${ new_style.search_button_radius?.radius_bottom_right || 0 }px 0px;`,
             });
+        },
+        get_search_button_style(form, new_style) {
+            const { search_botton_color_list = [], search_botton_direction, search_botton_background_img_style, search_button_radius = old_radius, search_botton_background_img, search_botton_margin = old_margin, search_botton_border_show = '0', search_botton_border_size = old_padding, search_botton_border_style = 'solid', search_botton_border_color = '' } = new_style;
+            let style = radius_computer(search_button_radius);
+            if (form.search_type != 'img') {
+                const data = {
+                    color_list: search_botton_color_list,
+                    direction: search_botton_direction,
+                    background_img: search_botton_background_img,
+                    background_img_style: search_botton_background_img_style,
+                }
+                style += gradient_computer(data) + margin_computer(search_botton_margin) + `color: ${ new_style.button_inner_color };`;
+            }
+            let border = ``;
+            if (search_botton_border_show == '1') {
+                border += `border-width: ${search_botton_border_size.padding_top}px ${search_botton_border_size.padding_right}px ${search_botton_border_size.padding_bottom}px ${search_botton_border_size.padding_left}px;border-style: ${ search_botton_border_style };border-color: ${search_botton_border_color};`
+            }
+            const height = 28 - search_botton_margin.margin_top - search_botton_margin.margin_bottom;
+            return style + border + `height: ${height}px;line-height: ${height}px;`;
+        },
+        get_search_button_height(new_style) {
+            const { search_botton_border_size = old_padding, search_botton_padding = old_padding } = new_style;
+            const height = 28 - search_botton_border_size.padding_top - search_botton_border_size.padding_bottom - search_botton_padding.padding_top - search_botton_padding.padding_bottom;
+            return `height: ${height}px !important;line-height: ${height}px;`;
+        },
+        // 搜索按钮圆角
+        get_search_button_img_style(new_style) {
+            const { search_botton_background_img_style, search_botton_background_img } = new_style;
+            const data = {
+                background_img: search_botton_background_img,
+                background_img_style: search_botton_background_img_style,
+            }
+            return background_computer(data) + padding_computer(new_style?.search_botton_padding || old_padding);
         },
         // get_style(new_style) {
         //     let common_styles = '';
@@ -204,20 +241,6 @@ export default {
                 app.globalData.url_open('pages/goods-search/goods-search?keywords=' + this.keywords);
             }
             app.globalData.url_open('/pages/goods-search-start/goods-search-start?keywords=' + this.keywords);
-        },
-        get_search_button(new_style) {
-            const { search_botton_color_list, search_botton_direction, search_botton_background_img_style, search_botton_background_img, search_button_radius } = new_style;
-            let style = radius_computer(search_button_radius);
-            if (this.form.search_type != 'img') {
-                const data = {
-                    color_list: search_botton_color_list,
-                    direction: search_botton_direction,
-                    background_img: search_botton_background_img,
-                    background_img_style: search_botton_background_img_style,
-                };
-                style += gradient_computer(data) + background_computer(data) + `color: ${new_style.button_inner_color};`;
-            }
-            return style;
         },
         search_icon_tap() {
             if (isEmpty(this.form.icon_link)) {
