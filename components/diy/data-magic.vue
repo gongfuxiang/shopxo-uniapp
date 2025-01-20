@@ -19,7 +19,14 @@
                                                 <template v-else>
                                                     <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
                                                 </template>
-                                                <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                                <template v-if="item.data_content.subtitle_title_type && item.data_content.subtitle_title_type == 'image'">
+                                                    <view v-if="item.data_content.subtitle_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.subtitle_img_height) ? item.data_style.subtitle_img_height * magic_scale : 0) + 'px'">
+                                                        <image :src="item.data_content.subtitle_title_img[0].url" class="ht-auto max-w" mode="heightFix" />
+                                                    </view>
+                                                </template>
+                                                <template v-else>
+                                                    <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                                </template>
                                             </view>
                                             <view class="w h flex-1 oh flex-row">
                                                 <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
@@ -68,7 +75,14 @@
                                             <template v-else>
                                                 <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.heading_style">{{ item.data_content.heading_title || '' }}</view>
                                             </template>
-                                            <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                            <template v-if="item.data_content.subtitle_title_type && item.data_content.subtitle_title_type == 'image'">
+                                                <view v-if="item.data_content.subtitle_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.subtitle_img_height) ? item.data_style.subtitle_img_height * magic_scale : 0) + 'px'">
+                                                    <image :src="item.data_content.subtitle_title_img[0].url" class="ht-auto max-w" mode="heightFix" />
+                                                </view>
+                                            </template>
+                                            <template v-else>
+                                                <view class="ma-0 w text-word-break text-line-1 flex-basis-shrink" :style="item.data_style.subtitle_style">{{ item.data_content.subtitle || '' }}</view>
+                                            </template>
                                         </view>
                                         <view class="w h oh flex-row">
                                             <magic-carousel class="flex-1" :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" propType="product" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
