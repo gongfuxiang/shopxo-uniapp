@@ -12,8 +12,8 @@
                                         <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;'">
                                             <view v-if="(!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)) && [0, 1].includes(index)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                                 <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
-                                                    <view v-if="item.data_content.heading_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
-                                                        <image :src="item.data_content.heading_title_img[0].url" class="wh-auto ht-auto" mode="aspectFit" />
+                                                    <view v-if="item.data_content.heading_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height * magic_scale : 0) + 'px'">
+                                                        <image :src="item.data_content.heading_title_img[0].url" class="ht-auto max-w" mode="heightFix" />
                                                     </view>
                                                 </template>
                                                 <template v-else>
@@ -61,8 +61,8 @@
                                     <view class="w h flex-col" :style="'gap:'+ item.data_style.title_data_gap * 2 + 'rpx;'">
                                         <view v-if="!isEmpty(item.data_content.heading_title) || !isEmpty(item.data_content.subtitle)" :class="'tl' + (item.data_style.title_line == '1' ? ' flex-row align-c' : ' flex-col')" :style="'gap:' + item.data_style.title_gap * 2 + 'rpx;'">
                                             <template v-if="item.data_content.heading_title_type && item.data_content.heading_title_type == 'image'">
-                                                <view v-if="item.data_content.heading_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height : 0) * 2 + 'rpx'">
-                                                    <image :src="item.data_content.heading_title_img[0].url" class="wh-auto ht-auto" mode="aspectFit" />
+                                                <view v-if="item.data_content.heading_title_img.length > 0" class="re oh" :style="'width:100%;height:' + (!isEmpty(item.data_style.heading_img_height) ? item.data_style.heading_img_height * magic_scale : 0) + 'px'">
+                                                    <image :src="item.data_content.heading_title_img[0].url" class="ht-auto max-w" mode="heightFix" />
                                                 </view>
                                             </template>
                                             <template v-else>
@@ -204,7 +204,7 @@
                     magic_scale: width / 390,
                     div_width: sys_width,
                     cubeCellWidth: sys_width / density,
-                    container_size: container_height * 2 + 'rpx',
+                    container_size: container_height * (width / 390) + 'px',
                 });
             },
             get_data_magic_list(data, new_style) {

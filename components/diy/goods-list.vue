@@ -111,7 +111,7 @@
                     </view>
                 </block>
                 <block v-else>
-                    <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
+                    <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
                         <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
                             <view class="flex-row wh-auto ht-auto" :style="onter_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-index="index1" :data-split-index="index" :data-value="item.goods_url" @tap.stop="url_event">
@@ -256,6 +256,7 @@
                 button_gradient: '',
                 // 图片大小
                 img_size: '',
+                new_scale: 1,
             };
         },
         watch: {
@@ -335,6 +336,7 @@
                         new_style: new_style,
                         outer_class: flex + wrap + background + 'oh',
                         list: new_list,
+                        new_scale: scale,
                         content_radius: radius_computer(new_style.shop_radius), // 圆角设置
                         content_img_radius: radius_computer(new_style.shop_img_radius), // 图片圆角设置
                         content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
@@ -428,7 +430,7 @@
                 } else if (form.theme == '5') {
                     // 如果不是平移的时候执行
                     if (new_style.rolling_fashion != 'translation') {
-                        size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * 2 + 'rpx'};`;
+                        size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * (sys_width / 390) + 'px'};`;
                     } else {
                         size_style = `margin-right: ${ (new_style.content_outer_spacing * 2) + (shop_margin.margin_right * 2) }rpx;width: 100%;height: 100%;`;
                     }
