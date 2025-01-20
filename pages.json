@@ -541,6 +541,13 @@
                     }
                 },
                 {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "shop/shop",
                     "style": {
                         "enablePullDownRefresh": true,

@@ -128,7 +128,7 @@
                     </view>
 
                     <!-- 猜你喜欢 -->
-                    <view v-if="goods_list.length > 0" class="padding-horizontal-main margin-top-main">
+                    <view v-if="goods_list.length > 0" class="padding-horizontal-main margin-top-xxxl">
                         <view class="tc spacing-mb">
                             <view class="guess-like fw-b text-size-md">{{ $t('goods-detail.goods-detail.v2974w') }}</view>
                         </view>
@@ -358,6 +358,7 @@
                 currency_symbol: app.globalData.currency_symbol(),
                 common_site_type: 0,
                 common_is_exhibition_mode_btn_text: null,
+                common_is_cart_show_guess_you_like: 0,
                 common_app_customer_service_tel: null,
                 swipe_item_index: null,
                 swipe_options: [
@@ -460,6 +461,7 @@
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_site_type: app.globalData.get_config('config.common_site_type'),
                         common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', this.$t('cart.cart.31h34v')),
+                        common_is_cart_show_guess_you_like: parseInt(app.globalData.get_config('config.common_is_cart_show_guess_you_like', 0)),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
                     });
@@ -1082,7 +1084,7 @@
 
             // 猜你喜欢
             get_data_list(is_mandatory) {
-                if(app.globalData.data.is_cart_bottom_guess_you_like == 1) {
+                if(this.common_is_cart_show_guess_you_like == 1) {
                     // 分页是否还有数据
                     if ((is_mandatory || 0) == 0) {
                         if (this.goods_bottom_line_status == true) {
@@ -1140,6 +1142,7 @@
                                     if (this.goods_page <= 1) {
                                         this.setData({
                                             goods_list: [],
+                                            random_value: Math.random(),
                                             goods_bottom_line_status: false,
                                         });
                                     }
@@ -1166,6 +1169,7 @@
                 // 更新猜你喜欢列表数据
                 this.setData({
                     goods_list: e.goods_list,
+                    random_value: Math.random(),
                 });
                 // 重新加载数据
                 this.get_data();
@@ -1184,6 +1188,7 @@
                     }
                     this.setData({
                         goods_list: temp_goods_list,
+                        random_value: Math.random(),
                     });
                 }
             },

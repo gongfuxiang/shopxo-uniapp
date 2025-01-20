@@ -106,8 +106,8 @@
             },
             // 下标
             propIndex: {
-                type: Number,
-                default: 1,
+                type: [Number,String],
+                default: 0,
             },
             // 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期
             propStatusType: {

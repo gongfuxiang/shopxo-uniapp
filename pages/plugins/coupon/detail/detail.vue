@@ -1,35 +1,27 @@
 <template>
     <view :class="theme_view">
-        <block v-if="(data_base || null) != null">
-            <component-nav-back :propName="data_base.application_name || $t('index.index.p4872s')"></component-nav-back>
-            <view class="pr">
-                <view class="pa top-0 bg-img wh-auto">
-                    <image class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
-                </view>
-                <view class="plugins-coupon-container">
-                    <view class="coupon-content bg-white pr page-bottom-fixed">
-                        <!-- 优惠劵列表 -->
-                        <view v-if="data_list.length > 0" class="flex-col">
-                            <block v-for="(item, index) in data_list" :key="index">
-                                <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
-                            </block>
-                        </view>
-                        <block v-else>
-                            <!-- 提示信息 -->
-                            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                        </block>
+        <view v-if="(data_base || null) != null" class="ht bg-white">
+            <view class="plugins-coupon-container">
+                <view class="coupon-content padding-top-main page-bottom-fixed">
+                    <!-- 优惠劵列表 -->
+                    <block v-if="(data || null) != null">
+                        <component-coupon-card :propData="data" :propStatusType="data.status_type" :propStatusOperableName="data.status_operable_name" propIndex="0" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                    </block>
+                    <block v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                    </block>
 
-                        <!-- 结尾 -->
-                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-                    </view>
-                </view>
-                <view class="bottom-fixed">
-                    <view class="bottom-line-exclude">
-                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/coupon/user/user" @tap="url_event">{{$t('index.index.lk0i6c')}}</button>
-                    </view>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
             </view>
-        </block>
+            <view class="bottom-fixed">
+                <view class="bottom-line-exclude">
+                    <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/coupon/user/user" @tap="url_event">{{$t('index.index.lk0i6c')}}</button>
+                </view>
+            </view>
+        </view>
         <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -42,20 +34,18 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
-    var coupon_static_url = app.globalData.get_static_url('coupon', true);
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                coupon_static_url: coupon_static_url + 'app/',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                data_list: [],
+                params: {},
+                data: null,
                 data_base: null,
                 // 优惠劵领取
                 temp_coupon_receive_index: null,
@@ -66,7 +56,6 @@
         },
         components: {
             componentCommon,
-            componentNavBack,
             componentNoData,
             componentBottomLine,
             componentCouponCard,
@@ -75,6 +64,11 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: app.globalData.launch_params_handle(params),
+            });
         },
 
         onShow() {
@@ -82,10 +76,7 @@
             app.globalData.page_event_onshow_handle();
 
             // 数据加载
-            this.init();
-
-            // 初始化配置
-            this.init_config();
+            this.get_data();
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
@@ -94,60 +85,47 @@
         },
         // 下拉刷新
         onPullDownRefresh() {
-            this.get_data_list();
+            this.get_data();
         },
         methods: {
             // 获取数据
-            init() {
-                this.get_data_list();
-            },
-            // 获取数据
-            get_data_list() {
-                if (this.data_list.length <= 0) {
-                    this.setData({
-                        data_list_loding_status: 1,
-                    });
-                }
+            get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'index', 'coupon'),
+                    url: app.globalData.get_request_url('detail', 'index', 'coupon'),
                     method: 'POST',
-                    data: {},
+                    data: this.params,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            var status = (data.data || []).length > 0;
                             this.setData({
                                 data_base: data.base || null,
-                                data_list: data.data || [],
+                                data: data.data || null,
                                 data_list_loding_msg: '',
-                                data_list_loding_status: status ? 3 : 0,
-                                data_bottom_line_status: status,
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: false,
                             });
-                            if ((this.data_base || null) != null) {
+                            if ((this.data || null) != null) {
                                 // 基础自定义分享
                                 this.setData({
                                     share_info: {
-                                        title: this.data_base.seo_title || this.data_base.application_name,
-                                        desc: this.data_base.seo_desc,
-                                        path: '/pages/plugins/coupon/index/index',
+                                        title: this.data.name,
+                                        desc: this.data.desc,
+                                        path: '/pages/plugins/coupon/detail/detail',
+                                        query: 'id='+this.data.id
                                     },
                                 });
 
-                                // #ifndef MP-ALIPAY
                                 // 导航名称
-                                if ((this.data_base.application_name || null) != null) {
-                                    uni.setNavigationBarTitle({
-                                        title: this.data_base.application_name,
-                                    });
-                                }
-                                // #endif
+                                uni.setNavigationBarTitle({
+                                    title: this.data.name,
+                                });
                             }
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
                             });
                         }
@@ -182,8 +160,8 @@
                 // 登录校验
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
-                    var temp_list = this.data_list;
-                    if (temp_list[index]['is_operable'] != 0) {
+                    var data = this.data;
+                    if (data['is_operable'] != 0) {
                         uni.showLoading({
                             title: this.$t('common.processing_in_text'),
                         });
@@ -198,9 +176,9 @@
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
                                     app.globalData.showToast(res.data.msg, 'success');
-                                    temp_list[index] = res.data.data.coupon;
+                                    data = res.data.data.coupon;
                                     this.setData({
-                                        data_list: temp_list,
+                                        data_list: data,
                                     });
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
@@ -220,15 +198,9 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            },
-
-            // 页面滚动监听
-            onPageScroll(res) {
-                uni.$emit('onPageScroll', res);
-            },
-        },
+            }
+        }
     };
 </script>
 <style scoped>
-    @import './index.css';
 </style>
