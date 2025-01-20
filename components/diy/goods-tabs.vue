@@ -5,7 +5,7 @@
             <view :style="shop_margin_top">
                 <view :style="shop_container">
                     <view :style="shop_img_container">
-                        <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+                        <componentGoodsList ref="diy_goods_list" :propKey="diy_key" :propDiyIndex="propDiyIndex" :propValue="goods_tabs" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
                     </view>
                 </view>
             </view>

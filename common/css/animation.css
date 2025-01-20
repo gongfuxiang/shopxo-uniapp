@@ -1,50 +1,4 @@
-/*
-* 放大缩小
-*/
-.scale-up-center {
-	-webkit-animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-}
 
-.scale-up-center-infinite {
-	-webkit-animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite both;
-	        animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite both;
-}
-
-@keyframes scale-up-center {
-    0% {
-      -webkit-transform: scale(0.5);
-              transform: scale(0.5);
-    }
-    100% {
-      -webkit-transform: scale(1);
-              transform: scale(1);
-    }
-  }
-/*
-* 中心缩小
-*/
-.scale-out-center {
-	-webkit-animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-	        animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-}
-.scale-out-center-infinite {
-	-webkit-animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) infinite both;
-	        animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) infinite both;
-}
-
-@keyframes scale-out-center {
-    0% {
-      -webkit-transform: scale(1);
-              transform: scale(1);
-      opacity: 1;
-    }
-    100% {
-      -webkit-transform: scale(0);
-              transform: scale(0);
-      opacity: 1;
-    }
-}
 /*
 * 垂直放大
 */
@@ -84,8 +38,8 @@
     }
 }
 /*
-* 交替垂直
-*/放大
+* 交替垂直放大
+*/
 .scale-up-ver-bottom-alternate {
     -webkit-animation: scale-up-ver-bottom-alternate 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) alternate both;
 	        animation: scale-up-ver-bottom-alternate 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) alternate both;
@@ -561,8 +515,8 @@
 }
 
 /*
-* 在fwd
-*/中心滑动
+* 在fwd中心滑动
+*/
 .slide-in-fwd-center {
 	-webkit-animation: slide-in-fwd-center 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-fwd-center 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;

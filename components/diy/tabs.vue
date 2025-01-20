@@ -146,10 +146,9 @@
                 if (!Array.isArray(tabs_bg) || tabs_bg.length === 0 || !tabs_bg[0] || !tabs_bg[0].color) {
                     new_tabs_background = 'background:#fff;';
                 }
-
                 this.setData({
                     tabs_data: new_tabs_data,
-                    style_container: this.propIsCommon ? common_styles_computer(new_style.common_style) + new_tabs_background : new_content.tabs_top_up == '1' ? gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) + new_tabs_background : '', // 如果是选项卡轮播，不需要走默认样式
+                    style_container: this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : '', // 如果是选项卡轮播，不需要走默认样式
                     style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
                     // 判断是否置顶

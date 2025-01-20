@@ -8,29 +8,40 @@
                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                             <view class="flex-row" :style="'height:' + tabs_height">
                                 <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
-                                    <view class="nowrap flex-col jc-c align-c" :style="tabs_sign_spacing">
-                                        <view v-if="tabs_theme_index == '4'" :class="'img oh ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
+                                    <view class="nowrap ma-auto">
+                                        <view v-if="tabs_theme_index == '4'" :class="'img oh pr z-i-deep ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
                                             <imageEmpty :propImageSrc="item.img[0]" propImgFit="aspectFit" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
                                             <!-- <image :src="item.img[0].url" class="img" mode="aspectFit" /> -->
                                         </view>
                                         <template v-if="item.tabs_type == '1'">
                                             <template v-if="!isEmpty(item.tabs_icon)">
-                                                <view class="title" :style="index == active_index ? ['2', '4'].includes(tabs_theme_index) ? tabs_check : `` :  '' + tabs_padding_bottom">
+                                                <view :class="tabs_theme_index == '4' ? 'title pr z-i' : 'title pr z-i-deep'" :style="(tabs_theme_index == '4' ? tabs_sign_spacing : '') + (index == active_index ? (['2', '4'].includes(tabs_theme_index) ? tabs_check : '') :  '' + tabs_padding_bottom)">
                                                     <iconfont :name="'icon-' + item.tabs_icon" :color="index == active_index ? tabs_icon_checked_color : tabs_icon_color" propContainerDisplay="flex" :size="index == active_index ? tabs_icon_checked_size : tabs_icon_size"></iconfont>
                                                 </view>
                                             </template>
                                             <template v-else>
-                                                <view class="title" :style="index == active_index ? new_style.is_tabs_img_background == '1' && ['2', '4'].includes(tabs_theme_index) ? tabs_check : `` : tabs_padding_bottom">
+                                                <view :class="tabs_theme_index == '4' ? 'title pr z-i' : 'title pr z-i-deep'" :style="(tabs_theme_index == '4' ? tabs_sign_spacing : '') + index == active_index ? new_style.is_tabs_img_background == '1' && ['2', '4'].includes(tabs_theme_index) ? tabs_check : '' : tabs_padding_bottom">
                                                     <imageEmpty :propImageSrc="item.tabs_img[0]" :propStyle="index == active_index ? tabs_theme_style.tabs_img_checked : tabs_theme_style.tabs_img" propImgFit="heightFix" propErrorStyle="width: 40rpx;height: 40rpx;"></imageEmpty>
                                                 </view>
                                             </template>
                                         </template>
                                         <template v-else>
-                                            <view class="title" :style="index == active_index ? ['2', '4'].includes(tabs_theme_index) ? tabs_theme_style.tabs_title_checked + tabs_check : tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title + tabs_padding_bottom">{{ item.title }}</view>
+                                            <view :class="tabs_theme_index == '4' ? 'title pr z-i' : 'title pr z-i-deep'" :style="(tabs_theme_index == '4' ? tabs_sign_spacing : '') + (index == active_index ? ['2', '4'].includes(tabs_theme_index) ? tabs_theme_style.tabs_title_checked + tabs_check : tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title + tabs_padding_bottom)">{{ item.title }}</view>
                                         </template>
-                                        <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
-                                        <iconfont v-if="tabs_theme_index == '3' && index == active_index" name="icon-checked-smooth" class="icon" :style="tabs_theme_index == '3' && index == active_index ? icon_tabs_check : ''" propContainerDisplay="flex" size="40rpx"></iconfont>
-                                        <view class="bottom_line" :class="tabs_bottom_line_theme" :style="tabs_check"></view>
+                                        <view class="desc pr z-i wh-auto" :style="tabs_sign_spacing + (tabs_theme_index == '1' && index == active_index ? tabs_check : '')">{{ item.desc }}</view>
+                                        <template v-if="tabs_theme_index == '3' && index == active_index">
+                                            <template v-if="!isEmpty(form.tabs_adorn_icon)">
+                                                <view class="icon pr z-i wh-auto flex-row jc-c align-c" :style="tabs_sign_spacing">
+                                                    <iconfont :name="'icon-' + form.tabs_adorn_icon" :style="icon_tabs_check" propContainerDisplay="flex" size="40rpx"></iconfont>
+                                                </view>
+                                            </template>
+                                            <template v-else>
+                                                <view class="pr z-i wh-auto flex-row jc-c align-c ma-auto" :style="tabs_sign_spacing">
+                                                    <imageEmpty :propImageSrc="form.tabs_adorn_img[0]" :propStyle="tabs_adorn_img_style" propImgFit="aspectFit" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
+                                                </view>
+                                            </template>
+                                        </template>
+                                        <view class="bottom_line z-i" :class="tabs_bottom_line_theme" :style="tabs_check + tabs_sign_spacing"></view>
                                     </view>
                                 </view>
                             </view>
@@ -132,6 +143,7 @@
         },
         data() {
             return {
+                form: {},
                 new_style: {},
                 tabs_theme_index: '',
                 tabs_theme: '',
@@ -164,6 +176,7 @@
                 tabs_bottom_line_theme: '',
                 tabs_sticky: '',
                 tabs_height: '100%',
+                tabs_adorn_img_style: '',
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
@@ -241,9 +254,10 @@
                 const height = Math.max(tabs_size_checked + default_height, tabs_size, icon_height, is_img > -1 ? (tabs_img_height + default_height) : '');
                 // 参数设置
                 this.setData({
+                    form: new_content,
                     new_style: new_style,
                     tabs_spacing: Number(new_style.tabs_spacing),
-                    tabs_sign_spacing: !isEmpty(new_style.tabs_sign_spacing) ? `row-gap:${new_style.tabs_sign_spacing * 2}rpx;` : 'row-gap:8rpx;',
+                    tabs_sign_spacing: !isEmpty(new_style.tabs_sign_spacing) ? `margin-top: ${new_style.tabs_sign_spacing * 2}rpx;` : 'margin-top: 8rpx;',
                     tabs_list: new_content.tabs_list,
                     tabs_padding_bottom: this.get_padding_bottom(new_content, new_style),
                     // 选项卡主题
@@ -261,7 +275,11 @@
                     tabs_bottom_line_theme: new_style.tabs_one_theme == '1' ? 'tabs-bottom-line-theme' : '',
                     tabs_theme_1_style: new_style.tabs_one_theme == '1',
                     tabs_height: ['2', '4'].includes(new_content.tabs_theme) ? height * 2 + 'rpx' : '100%;',
+                    tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                 });
+            },
+            get_tabs_adorn_img_style(new_style) {
+                return radius_computer(new_style?.tabs_adorn_img_radius || this.old_radius) + `height: ${(new_style?.tabs_adorn_img_height || 10) * 2}rpx;${ new_style.is_tabs_adorn_img_background == '1' ? tabs_check.value : ''}`;
             },
             // 获取选项卡主题
             get_tabs_theme(data) {
@@ -283,7 +301,7 @@
                         bottom = 3;
                     }
                 } else if (form.tabs_theme == '3') {
-                    bottom = 10;
+                    bottom = !isEmpty(form.tabs_adorn_icon) ? new_style.tabs_adorn_icon_size : new_style.tabs_adorn_img_height;
                 }
                 const tabs_sign_spacing = !isEmpty(new_style.tabs_sign_spacing) ? new_style.tabs_sign_spacing : 4;
                 return ['1', '2', '4'].includes(form.tabs_theme) ? '' : `padding-bottom: ${(tabs_sign_spacing + bottom) * 2 }rpx;`;
@@ -369,6 +387,7 @@
                 border-radius: 100%;
                 border: 2rpx solid transparent;
                 display: none;
+                margin: 0 auto;
             }
             &.tabs-style-1 {
                 &.active {
@@ -395,7 +414,8 @@
                 .desc {
                     border-radius: 40rpx;
                     padding: 4rpx 12rpx;
-                    display: inline-block;
+                    box-sizing: border-box;
+                    display: block;
                 }
             }
             &.tabs-style-3 {
@@ -404,6 +424,7 @@
                         // background: #ff2222;
                         border-radius: 40rpx;
                         padding: 6px 12px;
+                        box-sizing: border-box;
                         color: #fff;
                     }
                 }
@@ -428,6 +449,7 @@
                         // background: #ff5e5e;
                         border-radius: 40rpx;
                         padding: 2px 7px;
+                        box-sizing: border-box;
                         // color: #fff;
                     }
                     .img {
@@ -458,5 +480,8 @@
     }
     .pb-0 {
         padding-bottom: 0 !important;
+    }
+    .ma-auto {
+        margin: auto;
     }
 </style>

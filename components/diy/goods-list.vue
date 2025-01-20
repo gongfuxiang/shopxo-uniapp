@@ -63,7 +63,7 @@
                                                     <!-- <view v-if="is_show('4')" class="pl-5" :style="score_style">评分0</view> -->
                                                 </view>
                                             </view>
-                                            <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
+                                            <view v-if="(form.is_shop_show == '1' && form.shop_button_effect == '1' && item.is_error == 0) || (form.is_shop_show == '1' && form.shop_button_effect == '0')" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                                 <block v-if="form.shop_type == 'text'">
                                                     <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                                 </block>
@@ -93,7 +93,7 @@
                                                 </text>
                                             </view>
                                         </view>
-                                        <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index" @tap.stop="goods_button_event">
+                                        <view v-if="(form.is_shop_show == '1' && form.shop_button_effect == '1' && item.is_error == 0) || (form.is_shop_show == '1' && form.shop_button_effect == '0')" class="pr" :data-index="index" @tap.stop="goods_button_event">
                                             <block v-if="form.shop_type == 'text'">
                                                 <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                             </block>
@@ -155,7 +155,7 @@
                                                         </text>
                                                     </view>
                                                 </view>
-                                                <view v-if="form.is_shop_show == '1'" class="pr" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
+                                                <view v-if="(form.is_shop_show == '1' && form.shop_button_effect == '1' && item.is_error == 0) || (form.is_shop_show == '1' && form.shop_button_effect == '0')" class="pr" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
                                                     <block v-if="form.shop_type == 'text'">
                                                         <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                                     </block>
