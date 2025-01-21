@@ -41,12 +41,12 @@
                         <view class="search-icon-before" @tap.stop="search_right_icon_tap"></view>
                         <view class="wh-auto ht-auto">
                             <template v-if="form.right_icon_img.length > 0">
-                                <view class="img-box">
+                                <view class="img-box right_icon_height flex-row align-c">
                                     <image :src="form.right_icon_img[0].url" class="img" mode="heightFix"></image>
                                 </view>
                             </template>
                             <template v-else>
-                                <view>
+                                <view class="right_icon_height flex-row align-c">
                                     <iconfont :name="!isEmpty(form.right_icon_class) ? 'icon-' + form.right_icon_class : 'icon-search-max'" size="28rpx" :color="new_style.right_icon_color" propContainerDisplay="flex"></iconfont>
                                 </view>
                             </template>
@@ -176,7 +176,7 @@ export default {
                 box_style: this.get_box_style(new_style, new_form), // 搜索框设置
                 search_box_style: `border: 1px solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,
                 search_button_style: this.get_search_button_style(new_form, new_style), // 搜索按钮显示
-                right_icon_style: `border-radius: 0px ${ new_style.search_button_radius?.radius_top_right || 0 }px ${ new_style.search_button_radius?.radius_bottom_right || 0 }px 0px;`,
+                right_icon_style: `border-radius: 0px ${ new_style.search_border_radius?.radius_top_right || 0 }px ${ new_style.search_border_radius?.radius_bottom_right || 0 }px 0px;`,
             });
         },
         get_search_button_style(form, new_style) {
@@ -195,13 +195,13 @@ export default {
             if (search_botton_border_show == '1') {
                 border += `border-width: ${search_botton_border_size.padding_top}px ${search_botton_border_size.padding_right}px ${search_botton_border_size.padding_bottom}px ${search_botton_border_size.padding_left}px;border-style: ${ search_botton_border_style };border-color: ${search_botton_border_color};`
             }
-            const height = 28 - search_botton_margin.margin_top - search_botton_margin.margin_bottom;
-            return style + border + `height: ${height}px;line-height: ${height}px;`;
+            const height = 32 - search_botton_margin.margin_top - search_botton_margin.margin_bottom;
+            return style + border + `height: ${height > 0 ? height : 0}px;line-height: ${height > 0 ? height : 0}px;`;
         },
         get_search_button_height(new_style) {
             const { search_botton_border_size = old_padding, search_botton_padding = old_padding } = new_style;
-            const height = 28 - search_botton_border_size.padding_top - search_botton_border_size.padding_bottom - search_botton_padding.padding_top - search_botton_padding.padding_bottom;
-            return `height: ${height}px !important;line-height: ${height}px;`;
+            const height = 32 - search_botton_border_size.padding_top - search_botton_border_size.padding_bottom - search_botton_padding.padding_top - search_botton_padding.padding_bottom;
+            return `height: ${height > 0 ? height : 0}px !important;line-height: ${height > 0 ? height : 0}px;`;
         },
         // 搜索按钮圆角
         get_search_button_img_style(new_style) {
@@ -210,7 +210,7 @@ export default {
                 background_img: search_botton_background_img,
                 background_img_style: search_botton_background_img_style,
             }
-            return background_computer(data) + padding_computer(new_style?.search_botton_padding || old_padding);
+            return background_computer(data) + padding_computer(new_style?.search_botton_padding || old_padding) + 'box-sizing: border-box;';
         },
         // get_style(new_style) {
         //     let common_styles = '';
@@ -283,7 +283,6 @@ export default {
 
     .img-box {
         height: 100%;
-
         .img {
             height: 36rpx;
             display: block;
@@ -292,15 +291,19 @@ export default {
     .search-outer-botton {
         height: 64rpx;
         top: 0;
-        right: 4rpx;
+        right: 0;
         .search-botton {
-            height: 56rpx;
+            height: 64rpx;
             .img {
-                height: 56rpx;
+                height: 64rpx;
                 min-width: 6rpx;
                 max-width: 20rpx;
             }
         }
+    }
+    .right_icon_height {
+        position: relative;
+        height: 56rpx !important;
     }
     .search-icon {
         position: relative;

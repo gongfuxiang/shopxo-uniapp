@@ -322,7 +322,7 @@
                     border += `border-width: ${location_border_size.padding_top}px ${location_border_size.padding_right}px ${location_border_size.padding_bottom}px ${location_border_size.padding_left}px;border-style: ${location_border_style};border-color: ${location_border_color};`;
                 }
                 const height = 32 - (location_margin.margin_top || 0) - (location_margin.margin_bottom || 0);
-                return background_computer(style) + padding_computer(location_padding) + border + `height: ${height * 2}rpx;line-height: ${height * 2}rpx;box-sizing: border-box;`;
+                return background_computer(style) + padding_computer(location_padding) + border + `height: ${(height > 0 ? height : 0) * 2}rpx;line-height: ${(height > 0 ? height : 0) * 2}rpx;box-sizing: border-box;`;
             },
             // 获取顶部导航高度
             get_nav_height() {
