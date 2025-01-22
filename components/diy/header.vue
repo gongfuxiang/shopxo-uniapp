@@ -255,9 +255,14 @@
                 let new_text_style = `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`;
                 // #ifndef MP-TOUTIAO
                 // #ifdef MP
-                const custom = uni.getMenuButtonBoundingClientRect();
-                menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
-                new_text_style += `right:-${custom.width + 10}px;`;
+                // 判断是否有胶囊
+                const is_current_single_page = app.globalData.is_current_single_page();
+                // 如果有胶囊的时候，做处理
+                if (is_current_single_page == 0) {
+                    const custom = uni.getMenuButtonBoundingClientRect();
+                    menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
+                    new_text_style += `right:-${custom.width + 10}px;`;
+                }
                 // #endif
                 // #endif
                 const { location_margin = this.old_margin } = new_style;
