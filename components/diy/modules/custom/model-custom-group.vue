@@ -9,7 +9,7 @@
                                 <view v-for="(item1, index1) in item.split_list" :key="index1">
                                     <view :style="style_chunk_container">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
+                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -22,7 +22,7 @@
                                 <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
+                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -43,7 +43,7 @@
                     <template v-else>
                         <view :style="style_chunk_container">
                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" @url_event="url_event"></dataGroupRendering>
+                                <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" @url_event="url_event"></dataGroupRendering>
                             </view>
                         </view>
                     </template>
@@ -113,6 +113,10 @@
                     data_key: 'id',
                     data_name: 'name',
                 })
+            },
+            propConfigLoop: {
+                type: String,
+                default: "1"
             }
         },
         data() {
@@ -194,14 +198,28 @@
                 // 自定义组的数据源内容切换, 判断是取自定义组数据源内容还是取自定义数据源内容
                 const is_data_source_id = this.propFieldList.filter((item) => item.field == data_source_id);
                 let new_list = [];
-                // 如果自定义组选择了数据源，就按照自定义组的数据源的方式走，否则的话就按照自定义的数据走
-                if (is_data_source_id.length > 0) {
-                    const list = this.get_data_source_content_list(this.propSourceList, new_form);
-                    // 数据来源的内容
-                    new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                // 判断是否是循环内容
+                if (this.propConfigLoop == '1') {
+                    // 如果自定义组选择了数据源，就按照自定义组的数据源的方式走，否则的话就按照自定义的数据走
+                    if (is_data_source_id.length > 0) {
+                        const list = this.get_data_source_content_list(this.propSourceList, new_form);
+                        // 数据来源的内容
+                        new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                    } else {
+                        if (!isEmpty(this.propSourceList)) {
+                            const new_source_list = [ this.propSourceList ];
+                            new_list = [{ split_list: new_source_list }];
+                        } else {
+                            new_list = [];
+                        }
+                    }
                 } else {
-                    // 自定义数据，专门为自定义组使用的数据
-                    new_list = this.propGroupSourceList;
+                    // 如果使用父级数据，就直接使用父级的全部数据，否则的话就没有任何数据
+                    if (new_form.is_use_parent_data == '1') {
+                        new_list = this.propGroupSourceList;
+                    } else {
+                        new_list = [];
+                    }
                 }
                 // 初始化数据
                 const { common_style, data_content_style, data_style } = new_style;
@@ -267,9 +285,13 @@
                 });
             },
             get_is_show(form) {
-                // 取出条件判断的内容
-                const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, false, this.propCustomGroupFieldId);
+                if (this.propConfigLoop == '1') {
+                    // 取出条件判断的内容
+                    const condition = form?.condition || { field: '', type: '', value: '' };
+                    return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, false, this.propCustomGroupFieldId);
+                } else {
+                    return true;
+                }
             },
             get_data_source_content_list(sourceList, form) {
                 if (!isEmpty(sourceList)) {

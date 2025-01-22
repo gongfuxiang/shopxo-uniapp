@@ -44,6 +44,10 @@
             propFieldList: {
                 type: Array,
                 default: []
+            },
+            propConfigLoop: {
+                type: String,
+                default: "1"
             }
         },
         data() {
@@ -72,7 +76,7 @@
                     url = new_form.link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = new_form?.data_source_link_field?.id || '';
+                    const data_source_link_id = !isEmpty(new_form?.data_source_link_field?.id || '') && this.propConfigLoop == '1' ? new_form.data_source_link_field.id : '';
                     // 数据源内容
                     const source_link_option = new_form?.data_source_link_field?.option || {};
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option);
@@ -86,9 +90,13 @@
                 });
             },
             get_is_show(form) {
-                // 取出条件判断的内容
-                const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                if (this.propConfigLoop == '1') {
+                    // 取出条件判断的内容
+                    const condition = form?.condition || { field: '', type: '', value: '' };
+                    return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                } else {
+                    return true;
+                }
             },
             get_com_style(form, scale) {
                 let style = `${ gradient_handle(form.color_list, form.direction) } ${radius_computer(form.bg_radius, scale, true)}; transform: rotate(${form.panel_rotate}deg);`;

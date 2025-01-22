@@ -41,6 +41,10 @@
             propFieldList: {
                 type: Array,
                 default: []
+            },
+            propConfigLoop: {
+                type: String,
+                default: "1"
             }
         },
         data() {
@@ -68,9 +72,13 @@
                 });
             },
             get_is_show(form) {
-                // 取出条件判断的内容
-                const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                if (this.propConfigLoop == '1') {
+                    // 取出条件判断的内容
+                    const condition = form?.condition || { field: '', type: '', value: '' };
+                    return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                } else {
+                    return true;
+                }
             },
             get_border_style(form, scale) {
                 if (form.line_settings === 'horizontal') {

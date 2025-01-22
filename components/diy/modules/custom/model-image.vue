@@ -51,6 +51,10 @@
             propFieldList: {
                 type: Array,
                 default: []
+            },
+            propConfigLoop: {
+                type: String,
+                default: "1"
             }
         },
         data() {
@@ -84,24 +88,28 @@
                     img: this.get_img_url(new_form),
                     image_style: this.get_image_style(new_form, this.propScale),
                     border_style: this.get_border_style(new_form, this.propScale),
-                    img_url: this.get_img_link(),
+                    img_url: this.get_img_link(new_form),
                     is_show: this.get_is_show(new_form),
                 });
             },
             get_is_show(form) {
-                // 取出条件判断的内容
-                const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                if (this.propConfigLoop == '1') {
+                    // 取出条件判断的内容
+                    const condition = form?.condition || { field: '', type: '', value: '' };
+                    return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                } else {
+                    return true;
+                }
             },
-            get_img_link() {
+            get_img_link(form) {
                 let url = '';
-                if (!isEmpty(this.propValue.link)) {
-                    url = this.propValue.link?.page || '';
+                if (!isEmpty(form.link)) {
+                    url = form.link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = this.propValue?.data_source_link_field?.id || '';
+                    const data_source_link_id = !isEmpty(form?.data_source_link_field?.id || '') && this.propConfigLoop == '1' ? form.data_source_link_field.id : '';
                     // 数据源内容
-                    const source_link_option = this.propValue?.data_source_link_field?.option || {};
+                    const source_link_option = form?.data_source_link_field?.option || {};
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option)
                 }
                 return url;
@@ -113,7 +121,7 @@
                     if (!isEmpty(this.propSourceList)) {
                         let image_url = '';
                         // 获取数据源ID
-                        const data_source_id = form?.data_source_field?.id || '';
+                        const data_source_id = !isEmpty(form?.data_source_field?.id || '') && this.propConfigLoop == '1' ? form.data_source_field.id : '';
                         // 数据源内容
                         const option = form?.data_source_field?.option || {};
                         if (data_source_id.includes(';')) {

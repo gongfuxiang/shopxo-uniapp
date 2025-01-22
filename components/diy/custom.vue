@@ -3,47 +3,63 @@
         <view :style="style_img_container">
             <view :style="style_content_container">
                 <view class="w h pr" :style="style_content_img_container">
-                    <template v-if="data_source_content_list.length > 0 && form.data_source_direction == 'vertical'">
-                        <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
-                            <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
-                                <view v-for="(item1, index1) in item.split_list" :key="index1">
-                                    <view :style="style_chunk_container">
-                                        <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                    <template v-if="!isEmpty(form.data_source) && form.data_source_is_loop !== '0'">
+                        <template v-if="data_source_content_list.length > 0 && form.data_source_direction == 'vertical'">
+                            <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
+                                <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
+                                    <view v-for="(item1, index1) in item.split_list" :key="index1">
+                                        <view :style="style_chunk_container">
+                                            <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                            </view>
                                         </view>
                                     </view>
                                 </view>
                             </view>
-                        </view>
-                    </template>
-                    <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh ht-auto">
-                        <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
-                            <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
-                                <view :class="form.data_source_direction != 'horizontal' ? 'ht-auto ' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
-                                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
-                                        <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                        </template>
+                        <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh ht-auto">
+                            <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+                                <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
+                                    <view :class="form.data_source_direction != 'horizontal' ? 'ht-auto ' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
+                                        <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
+                                            <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                            </view>
                                         </view>
                                     </view>
-                                </view>
-                            </swiper-item>
-                        </swiper>
-                        <view v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
-                            <block v-if="new_style.indicator_style == 'num'">
-                                <view :style="indicator_style" class="dot-item">
-                                    <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
-                                    <text>/{{ data_source_content_list.length }}</text>
-                                </view>
-                            </block>
-                            <block v-else>
-                                <view v-for="(item, index) in data_source_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
-                            </block>
+                                </swiper-item>
+                            </swiper>
+                            <view v-if="new_style.is_show == '1' && data_source_content_list.length > 1" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
+                                <block v-if="new_style.indicator_style == 'num'">
+                                    <view :style="indicator_style" class="dot-item">
+                                        <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
+                                        <text>/{{ data_source_content_list.length }}</text>
+                                    </view>
+                                </block>
+                                <block v-else>
+                                    <view v-for="(item, index) in data_source_content_list" :key="index" :style="indicator_style + (actived_index == index ? 'background:' + new_style.actived_color : '')" class="dot-item" />
+                                </block>
+                            </view>
                         </view>
-                    </view>
+                        <template v-else>
+                            <view :style="style_chunk_container">
+                                <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propConfigLoop="form.data_source_is_loop || '1'" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
+                                </view>
+                            </view>
+                        </template>
+                    </template>
+                    <template v-else-if="!isEmpty(form.data_source) && form.data_source_is_loop == '0'">
+                        <view class="h" :style="style_chunk_container">
+                            <view class="w h oh" :style="style_chunk_img_container">
+                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="{}" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                            </view>
+                        </view>
+                    </template>
                     <template v-else>
                         <view :style="style_chunk_container">
                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
+                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propConfigLoop="form.data_source_is_loop || '1'" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                             </view>
                         </view>
                     </template>
@@ -158,6 +174,7 @@
         },
         methods: {
             percentage_count,
+            isEmpty,
             init() {
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;

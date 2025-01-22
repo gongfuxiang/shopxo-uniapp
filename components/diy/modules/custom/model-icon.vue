@@ -44,6 +44,10 @@
             propFieldList: {
                 type: Array,
                 default: []
+            },
+            propConfigLoop: {
+                type: String,
+                default: "1"
             }
         },
         data() {
@@ -74,7 +78,7 @@
                     if (!isEmpty(this.propSourceList)) {
                         let icon = '';
                         // 获取数据源ID
-                        const data_source_id = new_form?.data_source_field?.id || '';
+                        const data_source_id = !isEmpty(new_form?.data_source_field?.id || '') && this.propConfigLoop == '1' ? new_form.data_source_field.id : '';
                         // 数据源内容
                         const option = new_form?.data_source_field?.option || {};
                         if (data_source_id.includes(';')) {
@@ -103,9 +107,13 @@
                 });
             },
             get_is_show(form) {
-                // 取出条件判断的内容
-                const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                if (this.propConfigLoop == '1') {
+                    // 取出条件判断的内容
+                    const condition = form?.condition || { field: '', type: '', value: '' };
+                    return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                } else {
+                    return true;
+                }
             },
             get_icon_link(new_form) {
                 let url = '';
@@ -113,7 +121,7 @@
                     url = new_form.icon_link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = new_form?.data_source_link_field?.id || '';
+                    const data_source_link_id = !isEmpty(new_form?.data_source_link_field?.id || '') && this.propConfigLoop == '1' ? new_form?.data_source_link_field?.id : '';
                     // 数据源内容
                     const source_link_option = new_form?.data_source_link_field?.option || {};
                     url = get_custom_link(data_source_link_id, this.propSourceList, source_link_option)

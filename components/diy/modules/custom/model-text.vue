@@ -55,6 +55,10 @@
             propFieldList: {
                 type: Array,
                 default: []
+            },
+            propConfigLoop: {
+                type: String,
+                default: "1"
             }
         },
         data() {
@@ -88,7 +92,7 @@
                     url = new_form.text_link?.page || '';
                 } else {
                     // 获取数据源ID
-                    const data_source_link_id = new_form?.data_source_link_field?.id || '';
+                    const data_source_link_id = !isEmpty(new_form?.data_source_link_field?.id || '') && this.propConfigLoop == '1' ? new_form.data_source_link_field.id : '';
                     // 数据源内容
                     const source_link_option = new_form?.data_source_link_field?.option || {};
                     // 调用方法处理数据显示
@@ -104,9 +108,13 @@
                 });
             },
             get_is_show(form) {
-                // 取出条件判断的内容
-                const condition = form?.condition || { field: '', type: '', value: '' };
-                return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                if (this.propConfigLoop == '1') {
+                    // 取出条件判断的内容
+                    const condition = form?.condition || { field: '', type: '', value: '' };
+                    return get_is_eligible(this.propFieldList, condition, this.propSourceList, this.propIsCustom, this.propIsCustomGroup, this.propCustomGroupFieldId);
+                } else {
+                    return true;
+                }
             },
             get_text_title(form) {
                 let text = '';
@@ -140,7 +148,7 @@
                 } else {
                     let text_title = '';
                     // 获取数据源ID
-                    const data_source_id = form?.data_source_field?.id || [];
+                    const data_source_id = !isEmpty(form?.data_source_field?.id || []) && this.propConfigLoop == '1' ? form?.data_source_field?.id : [];
                     // 数据源内容
                     const option = form?.data_source_field?.option || [];
                     // 多选判断
