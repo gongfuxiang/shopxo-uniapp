@@ -212,4 +212,9 @@
     .tabs-contents {
         max-width: 800px !important;
     }
+    @media only screen and (min-width: 800px) {
+        .tabs-container .tabs-top {
+            left: calc(50% - 400px) !important;
+        }
+    }
 </style>
