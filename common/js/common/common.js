@@ -67,13 +67,13 @@ export const custom_condition_judg = (fieldValue, type, value) => {
             // 根据字段值的类型，进行数字间的比较
             if (typeof fieldValue === 'number') {
                 return compare_numbers(fieldValue, numberValue, type);
-            } else if (Array.isArray(fieldValue)) {
-                // 如果字段值是数组，比较数组长度和指定值
-                const valueLength = fieldValue.length;
+            } else if (Array.isArray(fieldValue) || typeof fieldValue === 'string') {
+                // 如果字段值是数组或字符串，比较数组长度和指定值
+                const valueLength = fieldValue?.length || 0;
                 return compare_numbers(valueLength, numberValue, type);
-            } else {
-                // 将字段值转换为数字进行比较, 如果是字符串的话，直接为NAN，比对不会成功，为空的时候会转为0 == 0会成功，其他情况下不会成功
-                const numericFieldValue = +stringValue;
+            } else if (typeof fieldValue === 'object') {
+                // 如果字段值是对象，比较对象的属性值
+                const numericFieldValue = Object.keys(fieldValue)?.length || 0;
                 return compare_numbers(numericFieldValue, numberValue, type);
             }
         default:
