@@ -211,7 +211,7 @@ export const custom_condition_data = (data_source_id, option, sourceList, isCust
         data_value = data_handling(data_source_id, sourceList, isCustom);
     }
     // 根据配置选项，添加前缀和后缀到处理后的数据
-    return (option?.first || '') + data_value + (option?.last || '');
+    return Array.isArray(data_value) || typeof data_value === "object" ? data_value : ((option?.first || '') + data_value + (option?.last || ''));
 }
 
 /**
