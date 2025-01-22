@@ -506,8 +506,8 @@
                         <block v-if="(goods.parameters || null) != null && (goods.parameters[popup_params_type_field] || null) != null && goods.parameters[popup_params_type_field].length > 0">
                             <block v-for="(item, index) in goods.parameters[popup_params_type_field]" :key="index">
                                 <view class="item padding-vertical-main br-b oh">
-                                    <view class="name fl br-r single-text">{{ item.name }}</view>
-                                    <view class="value fr single-text">{{ item.value }}</view>
+                                    <view class="name fl br-r">{{ item.name }}</view>
+                                    <view class="value fr">{{ item.value }}</view>
                                 </view>
                             </block>
                         </block>
