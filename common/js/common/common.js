@@ -210,6 +210,10 @@ export const custom_condition_data = (data_source_id, option, sourceList, isCust
         // 当数据源ID不包含分号时，直接处理数据
         data_value = data_handling(data_source_id, sourceList, isCustom);
     }
+    // 如果数据是undefined或者null，则设置为空字符串
+    if (data_value == null) {
+        data_value = '';
+    }
     // 根据配置选项，添加前缀和后缀到处理后的数据
     return Array.isArray(data_value) || typeof data_value === "object" ? data_value : ((option?.first || '') + data_value + (option?.last || ''));
 }
