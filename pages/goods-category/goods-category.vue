@@ -132,7 +132,7 @@
                                                                         </text>
                                                                         <text class="text-size-xs cr-grey">{{ item.show_price_unit }}</text>
                                                                     </view>
-                                                                    <view v-if="common_site_type != 1" class="buy-opt flex-row align-c tc">
+                                                                    <view v-if="common_site_type != 4" class="buy-opt flex-row align-c tc">
                                                                         <block v-if="(item.is_error || 0) == 0">
                                                                             <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
                                                                                 <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
@@ -177,7 +177,7 @@
                                     <!-- 一级导航 -->
                                     <view class="left-nav ht-auto">
                                         <scroll-view :scroll-y="true" class="ht-auto" :show-scrollbar="false">
-                                            <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
+                                            <view :class="common_site_type != 4 ? 'left-content-actual ht-auto' : ''">
                                                 <view class="ht-auto padding-0" :style="left_content_actual_style">
                                                     <block v-for="(item, index) in category_list" :key="index">
                                                         <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
@@ -270,7 +270,7 @@
                         </view>
 
                         <!-- 仅商品模式展示购物车和规格选择 -->
-                        <block v-if="category_goods_is_show_cart_nav == 1 && common_site_type != 1 && category_show_level == 0">
+                        <block v-if="category_goods_is_show_cart_nav == 1 && common_site_type != 4 && category_show_level == 0">
                             <!-- 购物车列表 -->
                             <block v-if="cart_status">
                                 <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
@@ -694,7 +694,7 @@
                 }
                 // 右侧
                 var right_style = '';
-                if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 1) {
+                if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 4) {
                     right_style = 'padding-bottom: calc(120rpx + '+bottom_style_value+'rpx);';
                 }
                 this.setData({

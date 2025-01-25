@@ -443,8 +443,9 @@
                         temp_data_list[i]['operate_data']['is_pay'] = 0;
                         temp_data_list[i]['operate_data']['is_cancel'] = 0;
                         switch (parseInt(temp_data_list[i]['order_model'])) {
-                            // 销售模式
+                            // 销售,同城模式
                             case 0:
+                            case 1:
                                 temp_data_list[i]['status'] = 2;
                                 temp_data_list[i]['status_name'] = this.$t('user.user.66714e');
                                 break;

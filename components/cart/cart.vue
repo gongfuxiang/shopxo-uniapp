@@ -53,9 +53,9 @@
                         <uni-swipe-action>
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                                    <view class="cart-goods-item flex-row align-c bs-bb padding-main pr wh-auto" :class="(common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
+                                    <view class="cart-goods-item flex-row align-c bs-bb padding-main pr wh-auto" :class="(common_site_type == 4 ? 'cart-exhibition-mode-data' : '')">
                                         <!-- 选择 -->
-                                        <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i">
+                                        <view v-if="common_site_type != 4" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i">
                                             <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
@@ -95,7 +95,7 @@
                                                     </view>
 
                                                     <!-- 数量 -->
-                                                    <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="cart-number-content pa tc oh round br">
+                                                    <view v-if="(item.is_error || 0) != 1 && common_site_type != 4" class="cart-number-content pa tc oh round br">
                                                         <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="0">-</view>
                                                         <input @blur="goods_buy_number_blur" class="number-input tc cr-grey fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
                                                         <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="1">+</view>
@@ -142,7 +142,7 @@
                         <view class="bottom-fixed z-i" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="bottom_fixed_style">
                             <view :class="propCartNavBottomValue > 0 ? '' : 'bottom-line-exclude'">
                                 <!-- 展示 -->
-                                <view v-if="common_site_type == 1" class="cart-exhibition-mode">
+                                <view v-if="common_site_type == 4" class="cart-exhibition-mode">
                                     <button class="item exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                         <view class="dis-inline-block va-m margin-right-xl">
                                             <uni-icons type="phone" size="14" color="#fff" />
@@ -209,7 +209,7 @@
                                         <view v-for="(item, index) in data_list" :key="index" class="item">
                                             <view class="padding-sm pr">
                                                 <!-- 选择 -->
-                                                <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
+                                                <view v-if="common_site_type != 4" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
                                                     <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                                 </view>
                                                 <view>

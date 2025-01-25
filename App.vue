@@ -67,7 +67,7 @@
                 is_use_native_tabbar: 0,
 
                 // 购物车页面顶部导航强制关闭门店（0否, 1是）
-                is_cart_header_close_realstore: 1,
+                is_cart_header_close_realstore: 0,
 
                 // 商品详情页底部导航是否开启购物车功能（0否, 1是）
                 is_goods_bottom_opt_cart: 1,

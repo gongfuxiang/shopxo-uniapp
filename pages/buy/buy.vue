@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <block v-if="common_site_type == 1">
+        <block v-if="buy_site_model_value == 4">
             <component-no-data propStatus="2" :propMsg="$t('buy.buy.l1c8q6')"></component-no-data>
         </block>
         <block v-else>
@@ -8,13 +8,13 @@
                 <!-- 模式选择，站点类型选择 销售+自提 -->
                 <view v-if="buy_site_model_list.length > 1" class="buy-site-model bg-white oh tc" :class="'count-'+buy_site_model_list.length">
                     <block v-for="(item, index) in buy_site_model_list" :key="index">
-                        <view :class="'item fl cp ' + (buy_site_model_value == item.value ? 'nav-active-line cr-main' : 'cr-base')" :data-ext="item.ext" :data-value="item.value" @tap="buy_site_model_event">{{ item.name }}</view>
+                        <view :class="'item fl cp ' + (buy_site_model_active_index == index ? 'nav-active-line cr-main' : 'cr-base')" :data-index="index" :data-value="item.value" @tap="buy_site_model_event">{{ item.name }}</view>
                     </block>
                 </view>
 
                 <view class="padding-horizontal-main padding-top-main bottom-line-exclude">
-                    <!-- 地址 -->
-                    <view v-if="common_site_type == 0 || common_site_type == 2 || common_site_type == 4" class="padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
+                    <!-- 非虚拟类型 则地址 -->
+                    <view v-if="buy_site_model_value != 3" class="padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
                         <view class="address arrow-right cp" @tap="address_event">
                             <view v-if="address != null" class="padding-bottom-main">
                                 <view class="address-base">
@@ -30,7 +30,7 @@
                                 </view>
                             </view>
                             <view v-else class="padding-top-xl padding-bottom-xxxl cr-grey">
-                                {{ common_site_type == 0 || (common_site_type == 4 && buy_site_model_value == 0) ? $t('buy.buy.6rk813') : $t('buy.buy.wq7gnb') }}
+                                {{ (buy_site_model_value == 2) ? $t('buy.buy.wq7gnb') : $t('buy.buy.6rk813') }}
                             </view>
                         </view>
                         <view class="address-divider spacing-mb"></view>
@@ -391,7 +391,8 @@
                 // 是否门店模式
                 is_realstore_model: false,
                 // 站点类型模式
-                buy_site_model_value: 0,
+                buy_site_model_active_index: 0,
+                buy_site_model_value: -1,
                 buy_site_model_list: [],
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
@@ -464,11 +465,9 @@
             // ids 购物车主键ids
             if ((params.data || null) != null) {
                 params = JSON.parse(base64.decode(decodeURIComponent(params.data)));
-                var is_realstore_model = (params.realstore_id || null) != null;
                 this.setData({
                     params: params,
-                    is_realstore_model: is_realstore_model,
-                    buy_site_model_value: is_realstore_model ? parseInt(params.buy_use_type_index || 0) : 0,
+                    is_realstore_model: (params.realstore_id || null) != null,
                     plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1,
                     pay_url: app.globalData.get_request_url('pay', 'order'),
                     qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
@@ -592,11 +591,18 @@
                                 payment_list: data.payment_list || [],
                             });
 
-                            // 首次赋值默认支付方式
+                            // 首次
                             if(this.is_first == 1) {
-                                this.setData({
-                                    payment_id: data.default_payment_id || 0
-                                });
+                                // 赋值默认支付方式
+                                var default_payment_id = parseInt(data.default_payment_id || 0);
+                                if(this.payment_list.length > 0 && default_payment_id > 0) {
+                                    var temp_payment_ids = this.payment_list.map(function(item){return item.id;});
+                                    if(temp_payment_ids.indexOf(default_payment_id) != -1) {
+                                        this.setData({
+                                            payment_id: default_payment_id
+                                        });
+                                    }
+                                }
                             }
 
                             // 订单是否已提交、直接进入支付页面
@@ -680,6 +686,7 @@
                                     total_price: data.base.actual_price,
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
+                                    buy_site_model_value: data.base.site_model || 0,
                                     extraction_address: data.base.extraction_address || [],
                                     buy_site_model_list: data.buy_site_model_list || [],
                                     buy_datetime_info: datetime,
@@ -691,6 +698,19 @@
                                     plugins_coin_data: plugins_coin_data,
                                     plugins_coin_is_valid:  plugins_coin_data != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0,
                                 });
+
+                                // 非门店模式则赋值指定的类型模式
+                                if(this.is_first == 1) {
+                                    if (this.buy_site_model_list.length > 0) {
+                                        for(var i in this.buy_site_model_list) {
+                                            if(this.buy_site_model_list[i]['value'] == this.buy_site_model_value) {
+                                                this.setData({
+                                                    buy_site_model_active_index: i
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
 
                                 // 可使用积分数量
                                 if (this.plugins_points_data != null && this.is_first == 1) {
@@ -853,7 +873,7 @@
 
                 // 数据验证
                 var validation = [];
-                if (this.common_site_type == 0 || this.common_site_type == 2 || this.common_site_type == 4) {
+                if (this.buy_site_model_value <= 2) {
                     validation.push({
                         fields: 'address_id',
                         msg: this.$t('buy.buy.3740ur'),
@@ -1092,37 +1112,32 @@
                     var params = '';
                 }
 
-                // 仅自提和快递需要选择地址
-                if (this.common_site_type == 0 || (this.common_site_type == 4 && this.buy_site_model_value == 0)) {
+                // 快递、同城、自提 需要选择地址
+                if (this.buy_site_model_value <= 1) {
                     app.globalData.url_open('/pages/user-address/user-address?is_back=1' + params);
-                } else if (this.common_site_type == 2 || (this.common_site_type == 4 && this.buy_site_model_value == 2)) {
+                } else if (this.buy_site_model_value == 2) {
                     app.globalData.url_open('/pages/extraction-address/extraction-address?is_back=1&is_buy=1' + params);
                 } else {
                     app.globalData.showToast(this.$t('buy.buy.31616e'));
                 }
             },
 
-            // 销售+自提 模式选择事件
+            // 销售,同城,自提,虚拟 模式选择事件
             buy_site_model_event(e) {
-                var value = e.currentTarget.dataset.value || 0;
-                if (value != this.buy_site_model_value) {
+                var index = e.currentTarget.dataset.index || 0;
+                if (index != this.buy_site_model_active_index) {
                     // 数据设置
                     var upd_data = {
                         address: null,
                         address_id: null,
-                        buy_site_model_value: value,
+                        buy_site_model_value: e.currentTarget.dataset.value || 0,
+                        buy_site_model_active_index: index,
                     };
 
                     // 是否门店模式下
                     if (this.is_realstore_model) {
-                        // 覆盖选择类型索引值，门店模式下还有站点类型选择择标识是门店的类型列表（非系统类型列表）
-                        upd_data['params'] = {...this.params, ...{buy_use_type_index: value}};
-
-                        // 扩展状态则覆盖common_site_type公共类型数据
-                        var ext = e.currentTarget.dataset.ext;
-                        if(ext !== '' && ext !== undefined) {
-                            upd_data['common_site_type'] = parseInt(ext);
-                        }
+                        // 覆盖选择的门店下单类型参数索引值
+                        upd_data['params'] = {...this.params, ...{buy_use_type_index: this.buy_site_model_list[index]['index']}};
                     }
                     this.setData(upd_data);
 
