@@ -1365,19 +1365,6 @@
                                 this.setData({
                                     'plugins_coupon_data.data': temp_list,
                                 });
-                                // if ((res.data.data.is_repeat_receive = 1)) {
-                                //     temp_list[index]['is_repeat_receive'] = 1;
-                                //     temp_list[index]['already_receive_text'] = '已领取';
-                                //     temp_list[index]['already_receive_text'] = '已领取';
-                                //     if (temp_list[index].process_data.type !== 0) {
-                                //         temp_list[index]['already_send_count'] = Number(temp_list[index]['already_send_count']) + 1;
-                                //         temp_list[index]['process_data'].value = Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100);
-                                //         temp_list[index]['process_data'].msg = '已领' + Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100) + '%';
-                                //     }
-                                //     this.setData({
-                                //         'plugins_coupon_data.data': temp_list,
-                                //     });
-                                // }
                             } else {
                                 if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
                                     app.globalData.showToast(res.data.msg);

@@ -58,7 +58,7 @@
                     <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                         <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
                             <block v-for="(item, index) in opt_button" :key="index">
-                                <view v-if="(item.name || null) != null && (item.type || null) != null && (item.type == 'cart' || item.type == 'buy' || item.type == 'show')" class="item fl bs-bb padding-horizontal-main">
+                                <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
                                     <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
@@ -771,7 +771,17 @@
                                     )
                                 )
                             };
-                            app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
+                            // 转换数据
+                            var data_params = encodeURIComponent(base64.encode(JSON.stringify(data)));
+
+                            // 是否互联网医院插件-开处方
+                            if(parseInt(this.goods.plugins_hospital_is_prescription || 0) == 1) {
+                                app.globalData.url_open('/pages/plugins/hospital/prescription/prescription?data=' + data_params);
+                            } else {
+                                // 默认进去订单确认页面
+                                app.globalData.url_open('/pages/buy/buy?data=' + data_params);
+                            }
+                            // 关闭弹窗
                             this.popup_close_event();
                             break;
 

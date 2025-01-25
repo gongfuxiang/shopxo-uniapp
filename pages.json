@@ -1710,6 +1710,18 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/hospital",
+            "pages": [
+                {
+                    "path": "prescription/prescription",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {
