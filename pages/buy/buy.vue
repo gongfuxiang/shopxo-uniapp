@@ -1137,7 +1137,7 @@
                     // 是否门店模式下
                     if (this.is_realstore_model) {
                         // 覆盖选择的门店下单类型参数索引值
-                        upd_data['params'] = {...this.params, ...{buy_use_type_index: this.buy_site_model_list[index]['index']}};
+                        upd_data['params'] = {...this.params, ...{buy_use_type_data_index: this.buy_site_model_list[index]['index']}};
                     }
                     this.setData(upd_data);
 

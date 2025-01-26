@@ -13,7 +13,7 @@
                                 <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
                                     <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                     <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
-                                        <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}({{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                        <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}({{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
                                         <view class="va-m dis-inline-block margin-left-xs">
                                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                         </view>
@@ -28,7 +28,7 @@
                             </view>
                             <scroll-view :scroll-y="true" class="cart-list goods-list">
                                 <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                    <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
+                                    <view :data-index="index" @tap="goods_event">
                                         <view class="flex-row jc-sb">
                                             <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
                                             <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
@@ -64,7 +64,7 @@
                             <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
                                 <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                 <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
-                                    <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                    <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
                                     <view class="va-m dis-inline-block margin-left-xs">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                     </view>
@@ -166,8 +166,8 @@
                 // 临时操作数据
                 temp_opt_data: null,
                 // 下单类型
-                cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index_',
-                buy_use_type_index: 0,
+                cache_buy_use_type_active_index_key: 'cache_plugins_realstore_buy_use_type_active_index_',
+                buy_use_type_active_index: 0,
                 // 下单类型选择弹窗
                 buy_use_type_choice_list: [],
                 buy_use_type_choice_status: false,
@@ -232,10 +232,10 @@
                         });
 
                         // 商品来源
-                        var index = this.get_buy_use_type_index();
+                        var type_data = this.buy_use_type_data();
                         if(this.source == 'goods' && (params.realstore_id || null) == null) {
                             // 调用父级需要重新加载数据
-                            this.$emit('RefreshLoadingEvent', {buy_use_type_index: index, realstore_id: this.info.id});
+                            this.$emit('RefreshLoadingEvent', {buy_use_type_active_index: type_data.active_index, buy_use_type_data_index: type_data.data_index, realstore_id: this.info.id});
                         } else {
                             // 非系统购物车来源
                             if(this.source != 'system-cart') {
@@ -284,7 +284,7 @@
 
                                 // 是否需要弹出下单类型选择
                                 // 打开开关，并且店铺必须存在下单类型
-                                var cache_index = this.get_cache_buy_use_type_index();
+                                var cache_index = this.get_cache_buy_use_type_active_index();
                                 if((this.base || null) != null && parseInt(this.base.is_tips_user_choice_buy_use_type || 0) == 1 && (cache_index === null || cache_index === '') && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 1 && (this.info.status_info || null) != null && this.info.status_info.status == 1) {
                                     // 门店、商品是否开启了弹窗提示
                                     var key = 'is_tips_user_choice_buy_use_type_'+this.params.source+'_detail';
@@ -311,15 +311,15 @@
                                     }
                                 }
 
-                                // 设置下单类型
-                                this.setData({
-                                    buy_use_type_index: index,
-                                });
-
                                 // 获取购物车数据
                                 this.get_cart_data();
                             }
                         }
+
+                        // 设置下单类型
+                        this.setData({
+                            buy_use_type_active_index: type_data.active_index,
+                        });
                     }
                 }
             },
@@ -404,10 +404,9 @@
                         // 是否限制类型
                         var limit_type = this.info.starting_price_limit_type_list || [];
                         if(limit_type.length > 0) {
-                            var index = this.get_buy_use_type_index();
-                            var buy_use_type = this.info.buy_use_type_list[index];
-                            if(limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
-                                return buy_use_type['name'] + this.$t('realstore-cart.realstore-cart.miv944')+ this.propCurrencySymbol + starting_price;
+                            var type_data = this.buy_use_type_data();
+                            if(limit_type.indexOf(type_data.data_index) != -1 || limit_type.indexOf(type_data.data_index.toString()) != -1) {
+                                return temp['name'] + this.$t('realstore-cart.realstore-cart.miv944')+ this.propCurrencySymbol + starting_price;
                             }
                         } else {
                             return this.$t('realstore-cart.realstore-cart.miv944') + this.propCurrencySymbol + starting_price;
@@ -879,11 +878,11 @@
             // 下单类型确认处理
             buy_use_type_confirm_handle(self, index) {
                 self.setData({
-                    buy_use_type_index: index,
+                    buy_use_type_active_index: index,
                     settlement_btn_loading: true,
                     realstore_goods_data_cart_loading: true,
                 });
-                uni.setStorageSync(self.cache_buy_use_type_index_key+self.info.id, index);
+                uni.setStorageSync(self.cache_buy_use_type_active_index_key+self.info.id, index);
 
                 // 获取购物车数据、系统购物车来源则不执行
                 if(this.source != 'system-cart') {
@@ -891,7 +890,8 @@
                 }
 
                 // 下单类型切换回调
-                self.$emit('BuyTypeSwitchEvent', {index: index, buy_use_type_index: this.get_buy_use_type_index(), realstore_id: this.info.id});
+                var type_data = this.buy_use_type_data();
+                self.$emit('BuyTypeSwitchEvent', {buy_use_type_active_index: type_data.active_index, buy_use_type_data_index: type_data.data_index, realstore_id: this.info.id});
             },
 
             // 下单类型弹窗关闭
@@ -903,38 +903,42 @@
             },
 
             // 获取使用类型数据索引、默认在店0
-            get_buy_use_type_index() {
+            buy_use_type_data() {
+                // 不在店铺设置的类型列表则默认0
+                var data = {
+                    active_index: 0,
+                    data_index: 0,
+                }
+                // 门店信息
                 if((this.info || null) != null) {
                     // 用户未设置类型则使用默认的
-                    var index = this.get_cache_buy_use_type_index();
-                    if(index === null || index === '') {
+                    var active_index = this.get_cache_buy_use_type_active_index();
+                    if(active_index !== null && active_index !== '') {
+                        var temp = this.info.buy_use_type_list[active_index] || null;
+                        if(temp != null) {
+                            data['active_index'] = active_index;
+                            data['data_index'] = temp.index;
+                        }
+                    } else {
                         // 是否默认类型
                         if(this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
                             // 不在店铺设置的类型列表则默认0
-                            var temp_index = null;
                             for (var i in this.info.buy_use_type_list) {
                                 if(this.info.buy_use_type_list[i]['index'] == this.info.default_buy_use_type) {
-                                    temp_index = i;
+                                    data['active_index'] = i;
+                                    data['data_index'] = this.info.buy_use_type_list[i]['index'];
+                                    break;
                                 }
-                            }
-                            if(temp_index !== null) {
-                                index = temp_index;
                             }
                         }
                     }
-            
-                    // 不在店铺设置的类型列表则默认0
-                    if(this.info.buy_use_type_list[index] == undefined) {
-                        index = 0;
-                    }
-                    return index;
                 }
-                return 0;
+                return data;
             },
 
             // 获取下单类型缓存数据
-            get_cache_buy_use_type_index() {
-                return uni.getStorageSync(this.cache_buy_use_type_index_key+this.info.id);
+            get_cache_buy_use_type_active_index() {
+                return uni.getStorageSync(this.cache_buy_use_type_active_index_key+this.info.id);
             },
 
             // 请求参数处理
@@ -943,11 +947,8 @@
             request_params_merge(data, type = 'init') {
                 // 用户使用类型
                 if((this.info || null) != null && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0) {
-                    var index = this.get_buy_use_type_index();
-                    if(this.info.buy_use_type_list[index] == undefined) {
-                        index = 0;
-                    }
-                    data['buy_use_type_index'] = index;
+                    var type_data = this.buy_use_type_data();
+                    data['buy_use_type_data_index'] = type_data.data_index;
                 }
 
                 // 初始化
@@ -994,9 +995,11 @@
                     var goods = this.cart.data[e.currentTarget.dataset.index];
                     goods['id'] = goods.goods_id;
                     app.globalData.goods_data_cache_handle(goods.id, goods);
-
+                    
                     // 调用公共打开url地址
-                    app.globalData.url_event(e);
+                    var type_data = this.buy_use_type_data();
+                    var url = '/pages/goods-detail/goods-detail?id=' + goods.id + '&is_opt_back=1&buy_use_type_data_index=' + type_data.data_index + '&realstore_id=' + this.info.id;
+                    app.globalData.url_open(url);
                 }
             }
         }

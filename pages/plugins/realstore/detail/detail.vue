@@ -44,7 +44,7 @@
                                     <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
                                     <view class="base-right padding-left-sm flex-1 flex-width">
                                         <view v-if="is_base_mode != 1 && (info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main tl" @tap="buy_use_type_event">
-                                            <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_index]['name'] }}</text>
+                                            <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_active_index]['name'] }}</text>
                                             <view class="dis-inline-block va-m pr">
                                                 <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                             </view>
@@ -159,7 +159,7 @@
                                     <block v-if="(data_list || null) != null && data_list.length > 0">
                                         <block v-for="(item, index) in data_list" :key="index">
                                             <view :class="'goods-item bg-white padding-main border-radius-main oh spacing-mb '+((item.is_highlight || 0) == 1 ? 'item-highlight' : '')">
-                                                <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
+                                                <view :data-index="index" @tap="goods_event">
                                                     <view class="flex-row jc-sb">
                                                         <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
                                                         <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
@@ -326,7 +326,6 @@
                 is_base_mode: 0,
                 is_base_mode_show_type: 0,
                 is_cart_nav: false,
-                buy_use_type_index: 0,
                 params: null,
                 is_first: 1,
                 scroll_top: 0,
@@ -352,7 +351,7 @@
                     { name: this.$t('goods-detail.goods-detail.567uhg'), value: 1 },
                 ],
                 // 下单类型
-                buy_use_type_index: 0,
+                buy_use_type_active_index: 0,
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [{
@@ -587,8 +586,9 @@
                                 }
 
                                 // 下单类型索引
+                                var type_data = this.buy_use_type_data();
                                 this.setData({
-                                    buy_use_type_index: this.get_buy_use_type_index(),
+                                    buy_use_type_active_index: type_data.active_index,
                                 });
 
                                 // 获取数据、仅首次调用，获取列表接口
@@ -809,8 +809,9 @@
                         } else {
                             if ((this.$refs.goods_buy || null) != null) {
                                 var buy_params = this.params;
+                                var type_data = this.buy_use_type_data();
                                 buy_params['buy_event_type'] = 'cart';
-                                buy_params['buy_use_type_index'] = this.get_buy_use_type_index();
+                                buy_params['buy_use_type_data_index'] = type_data.data_index;
                                 buy_params['realstore_id'] = this.info.id;
                                 this.$refs.goods_buy.init(temp_goods, buy_params);
                             }
@@ -1029,7 +1030,7 @@
             // 下单类型切换事件回调
             buy_type_switch_event(params) {
                 this.setData({
-                    buy_use_type_index: params.index,
+                    buy_use_type_active_index: params.buy_use_type_active_index,
                     data_page: 1,
                 });
                 this.reset_scroll();
@@ -1037,8 +1038,8 @@
             },
 
             // 获取使用类型数据索引、默认在店0
-            get_buy_use_type_index() {
-                return this.$refs.realstore_cart.get_buy_use_type_index();
+            buy_use_type_data() {
+                return this.$refs.realstore_cart.buy_use_type_data();
             },
 
             // 商品事件
@@ -1050,7 +1051,9 @@
                     app.globalData.goods_data_cache_handle(goods.id, goods);
 
                     // 调用公共打开url地址
-                    app.globalData.url_event(e);
+                    var type_data = this.buy_use_type_data();
+                    var url = '/pages/goods-detail/goods-detail?id=' + goods.id + '&is_opt_back=1&buy_use_type_data_index=' + type_data.data_index + '&realstore_id=' + this.info.id;
+                    app.globalData.url_open(url);
                 }
             },
 

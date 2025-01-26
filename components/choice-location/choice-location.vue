@@ -3,7 +3,7 @@
         <view v-if="propIsShowAddressChoice" class="choice-location pr wh-auto oh" :style="propLocationContainerStyle" @tap.stop="choose_user_location">
             <view class="flex-row gap-2 align-c oh" :style="propLocationImgContainerStyle">
                 <view v-if="propIsLeftIconArrow" class="dis-inline-block va-m lh">
-                    <block v-if="propLeftImgValue.length > 0">
+                    <block v-if="(propLeftImgValue || null) != null && propLeftImgValue.length > 0">
                         <image :src="propLeftImgValue[0].url" class="dis-block" mode="heightFix"></image>
                     </block>
                     <block v-else>
@@ -12,7 +12,7 @@
                 </view>
                 <view :class="'va-m dis-inline-block margin-left-xs single-text text' + (propType == 'header' ? ' text-size-md' : ' text-size-xs')" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
                 <view v-if="propIsRightIconArrow" class="va-m lh dis-inline-block margin-left-xs">
-                    <block v-if="propRightImgValue.length > 0">
+                    <block v-if="(propRightImgValue || null) != null && propRightImgValue.length > 0">
                         <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>
                     </block>
                     <block v-else>
@@ -75,8 +75,8 @@
                 default: true,
             },
             propLeftImgValue: {
-                type: Array,
-                default: [],
+                type: [Array,String],
+                default: '',
             },
             propLeftIconValue: {
                 type: String,
@@ -87,8 +87,8 @@
                 default: true,
             },
             propRightImgValue: {
-                type: Array,
-                default: [],
+                type: [Array,String],
+                default: '',
             },
             propRightIconValue: {
                 type: String,

@@ -1489,6 +1489,7 @@
 
             // 下单类型切换事件、数据刷新事件
             refresh_loading_event(params) {
+                console.log(params)
                 this.setData({params: {...this.params, ...params}});
                 this.init();
             }

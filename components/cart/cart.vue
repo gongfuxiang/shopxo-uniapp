@@ -26,7 +26,7 @@
                         </view>
                     </view>
                     <view v-if="(plugins_realstore_info.buy_use_type_list || null) != null && plugins_realstore_info.buy_use_type_list.length > 0" class="pa top-0 right-0 padding-main cp" @tap="realstore_buy_type_switch_event">
-                        <text class="cr-base va-m">{{ plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name'] }}</text>
+                        <text class="cr-base va-m">{{ plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_active_index]['name'] }}</text>
                         <view class="dis-inline-block va-m margin-left-xs">
                             <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
@@ -393,7 +393,7 @@
                 // 门店插件数据
                 plugins_realstore_data: null,
                 plugins_realstore_info: null,
-                plugins_realstore_buy_use_type_index: 0,
+                plugins_realstore_buy_use_type_active_index: 0,
                 plugins_realstore_choice_status: false,
                 // 智能工具箱插件
                 plugins_intellectstools_data: null,
@@ -538,8 +538,9 @@
                     // 门店购物车初始化、避免上一个页面更改了门店下单类型
                     this.realstore_cart_data_init();
                     // 门店请求参数
+                    var type_data = this.$refs.realstore_cart.buy_use_type_data();
                     var post_data = {
-                        buy_use_type_index: this.plugins_realstore_buy_use_type_index,
+                        buy_use_type_data_index: type_data.data_index,
                         id: this.plugins_realstore_info.id,
                     };
                     this.get_cart_data(type, app.globalData.get_request_url('cartdata', 'detail', 'realstore'), post_data);
@@ -1054,8 +1055,9 @@
                 };
                 // 是否门店模式
                 if (this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
+                    var type_data = this.$refs.realstore_cart.buy_use_type_data();
+                    data['buy_use_type_data_index'] = type_data.data_index;
                     data['realstore_id'] = this.plugins_realstore_info.id;
-                    data['buy_use_type_index'] = this.plugins_realstore_buy_use_type_index;
                 }
                 return data;
             },
@@ -1256,8 +1258,9 @@
                     // 初始化门店购物车
                     this.$refs.realstore_cart.init({ source: 'system-cart', info: this.plugins_realstore_info });
                     // 初始当前门店下单类型
+                    var type_data = this.$refs.realstore_cart.buy_use_type_data();
                     this.setData({
-                        plugins_realstore_buy_use_type_index: this.$refs.realstore_cart.get_buy_use_type_index(),
+                        plugins_realstore_buy_use_type_active_index: type_data.active_index,
                     });
                 }
             },
@@ -1271,7 +1274,7 @@
             realstore_buy_type_switch_back_event(params) {
                 this.setData({
                     data_list_loding_status: 1,
-                    plugins_realstore_buy_use_type_index: params.index,
+                    plugins_realstore_buy_use_type_active_index: params.buy_use_type_active_index,
                 });
                 // 重新加载数据
                 this.get_data();
