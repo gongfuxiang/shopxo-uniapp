@@ -482,7 +482,7 @@
                                     <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
                                         <block v-for="(item, index) in buy_button.data" :key="index">
                                             <block v-if="(item.name || null) != null && (item.type || null) != null">
-                                                <button :class="'btn fl cr-white text-size-md round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{ item.name }}</button>
+                                                <button :class="'btn fl cr-white text-size-md round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" :data-business="item.business || ''" hover-class="none">{{ item.name }}</button>
                                             </block>
                                         </block>
                                     </block>
