@@ -1,0 +1,7 @@
+.buy-goods-list .goods-images {
+    width: 60rpx;
+    height: 60rpx;
+}
+.buy-goods-list .goods-title {
+    width: calc(100% - 300rpx);
+}

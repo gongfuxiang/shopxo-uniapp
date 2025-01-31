@@ -221,6 +221,9 @@
                 // 门店选择详情缓存
                 cache_realstore_detail_choice_key: 'cache_realstore_detail_choice_key',
 
+                // 互联网医院就诊人选择数据
+                cache_hospital_patient_choice_value_key: 'cache_hospital_patient_choice_value_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 

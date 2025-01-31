@@ -1720,6 +1720,20 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "patient/patient",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "patient-list/patient-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         }

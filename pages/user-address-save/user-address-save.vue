@@ -460,8 +460,6 @@
                     app.globalData.showToast(this.$t('user-address-save.user-address-save.7w01kd'));
                     return false;
                 }
-
-                var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
                     content: this.$t('order.order.psi67g'),
@@ -801,8 +799,6 @@
                     app.globalData.showToast(this.$t('user-address-save.user-address-save.620370'));
                     return false;
                 }
-
-                var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
                     content: this.$t('recommend-list.recommend-list.54d418'),

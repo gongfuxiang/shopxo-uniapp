@@ -1,6 +1,75 @@
 <template>
     <view :class="theme_view">
-        hello
+        <view v-if="data_list_loding_status == 3" class="page-bottom-fixed padding-main">
+            <form @submit="form_submit" class="form-container">
+                <!-- 购买商品 -->
+                <view v-if="(goods_data || null) != null && goods_data.length > 0" class="bg-white padding-main border-radius-main">
+                    <block v-for="(item, index) in goods_data" :key="index">
+                        <view class="buy-goods-list oh">
+                            <image :src="item.images" mode="aspectFit" class="goods-images radius dis-inline-block va-m"></image>
+                            <view class="single-text dis-inline-block va-m margin-left-xs goods-title">{{item.title}}</view>
+                            <view class="fr">
+                                <text class="cr-price">{{item.show_price_symbol}}{{item.price}}</text>
+                                <text class="cr-grey margin-left-xs">x{{item.stock}}</text>
+                            </view>
+                        </view>
+                    </block>
+                </view>
+                <!-- 用药人 -->
+                <view class="bg-white border-radius-main spacing-mt">
+                    <view class="padding-main">
+                        <view>
+                            <text class="fw-b va-m">用药人</text>
+                            <view class="dis-inline-block va-m margin-left-sm">
+                                <iconfont name="icon-sigh-o" size="28rpx" color="#999"></iconfont>
+                            </view>
+                        </view>
+                        <view v-if="(patient_data || null) != null" class="oh pr margin-top">
+                            <view>
+                                <text>{{patient_data.name}}</text>
+                                <block v-if="(patient_data.gender_text || null) != null">
+                                    <text class="cr-grey-white padding-horizontal-sm">|</text>
+                                    <text>{{patient_data.gender_text}}</text>
+                                </block>
+                                <block v-if="(patient_data.age_text || null) != null">
+                                    <text class="cr-grey-white padding-horizontal-sm">|</text>
+                                    <text>{{patient_data.age_text}}</text>
+                                </block>
+                            </view>
+                            <view>{{patient_data.idcard}}</view>
+                            <view class="pa top-0 right-0">
+                                <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
+                                    <iconfont name="icon-transfer" size="28rpx" :color="theme_color"></iconfont>
+                                    <text class="margin-left-xs">切换用药人</text>
+                                </button>
+                            </view>
+                        </view>
+                        <view v-else class="tc padding-vertical-xxl">
+                            <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
+                                <iconfont name="icon-user-group" size="28rpx" :color="theme_color"></iconfont>
+                                <text class="margin-left-xs">选择用药人</text>
+                            </button>
+                        </view>
+                    </view>
+                    <view class="padding-horizontal-main">
+                        <view class="br-t-f5"></view>
+                    </view>
+                    <view class="form-gorup">
+                        <view class="form-gorup-title">主诉<text class="form-group-tips">例如: 感冒, 胃炎, 头疼, 肚子疼</text></view>
+                        <input type="text" name="ill_desc" maxlength="230" placeholder-class="cr-grey-9" class="cr-base" placeholder="主诉格式1～230个字符" />
+                    </view>
+                </view>
+                <view class="bottom-fixed">
+                    <view class="bottom-line-exclude">
+                        <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">免费问诊开方</button>
+                    </view>
+                </view>
+            </form>
+        </view>
+
+        <!-- 提示信息 -->
+        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -9,23 +78,25 @@
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
-    import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
 
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                buy_submit_disabled_status: false,
+                form_submit_disabled_status: false,
                 params: null,
+                goods_data: [],
+                patient_data: null,
+                patient_list: []
             };
         },
 
         components: {
             componentCommon,
-            componentPopup,
             componentNoData
         },
 
@@ -45,8 +116,6 @@
                     params: params,
                 });
             }
-            
-            console.log(this.params);
         },
 
         onShow() {
@@ -88,15 +157,13 @@
             // 获取数据
             init() {
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'buy'),
+                    url: app.globalData.get_request_url('saveinit', 'prescription', 'hospital'),
                     method: 'POST',
                     data: this.params,
                     dataType: 'json',
                     success: (res) => {
-                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            console.log(data)
+                            this.get_data();
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -108,18 +175,110 @@
                         }
                     },
                     fail: () => {
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                    }
+                });
+            },
+
+            // 获取数据
+            get_data() {
+                var patient_id = uni.getStorageSync(app.globalData.data.cache_hospital_patient_choice_value_key) || 0;
+                uni.request({
+                    url: app.globalData.get_request_url('saveinfo', 'prescription', 'hospital'),
+                    method: 'POST',
+                    data: {...this.params, ...{id: patient_id}},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_list_loding_status: 3,
+                                data_list_loding_msg: '',
+                                goods_data: data.goods_data || [],
+                                patient_data: data.patient_data || null,
+                            });
+                            console.log(data)
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
+                    }
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+
+            // 数据提交
+            form_submit(e) {
+                // 表单数据
+                var form_data = e.detail.value;
+                // 就诊人
+                form_data['id'] = ((this.patient_data || null) == null) ? 0 : (this.patient_data.id || 0);
+                // 数据校验
+                var validation = [
+                    { fields: 'id', msg: '请选择就诊人' },
+                ];
+                // 验证提交表单
+                if (app.globalData.fields_check(form_data, validation)) {
+                    // 数据保存
+                    this.setData({
+                        form_submit_disabled_status: true,
+                    });
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('created', 'prescription', 'hospital'),
+                        method: 'POST',
+                        data: form_data,
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                app.globalData.open_web_view(res.data.data, true);
+                            } else {
+                                this.setData({
+                                    form_submit_disabled_status: false,
+                                });
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(res.data.msg);
+                                } else {
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                }
+                            }
+                        },
+                        fail: () => {
+                            this.setData({
+                                form_submit_disabled_status: false,
+                            });
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
+            }
         }
     };
 </script>
 <style>
-    
+    @import './prescription.css';
 </style>

@@ -748,7 +748,6 @@
                     var type = (e == null) ? this.buy_event_type : (e.currentTarget.dataset.type || this.buy_event_type);
                     var value = (e == null) ? null : (e.currentTarget.dataset.value || null);
                     var business = (e == null) ? null : (e.currentTarget.dataset.business || null);
-                    console.log(business)
                     switch (type) {
                         // 展示型、商品页面规格选择展示型 拨打电话操作
                         case 'show':
