@@ -1,71 +1,87 @@
 <template>
     <view :class="theme_view">
-        <view v-if="data_list_loding_status == 3" class="page-bottom-fixed padding-main">
-            <form @submit="form_submit" class="form-container">
-                <!-- 购买商品 -->
-                <view v-if="(goods_data || null) != null && goods_data.length > 0" class="bg-white padding-main border-radius-main">
-                    <block v-for="(item, index) in goods_data" :key="index">
-                        <view class="buy-goods-list oh">
-                            <image :src="item.images" mode="aspectFit" class="goods-images radius dis-inline-block va-m"></image>
-                            <view class="single-text dis-inline-block va-m margin-left-xs goods-title">{{item.title}}</view>
-                            <view class="fr">
-                                <text class="cr-price">{{item.show_price_symbol}}{{item.price}}</text>
-                                <text class="cr-grey margin-left-xs">x{{item.stock}}</text>
+        <block v-if="data_list_loding_status == 3">
+            <view class="page-bottom-fixed padding-main">
+                <form @submit="form_submit" class="form-container">
+                    <!-- 购买商品 -->
+                    <view v-if="(goods_data || null) != null && goods_data.length > 0" class="bg-white padding-main border-radius-main">
+                        <block v-for="(item, index) in goods_data" :key="index">
+                            <view class="buy-goods-list oh">
+                                <image :src="item.images" mode="aspectFit" class="goods-images radius dis-inline-block va-m"></image>
+                                <view class="single-text dis-inline-block va-m margin-left-xs goods-title">{{item.title}}</view>
+                                <view class="fr">
+                                    <text class="cr-price">{{item.show_price_symbol}}{{item.price}}</text>
+                                    <text class="cr-grey margin-left-xs">x{{item.stock}}</text>
+                                </view>
                             </view>
-                        </view>
-                    </block>
-                </view>
-                <!-- 用药人 -->
-                <view class="bg-white border-radius-main spacing-mt">
-                    <view class="padding-main">
-                        <view>
-                            <text class="fw-b va-m">用药人</text>
-                            <view class="dis-inline-block va-m margin-left-sm">
-                                <iconfont name="icon-sigh-o" size="28rpx" color="#999"></iconfont>
-                            </view>
-                        </view>
-                        <view v-if="(patient_data || null) != null" class="oh pr margin-top">
+                        </block>
+                    </view>
+                    <!-- 用药人 -->
+                    <view class="bg-white border-radius-main oh spacing-mt">
+                        <view class="padding-main">
                             <view>
-                                <text>{{patient_data.name}}</text>
-                                <block v-if="(patient_data.gender_text || null) != null">
-                                    <text class="cr-grey-white padding-horizontal-sm">|</text>
-                                    <text>{{patient_data.gender_text}}</text>
-                                </block>
-                                <block v-if="(patient_data.age_text || null) != null">
-                                    <text class="cr-grey-white padding-horizontal-sm">|</text>
-                                    <text>{{patient_data.age_text}}</text>
-                                </block>
+                                <text class="fw-b va-m">用药人</text>
+                                <view class="dis-inline-block va-m margin-left-sm" @tap="popup_patient_tips_event">
+                                    <iconfont name="icon-sigh-o" size="28rpx" color="#999"></iconfont>
+                                </view>
                             </view>
-                            <view>{{patient_data.idcard}}</view>
-                            <view class="pa top-0 right-0">
+                            <view v-if="(patient_data || null) != null" class="oh pr margin-top">
+                                <view>
+                                    <text>{{patient_data.name}}</text>
+                                    <block v-if="(patient_data.gender_text || null) != null">
+                                        <text class="cr-grey-white padding-horizontal-sm">|</text>
+                                        <text>{{patient_data.gender_text}}</text>
+                                    </block>
+                                    <block v-if="(patient_data.age_text || null) != null">
+                                        <text class="cr-grey-white padding-horizontal-sm">|</text>
+                                        <text>{{patient_data.age_text}}</text>
+                                    </block>
+                                </view>
+                                <view>{{patient_data.idcard}}</view>
+                                <view class="pa top-0 right-0">
+                                    <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
+                                        <iconfont name="icon-transfer" size="28rpx" :color="theme_color"></iconfont>
+                                        <text class="margin-left-xs">切换用药人</text>
+                                    </button>
+                                </view>
+                            </view>
+                            <view v-else class="tc padding-vertical-xxl">
                                 <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
-                                    <iconfont name="icon-transfer" size="28rpx" :color="theme_color"></iconfont>
-                                    <text class="margin-left-xs">切换用药人</text>
+                                    <iconfont name="icon-user-group" size="28rpx" :color="theme_color"></iconfont>
+                                    <text class="margin-left-xs">选择用药人</text>
                                 </button>
                             </view>
                         </view>
-                        <view v-else class="tc padding-vertical-xxl">
-                            <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
-                                <iconfont name="icon-user-group" size="28rpx" :color="theme_color"></iconfont>
-                                <text class="margin-left-xs">选择用药人</text>
-                            </button>
+                        <view class="form-gorup br-t-f5">
+                            <view class="form-gorup-title">主诉<text class="form-group-tips">例如: 感冒, 胃炎, 头疼, 肚子疼</text></view>
+                            <input type="text" name="ill_desc" maxlength="230" placeholder-class="cr-grey-9" class="cr-base" placeholder="主诉格式1～230个字符" />
                         </view>
                     </view>
-                    <view class="padding-horizontal-main">
-                        <view class="br-t-f5"></view>
+                    <view class="bottom-fixed">
+                        <view class="bottom-line-exclude">
+                            <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">免费问诊开方</button>
+                        </view>
                     </view>
-                    <view class="form-gorup">
-                        <view class="form-gorup-title">主诉<text class="form-group-tips">例如: 感冒, 胃炎, 头疼, 肚子疼</text></view>
-                        <input type="text" name="ill_desc" maxlength="230" placeholder-class="cr-grey-9" class="cr-base" placeholder="主诉格式1～230个字符" />
+                </form>
+            </view>
+
+            <!-- 提示弹窗 -->
+            <component-popup :propShow="popup_patient_tips_status" propPosition="bottom" @onclose="popup_patient_tips_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_patient_tips_close_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="padding-vertical-main">
+                        <block v-if="patient_tips != null">{{patient_tips}}</block>
+                        <block v-else>
+                            <component-no-data propStatus="0"></component-no-data>
+                        </block>
                     </view>
                 </view>
-                <view class="bottom-fixed">
-                    <view class="bottom-line-exclude">
-                        <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">免费问诊开方</button>
-                    </view>
-                </view>
-            </form>
-        </view>
+            </component-popup>
+        </block>
 
         <!-- 提示信息 -->
         <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -79,6 +95,7 @@
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
 
     export default {
         data() {
@@ -91,13 +108,17 @@
                 params: null,
                 goods_data: [],
                 patient_data: null,
-                patient_list: []
+                patient_list: [],
+                popup_patient_tips_status: false,
+                patient_tips: null
+                
             };
         },
 
         components: {
             componentCommon,
-            componentNoData
+            componentNoData,
+            componentPopup
         },
 
         onLoad(params) {
@@ -200,8 +221,8 @@
                                 data_list_loding_msg: '',
                                 goods_data: data.goods_data || [],
                                 patient_data: data.patient_data || null,
+                                patient_tips: data.patient_tips || null
                             });
-                            console.log(data)
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -225,6 +246,20 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 就诊人提示开启弹层
+            popup_patient_tips_event(e) {
+                this.setData({
+                    popup_patient_tips_status: true
+                });
+            },
+            
+            // 就诊人提示关闭弹层
+            popup_patient_tips_close_event(e) {
+                this.setData({
+                    popup_patient_tips_status: false
+                });
             },
 
             // 数据提交

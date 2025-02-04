@@ -6,19 +6,19 @@
                 <text class="cr-blue" @tap="sub_ragion_event">{{$t('common.confirm')}}</text>
             </view>
             <view class="g-dp-ctt-wrapper">
-                <picker-view style="width: 32%; height: 240px" :indicator-style="indicatorStyle" :value="columns_index[0]" data-column="0" @change="changeHandler">
+                <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="columns_index[0]" data-column="0" @change="changeHandler">
                     <picker-view-column>
                         <view class="g-dp-ctt-wp-item" v-for="(item, a) in columns[0]" :key="item.id">{{ item.name }}</view>
                     </picker-view-column>
                 </picker-view>
 
-                <picker-view style="width: 32%; height: 240px" :indicator-style="indicatorStyle" :value="columns_index[1]" data-column="1" @change="changeHandler">
+                <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="columns_index[1]" data-column="1" @change="changeHandler">
                     <picker-view-column>
                         <view class="g-dp-ctt-wp-item" v-for="(item, b) in columns[1]" :key="item.id">{{ item.name }}</view>
                     </picker-view-column>
                 </picker-view>
 
-                <picker-view style="width: 32%; height: 240px" :indicator-style="indicatorStyle" :value="columns_index[2]" data-column="2" @change="changeHandler">
+                <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="columns_index[2]" data-column="2" @change="changeHandler">
                     <picker-view-column>
                         <view class="g-dp-ctt-wp-item" v-for="(item, c) in columns[2]" :key="item.id">{{ item.name }}</view>
                     </picker-view-column>
@@ -205,27 +205,30 @@ export default {
 };
 </script>
 <style scoped>
-::v-deep .popup-bottom {
-    border-radius: 0;
-}
-.picker-view-column {
-    height: 480rpx !important;
-}
-.g-dp-ctt-wrapper {
-    height: 480upx;
-    width: 100%;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.g-dp-ctt-wp-item {
-    width: 100%;
-    height: 88upx;
-    line-height: 88upx;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 30upx;
-}
+    ::v-deep .popup-bottom {
+        border-radius: 0;
+    }
+    .picker-view {
+        width: 32%; height: 480rpx
+    }
+    .picker-view-column {
+        height: 480rpx !important;
+    }
+    .g-dp-ctt-wrapper {
+        height: 480upx;
+        width: 100%;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .g-dp-ctt-wp-item {
+        width: 100%;
+        height: 88upx;
+        line-height: 88upx;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 30upx;
+    }
 </style>

@@ -1,6 +1,12 @@
 <template>
     <view :class="theme_view">
         <view class="page-bottom-fixed padding-main">
+            <view v-if="patient_tips != null" class="cr-yellow margin-bottom">
+                <view class="dis-inline-block va-m margin-right-xs">
+                    <iconfont name="icon-sigh-o" size="28rpx" color="#f6c133"></iconfont>
+                </view>
+                <text class="va-m">{{patient_tips}}</text>
+            </view>
             <view v-if="(data_list || null) != null && data_list.length > 0" class="bg-white padding-horizontal-main border-radius-main">
                 <block v-for="(item, index) in data_list" :key="index">
                     <view class="item padding-vertical-main oh pr" :class="index > 0 ? 'br-t-f5' : ''" :data-index="index" @tap="item_event">
@@ -54,6 +60,7 @@
                 data_list_loding_msg: '',
                 params: {},
                 data_list: [],
+                patient_tips: null,
             };
         },
 
@@ -122,6 +129,7 @@
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: '',
+                                patient_tips: data.patient_tips || null,
                                 data_list: data.data_list || [],
                             });
                         } else {

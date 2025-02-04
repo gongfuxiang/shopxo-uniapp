@@ -256,7 +256,10 @@
         "plugins-givegift-receive": "礼品领取",
         "plugins-givegift-gift": "我的送礼",
         "plugins-givegift-code": "礼品链接",
-        "plugins-orderresources-orderannex": "订单资源"
+        "plugins-orderresources-orderannex": "订单资源",
+        "plugins-hospital-patient": "就诊人添加/编辑",
+        "plugins-hospital-patient-list": "就诊人列表",
+        "plugins-hospital-prescription": "问诊开方"
 	},
 	"login": {
 		"login": {

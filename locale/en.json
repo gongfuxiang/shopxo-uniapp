@@ -258,7 +258,10 @@
         "plugins-givegift-receive": "Gift collection",
         "plugins-givegift-gift": "My gift",
         "plugins-givegift-code": "Gift Link",
-        "plugins-orderresources-orderannex": "Order Resources"
+        "plugins-orderresources-orderannex": "Order Resources",
+        "plugins-hospital-patient": "Add/Edit Patient",
+        "plugins-hospital-patient-list": "Patient List",
+        "plugins-hospital-prescription": "Consultation and prescription"
 	},
 	"login": {
 		"login": {
