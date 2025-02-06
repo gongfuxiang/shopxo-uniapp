@@ -2,11 +2,8 @@
     <view :class="theme_view">
         <block v-if="data_list_loding_status == 3">
             <view class="page-bottom-fixed padding-main">
-                <view v-if="patient_tips != null" class="cr-yellow margin-bottom">
-                    <view class="dis-inline-block va-m margin-right-xs">
-                        <iconfont name="icon-sigh-o" size="28rpx" color="#f6c133"></iconfont>
-                    </view>
-                    <text class="va-m">{{patient_tips}}</text>
+                <view v-if="patient_tips != null" class="margin-bottom">
+                    <uni-notice-bar background-color="" :text="patient_tips" />
                 </view>
                 <form @submit="form_submit" class="form-container">
                     <view class="oh border-radius-main tr">

@@ -275,7 +275,7 @@
             </scroll-view>
         </block>
 
-        <!-- 选择门店弹层 -->
+        <!-- 选择门店弹窗 -->
         <component-popup :propShow="plugins_realstore_choice_status" propPosition="bottom" @onclose="realstore_choice_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="oh tc">
@@ -307,7 +307,32 @@
                         </view>
                     </block>
                     <block v-else>
-                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{ $t('cart.cart.h63814') }}</view>
+                        <component-no-data :propMsg="$t('cart.cart.h63814')"></component-no-data>
+                    </block>
+                </view>
+            </view>
+        </component-popup>
+
+        <!-- 互联网医院问诊下单弹窗 -->
+        <component-popup :propShow="plugins_hospital_prescription_status" propPosition="bottom" @onclose="hospital_prescription_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="oh tc">
+                    <text class="text-size">{{ (plugins_hospital_prescription_data || null) != null ? (plugins_hospital_prescription_data.title || '') : '' }}</text>
+                    <view class="fr" @tap.stop="hospital_prescription_close_event">
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="padding-vertical-main">
+                    <block v-if="(plugins_hospital_prescription_data || null) != null && plugins_hospital_prescription_data.choice_data.length > 0">
+                        <block v-for="(item, index) in plugins_hospital_prescription_data.choice_data">
+                            <view class="padding-vertical-xxl pr">
+                                <text>{{item.name}}</text>
+                                <button type="default" size="mini" class="bg-main br-main cr-white round text-size-xs pa top-xxxxxl right-0" :data-index="index" @tap="hospital_prescription_confirm_event">{{item.btn_text}}</button>
+                            </view>
+                        </block>
+                    </block>
+                    <block v-else>
+                        <component-no-data></component-no-data>
                     </block>
                 </view>
             </view>
@@ -405,7 +430,10 @@
                 is_cart_show_discount: 0,
                 scroll_style: '',
                 // 底部购买导航样式
-                bottom_fixed_style: ''
+                bottom_fixed_style: '',
+                // 互联网医院问诊数据
+                plugins_hospital_prescription_data: null,
+                plugins_hospital_prescription_status: false
             };
         },
 
@@ -1026,12 +1054,19 @@
             },
 
             // 结算数据参数
-            buy_data_params() {
+            // appoint_goods_ids  指定结算商品id，多个id逗号分割）
+            buy_data_params(appoint_goods_ids = null) {
+                // 解析当前选择的数据商品id
+                var temp_appoint_goods_ids = [];
+                if((appoint_goods_ids || null) != null) {
+                    temp_appoint_goods_ids = appoint_goods_ids.split(',').map(function(v){return parseInt(v);});
+                }
+                // 匹配商品
                 var selected_count = 0;
                 var ids = [];
                 var temp_data_list = this.data_list || [];
                 for (var i in temp_data_list) {
-                    if ((temp_data_list[i]['is_error'] || 0) == 0 && (temp_data_list[i]['selected'] || false) == true) {
+                    if ((temp_data_list[i]['is_error'] || 0) == 0 && (temp_data_list[i]['selected'] || false) == true && (temp_appoint_goods_ids.length == 0 || temp_appoint_goods_ids.indexOf(parseInt(temp_data_list[i]['goods_id'])) != -1)) {
                         ids.push(temp_data_list[i]['id']);
                         selected_count++;
                     }
@@ -1065,14 +1100,84 @@
             // 结算
             buy_submit_event(e) {
                 // 结算参数
-                var data = this.buy_data_params();
-                if (data === false) {
+                var buy_data = this.buy_data_params();
+                if (buy_data === false) {
                     app.globalData.showToast(this.$t('cart.cart.3sy0mp'));
                     return false;
                 }
 
+                // 是否开启了互联网医院处方问诊
+                var is_goods_is_prescription = parseInt(app.globalData.get_config('plugins_base.hospital.data.is_goods_is_prescription', 0));
+                if(is_goods_is_prescription == 1) {
+                    this.plugins_hospital_prescription_handle(buy_data);
+                    return false;
+                }
+
                 // 进入结算页面
-                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
+                this.to_buy_handle(buy_data);
+            },
+
+            // 互联网医院处方问诊
+            plugins_hospital_prescription_handle(buy_data) {
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('savecheck', 'prescription', 'hospital'),
+                    method: 'POST',
+                    data: buy_data,
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            if((data.choice_data || null) != null && data.choice_data.length > 0) {
+                                this.setData({
+                                    plugins_hospital_prescription_data: data,
+                                    plugins_hospital_prescription_status: true
+                                });
+                            } else {
+                                this.to_buy_handle(buy_data);
+                            }
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                this.to_buy_handle(buy_data);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 互联网医院问诊确认事件
+            hospital_prescription_confirm_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var data = this.plugins_hospital_prescription_data.choice_data[index];
+                var buy_data = this.buy_data_params(data.goods_ids);
+                // 问诊开方
+                if(data.type == 'prescription') {
+                    this.to_buy_handle(buy_data, '/pages/plugins/hospital/prescription/prescription');
+                } else {
+                    // 普通结算
+                    this.to_buy_handle(buy_data);
+                }
+            },
+
+            // 互联网医院问诊弹窗关闭
+            hospital_prescription_close_event(e) {
+                this.setData({
+                    plugins_hospital_prescription_status: false
+                });
+            },
+
+            // 进入购买
+            to_buy_handle(buy_data, pages = '/pages/buy/buy') {
+                app.globalData.url_open(pages+'?data=' + encodeURIComponent(base64.encode(JSON.stringify(buy_data))));
             },
 
             // 展示型事件

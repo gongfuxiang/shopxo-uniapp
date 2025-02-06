@@ -21,7 +21,7 @@
                         <view class="padding-main">
                             <view>
                                 <text class="fw-b va-m">用药人</text>
-                                <view class="dis-inline-block va-m margin-left-sm" @tap="popup_patient_tips_event">
+                                <view v-if="(patient_tips || null) != null" class="dis-inline-block va-m margin-left-sm" @tap="popup_patient_tips_event">
                                     <iconfont name="icon-sigh-o" size="28rpx" color="#999"></iconfont>
                                 </view>
                             </view>

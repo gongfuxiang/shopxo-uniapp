@@ -1,11 +1,8 @@
 <template>
     <view :class="theme_view">
         <view class="page-bottom-fixed padding-main">
-            <view v-if="patient_tips != null" class="cr-yellow margin-bottom">
-                <view class="dis-inline-block va-m margin-right-xs">
-                    <iconfont name="icon-sigh-o" size="28rpx" color="#f6c133"></iconfont>
-                </view>
-                <text class="va-m">{{patient_tips}}</text>
+            <view v-if="patient_tips != null" class="margin-bottom">
+                <uni-notice-bar background-color="" :text="patient_tips" />
             </view>
             <view v-if="(data_list || null) != null && data_list.length > 0" class="bg-white padding-horizontal-main border-radius-main">
                 <block v-for="(item, index) in data_list" :key="index">
