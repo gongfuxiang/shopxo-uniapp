@@ -12,13 +12,13 @@
                     <view class="item padding-vertical-main oh pr" :class="index > 0 ? 'br-t-f5' : ''" :data-index="index" @tap="item_event">
                         <view>
                             <text>{{item.name}}</text>
-                            <block v-if="(item.gender_text || null) != null">
+                            <block v-if="(item.gender_name || null) != null">
                                 <text class="cr-grey-white padding-horizontal-sm">|</text>
-                                <text>{{item.gender_text}}</text>
+                                <text>{{item.gender_name}}</text>
                             </block>
-                            <block v-if="(item.age_text || null) != null">
+                            <block v-if="(item.age_name || null) != null">
                                 <text class="cr-grey-white padding-horizontal-sm">|</text>
-                                <text>{{item.age_text}}</text>
+                                <text>{{item.age_name}}</text>
                             </block>
                         </view>
                         <view>{{item.idcard}}</view>
@@ -100,7 +100,7 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.init();
+            this.get_data();
         },
 
         methods: {

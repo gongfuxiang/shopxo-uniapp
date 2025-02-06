@@ -81,7 +81,7 @@
                     </view>
                 </view>
                 <!-- 当前diy页面底部菜单（非公共底部菜单） -->
-                <block v-if="is_show_footer == 1">
+                <block v-if="is_show_footer">
                     <componentDiyFooter :propKey="footer_data.id" :propValue="footer_data.com_data" @onFooterHeight="footer_height_value_event"></componentDiyFooter>
                     <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
                 </block>
@@ -219,7 +219,7 @@
                 diy_data: [],
                 page_style: '',
                 page_img_style: '',
-                is_show_footer: 0,
+                is_show_footer: false,
                 tabs_home_id: this.propDataId,
                 // 商品列表
                 goods_list: [],
@@ -287,6 +287,13 @@
                     this.setData({
                         is_show_footer: is_show_footer && !is_tabbar,
                     });
+                    // diy页面不显示底部菜单则设置底部菜单高度为0
+                    if(!this.is_show_footer) {
+                        // 存储diy页面底部菜单高度
+                        if(app.globalData.current_page(false) == 'pages/diy/diy') {
+                            app.globalData.app_diy_tabbar_height_save(0);
+                        }
+                    }
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -620,8 +627,13 @@
             // 底部菜单高度
             footer_height_value_event(value) {
                 this.setData({
-                    footer_height_value: value * 2 + 20,
+                    footer_height_value: (value*2)+20,
                 });
+
+                // 存储diy页面底部菜单高度
+                if(app.globalData.current_page(false) == 'pages/diy/diy') {
+                    app.globalData.app_diy_tabbar_height_save(value);
+                }
             },
             // 商品数量更新回调
             goods_buy_event(index, goods = {}, params = {}, back_data = null) {

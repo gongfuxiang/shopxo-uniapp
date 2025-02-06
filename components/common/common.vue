@@ -188,7 +188,7 @@
                 this.$emit('onFooterHeight', value);
 
                 // 存储底部菜单高度
-                app.globalData.app_tabbar_height_save(value);
+                app.globalData.app_system_tabbar_height_save(value);
             },
 
             // 协议事件

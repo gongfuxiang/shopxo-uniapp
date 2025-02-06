@@ -210,7 +210,10 @@
                 cache_diy_page_data_key: 'cache_diy_page_data_key',
 
                 // apptabbar底部菜单高度
-                cache_app_tabbar_height_key: 'cache_app_tabbar_height_key',
+                cache_app_system_tabbar_height_key: 'cache_app_system_tabbar_height_key',
+
+                // diy底部菜单高度
+                cache_app_diy_tabbar_height_key: 'cache_app_diy_tabbar_height_key',
 
                 // apptabbar底部菜单角标数据
                 cache_tabbar_badge_key: 'cache_tabbar_badge_key',
@@ -943,20 +946,35 @@
                 }
                 return value;
             },
-            
+
             /**
-             * 底部菜单高度数据存储
+             * diy底部菜单高度数据存储
              * value  高度
              */
-            app_tabbar_height_save(value) {
-                uni.setStorageSync(this.data.cache_app_tabbar_height_key, value);
+            app_diy_tabbar_height_save(value) {
+                uni.setStorageSync(this.data.cache_app_diy_tabbar_height_key, value);
+            },
+
+            /**
+             * diy底部菜单高度数据读取
+             */
+            app_diy_tabbar_height_value() {
+                return parseInt(uni.getStorageSync(this.data.cache_app_diy_tabbar_height_key) || 0);
+            },
+
+            /**
+             * 系统底部菜单高度数据存储
+             * value  高度
+             */
+            app_system_tabbar_height_save(value) {
+                uni.setStorageSync(this.data.cache_app_system_tabbar_height_key, value);
             },
             
             /**
-             * 底部菜单高度数据读取
+             * 系统底部菜单高度数据读取
              */
-            app_tabbar_height_value() {
-                return parseInt(uni.getStorageSync(this.data.cache_app_tabbar_height_key) || 0);
+            app_system_tabbar_height_value() {
+                return parseInt(uni.getStorageSync(this.data.cache_app_system_tabbar_height_key) || 0);
             },
 
             /**
@@ -3055,7 +3073,7 @@
                     if(temp !== undefined && this.is_tabbar_pages()) {
                         obj.$vm.setData(
                         {
-                            bottom_fixed_style: 'bottom:'+(((this.app_tabbar_height_value()-8)*2)+20)+'rpx'
+                            bottom_fixed_style: 'bottom:'+(((this.app_system_tabbar_height_value()-8)*2)+20)+'rpx'
                         });
                     }
                 }

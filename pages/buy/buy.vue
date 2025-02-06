@@ -457,7 +457,7 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
-            // 设置参数
+            // 下单参数处理
             // params.data 参数 urlencode(base64_encode(json字符串))
             // buy_type 下单类型（goods 立即购买、cart 购物车）
             // goods_data 下单商品urlencode(base64_encode(json字符串[{goods_id,stock,spec}]))
@@ -465,17 +465,19 @@
             // ids 购物车主键ids
             if ((params.data || null) != null) {
                 params = JSON.parse(base64.decode(decodeURIComponent(params.data)));
-                this.setData({
-                    params: params,
-                    is_realstore_model: (params.realstore_id || null) != null,
-                    plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1,
-                    pay_url: app.globalData.get_request_url('pay', 'order'),
-                    qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
-                });
-
-                // 删除地址缓存
-                uni.removeStorageSync(app.globalData.data.cache_buy_user_address_select_key);
             }
+
+            // 设置参数
+            this.setData({
+                params: params,
+                is_realstore_model: (params.realstore_id || null) != null,
+                plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1,
+                pay_url: app.globalData.get_request_url('pay', 'order'),
+                qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
+            });
+
+            // 删除地址缓存
+            uni.removeStorageSync(app.globalData.data.cache_buy_user_address_select_key);
         },
 
         onShow() {

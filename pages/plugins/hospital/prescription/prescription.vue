@@ -28,13 +28,13 @@
                             <view v-if="(patient_data || null) != null" class="oh pr margin-top">
                                 <view>
                                     <text>{{patient_data.name}}</text>
-                                    <block v-if="(patient_data.gender_text || null) != null">
+                                    <block v-if="(patient_data.gender_name || null) != null">
                                         <text class="cr-grey-white padding-horizontal-sm">|</text>
-                                        <text>{{patient_data.gender_text}}</text>
+                                        <text>{{patient_data.gender_name}}</text>
                                     </block>
-                                    <block v-if="(patient_data.age_text || null) != null">
+                                    <block v-if="(patient_data.age_name || null) != null">
                                         <text class="cr-grey-white padding-horizontal-sm">|</text>
-                                        <text>{{patient_data.age_text}}</text>
+                                        <text>{{patient_data.age_name}}</text>
                                     </block>
                                 </view>
                                 <view>{{patient_data.idcard}}</view>

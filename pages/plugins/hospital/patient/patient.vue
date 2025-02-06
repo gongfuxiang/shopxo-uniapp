@@ -213,7 +213,7 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.init();
+            this.get_data();
         },
 
         methods: {
@@ -242,10 +242,10 @@
                                 hospital_relation_tags_list: data.hospital_relation_tags_list || [],
                             });
                             // 健康信息
-                            var health = this.data.health || {};
+                            var health = this.data.health || null;
                             this.setData({
-                                health: health,
-                                health_tips: health.map(function(v){return v.msg;}).join(';')
+                                health: health || {},
+                                health_tips: (health == null) ? '' : health.map(function(v){return v.msg;}).join(';')
                             });
                             // 下拉选中数据处理
                             if(temp_data !== null) {

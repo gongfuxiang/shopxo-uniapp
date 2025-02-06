@@ -201,7 +201,7 @@
 
 <style lang="scss" scoped>
     .tabs-container {
-        z-index: 3;
+        z-index: 2;
         .tabs-top {
             position: fixed;
             left: 0;
