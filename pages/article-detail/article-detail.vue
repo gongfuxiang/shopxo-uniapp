@@ -123,6 +123,7 @@
                                     desc: this.data.seo_desc,
                                     path: "/pages/article-detail/article-detail",
                                     query: "id=" + this.data.id,
+                                    img: this.data.share_images || this.data.cover,
                                 },
                             });
 

@@ -998,7 +998,7 @@
                                     desc: goods.seo_desc || goods.simple_desc,
                                     path: '/pages/goods-detail/goods-detail',
                                     query: 'id=' + goods.id,
-                                    img: goods.images,
+                                    img: goods.share_images || goods.images,
                                     video: goods.video,
                                 },
                             });
