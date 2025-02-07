@@ -96,6 +96,10 @@
                 type: Number,
                 default: 1000000,
             },
+            propIsCommonStyle: {
+                type: Boolean,
+                default: true,
+            },
             propOuterContainerPadding: {
                 type: Number,
                 default: 0,
@@ -249,8 +253,8 @@
                     div_width: width,
                     scale: new_scale,
                     custom_list_length: new_form.custom_list.length - 1,
-                    style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
-                    style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                    style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) + 'box-sizing: border-box;' : '', // 用于样式显示
+                    style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '',
                     style_content_container: common_styles_computer(new_data_content_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_content_img_container: common_img_computer(new_data_content_style),
                     style_chunk_container: common_styles_computer(new_data_style) + 'box-sizing: border-box;', // 用于样式显示
