@@ -22,7 +22,7 @@
                         <template v-else-if="tabs_data_type == 'custom'">
                             <componentCustomList :propKey="diy_key" :propValue="tabs_list" :propOuterContainerPadding="outer_container_width" :propIsCommonStyle="false"></componentCustomList>
                         </template>
-                        </view>
+                    </view>
                 </view>
             </view>
         </view>
