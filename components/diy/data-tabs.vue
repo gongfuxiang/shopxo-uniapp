@@ -15,7 +15,7 @@
                         <template v-else-if="tabs_data_type == 'article'">
                             <view class="oh" :style="data_content_container">
                                 <view class="oh" :style="data_content_img_container">
-                                    <componentDiyArticleList :propKey="diy_key" :propValue="tabs_list" :propIsCommonStyle="false"></componentDiyArticleList>
+                                    <componentArticleList :propKey="diy_key" :propValue="tabs_list" :propIsCommonStyle="false"></componentArticleList>
                                 </view>
                             </view>
                         </template>
