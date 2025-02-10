@@ -116,12 +116,6 @@
                     this.tabs_background = 'background:transparent';
                 }
             },
-            propTop(val) {
-                let new_style = this.propValue.style || {};
-                this.setData({
-                    sticky_top: val + (new_style?.tabs_margin?.margin_top || 0),
-                });
-            },
             propKey(val) {
                 this.setData({
                     diy_key: val,
@@ -199,6 +193,7 @@
                 const tabs_content = new_style?.tabs_content || old_border_and_box_shadow;
                 this.setData({
                     top_up: new_content.tabs_top_up,
+                    sticky_top: this.propTop + (new_style?.tabs_margin?.margin_top || 0),
                     article_tabs: new_data,
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),

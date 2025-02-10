@@ -353,7 +353,7 @@
                     is_search_alone_row: header.com_data.content.data_alone_row_value.length > 0 ? true : false,
                     data_alone_row_space: parseInt(header.com_data.style.data_alone_row_space || 5),
                     is_immersive_style_and_general_safe_distance_value: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',
-                    is_the_safe_distance_enabled: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1' && tabs_data.length == 0,// diy_data是否开启安全距离
+                    is_the_safe_distance_enabled: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1' && new_tabs_data.length == 0,// diy_data是否开启安全距离
                 });
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
