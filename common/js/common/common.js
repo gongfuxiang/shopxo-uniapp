@@ -430,7 +430,7 @@ export function gradient_handle(color_list, direction, is_return_all = true) {
         new_color_list.forEach((item, index) => {
             container_common_styles += `${item.color ? item.color : 'rgb(255 255 255 / 0%)'}`;
             if (color_list.length == 1) {
-                container_common_styles += ` ${item.color_percentage || 0}%, ${item.color} 100%`;
+                container_common_styles += ` ${item.color_percentage || 0}%, ${item.color ? item.color : 'rgb(255 255 255 / 0%)'} 100%`;
             } else {
                 if (typeof item.color_percentage === 'number') {
                     if (index == color_list.length - 1) {
