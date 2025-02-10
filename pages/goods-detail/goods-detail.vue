@@ -998,7 +998,7 @@
                                     desc: goods.seo_desc || goods.simple_desc,
                                     path: '/pages/goods-detail/goods-detail',
                                     query: 'id=' + goods.id,
-                                    img: goods.images,
+                                    img: goods.share_images || goods.images,
                                     video: goods.video,
                                 },
                             });
@@ -1138,6 +1138,7 @@
                 switch (type) {
                     // 展示型、拨打电话
                     case 'show':
+                    case 'tel':
                         app.globalData.call_tel(value || this.common_app_customer_service_tel);
                         break;
                     // 规格选择(展示模式)、购买、加入购物车
@@ -1151,11 +1152,20 @@
                         break;
                     // url事件
                     case 'url':
+                    case 'link':
                         if (value == null) {
                             app.globalData.showToast(this.$t('goods-detail.goods-detail.tq1976'));
                             return false;
                         }
                         app.globalData.url_open(value);
+                        break;
+                    // 复制事件
+                    case 'copy':
+                        if (value == null) {
+                            app.globalData.showToast(this.$t('goods-detail.goods-detail.uyghj2'));
+                            return false;
+                        }
+                        app.globalData.text_copy_event(value);
                         break;
                     // 门店
                     case 'plugins-realstore':
