@@ -1,7 +1,7 @@
 <template>
-    <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
+    <view class="data-tabs ou" :class="'data-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="data_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="data_margin_top">
                 <view :style="data_container">
                     <view :style="data_img_container">
@@ -88,7 +88,7 @@
             return {
                 style_container: '',
                 style_img_container: '',
-                goods_tabs: {},
+                data_tabs: {},
                 tabs_list: {},
                 // 是否滑动置顶
                 top_up: '0',
@@ -251,7 +251,7 @@
                 this.tabs_click_event(0);
                 this.setData({
                     top_up: new_content.tabs_top_up,
-                    goods_tabs: new_data,
+                    data_tabs: new_data,
                     // 自定义需要做等比缩放，因此宽度需要减去 外层通用的宽度和内容区域的宽度
                     outer_container_width: common_style.margin_left + common_style.margin_right + common_style.padding_left + common_style.padding_right + new_style.data_content_margin.margin_left + new_style.data_content_margin.margin_right + new_style.data_content_padding.padding_left + new_style.data_content_padding.padding_right,
                     style_container: common_styles_computer(common_style),
@@ -301,7 +301,7 @@
             getTop() {
                 const query = uni.createSelectorQuery().in(this);
                 query
-                    .select('.goods-tabs-' + this.propKey)
+                    .select('.data-tabs-' + this.propKey)
                     .boundingClientRect((res) => {
                         if ((res || null) != null) {
                             let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;

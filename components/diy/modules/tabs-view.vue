@@ -56,7 +56,7 @@
         <!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
             <view class="padding-vertical-lg">
-                <view class="padding-left-main padding-bottom-main">{{ $t('recommend-form.recommend-form.7gc30l') }}</view>
+                <view class="padding-left-main padding-bottom-main">全部选项卡</view>
                 <view class="divider-b">
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">
