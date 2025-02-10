@@ -179,12 +179,6 @@
                     this.tabs_background = 'background:transparent';
                 }
             },
-            propTop(val) {
-                let new_style = this.propValue.style || {};
-                this.setData({
-                    sticky_top: val + (new_style?.tabs_margin?.margin_top || 0),
-                });
-            },
             propKey(val) {
                 // 初始化
                 this.setData({
@@ -251,6 +245,7 @@
                 this.tabs_click_event(0);
                 this.setData({
                     top_up: new_content.tabs_top_up,
+                    sticky_top: this.propTop + (new_style?.tabs_margin?.margin_top || 0),
                     data_tabs: new_data,
                     // 自定义需要做等比缩放，因此宽度需要减去 外层通用的宽度和内容区域的宽度
                     outer_container_width: common_style.margin_left + common_style.margin_right + common_style.padding_left + common_style.padding_right + new_style.data_content_margin.margin_left + new_style.data_content_margin.margin_right + new_style.data_content_padding.padding_left + new_style.data_content_padding.padding_right,
