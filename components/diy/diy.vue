@@ -27,6 +27,7 @@
                                         <componentDiyVideo v-else-if="item.key == 'video'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyVideo>
                                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyArticleList>
                                         <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0"></componentDiyArticleTabs>
+                                        <componentDataTabs v-else-if="item.key == 'data-tabs'" :ref="'diy_goods_buy' + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @goods_buy_event="goods_buy_event"></componentDataTabs>
                                         <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
                                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
                                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyDataMagic>
@@ -121,6 +122,7 @@
     import componentDiyImgMagic from '@/components/diy/img-magic';
     import componentDiySeckill from '@/components/diy/seckill';
     import componentDiyTabsCarousel from '@/components/diy/tabs-carousel';
+    import componentDataTabs from '@/components/diy/data-tabs';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -176,6 +178,7 @@
             componentDiyImgMagic,
             componentDiySeckill,
             componentDiyTabsCarousel,
+            componentDataTabs,
             componentGoodsList,
             componentNoData,
             componentBottomLine,
