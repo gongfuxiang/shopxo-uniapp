@@ -288,7 +288,7 @@
                     location_name_style: this.get_location_name_style(new_content),
                     location_margin: `padding: ${location_margin.margin_top * 2}rpx ${location_margin.margin_right * 2}rpx ${location_margin.margin_bottom * 2}rpx ${location_margin.margin_left * 2}rpx;`, // 悬浮之后有间距，所以要将margin设置成外padding
                 });
-                this.$emit('onImmersionModelCallBack', this.is_immersion_model);
+                // this.$emit('onImmersionModelCallBack', this.is_immersion_model);
             },
             get_location_name_style(new_content) {
                 const is_search_alone_row = new_content.data_alone_row_value && new_content.data_alone_row_value.includes('search');

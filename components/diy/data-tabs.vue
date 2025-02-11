@@ -1,7 +1,7 @@
 <template>
     <view class="data-tabs ou" :class="'data-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="data_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propCustomNavHeight * 2 + 'rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propValue="data_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="data_margin_top">
                 <view :style="data_container">
                     <view :style="data_img_container">
@@ -83,6 +83,11 @@
                 type: Number,
                 default: 0,
             },
+            // 选项卡是否使用安全距离
+            propIsTabsUseSafeDistance: {
+                type: Boolean,
+                default: true
+            }
         },
         data() {
             return {
@@ -179,6 +184,9 @@
                     this.tabs_background = 'background:transparent';
                 }
             },
+            propTop(val) {
+                this.init();
+            },
             propKey(val) {
                 // 初始化
                 this.setData({
@@ -209,20 +217,19 @@
                 let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
                 const new_content = new_data.content || {};
                 const new_style = new_data.style || {};
+                // 公共样式
+                const common_style = new_style.common_style;
                 let tabs_style_obj = {
-                    padding_top: new_style.common_style.padding_top,
-                    padding_left: new_style.common_style.padding_left,
-                    padding_right: new_style.common_style.padding_right,
+                    padding_top: (common_style.padding_top - this.propCustomNavHeight) < 0 ? 0 : common_style.padding_top - this.propCustomNavHeight,
+                    padding_left: common_style.padding_left,
+                    padding_right: common_style.padding_right,
                 };
                 let new_tabs_style = padding_computer(tabs_style_obj) + `position:relative;left: -${tabs_style_obj.padding_left * 2}rpx;right: -${tabs_style_obj.padding_right * 2}rpx;width:100%;`;
                 // 如果是历史数据的话，就执行默认添加下边距
                 if (isEmpty(new_style.tabs_padding)) {
                     new_tabs_style += 'padding-bottom: 20rpx;';
                 }
-                let common_style = Object.assign({}, new_style.common_style, {
-                    padding_top: 0,
-                });
-                
+
                 const { tabs_bg_color_list = [], tabs_bg_direction = '', tabs_bg_background_img_style = '', tabs_bg_background_img = [], tabs_radius = old_radius, tabs_padding = old_padding, data_content_color_list = [], data_content_direction = '', data_content_background_img_style = '', data_content_background_img = [], data_content_margin = old_margin, data_content_padding = old_padding, data_content_radius = old_radius } = new_style;
                 // 选项卡背景设置
                 const tabs_data = {
