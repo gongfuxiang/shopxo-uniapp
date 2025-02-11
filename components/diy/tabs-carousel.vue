@@ -2,7 +2,7 @@
     <view class="ou pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
-            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsImmersionModel="propIsImmersionModel" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <view :style="carousel_margin_top">
                 <view :style="carousel_container">
                     <view :style="carousel_img_container">
@@ -57,6 +57,11 @@
                 type: Number,
                 default: 1000000,
             },
+            // 选项卡是否使用安全距离
+            propIsImmersionModel: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {

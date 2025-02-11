@@ -7,11 +7,11 @@
                     <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
                 </view>
                 <view :style="content_padding">
-                    <view class="content flex-col" :style="'padding-top:' + (temp_is_header_top ? temp_header_top : '0')">
+                    <view class="content flex-col" :style="'padding-top:calc(' + (temp_is_header_top ? temp_header_top + 'px)' : '0px)')">
                         <view v-for="item in tabs_data" :key="item.key">
                             <template v-if="item.is_enable == '1'">
-                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="temp_header_top" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-                                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="temp_header_top" :propScrollTop="scroll_top" :propTabsIsTop="temp_is_header_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
+                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propIsImmersionModel="is_immersion_model" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+                                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propIsImmersionModel="is_immersion_model" :propScrollTop="scroll_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
                             </template>
                         </view>
                         <template v-if="is_tabs_type">
@@ -19,30 +19,30 @@
                                 <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx;z-index:1' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:' + (!isEmpty(item.com_data.style.common_style.module_z_index) ? item.com_data.style.common_style.module_z_index : 0))">
                                     <!-- 基础组件 -->
                                     <template v-if="item.is_enable == '1'">
-                                        <componentDiySearch v-if="item.key == 'search'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiySearch>
-                                        <componentDiyCarousel v-else-if="item.key == 'carousel'" :propOuterContainerPadding="outer_container_padding" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data" @onVideoPlay="video_play"></componentDiyCarousel>
-                                        <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyNavGroup>
-                                        <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyUserInfo>
-                                        <componentDiyNotice v-else-if="item.key == 'notice'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyNotice>
-                                        <componentDiyVideo v-else-if="item.key == 'video'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyVideo>
-                                        <componentDiyArticleList v-else-if="item.key == 'article-list'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyArticleList>
-                                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0"></componentDiyArticleTabs>
-                                        <componentDataTabs v-else-if="item.key == 'data-tabs'" :ref="'diy_goods_buy' + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @goods_buy_event="goods_buy_event"></componentDataTabs>
-                                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="(!is_immersion_model ? temp_sticky_top : 0) + tabs_height" :propScrollTop="scroll_top" :propCustomNavHeight="!is_immersion_model && is_header_top ? (is_search_alone_row ? 66 + data_alone_row_space : 33) : 0" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
-                                        <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
-                                        <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyDataMagic>
-                                        <componentDiyCustom v-else-if="item.key == 'custom'" :propOuterContainerPadding="outer_container_padding" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCustom>
-                                        <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyImgMagic>
-                                        <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyHotZone>
-                                        <componentDiySeckill v-else-if="item.key == 'seckill'" :propOuterContainerPadding="outer_container_padding" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiySeckill>
+                                        <componentDiySearch v-if="item.key == 'search'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiySearch>
+                                        <componentDiyCarousel v-else-if="item.key == 'carousel'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @onVideoPlay="video_play"></componentDiyCarousel>
+                                        <componentDiyNavGroup v-else-if="item.key == 'nav-group'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyNavGroup>
+                                        <componentDiyUserInfo v-else-if="item.key == 'user-info'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyUserInfo>
+                                        <componentDiyNotice v-else-if="item.key == 'notice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyNotice>
+                                        <componentDiyVideo v-else-if="item.key == 'video'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyVideo>
+                                        <componentDiyArticleList v-else-if="item.key == 'article-list'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyArticleList>
+                                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height" :propIsTabsUseSafeDistance="(is_immersion_model && is_header_top) || !is_immersion_model"></componentDiyArticleTabs>
+                                        <componentDataTabs v-else-if="item.key == 'data-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height" :propIsTabsUseSafeDistance="(is_immersion_model && is_header_top) || !is_immersion_model" @goods_buy_event="goods_buy_event"></componentDataTabs>
+                                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height" :propIsTabsUseSafeDistance="(is_immersion_model && is_header_top) || !is_immersion_model" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
+                                        <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
+                                        <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyDataMagic>
+                                        <componentDiyCustom v-else-if="item.key == 'custom'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCustom>
+                                        <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyImgMagic>
+                                        <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyHotZone>
+                                        <componentDiySeckill v-else-if="item.key == 'seckill'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiySeckill>
                                         <!-- 插件 -->
-                                        <componentDiyCoupon v-else-if="item.key == 'coupon'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCoupon>
+                                        <componentDiyCoupon v-else-if="item.key == 'coupon'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCoupon>
                                         <!-- 工具组件 -->
                                         <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data"></componentDiyFloatWindow>
-                                        <componentDiyTitle v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propValue="item.com_data"></componentDiyTitle>
-                                        <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyAuxiliaryLine>
-                                        <componentDiyRichText v-else-if="item.key == 'rich-text'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyRichText>
-                                        <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propIndex="is_the_safe_distance_enabled ? item.index : -1" :propKey="item.id + index" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
+                                        <componentDiyTitle v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></componentDiyTitle>
+                                        <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyAuxiliaryLine>
+                                        <componentDiyRichText v-else-if="item.key == 'rich-text'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyRichText>
+                                        <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyAuxiliaryBlank>
                                     </template>
                                 </view>
                             </template>
@@ -261,7 +261,61 @@
                 scroll_throttle_timeout: null,
                 // 是否开启安全距离
                 is_the_safe_distance_enabled: false,
+                // 是否开启置顶
+                is_tabs_data_topped: false,
             };
+        },
+        computed: {
+            get_tabs_data_prop_top() {
+                // 开启了沉浸式时的处理
+                if (this.is_immersion_model) {
+                    // 并且开启了安全距离
+                    return this.is_the_safe_distance_enabled ? this.temp_header_top : 0;
+                } else {
+                    return this.temp_header_top;
+                }
+            },
+            get_prop_index() {
+                return (item) => {
+                    return this.is_the_safe_distance_enabled && this.tabs_data.length == 0 ? item.index : -1;
+                }
+            },
+            get_diy_prop_top() {
+                // 不开启沉浸模式时的处理
+                if (!this.is_immersion_model) {
+                    return this.temp_sticky_top + this.tabs_height;
+                } else {
+                    // 开启沉浸模式且开启选项卡置顶时
+                    if (this.is_tabs_data_topped) {
+                        return this.tabs_height;
+                    } else {
+                        // 开启安全距离
+                        if (this.is_the_safe_distance_enabled) {
+                            return this.is_header_top ? this.temp_sticky_top : 0;
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+            },
+            get_diy_custom_nav_height() {
+                // 不开启沉浸模式时的处理
+                if (!this.is_immersion_model) {
+                    return this.is_header_top ? (this.is_search_alone_row ? 66 + this.data_alone_row_space : 33) : 0 
+                } else {
+                    // 开启沉浸模式且开启选项卡置顶时
+                    if (this.is_tabs_data_topped) {
+                        return 0;
+                    } else {
+                        // 开启沉浸模式时并且开启安全距离
+                        if (this.is_the_safe_distance_enabled) {
+                            return this.is_search_alone_row ? 66 + this.data_alone_row_space : 33;
+                        } else {
+                            return 0
+                        }
+                    }   
+                }
+            }
         },
         watch: {
             propKey(val) {
@@ -305,6 +359,7 @@
             // 初始化
             init() {
                 const { header = {}, diy_data = [], tabs_data = [] } = this.propValue;
+                // 头部的样式
                 let header_style = header.com_data.style;
                 let new_diy_index = 0;
                 let new_tabs_data = [];
@@ -332,38 +387,42 @@
                         }
                     });
                 }
-                const { padding_right = 0, padding_left = 0 } = header.com_data.style.common_style;
+                const { padding_right = 0, padding_left = 0 } = header_style.common_style;
+                const new_is_search_alone_row = header.com_data.content.data_alone_row_value.length > 0 ? true : false;
+                const new_data_alone_row_space = parseInt(header_style.data_alone_row_space || 5);
                 // tabs选项卡数据过滤
                 this.setData({
                     header_data: header,
                     footer_data: this.propValue.footer,
                     diy_data: new_diy_data,
                     tabs_data: new_tabs_data,
-                    page_style: common_styles_computer(header.com_data.style.common_style),
-                    page_img_style: background_computer(header.com_data.style.common_style),
+                    page_style: common_styles_computer(header_style.common_style),
+                    page_img_style: background_computer(header_style.common_style),
                     // 内间距
                     content_padding: `padding: 0px ${padding_right}px 0px ${padding_left}px;` + 'box-sizing:border-box;',
                     outer_container_padding: padding_right + padding_left,
                     // 判断顶部导航是否置顶
-                    is_header_top: parseInt(header.com_data.style.up_slide_display) == 1 ? true : false,
+                    is_header_top: parseInt(header_style.up_slide_display) == 1 ? true : false,
+                    is_tabs_data_topped: new_tabs_data[0]?.com_data?.content?.tabs_top_up == '1' || false,
                     temp_sticky_top: this.sticky_top,
-                    temp_header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(header.com_data.content.data_alone_row_value.length > 0 ? header.com_data.style.data_alone_row_space || 5 : 0) * 2}rpx + ${header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
-                    header_top: `calc(${this.sticky_top}px + 66rpx + ${parseInt(header.com_data.content.data_alone_row_value.length > 0 ? header.com_data.style.data_alone_row_space || 5 : 0) * 2}rpx + ${header.com_data.content.data_alone_row_value.length > 0 ? '66rpx' : '0rpx'});`,
+                    temp_header_top: this.sticky_top + (new_is_search_alone_row ? 66 + new_data_alone_row_space : 33),
+                    header_top: this.sticky_top + (new_is_search_alone_row ? 66 + new_data_alone_row_space : 33),
+                    is_immersion_model: header_style.header_background_type !== 'color_image' && header_style.immersive_style == '1',
                     // 顶部导航高度是否变化--------------------------------------------------
-                    is_search_alone_row: header.com_data.content.data_alone_row_value.length > 0 ? true : false,
-                    data_alone_row_space: parseInt(header.com_data.style.data_alone_row_space || 5),
+                    is_search_alone_row: new_is_search_alone_row,
+                    data_alone_row_space: new_data_alone_row_space,
                     is_immersive_style_and_general_safe_distance_value: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',
-                    is_the_safe_distance_enabled: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1' && new_tabs_data.length == 0,// diy_data是否开启安全距离
+                    is_the_safe_distance_enabled: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',// diy_data是否开启安全距离
                 });
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
             },
             // 顶部导航沉浸模式回调
-            immersion_model_call_back(bool) {
-                this.setData({
-                    is_immersion_model: bool,
-                });
-            },
+            // immersion_model_call_back(bool) {
+            //     this.setData({
+            //         is_immersion_model: bool,
+            //     });
+            // },
             get_index_content(new_diy_index, header, header_style, item) {
                 item.index = new_diy_index;
                 if (new_diy_index == 0) {
@@ -372,7 +431,10 @@
                         let new_data = JSON.parse(JSON.stringify(item));
                         // 顶部导航的高度
                         let header_top_height = (header.com_data.content.data_alone_row_value.length > 0 ? parseInt(header.com_data.style.data_alone_row_space || 5) : 0) + 33 + (header.com_data.content.data_alone_row_value.length > 0 ? 33 : 0);
-                        new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
+                        // 选项卡和选项卡轮播置顶时不需要加入安全距离
+                        if (!(new_data.com_data.content.tabs_top_up == '1' && ['tabs', 'tabs-carousel'].includes(new_data.key))) {
+                            new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
+                        }
                         return new_data;
                     }
                     return item;
