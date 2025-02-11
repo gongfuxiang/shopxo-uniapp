@@ -115,7 +115,7 @@
             // 层级
             propZIndex: {
                 type: Number,
-                default: 2,
+                default: 11,
             },
             // 自定义导航栏高度
             propCustomNavHeight: {

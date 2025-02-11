@@ -363,7 +363,7 @@
     .header-container {
         width: 100%;
         .header-around {
-            z-index: 4;
+            z-index: 11;
         }
         .model-top {
             .roll {
