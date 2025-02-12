@@ -54,7 +54,7 @@
             </view>
         </view>
         <!-- 选项卡更多弹窗 -->
-        <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
+        <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="'calc(' + propTop + 'px)'" @onclose="quick_close_event">
             <view class="padding-vertical-lg">
                 <view class="padding-left-main padding-bottom-main">全部选项卡</view>
                 <view class="divider-b">
@@ -115,7 +115,7 @@
             // 层级
             propZIndex: {
                 type: Number,
-                default: 2,
+                default: 11,
             },
             // 自定义导航栏高度
             propCustomNavHeight: {

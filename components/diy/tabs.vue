@@ -2,9 +2,11 @@
     <!-- 选项卡 -->
     <view class="tabs-container pr">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style + (top_up == '1' ? propContentPadding : '')">
-            <view class="tabs-contents bs-bb" :style="style_container">
-                <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
-                    <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <view :style="style_margin_top">
+                <view class="tabs-contents bs-bb" :style="style_container">
+                    <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
+                        <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+                    </view>
                 </view>
             </view>
         </view>
@@ -98,6 +100,7 @@
                 tabs_carousel_seat_height: 0,
                 // 置顶时，选项卡样式
                 tabs_top_style: '',
+                style_margin_top: '',
             };
         },
         created() {
@@ -139,13 +142,13 @@
                 // 判断选项卡是否置顶
                 let other_style = this.propTop;
 
-                let new_tabs_top_style = this.propNavIsTop || this.propTabsIsTop || new_content.tabs_top_up == '1' ? (new_content.tabs_top_up == '1' ? 'top:calc(' + other_style + 'px);z-index:3;' : '') : '';
+                let new_tabs_top_style = this.propNavIsTop || this.propTabsIsTop || new_content.tabs_top_up == '1' ? (new_content.tabs_top_up == '1' ? 'top:calc(' + other_style + 'px);z-index:11;' : '') : '';
                 let new_top_up = new_content.tabs_top_up;
                 // #ifdef H5 || MP-TOUTIAO
                 if (this.propTabsIsTop) {
                     other_style = '0';
                 }
-                new_tabs_top_style = 'top:calc(' + other_style + 'px);z-index:3;';
+                new_tabs_top_style = 'top:calc(' + other_style + 'px);z-index:11;';
                 new_top_up = this.propNavIsTop || this.propTabsIsTop ? new_content.tabs_top_up : '0';
                 // #endif
                 let tabs_bg = new_style.common_style.color_list;
@@ -157,8 +160,10 @@
                     tabs_data: new_tabs_data,
                     style_container: this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : '', // 如果是选项卡轮播，不需要走默认样式
                     // 如果开了滑动置顶，并且开了沉浸式，不需要走传递过来的index，否则的话就用传递过来的index
-                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, new_content.tabs_top_up == '1' ? -1 : this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
+                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
+                    // 沉浸模式下并且开通了安全距离 会显示-的margin
+                    style_margin_top: this.propIsImmersionModel ? `margin-top: -${ this.propTop * 2 }rpx;` : '',
                     // 判断是否置顶
                     top_up: new_top_up,
                 });
@@ -209,7 +214,7 @@
 
 <style lang="scss" scoped>
     .tabs-container {
-        z-index: 2;
+        z-index: 11;
         .tabs-top {
             position: fixed;
             left: 0;
