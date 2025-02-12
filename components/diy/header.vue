@@ -268,7 +268,7 @@
                 const { location_margin = this.old_margin } = new_style;
                 this.setData({
                     form: this.propValue,
-                    position: new_style.up_slide_display == '1' ? 'position:fixed;' : new_style.immersive_style === '1' ? 'position:absolute;' : 'position:reactive;',
+                    position: new_style.up_slide_display == '1' ? 'position:fixed;' : new_style.immersive_style === '1' ? 'position:absolute;' : 'position:relative;',
                     is_positon_realative: new_style.up_slide_display == '1' ? false : true,
                     roll_style: new_roll_style,
                     roll_img_style: new_roll_img_style,

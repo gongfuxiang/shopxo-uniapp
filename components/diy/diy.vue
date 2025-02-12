@@ -7,11 +7,11 @@
                     <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
                 </view>
                 <view :style="content_padding">
-                    <view class="content flex-col" :style="'padding-top:calc(' + (temp_is_header_top ? temp_header_top + 'px)' : '0px)')">
+                    <view class="content flex-col" :style="'padding-top:calc(' + (temp_is_header_top ? temp_header_top + temp_sticky_top + 'px)' : '0px)')">
                         <view v-for="item in tabs_data" :key="item.key">
                             <template v-if="item.is_enable == '1'">
-                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propIsImmersionModel="is_immersion_model" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
-                                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propIsImmersionModel="is_immersion_model" :propScrollTop="scroll_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
+                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model" :propNavIsTop="is_header_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+                                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model" :propScrollTop="scroll_top" :propTabsIsTop="temp_is_header_top" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
                             </template>
                         </view>
                         <template v-if="is_tabs_type">
@@ -208,6 +208,7 @@
                 // #endif
                 header_top: '',
                 temp_sticky_top: 0,
+                temp_sticky_no_h5_top: 0,
                 temp_header_top: '0px',
                 is_header_top: false,
                 temp_is_header_top: false,
@@ -275,6 +276,15 @@
                     return this.temp_header_top;
                 }
             },
+            get_tabs_data_prop_sticky_top() {
+                // 开启了沉浸式时的处理
+                if (this.is_immersion_model) {
+                    // 并且开启了安全距离
+                    return this.is_the_safe_distance_enabled ? this.temp_sticky_top : 0;
+                } else {
+                    return this.temp_sticky_top;
+                }
+            },
             get_prop_index() {
                 return (item) => {
                     return this.is_the_safe_distance_enabled && this.tabs_data.length == 0 ? item.index : -1;
@@ -283,7 +293,7 @@
             get_diy_prop_top() {
                 // 不开启沉浸模式时的处理
                 if (!this.is_immersion_model) {
-                    return this.temp_sticky_top + this.tabs_height;
+                    return this.temp_sticky_no_h5_top + this.tabs_height;
                 } else {
                     // 开启沉浸模式且开启选项卡置顶时
                     if (this.is_tabs_data_topped) {
@@ -291,7 +301,7 @@
                     } else {
                         // 开启安全距离
                         if (this.is_the_safe_distance_enabled) {
-                            return this.is_header_top ? this.temp_sticky_top : 0;
+                            return this.is_header_top ? this.temp_sticky_no_h5_top : 0;
                         } else {
                             return 0;
                         }
@@ -389,7 +399,7 @@
                 }
                 const { padding_right = 0, padding_left = 0 } = header_style.common_style;
                 const new_is_search_alone_row = header.com_data.content.data_alone_row_value.length > 0 ? true : false;
-                const new_data_alone_row_space = parseInt(header_style.data_alone_row_space || 5);
+                const new_data_alone_row_space = parseInt(header_style.data_alone_row_space || 0);
                 // tabs选项卡数据过滤
                 this.setData({
                     header_data: header,
@@ -405,8 +415,9 @@
                     is_header_top: parseInt(header_style.up_slide_display) == 1 ? true : false,
                     is_tabs_data_topped: new_tabs_data[0]?.com_data?.content?.tabs_top_up == '1' || false,
                     temp_sticky_top: this.sticky_top,
-                    temp_header_top: this.sticky_top + (new_is_search_alone_row ? 66 + new_data_alone_row_space : 33),
-                    header_top: this.sticky_top + (new_is_search_alone_row ? 66 + new_data_alone_row_space : 33),
+                    temp_sticky_no_h5_top: this.sticky_top,
+                    temp_header_top: (new_is_search_alone_row ? 66 + new_data_alone_row_space : 33),
+                    header_top: (new_is_search_alone_row ? 66 + new_data_alone_row_space : 33),
                     is_immersion_model: header_style.header_background_type !== 'color_image' && header_style.immersive_style == '1',
                     // 顶部导航高度是否变化--------------------------------------------------
                     is_search_alone_row: new_is_search_alone_row,
@@ -431,10 +442,7 @@
                         let new_data = JSON.parse(JSON.stringify(item));
                         // 顶部导航的高度
                         let header_top_height = (header.com_data.content.data_alone_row_value.length > 0 ? parseInt(header.com_data.style.data_alone_row_space || 5) : 0) + 33 + (header.com_data.content.data_alone_row_value.length > 0 ? 33 : 0);
-                        // 选项卡和选项卡轮播置顶时不需要加入安全距离
-                        // if (!(new_data.com_data.content.tabs_top_up == '1' && ['tabs', 'tabs-carousel'].includes(new_data.key))) {
-                            new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
-                        // }
+                        new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
                         return new_data;
                     }
                     return item;
@@ -659,21 +667,26 @@
                         this.head_scroll_top = this.sticky_top + 100;
                     }
                 }
-
                 // 判断顶部导航是否置顶
-                // #ifdef H5 || MP-TOUTIAO
                 if (!this.is_header_top) {
                     if (scroll_num >= this.sticky_top + 33 + (this.is_search_alone_row ? 0 : 33 + this.data_alone_row_space)) {
                         this.temp_sticky_top = 0;
+                        // #ifdef H5
                         this.temp_header_top = 0;
+                        this.temp_sticky_no_h5_top = 0;
+                        // #endif
+                        // #ifndef H5
+                        this.temp_header_top = this.sticky_top;
+                        this.temp_sticky_no_h5_top = this.sticky_top;
+                        // #endif
                         this.temp_is_header_top = true;
                     } else {
                         this.temp_header_top = this.header_top;
                         this.temp_sticky_top = this.sticky_top;
+                        this.temp_sticky_no_h5_top = this.sticky_top;
                         this.temp_is_header_top = false;
                     }
                 }
-                // #endif
                 this.scroll_timer_compute(scroll_num);
             },
 

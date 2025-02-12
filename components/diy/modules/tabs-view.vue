@@ -54,7 +54,7 @@
             </view>
         </view>
         <!-- 选项卡更多弹窗 -->
-        <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="'calc(' + propTop + 'px)'" @onclose="quick_close_event">
+        <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="newPropTop" :propStyle="newPropStyle" @onclose="quick_close_event">
             <view class="padding-vertical-lg">
                 <view class="padding-left-main padding-bottom-main">全部选项卡</view>
                 <view class="divider-b">
@@ -177,6 +177,17 @@
                 tabs_sticky: '',
                 tabs_height: '100%',
                 tabs_adorn_img_style: '',
+                // #ifdef MP
+                sticky_top: bar_height,
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                sticky_top: bar_height,
+                // #endif
+                // #ifdef APP
+                sticky_top: bar_height,
+                // #endif
+                newPropTop: '',
+                newPropStyle: '',
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
@@ -255,11 +266,13 @@
                 // 参数设置
                 this.setData({
                     form: new_content,
+                    newPropTop: `calc(${ this.sticky_top * 2}rpx);`,
+                    newPropStyle: `padding-top: ${ this.sticky_top * 2 }rpx;margin-top: -${ this.sticky_top * 2 }rpx;`,
                     new_style: new_style,
                     tabs_spacing: Number(new_style.tabs_spacing),
                     tabs_sign_spacing: !isEmpty(new_style.tabs_sign_spacing) ? `margin-top: ${new_style.tabs_sign_spacing * 2}rpx;` : 'margin-top: 8rpx;',
                     tabs_list: new_content.tabs_list,
-                    tabs_padding_bottom: this.get_padding_bottom(new_content, new_style),
+                    tabs_padding_bottom: this.get_padding_bottom(new_content, new_style) + 'z-index: 11;',
                     // 选项卡主题
                     tabs_theme: this.get_tabs_theme(new_content),
                     tabs_theme_index: new_content.tabs_theme,
@@ -328,12 +341,14 @@
             },
             // 分类选择事件
             category_check_event() {
+                this.$emit('tabsZindex', 13)
                 this.setData({
                     popup_status: true,
                 });
             },
             // 关闭分类选择事件
             quick_close_event(e) {
+                this.$emit('tabsZindex', 11)
                 this.setData({
                     popup_status: false,
                 });
