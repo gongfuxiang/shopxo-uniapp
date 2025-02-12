@@ -338,20 +338,27 @@
                     popup_status: false,
                 });
                 this.$emit('onTabsTap', index, tabs_list_item);
+                setTimeout(() => {
+                    this.$emit('tabsZindex', 11)
+                }, 200)
             },
             // 分类选择事件
             category_check_event() {
-                this.$emit('tabsZindex', 13)
                 this.setData({
                     popup_status: true,
                 });
+                setTimeout(() => {
+                    this.$emit('tabsZindex', 13)
+                }, 0)
             },
             // 关闭分类选择事件
             quick_close_event(e) {
-                this.$emit('tabsZindex', 11)
                 this.setData({
                     popup_status: false,
                 });
+                setTimeout(() => {
+                    this.$emit('tabsZindex', 11)
+                }, 200)
             },
         },
     };
