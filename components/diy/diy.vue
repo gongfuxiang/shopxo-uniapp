@@ -432,9 +432,9 @@
                         // 顶部导航的高度
                         let header_top_height = (header.com_data.content.data_alone_row_value.length > 0 ? parseInt(header.com_data.style.data_alone_row_space || 5) : 0) + 33 + (header.com_data.content.data_alone_row_value.length > 0 ? 33 : 0);
                         // 选项卡和选项卡轮播置顶时不需要加入安全距离
-                        if (!(new_data.com_data.content.tabs_top_up == '1' && ['tabs', 'tabs-carousel'].includes(new_data.key))) {
+                        // if (!(new_data.com_data.content.tabs_top_up == '1' && ['tabs', 'tabs-carousel'].includes(new_data.key))) {
                             new_data.com_data.style.common_style.padding_top = parseInt(new_data.com_data.style.common_style.padding_top) + header_top_height;
-                        }
+                        // }
                         return new_data;
                     }
                     return item;
