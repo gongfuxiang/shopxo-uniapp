@@ -668,7 +668,7 @@
                     }
                 }
                 // 判断顶部导航是否置顶
-                if (!this.is_header_top) {
+                if (!this.is_header_top && !this.is_immersion_model) {
                     if (scroll_num >= this.sticky_top + 33 + (this.is_search_alone_row ? 0 : 33 + this.data_alone_row_space)) {
                         this.temp_sticky_top = 0;
                         // #ifdef H5
