@@ -55,7 +55,7 @@
         </view>
         <!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="newPropTop" :propStyle="newPropStyle" @onclose="quick_close_event">
-            <view class="padding-vertical-lg">
+            <view :class="['toutiao', 'app', 'h5'].includes(platform) ? 'padding-vertical-lg' : 'padding-vertical'">
                 <view class="padding-left-main padding-bottom-main">全部选项卡</view>
                 <view class="divider-b">
                     <view class="nav-list-more">
@@ -188,6 +188,7 @@
                 // #endif
                 newPropTop: '',
                 newPropStyle: '',
+                platform: app.globalData.application_client_type(),
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
