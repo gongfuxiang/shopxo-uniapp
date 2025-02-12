@@ -2,7 +2,7 @@
     <view :class="theme_view + ' ' + propMostClass">
         <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : 'popup-hide') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
             <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
-            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="popup_content_style + this.propStyle">
+            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="popup_content_style + propStyle">
                 <slot></slot>
             </view>
         </view>

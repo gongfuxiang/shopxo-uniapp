@@ -2,7 +2,7 @@
     <view class="ou pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? 'background-image: url(null);' : '')">
-            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsImmersionModel="propIsImmersionModel" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <view :style="carousel_margin_top">
                 <view :style="carousel_container">
                     <view :style="carousel_img_container">
@@ -32,6 +32,10 @@
             },
             propTop: {
                 type: [String, Number],
+                default: 0,
+            },
+            propStickyTop: {
+                type: Number,
                 default: 0,
             },
             // 是否导航栏置顶
@@ -67,6 +71,7 @@
             return {
                 style_container: '',
                 style_img_container: '',
+                style_margin_container: '',
                 spacing_common_style: {
                     padding: 0,
                     padding_top: 0,
@@ -139,7 +144,7 @@
                     carousel_img_container: background_computer(carousel_content_data) + padding_computer(carousel_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                     spacing_common_style: {
                         padding: 0,
-                        padding_top: new_style.common_style.padding_top,
+                        padding_top: new_style.common_style.padding_top + this.propStickyTop,
                         padding_bottom: 0,
                         padding_left: new_style.common_style.padding_left,
                         padding_right: new_style.common_style.padding_right,
