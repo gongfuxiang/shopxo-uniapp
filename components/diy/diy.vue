@@ -671,11 +671,11 @@
                 if (!this.is_header_top && !this.is_immersion_model) {
                     if (scroll_num >= this.sticky_top + 33 + (this.is_search_alone_row ? 0 : 33 + this.data_alone_row_space)) {
                         this.temp_sticky_top = 0;
-                        // #ifdef H5
+                        // #ifdef H5 || MP-TOUTIAO
                         this.temp_header_top = 0;
                         this.temp_sticky_no_h5_top = 0;
                         // #endif
-                        // #ifndef H5
+                        // #ifndef H5 || MP-TOUTIAO
                         this.temp_header_top = this.sticky_top;
                         this.temp_sticky_no_h5_top = this.sticky_top;
                         // #endif
