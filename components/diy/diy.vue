@@ -427,10 +427,6 @@
                     is_immersive_style_and_general_safe_distance_value: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',
                     is_the_safe_distance_enabled: header_style.immersive_style == '1' && header_style.general_safe_distance_value == '1',// diy_data是否开启安全距离
                 });
-                console.log(
-                    this.temp_header_top1
-                );
-                
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
             },
