@@ -170,7 +170,7 @@
                     // 如果开了滑动置顶，并且开了沉浸式，不需要走传递过来的index，否则的话就用传递过来的index
                     style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
-                    // 沉浸模式下并且开通了安全距离 会显示-的margin, this.propStickyTop - 10是因为他将头部的下边距也加上了，需要减去这部分值，确保他在头部的下边距下边
+                    // 沉浸模式下并且开通了安全距离 会显示-的margin
                     style_margin_container: this.propIsImmersionModel ? `margin-top: -${ newPropTop + this.propStickyTop }px;` : '',
                     // 判断是否置顶
                     top_up: new_top_up,
