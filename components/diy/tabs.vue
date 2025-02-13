@@ -129,7 +129,6 @@
                 this.init();
             },
             propStickyTop(val) {
-                console.log(val);
                 this.init();
             },
             propKey(val) {
@@ -150,14 +149,13 @@
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 // 判断选项卡是否置顶
                 let other_style = this.propTop;
-
-                let new_tabs_top_style = this.propNavIsTop || this.propTabsIsTop || new_content.tabs_top_up == '1' ? (new_content.tabs_top_up == '1' ? 'top:calc(' + (this.propStickyTop > 0 ? this.propStickyTop + 'px +' : '') + other_style * 2 + 'rpx);z-index:11;' : '') : '';
+                let new_tabs_top_style = this.propNavIsTop || this.propTabsIsTop || new_content.tabs_top_up == '1' ? (new_content.tabs_top_up == '1' ? 'top:calc(' + (this.propStickyTop > 0 ? this.propStickyTop + 'px + ' : '') + other_style * 2 + 'rpx);z-index:11;' : '') : '';
                 let new_top_up = new_content.tabs_top_up;
                 // #ifdef H5 || MP-TOUTIAO
-                if (this.propTabsIsTop) {
-                    other_style = '0';
-                }
-                new_tabs_top_style = 'top:calc(' + (this.propStickyTop > 0 ? this.propStickyTop + 'px +' : '') + other_style * 2 + 'rpx);z-index:11;';
+                // if (this.propTabsIsTop) {
+                //     other_style = '0';
+                // }
+                new_tabs_top_style = 'top:calc(' + (this.propStickyTop > 0 ? this.propStickyTop + 'px + ' : '') + other_style * 2 + 'rpx);z-index:11;';
                 new_top_up = this.propNavIsTop || this.propTabsIsTop ? new_content.tabs_top_up : '0';
                 // #endif
                 let tabs_bg = new_style.common_style.color_list;
