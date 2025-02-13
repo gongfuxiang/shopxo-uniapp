@@ -100,11 +100,11 @@
             </view>
         </block>
         <!-- #ifndef H5 || MP-TOUTIAO -->
-        <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
+        <!-- <view v-if="is_positon_realative" class="wh-auto pf top-0 left-0 right-0" :style="roll_style">
             <view :style="top_content_style">
                 <view :style="'height:' + (is_search_alone_row || is_icon_alone_row ? 'calc(132rpx + ' + data_alone_row_space + ');' : '66rpx;')"></view>
             </view>
-        </view>
+        </view> -->
         <!-- #endif -->
     </view>
 </template>

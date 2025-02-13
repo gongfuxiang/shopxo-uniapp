@@ -15,6 +15,7 @@
 </template>
 
 <script>
+    const app = getApp();
     import { common_styles_computer, common_img_computer, padding_computer, isEmpty, gradient_computer, margin_computer, background_computer, radius_computer, old_margin, old_padding, old_radius, old_border_and_box_shadow, border_computer, box_shadow_computer, } from '@/common/js/common/common.js';
     import componentDiyTabs from '@/components/diy/tabs';
     import componentDiycarousel from '@/components/diy/carousel';
@@ -133,18 +134,21 @@
                     background_img_style: carousel_content_background_img_style,
                     background_img: carousel_content_background_img,
                 }
+                const newPropTop = app.globalData.rpx_to_px(this.propTop * 2);
+                const new_tabs_top = app.globalData.rpx_to_px((tabs_margin?.margin_top || 0) * 2);
+                const tabs_margin_top = new_content.is_tabs_safe_distance == '1' ? newPropTop + this.propStickyTop : 0;
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     carousel_margin_top: 'margin-top:' + new_style.data_spacing * 2 + 'rpx',
-                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(tabs_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',
-                    tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
+                    tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(tabs_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + `overflow: hidden;margin-top: ${ new_tabs_top - tabs_margin_top }px;`,
+                    tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + `box-sizing: border-box;overflow: hidden;padding-top: ${ (tabs_padding?.padding_top || 0) + tabs_margin_top }px;`,
                     carousel_container: gradient_computer(carousel_content_data) + margin_computer(carousel_content_margin) + radius_computer(carousel_content_radius) + border_computer(carousel_content) + box_shadow_computer(carousel_content)  + 'overflow: hidden;',
                     carousel_img_container: background_computer(carousel_content_data) + padding_computer(carousel_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                     spacing_common_style: {
                         padding: 0,
-                        padding_top: new_style.common_style.padding_top + this.propStickyTop,
+                        padding_top: new_style.common_style.padding_top + (this.propIsImmersionModel ? this.propStickyTop : 0),
                         padding_bottom: 0,
                         padding_left: new_style.common_style.padding_left,
                         padding_right: new_style.common_style.padding_right,

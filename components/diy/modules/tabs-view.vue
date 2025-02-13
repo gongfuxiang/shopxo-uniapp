@@ -55,7 +55,7 @@
         </view>
         <!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="newPropTop" :propStyle="newPropStyle" @onclose="quick_close_event">
-            <view :class="['toutiao', 'app', 'h5'].includes(platform) ? 'padding-vertical-lg' : 'padding-vertical'">
+            <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')">
                 <view class="padding-left-main padding-bottom-main">全部选项卡</view>
                 <view class="divider-b">
                     <view class="nav-list-more">
