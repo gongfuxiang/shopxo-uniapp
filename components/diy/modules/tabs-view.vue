@@ -6,8 +6,8 @@
                 <view class="flex-row gap-10 jc-sb align-c" :style="propsTabsImgContainer">
                     <view class="tabs flex-1 flex-width">
                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" scroll-with-animation :scroll-into-view="'one-nav-item-' + active_index" :class="'wh-auto interior-area-' + propKey">
-                            <view :class="'flex-row ' + flex_class" :style="'height:' + tabs_height">
-                                <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;' + get_item_style(item.is_sliding_fixed)" :data-index="index" @tap="handle_event">
+                            <view :class="'flex-row ' + flex_class" :style="'height:' + tabs_height + ';width:' + tabs_width + 'px;'">
+                                <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index + 1 == tabs_list.length ? '0' : tabs_spacing) + 'rpx;' + get_item_style(item.is_sliding_fixed)" :data-index="index" @tap="handle_event">
                                     <view class="nowrap ma-auto">
                                         <view v-if="tabs_theme_index == '4'" :class="'img oh pr z-i-deep ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
                                             <imageEmpty :propImageSrc="item.img[0]" propImgFit="aspectFit" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
@@ -185,6 +185,7 @@
                 tabs_sticky: '',
                 tabs_height: '100%',
                 tabs_adorn_img_style: '',
+                tabs_width: 0,
                 // #ifdef MP
                 sticky_top: bar_height,
                 // #endif
@@ -315,21 +316,22 @@
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                 });
                 // 只有居中居右的才重新获取dom判断
-                if (['center', 'right'].includes(this.form.justification)) {
-                    setTimeout(() => {
-                        const query = uni.createSelectorQuery().in(this);
-                        query.select('.interior-area-' + this.propKey)
-                            .fields({ size: true, scrollOffset: true},(res) => {
-                                if ((res || null) != null) {
-                                    const { scrollWidth, width } = res;
-                                    this.setData({
-                                        is_out_of_range: scrollWidth <= width
-                                    });
-                                }
-                            })
-                            .exec();
-                    }, 0)
-                }
+                // if (['center', 'right'].includes(this.form.justification)) {
+                setTimeout(() => {
+                    const query = uni.createSelectorQuery().in(this);
+                    query.select('.interior-area-' + this.propKey)
+                        .fields({ size: true, scrollOffset: true},(res) => {
+                            if ((res || null) != null) {
+                                const { scrollWidth, width } = res;
+                                this.setData({
+                                    is_out_of_range: scrollWidth <= width,
+                                    tabs_width: scrollWidth
+                                });
+                            }
+                        })
+                        .exec();
+                }, 0)
+                // }
             },
             get_tabs_adorn_img_style(new_style) {
                 return radius_computer(new_style?.tabs_adorn_img_radius || this.old_radius) + `height: ${(new_style?.tabs_adorn_img_height || 10) * 2}rpx;${ new_style.is_tabs_adorn_img_background == '1' ? tabs_check.value : ''}`;
