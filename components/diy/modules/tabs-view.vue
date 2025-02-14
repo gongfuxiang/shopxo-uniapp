@@ -5,9 +5,9 @@
             <view :style="propsTabsContainer">
                 <view class="flex-row gap-10 jc-sb align-c" :style="propsTabsImgContainer">
                     <view class="tabs flex-1 flex-width">
-                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" :class="'wh-auto interior-area-' + propKey">
+                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" scroll-with-animation :scroll-into-view="'one-nav-item-' + active_index" :class="'wh-auto interior-area-' + propKey">
                             <view :class="'flex-row ' + flex_class" :style="'height:' + tabs_height">
-                                <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;margin-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;margin-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;'" :data-index="index" @tap="handle_event">
+                                <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index - 1 == tabs_list ? '0' : tabs_spacing) + 'rpx;' + get_item_style(item.is_sliding_fixed)" :data-index="index" @tap="handle_event">
                                     <view class="nowrap ma-auto">
                                         <view v-if="tabs_theme_index == '4'" :class="'img oh pr z-i-deep ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
                                             <imageEmpty :propImageSrc="item.img[0]" propImgFit="aspectFit" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
@@ -143,6 +143,10 @@
             propKey: {
                 type: [String, Number],
                 default: '',
+            },
+            propTabsSlidingFixedBg: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -206,6 +210,11 @@
                     return this.form.justification == 'center' ? 'jc-c' : this.form.justification == 'right' ? 'jc-e': '';
                 } else {
                     return '';
+                }
+            },
+            get_item_style() {
+                return (val) => {
+                    return val == '1' ? `${ this.propTabsSlidingFixedBg };position: sticky;left: 0;z-index: 11;` : ''
                 }
             }
         },

@@ -2,7 +2,7 @@
     <!-- 文章列表 -->
     <view class="article-tabs ou" :class="'article-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propKey="propKey" :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propKey="propKey" :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="article_margin_top">
                 <view :style="article_container">
                     <view :style="article_img_container">
@@ -85,6 +85,7 @@
                 article_margin_top: '',
                 tabs_container: '',
                 tabs_img_container: '',
+                tabs_sliding_fixed_bg: '',
                 // 商品区域背景设置
                 article_container: '',
                 article_img_container: '',
@@ -206,6 +207,7 @@
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
                     article_margin_top:  'margin-top:' + (new_style?.article_content_spacing || 0) * 2 + 'rpx',
+                    tabs_sliding_fixed_bg: gradient_computer(tabs_data),
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(new_style?.tabs_margin || old_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
                     article_container: gradient_computer(article_content_data) + margin_computer(article_content_margin) + radius_computer(article_content_radius) + box_shadow_computer(article_content) + border_computer(article_content) + 'overflow: hidden;',
