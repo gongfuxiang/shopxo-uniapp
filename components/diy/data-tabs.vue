@@ -1,7 +1,7 @@
 <template>
     <view class="data-tabs ou" :class="'data-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propValue="data_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propKey="propKey" :propValue="data_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="data_margin_top">
                 <view :style="data_container">
                     <view :style="data_img_container">

@@ -5,7 +5,7 @@
             <view :style="style_margin_container">
                 <view class="tabs-contents bs-bb" :style="style_container">
                     <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
-                        <componentDiyModulesTabsView :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></componentDiyModulesTabsView>
+                        <componentDiyModulesTabsView :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></componentDiyModulesTabsView>
                     </view>
                 </view>
             </view>
