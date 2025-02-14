@@ -5,9 +5,9 @@
             <view :style="propsTabsContainer">
                 <view class="flex-row gap-10 jc-sb align-c" :style="propsTabsImgContainer">
                     <view class="tabs flex-1 flex-width">
-                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" scroll-with-animation :scroll-into-view="'one-nav-item-' + active_index" :class="'wh-auto interior-area-' + propKey">
-                            <view :class="'flex-row ' + flex_class" :style="'height:' + tabs_height + ';width:' + tabs_width + 'px;'">
-                                <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c align-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index + 1 == tabs_list.length ? '0' : tabs_spacing) + 'rpx;' + get_item_style(item.is_sliding_fixed)" :data-index="index" @tap="handle_event">
+                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="tabs_list_is_sliding_fixed" :scroll-left="scroll_left" :class="'wh-auto interior-area-' + propKey">
+                            <view :class="'flex-row ' + flex_class" :style="'height:' + tabs_height + ';width:' + tabs_scroll_width + 'px;'">
+                                <view v-for="(item, index) in tabs_list" :key="index" :class="'item nowrap flex-col jc-c align-c gap-4 scroll-item-' + propKey + ' ' + tabs_theme + (index == active_index ? ' active' : '') + ((tabs_theme_index == '0' && tabs_theme_1_style) || tabs_theme_index == '1' || tabs_theme_index == '2' ? ' pb-0' : '')" :style="'flex:0 0 auto;padding-left:' + (index == 0 ? '0' : tabs_spacing) + 'rpx;padding-right:' + (index + 1 == tabs_list.length ? '0' : tabs_spacing) + 'rpx;' + get_item_style(item.is_sliding_fixed)" :data-index="index" @tap="handle_event">
                                     <view class="nowrap ma-auto">
                                         <view v-if="tabs_theme_index == '4'" :class="'img oh pr z-i-deep ' + (!isEmpty(item.img) ? 'img-no-empty' : '')" :style="tabs_theme_style.tabs_top_img">
                                             <imageEmpty :propImageSrc="item.img[0]" propImgFit="aspectFit" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
@@ -186,6 +186,7 @@
                 tabs_height: '100%',
                 tabs_adorn_img_style: '',
                 tabs_width: 0,
+                tabs_scroll_width: 0,
                 // #ifdef MP
                 sticky_top: bar_height,
                 // #endif
@@ -199,6 +200,8 @@
                 newPropStyle: '',
                 platform: app.globalData.application_client_type(),
                 is_out_of_range: false,
+                tabs_list_is_sliding_fixed: true,
+                scroll_left: 0,
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
@@ -288,9 +291,11 @@
                 const is_img = new_content?.tabs_list?.findIndex((item) => item.tabs_type === '1' && isEmpty(item.tabs_icon)) ?? -1;
                 // 选项卡高度 五个值，作为判断依据，因为图片没有未选中的大小设置，所以高度判断的时候只取选中的高度, 其余的icon和标题都分别取选中和未选中的大小对比，取出最大的值，作为选项卡的高度，避免选项卡切换时会出现抖动问题
                 const height = Math.max(tabs_size_checked + default_height, tabs_size, icon_height, is_img > -1 ? (tabs_img_height + default_height) : '');
+                const findIndex = new_content.tabs_list.findIndex(item => item.is_sliding_fixed == '1');
                 // 参数设置
                 this.setData({
                     form: new_content,
+                    tabs_list_is_sliding_fixed: findIndex == -1,
                     newPropTop: `calc(${ this.sticky_top * 2}rpx);`,
                     newPropStyle: `padding-top: ${ this.sticky_top * 2 }rpx;margin-top: -${ this.sticky_top * 2 }rpx;`,
                     new_style: new_style,
@@ -325,7 +330,8 @@
                                 const { scrollWidth, width } = res;
                                 this.setData({
                                     is_out_of_range: scrollWidth <= width,
-                                    tabs_width: scrollWidth
+                                    tabs_scroll_width: scrollWidth,
+                                    tabs_width: width
                                 });
                             }
                         })
@@ -379,10 +385,27 @@
                     active_index: index,
                     popup_status: false,
                 });
+                this.set_scoll_left(index);
                 this.$emit('onTabsTap', index, tabs_list_item);
                 setTimeout(() => {
                     this.$emit('tabsZindex', 11)
                 }, 200)
+            },
+            // 将选中的内容定位到中间
+            set_scoll_left(index) {
+                const query = uni.createSelectorQuery().in(this);
+                query.selectAll(`.scroll-item-` + this.propKey)
+                .boundingClientRect((rect) => {
+                    const scrollLeft =
+                        rect[index].left +
+                        rect[index].width / 2 -
+                        this.tabs_width / 2 -
+                        rect[0].left;
+                    this.setData({
+                        scroll_left: scrollLeft,
+                    });
+                })
+                .exec();
             },
             // 分类选择事件
             category_check_event() {
