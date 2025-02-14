@@ -305,7 +305,7 @@
                     tabs_height: ['2', '4'].includes(new_content.tabs_theme) ? height * 2 + 'rpx' : '100%;',
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                 });
-                // 只有居左居右的才重新获取dom
+                // 只有居中居右的才重新获取dom判断
                 if (['center', 'right'].includes(this.form.justification)) {
                     setTimeout(() => {
                         const query = uni.createSelectorQuery().in(this);
