@@ -322,7 +322,6 @@
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                     tabs_adorn_icon_size: (new_style?.tabs_adorn_icon_size || 0) * 2 + 'rpx',
                 });
-                console.log(this.tabs_padding_bottom);
                 // 只有居中居右的才重新获取dom判断
                 // if (['center', 'right'].includes(this.form.justification)) {
                 setTimeout(() => {
@@ -399,11 +398,14 @@
                 const query = uni.createSelectorQuery().in(this);
                 query.selectAll(`.scroll-item-` + this.propKey)
                 .boundingClientRect((rect) => {
+                    const tabs_index = this.form.tabs_list.findIndex(item => item.is_sliding_fixed == '1');
+                    // 如果第一个悬浮了，就取第二个的left加上 第一个的宽度和left
+                    const new_width = tabs_index == 0 ? rect[1].left - rect[0].width - rect[0].left : rect[0].left;
                     const scrollLeft =
                         rect[index].left +
                         rect[index].width / 2 -
                         this.tabs_width / 2 -
-                        rect[0].left;
+                        new_width
                     this.setData({
                         scroll_left: scrollLeft,
                     });
