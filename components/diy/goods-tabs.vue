@@ -1,7 +1,7 @@
 <template>
     <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
         <view class="ou" :style="style_img_container">
-            <componentDiyModulesTabsView :propKey="propKey" :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
+            <componentDiyModulesTabsView :propKey="propKey" :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="shop_margin_top">
                 <view :style="shop_container">
                     <view :style="shop_img_container">
@@ -82,6 +82,7 @@
                 // 选项卡背景设置
                 tabs_container: '',
                 tabs_img_container: '',
+                tabs_sliding_fixed_bg: '',
                 // 商品区域背景设置
                 shop_margin_top: '',
                 shop_container: '',
@@ -197,6 +198,7 @@
                     style_container: common_styles_computer(common_style),
                     style_img_container: common_img_computer(common_style, this.propIndex),
                     tabs_style: new_tabs_style,
+                    tabs_sliding_fixed_bg: gradient_computer(tabs_data),
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(new_style?.tabs_margin || old_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + 'box-sizing: border-box;overflow: hidden;',
                     shop_margin_top: 'margin-top:' + (new_style?.shop_content_spacing || 0) * 2 + 'rpx;',

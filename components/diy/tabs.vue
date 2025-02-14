@@ -5,7 +5,7 @@
             <view :style="style_margin_container">
                 <view class="tabs-contents bs-bb" :style="style_container">
                     <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
-                        <componentDiyModulesTabsView :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></componentDiyModulesTabsView>
+                        <componentDiyModulesTabsView :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></componentDiyModulesTabsView>
                     </view>
                 </view>
             </view>
@@ -85,6 +85,10 @@
             propIsImmersionModel: {
                 type: Boolean,
                 default: false
+            },
+            propTabsSlidingFixedBg: {
+                type: String,
+                default: ''
             }
         },
         components: {
@@ -94,6 +98,7 @@
             return {
                 style_container: '',
                 style_img_container: '',
+                tabs_sliding_fixed_bg: '',
                 content: '',
                 tabs_data: {},
                 // 是否滑动置顶
@@ -166,6 +171,7 @@
                 const newPropTop = app.globalData.rpx_to_px(this.propTop * 2);
                 this.setData({
                     tabs_data: new_tabs_data,
+                    tabs_sliding_fixed_bg: this.propIsCommon ? gradient_computer(new_style.common_style) : this.propTabsSlidingFixedBg,
                     style_container: this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : '', // 如果是选项卡轮播，不需要走默认样式
                     // 如果开了滑动置顶，并且开了沉浸式，不需要走传递过来的index，否则的话就用传递过来的index
                     style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
