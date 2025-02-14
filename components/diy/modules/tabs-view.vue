@@ -305,19 +305,22 @@
                     tabs_height: ['2', '4'].includes(new_content.tabs_theme) ? height * 2 + 'rpx' : '100%;',
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                 });
-                setTimeout(() => {
-                    const query = uni.createSelectorQuery().in(this);
-                    query.select('.interior-area-' + this.propKey)
-                        .fields({ size: true, scrollOffset: true},(res) => {
-                            if ((res || null) != null) {
-                                const { scrollWidth, width } = res;
-                                this.setData({
-                                    is_out_of_range: scrollWidth <= width
-                                });
-                            }
-                        })
-                        .exec();
-                }, 0)
+                // 只有居中居右的才重新获取dom判断
+                if (['center', 'right'].includes(this.form.justification)) {
+                    setTimeout(() => {
+                        const query = uni.createSelectorQuery().in(this);
+                        query.select('.interior-area-' + this.propKey)
+                            .fields({ size: true, scrollOffset: true},(res) => {
+                                if ((res || null) != null) {
+                                    const { scrollWidth, width } = res;
+                                    this.setData({
+                                        is_out_of_range: scrollWidth <= width
+                                    });
+                                }
+                            })
+                            .exec();
+                    }, 0)
+                }
             },
             get_tabs_adorn_img_style(new_style) {
                 return radius_computer(new_style?.tabs_adorn_img_radius || this.old_radius) + `height: ${(new_style?.tabs_adorn_img_height || 10) * 2}rpx;${ new_style.is_tabs_adorn_img_background == '1' ? tabs_check.value : ''}`;
