@@ -32,7 +32,7 @@
                                         <template v-if="tabs_theme_index == '3' && index == active_index">
                                             <template v-if="!isEmpty(form.tabs_adorn_icon)">
                                                 <view class="icon pr z-i wh-auto flex-row jc-c align-c" :style="tabs_sign_spacing">
-                                                    <iconfont :name="'icon-' + form.tabs_adorn_icon" :style="icon_tabs_check" propContainerDisplay="flex" size="40rpx"></iconfont>
+                                                    <iconfont :name="'icon-' + form.tabs_adorn_icon" :style="icon_tabs_check" propContainerDisplay="flex" :size="tabs_adorn_icon_size"></iconfont>
                                                 </view>
                                             </template>
                                             <template v-else>
@@ -202,6 +202,7 @@
                 is_out_of_range: false,
                 tabs_list_is_sliding_fixed: true,
                 scroll_left: 0,
+                tabs_adorn_icon_size: '0rpx',
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
@@ -319,7 +320,9 @@
                     tabs_theme_1_style: new_style.tabs_one_theme == '1',
                     tabs_height: ['2', '4'].includes(new_content.tabs_theme) ? height * 2 + 'rpx' : '100%;',
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
+                    tabs_adorn_icon_size: (new_style?.tabs_adorn_icon_size || 0) * 2 + 'rpx',
                 });
+                console.log(this.tabs_padding_bottom);
                 // 只有居中居右的才重新获取dom判断
                 // if (['center', 'right'].includes(this.form.justification)) {
                 setTimeout(() => {
