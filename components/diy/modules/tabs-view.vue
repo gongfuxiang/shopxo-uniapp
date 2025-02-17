@@ -403,7 +403,7 @@
                     let new_width = tabs_index == 0 && index != 0 ? rect[1].left - rect[0].width - rect[0].left : rect[0].left;
                     // 如果悬浮的不是第一个并且选中的是悬浮的内容
                     if (index > 0 && tabs_index == index) {
-                        new_width = rect[index + 1].left + rect[index].width
+                        new_width = rect[0].left - rect[index + 1].left + rect[index].width; 
                     }
                     const scrollLeft =
                         rect[index].left +
