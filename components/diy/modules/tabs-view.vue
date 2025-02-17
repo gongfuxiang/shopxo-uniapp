@@ -400,7 +400,11 @@
                 .boundingClientRect((rect) => {
                     const tabs_index = this.form.tabs_list.findIndex(item => item.is_sliding_fixed == '1');
                     // 如果第一个悬浮了，就取第二个的left加上 第一个的宽度和left
-                    const new_width = tabs_index == 0 && index != 0 ? rect[1].left - rect[0].width - rect[0].left : rect[0].left;
+                    let new_width = tabs_index == 0 && index != 0 ? rect[1].left - rect[0].width - rect[0].left : rect[0].left;
+                    // 如果悬浮的不是第一个并且选中的是悬浮的内容
+                    if (index > 0 && tabs_index == index) {
+                        new_width = rect[index + 1].left + rect[index].width
+                    }
                     const scrollLeft =
                         rect[index].left +
                         rect[index].width / 2 -
