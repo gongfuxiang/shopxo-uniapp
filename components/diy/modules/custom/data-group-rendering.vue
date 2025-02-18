@@ -14,7 +14,7 @@
                 <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-icon>
             </template>
             <template v-else-if="item.key == 'panel'">
-                <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList"  :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-panel>
+                <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-panel>
             </template>
         </view>
     </view>

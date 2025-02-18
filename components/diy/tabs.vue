@@ -3,9 +3,9 @@
     <view class="tabs-container pr" :style="tabs_z_index">
         <view :class="top_up == '1' ? 'tabs-top' : ''" :style="tabs_top_style + (top_up == '1' ? propContentPadding : '')">
             <view :style="style_margin_container">
-                <view class="tabs-contents bs-bb" :style="style_container">
+                <view class="tabs-contents bs-bb pr" :style="style_container">
                     <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
-                        <componentDiyModulesTabsView :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></componentDiyModulesTabsView>
+                        <componentDiyModulesTabsView :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer + (propIsRotatingBackground ? propBgStyle : '')" :propIsRotatingBackground="propIsRotatingBackground" :propBgImgStyle="propBgImgStyle" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></componentDiyModulesTabsView>
                     </view>
                 </view>
             </view>
@@ -87,6 +87,18 @@
                 default: false
             },
             propTabsSlidingFixedBg: {
+                type: String,
+                default: ''
+            },
+            propIsRotatingBackground: {
+                type: Boolean,
+                default: false
+            },
+            propBgStyle: {
+                type: String,
+                default: ''
+            },
+            propBgImgStyle: {
                 type: String,
                 default: ''
             }
