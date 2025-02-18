@@ -3,7 +3,7 @@
     <view class="tabs-view" :style="tabs_sticky">
         <view class="tabs-view" :style="propStyle + propTabsBackground">
             <view class="pr" :style="propsTabsContainer">
-                <view class="pa top-0 wh-auto ht-auto" :style="propBgImgStyle"></view>
+                <view v-if="propIsRotatingBackground" class="pa top-0 wh-auto ht-auto" :style="propBgImgStyle"></view>
                 <view class="flex-row gap-10 jc-sb align-c" :style="propsTabsImgContainer">
                     <view class="tabs flex-1 flex-width">
                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="tabs_list_is_sliding_fixed" :scroll-left="scroll_left" :class="'wh-auto interior-area-' + propKey">
@@ -140,6 +140,10 @@
             propsTabsImgContainer: {
                 type: String,
                 default: '',
+            },
+            propIsRotatingBackground: {
+                type: Boolean,
+                default: false,
             },
             propBgImgStyle: {
                 type: String,

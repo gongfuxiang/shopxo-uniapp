@@ -2,7 +2,7 @@
     <view class="ou pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? swiper_bg_img_style_null : '')">
-            <componentDiyTabs :propKey="propKey" prop :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propTabsPaddingTop="tabs_padding_top" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propKey="propKey" prop :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <view :style="carousel_margin_top">
                 <view :style="carousel_container">
                     <view :style="carousel_img_container">
@@ -100,7 +100,7 @@
                 swiper_bg_style: '',
                 swiper_bg_img_style: '',
                 swiper_bg_img_style_null: `background-image: url('')`,
-                tabs_padding_top: 0
+                is_rotating_background: false,
             };
         },
         created() {
@@ -145,12 +145,13 @@
                     style_container: `${common_styles_computer(new_style.common_style)};`,
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     carousel_margin_top: 'margin-top:' + new_style.data_spacing * 2 + 'rpx',
+                    // 是否开启轮播图背景设置
+                    is_rotating_background: new_content.rotating_background == '1',
                     tabs_sliding_fixed_bg: gradient_computer(tabs_data),
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(tabs_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + `overflow: hidden;margin-top: ${ new_tabs_top - tabs_margin_top }px;`,
                     tabs_img_container: background_computer(tabs_data) + padding_computer(tabs_padding) + `box-sizing: border-box;overflow: hidden;padding-top: ${ (tabs_padding?.padding_top || 0) + tabs_margin_top }px;`,
                     carousel_container: gradient_computer(carousel_content_data) + margin_computer(carousel_content_margin) + radius_computer(carousel_content_radius) + border_computer(carousel_content) + box_shadow_computer(carousel_content)  + 'overflow: hidden;',
                     carousel_img_container: background_computer(carousel_content_data) + padding_computer(carousel_content_padding) + 'box-sizing: border-box;overflow: hidden;',
-                    tabs_padding_top: new_style.common_style.padding_top + (this.propIsImmersionModel ? this.propStickyTop : 0),
                     spacing_common_style: {
                         padding: 0,
                         padding_top: new_style.common_style.padding_top + (this.propIsImmersionModel ? this.propStickyTop : 0),
