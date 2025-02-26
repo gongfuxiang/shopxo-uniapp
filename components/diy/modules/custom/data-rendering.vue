@@ -131,7 +131,7 @@ export default {
             return (num, data_follow, type, is_auto = '0', max_size = 0) => {
                 // 检查类型是否为'left'或'top'，如果是，则根据跟随数据计算样式
                 if (['left', 'top'].includes(type)) {
-                    const { id = '', type: follow_type = 'left' } = data_follow;
+                    const { id = '', type: follow_type = 'left' } = data_follow || { id: '', type: 'left' };
                     // 如果id不为空且follow_type与type匹配，则返回原始值的字符串表示
                     if (id !== '' && follow_type === type) {
                         return `${num}px`;
