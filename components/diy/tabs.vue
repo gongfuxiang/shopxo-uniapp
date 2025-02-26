@@ -86,6 +86,10 @@
                 type: Boolean,
                 default: false
             },
+            propNewIsTabsSafeDistance: {
+                type: Boolean,
+                default: true
+            },
             propTabsSlidingFixedBg: {
                 type: String,
                 default: ''
@@ -189,7 +193,7 @@
                     style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
                     // 沉浸模式下并且开通了安全距离 会显示-的margin
-                    style_margin_container: this.propIsImmersionModel ? `margin-top: -${ newPropTop + this.propStickyTop }px;` : '',
+                    style_margin_container: this.propIsImmersionModel && this.propNewIsTabsSafeDistance ? `margin-top: -${ newPropTop + this.propStickyTop }px;` : '',
                     // 判断是否置顶
                     top_up: new_top_up,
                     tabs_z_index: 'z-index: 11;'

@@ -2,7 +2,7 @@
     <view class="ou pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="ou wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? swiper_bg_img_style_null : '')">
-            <componentDiyTabs :propKey="propKey" prop :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
             <view :style="carousel_margin_top">
                 <view :style="carousel_container">
                     <view :style="carousel_img_container">
@@ -101,6 +101,7 @@
                 swiper_bg_img_style: '',
                 swiper_bg_img_style_null: `background-image: url('')`,
                 is_rotating_background: false,
+                new_is_tabs_safe_distance: false,
             };
         },
         created() {
@@ -137,14 +138,20 @@
                     background_img_style: carousel_content_background_img_style,
                     background_img: carousel_content_background_img,
                 }
+                // 头部的高度
                 const newPropTop = app.globalData.rpx_to_px(this.propTop * 2);
+                // 选项卡的外边距
                 const new_tabs_top = app.globalData.rpx_to_px((tabs_margin?.margin_top || 0) * 2);
+                // 选项卡的实际外边距
                 const tabs_margin_top = new_content.is_tabs_safe_distance == '1' ? newPropTop + this.propStickyTop : 0;
+                // 选项卡的内边距处理
+                const new_padding_top = new_style.common_style.padding_top - newPropTop;
                 this.setData({
                     // style_container: `${common_styles_computer(common_style)};gap:${new_style.data_spacing * 2}rpx`,
                     style_container: `${common_styles_computer(new_style.common_style)};`,
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     carousel_margin_top: 'margin-top:' + new_style.data_spacing * 2 + 'rpx',
+                    new_is_tabs_safe_distance: new_content.is_tabs_safe_distance == '1',
                     // 是否开启轮播图背景设置
                     is_rotating_background: new_content.rotating_background == '1',
                     tabs_sliding_fixed_bg: gradient_computer(tabs_data),
@@ -154,7 +161,7 @@
                     carousel_img_container: background_computer(carousel_content_data) + padding_computer(carousel_content_padding) + 'box-sizing: border-box;overflow: hidden;',
                     spacing_common_style: {
                         padding: 0,
-                        padding_top: new_style.common_style.padding_top + (this.propIsImmersionModel ? this.propStickyTop : 0),
+                        padding_top: (this.propIsImmersionModel && new_content.is_tabs_safe_distance == '1' ? new_style.common_style.padding_top + this.propStickyTop : new_padding_top > 0 ? new_padding_top : 0),
                         padding_bottom: 0,
                         padding_left: new_style.common_style.padding_left,
                         padding_right: new_style.common_style.padding_right,

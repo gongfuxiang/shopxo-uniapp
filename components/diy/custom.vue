@@ -10,7 +10,7 @@
                                     <view v-for="(item1, index1) in item.split_list" :key="index1">
                                         <view :style="style_chunk_container">
                                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                             </view>
                                         </view>
                                     </view>
@@ -23,7 +23,7 @@
                                     <view :class="form.data_source_direction != 'horizontal' ? 'ht-auto ' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                         <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                                             </view>
                                         </view>
                                     </view>
@@ -44,7 +44,7 @@
                         <template v-else>
                             <view :style="style_chunk_container">
                                 <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propConfigLoop="form.data_source_is_loop || '1'" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
+                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="0" :propConfigLoop="form.data_source_is_loop || '1'" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                                 </view>
                             </view>
                         </template>
@@ -52,14 +52,14 @@
                     <template v-else-if="!isEmpty(form.data_source) && form.data_source_is_loop == '0'">
                         <view class="h" :style="style_chunk_container">
                             <view class="w h oh" :style="style_chunk_img_container">
-                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="{}" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="0" :propSourceList="{}" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
                             </view>
                         </view>
                     </template>
                     <template v-else>
                         <view :style="style_chunk_container">
                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propConfigLoop="form.data_source_is_loop || '1'" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
+                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="0" :propConfigLoop="form.data_source_is_loop || '1'" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" @url_event="url_event"></dataRendering>
                             </view>
                         </view>
                     </template>

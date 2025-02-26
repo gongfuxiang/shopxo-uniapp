@@ -143,8 +143,9 @@
                 const container_height = !isEmpty(new_content.container_height) ? new_content.container_height : sys_width;
                 const density = !isEmpty(new_content.magic_cube_density) ? new_content.magic_cube_density : 4;
 
-                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right - padding_left - padding_right - border_width(new_style.common_style) - this.propOuterContainerPadding;
+                const { margin_left, margin_right } = new_style.common_style;
+                const width = sys_width - margin_left - margin_right - border_width(new_style.common_style) - this.propOuterContainerPadding;
+                const scale = width / 390;
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
@@ -155,7 +156,7 @@
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex) + 'box-sizing: border-box;',
                     img_fit: fit,
                     div_width: sys_width,
-                    container_size: container_height * (width / 390) + 'px',
+                    container_size: container_height * scale + 'px',
                     cube_cell: sys_width / density,
                     content_img_container: common_styles_computer(new_style) + margin_computer(new_style?.margin || old_margin) + 'box-sizing: border-box;',
                     content_img_style_container: common_img_computer(new_style) + padding_computer(new_style?.padding || old_padding) + 'box-sizing: border-box;',

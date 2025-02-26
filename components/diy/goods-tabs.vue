@@ -103,6 +103,8 @@
         },
         watch: {
             propScrollTop(newVal) {
+                console.log(newVal + this.sticky_top + this.custom_nav_height);
+                console.log(this.tabs_top + this.nav_safe_space);
                 if (newVal + this.sticky_top + this.custom_nav_height > this.tabs_top + this.nav_safe_space && this.top_up == '1') {
                     let new_style = this.propValue.style || {};
                     let tabs_bg = new_style.common_style.color_list;
