@@ -99,9 +99,13 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
+            // 参数处理
+            params = app.globalData.launch_params_handle(params);
+
             // 设置参数
             this.setData({
                 params: params,
+                nav_active_value: params.category_id || 0,
             });
             // 数据加载
             this.get_data();
