@@ -9,7 +9,7 @@
                                 <view v-for="(item1, index1) in item.split_list" :key="index1">
                                     <view :style="style_chunk_container">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
+                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -22,7 +22,7 @@
                                 <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
+                                            <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
                                     </view>
                                 </view>
@@ -43,7 +43,7 @@
                     <template v-else>
                         <view :style="style_chunk_container">
                             <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" @url_event="url_event"></dataGroupRendering>
+                                <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="0" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" @url_event="url_event"></dataGroupRendering>
                             </view>
                         </view>
                     </template>
@@ -264,7 +264,7 @@
                     new_style: new_style,
                     custom_scale: custom_scale,
                     custom_list_length: new_form.custom_list.length - 1,
-                    style_container: common_styles_computer(new_style.common_style) + (new_form.is_scroll_bar == '1' ? 'overflow: auto;' : '') + 'box-sizing: border-box;width:100%;height:100%;', // 用于样式显示
+                    style_container: common_styles_computer(new_style.common_style) + (new_form.is_scroll_bar == '1' ? 'overflow: auto;' : '') + 'box-sizing: border-box;', // 用于样式显示
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     style_content_container: common_styles_computer(new_data_content_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_content_img_container: common_img_computer(new_data_content_style),

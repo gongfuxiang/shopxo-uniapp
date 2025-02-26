@@ -630,3 +630,24 @@ export const percentage_count = (num, container_size) => {
     const marks = (num / container_size) * 100;
     return marks.toFixed(4) + '%';
 };
+
+/**
+ * 计算当前偏移量
+ *
+ * @param size 当前的组件的大小宽或者高。
+ * @param location 容器的位置的偏移量。
+ * @param container_size 对应位置的容器的大小
+ * @returns 偏移量
+ */
+export const location_compute = (size, location, container_size) => {
+    if (size + location >= container_size) {
+        const deviation = container_size - size;
+        if (deviation >= 0) {
+            return deviation;
+        } else {
+            return 0;
+        }
+    } else {
+        return location;
+    }
+};

@@ -12,7 +12,7 @@
                             <view v-if="form.theme == '1'" class="padding-horizontal-sm cr-white">|</view>
                             <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
                                 <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</text>
-                                <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
+                                <view class="flex-row gap-3 jc-c align-c" :style="form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : ''">
                                     <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
                                     <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
                                         <template v-if="form.theme == '4'">
@@ -606,6 +606,10 @@
     }
     .colon {
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 33rpx;
         top: -2rpx;
     }
     .slide-bottom {

@@ -10,7 +10,7 @@
                     <view class="content flex-col" :style="'padding-top:calc(' + (temp_is_header_top ? temp_header_top + temp_sticky_top + 'px)' : '0px)')">
                         <view v-for="item in tabs_data" :key="item.key">
                             <template v-if="item.is_enable == '1'">
-                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model && is_the_safe_distance_enabled" :propNavIsTop="is_header_top" :propTabsIsTop="true" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
+                                <componentDiyTabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model && is_the_safe_distance_enabled && item.com_data.content.tabs_top_up == '1'" :propNavIsTop="is_header_top" :propTabsIsTop="true" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></componentDiyTabs>
                                 <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model && is_the_safe_distance_enabled" :propScrollTop="scroll_top" :propTabsIsTop="true" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></componentDiyTabsCarousel>
                             </template>
                         </view>
@@ -26,9 +26,9 @@
                                         <componentDiyNotice v-else-if="item.key == 'notice'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyNotice>
                                         <componentDiyVideo v-else-if="item.key == 'video'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyVideo>
                                         <componentDiyArticleList v-else-if="item.key == 'article-list'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyArticleList>
-                                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height" :propIsTabsUseSafeDistance="(is_immersion_model && is_header_top) || !is_immersion_model"></componentDiyArticleTabs>
-                                        <componentDataTabs v-else-if="item.key == 'data-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height" :propIsTabsUseSafeDistance="(is_immersion_model && is_header_top) || !is_immersion_model" @goods_buy_event="goods_buy_event"></componentDataTabs>
-                                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height" :propIsTabsUseSafeDistance="(is_immersion_model && is_header_top) || !is_immersion_model" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
+                                        <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></componentDiyArticleTabs>
+                                        <componentDataTabs v-else-if="item.key == 'data-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance" @goods_buy_event="goods_buy_event"></componentDataTabs>
+                                        <componentDiyGoodsTabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance" @goods_buy_event="goods_buy_event"></componentDiyGoodsTabs>
                                         <componentDiyGoodsList v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyGoodsList>
                                         <componentDiyDataMagic v-else-if="item.key == 'data-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyDataMagic>
                                         <componentDiyCustom v-else-if="item.key == 'custom'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCustom>
@@ -290,44 +290,67 @@
                 }
             },
             get_diy_prop_top() {
-                // 不开启沉浸模式时的处理
-                if (!this.is_immersion_model) {
-                    return this.temp_sticky_top + this.tabs_height;
-                } else {
-                    // 开启沉浸模式且开启选项卡置顶时
-                    if (this.is_tabs_data_topped) {
-                        return this.tabs_height;
+                return (item) => {
+                    // 不开启沉浸模式时的处理
+                    if (!this.is_immersion_model) {
+                        return this.temp_sticky_top + this.tabs_height;
                     } else {
-                        // 开启安全距离
-                        if (this.is_the_safe_distance_enabled) {
-                            return this.is_header_top ? this.temp_sticky_top : 0;
+                        // 开启沉浸模式且开启选项卡置顶时
+                        if (this.is_tabs_data_topped) {
+                            return this.tabs_height;
                         } else {
-                            return 0;
+                            // 开启安全距离
+                            let is_general_safe_distance_num = this.temp_sticky_top;
+                            // #ifdef H5 || MP-TOUTIAO
+                            is_general_safe_distance_num = this.is_header_top ? this.temp_sticky_top : 0
+                            // #endif
+                            if (this.is_the_safe_distance_enabled) {
+                                return is_general_safe_distance_num;
+                            } else {
+                                if (item?.content?.is_general_safe_distance == '1') {
+                                    return is_general_safe_distance_num;
+                                } else {
+                                    return 0;
+                                }
+                            }
                         }
                     }
-                }
+                }  
             },
             get_diy_custom_nav_height() {
-                // 不开启沉浸模式时的处理
-                if (!this.is_immersion_model) {
+                return (item) => {
                     let header_height = (this.is_search_alone_row ? 66 + this.data_alone_row_space : 33);
                     // #ifdef H5 || MP-TOUTIAO
                     header_height = this.is_header_top ? header_height : 0;
                     // #endif
-                    return header_height;
-                } else {
-                    // 开启沉浸模式且开启选项卡置顶时
-                    if (this.is_tabs_data_topped) {
-                        return 0;
+                    // 不开启沉浸模式时的处理
+                    if (!this.is_immersion_model) {
+                        return header_height;
                     } else {
-                        // 开启沉浸模式时并且开启安全距离
-                        if (this.is_the_safe_distance_enabled) {
-                            return this.is_search_alone_row ? 66 + this.data_alone_row_space : 33;
+                        // 开启沉浸模式且开启选项卡置顶时
+                        if (this.is_tabs_data_topped) {
+                            return 0;
                         } else {
-                            return 0
-                        }
-                    }   
+                            // 开启沉浸模式时并且开启安全距离
+                            if (this.is_the_safe_distance_enabled) {
+                                return this.is_search_alone_row ? 66 + this.data_alone_row_space : 33;
+                            } else {
+                                if (item?.content?.is_general_safe_distance == '1') {
+                                    return header_height;
+                                } else {
+                                    return 0;
+                                }
+                            }
+                        }   
+                    }
                 }
+            },
+            getPropIsTabsUseSafeDistance() {
+                let is_tabs_use_safe_distance = this.is_immersion_model;
+                // #ifdef H5 || MP-TOUTIAO
+                is_tabs_use_safe_distance = this.is_immersion_model && this.is_header_top;
+                // #endif
+                return is_tabs_use_safe_distance || !this.is_immersion_model;
             }
         },
         watch: {
