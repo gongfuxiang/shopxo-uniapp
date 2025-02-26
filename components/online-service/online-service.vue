@@ -334,6 +334,9 @@
                                 sendMessageImg: this.propImg,
                             });
                             // #endif
+                            // #ifdef H5
+                            app.globalData.url_open(this.common_app_customer_service_company_weixin_url);
+                            // #endif
                         } else {
                             // 电话客服
                             this.call_event();
