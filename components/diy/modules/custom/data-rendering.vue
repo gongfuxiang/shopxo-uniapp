@@ -145,8 +145,8 @@ export default {
                             if (typeof max_size === 'number' && max_size >= 0) {
                                 const scaledMaxSize = max_size * this.propScale;
                                 const autoStyle = 'auto;';
-                                const maxSizeStyle = ` max-${type}: ${scaledMaxSize}px;`;
-                                const whiteSpaceStyle = type === 'width' ? ' white-space:nowrap;' : '';
+                                const maxSizeStyle = scaledMaxSize > 0 ? ` max-${type}: ${scaledMaxSize}px;` : '';
+                                const whiteSpaceStyle = type === 'width' && scaledMaxSize <= 0 ? ' white-space:nowrap;' : '';
                                 return `${ autoStyle }${ maxSizeStyle }${ whiteSpaceStyle }`;
                             } else {
                                 return 'auto;';
