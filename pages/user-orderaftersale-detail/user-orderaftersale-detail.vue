@@ -39,7 +39,7 @@
                 <!-- 提示/退货 -->
                 <view v-if="new_aftersale_data.status <= 2" class="msg-tips padding-main border-radius-main spacing-mb">
                     <text class="msg-text">{{ new_aftersale_data.tips_msg.title }}</text>
-                    <text class="msg-a" @tap="show_aftersale_event"> {{$t('common.view_text')}} >></text>
+                    <text class="msg-a margin-left-sm" @tap="show_aftersale_event"> {{$t('common.view_text')}} >></text>
                     <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="margin-top-sm oh">
                         <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
                     </view>
@@ -71,7 +71,11 @@
                         <view class="panel-content oh">
                             <view v-for="(item, index) in panel_base_data_list" :key="index" class="item br-b oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                                <view class="content fl br-l padding-left-main">{{ new_aftersale_data[item.field] || "" }}</view>
+                                <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="new_aftersale_data[item.field] || ''" data-event="copy" @tap="text_event">
+                                    <text>{{ new_aftersale_data[item.field] || '' }}</text>
+                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                </view>
+                                <view v-else class="content fl br-l padding-left-main">{{ new_aftersale_data[item.field] || '' }}</view>
                             </view>
                         </view>
                     </view>
@@ -275,6 +279,11 @@
                     {
                         name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.50cm8m'),
                         field: "type_text",
+                    },
+                    {
+                        name: this.$t('user-order-detail.user-order-detail.n18sd2'),
+                        field: "order_no",
+                        is_copy: 1
                     },
                     {
                         name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.17j4cy'),
