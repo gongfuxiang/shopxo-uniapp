@@ -3,7 +3,7 @@
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 地址 -->
-                <view v-if="(detail.order_model <= 2) && (detail.address_data || null) != null" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
+                <view v-if="(detail.address_data || null) != null" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
                     <view class="address-base padding-top-xs padding-bottom oh">
                         <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{ detail.address_data.alias }}</text>
                         <text>{{ detail.address_data.name }}</text>
@@ -13,7 +13,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
                         </view>
                     </view>
                     <view v-if="(detail.address_data.extraction_contact_name || null) != null || (detail.address_data.extraction_contact_tel || null) != null || (detail.address_data.appoint_time || null) != null" class="padding-vertical-main br-t-dashed">
@@ -53,6 +53,35 @@
                     </view>
                 </view>
 
+                <!-- 服务信息 -->
+                <view v-if="(detail.service_data || null) != null" class="service-data panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.567ygf')}}</view>
+                    <view class="panel-content oh padding-top-main">
+                        <view class="item br-b-dashed oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.gsfw4d')}}</view>
+                            <view class="content fl br-l padding-left-main">{{ detail.service_data.service_name }}</view>
+                        </view>
+                        <view class="item br-b-dashed oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.6ygfew')}}</view>
+                            <view class="content fl br-l padding-left-main" :data-value="detail.service_data.service_mobile" @tap="text_copy_event">
+                                <text>{{ detail.service_data.service_mobile }}</text>
+                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                            </view>
+                        </view>
+                        <view v-if="(detail.service_data.service_duration_minute_text || null) != null" class="item br-b-dashed oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.67ujfr')}}</view>
+                            <view class="content fl br-l padding-left-main">{{ detail.service_data.service_duration_minute_text }}</view>
+                        </view>
+                        <view class="item br-b-dashed oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-grey">{{$t('common.service_time')}}</view>
+                            <view class="content fl br-l padding-left-main">
+                                <view v-if="(detail.service_data.service_start_time || null) != null">{{ detail.service_data.service_start_time }}</view>
+                                <view v-if="(detail.service_data.service_end_time || null) != null">{{ detail.service_data.service_end_time }}</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
                 <!-- 虚拟销售数据 -->
                 <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || $t('user-order-detail.user-order-detail.y9woor') }}</view>
@@ -89,7 +118,11 @@
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">{{ item.value }}</view>
+                            <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">
+                                <text>{{ item.value }}</text>
+                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                            </view>
+                            <view v-else class="content fl br-l padding-left-main">{{ item.value }}</view>
                         </view>
                     </view>
                 </view>
@@ -105,7 +138,10 @@
                             </view>
                             <view class="item oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.2byl8l')}}</view>
-                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">{{item.express_number}}</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">
+                                    <text>{{item.express_number}}</text>
+                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                </view>
                             </view>
                             <view v-if="(item.note || null) != null" class="item oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{$t('common.note')}}:</view>
@@ -220,7 +256,7 @@
                                 detail_list: [
                                     { name: this.$t('user-order-detail.user-order-detail.346376'), value: data.data.warehouse_name || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.io6p5k'), value: data.data.order_model_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '', is_copy: 1 },
                                     { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: data.data.pay_status_name || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.vg4jb1'), value: data.data.price || '' },

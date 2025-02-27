@@ -13,6 +13,7 @@
 		"not_yet": "Not yet",
 		"save": "Preserve",
 		"add": "Add",
+        "copy": "Copy",
 		"del": "Delete",
         "del_record": "Delete record",
         "del_success": "Delete successful",
@@ -390,7 +391,11 @@
 			"1jpv4n": "Cancel time",
 			"8o2of3": "Closing time",
 			"5k6k56": "Parameter error",
-			"i876o3": "Incorrect address"
+			"i876o3": "Incorrect address",
+            "567ygf": "service information",
+            "67ujfr": "Service duration",
+            "gsfw4d": "Service Name",
+            "6ygfew": "Service Mobile"
 		}
 	},
 	"setup": {

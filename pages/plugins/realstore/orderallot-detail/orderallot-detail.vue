@@ -81,7 +81,11 @@
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">{{ item.value }}</view>
+                            <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">
+                                <text>{{ item.value }}</text>
+                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                            </view>
+                            <view v-else class="content fl br-l padding-left-main">{{ item.value }}</view>
                         </view>
                     </view>
                 </view>
@@ -97,7 +101,10 @@
                             </view>
                             <view class="item oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.2byl8l')}}</view>
-                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">{{item.express_number}}</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">
+                                    <text>{{item.express_number}}</text>
+                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                </view>
                             </view>
                         </view>
                     </view>
@@ -195,21 +202,21 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                    { name: this.$t('common.add_time'), value: data.data.add_time || "" },
-                                    { name: this.$t('common.receive_time'), value: data.data.receive_time || "" },
-                                    { name: this.$t('common.service_time'), value: data.data.service_time || "" },
-                                    { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || "" },
+                                    { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || '', is_copy: 1 },
+                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
+                                    { name: this.$t('common.add_time'), value: data.data.add_time || '' },
+                                    { name: this.$t('common.receive_time'), value: data.data.receive_time || '' },
+                                    { name: this.$t('common.service_time'), value: data.data.service_time || '' },
+                                    { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || '' },
                                 ],
                                 site_fictitious: data.site_fictitious || null,
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
-                                data_list_loding_msg: "",
+                                data_list_loding_msg: '',
                             });
                         } else {
                             this.setData({
