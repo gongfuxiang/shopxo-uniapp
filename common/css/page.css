@@ -858,6 +858,18 @@ button[disabled].bg-grey {
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
+.text-line-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* 添加标准属性以增加兼容性 */
+    line-clamp: 3; 
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
 /**
  * 文字超出部分换行
  */

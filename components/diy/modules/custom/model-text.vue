@@ -1,6 +1,6 @@
 <template>
     <view v-if="is_show" class="img-outer wh-auto ht-auto re oh" :style="com_style" @tap="url_event">
-        <view :style="text_style" class="break wh-auto ht-auto">
+        <view :style="text_style" :class="'break ' + text_line_class">
             <template v-if="form.is_rich_text == '1'">
                 <mp-html :content="text_title" />
             </template>
@@ -74,6 +74,7 @@
                     brand: 'name'
                 },
                 is_show: true,
+                text_line_class: ''
             };
         },
         watch: {
@@ -105,6 +106,7 @@
                     com_style: this.get_com_style(new_form, this.propScale),
                     text_url: url,
                     is_show: this.get_is_show(new_form),
+                    text_line_class: new_form.width_omit_num == '0' || new_form.is_rich_text == '1' ? '' : `text-line-${ new_form?.width_omit_num || '' }`
                 });
             },
             get_is_show(form) {
