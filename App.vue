@@ -1914,7 +1914,11 @@
             },
             // px转rpx
             px_to_rpx(value) {
-                return (value || 0) == 0 ? 0 : (parseInt(value) * 750) / parseInt(this.get_system_info('windowWidth', 0));
+                const new_value = value * 2 || 0;
+                // 200 为 100px 的值，后面的两个 100 为计算比例使用
+                var rpx = new_value / (uni.upx2px(value) / value);
+                // 验证上面rpx的值
+                return uni.upx2px(rpx);
             },
 
             // 终端类型
