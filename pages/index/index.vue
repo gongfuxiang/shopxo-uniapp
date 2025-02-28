@@ -3,7 +3,7 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
-                <block v-if="data_list !== null">
+                <block v-if="(data_list || null) != null && (data_list.config || null) != null">
                     <componentDiy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
                         <!-- 底部内容 -->
                         <template slot="diy-bottom-content">

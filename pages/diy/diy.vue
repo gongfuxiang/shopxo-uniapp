@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <block v-if="(data || null) != null">
+        <block v-if="(data || null) != null && (data.config || null) != null">
             <!-- diy模块 -->
             <componentDiy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
                 <!-- 底部内容 -->
