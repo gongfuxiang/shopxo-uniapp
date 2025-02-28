@@ -162,9 +162,6 @@
         left: 0;
         right: 0;
         width: 100%;
-        /* #ifdef H5 */
-        max-width: 800px;
-        /* #endif */
         margin: 0 auto;
         background-color: transparent;
         .footer-nav-content {
@@ -192,4 +189,11 @@
             }
         }
     }
+    /* #ifdef H5 */
+    @media only screen and (min-width: 1600rpx) {
+        .footer-nav {
+            max-width: 1600rpx;
+        }
+    }
+    /* #endif */
 </style>
