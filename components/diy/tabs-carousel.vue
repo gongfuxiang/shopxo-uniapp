@@ -139,9 +139,9 @@
                     background_img: carousel_content_background_img,
                 }
                 // 头部的高度
-                const newPropTop = app.globalData.rpx_to_px(this.propTop * 2);
+                const newPropTop = app.globalData.rpx_to_px(this.propTop);
                 // 选项卡的外边距
-                const new_tabs_top = app.globalData.rpx_to_px((tabs_margin?.margin_top || 0) * 2);
+                const new_tabs_top = app.globalData.rpx_to_px(tabs_margin?.margin_top || 0);
                 // 选项卡的实际外边距
                 const tabs_margin_top = new_content.is_tabs_safe_distance == '1' ? newPropTop + this.propStickyTop : 0;
                 // 选项卡的内边距处理

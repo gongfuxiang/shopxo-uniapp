@@ -10,7 +10,7 @@
                 </view>
             </view>
         </view>
-        <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + (propIsCommon ? tabs_seat_height : tabs_carousel_seat_height) * 2 + 'rpx;'"></view>
+        <view v-if="top_up == '1'" class="tabs-seat" :style="'height:' + (propIsCommon ? tabs_seat_height : tabs_carousel_seat_height) + 'px;'"></view>
     </view>
 </template>
 
@@ -184,13 +184,13 @@
                 if (!Array.isArray(tabs_bg) || tabs_bg.length === 0 || !tabs_bg[0] || !tabs_bg[0].color) {
                     new_tabs_background = 'background:#fff;';
                 }
-                const newPropTop = app.globalData.rpx_to_px(this.propTop * 2);
+                const newPropTop = app.globalData.rpx_to_px(this.propTop);
                 this.setData({
                     tabs_data: new_tabs_data,
                     tabs_sliding_fixed_bg: this.propIsCommon ? gradient_computer(new_style.common_style) : this.propTabsSlidingFixedBg,
                     style_container: this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : '', // 如果是选项卡轮播，不需要走默认样式
                     // 如果开了滑动置顶，并且开了沉浸式，不需要走传递过来的index，否则的话就用传递过来的index
-                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, true) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
+                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, false) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
                     // 沉浸模式下并且开通了安全距离 会显示-的margin
                     style_margin_container: this.propIsImmersionModel && this.propNewIsTabsSafeDistance ? `margin-top: -${ newPropTop + this.propStickyTop }px;` : '',
@@ -198,6 +198,7 @@
                     top_up: new_top_up,
                     tabs_z_index: 'z-index: 11;'
                 });
+                console.log(this.style_img_container);
             },
             // 获取选项卡高度
             get_tabs_height() {
@@ -209,10 +210,11 @@
                         .select('.tabs-top')
                         .boundingClientRect((res) => {
                             if ((res || null) != null) {
+                                const newPropTop = app.globalData.rpx_to_px(this.propTop);
                                 // data包含元素的宽度、高度等信息
                                 this.setData({
-                                    tabs_seat_height: res.height + (this.propIsImmersionModel ? this.propTop + this.propStickyTop : 0),
-                                    tabs_carousel_seat_height: (res.height + (this.propIsImmersionModel ? this.propTop + this.propStickyTop : 0)) - this.propSpacingCommonStyle.padding_top - this.propSpacingCommonStyle.margin_top, // 轮播选项卡置顶时去掉顶部间距
+                                    tabs_seat_height: res.height + (this.propIsImmersionModel ? newPropTop + this.propStickyTop : 0),
+                                    tabs_carousel_seat_height: (res.height + (this.propIsImmersionModel ? newPropTop + this.propStickyTop : 0)) - this.propSpacingCommonStyle.padding_top - this.propSpacingCommonStyle.margin_top, // 轮播选项卡置顶时去掉顶部间距
                                 });
                                 this.$emit('onComputerHeight', this.tabs_seat_height);
                             }
@@ -258,10 +260,10 @@
             max-width: 100%;
         }
     }
-    .tabs-contents {
-        max-width: 800px !important;
-    }
     @media only screen and (min-width: 800px) {
+        .tabs-contents {
+            max-width: 800px !important;
+        }
         .tabs-container .tabs-top {
             left: calc(50% - 400px) !important;
         }

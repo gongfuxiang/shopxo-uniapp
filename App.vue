@@ -1910,9 +1910,8 @@
 
             // rpx转px
             rpx_to_px(value) {
-                return (value || 0) == 0 ? 0 : (parseInt(value) / 750) * parseInt(this.get_system_info('windowWidth', 0));
+                return (value || 0) == 0 ? 0 : uni.upx2px(value * 2);
             },
-
             // px转rpx
             px_to_rpx(value) {
                 return (value || 0) == 0 ? 0 : (parseInt(value) * 750) / parseInt(this.get_system_info('windowWidth', 0));
