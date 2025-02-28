@@ -116,7 +116,7 @@
                 // #ifdef H5
                 // 处理内容左边距、避免父级设置内边距影响
                 var width = uni.getSystemInfoSync().windowWidth;
-                if (width > 800) {
+                if (width > 960) {
                     left = (width - 800) / 2;
                 }
                 // #endif
