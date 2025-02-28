@@ -174,9 +174,9 @@ export default {
                 style_img_container: this.propIsPageSettings ? '' : common_img_computer(common_style, this.propIndex),
                 search_button_radius: radius_computer(search_button_radius), // 按钮圆角
                 box_style: this.get_box_style(new_style, new_form), // 搜索框设置
-                search_box_style: `border: 1px solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,
+                search_box_style: `border: 2rpx solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,
                 search_button_style: this.get_search_button_style(new_form, new_style), // 搜索按钮显示
-                right_icon_style: `border-radius: 0px ${ new_style.search_border_radius?.radius_top_right || 0 }px ${ new_style.search_border_radius?.radius_bottom_right || 0 }px 0px;`,
+                right_icon_style: `border-radius: 0px ${ new_style.search_border_radius?.radius_top_right * 2 || 0 }rpx ${ new_style.search_border_radius?.radius_bottom_right * 2 || 0 }rpx 0px;`,
             });
         },
         get_search_button_style(form, new_style) {
@@ -193,15 +193,15 @@ export default {
             }
             let border = ``;
             if (search_botton_border_show == '1') {
-                border += `border-width: ${search_botton_border_size.padding_top}px ${search_botton_border_size.padding_right}px ${search_botton_border_size.padding_bottom}px ${search_botton_border_size.padding_left}px;border-style: ${ search_botton_border_style };border-color: ${search_botton_border_color};`
+                border += `border-width: ${search_botton_border_size.padding_top * 2}rpx ${search_botton_border_size.padding_right * 2}rpx ${search_botton_border_size.padding_bottom * 2}rpx ${search_botton_border_size.padding_left * 2}rpx;border-style: ${ search_botton_border_style };border-color: ${search_botton_border_color};`
             }
             const height = 32 - search_botton_margin.margin_top - search_botton_margin.margin_bottom;
-            return style + border + `height: ${height > 0 ? height : 0}px;line-height: ${height > 0 ? height : 0}px;`;
+            return style + border + `height: ${height > 0 ? height * 2 : 0}rpx;line-height: ${height > 0 ? height * 2 : 0}rpx;`;
         },
         get_search_button_height(new_style) {
             const { search_botton_border_size = old_padding, search_botton_padding = old_padding } = new_style;
             const height = 32 - search_botton_border_size.padding_top - search_botton_border_size.padding_bottom - search_botton_padding.padding_top - search_botton_padding.padding_bottom;
-            return `height: ${height > 0 ? height : 0}px !important;line-height: ${height > 0 ? height : 0}px;`;
+            return `height: ${height > 0 ? height * 2 : 0}rpx !important;line-height: ${height > 0 ? height * 2 : 0}rpx;`;
         },
         // 搜索按钮圆角
         get_search_button_img_style(new_style) {
@@ -222,7 +222,7 @@ export default {
         //     return common_styles;
         // },
         get_box_style(new_style, form) {
-            let style = `background: ${ new_style?.search_bg_color || '' };border: 1px solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
+            let style = `background: ${ new_style?.search_bg_color || '' };border: 2rpx solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
             if (form.positioning_name_float == '1' && this.propSearchType == 'header') {
                 style += `padding-left: ${ (new_style.search_padding_left? new_style.search_padding_left : 15) * 2 }rpx;`;
             } else if (form.is_center != '1') {
@@ -311,10 +311,10 @@ export default {
     .search-icon-before {
         position: absolute;
         z-index: 10; // 确保悬浮在内容上层
-        top: -10px;
-        right: -10px;
-        bottom: -10px;
-        left: -10px
+        top: -20rpx;
+        right: -20rpx;
+        bottom: -20rpx;
+        left: -20rpx
     }
     .tips-float {
         position: absolute;
