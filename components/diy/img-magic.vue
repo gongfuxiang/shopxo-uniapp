@@ -32,7 +32,7 @@
                         <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <view class="wh-auto flex-row" :style="content_img_container">
                                 <view class="flex-1" :style="content_img_style_container">
-                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="wh-autoidthFix" :style="content_img_radius"></image>
+                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
                                 </view>
                             </view>
                         </view>

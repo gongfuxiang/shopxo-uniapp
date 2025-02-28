@@ -1,5 +1,5 @@
 <template>
-    <view v-if="is_show" :style="style_container">
+    <view v-if="is_show" class="h" :style="style_container">
         <view :style="style_img_container">
             <view :style="style_content_container">
                 <view class="w h pr" :style="style_content_img_container">
