@@ -38,7 +38,7 @@
                         </view>
                     </template>
                     <template v-else>
-                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item) + ';height:' + form.image_height * 2 + 'rpx;'" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
+                        <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item) + ';height:' + image_height" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <view class="wh-auto flex-row" :style="content_img_container">
                                 <view class="flex-1" :style="content_img_style_container">
                                     <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
@@ -99,6 +99,7 @@
                 cube_cell: '',
                 container_size: '',
                 div_width: 0,
+                image_height: '',
                 img_fit: '',
                 content_img_container: '',
                 content_img_style_container: '',
@@ -158,6 +159,7 @@
                     div_width: sys_width,
                     container_size: container_height * scale + 'px',
                     cube_cell: sys_width / density,
+                    image_height: this.propValue.content.image_height * scale + 'px',
                     content_img_container: common_styles_computer(new_style) + margin_computer(new_style?.margin || old_margin) + 'box-sizing: border-box;',
                     content_img_style_container: common_img_computer(new_style) + padding_computer(new_style?.padding || old_padding) + 'box-sizing: border-box;',
                 });
