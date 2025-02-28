@@ -2005,7 +2005,7 @@
             // 窗口宽度处理
             window_width_handle(width) {
                 // #ifdef H5 || APP
-                if (width > 800) {
+                if (width > 960) {
                     width = 800;
                 }
                 // #endif
