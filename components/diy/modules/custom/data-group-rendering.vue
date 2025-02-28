@@ -186,7 +186,7 @@ export default {
                 new_list: val
             });
             // 判断是否有跟随的数据
-            const follow_list = val.filter(item => item.com_data?.data_follow?.id !== '');
+            const follow_list = val.filter(item => item.com_data.data_follow && item.com_data?.data_follow?.id !== '');
             if (follow_list.length > 0) {
                 // 等待页面渲染完成之后再获取内容
                 await this.$nextTick();

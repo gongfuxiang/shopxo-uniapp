@@ -197,7 +197,7 @@ export default {
                 new_list: val
             });
             // 判断是否有跟随的数据
-            const follow_list = val.filter(item => item.com_data?.data_follow?.id !== '');
+            const follow_list = val.filter(item => item.com_data.data_follow && item.com_data?.data_follow?.id !== '');
             if (follow_list.length > 0) {
                 await this.$nextTick();
                 // 第二次如果有跟随数据，更新对应数据的内容， 如果有超出容器范围的数据，限制其超出容器范围

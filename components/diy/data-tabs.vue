@@ -31,7 +31,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, old_border_and_box_shadow, old_margin, old_radius, old_padding, border_computer, box_shadow_computer, radius_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, old_border_and_box_shadow, old_margin, old_radius, old_padding, border_computer, box_shadow_computer, radius_computer, get_math } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     import componentGoodsList from '@/components/diy/goods-list';
     import componentArticleList from '@/components/diy/article-list';
@@ -300,7 +300,7 @@
                     tabs_list: tabs_list,
                     data_content_container: data_content_container,
                     data_content_img_container: data_content_img_container,
-                    diy_key: Math.random(),
+                    diy_key: get_math(),
                 });
             },
             // 获取商品距离顶部的距离
