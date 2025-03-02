@@ -218,8 +218,8 @@
             init(params) {
                 // 非基础模式
                 if(!this.propIsBaseMode) {
-                    // 获取底部菜单高度、如果当前为底部菜单页面则增加底部间距
-                    var tabbar_height = app.globalData.is_tabbar_pages() ? (app.globalData.app_system_tabbar_height_value()*2) : 0;
+                    // 获取底部菜单高度、如果当前为底部菜单页面则增加底部间距、如果当前使用了原生菜单则不取底部菜单高度
+                    var tabbar_height = (app.globalData.data.is_tabbar_pages == 0 && app.globalData.is_tabbar_pages()) ? (app.globalData.app_tabbar_height_value()*2) : 0;
                     // 门店信息
                     var info = params.info || null;
                     if(info != null && (params.source || null) != null) {
