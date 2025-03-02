@@ -199,7 +199,7 @@
                                         desc: this.shop.seo_desc || this.shop.describe,
                                         path: '/pages/plugins/shop/detail/detail',
                                         query: 'id=' + this.shop.id,
-                                        img: this.shop.logo,
+                                        img: this.shop.share_images || this.shop.logo,
                                     },
                                 });
                                 // 标题名称

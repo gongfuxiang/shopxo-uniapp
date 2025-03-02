@@ -208,7 +208,7 @@
                                         desc: info.seo_desc || info.describe,
                                         path: '/pages/plugins/blog/detail/detail',
                                         query: 'id=' + info.id,
-                                        img: info.cover,
+                                        img: info.share_images || info.cover,
                                     },
                                 });
 

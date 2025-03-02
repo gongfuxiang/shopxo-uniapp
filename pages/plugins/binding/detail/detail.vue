@@ -221,7 +221,7 @@
                                         desc: this.data.seo_desc || this.data.describe,
                                         path: '/pages/plugins/binding/detail/detail',
                                         query: 'id=' + this.data.id,
-                                        img: this.data.images,
+                                        img: this.data.share_images || this.data.images,
                                     },
                                 });
 

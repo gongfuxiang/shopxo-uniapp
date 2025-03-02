@@ -147,7 +147,7 @@
                                         desc: this.data.seo_desc || this.data.describe,
                                         path: '/pages/plugins/activity/detail/detail',
                                         query: 'id=' + this.data.id,
-                                        img: this.data.cover,
+                                        img: this.data.share_images || this.data.cover,
                                     },
                                 });
 

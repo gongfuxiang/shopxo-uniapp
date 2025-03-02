@@ -575,7 +575,7 @@
                                         desc: this.info.seo_desc || this.info.describe,
                                         path: '/pages/plugins/realstore/detail/detail',
                                         query: 'id=' + this.info.id,
-                                        img: this.info.logo,
+                                        img: this.info.share_images || this.info.logo,
                                     },
                                 });
 
