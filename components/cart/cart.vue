@@ -488,7 +488,7 @@
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_site_type: app.globalData.get_config('config.common_site_type'),
-                        common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', this.$t('cart.cart.31h34v')),
+                        common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text') || this.$t('cart.cart.31h34v'),
                         common_is_cart_show_guess_you_like: parseInt(app.globalData.get_config('config.common_is_cart_show_guess_you_like', 0)),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
