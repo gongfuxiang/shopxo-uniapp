@@ -1,6 +1,6 @@
 <template>
     <view :class="'wh-auto pr allSignList-' + propIndex + propKey" :style="'height:' + propDataHeight * propScale + 'px;'">
-       <view v-for="(item, index) in new_list" :key="index" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :class="'sign-' + propIndex + propKey + ' main-content ' + get_animation_class(item.com_data)" :style="'left:' + get_percentage_count(item.location.x, item.com_data.data_follow, 'left') + ';top:' + get_percentage_count(item.location.y, item.com_data.data_follow, 'top') + ';width:' + get_percentage_count(item.com_data.com_width, item.com_data.data_follow, 'width', item.com_data.is_width_auto, item.com_data.max_width) + ';height:' + get_percentage_count(item.com_data.com_height, item.com_data.data_follow, 'height', item.com_data.is_height_auto, item.com_data.max_height) + ';z-index:' + (new_list.length - 1 > 0 ? (new_list.length - 1) - index : 0)">
+       <view v-for="(item, index) in new_list" :key="index" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :class="'sign-' + propIndex + propKey + ' main-content ' + get_animation_class(item.com_data)" :style="'left:' + get_percentage_count(item.location.x, item.com_data.data_follow, 'left') + ';top:' + get_percentage_count(item.location.y, item.com_data.data_follow, 'top') + ';width:' + get_percentage_count(item.com_data.com_width, item.com_data.data_follow, 'width', item.com_data.is_width_auto, item.com_data.max_width, item.key) + ';height:' + get_percentage_count(item.com_data.com_height, item.com_data.data_follow, 'height', item.com_data.is_height_auto, item.com_data.max_height, item.key) + ';z-index:' + (new_list.length - 1 > 0 ? (new_list.length - 1) - index : 0)">
             <template v-if="item.key == 'text'">
                 <model-text :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" :propTitleParams="propShowData.data_name" @url_event="url_event"></model-text>
             </template>
@@ -128,7 +128,7 @@ export default {
     },
     computed: {
         get_percentage_count() {
-            return (num, data_follow, type, is_auto = '0', max_size = 0) => {
+            return (num, data_follow, type, is_auto = '0', max_size = 0, key = '') => {
                 // 检查类型是否为'left'或'top'，如果是，则根据跟随数据计算样式
                 if (['left', 'top'].includes(type)) {
                     const { id = '', type: follow_type = 'left' } = data_follow || { id: '', type: 'left' };
@@ -153,8 +153,14 @@ export default {
                             }
                         }
                     } else {
-                        // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
-                        return `${num * this.propScale}px`;
+                        // 微信小程序图片等比缩放对小数点后的内容支持的不是特别的好，需要取向上取整数
+                        if (key == 'img' && ['width', 'height'].includes(type)) {
+                            // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
+                            return `${ Math.round(num * this.propScale) }px`;
+                        } else {
+                            // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
+                            return `${num * this.propScale}px`;
+                        }
                     }
                 }
             };
