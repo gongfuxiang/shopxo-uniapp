@@ -34,7 +34,7 @@
                 </view>
             </block>
             <block v-else>
-                <!-- #ifndef MP-TOUTIAO -->
+                <!-- #ifndef MP-TOUTIAO || H5 -->
                 <component-nav-back propClass="bg-white" propColor="#333" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType == 'page'" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
