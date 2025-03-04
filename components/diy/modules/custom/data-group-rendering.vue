@@ -26,7 +26,7 @@ import modelLines from '@/components/diy/modules/custom/model-lines.vue';
 import modelImage from '@/components/diy/modules/custom/model-image.vue';
 import modelIcon from '@/components/diy/modules/custom/model-icon.vue';
 import modelPanel from '@/components/diy/modules/custom/model-panel.vue';
-import { location_compute } from '@/common/js/common/common.js';
+import { location_compute, isEmpty } from '@/common/js/common/common.js';
 export default {
     components: {
         modelText,
@@ -112,7 +112,7 @@ export default {
     watch: {
         propKey(val) {
             // 初始化
-            this.init();
+            this.init(this.propCustomList);
         },
         propCustomList(val) {
             this.init(val);
@@ -173,6 +173,10 @@ export default {
     },
     methods: {
         async init(val) {
+            // 如果为空就不进行渲染
+            if (isEmpty(val)) {
+                return;
+            }
             await this.get_custom_width();
             this.set_new_list(val);
         },
