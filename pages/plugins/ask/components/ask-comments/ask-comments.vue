@@ -544,8 +544,8 @@
         height: 200rpx;
     }
     .ask-comments-modal-content .close {
-        top: 8rpx;
-        right: 14rpx;
+        top: 20rpx;
+        right: 20rpx;
     }
     .comment-btn {
         height: 56rpx;
