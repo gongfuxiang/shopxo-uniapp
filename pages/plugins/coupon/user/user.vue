@@ -74,8 +74,6 @@
                     },
                 ],
                 nav_tabs_value: 'not_use',
-                // 基础配置
-                currency_symbol: app.globalData.currency_symbol(),
                 // 首页地址
                 home_page_url: app.globalData.app_tabbar_pages()[0],
             };
@@ -100,9 +98,6 @@
             // 数据加载
             this.init();
 
-            // 初始化配置
-            this.init_config();
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -118,17 +113,6 @@
         },
 
         methods: {
-            // 初始化配置
-            init_config(status) {
-                if ((status || false) == true) {
-                    this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol'),
-                    });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
-                }
-            },
-
             // 获取数据
             init() {
                 var user = app.globalData.get_user_info(this, 'init');

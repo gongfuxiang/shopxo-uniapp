@@ -41,7 +41,6 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                currency_symbol: app.globalData.currency_symbol(),
                 params: null,
                 data_list: [],
                 data_base: null,
@@ -78,9 +77,6 @@
             // 数据加载
             this.init();
 
-            // 初始化配置
-            this.init_config();
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -93,17 +89,6 @@
         },
 
         methods: {
-            // 初始化配置
-            init_config(status) {
-                if ((status || false) == true) {
-                    this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol'),
-                    });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
-                }
-            },
-
             // 获取数据
             init() {
                 this.get_data_list();

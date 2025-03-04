@@ -84,9 +84,6 @@
             // 数据加载
             this.init();
 
-            // 初始化配置
-            this.init_config();
-
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
