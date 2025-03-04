@@ -200,7 +200,7 @@ export default {
             return style + border + `height: ${height > 0 ? height * 2 : 0}rpx;line-height: ${height > 0 ? height * 2 : 0}rpx;`;
         },
         get_search_button_height(new_style) {
-            const { search_botton_border_size = old_padding, search_botton_padding = old_padding } = new_style;
+            const { search_botton_border_size = old_padding, search_botton_padding = this.button_padding } = new_style;
             const height = 32 - search_botton_border_size.padding_top - search_botton_border_size.padding_bottom - search_botton_padding.padding_top - search_botton_padding.padding_bottom;
             return `height: ${height > 0 ? height * 2 : 0}rpx !important;line-height: ${height > 0 ? height * 2 : 0}rpx;`;
         },
@@ -211,7 +211,7 @@ export default {
                 background_img: search_botton_background_img,
                 background_img_style: search_botton_background_img_style,
             }
-            return background_computer(data) + padding_computer(new_style?.search_botton_padding || button_padding) + 'box-sizing: border-box;';
+            return background_computer(data) + padding_computer(new_style?.search_botton_padding || this.button_padding) + 'box-sizing: border-box;';
         },
         // get_style(new_style) {
         //     let common_styles = '';
