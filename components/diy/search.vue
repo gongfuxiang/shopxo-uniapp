@@ -147,6 +147,7 @@ export default {
             search_button_style: '',
             search_button_img_style: '',
             search_button_height: '',
+            button_padding: { padding: 0, padding_bottom: 3, padding_left: 12, padding_right: 12, padding_top: 3 }
         };
     },
     watch: {
@@ -210,7 +211,7 @@ export default {
                 background_img: search_botton_background_img,
                 background_img_style: search_botton_background_img_style,
             }
-            return background_computer(data) + padding_computer(new_style?.search_botton_padding || old_padding) + 'box-sizing: border-box;';
+            return background_computer(data) + padding_computer(new_style?.search_botton_padding || button_padding) + 'box-sizing: border-box;';
         },
         // get_style(new_style) {
         //     let common_styles = '';

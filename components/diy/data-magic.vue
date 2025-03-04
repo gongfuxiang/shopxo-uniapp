@@ -29,13 +29,13 @@
                                                 </template>
                                             </view>
                                             <view class="w h flex-1 oh flex-row">
-                                                <magic-carousel :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                                <magic-carousel class="flex-1" :propKey="propKey + index" :propValue="item" :propGoodStyle="item.data_style" :propActived="form.style_actived" propType="product" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                             </view>
                                         </view>
                                     </template>
                                     <template v-else-if="item.data_content.data_type == 'images'">
                                         <view class="w h flex-1 oh flex-row">
-                                            <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
+                                            <magic-carousel class="flex-1" :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index" @onCarouselChange="carousel_change"></magic-carousel>
                                         </view>
                                     </template>
                                     <template v-else-if="item.data_content.data_type == 'custom'">
@@ -91,7 +91,7 @@
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'images'">
                                     <view class="w h oh flex-row">
-                                        <magic-carousel :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
+                                        <magic-carousel class="flex-1" :propKey="propKey + index" :propValue="item" propType="img" :propActived="form.style_actived" :propDataIndex="index"  @onCarouselChange="carousel_change"></magic-carousel>
                                     </view>
                                 </template>
                                 <template v-else-if="item.data_content.data_type == 'custom'">
