@@ -140,7 +140,7 @@
                     <!-- 操作导航 -->
                     <block v-if="data_list.length > 0">
                         <view class="bottom-fixed z-i" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="bottom_fixed_style">
-                            <view :class="propCartNavBottomValue > 0 ? '' : 'bottom-line-exclude'">
+                            <view>
                                 <!-- 展示 -->
                                 <view v-if="common_site_type == 4" class="cart-exhibition-mode">
                                     <button class="item exhibition-btn bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
@@ -1418,16 +1418,28 @@
             // 页面样式处理
             page_style_handle() {
                 var value = 0;
+                var value_unit = 'px';
                 if(app.globalData.data.is_use_native_tabbar == 1) {
                     // #ifdef H5
-                    value += (uni.getWindowInfo().windowBottom || 50)+40;
+                    if(this.propSourceType != 'page') {
+                        value += uni.getWindowInfo().windowBottom || 50;
+                    }
                     // #endif
                 } else {
-                    value += ((this.propCartNavBottomValue-8)*2)+20;
+                    value += this.propCartNavBottomValue;
+                    // #ifdef H5
+                    if(app.globalData.is_pc()) {
+                        var system = app.globalData.get_system_info(null, null, true);
+                        if(system.windowWidth <= 960) {
+                            value *= 2;
+                            value_unit = 'rpx';
+                        }
+                    }
+                    // #endif
                 }
                 this.setData({
-                    bottom_fixed_style: 'bottom:'+value+'rpx',
-                    scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 220 : 80)-(this.is_first == 1 ? 100 : 0))+'rpx)',
+                    bottom_fixed_style: 'bottom:'+value+value_unit,
+                    scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 200 : 70)-(this.is_first == 1 ? 100 : 0))+'rpx)',
                 });
             }
         }
@@ -1444,7 +1456,7 @@
         padding-bottom: 60rpx;
     }
     .scroll-box.cart .content {
-        padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+        padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
     }
     .cart-goods-title {
         line-height: 44rpx;

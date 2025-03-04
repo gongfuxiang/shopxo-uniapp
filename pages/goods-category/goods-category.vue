@@ -697,8 +697,20 @@
                 if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 4) {
                     right_style = 'padding-bottom: calc(120rpx + '+bottom_style_value+'rpx);';
                 }
+                // 底部导航高度
+                var footer_height = this.footer_height_value;
+                var footer_height_unit = 'px';
+                // #ifdef H5
+                if(app.globalData.is_pc()) {
+                    var system = app.globalData.get_system_info(null, null, true);
+                    if(system.windowWidth <= 960) {
+                        footer_height *= 2;
+                        footer_height_unit = 'rpx';
+                    }
+                }
+                // #endif
                 this.setData({
-                    category_content_style: 'height:calc(100vh - ' + (this.search_height + this.window_bottom_height + this.footer_height_value)+'px);',
+                    category_content_style: 'height:calc(100vh - ' + (this.search_height + this.window_bottom_height)+'px - '+footer_height+footer_height_unit+');',
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
                     botton_nav_style: 'bottom: calc(20rpx);',

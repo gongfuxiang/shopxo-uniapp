@@ -1922,6 +1922,12 @@
                 return uni.upx2px(rpx);
             },
 
+            // 是否pc
+            is_pc() {
+                var arr = ['macos', 'windows'];
+                return arr.indexOf(uni.getSystemInfoSync().platform) != -1;
+            },
+
             // 终端类型
             application_client() {
                 var type = '';
