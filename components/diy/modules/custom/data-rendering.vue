@@ -125,6 +125,9 @@ export default {
             // 初始化
             this.init(this.propCustomList);
         },
+        propCustomList(val) {
+            this.init(val);
+        }
     },
     computed: {
         get_percentage_count() {
