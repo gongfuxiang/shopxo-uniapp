@@ -114,6 +114,9 @@ export default {
             // 初始化
             this.init();
         },
+        propCustomList(val) {
+            this.init(val);
+        }
     },
     computed: {
         get_percentage_count() {
@@ -166,12 +169,12 @@ export default {
         }
     },
     mounted() {
-        this.init();
+        this.init(this.propCustomList);
     },
     methods: {
-        async init() {
+        async init(val) {
             await this.get_custom_width();
-            this.set_new_list(this.propCustomList);
+            this.set_new_list(val);
         },
         get_custom_width() {
             // 获取当前容器的宽度
