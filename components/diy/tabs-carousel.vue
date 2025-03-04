@@ -173,10 +173,6 @@
                     swiper_bg_style: this.get_swiper_bg_style(new_content, 0),
                     swiper_bg_img_style: this.get_swiper_bg_img_style(new_content, 0),
                 });
-                console.log(
-                    app.globalData.px_to_rpx(100)
-                );
-                
             },
             // tab点击
             tabs_click_event(tabs_id, is_micro_page) {
