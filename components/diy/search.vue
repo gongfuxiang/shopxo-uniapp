@@ -78,7 +78,7 @@
 <script>
 import componentChoiceLocation from '@/components/choice-location/choice-location';
 const app = getApp();
-import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, padding_computer, old_padding, old_radius, old_margin, margin_computer } from '@/common/js/common/common.js';
+import { background_computer, common_styles_computer, common_img_computer, gradient_computer, radius_computer, isEmpty, padding_computer, old_padding, old_radius, margin_computer } from '@/common/js/common/common.js';
 export default {
     components: {
         componentChoiceLocation,
@@ -147,7 +147,8 @@ export default {
             search_button_style: '',
             search_button_img_style: '',
             search_button_height: '',
-            button_padding: { padding: 0, padding_bottom: 3, padding_left: 12, padding_right: 12, padding_top: 3 }
+            button_padding: { padding: 0, padding_bottom: 3, padding_left: 12, padding_right: 12, padding_top: 3 },
+            button_margin: { margin: 0, margin_bottom: 2, margin_left: 0, margin_right: 2, margin_top: 2 },
         };
     },
     watch: {
@@ -181,7 +182,7 @@ export default {
             });
         },
         get_search_button_style(form, new_style) {
-            const { search_botton_color_list = [], search_botton_direction, search_botton_background_img_style, search_button_radius = old_radius, search_botton_background_img, search_botton_margin = old_margin, search_botton_border_show = '0', search_botton_border_size = old_padding, search_botton_border_style = 'solid', search_botton_border_color = '' } = new_style;
+            const { search_botton_color_list = [], search_botton_direction, search_botton_background_img_style, search_button_radius = old_radius, search_botton_background_img, search_botton_margin = this.button_margin, search_botton_border_show = '0', search_botton_border_size = old_padding, search_botton_border_style = 'solid', search_botton_border_color = '' } = new_style;
             let style = radius_computer(search_button_radius);
             if (form.search_type != 'img') {
                 const data = {
@@ -196,7 +197,7 @@ export default {
             if (search_botton_border_show == '1') {
                 border += `border-width: ${search_botton_border_size.padding_top * 2}rpx ${search_botton_border_size.padding_right * 2}rpx ${search_botton_border_size.padding_bottom * 2}rpx ${search_botton_border_size.padding_left * 2}rpx;border-style: ${ search_botton_border_style };border-color: ${search_botton_border_color};`
             }
-            const height = 32 - search_botton_margin.margin_top - search_botton_margin.margin_bottom;
+            const height = 32 - search_botton_margin.margin_top - search_botton_margin.margin_bottom - search_botton_border_size.padding_top - search_botton_border_size.padding_bottom;
             return style + border + `height: ${height > 0 ? height * 2 : 0}rpx;line-height: ${height > 0 ? height * 2 : 0}rpx;`;
         },
         get_search_button_height(new_style) {
