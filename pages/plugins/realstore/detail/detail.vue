@@ -162,15 +162,16 @@
                                                 <view :data-index="index" @tap="goods_event">
                                                     <view class="flex-row jc-sb">
                                                         <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                                        <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                                        <view class="goods-base flex-1 flex-width padding-left-sm flex-col jc-sb">
                                                             <view class="goods-base-content">
                                                                 <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
                                                                 <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
                                                             </view>
                                                             <view class="margin-top-sm oh flex-row jc-sb align-c">
                                                                 <view class="single-text sales-price va-b va-m">
-                                                                    <text class="text-size-xss">{{ currency_symbol }}</text>
-                                                                    <text class="text-size-lg">{{ item.min_price }}</text>
+                                                                    <text class="text-size-xss">{{ item.show_price_symbol }}</text>
+                                                                    <text class="text-size">{{ item.min_price }}</text>
+                                                                    <text class="text-size-xss cr-grey">{{ item.show_price_unit }}</text>
                                                                 </view>
                                                                 <view v-if="is_base_mode != 1" class="tc flex-row align-c">
                                                                     <block v-if="(item.is_error || 0) == 0">

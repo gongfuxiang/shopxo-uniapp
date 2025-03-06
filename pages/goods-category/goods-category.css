@@ -241,11 +241,11 @@
     height: 26rpx !important;
 }
 .goods-list .goods-img {
-    width: 182rpx;
-    height: 182rpx !important;
+    width: 160rpx;
+    height: 160rpx !important;
 }
 .goods-list .goods-base {
-    width: calc(100% - 220rpx);
+    width: calc(100% - 200rpx);
     padding-right: 20rpx;
 }
 .goods-list .goods-base-content {

@@ -128,9 +128,9 @@
                                                                     <view class="single-text va-m">
                                                                         <text class="sales-price">
                                                                             <text class="text-size-xss">{{ item.show_price_symbol }}</text>
-                                                                            <text class="text-size-lg">{{ item.min_price }}</text>
+                                                                            <text class="text-size">{{ item.min_price }}</text>
                                                                         </text>
-                                                                        <text class="text-size-xs cr-grey">{{ item.show_price_unit }}</text>
+                                                                        <text class="text-size-xss cr-grey">{{ item.show_price_unit }}</text>
                                                                     </view>
                                                                     <view v-if="common_site_type != 4" class="buy-opt flex-row align-c tc">
                                                                         <block v-if="(item.is_error || 0) == 0">

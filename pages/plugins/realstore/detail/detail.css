@@ -119,7 +119,7 @@ page {
     max-height: 58rpx;
 }
 .goods-list .goods-base .sales-price {
-    width: calc(100% - 160rpx);
+    width: calc(100% - 140rpx);
 }
 .goods-list .goods-base .buy-number {
     min-width: 32rpx;
