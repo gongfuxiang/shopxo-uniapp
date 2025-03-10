@@ -14,7 +14,7 @@
                                         <view class="model-head-content flex-row align-c jc-sb gap-16 wh-auto pr" :style="header_style">
                                             <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                                             <!-- #ifndef MP-ALIPAY -->
-                                            <view v-if="!is_tabbar_pages" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
+                                            <view v-if="!is_tabbar_pages && is_left_back_btn_show == '1'" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
                                                 <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
                                             </view>
                                             <!-- #endif -->
@@ -182,6 +182,7 @@
                 up_slide_img_style: '',
                 // 当前页面是否在底部菜单中
                 is_tabbar_pages: app.globalData.is_tabbar_pages(),
+                is_left_back_btn_show: '0',
                 // 判断header的查询是否独行
                 is_search_alone_row: false,
                 is_icon_alone_row: false,
@@ -273,6 +274,7 @@
                     roll_style: new_roll_style,
                     roll_img_style: new_roll_img_style,
                     text_style: new_text_style,
+                    is_left_back_btn_show: new_content?.is_left_back_btn_show || '1',
                     position_class: new_content.indicator_location == 'center' ? `indicator-center` : '',
                     header_style: menu_button_info,
                     header_background_type: header_background_type,
