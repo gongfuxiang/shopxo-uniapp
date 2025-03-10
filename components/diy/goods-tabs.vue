@@ -1,6 +1,6 @@
 <template>
-    <view class="goods-tabs ou" :class="'goods-tabs-' + propKey" :style="style_container">
-        <view class="ou" :style="style_img_container">
+    <view class="goods-tabs" :class="'goods-tabs-' + propKey" :style="style_container">
+        <view :style="style_img_container">
             <componentDiyModulesTabsView :propKey="propKey" :propValue="goods_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="shop_margin_top">
                 <view :style="shop_container">
@@ -195,8 +195,8 @@
                     top_up: new_content.tabs_top_up,
                     sticky_top: this.propTop + (new_style?.tabs_margin?.margin_top || 0),
                     goods_tabs: new_data,
-                    style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style, this.propIndex),
+                    style_container: common_styles_computer(common_style) + (new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
+                    style_img_container: common_img_computer(common_style, this.propIndex) + radius_computer(common_style) +(new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
                     tabs_style: new_tabs_style,
                     tabs_sliding_fixed_bg: gradient_computer(tabs_data),
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(new_style?.tabs_margin || old_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',
