@@ -1,6 +1,6 @@
 <template>
-    <view class="data-tabs ou" :class="'data-tabs-' + propKey" :style="style_container">
-        <view class="ou" :style="style_img_container">
+    <view class="data-tabs" :class="'data-tabs-' + propKey" :style="style_container">
+        <view :style="style_img_container">
             <componentDiyModulesTabsView :propKey="propKey" :propValue="data_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="data_margin_top">
                 <view :style="data_container">
@@ -259,8 +259,8 @@
                     data_tabs: new_data,
                     // 自定义需要做等比缩放，因此宽度需要减去 外层通用的宽度和内容区域的宽度
                     outer_container_width: common_style.margin_left + common_style.margin_right + common_style.padding_left + common_style.padding_right + new_style.data_content_margin.margin_left + new_style.data_content_margin.margin_right + new_style.data_content_padding.padding_left + new_style.data_content_padding.padding_right,
-                    style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style, this.propIndex),
+                    style_container: common_styles_computer(common_style) + (new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
+                    style_img_container: common_img_computer(common_style, this.propIndex) + radius_computer(common_style) +(new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
                     tabs_style: new_tabs_style,
                     tabs_sliding_fixed_bg: gradient_computer(tabs_data),
                     tabs_container: gradient_computer(tabs_data) + radius_computer(tabs_radius) + margin_computer(new_style?.tabs_margin || old_margin) + border_computer(tabs_content) + box_shadow_computer(tabs_content) + 'overflow: hidden;',

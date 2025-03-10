@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
-    <view class="article-tabs ou" :class="'article-tabs-' + propKey" :style="style_container">
-        <view class="ou" :style="style_img_container">
+    <view class="article-tabs" :class="'article-tabs-' + propKey" :style="style_container">
+        <view :style="style_img_container">
             <componentDiyModulesTabsView :propKey="propKey" :propValue="article_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsBackground="tabs_background" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onTabsTap="tabs_click_event"></componentDiyModulesTabsView>
             <view :style="article_margin_top">
                 <view :style="article_container">
@@ -203,8 +203,8 @@
                     top_up: new_content.tabs_top_up,
                     sticky_top: this.propTop + (new_style?.tabs_margin?.margin_top || 0),
                     article_tabs: new_data,
-                    style_container: common_styles_computer(common_style),
-                    style_img_container: common_img_computer(common_style, this.propIndex),
+                    style_container: common_styles_computer(common_style) + (new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
+                    style_img_container: common_img_computer(common_style, this.propIndex) + radius_computer(common_style) +(new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
                     tabs_style: new_tabs_style,
                     article_margin_top:  'margin-top:' + (new_style?.article_content_spacing || 0) * 2 + 'rpx',
                     tabs_sliding_fixed_bg: gradient_computer(tabs_data),
