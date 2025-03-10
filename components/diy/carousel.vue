@@ -2,7 +2,7 @@
     <view class="pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="pr" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? swiper_bg_img_style_null : '')">
-            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: swiper_height }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+            <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="'height:' + swiper_height + '; '+ outer_img_style" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
                 <block v-if="form.carousel_type == 'card'">
                     <swiper-item v-for="(item, index) in new_list" :key="index">
                         <view class="flex-row align-c wt-auto ht-auto" :data-value="item.carousel_link.page" @tap="url_open">
@@ -109,6 +109,7 @@
                 style_img_container: '',
                 // 图片的设置
                 img_style: '',
+                outer_img_style: '',
                 // 指示器的样式
                 indicator_style: '',
                 seat_list: [],
@@ -177,7 +178,8 @@
                     popup_height: block * 9 * 2 + 'rpx',  // 视频的高度
                     style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 公共样式显示
                     style_img_container: this.propIsCommon ? common_img_computer(common_style, this.propIndex) : '', // 公共样式显示
-                    img_style: radius_computer(new_style), // 图片的设置
+                    img_style: new_form.carousel_type == 'inherit' ? '' : radius_computer(new_style), // 图片的设置
+                    outer_img_style: new_form.carousel_type == 'inherit' ? radius_computer(new_style) + 'overflow: hidden;' : '',
                     indicator_style: get_indicator_style(new_style), // 指示器的样式
                     indicator_location_style: get_indicator_location_style(new_style),
                     dot_style: `bottom: ${ new_style.indicator_bottom * scale }px;`, // 指示器位置

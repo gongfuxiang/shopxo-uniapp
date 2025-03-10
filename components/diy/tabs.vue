@@ -185,10 +185,12 @@
                     new_tabs_background = 'background:#fff;';
                 }
                 const newPropTop = this.propIsCommon ? (app.globalData.rpx_to_px(this.propTop) + this.propStickyTop) : (app.globalData.rpx_to_px(this.propTop + this.propStickyTop));
+                // 设置margin之后的显示问题
+                const max_width = this.propIsCommon ? (new_style.common_style?.margin_left || 0) + (new_style.common_style?.margin_right || 0) : (this.propSpacingCommonStyle?.margin_left || 0) + (this.propSpacingCommonStyle?.margin_right || 0);
                 this.setData({
                     tabs_data: new_tabs_data,
                     tabs_sliding_fixed_bg: this.propIsCommon ? gradient_computer(new_style.common_style) : this.propTabsSlidingFixedBg,
-                    style_container: this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : '', // 如果是选项卡轮播，不需要走默认样式
+                    style_container: `max-width: calc(1600rpx - ${ max_width * 2 }rpx);` + (this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : ''), // 如果是选项卡轮播，不需要走默认样式
                     // 如果开了滑动置顶，并且开了沉浸式，不需要走传递过来的index，否则的话就用传递过来的index
                     style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, false) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
@@ -259,9 +261,9 @@
             max-width: 100%;
         }
     }
-    .tabs-contents {
-        max-width: 1600rpx !important;
-    }
+    // .tabs-contents {
+    //     max-width: 1600rpx !important;
+    // }
     @media only screen and (min-width: 1600rpx) {
         .tabs-container .tabs-top {
             left: calc(50% - 400px) !important;
