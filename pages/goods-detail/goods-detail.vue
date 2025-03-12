@@ -899,7 +899,7 @@
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_content_show_photo: app.globalData.get_config('config.common_is_goods_detail_content_show_photo'),
-                        common_is_goods_detail_show_comments: app.globalData.get_config('config.common_is_goods_detail_show_comments', 1),
+                        common_is_goods_detail_show_comments: app.globalData.get_config('config.common_is_goods_detail_show_comments'),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     });

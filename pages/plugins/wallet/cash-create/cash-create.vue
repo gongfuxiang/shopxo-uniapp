@@ -36,7 +36,7 @@
                         <radio-group name="cash_type" @change="cash_type_event">
                             <block v-for="(item, index) in user_cash_type_list" :key="index">
                                 <label class="margin-right">
-                                    <radio :value="item.value" :color="theme_color" :checked="default_data.cash_type == item.value" style="transform: scale(0.7)" /> {{item.name}}
+                                    <radio :value="item.value.toString()" :color="theme_color" :checked="default_data.cash_type == item.value" style="transform: scale(0.7)" /> {{item.name}}
                                 </label>
                             </block>
                         </radio-group>
