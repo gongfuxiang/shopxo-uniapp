@@ -345,7 +345,7 @@
                         content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         onter_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
                         // 不同风格下的样式
-                        layout_type: ['0', '4'].includes(new_form.theme) ? 'flex-row wh-auto ht-auto oh' : 'flex-col wh-auto ht-auto oh',
+                        layout_type: ['0', '4'].includes(new_form.theme) ? 'flex-row wh-auto ht-auto oh align-c' : 'flex-col wh-auto ht-auto oh',
                         layout_style: this.get_layout_style(new_style, new_form),
                         layout_img_style: this.get_layout_img_style(new_style, new_form),
                         content_style: this.get_content_style(new_style, new_form), // 内容区域的样式
