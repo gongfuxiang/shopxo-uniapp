@@ -11,27 +11,15 @@
 						<view class="right-content fr flex-1 flex-width">
 							<view class="title single-text">
 								<!-- 认证信息 -->
-								<view
-									v-if="(config.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))"
-									class="auth-icon dis-inline-block">
-									<!-- 实名认证 -->
-									<block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
-										<block v-if="item.auth_type == 0">
-											<image :src="config.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
-										</block>
-										<block v-if="item.auth_type == 1">
-											<image :src="config.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
-										</block>
-									</block>
-									<!-- 保证金认证 -->
-									<block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
-										<image :src="config.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+								<view v-if="(item.icon_list || null) != null && item.icon_list.length > 0" class="auth-icon dis-inline-block">
+									<block v-for="(itemiv, indexix) in item.icon_list" :key="indexix">
+									    <image :src="itemiv.icon" class="icon va-m" mode="aspectFill"></image>
 									</block>
 								</view>
 								<!-- 标题 -->
 								<text class="fw-b text-size va-m">{{item.name}}</text>
 							</view>
-							<view class="desc multi-text cr-base text-size-xs margin-top-sm padding-top-xs">{{item.describe}}</view>
+							<view class="desc multi-text cr-base text-size-xs margin-top-sm">{{item.describe}}</view>
 						</view>
 					</view>
 				</view>
