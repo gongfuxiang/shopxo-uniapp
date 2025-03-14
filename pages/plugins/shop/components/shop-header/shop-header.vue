@@ -23,14 +23,9 @@
             <view class="base fr item">
                 <view class="shop-title single-text">
                     <!-- 认证信息 -->
-                    <view v-if="(propBase.is_enable_auth || 0) == 1 && ((propShop.auth_type != -1 && (propShop.auth_type_msg || null) != null) || ((propShop.bond_status || 0) == 1 && (propShop.bond_status_msg || null) != null))" class="auth-icon dis-inline-block">
-                        <!-- 实名认证 -->
-                        <block v-if="propShop.auth_type != -1 && (propShop.auth_type_msg || null) != null">
-                            <image :src="propShop.auth_type == 0 ? propBase.shop_auth_personal_icon : propBase.shop_auth_company_icon" class="icon va-m" mode="aspectFill" :data-value="'/pages/plugins/shop/license/license?id=' + propShop.id" @tap="url_event"></image>
-                        </block>
-                        <!-- 保证金认证 -->
-                        <block v-if="(propShop.bond_status || 0) == 1 && (propShop.bond_status_msg || null) != null">
-                            <image :src="propBase.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                    <view v-if="(propShop.icon_list || null) != null && propShop.icon_list.length > 0" class="auth-icon dis-inline-block">
+                        <block v-for="(itemiv, indexix) in propShop.icon_list" :key="indexix">
+                            <image :src="itemiv.icon" class="icon va-m" mode="aspectFill" :data-value="itemiv.url || ''" @tap="url_event"></image>
                         </block>
                     </view>
                     <!-- 标题 -->
