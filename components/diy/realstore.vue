@@ -32,9 +32,9 @@
                                                 </view>
                                             </view>
                                         </view>
-                                        <view class="flex-row gap-2 align-c">
+                                        <view v-if="!isEmpty(item.status_info) && !isEmpty(item.status_info.time)" class="flex-row gap-2 align-c">
                                             <imgOrIconOrText :propValue="propValue" propType="time" />
-                                            <view v-if="!isEmpty(item.status_info)" class="flex-1 flex-row align-c">
+                                            <view class="flex-1 flex-row align-c">
                                                 <span class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
                                                 <span v-if="!isEmpty(item.status_info.msg) || !isEmpty(item.status_info.time)" :style="'color: #ccc;' + margin_computer(new_style.realstore_business_distance)">|</span>
                                                 <span class="text-line-1" :style="business_hours_style">{{ item.status_info.time }}</span>
@@ -93,9 +93,9 @@
                                                 <view class="text-line-2" :style="title_style">{{ item.name }}</view>
                                             </view>
                                             <view class="flex-row jc-sb align-c">
-                                                <view class="flex-1 flex-row gap-2 align-c">
+                                                <view v-if="!isEmpty(item.status_info) && !isEmpty(item.status_info.time)" class="flex-1 flex-row gap-2 align-c">
                                                     <imgOrIconOrText :propValue="propValue" propType="time" />
-                                                    <span v-if="!isEmpty(item.status_info)" class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
+                                                    <span class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
                                                 </view>
                                                 <view v-if="item.lat != 0 && item.lng != 0" :data-index="index1" :data-split="index" @tap.stop="address_map_event">
                                                     <imgOrIconOrText :propValue="propValue" propType="navigation" />
@@ -197,23 +197,6 @@
                 const new_form = this.propValue.content || null;
                 const new_style = this.propValue.style || null;
                 if (new_form != null && new_style != null) {
-                    const default_list = {
-                        name: '测试门店标题',
-                        province_name: '测试地址',
-                        alias: '上海门店',
-                        city_name: '',
-                        county_name: '',
-                        address: '',
-                        logo: '',
-                        new_cover: [],
-                        distance: '12km',
-                        status_info: {
-                            msg: '营业中',
-                            time: '7:00-22:00',
-                            status: 1,
-                            type: 0,
-                        },
-                    };
                     let new_list = [];
                     // 指定商品并且指定商品数组不为空
                     if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
@@ -225,10 +208,7 @@
                     } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
                         // 筛选商品并且筛选商品数组不为空
                         new_list = new_form.data_auto_list;
-                    } else {
-                        new_list = Array(4).fill(default_list);
                     }
-                    console.log(new_list);
                     // 最外层不同风格下的显示
                     const flex = ['0', '2'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
                     const wrap = new_form.theme == '3' ? '' : 'flex-wrap ';
@@ -272,6 +252,7 @@
                         new_style: new_style,
                         outer_class: flex + wrap + 'oh',
                         onter_style: `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
+                        content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         list: new_list,
                         new_scale: scale,
                         content_radius: radius_computer(new_style.realstore_radius), // 圆角设置
@@ -431,4 +412,13 @@
 </script>
 
 <style scoped lang="scss">
+.gap-10 {
+    gap: 20rpx;
+}
+.gap-2 {
+    gap: 4rpx;
+}
+.gap-3 {
+    gap: 6rpx;
+}
 </style>

@@ -18,9 +18,11 @@
                             <view class="flex-1 flex-row jc-sb gap-10" :style="content_style">
                                 <view class="flex-1 flex-col jc-sb gap-10">
                                     <view class="text-line-2" :style="title_style">
-                                        <template v-for="(item1, index1) in item.icon_list">
-                                            <template v-if="!isEmpty(item1.icon)">
-                                                <img :key="index1" :src="item1.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;vertical-align: middle;'" />
+                                        <template v-if="(item.icon_list || null) != null && item.icon_list.length > 0">
+                                            <template v-for="(item1, index1) in item.icon_list">
+                                                <template v-if="!isEmpty(item1.icon)">
+                                                    <img :key="index1" :src="item1.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;vertical-align: middle;'" />
+                                                </template>
                                             </template>
                                         </template>{{ item.name }}
                                     </view>
@@ -35,7 +37,7 @@
                 </template>
                 <template v-else>
                     <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
-                        <swiper-item v-for="(item1, index) in shop_content_list" :key="index">
+                        <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
                             <view class="flex-row wh-auto ht-auto" :style="onter_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                                     <view :class="['oh ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
@@ -51,9 +53,11 @@
                                         </template>
                                         <view class="flex-col jc-sb gap-10" :style="content_style">
                                             <view class="text-line-2" :style="title_style">
-                                                <template v-for="(item1, index1) in item.icon_list">
-                                                    <template v-if="!isEmpty(item1.icon)">
-                                                        <image :key="index1" :src="item1.icon" mode="aspectFit" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;vertical-align: middle;'" :data-value="item1.url" @tap.stop="url_event" />
+                                                <template v-if="(item.icon_list || null) != null && item.icon_list.length > 0">
+                                                    <template v-for="(item2, index2) in item.icon_list">
+                                                        <template v-if="!isEmpty(item2.icon)">
+                                                            <img :key="index2" :src="item2.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;vertical-align: middle;'" />
+                                                        </template>
                                                     </template>
                                                 </template>{{ item.name }}
                                             </view>
@@ -152,13 +156,6 @@
                 const new_form = this.propValue.content || null;
                 const new_style = this.propValue.style || null;
                 if (new_form != null && new_style != null) {
-                    const default_list = {
-                        name: '测试商户标题',
-                        describe: '测试商户描述',
-                        icon_list: [{ icon: `http://shopxo.com/static/diy/images/components/model-shop/auth.png`}, { icon: ''}],
-                        logo: '',
-                        new_cover: [],
-                    };
                     let new_list = [];
                     // 指定商品并且指定商品数组不为空
                     if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
@@ -170,8 +167,6 @@
                     } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
                         // 筛选商品并且筛选商品数组不为空
                         new_list = new_form.data_auto_list;
-                    } else {
-                        new_list = Array(4).fill(default_list);
                     }
                     // 最外层不同风格下的显示
                     const flex = ['0', '2'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
@@ -216,6 +211,7 @@
                         new_style: new_style,
                         outer_class: flex + wrap + 'oh',
                         onter_style: `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
+                        content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         list: new_list,
                         new_scale: scale,
                         content_radius: radius_computer(new_style.shop_radius), // 圆角设置
@@ -358,5 +354,8 @@
 <style scoped lang="scss">
     .title-img {
         object-fit: contain;
+    }
+    .gap-10 {
+        gap: 20rpx;
     }
 </style>

@@ -1,16 +1,16 @@
 <template>
-    <view v-if="is_show" :style="corner_marker">
+    <view v-if="is_show" :style="corner_marker + (propType == 'data_discounts' ? 'background-size: 400%;' : '')" :class="propType == 'data_discounts' ? 'discount-icon' : ''">
         <view class="flex-row nowrap oh" :style="corner_img_marker">
             <template v-if="type_boolean">
                 <template v-if="!isEmpty(type_img)">
                     <image-empty v-model="type_img[0]" :style="img_style"></image-empty>
                 </template>
                 <template v-else>
-                    <iconfont :name="'icon-' + type_icon" :size="new_type_size + ''" :color="new_type_color"></iconfont>
+                    <iconfont :name="'icon-' + type_icon" :size="new_type_size * 2 + 'rpx'" :color="new_type_color" propContainerDisplay="flex"></iconfont>
                 </template>
             </template>
             <template v-else>
-                <span class="text-line-1" :style="'font-size:' + new_type_size * 2 + 'rpx;color:' + new_type_color">{{ type_text }}</span>
+                <view class="text-line-1" :style="'font-size:' + new_type_size * 2 + 'rpx;color:' + new_type_color">{{ type_text }}</view>
             </template>
         </view>
     </view>
@@ -81,5 +81,19 @@
     .img_wh {
         width: 100%;
         height: 100%;
+    }
+    .discount-icon {
+        animation: gradient 5s ease infinite;
+    }
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
     }
 </style>

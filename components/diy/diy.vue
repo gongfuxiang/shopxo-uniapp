@@ -41,6 +41,7 @@
                                         <componentDiyBlogList v-else-if="item.key == 'blog'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyBlogList>
                                         <componentDiyBlogTabs v-else-if="item.key == 'blog-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></componentDiyBlogTabs>
                                         <componentDiyShop v-else-if="item.key == 'shop'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyShop>
+                                        <componentDiyBinding v-else-if="item.key == 'binding'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyBinding>
                                         <!-- 工具组件 -->
                                         <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data"></componentDiyFloatWindow>
                                         <componentDiyTitle v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></componentDiyTitle>
@@ -129,6 +130,7 @@
     import componentDiySeckill from '@/components/diy/seckill';
     import componentDiyRealstore from '@/components/diy/realstore';
     import componentDiyShop from '@/components/diy/shop';
+    import componentDiyBinding from '@/components/diy/binding';
     import componentDiyTabsCarousel from '@/components/diy/tabs-carousel';
     import componentDataTabs from '@/components/diy/data-tabs';
     import componentGoodsList from '@/components/goods-list/goods-list';
@@ -190,6 +192,7 @@
             componentDiySeckill,
             componentDiyRealstore,
             componentDiyShop,
+            componentDiyBinding,
             componentDiyTabsCarousel,
             componentDataTabs,
             componentGoodsList,
