@@ -385,24 +385,36 @@
             ]
         },
         {
-            "root": "pages/web-view",
-            "pages": [
-                {
-                    "path": "web-view",
-                    "style": {
-                        "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
-                    }
-                }
-            ]
-        },
-        {
             "root": "pages/paytips",
             "pages": [
                 {
                     "path": "paytips",
                     "style": {
                         "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/paylog-detail",
+            "pages": [
+                {
+                    "path": "paylog-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/web-view",
+            "pages": [
+                {
+                    "path": "web-view",
+                    "style": {
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 }
@@ -1621,6 +1633,13 @@
                 },
                 {
                     "path": "gift/gift",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "gift-detail/gift-detail",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

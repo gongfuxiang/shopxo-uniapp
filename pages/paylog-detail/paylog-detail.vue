@@ -1,14 +1,16 @@
 <template>
     <view :class="theme_view">
-        <block v-if="detail != null">
-            <view class="padding-horizontal-main padding-top-main">
-                <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+        <block v-if="data_list.length > 0">
+            <!-- 订单列表 -->
+            <view class="padding-main">
+                <view class="bg-white border-radius-main">
+                    <block v-for="(item, index) in data_list" :key="index">
+                        <view :class="index > 0 ? 'br-t-f5' : ''" class="padding-main oh">
+                            <text>{{$t('order-detail.order-detail.36op8f')}}：</text>
+                            <text>{{item.order_no}}</text>
+                            <text class="cr-green br-green bg-white round padding-horizontal-lg padding-vertical-xs text-size-xs fr" :data-value="item.url" @tap="url_event">{{$t('common.view_text')}}</text>
                         </view>
-                    </view>
+                    </block>
                 </view>
             </view>
 
@@ -29,24 +31,22 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 params: null,
                 data_list_loding_status: 1,
-                data_list_loding_msg: "",
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
-                detail: null,
-                detail_list: [],
+                data_list: []
             };
         },
 
         components: {
             componentCommon,
             componentNoData,
-            componentBottomLine,
+            componentBottomLine
         },
 
         onLoad(params) {
@@ -84,38 +84,33 @@
                     data_list_loding_status: 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("detail", "recharge", "wallet"),
+                    url: app.globalData.get_request_url("orderdata", "paylog"),
                     method: "POST",
                     data: this.params,
                     dataType: "json",
                     success: (res) => {
                         uni.stopPullDownRefresh();
+                        var data = res.data.data || [];
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            this.setData({
-                                detail: data.data,
-                                detail_list: [
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), value: data.data.recharge_no || "" },
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.dq5v2u'), value: data.data.status_name || "" },
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), value: data.data.money || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || "" },
-                                ],
-                                data_list_loding_status: 3,
-                                data_bottom_line_status: true,
-                                data_list_loding_msg: "",
-                            });
+                            if(data.length == 1) {
+                                setTimeout(function() {
+                                    app.globalData.url_open(data[0]['url'], true);
+                                }, 500);
+                            } else {
+                                this.setData({
+                                    data_list: data,
+                                    data_list_loding_status: data.length == 0 ? 0 : 3,
+                                    data_bottom_line_status: data.length == 0 ? false : true,
+                                    data_list_loding_msg: "",
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
                                 data_bottom_line_status: false,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, this, "init")) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            app.globalData.is_login_check(res.data, this, "init");
                         }
                     },
                     fail: () => {
@@ -125,11 +120,14 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>
-<style></style>

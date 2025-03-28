@@ -94,9 +94,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("detail", "user", "invoice"),
                     method: "POST",
-                    data: {
-                        id: this.params.id,
-                    },
+                    data: this.params,
                     dataType: "json",
                     success: (res) => {
                         uni.stopPullDownRefresh();

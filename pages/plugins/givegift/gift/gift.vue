@@ -15,11 +15,13 @@
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
                     <view  class="margin-top">
-                        <view class="oh" :data-value="item.goods.goods_url" @tap="url_event">
+                        <view v-if="(item.goods || null) != null" class="oh" :data-value="item.goods.goods_url" @tap="url_event">
                             <image :src="item.goods.images" mode="aspectFill" class="radius goods-images fl"></image>
                             <view class="goods-title multi-text fr">{{item.goods.title}}</view>
                         </view>
-                        <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="status_name" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
+                        <view :data-value="'/pages/plugins/givegift/gift-detail/gift-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
+                            <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="status_name" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
+                        </view>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>

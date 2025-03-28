@@ -1,16 +1,16 @@
 <template>
     <view :class="theme_view">
         <block v-if="detail != null">
-            <view class="padding-horizontal-main padding-top-main">
-                <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
-                        </view>
-                    </view>
+            <!-- 商品信息 -->
+            <view v-if="(detail.goods || null) != null" class="padding-horizontal-main padding-top-main">
+                <view class="padding-main bg-white border-radius-main oh" :data-value="detail.goods.goods_url" @tap="url_event">
+                    <image :src="detail.goods.images" mode="aspectFill" class="radius goods-images fl"></image>
+                    <view class="goods-title multi-text fr">{{detail.goods.title}}</view>
                 </view>
             </view>
+
+            <!-- 基础信息 -->
+            <component-panel-content :propData="detail" :propDataField="field_list"></component-panel-content>
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -29,17 +29,17 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-
+    import componentPanelContent from "@/components/panel-content/panel-content";
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 params: null,
                 data_list_loding_status: 1,
-                data_list_loding_msg: "",
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
-                detail: null,
-                detail_list: [],
+                field_list: [],
+                detail: null
             };
         },
 
@@ -47,6 +47,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentPanelContent
         },
 
         onLoad(params) {
@@ -84,7 +85,7 @@
                     data_list_loding_status: 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("detail", "recharge", "wallet"),
+                    url: app.globalData.get_request_url("detail", "gift", "givegift"),
                     method: "POST",
                     data: this.params,
                     dataType: "json",
@@ -94,15 +95,7 @@
                             var data = res.data.data;
                             this.setData({
                                 detail: data.data,
-                                detail_list: [
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), value: data.data.recharge_no || "" },
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.dq5v2u'), value: data.data.status_name || "" },
-                                    { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), value: data.data.money || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || "" },
-                                ],
+                                field_list: data.field_list || [],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: "",
@@ -129,7 +122,14 @@
                     },
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>
-<style></style>
+<style>
+    @import './gift-detail.css';
+</style>
