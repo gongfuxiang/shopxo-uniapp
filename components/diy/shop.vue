@@ -313,7 +313,7 @@
                         size_style = `margin-right: ${ (new_style.content_outer_spacing * 2) + (shop_margin.margin_right * 2) }rpx;width: 100%;height: 100%;`;
                     }
                 } else if (form.theme == '0') {
-                    size_style = `width: calc(100% - ${ shop_left_right_width }px);`;
+                    size_style = `width: calc(100% - ${ shop_left_right_width * 2 }rpx);`;
                 }
                 const gradient = gradient_handle(shop_color_list, shop_direction) + margin_computer(shop_margin) + border_computer(new_style) + box_shadow_computer(new_style);
                 return `${radius} ${ gradient } ${ size_style }`;

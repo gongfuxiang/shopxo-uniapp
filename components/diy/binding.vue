@@ -82,16 +82,16 @@
                                                                 <view v-if="is_show('title')" :class="theme == '0' ? 'text-line-2' : 'text-line-1'" :style="goods_title_style">
                                                                     {{ item.title }}
                                                                 </view>
-                                                                <view v-if="is_show('price')" class="flex-row align-c text-line-1">
-                                                                    <view :style="goods_price_symbol_style">{{ item.show_price_symbol }}</view>
-                                                                    <view :style="goods_price_style">{{ item.price }}</view>
-                                                                    <view v-if="is_show('price_unit')" :style="goods_price_unit_style">{{ item.show_price_unit }}</view>
+                                                                <view v-if="is_show('price')" class="text-line-1">
+                                                                    <text :style="goods_price_symbol_style">{{ item.show_price_symbol }}</text>
+                                                                    <text :style="goods_price_style">{{ item.price }}</text>
+                                                                    <text v-if="is_show('price_unit')" :style="goods_price_unit_style">{{ item.show_price_unit }}</text>
                                                                 </view>
                                                                 <view v-if="is_show('save_price')" class="flex-row align-c gap-3">
                                                                     <img-or-icon-or-text :propValue="propValue" propType="goods_discounts" />
                                                                     <view class="flex-1 text-line-1 flex-row">
-                                                                        <view :style="goods_save_price_symbol_style">{{ item.show_price_symbol }}</view>
-                                                                        <view :style="goods_save_price_style">{{ item.discount_price || 0 }}</view>
+                                                                        <text :style="goods_save_price_symbol_style">{{ item.show_price_symbol }}</text>
+                                                                        <text :style="goods_save_price_style">{{ item.discount_price || 0 }}</text>
                                                                     </view>
                                                                 </view>
                                                             </view>
@@ -115,16 +115,16 @@
                                                                             <view v-if="is_show('title')" :class="theme == '0' ? 'text-line-2' : 'text-line-1'" :style="goods_title_style">
                                                                                 {{ item.title }}
                                                                             </view>
-                                                                            <view v-if="is_show('price')" class="flex-row align-c text-line-1">
-                                                                                <view :style="goods_price_symbol_style">{{ item.show_price_symbol }}</view>
-                                                                                <view :style="goods_price_style">{{ item.price }}</view>
-                                                                                <view v-if="is_show('price_unit')" :style="goods_price_unit_style">{{ item.show_price_unit }}</view>
+                                                                            <view v-if="is_show('price')" class="text-line-1">
+                                                                                <text :style="goods_price_symbol_style">{{ item.show_price_symbol }}</text>
+                                                                                <text :style="goods_price_style">{{ item.price }}</text>
+                                                                                <text v-if="is_show('price_unit')" :style="goods_price_unit_style">{{ item.show_price_unit }}</text>
                                                                             </view>
                                                                             <view v-if="is_show('save_price')" class="flex-row align-c gap-3">
                                                                                 <img-or-icon-or-text :propValue="propValue" propType="goods_discounts" />
-                                                                                <view class="flex-1 text-line-1 flex-row">
-                                                                                    <view :style="goods_save_price_symbol_style">{{ item.show_price_symbol }}</view>
-                                                                                    <view :style="goods_save_price_style">{{ item.discount_price || 0 }}</view>
+                                                                                <view class="flex-1 text-line-1">
+                                                                                    <text :style="goods_save_price_symbol_style">{{ item.show_price_symbol }}</text>
+                                                                                    <text :style="goods_save_price_style">{{ item.discount_price || 0 }}</text>
                                                                                 </view>
                                                                             </view>
                                                                         </view>
@@ -286,7 +286,6 @@
                     if (['0', '1'].includes(new_form.host_graph_theme)) {
                         data_img_style += `height: ${ this.size_handle(new_style, 'data', 'height', data_list, scale) };`
                     }
-                    console.log(data_img_style);
                     // 商品图片大小的控制
                     const goods_style_list = [
                         { name: '单列展示', value: '0', width: 50, height: 50 },
