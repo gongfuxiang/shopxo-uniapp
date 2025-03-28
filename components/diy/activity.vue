@@ -2,7 +2,7 @@
     <view class="oh" :style="style_container">
         <view :style="style_img_container">
             <view class="oh flex-col" :style="'gap:' + new_style.activity_outer_spacing * 2+ 'px;'">
-                <view v-for="(activity_item, match_index) in list" :key="match_index">
+                <view v-for="(activity_item, match_index) in list" :key="match_index" :data-value="activity_item.url" @tap.stop="url_event">
                     <view class="oh" :style="style_activity_content_container">
                         <view class="oh flex-col" :style="style_activity_content_img_container + 'gap:' + new_style.shop_content_spacing * 2 + 'rpx;'">
                             <view class="oh" :style="style_activity_container">
@@ -27,7 +27,7 @@
                                             <view v-if="is_show('desc')" :style="desc_style">{{ activity_item.describe }}</view>
                                         </view>
                                         <view v-if="is_show('keywords')" class="flex-row gap-10 align-c flex-wrap">
-                                            <view v-for="(item, index) in activity_item.keywords_arr" :key="index" :style="keyword_style">
+                                            <view v-for="(item, index) in activity_item.keywords_arr" :key="index" :style="keyword_style" :data-value="item" @tap.stop="serch_button_event">
                                                 <view class="nowrap" :style="keyword_img_style">{{ item }}</view>
                                             </view>
                                         </view>
@@ -36,7 +36,7 @@
                             </view>
                             <view v-if="!isEmpty(activity_item.goods_list)" class="oh" :style="shop_container">
                                 <view class="oh" :style="shop_img_container">
-                                    <componentGoodsList :propValue="propValue" :propNewList="activity_item.goods_list" :propIsUseAuto="false" :propIsCommonStyle="false"></componentGoodsList>
+                                    <componentGoodsList :ref="'diy_goods_list' + match_index" :propDiyIndex="propDiyIndex" :propActivityIndex="match_index" :propValue="propValue" :propNewList="activity_item.goods_list" :propIsUseAuto="false" :propIsCommonStyle="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
                                 </view>
                             </view>
                         </view>
@@ -68,6 +68,10 @@
                 type: [String, Number],
                 default: '',
             },
+            propDiyIndex: {
+                type: Number,
+                default: 0,
+            },
             // 组件渲染的下标
             propIndex: {
                 type: Number,
@@ -84,6 +88,7 @@
                 form: {},
                 new_style: {},
                 list: [],
+                activity_index: 0,
                 content_img_radius: '', // 图片圆角设置
                 main_theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
@@ -178,6 +183,7 @@
                         new_style: new_style,
                         list: new_list,
                         new_scale: scale,
+                        activity_index: 0, // 每次更新的时候重置筛选的index
                         content_img_radius: radius_computer(new_style.activity_main.img_radius), // 图片圆角设置
                         main_theme: new_form.main_theme, // 选择的风格
                         title_style: this.trends_config('title', new_style) + 'word-break: break-all;',
@@ -217,6 +223,23 @@
             },
             get_content_style(new_style) {
                 return padding_computer(new_style.activity_main.activity_main_right_content);
+            },
+            goods_buy_event(index, goods = {}, params = {}, back_data = null) {
+                this.setData({
+                    activity_index: back_data.activity_index || 0
+                })
+                this.$emit('goods_buy_event', index, goods, params, back_data);
+            },
+            goods_cart_back_event(e) {
+                if ((this.$refs[`diy_goods_list${this.activity_index}`][0] || null) != null) {
+                    this.$refs[`diy_goods_list${this.activity_index}`][0].goods_cart_back_event(e);
+                }
+            },
+            serch_button_event(e) {
+                const keywords = e.currentTarget.dataset.value || '';
+                if (!isEmpty(keywords)) {
+                    app.globalData.url_open('/pages/goods-search/goods-search?keywords=' + keywords);
+                }
             },
             url_event(e) {
                 app.globalData.url_event(e);

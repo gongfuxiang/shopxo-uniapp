@@ -222,6 +222,10 @@
             propIsUseAuto: {
                 type: Boolean,
                 default: true,
+            },
+            propActivityIndex: {
+                type: Number,
+                default: 0
             }
         },
         data() {
@@ -554,6 +558,7 @@
                         {
                             index: index,
                             split_index: split_index,
+                            activity_index: this.propActivityIndex,
                             pos: e,
                         }
                     );
