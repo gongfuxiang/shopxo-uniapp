@@ -1,7 +1,7 @@
 <template>
     <view class="oh" :style="style_container">
         <view :style="style_img_container">
-            <view :class="outer_class" :style="onter_style">
+            <view :class="outer_class" :style="outer_style">
                 <template v-if="!['3'].includes(theme)">
                     <view v-for="(item, index) in list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                         <view class="flex-col" :style="layout_img_style">
@@ -74,7 +74,7 @@
                 <template v-else>
                     <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
                         <swiper-item v-for="(item1, index1) in realstore_content_list" :key="index1">
-                            <view class="flex-row wh-auto ht-auto" :style="onter_style">
+                            <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                                     <view :class="['oh wh-auto ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
                                         <template v-if="!isEmpty(item)">
@@ -146,23 +146,18 @@
             return {
                 form: {},
                 new_style: {},
-                propIsCartParaCurve: false,
                 list: [],
-                content_radius: '', // 圆角设置
                 content_img_radius: '', // 图片圆角设置
-                content_padding: '', // 内边距设置
                 theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
                 content_outer_spacing_magin: '', // 商品间距
                 // 最外层不同风格下的显示
                 outer_class: '',
-                onter_style: '',
+                outer_style: '',
                 // 不同风格下的样式
                 layout_style: '',
                 layout_img_style: '',
                 content_style: '', // 内容区域的样式
-                show_content: false, // 显示除标题外的其他区域
-                text_line: '', // 超过多少行隐藏
                 style_container: '', // 公共样式
                 style_img_container: '',
                 realstore_content_list: [],
@@ -251,13 +246,11 @@
                         form: new_form,
                         new_style: new_style,
                         outer_class: flex + wrap + 'oh',
-                        onter_style: `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
+                        outer_style: `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
                         content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         list: new_list,
                         new_scale: scale,
-                        content_radius: radius_computer(new_style.realstore_radius), // 圆角设置
                         content_img_radius: radius_computer(new_style.realstore_img_radius), // 图片圆角设置
-                        content_padding: padding_computer(new_style.realstore_padding) + 'box-sizing: border-box;', // 内边距设置
                         theme: new_form.theme, // 选择的风格
                         title_style: this.trends_config('title', new_style),
                         state_style: this.trends_config('state', new_style),

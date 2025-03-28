@@ -28,7 +28,7 @@
                                                     <view :style="data_price_style">{{ match_item.estimate_price }}</view>
                                                 </view>
                                                 <view class="flex-row align-c gap-3">
-                                                    <img-or-icon-or-text :propValue="propValue" propType="data_discounts" />
+                                                    <imgOrIconOrText :propValue="propValue" propType="data_discounts" />
                                                     <view class="flex-row">
                                                         <view :style="data_save_price_symbol_style">￥</view>
                                                         <view :style="data_save_price_style">{{ match_item.estimate_discount_price || 0 }}</view>
@@ -38,7 +38,7 @@
                                         </view>
                                     </view>
                                     <view class="flex-row align-c jc-e">
-                                        <img-or-icon-or-text :value="propValue" type="details" />
+                                        <imgOrIconOrText :value="propValue" type="details" />
                                     </view>
                                 </view>
                             </view>
@@ -53,7 +53,7 @@
                                                 <view :style="data_price_style">{{ match_item.estimate_price }}</view>
                                             </view>
                                             <view class="flex-row align-c gap-3">
-                                                <img-or-icon-or-text :propValue="propValue" propType="data_discounts" />
+                                                <imgOrIconOrText :propValue="propValue" propType="data_discounts" />
                                                 <view class="flex-row">
                                                     <view :style="data_save_price_symbol_style">￥</view>
                                                     <view :style="data_save_price_style">{{ match_item.estimate_discount_price || 0 }}</view>
@@ -61,14 +61,14 @@
                                             </view>
                                         </view>
                                         <view class="flex-row align-c jc-e">
-                                            <img-or-icon-or-text :value="propValue" type="details" />
+                                            <imgOrIconOrText :value="propValue" type="details" />
                                         </view>
                                     </view>
                                 </view>
                                 <!-- 商品信息区域 -->
                                 <view :style="goods_content_style" :class="match_item.is_home_show_goods ? 'show-goods' : 'hidden-goods'">
                                     <view :style="goods_content_img_style">
-                                        <view :class="outer_class" :style="onter_style">
+                                        <view :class="outer_class" :style="outer_style">
                                             <template v-if="!['3'].includes(theme)">
                                                 <view v-for="(item, index) in match_item.goods" :key="index" class="pr oh" :style="layout_style" :data-value="item.goods_url" @tap.stop="url_event">
                                                     <view :class="['oh wh-auto ht-auto', ['0' , '2'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
@@ -88,7 +88,7 @@
                                                                     <text v-if="is_show('price_unit')" :style="goods_price_unit_style">{{ item.show_price_unit }}</text>
                                                                 </view>
                                                                 <view v-if="is_show('save_price')" class="flex-row align-c gap-3">
-                                                                    <img-or-icon-or-text :propValue="propValue" propType="goods_discounts" />
+                                                                    <imgOrIconOrText :propValue="propValue" propType="goods_discounts" />
                                                                     <view class="flex-1 text-line-1 flex-row">
                                                                         <text :style="goods_save_price_symbol_style">{{ item.show_price_symbol }}</text>
                                                                         <text :style="goods_save_price_style">{{ item.discount_price || 0 }}</text>
@@ -102,7 +102,7 @@
                                             <template v-else>
                                                 <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
                                                     <swiper-item v-for="(item1, index1) in match_item.content_goods" :key="index1">
-                                                        <view class="flex-row wh-auto ht-auto" :style="onter_style">
+                                                        <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                                             <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.goods_url" @tap.stop="url_event">
                                                                 <view :class="['oh wh-auto ht-auto', ['0', '2'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
                                                                     <template v-if="!isEmpty(item) && is_show('goods_img')">
@@ -121,7 +121,7 @@
                                                                                 <text v-if="is_show('price_unit')" :style="goods_price_unit_style">{{ item.show_price_unit }}</text>
                                                                             </view>
                                                                             <view v-if="is_show('save_price')" class="flex-row align-c gap-3">
-                                                                                <img-or-icon-or-text :propValue="propValue" propType="goods_discounts" />
+                                                                                <imgOrIconOrText :propValue="propValue" propType="goods_discounts" />
                                                                                 <view class="flex-1 text-line-1">
                                                                                     <text :style="goods_save_price_symbol_style">{{ item.show_price_symbol }}</text>
                                                                                     <text :style="goods_save_price_style">{{ item.discount_price || 0 }}</text>
@@ -187,23 +187,18 @@
             return {
                 form: {},
                 new_style: {},
-                propIsCartParaCurve: false,
                 list: [],
-                content_radius: '', // 圆角设置
-                content_img_radius: '', // 图片圆角设置
-                content_padding: '', // 内边距设置
                 host_graph_theme: '',//主图风格
                 theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
                 content_outer_spacing_magin: '', // 商品间距
                 // 最外层不同风格下的显示
                 outer_class: '',
-                onter_style: '',
+                outer_style: '',
                 // 不同主图风格下的内容
                 match_layout_style: '',
                 match_layout_img_style: '',
                 data_content_img_radius: '',
-                data_content_padding: '',
                 data_content_style: '',
                 // 不同风格下的样式
                 layout_style: '',
@@ -310,7 +305,7 @@
                         form: new_form,
                         new_style: new_style,
                         outer_class: flex + wrap + 'oh',
-                        onter_style: `gap: ${new_style.goods_content_outer_spacing * 2 + 'rpx'};`,
+                        outer_style: `gap: ${new_style.goods_content_outer_spacing * 2 + 'rpx'};`,
                         content_outer_spacing_magin: new_style.goods_content_outer_spacing * 2 + 'rpx',
                         list: data_handle_list,
                         new_scale: scale,
@@ -319,7 +314,6 @@
                         match_layout_style: this.get_match_layout_style(new_style),
                         match_layout_img_style: this.get_match_layout_img_style(new_form, new_style),
                         data_content_img_radius: radius_computer(new_style.data_img_radius),
-                        data_content_padding: padding_computer(new_style.data_padding),
                         data_content_style: this.get_data_content_style(new_form, new_style),
                         data_img_style: data_img_style,
                         data_title_style: this.trends_config('title', 'data', new_style),

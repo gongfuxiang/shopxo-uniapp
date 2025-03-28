@@ -1,7 +1,7 @@
 <template>
     <view class="oh" :style="style_container">
         <view :style="style_img_container">
-            <view :class="outer_class" :style="onter_style">
+            <view :class="outer_class" :style="outer_style">
                 <template v-if="!['3'].includes(theme)">
                     <view v-for="(item, index) in list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                         <view :class="['oh', ['0'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
@@ -29,7 +29,7 @@
                                     <span v-if="form.shop_desc == '1'" :class="form.shop_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="desc_style">{{ item.describe }}</span>
                                 </view>
                                 <view v-if="theme == '0'" class="flex-row align-c">
-                                    <img-or-icon-or-text :propValue="propValue" propType="right" />
+                                    <imgOrIconOrText :propValue="propValue" propType="right" />
                                 </view>
                             </view>
                         </view>
@@ -38,7 +38,7 @@
                 <template v-else>
                     <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
                         <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
-                            <view class="flex-row wh-auto ht-auto" :style="onter_style">
+                            <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                                     <view :class="['oh ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
                                         <template v-if="!isEmpty(item)">
@@ -107,35 +107,28 @@
             return {
                 form: {},
                 new_style: {},
-                propIsCartParaCurve: false,
                 list: [],
-                content_radius: '', // 圆角设置
                 content_img_radius: '', // 图片圆角设置
-                content_padding: '', // 内边距设置
                 theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
                 content_outer_spacing_magin: '', // 商品间距
                 // 最外层不同风格下的显示
                 outer_class: '',
-                onter_style: '',
+                outer_style: '',
                 // 不同风格下的样式
                 layout_style: '',
                 layout_img_style: '',
                 content_style: '', // 内容区域的样式
-                show_content: false, // 显示除标题外的其他区域
-                text_line: '', // 超过多少行隐藏
                 style_container: '', // 公共样式
                 style_img_container: '',
                 shop_content_list: [],
                 slides_per_group: 1,
-                border_style: '',
                 // 内容样式
                 title_style: '',
                 desc_style: '',
                 title_img_style: '',
                 // 图片大小
                 img_size: '',
-                shop_label_style: '',
                 new_scale: 1,
             };
         },
@@ -210,21 +203,17 @@
                         form: new_form,
                         new_style: new_style,
                         outer_class: flex + wrap + 'oh',
-                        onter_style: `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
+                        outer_style: `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
                         content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         list: new_list,
                         new_scale: scale,
-                        content_radius: radius_computer(new_style.shop_radius), // 圆角设置
                         content_img_radius: radius_computer(new_style.shop_img_radius), // 图片圆角设置
-                        content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
                         theme: new_form.theme, // 选择的风格
                         title_style: this.trends_config('title', new_style),
                         desc_style: this.trends_config('desc', new_style),
                         shop_content_list: this.get_shop_content_list(new_list, new_form, new_style),
                         title_img_style: this.get_title_img_style(new_style),
                         img_size: img_style,
-                        shop_label_style: this.get_shop_label_style(new_style),
-                        border_style: this.get_border_style(new_style),
                         layout_style: this.get_layout_style(new_form, new_style),
                         layout_img_style: this.get_layout_img_style(new_form, new_style),
                         content_style: this.get_content_style(new_form, new_style),
@@ -233,11 +222,6 @@
                         style_img_container: common_img_computer(new_style.common_style, this.propIndex), // 图片样式
                     });
                 }
-            },
-            // 标签显示
-            get_shop_label_style(new_style) {
-                const { shop_lable_color, shop_lable_size, shop_lable_padding, shop_lable_radius, shop_lable_color_list, shop_lable_direction, shop_lable_border_color, shop_lable_border_size } = new_style;
-                return `color: ${ shop_lable_color };font-size: ${ shop_lable_size }px;${ padding_computer(shop_lable_padding) };${ radius_computer(shop_lable_radius) };${ gradient_handle(shop_lable_color_list, shop_lable_direction) };border: ${ shop_lable_border_size }px solid ${ shop_lable_border_color };` 
             },
             // 根据传递的参数，从对象中取值
             trends_config(key, new_style) {
@@ -287,14 +271,6 @@
                     });
                     return nav_list;
                 }
-            },
-            get_border_style(new_style) {
-                const { content_border_margin, content_border_size, content_border_is_show, content_border_color, content_border_style } = new_style;
-                let border = ``;
-                if (content_border_is_show == '1') {
-                    border += `${ margin_computer(content_border_margin) };border-width: ${content_border_size}px 0px 0px 0px;border-style: ${ content_border_style };border-color: ${content_border_color};`
-                }
-                return border;
             },
             // 容器样式
             get_layout_style(form, new_style) {

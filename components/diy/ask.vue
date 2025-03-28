@@ -1,9 +1,9 @@
 <template>
     <view class="oh" :style="style_container">
         <view :style="style_img_container">
-            <view :class="outer_class" :style="onter_style">
+            <view :class="outer_class" :style="outer_style">
                 <template v-if="!['2'].includes(theme)">
-                    <view v-for="(item, index) in list" :key="index" class="pr oh" :style="layout_style">
+                    <view v-for="(item, index) in list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                         <template v-if="theme == 0">
                             <view class="oh wh-auto ht-auto flex-col jc-sb gap-10" :style="layout_img_style">
                                 <view class="flex-row gap-10 align-b">
@@ -45,7 +45,7 @@
                 <template v-else>
                     <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
                         <swiper-item v-for="(item1, index1) in ask_content_list" :key="index1">
-                            <view class="flex-row wh-auto ht-auto" :style="onter_style">
+                            <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
                                     <view class="oh ht-auto flex-col gap-10 jc-sb" :style="layout_img_style">
                                         <view class="flex-row gap-10 align-b">
@@ -110,35 +110,26 @@
             return {
                 form: {},
                 new_style: {},
-                propIsCartParaCurve: false,
                 list: [],
-                content_radius: '', // 圆角设置
-                content_img_radius: '', // 图片圆角设置
-                content_padding: '', // 内边距设置
                 theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
                 content_outer_spacing_magin: '', // 商品间距
                 // 最外层不同风格下的显示
                 outer_class: '',
-                onter_style: '',
+                outer_style: '',
                 // 不同风格下的样式
                 layout_style: '',
                 layout_img_style: '',
-                content_style: '', // 内容区域的样式
-                show_content: false, // 显示除标题外的其他区域
-                text_line: '', // 超过多少行隐藏
                 style_container: '', // 公共样式
                 style_img_container: '',
                 ask_content_list: [],
                 slides_per_group: 1,
-                border_style: '',
                 // 内容样式
                 title_style: '',
                 time_style: '',
                 page_view_style: '',
                 // 图片大小
                 img_size: '',
-                shop_label_style: '',
                 new_scale: 1,
                 // 已回未回信息
                 not_replied_yet_style: '',
@@ -222,13 +213,10 @@
                         form: new_form,
                         new_style: new_style,
                         outer_class: flex + wrap + 'oh',
-                        onter_style: ['0', '2'].includes(new_form.theme) ? `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};` : `column-gap: ${ new_style.content_outer_spacing * 2 + 'rpx' }`,
+                        outer_style: ['0', '2'].includes(new_form.theme) ? `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};` : `column-gap: ${ new_style.content_outer_spacing * 2 + 'rpx' }`,
                         content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
                         list: new_list,
                         new_scale: scale,
-                        content_radius: radius_computer(new_style.ask_radius), // 圆角设置
-                        content_img_radius: radius_computer(new_style.ask_img_radius), // 图片圆角设置
-                        content_padding: padding_computer(new_style.ask_padding) + 'box-sizing: border-box;', // 内边距设置
                         theme: new_form.theme, // 选择的风格
                         title_style: this.trends_config('title', new_style) + 'word-break: break-all;',
                         time_style: this.trends_config('time', new_style),
@@ -239,11 +227,8 @@
                         returned_style: this.button_style(new_style.returned_style),
                         returned_img_style: this.button_img_style(new_style.returned_style),
                         img_size: img_style,
-                        shop_label_style: this.get_shop_label_style(new_style),
-                        border_style: this.get_border_style(new_style),
                         layout_style: this.get_layout_style(new_form, new_style),
                         layout_img_style: this.get_layout_img_style(new_form, new_style),
-                        content_style: this.get_content_style(new_form, new_style),
                         slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.carousel_col : 1,
                         style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 公共样式
                         style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '', // 图片样式
@@ -255,11 +240,6 @@
             },
             button_img_style(style){
                 return `${ padding_computer(style.font_padding) } ${ background_computer(style) }font-weight:${style.font_typeface}; font-size: ${style.font_size}px;color: ${style.font_color};`;
-            },
-            // 标签显示
-            get_shop_label_style(new_style) {
-                const { shop_lable_color, shop_lable_size, shop_lable_padding, shop_lable_radius, shop_lable_color_list, shop_lable_direction, shop_lable_border_color, shop_lable_border_size } = new_style;
-                return `color: ${ shop_lable_color };font-size: ${ shop_lable_size }px;${ padding_computer(shop_lable_padding) };${ radius_computer(shop_lable_radius) };${ gradient_handle(shop_lable_color_list, shop_lable_direction) };border: ${ shop_lable_border_size }px solid ${ shop_lable_border_color };` 
             },
             // 根据传递的参数，从对象中取值
             trends_config(key, new_style) {
@@ -306,14 +286,6 @@
                     return nav_list;
                 }
             },
-            get_border_style(new_style) {
-                const { content_border_margin, content_border_size, content_border_is_show, content_border_color, content_border_style } = new_style;
-                let border = ``;
-                if (content_border_is_show == '1') {
-                    border += `${ margin_computer(content_border_margin) };border-width: ${content_border_size}px 0px 0px 0px;border-style: ${ content_border_style };border-color: ${content_border_color};`
-                }
-                return border;
-            },
             // 容器样式
             get_layout_style(form, new_style) {
                 const { ask_margin, ask_radius, ask_color_list, ask_direction } = new_style;
@@ -357,16 +329,6 @@
                     background_img: ask_background_img,
                 }
                 return padding + background_computer(data);
-            },
-            get_content_style(form, new_style) {
-                const spacing_value = new_style.content_spacing;
-                let spacing = '';
-                if (['0'].includes(form.theme)) {
-                    spacing = `margin-left: ${spacing_value}px;`;
-                } else {
-                    spacing = padding_computer(new_style.ask_padding);
-                }
-                return `${spacing}`;
             },
             url_event(e) {
                 app.globalData.url_event(e);
