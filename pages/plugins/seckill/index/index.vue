@@ -1,9 +1,9 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propFixed="false" :propStyle="seckill_bg">
+        <component-nav-back :propFixed="false" :propStyle="'background: url(' + (current.header_bg || seckill_static_url + 'app/header-bg.png')+') top/100% no-repeat;background-size:100% 100%;'">
             <template slot="right" class="flex-1 flex-width seckill-right-title">
                 <view class="flex-1 seckill-right-title tc">
-                    <image :src="seckill_title_url" mode="widthFix" class="title pr top-md"></image>
+                    <image :src="current.header_logo || seckill_static_url + 'app/header-logo.png'" mode="widthFix" class="title pr top-md"></image>
                 </view>
             </template>
             <template v-if="periods_list.length > 0" slot="content">
@@ -84,8 +84,6 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                seckill_bg: 'background: url(' + seckill_static_url + 'app/header-bg.png) top/100% no-repeat;background-size:100% 100%;',
-                seckill_title_url: seckill_static_url + 'seckill-title.png',
                 scroll_top: 0,
                 scroll_top_old: 0,
                 data_bottom_line_status: false,
@@ -95,7 +93,7 @@
                 data_base: null,
                 // 秒杀时段
                 periods_list: [],
-                current: null,
+                current: {},
                 time: null,
                 goods: [],
                 is_valid: 0,
@@ -198,9 +196,9 @@
                             var data = res.data.data;
                             var periods_list = data.periods_list || [];
                             var data_base = data.config || null;
-                            var current = data.current || null;
-                            var time = (current == null) ? null : current.time || null;
-                            var goods = (current == null) ? [] : current.goods || [];
+                            var current = data.current || {};
+                            var time = current.time || null;
+                            var goods = current.goods || [];
                             var is_valid = time == null ? 0 : time.status <= 1 ? 1 : 0;
                             if (goods.length > 0) {
                                 for (var i in goods) {
@@ -228,7 +226,7 @@
                                         title: this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
                                         path: '/pages/plugins/seckill/index/index',
-                                        img: (this.slider || null) != null && this.slider.length > 0 ? this.slider[0]['images_url'] : '',
+                                        img: this.current.header_logo || this.current.header_bg || '',
                                     },
                                 });
                                 // #ifndef MP-ALIPAY

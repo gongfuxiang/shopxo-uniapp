@@ -3,7 +3,7 @@
         <component-nav-back></component-nav-back>
         <view v-if="(data || null) != null" class="signin-container">
             <view class="pr oh">
-                <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
+                <image :src="data.bg_images || signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
                 <view class="signin-opration-group pa flex-col cr-white">
                     <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row"  @tap="share_event">
                         <view class="content">
@@ -107,7 +107,7 @@
                 <view v-if="is_success_tips == 1" class="coming-tips-container">
                     <view class="coming-content">
                         <view class="coming-item tc pr">
-                            <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
+                            <image :src="data.success_icon || signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
                             <view class="title">{{$t('detail.detail.6qk085')}}</view>
                             <view class="desc">{{$t('detail.detail.ndp2k3')}}<text>{{ coming_integral }}</text>{{$t('index.index.t26j9z')}}</view>
                             <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">{{$t('detail.detail.7itw5w')}}</view>

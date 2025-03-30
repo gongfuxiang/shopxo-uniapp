@@ -21,19 +21,9 @@
 }
 
 .submit-buy {
-    /* height: 52rpx;
-    line-height: 52rpx; */
-    padding: 0 44rpx 0 24rpx;
+    padding: 0 24rpx;
     background-color: rgba(0, 0, 0, 0.15) !important;
     border-radius: 200rpx 0 0 200rpx;
-}
-
-.submit-buy .right-icon {
-    top: 64%;
-    /* #ifdef H5 */
-    top: 50%;
-    /* #endif */
-    transform: translateY(-50%);
 }
 
 .vip-badge {

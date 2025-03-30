@@ -4,7 +4,7 @@
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 头部背景 -->
-                <image :src="membershiplevelvip_static_url + 'title-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
+                <image :src="default_images_data.default_center_head_bg_images_app || (membershiplevelvip_static_url + 'head-bg.png')" mode="widthFix" class="pa top-0 bg-img wh-auto" />
                 <view class="pr padding-top-main">
                     <view class="padding-top-xxxl oh">
                         <!-- 头部 -->
@@ -46,20 +46,23 @@
                             </view>
                             <!-- 已开通会员 -->
                             <view class="pa vip-btn flex-row align-c">
-                                <text data-value="/pages/plugins/membershiplevelvip/member-code/member-code" @tap="url_event" class="cp">
-                                    <iconfont name="icon-qrcode" size="44rpx" color="#fff" propClass="padding-right-main pr bottom-md"></iconfont>
-                                </text>
+                                <view v-if="(data_base.is_enable_member_code || 0) == 1" class="dis-inline-block cp pr padding-right-main" data-value="/pages/plugins/membershiplevelvip/member-code/member-code" @tap="url_event">
+                                    <iconfont name="icon-qrcode" size="44rpx" color="#fff"></iconfont>
+                                </view>
                                 <block v-if="(user_vip || null) != null">
                                     <!-- 判断会员永久 -->
                                     <block v-if="(user_vip.is_permanent || 0) !== 1">
                                         <!-- 会员已过期或未开通 -->
                                         <block v-if="(user_vip.surplus_time_number || 0) == 0">
-                                            <button v-if="(data_base.is_user_buy || null) == 1" data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
+                                            <button v-if="(data_base.is_user_buy || null) == 1" data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
+                                                <text>{{$t('user.user.n4orgk')}}</text>
+                                                <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx"></iconfont></view>
+                                            </button>
                                         </block>
                                         <block v-else>
                                             <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
                                                 <block v-if="(data_base.is_supported_renew_old_order || null) == 1">
-                                                    <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">{{$t('user.user.k614v7')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
+                                                    <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">{{$t('user.user.k614v7')}}<iconfont name="icon-arrow-right" size="18rpx"></iconfont>
                                                     </button>
                                                 </block>
                                                 <block v-else>
@@ -74,7 +77,10 @@
                                 <!-- 未开通会员 -->
                                 <block v-else>
                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
+                                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
+                                            <text>{{$t('user.user.n4orgk')}}</text>
+                                            <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></view>
+                                        </button>
                                     </block>
                                 </block>
                             </view>
@@ -163,7 +169,7 @@
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
-    var membershiplevelvip_static_url = app.globalData.get_static_url('membershiplevelvip', true) + 'app/';
+    var membershiplevelvip_static_url = app.globalData.get_static_url('membershiplevelvip', true) + 'app/center/';
 
     export default {
         data() {
@@ -179,6 +185,7 @@
                 avatar: app.globalData.data.default_user_head_src,
                 nickname: this.$t('login.login.6yfr9g'),
                 submit_disabled_status: false,
+                default_images_data: {},
                 // 推广客户，反力概况
                 statistics_data: null,
             };
@@ -248,6 +255,7 @@
                                 data_base: data.base || null,
                                 user_vip: data.user_vip || null,
                                 nav_list: data.nav_list || [],
+                                default_images_data: data.default_images_data || {},
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,

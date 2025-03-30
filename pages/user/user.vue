@@ -291,10 +291,10 @@
                     // 会员码及付款码入口
                     var membership_page_url = null;
                     var payment_page_url = null;
-                    if (app.globalData.get_config('plugins_base.wallet', null) != null) {
+                    if (app.globalData.get_config('plugins_base.wallet.data.is_enable_payment_code') == 1) {
                         payment_page_url = '/pages/plugins/wallet/payment-code/payment-code';
                     }
-                    if (app.globalData.get_config('plugins_base.membershiplevelvip', null) != null) {
+                    if (app.globalData.get_config('plugins_base.membershiplevelvip.data.is_enable_member_code') == 1) {
                         membership_page_url = '/pages/plugins/membershiplevelvip/member-code/member-code';
                     }
                     this.setData({

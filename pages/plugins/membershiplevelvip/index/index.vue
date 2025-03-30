@@ -3,14 +3,14 @@
         <component-nav-back></component-nav-back>
         <view v-if="(data_base || null) != null" class="bg-white">
             <view class="pr wh-auto oh">
-                <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="vip-bg"></image>
+                <image :src="default_images_data.default_bg_images_app || membership_level_vip_static + 'bg.png'" mode="widthFix" class="vip-bg"></image>
                 <view class="banner oh pa top-0 pa-w wh-auto head-top">
                     <view class="tc">
-                        <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
+                        <image :src="default_images_data.default_logo_app || membership_level_vip_static + 'logo.png'" mode="widthFix" class="title-img"></image>
                         <!-- 标题 -->
                         <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }} </view>
                         <!-- 购买按钮 -->
-                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="join_vip_btn">
+                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="buy_vip_btn">
                             {{ data_base.banner_middle_name || $t('index.index.tbo22p') }}
                         </button>
                     </view>
@@ -50,21 +50,21 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    let membership_level_vip = app.globalData.get_static_url('membershiplevelvip', true);
+    let membership_level_vip_static = app.globalData.get_static_url('membershiplevelvip', true);
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                membership_level_vip: membership_level_vip + 'app/',
+                membership_level_vip_static: membership_level_vip_static + 'app/index/',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 introduce_data: [],
                 data_base: null,
-                default_images_data: null,
+                default_images_data: {},
+                buy_vip_btn: '',
                 // 自定义分享信息
                 share_info: {},
-                join_vip_btn: 'background-image: url(' + membership_level_vip + 'app/join-vip-btn.png) !important;',
             };
         },
         components: {
@@ -115,10 +115,12 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var default_images_data = data.default_images_data || {};
                             this.setData({
                                 data_base: data.base || null,
-                                default_images_data: data.default_images_data || null,
+                                default_images_data: default_images_data,
                                 introduce_data: data.introduce_data || [],
+                                buy_vip_btn: 'background-image: url(' + (default_images_data.default_btn_bg_app || membership_level_vip_static+'app/index/btn.png')+') !important;',
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
@@ -130,7 +132,7 @@
                                         title: this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
                                         path: '/pages/plugins/membershiplevelvip/index/index',
-                                        img: this.default_images_data.default_bg_images || this.default_images_data.default_logo || '',
+                                        img: this.default_images_data.default_logo_app || this.default_images_data.default_bg_images_app || '',
                                     },
                                 });
 

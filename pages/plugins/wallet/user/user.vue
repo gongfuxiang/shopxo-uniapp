@@ -7,7 +7,7 @@
                     <view class="weixin-nav-padding-top">
                         <view class="padding-top-xxxl">
                             <!-- 头部背景 -->
-                            <image :src="wallet_static_url + 'title-bg.png'" mode="widthFix" class="pa bg-img wh-auto" :class="status_bar_height > 0 ? 'top-0' : 'wallet-bg'" />
+                            <image :src="(default_images_data.default_center_head_bg_images_app || wallet_static_url + 'head-bg.png')" mode="widthFix" class="pa bg-img wh-auto" :class="status_bar_height > 0 ? 'top-0' : 'wallet-bg'" />
                             <view class="pr padding-top-main">
                                 <!-- 钱包信息 -->
                                 <view class="padding-top-xxxl oh margin-top-main">
@@ -29,7 +29,7 @@
                                                     <view @tap="price_change">
                                                         <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" size="44rpx"></iconfont>
                                                     </view>
-                                                    <view class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
+                                                    <view v-if="(data_base.is_enable_payment_code || 0) == 1" class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
                                                         <iconfont name="icon-qrcode" size="44rpx"></iconfont>
                                                     </view>
                                                 </view>
@@ -136,6 +136,7 @@
                 data_base: null,
                 user_wallet: null,
                 nav_list: [],
+                default_images_data: {},
                 submit_disabled_status: false,
                 // 是否显示价格
                 is_price_show: false,
@@ -228,6 +229,7 @@
                                 data_base: data.base || null,
                                 user_wallet: data.user_wallet || null,
                                 nav_list: data.nav_list || [],
+                                default_images_data: data.default_images_data || {},
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
