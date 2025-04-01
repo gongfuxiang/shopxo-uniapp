@@ -45,6 +45,7 @@
                                         <componentDiyAsk v-else-if="item.key == 'ask'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyAsk>
                                         <componentDiyAskTabs v-else-if="item.key == 'ask-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></componentDiyAskTabs>
                                         <componentDiyActivity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyActivity>
+                                        <componentDiySalerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiySalerecords>
                                         <!-- 工具组件 -->
                                         <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data"></componentDiyFloatWindow>
                                         <componentDiyTitle v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></componentDiyTitle>
@@ -137,6 +138,7 @@
     import componentDiyAsk from '@/components/diy/ask';
     import componentDiyAskTabs from '@/components/diy/ask-tabs';
     import componentDiyActivity from '@/components/diy/activity';
+    import componentDiySalerecords from '@/components/diy/salerecords'
     import componentDiyTabsCarousel from '@/components/diy/tabs-carousel';
     import componentDataTabs from '@/components/diy/data-tabs';
     import componentGoodsList from '@/components/goods-list/goods-list';
@@ -202,6 +204,7 @@
             componentDiyAsk,
             componentDiyAskTabs,
             componentDiyActivity,
+            componentDiySalerecords,
             componentDiyTabsCarousel,
             componentDataTabs,
             componentGoodsList,

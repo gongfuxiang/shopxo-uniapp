@@ -24,7 +24,7 @@
                                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
                                                 <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                     <template v-if="['2', '3'].includes(form.content.theme)">
-                                                        <view v-if="form.content.logo.length > 0" class="logo-outer-style re flex-row align-c">
+                                                        <view v-if="form.content.logo.length > 0" class="logo-outer-style re flex-row align-c" :data-value="form.content.link.page" @tap.stop="url_event">
                                                             <template v-if="form.style.up_slide_logo && form.style.up_slide_logo.length > 0">
                                                                 <!-- 有上滑logo的处理逻辑 -->
                                                                 <view v-if="(propScrollTop - 5) / (header_top + 33) < 1" class="logo-style" :style="up_slide_old_logo_style">
@@ -40,7 +40,7 @@
                                                             </template>
                                                         </view>
                                                     </template>
-                                                    <view v-if="['1', '2', '3'].includes(form.content.theme) && !isEmpty(form.content.title)">{{ form.content.title }}</view>
+                                                    <view v-if="['1', '2', '3'].includes(form.content.theme) && !isEmpty(form.content.title)" :data-value="form.content.link.page" @tap.stop="url_event">{{ form.content.title }}</view>
                                                     <template v-if="['3'].includes(form.content.theme) && !is_search_alone_row">
                                                         <view class="flex-1 fw-n">
                                                             <componentDiySearch :propValue="form" :propIsPageSettings="true"></componentDiySearch>

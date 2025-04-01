@@ -842,7 +842,7 @@ button[disabled].bg-grey {
     /* 添加标准属性以增加兼容性 */
     line-clamp: 1; 
     -webkit-box-orient: vertical;
-    word-break: break-word;
+    word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
@@ -854,7 +854,7 @@ button[disabled].bg-grey {
     /* 添加标准属性以增加兼容性 */
     line-clamp: 2; 
     -webkit-box-orient: vertical;
-    word-break: break-word;
+    word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
 }

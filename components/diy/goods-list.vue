@@ -217,7 +217,7 @@
             },
             propNewList: {
                 type: Array,
-                default: []
+                default: () => ([])
             },
             propIsUseAuto: {
                 type: Boolean,
