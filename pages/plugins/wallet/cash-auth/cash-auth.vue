@@ -33,7 +33,7 @@
                 <view class="margin-top-lg cr-base">
                     <view class="fw-b text-size">{{$t('cash-auth.cash-auth.0j8388')}}</view>
                     <view class="text-size-xs">
-                        <view>{{$t('cash-auth.cash-auth.59iipw')}}<text class="cr-red" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">{{$t('cash-auth.cash-auth.8qcte7')}}</text>{{$t('cash-auth.cash-auth.t8y3r7')}}<text class="cr-red" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">{{$t('login.login.np9177')}}</text>{{$t('cash-auth.cash-auth.5wbuuy')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.59iipw')}}<text class="cr-red" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">{{$t('login.login.tgsa4d')}}</text>{{$t('cash-auth.cash-auth.t8y3r7')}}<text class="cr-red" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">{{$t('login.login.np9177')}}</text>{{$t('cash-auth.cash-auth.5wbuuy')}}</view>
                         <view>{{$t('cash-auth.cash-auth.r569wz')}}</view>
                         <view>{{$t('cash-auth.cash-auth.35837l')}}</view>
                         <view>{{$t('cash-auth.cash-auth.q2a553')}}</view>
@@ -43,7 +43,8 @@
                 </view>
 
                 <view v-if="check_account_list.length == 0" class="margin-top-xxxl">
-                    <button data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event" class="bg-main br-main cr-white text-size round" type="default">{{$t('cash-auth.cash-auth.d2ng16')}}</button>
+                    <button data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event" class="bg-main-pair br-main-pair cr-white text-size round" type="default">{{$t('login.login.8ytyuf')}}</button>
+                    <button data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event" class="bg-main br-main cr-white text-size round margin-top-xl" type="default">{{$t('login.login.d2ng16')}}</button>
                 </view>
             </view>
             <view v-else>
