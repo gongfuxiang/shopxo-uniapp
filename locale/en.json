@@ -266,7 +266,8 @@
         "plugins-hospital-patient-list": "Patient List",
         "plugins-hospital-prescription": "Consultation and prescription",
         "plugins-certificate-userauth": "User auth",
-        "plugins-certificate-userauth-form": "User auth editor"
+        "plugins-certificate-userauth-saveinfo": "User auth editor",
+        "plugins-certificate-userauth-detail": "User auth detail"
 	},
 	"login": {
 		"login": {
@@ -1935,5 +1936,10 @@
             "rtyu33": "Message prompt, maximum format of 200 characters",
             "34rrr3": "Leave a message for Ta to express gratitude!"
         }
+    },
+    "certificate-userauth": {
+    	"certificate-userauth": {
+    		"tgtwes": "Go authenticate"
+    	}
     }
 }

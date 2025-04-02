@@ -1,9 +1,5 @@
 <template>
     <view :class="theme_view">
-        <!-- 公告 -->
-        <view v-if="(data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0" class="padding-horizontal-main padding-vertical-sm bg-white">
-            <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.invoice_desc.join('')" background-color="transparent" color="#666" />
-        </view>
         <!-- 导航 -->
         <view v-if="nav_status_list.length > 0" class="nav-base bg-white flex-row jc-sa align-c">
             <block v-for="(item, index) in nav_status_list" :key="index">
@@ -11,21 +7,20 @@
             </block>
         </view>
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0 ? 'top-notice' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.certificate_desc || null) != null && data_base.certificate_desc.length > 0 ? 'top-notice' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="page-bottom-fixed">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
                             <text class="cr-grey-9">{{ item.add_time }}</text>
-                            <text class="cr-black" :class="item.status == 0 || item.status == 1 ? 'cr-black' : item.status == 2 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
+                            <text class="cr-black" :class="item.status == 1 ? 'cr-green' : 'cr-red'">{{ item.status_name }}</text>
                         </view>
-                        <view :data-value="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
+                        <view :data-value="'/pages/plugins/certificate/userauth-detail/userauth-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
                             <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
                         </view>
-                        <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
-                        <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
+                        <!-- 资质认证状态（0待审核, 1已审核, 2已拒绝, 3已过期） -->
+                        <view v-if="item.status != 1" class="item-operation tr margin-top-main">
                             <button class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
-                            <button v-if="item.status == 0 || item.status == 3" class="btn round cr-main br-main bg-white text-size-md" type="default" size="mini" :data-value="'/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id='+item.id" @tap="url_event" hover-class="none">{{$t('common.edit')}}</button>
                         </view>
                     </view>
 
@@ -37,11 +32,10 @@
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </view>
 
-                <!-- 添加发票 -->
-                <view v-if="(data_base.is_invoice_order || 0) == 1 || (data_base.is_invoice_recharge || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
-                    <view class="bottom-line-exclude flex-row gap-10">
-                        <button v-if="(data_base.is_invoice_order || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
-                        <button v-if="(data_base.is_invoice_recharge || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/recharge/recharge" @tap="url_event">{{$t('invoice.invoice.bh8yt3')}}</button>
+                <!-- 去认证 -->
+                <view class="bottom-fixed">
+                    <view class="bottom-line-exclude">
+                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/certificate/userauth-saveinfo/userauth-saveinfo" @tap="url_event">{{$t('certificate-userauth.certificate-userauth.tgtwes')}}</button>
                     </view>
                 </view>
             </view>
@@ -72,7 +66,6 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                bottom_fixed_style: '',
                 params: null,
                 nav_status_list: [],
                 nav_status_index: 0,
@@ -294,7 +287,7 @@
                                 title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
-                                url: app.globalData.get_request_url('delete', 'user', 'invoice'),
+                                url: app.globalData.get_request_url('delete', 'userauth', 'certificate'),
                                 method: 'POST',
                                 data: {
                                     ids: value,

@@ -1767,7 +1767,14 @@
                     }
                 },
                 {
-                    "path": "userauth-form/userauth-form",
+                    "path": "userauth-saveinfo/userauth-saveinfo",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "userauth-detail/userauth-detail",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

@@ -264,7 +264,8 @@
         "plugins-hospital-patient-list": "就诊人列表",
         "plugins-hospital-prescription": "问诊开方",
         "plugins-certificate-userauth": "用户认证",
-        "plugins-certificate-userauth-form": "用户认证编辑"
+        "plugins-certificate-userauth-saveinfo": "用户认证编辑",
+        "plugins-certificate-userauth-detail": "用户认证详情"
 	},
 	"login": {
 		"login": {
@@ -1916,6 +1917,11 @@
             "567uye": "留言提示",
     		"rtyu33": "留言提示,格式最多200个字符",
             "34rrr3": "给Ta留言表示感谢！"
+    	}
+    },
+    "certificate-userauth": {
+    	"certificate-userauth": {
+    		"tgtwes": "去认证"
     	}
     }
 }
