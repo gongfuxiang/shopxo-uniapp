@@ -35,9 +35,9 @@
                                         <view v-if="!isEmpty(item.status_info) && !isEmpty(item.status_info.time)" class="flex-row gap-2 align-c">
                                             <imgOrIconOrText :propValue="propValue" propType="time" />
                                             <view class="flex-1 flex-row align-c">
-                                                <span class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
-                                                <span v-if="!isEmpty(item.status_info.msg) || !isEmpty(item.status_info.time)" :style="'color: #ccc;' + margin_computer(new_style.realstore_business_distance)">|</span>
-                                                <span class="text-line-1" :style="business_hours_style">{{ item.status_info.time }}</span>
+                                                <text class="nowrap" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</text>
+                                                <text v-if="!isEmpty(item.status_info.msg) || !isEmpty(item.status_info.time)" :style="'color: #ccc;' + margin_computer(new_style.realstore_business_distance)">|</text>
+                                                <text class="text-line-1" :style="business_hours_style">{{ item.status_info.time }}</text>
                                             </view>
                                         </view>
                                     </view>
@@ -47,9 +47,9 @@
                                             <view class="flex-1 flex-row align-c jc-sb">
                                                 <view class="flex-1 flex-row align-b gap-2">
                                                     <imgOrIconOrText :propValue="propValue" propType="location" />
-                                                    <span v-if="form.is_location_title_show == '1'" class="text-line-2 flex-1" :style="location_style">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</span>
+                                                    <text v-if="form.is_location_title_show == '1'" class="text-line-2 flex-1" :style="location_style">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                                                 </view>
-                                                <span v-if="!isEmpty(item.distance) && theme != '1' && form.is_location_distance_show == '1'" :style="distance_style">距您{{ item.distance || '0km' }}</span>
+                                                <text v-if="!isEmpty(item.distance) && theme != '1' && form.is_location_distance_show == '1'" :style="distance_style">距您{{ item.distance || '0km' }}</text>
                                             </view>
                                             <view v-if="!['0', '2'].includes(theme) && item.lat != 0 && item.lng != 0" :data-index="index" @tap.stop="address_map_event" >
                                                 <imgOrIconOrText :propValue="propValue" propType="navigation" />
@@ -63,9 +63,9 @@
                                 <view class="flex-row align-c jc-sb">
                                     <view class="flex-1 flex-row align-b gap-2">
                                         <imgOrIconOrText :propValue="propValue" propType="location" />
-                                        <span v-if="form.is_location_title_show == '1'" class="text-line-2 flex-1" :style="location_style">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</span>
+                                        <text v-if="form.is_location_title_show == '1'" class="text-line-2 flex-1" :style="location_style">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                                     </view>
-                                    <span v-if="form.is_location_distance_show == '1' && !isEmpty(item.distance)" :style="distance_style">距您{{ item.distance || '' }}</span>
+                                    <text v-if="form.is_location_distance_show == '1' && !isEmpty(item.distance)" :style="distance_style">距您{{ item.distance || '' }}</text>
                                 </view>
                             </template>
                         </view>
@@ -96,7 +96,7 @@
                                                 <view class="flex-row jc-sb align-c">
                                                     <view v-if="!isEmpty(item.status_info) && !isEmpty(item.status_info.time)" class="flex-1 flex-row gap-2 align-c">
                                                         <imgOrIconOrText :propValue="propValue" propType="time" />
-                                                        <span class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
+                                                        <text class="nowrap" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</text>
                                                     </view>
                                                     <view v-if="item.lat != 0 && item.lng != 0" :data-index="index1" :data-split="index" @tap.stop="address_map_event">
                                                         <imgOrIconOrText :propValue="propValue" propType="navigation" />
