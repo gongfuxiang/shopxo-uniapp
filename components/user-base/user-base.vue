@@ -112,57 +112,59 @@
             init(params = {}) {
                 // 初始化配置
                 this.init_config(true);
-
-                // 未指定类型则自动匹配页面
-                var type = '';
-                if((params.type || null) == null) {
-                    var page = '/'+app.globalData.current_page(false);
-                    var obj = {
-                        'index': '/pages/index/index',
-                        'goods-category': '/pages/goods-category/goods-category',
-                        'cart': '/pages/cart/cart',
-                        'user': '/pages/user/user',
-                    };
-                    var index = Object.values(obj).indexOf(page);
-                    if(index != -1) {
-                        type = Object.keys(obj)[index];
-                    }
-                } else {
-                    type = params.type;
-                }
-                if((type || null) != null) {
-                    // 是否需要展示弹窗提示
-                    if (!this.popup_status && this.pages.indexOf(type) != -1 && this.client.indexOf(this.client_value) != -1) {
-                        // 当前缓存用户
-                        var user = app.globalData.get_user_cache_info() || null;
-                        // 需要填写字段数据
-                        var result = this.form_write_field_check_data(user);
-                        // 非微信 或者 微信小程序是否强制填写基础信息、强制则不验证时间
-                        if(this.client_value != 'weixin' || !this.is_weixin_force) {
-                            // 间隔时间
-                            var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
-                            var current_time = Date.parse(new Date()) / 1000;
-                            if (result.popup_status && !this.popup_status && cache_time > 0 && current_time < cache_time + parseInt(this.interval_time)) {
-                                result['popup_status'] = false;
-                            }
+                // 公共接口已初始化完成
+                if(app.globalData.data.common_data_init_status == 1) {
+                    // 未指定类型则自动匹配页面
+                    var type = '';
+                    if((params.type || null) == null) {
+                        var page = '/'+app.globalData.current_page(false);
+                        var obj = {
+                            'index': '/pages/index/index',
+                            'goods-category': '/pages/goods-category/goods-category',
+                            'cart': '/pages/cart/cart',
+                            'user': '/pages/user/user',
+                        };
+                        var index = Object.values(obj).indexOf(page);
+                        if(index != -1) {
+                            type = Object.keys(obj)[index];
                         }
-
-                        // 1秒后再提示用户填写信息
-                        clearTimeout(this.timer);
-                        var self = this;
-                        var timer = setTimeout(function () {
-                            self.setData({
-                                ...result,
-                                ...{
-                                    back_object: params.object || null,
-                                    back_method: params.method || null,
-                                    back_params: params.params || params,
+                    } else {
+                        type = params.type;
+                    }
+                    if((type || null) != null) {
+                        // 是否需要展示弹窗提示
+                        if (!this.popup_status && this.pages.indexOf(type) != -1 && this.client.indexOf(this.client_value) != -1) {
+                            // 当前缓存用户
+                            var user = app.globalData.get_user_cache_info() || null;
+                            // 需要填写字段数据
+                            var result = this.form_write_field_check_data(user);
+                            // 非微信 或者 微信小程序是否强制填写基础信息、强制则不验证时间
+                            if(this.client_value != 'weixin' || !this.is_weixin_force) {
+                                // 间隔时间
+                                var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
+                                var current_time = Date.parse(new Date()) / 1000;
+                                if (result.popup_status && !this.popup_status && cache_time > 0 && current_time < cache_time + parseInt(this.interval_time)) {
+                                    result['popup_status'] = false;
                                 }
+                            }
+
+                            // 1秒后再提示用户填写信息
+                            clearTimeout(this.timer);
+                            var self = this;
+                            var timer = setTimeout(function () {
+                                self.setData({
+                                    ...result,
+                                    ...{
+                                        back_object: params.object || null,
+                                        back_method: params.method || null,
+                                        back_params: params.params || params,
+                                    }
+                                });
+                            }, 500);
+                            this.setData({
+                                timer: timer
                             });
-                        }, 500);
-                        this.setData({
-                            timer: timer
-                        });
+                        }
                     }
                 }
             },

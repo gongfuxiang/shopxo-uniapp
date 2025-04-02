@@ -40,6 +40,9 @@
 
         <!-- 弹屏广告 -->
         <component-popupscreen ref="popupscreen" :propIsGrayscale="propIsGrayscale"></component-popupscreen>
+        
+        <!-- 资质认证 -->
+        <component-certificate ref="certificate" :propIsGrayscale="propIsGrayscale"></component-certificate>
     </view>
 </template>
 <script>
@@ -48,6 +51,7 @@
     import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentUserBase from '@/components/user-base/user-base';
     import componentPopupscreen from '@/components/popupscreen/popupscreen';
+    import componentCertificate from '@/components/certificate/certificate';
     export default {
         data() {
             return {
@@ -93,7 +97,8 @@
             componentDiyFooter,
             componentAppAdmin,
             componentUserBase,
-            componentPopupscreen
+            componentPopupscreen,
+            componentCertificate
         },
         // 页面被展示
         created: function () {
@@ -143,6 +148,11 @@
                 // 弹屏广告
                 if (this.propIsPopupscreen && (this.$refs.popupscreen || null) != null) {
                     this.$refs.popupscreen.init(params);
+                }
+
+                // 资质认证
+                if (this.propIsPopupscreen && (this.$refs.certificate || null) != null) {
+                    this.$refs.certificate.init(params);
                 }
 
                 // #ifdef MP-WEIXIN
