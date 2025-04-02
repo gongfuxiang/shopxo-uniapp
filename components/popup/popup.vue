@@ -41,6 +41,10 @@
                 type: Boolean,
                 default: true,
             },
+            propMaskTap: {
+                type: Boolean,
+                default: true,
+            },
             propAnimation: {
                 type: Boolean,
                 default: true,
@@ -90,13 +94,15 @@
         methods: {
             // 事件处理
             on_mask_tap: function on_mask_tap() {
-                this.$emit(
-                    'onclose',
-                    {
-                        detail: {},
-                    },
-                    {}
-                );
+                if(this.propMaskTap) {
+                    this.$emit(
+                        'onclose',
+                        {
+                            detail: {},
+                        },
+                        {}
+                    );
+                }
             },
             // 初初始化处理
             init_handle() {

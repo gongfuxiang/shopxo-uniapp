@@ -1,14 +1,23 @@
 <template>
     <view :class="theme_view">
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
+        <component-popup :propShow="popup_status" propPosition="bottom" :propMaskTap="(config.is_user_force_select || 0) == 0" @onclose="popup_close_event">
             <view :class="'certificate-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
-                <view class="close fr oh">
+                <view v-if="(config.is_user_force_select || 0) == 0" class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
                         <iconfont name="icon-close-o" size="24rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="padding-main">
-                    hello
+                <view class="certificate-content">
+                    <view>{{config.user_auth_business_data.business_title}}</view>
+                    <view class="business-type-data">
+                        <block v-for="(item, index) in config.business_type_data">
+                            <view v-if="item.status == 1" class="item padding-main tc br radius margin-top-lg" :data-value="item.url" @tap="url_event">
+                                <image v-if="(item.icon || null) != null" :src="item.icon" mode="aspectFit" class="icon radius margin-bottom-sm"></image>
+                                <view>{{item.name || item.name_old}}</view>
+                                <view v-if="(item.desc || null) != null" class="cr-grey margin-top-sm">{{item.desc}}</view>
+                            </view>
+                        </block>
+                    </view>
                 </view>
             </view>
         </component-popup>
@@ -59,13 +68,16 @@
                 this.init_config(true);
                 // 公共接口已初始化完成
                 if(app.globalData.data.common_data_init_status == 1) {
+                    // 当前缓存用户
+                    var user = app.globalData.get_user_cache_info() || null;
                     // 业务数据
-                    if((this.config || null) != null && (this.config.business_type_data || null) != null) {
+                    if(user != null && (this.config || null) != null && (this.config.user_auth_business_data || null) != null && (this.config.business_type_data || null) != null) {
                         this.setData({
                             popup_status: true,
                         });
                     }
                 }
+                return this.popup_status;
             },
 
             // 弹层关闭
@@ -74,6 +86,12 @@
                     popup_status: false,
                 });
             },
+
+            // url事件
+            url_event(e) {
+                this.popup_close_event();
+                app.globalData.url_event(e);
+            }
         }
     };
 </script>
@@ -87,5 +105,9 @@
         top: 36rpx;
         right: 36rpx;
         z-index: 2;
+    }
+    .business-type-data .item .icon {
+        height: 80rpx !important;
+        max-width: 100%;
     }
 </style>

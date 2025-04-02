@@ -1008,7 +1008,7 @@
                 // 预下单计算开关 0
                 if (this.is_cart_show_discount === 0) {
                     this.setData({
-                        total_price: total_price.toFixed(2),
+                        total_price: isNaN(total_price) ? '0.00' : total_price.toFixed(2),
                         total_num: total_num,
                     });
                 } else {

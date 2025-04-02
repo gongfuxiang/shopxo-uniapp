@@ -37,7 +37,6 @@
                     this.setData({
                         data: app.globalData.get_config('plugins_base.popupscreen.data') || null,
                     });
-                    this.init();
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -83,6 +82,7 @@
                         }
                     }
                 }
+                return this.status == 1;
             },
             
             // 关闭事件

@@ -1755,6 +1755,25 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/certificate",
+            "pages": [
+                {
+                    "path": "userauth/userauth",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "userauth-form/userauth-form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {

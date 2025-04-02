@@ -264,7 +264,9 @@
         "plugins-orderresources-orderannex": "Order Resources",
         "plugins-hospital-patient": "Add/Edit Patient",
         "plugins-hospital-patient-list": "Patient List",
-        "plugins-hospital-prescription": "Consultation and prescription"
+        "plugins-hospital-prescription": "Consultation and prescription",
+        "plugins-certificate-userauth": "User auth",
+        "plugins-certificate-userauth-form": "User auth editor"
 	},
 	"login": {
 		"login": {

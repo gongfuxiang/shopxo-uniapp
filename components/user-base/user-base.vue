@@ -147,26 +147,18 @@
                                     result['popup_status'] = false;
                                 }
                             }
-
-                            // 1秒后再提示用户填写信息
-                            clearTimeout(this.timer);
-                            var self = this;
-                            var timer = setTimeout(function () {
-                                self.setData({
-                                    ...result,
-                                    ...{
-                                        back_object: params.object || null,
-                                        back_method: params.method || null,
-                                        back_params: params.params || params,
-                                    }
-                                });
-                            }, 500);
                             this.setData({
-                                timer: timer
+                                ...result,
+                                ...{
+                                    back_object: params.object || null,
+                                    back_method: params.method || null,
+                                    back_params: params.params || params,
+                                }
                             });
                         }
                     }
                 }
+                return this.popup_status;
             },
 
             // 表单需要填写的验证数据
@@ -213,7 +205,6 @@
 
             // 基础信息填写打开
             user_base_open(object, method, params) {
-                clearTimeout(this.timer);
                 this.setData({
                     popup_status: true,
                     back_object: object,
