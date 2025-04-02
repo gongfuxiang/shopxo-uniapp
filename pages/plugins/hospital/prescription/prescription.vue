@@ -57,7 +57,7 @@
                             <input type="text" name="ill_desc" maxlength="230" placeholder-class="cr-grey-9" class="cr-base" placeholder="主诉格式1～230个字符" />
                         </view>
                     </view>
-                    <view class="bottom-fixed">
+                    <view class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
                             <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">免费问诊开方</button>
                         </view>
@@ -105,6 +105,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 form_submit_disabled_status: false,
+                bottom_fixed_style: '',
                 params: null,
                 goods_data: [],
                 patient_data: null,

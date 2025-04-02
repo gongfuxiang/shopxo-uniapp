@@ -76,7 +76,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="bottom-fixed">
+                    <view class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
                             <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.save')}}</button>
                         </view>
@@ -161,6 +161,7 @@
                 data_list_loding_msg: '',
                 popup_health_status: false,
                 form_submit_disabled_status: false,
+                bottom_fixed_style: '',
                 params: {},
                 data: {},
                 health: {},

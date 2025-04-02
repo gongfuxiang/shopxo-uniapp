@@ -33,7 +33,7 @@
                 </view>
 
                 <!-- 去认证 -->
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/certificate/userauth-saveinfo/userauth-saveinfo" @tap="url_event">{{$t('certificate-userauth.certificate-userauth.tgtwes')}}</button>
                     </view>
@@ -56,6 +56,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                bottom_fixed_style: '',
                 field_list: [],
                 data_base: null,
                 data_list: [],

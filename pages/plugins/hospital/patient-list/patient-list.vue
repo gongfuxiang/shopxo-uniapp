@@ -34,7 +34,7 @@
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </block>
         </view>
-        <view class="bottom-fixed">
+        <view class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/hospital/patient/patient" @tap="url_event">添加就诊人</button>
             </view>
@@ -55,6 +55,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 params: {},
                 data_list: [],
                 patient_tips: null,

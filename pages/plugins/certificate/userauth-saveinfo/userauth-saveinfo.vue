@@ -10,7 +10,7 @@
                                 <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.x461e0')" maxlength="200" :value="data.invoice_title || ''" />
                             </view>
                         </view>
-                        <view class="bottom-fixed">
+                        <view class="bottom-fixed" :style="bottom_fixed_style">
                             <view class="bottom-line-exclude">
                                 <button class="item bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                             </view>
@@ -42,6 +42,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
+                bottom_fixed_style: '',
                 data_base: null,
                 apply_type_list: [],
                 can_invoice_type_list: [],

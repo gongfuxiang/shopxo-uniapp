@@ -32,7 +32,7 @@
         </view>
 
         <!-- 底部操作 -->
-        <view class="bottom-fixed">
+        <view class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
                     <view class="flex-row jc-sb align-c gap-10">
@@ -69,6 +69,7 @@
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
+                bottom_fixed_style: '',
                 common_user_address_platform_import_list: [],
                 client_value: app.globalData.application_client_type(),
                 data_list: [],

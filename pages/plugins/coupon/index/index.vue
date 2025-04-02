@@ -23,7 +23,7 @@
                         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     </view>
                 </view>
-                <view class="bottom-fixed">
+                <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/coupon/user/user" @tap="url_event">{{$t('index.index.lk0i6c')}}</button>
                     </view>
@@ -55,6 +55,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                bottom_fixed_style: '',
                 data_list: [],
                 data_base: null,
                 // 优惠劵领取
