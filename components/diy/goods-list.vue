@@ -1,7 +1,7 @@
 <template>
     <view v-if="!isEmpty(list)" class="oh" :style="style_container" @tap.stop="onTap">
         <view class="oh" :style="style_img_container">
-            <view :class="outer_class" :style="onter_style">
+            <view :class="outer_class" :style="outer_style">
                 <block v-if="!['5'].includes(theme)">
                     <view v-for="(item, index) in list" :key="index" class="pr oh" :style="layout_style" :data-index="index" :data-value="item.goods_url" @tap.stop="url_event">
                         <view :class="layout_type" :style="layout_img_style">
@@ -113,7 +113,7 @@
                 <block v-else>
                     <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
                         <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
-                            <view class="flex-row wh-auto ht-auto" :style="onter_style">
+                            <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-index="index1" :data-split-index="index" :data-value="item.goods_url" @tap.stop="url_event">
                                     <view :class="layout_type" :style="layout_img_style">
                                         <block v-if="!isEmpty(item)">
@@ -215,22 +215,31 @@
                 type: Number,
                 default: 0,
             },
+            propNewList: {
+                type: Array,
+                default: () => ([])
+            },
+            propIsUseAuto: {
+                type: Boolean,
+                default: true,
+            },
+            propActivityIndex: {
+                type: Number,
+                default: 0
+            }
         },
         data() {
             return {
                 form: {},
                 new_style: {},
-                propIsCartParaCurve: false,
                 list: [],
-                content_radius: '', // 圆角设置
                 content_img_radius: '', // 图片圆角设置
-                content_padding: '', // 内边距设置
                 theme: '', // 选择的风格
                 content_outer_spacing: '', // 商品间距
                 content_outer_spacing_magin: '', // 商品间距
                 // 最外层不同风格下的显示
                 outer_class: '',
-                onter_style: '',
+                outer_style: '',
                 // 不同风格下的样式
                 layout_type: '',
                 layout_style: '',
@@ -277,16 +286,21 @@
                 const new_style = this.propValue.style || null;
                 if (new_form != null && new_style != null) {
                     let new_list = [];
-                    // 指定商品并且指定商品数组不为空
-                    if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
-                        new_list = new_form.data_list.map((item) => ({
-                            ...item.data,
-                            title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
-                            new_cover: item.new_cover,
-                        }));
-                    } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
-                        // 筛选商品并且筛选商品数组不为空
-                        new_list = new_form.data_auto_list;
+                    // 判断是否是活动传递过来的，是使用自动数据，还是使用传递过来的数据
+                    if (this.propIsUseAuto) {
+                        // 指定商品并且指定商品数组不为空
+                        if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
+                            new_list = new_form.data_list.map((item) => ({
+                                ...item.data,
+                                title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
+                                new_cover: item.new_cover,
+                            }));
+                        } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
+                            // 筛选商品并且筛选商品数组不为空
+                            new_list = new_form.data_auto_list;
+                        }
+                    } else {
+                        new_list = this.propNewList;
                     }
                     // 最外层不同风格下的显示
                     const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
@@ -337,13 +351,11 @@
                         outer_class: flex + wrap + background + 'oh',
                         list: new_list,
                         new_scale: scale,
-                        content_radius: radius_computer(new_style.shop_radius), // 圆角设置
                         content_img_radius: radius_computer(new_style.shop_img_radius), // 图片圆角设置
-                        content_padding: padding_computer(new_style.shop_padding) + 'box-sizing: border-box;', // 内边距设置
                         theme: new_form.theme, // 选择的风格
                         content_outer_spacing: new_style.content_outer_spacing, // 商品间距
                         content_outer_spacing_magin: new_style.content_outer_spacing * 2 + 'rpx',
-                        onter_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
+                        outer_style: new_form.theme == '6' ? radius_computer(new_style.shop_radius) : `gap: ${new_style.content_outer_spacing * 2 + 'rpx'};`,
                         // 不同风格下的样式
                         layout_type: ['0', '4'].includes(new_form.theme) ? 'flex-row wh-auto ht-auto oh' : 'flex-col wh-auto ht-auto oh',
                         layout_style: this.get_layout_style(new_style, new_form),
@@ -546,6 +558,7 @@
                         {
                             index: index,
                             split_index: split_index,
+                            activity_index: this.propActivityIndex,
                             pos: e,
                         }
                     );

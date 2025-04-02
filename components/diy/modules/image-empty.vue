@@ -1,6 +1,6 @@
 <template>
     <view :class="['oh img_wh', propClass]" :style="empty_outer_style + propStyle">
-        <image :src="img_url" :mode="propImgFit" :style="empty_style + 'display: block;'" />
+        <image :src="img_url" :mode="propImgFit" :style="empty_style + 'display: block;'" @error="error_change"/>
     </view>
 </template>
 
@@ -68,6 +68,13 @@
                     img_url: img_url,
                 });
             },
+            error_change() {
+                this.setData({
+                    empty_outer_style: 'background: #f4fcff;display:flex;align-items: center;justify-content: center;',
+                    empty_style: `${this.propErrorStyle}`,
+                    img_url: this.default_image,
+                });
+            }
         },
     };
 </script>

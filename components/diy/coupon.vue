@@ -160,7 +160,7 @@
 <script>
     const app = getApp();
     var tabbar_pages = app.globalData.app_tabbar_pages();
-    import { common_styles_computer, common_img_computer, gradient_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, gradient_computer, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -237,11 +237,24 @@
                     },
                     false
                 );
+                // 判断是自动还是手动, 取对应的数据
+                let new_list = [];
+                // 指定商品并且指定商品数组不为空
+                if (!isEmpty(new_content.data_list) && new_content.data_type == '0') {
+                    new_list = new_content.data_list.map((item) => ({
+                        ...item.data,
+                        name: !isEmpty(item.new_title) ? item.new_title : item.data.name,
+                        new_cover: item.new_cover,
+                    }));
+                } else if (!isEmpty(new_content.data_auto_list) && new_content.data_type == '1') {
+                    // 筛选商品并且筛选商品数组不为空
+                    new_list = new_content.data_auto_list;
+                }
                 this.setData({
                     content_title: new_content.title || '',
                     content_desc: new_content.desc || '',
                     // 判断是自动还是手动
-                    data_list: new_content.data_type == '1' ? new_content.data_list : new_content.data_auto_list,
+                    data_list: new_list,
                     theme: temp_theme,
                     theme_style: {
                         price_color: new_style.price_color,

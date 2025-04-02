@@ -4,7 +4,7 @@
             <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
-                    <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
+                    <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onLocationBack="choice_location_back"></componentDiyHeader>
                 </view>
                 <view :style="content_padding">
                     <view class="content flex-col" :style="'padding-top:calc(' + (temp_is_header_top ? temp_header_top + temp_sticky_top + 'px)' : '0px)')">
@@ -34,9 +34,18 @@
                                         <componentDiyCustom v-else-if="item.key == 'custom'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCustom>
                                         <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyImgMagic>
                                         <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyHotZone>
-                                        <componentDiySeckill v-else-if="item.key == 'seckill'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiySeckill>
                                         <!-- 插件 -->
+                                        <componentDiySeckill v-else-if="item.key == 'seckill'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiySeckill>
                                         <componentDiyCoupon v-else-if="item.key == 'coupon'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyCoupon>
+                                        <componentDiyRealstore v-else-if="item.key == 'realstore'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyRealstore>
+                                        <componentDiyBlogList v-else-if="item.key == 'blog'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyBlogList>
+                                        <componentDiyBlogTabs v-else-if="item.key == 'blog-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></componentDiyBlogTabs>
+                                        <componentDiyShop v-else-if="item.key == 'shop'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyShop>
+                                        <componentDiyBinding v-else-if="item.key == 'binding'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyBinding>
+                                        <componentDiyAsk v-else-if="item.key == 'ask'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiyAsk>
+                                        <componentDiyAskTabs v-else-if="item.key == 'ask-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></componentDiyAskTabs>
+                                        <componentDiyActivity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></componentDiyActivity>
+                                        <componentDiySalerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></componentDiySalerecords>
                                         <!-- 工具组件 -->
                                         <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data"></componentDiyFloatWindow>
                                         <componentDiyTitle v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></componentDiyTitle>
@@ -53,7 +62,7 @@
                         </template>
                         <template v-else>
                             <!-- 商品九宫格列表 -->
-                            <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-main oh">
+                            <view v-if="goods_list.length > 0" class="padding-top-main oh" :style="good_padding">
                                 <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
                             </view>
                             <view v-else class="pr">
@@ -107,6 +116,8 @@
     import componentDiyVideo from '@/components/diy/video';
     import componentDiyArticleList from '@/components/diy/article-list';
     import componentDiyArticleTabs from '@/components/diy/article-tabs';
+    import componentDiyBlogList from '@/components/diy/blog-list';
+    import componentDiyBlogTabs from '@/components/diy/blog-tabs';
     import componentDiyHotZone from '@/components/diy/hot-zone';
     import componentDiyCoupon from '@/components/diy/coupon';
     import componentDiyFloatWindow from '@/components/diy/float-window';
@@ -121,6 +132,13 @@
     import componentDiyCustom from '@/components/diy/custom';
     import componentDiyImgMagic from '@/components/diy/img-magic';
     import componentDiySeckill from '@/components/diy/seckill';
+    import componentDiyRealstore from '@/components/diy/realstore';
+    import componentDiyShop from '@/components/diy/shop';
+    import componentDiyBinding from '@/components/diy/binding';
+    import componentDiyAsk from '@/components/diy/ask';
+    import componentDiyAskTabs from '@/components/diy/ask-tabs';
+    import componentDiyActivity from '@/components/diy/activity';
+    import componentDiySalerecords from '@/components/diy/salerecords'
     import componentDiyTabsCarousel from '@/components/diy/tabs-carousel';
     import componentDataTabs from '@/components/diy/data-tabs';
     import componentGoodsList from '@/components/goods-list/goods-list';
@@ -128,6 +146,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentSearch from '@/components/search/search';
+    
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
 
@@ -163,6 +182,8 @@
             componentDiyVideo,
             componentDiyArticleList,
             componentDiyArticleTabs,
+            componentDiyBlogList,
+            componentDiyBlogTabs,
             componentDiyHotZone,
             componentDiyCoupon,
             componentDiyAuxiliaryLine,
@@ -177,6 +198,13 @@
             componentDiyCustom,
             componentDiyImgMagic,
             componentDiySeckill,
+            componentDiyRealstore,
+            componentDiyShop,
+            componentDiyBinding,
+            componentDiyAsk,
+            componentDiyAskTabs,
+            componentDiyActivity,
+            componentDiySalerecords,
             componentDiyTabsCarousel,
             componentDataTabs,
             componentGoodsList,
@@ -254,6 +282,7 @@
                 is_search_alone_row: false,
                 data_alone_row_space: 0,
                 content_padding: '',
+                good_padding: '',
                 outer_container_padding: 0,
 
                 // 滚动延迟器
@@ -435,7 +464,8 @@
                     page_style: common_styles_computer(header_style.common_style),
                     page_img_style: background_computer(header_style.common_style),
                     // 内间距
-                    content_padding: `padding: 0px ${padding_right}px 0px ${padding_left}px;` + 'box-sizing:border-box;',
+                    content_padding: `padding: 0px ${padding_right * 2 }rpx 0px ${padding_left * 2}rpx;` + 'box-sizing:border-box;',
+                    good_padding: padding_right == 0 && padding_left == 0 ? 'padding-left: 24rpx;padding-right: 24rpx;' : `padding: 0px ${ padding_right == 0 ? padding_left * 2 : 0 }rpx 0px ${ padding_left == 0 ? padding_right * 2 : 0 }rpx;`,
                     outer_container_padding: padding_right + padding_left,
                     // 判断顶部导航是否置顶
                     is_header_top: parseInt(header_style.up_slide_display) == 1 ? true : false,
@@ -453,12 +483,6 @@
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
             },
-            // 顶部导航沉浸模式回调
-            // immersion_model_call_back(bool) {
-            //     this.setData({
-            //         is_immersion_model: bool,
-            //     });
-            // },
             get_index_content(new_diy_index, header, header_style, item) {
                 item.index = new_diy_index;
                 if (new_diy_index == 0) {

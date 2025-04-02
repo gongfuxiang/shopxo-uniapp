@@ -178,6 +178,7 @@ export default {
                 box_style: this.get_box_style(new_style, new_form), // 搜索框设置
                 search_box_style: `border: 2rpx solid ${new_style.search_border == '#fff' ? '#eee' : new_style.search_border};`,
                 search_button_style: this.get_search_button_style(new_form, new_style), // 搜索按钮显示
+                keywords: new_form.hot_word_list.length > 0 ? (new_form.hot_word_list[0].value || '') : '',
                 right_icon_style: `border-radius: 0px ${ new_style.search_border_radius?.radius_top_right * 2 || 0 }rpx ${ new_style.search_border_radius?.radius_bottom_right * 2 || 0 }rpx 0px;`,
             });
         },
@@ -214,15 +215,6 @@ export default {
             }
             return background_computer(data) + padding_computer(new_style?.search_botton_padding || this.button_padding) + 'box-sizing: border-box;';
         },
-        // get_style(new_style) {
-        //     let common_styles = '';
-        //     if (new_style.text_style == 'italic') {
-        //         common_styles += `font-style: italic`;
-        //     } else if (new_style.text_style == '500') {
-        //         common_styles += `font-weight: 500`;
-        //     }
-        //     return common_styles;
-        // },
         get_box_style(new_style, form) {
             let style = `background: ${ new_style?.search_bg_color || '' };border: 2rpx solid ${new_style.search_border}; ${radius_computer(new_style.search_border_radius)};box-sizing: border-box;`;
             if (form.positioning_name_float == '1' && this.propSearchType == 'header') {
@@ -240,7 +232,8 @@ export default {
         },
         serch_button_event() {
             if (!isEmpty(this.keywords)) {
-                app.globalData.url_open('pages/goods-search/goods-search?keywords=' + this.keywords);
+                app.globalData.url_open('/pages/goods-search/goods-search?keywords=' + this.keywords);
+                return;
             }
             app.globalData.url_open('/pages/goods-search-start/goods-search-start?keywords=' + this.keywords);
         },
