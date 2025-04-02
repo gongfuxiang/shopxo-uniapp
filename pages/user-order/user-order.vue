@@ -532,11 +532,13 @@
                         extraData: {
                             transaction_id: transactionid
                         },
-                        success() {
+                        success(res) {
                             self.collect_handle(e);
                         },
-                        fail() {
-                            self.collect_hand_handle(e);
+                        fail(res) {
+                            if((res.status || null) == 'fail') {
+                                self.collect_hand_handle(e);
+                            }
                         }
                     });
                 }
@@ -559,51 +561,41 @@
 
             // 收货处理
             collect_handle(e) {
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
-                    success: (result) => {
-                        if (result.confirm) {
-                            // 参数
-                            var id = e.currentTarget.dataset.value;
-                            var index = e.currentTarget.dataset.index;
-            
-                            // 加载loding
-                            uni.showLoading({
-                                title: this.$t('common.processing_in_text'),
+                // 参数
+                var id = e.currentTarget.dataset.value;
+                var index = e.currentTarget.dataset.index;
+
+                // 加载loding
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('collect', 'order'),
+                    method: 'POST',
+                    data: {
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var temp_data_list = this.data_list;
+                            temp_data_list[index]['status'] = 4;
+                            temp_data_list[index]['status_name'] = this.$t('order.order.15lr5l');
+                            temp_data_list[index]['operate_data']['is_collect'] = 0;
+                            temp_data_list[index]['operate_data']['is_comments'] = 1;
+                            temp_data_list[index]['operate_data']['is_delete'] = 1;
+                            this.setData({
+                                data_list: temp_data_list,
                             });
-                            uni.request({
-                                url: app.globalData.get_request_url('collect', 'order'),
-                                method: 'POST',
-                                data: {
-                                    id: id,
-                                },
-                                dataType: 'json',
-                                success: (res) => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        var temp_data_list = this.data_list;
-                                        temp_data_list[index]['status'] = 4;
-                                        temp_data_list[index]['status_name'] = this.$t('order.order.15lr5l');
-                                        temp_data_list[index]['operate_data']['is_collect'] = 0;
-                                        temp_data_list[index]['operate_data']['is_comments'] = 1;
-                                        temp_data_list[index]['operate_data']['is_delete'] = 1;
-                                        this.setData({
-                                            data_list: temp_data_list,
-                                        });
-                                        app.globalData.showToast(res.data.msg, 'success');
-                                    } else {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                                },
-                            });
+                            app.globalData.showToast(res.data.msg, 'success');
+                        } else {
+                            app.globalData.showToast(res.data.msg);
                         }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
