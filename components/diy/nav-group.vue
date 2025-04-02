@@ -171,7 +171,7 @@ export default {
                         }
                     })
                     .exec(); // 执行查询
-            }, 100);
+            }, 500);
         },
         get_nav_content_list(data, new_style) {
             // 深拷贝一下，确保不会出现问题

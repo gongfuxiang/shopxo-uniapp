@@ -9,7 +9,7 @@
                         <view v-for="(item, index) in form.img_magic_list" :key="index" class="three flex-row" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <view class="wh-auto flex-row" :style="content_img_container">
                                 <view class="flex-1" :style="content_img_style_container">
-                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                    <image v-if="item.img && item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                                 </view>
                             </view>
                         </view>
@@ -21,7 +21,7 @@
                         <view v-for="(item, index) in form.img_magic_list" :key="index" :class="['flex-row', { 'style9-top': [0, 1].includes(index), 'style9-bottom': ![0, 1].includes(index) }]" :style="img_spacing" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <view class="wh-auto flex-row" :style="content_img_container">
                                 <view class="flex-1" :style="content_img_style_container">
-                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                    <image v-if="item.img && item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                                 </view>
                             </view>
                         </view>
@@ -32,7 +32,7 @@
                         <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <view class="wh-auto flex-row" :style="content_img_container">
                                 <view class="flex-1" :style="content_img_style_container">
-                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
+                                    <image v-if="item.img && item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto" mode="widthFix" :style="content_img_radius"></image>
                                 </view>
                             </view>
                         </view>
@@ -41,7 +41,7 @@
                         <view v-for="(item, index) in form.img_magic_list" :key="index" class="cr-main flex-row" :style="img_spacing + selected_style(item) + ';height:' + image_height" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                             <view class="wh-auto flex-row" :style="content_img_container">
                                 <view class="flex-1" :style="content_img_style_container">
-                                    <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                    <image v-if="item.img && item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                                 </view>
                             </view>
                         </view>
@@ -51,7 +51,7 @@
                     <view v-for="(item, index) in form.img_magic_list" :key="index" class="cube-selected cr-main flex-row" :style="img_spacing + selected_style(item)" :data-value="item.img_link ? item.img_link.page : ''" @tap="url_event">
                         <view class="wh-auto flex-row" :style="content_img_container">
                             <view class="flex-1" :style="content_img_style_container">
-                                <image v-if="item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
+                                <image v-if="item.img && item.img.length > 0" :src="item.img[0].url" class="dis-block wh-auto ht-auto" :mode="img_fit" :style="content_img_radius"></image>
                             </view>
                         </view>
                     </view>
