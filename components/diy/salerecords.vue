@@ -2,7 +2,7 @@
     <view class="oh" :style="style_container">
         <view :style="style_img_container + 'height:' + swiper_outer_height * 2 + 'rpx;'">
             <template v-if="['translation', 'vertical'].includes(form.rotation_direction)">
-                <swiper circular="true" vertical="true" :autoplay="form.is_roll == '1'" :interval="form.rotation_direction == 'vertical' ? swiper_interval_time : interval_time" :duration="form.rotation_direction == 'vertical' ? interval_time : 1000" :easing-function="form.rotation_direction == 'vertical' ? 'linear' : 'default'" :style="'height:' + swiper_height * 2 + 'rpx;'" :display-multiple-items="slides_per_group">
+                <swiper circular="true" vertical="true" :autoplay="form.is_roll == '1'" :acceleration="true" :interval="form.rotation_direction == 'vertical' ? swiper_interval_time : interval_time" :duration="form.rotation_direction == 'vertical' ? interval_time : 1000" :easing-function="form.rotation_direction == 'vertical' ? 'linear' : 'default'" :style="'height:' + swiper_height * 2 + 'rpx;'" :display-multiple-items="slides_per_group">
                     <swiper-item v-for="(item, index) in list" :key="index">
                         <view class="flex-row align-c" :style="'gap:' + new_style.content_spacing * 2 + 'rpx;margin-bottom:' + new_style.content_spacing * 2 + 'rpx;'">
                             <template v-if="!isEmpty(item) && is_show('head')">
@@ -24,7 +24,7 @@
                 <view class="swiper-free-mode swiper-horizontal-free-mode" :style="'height:' + swiper_height * 2 + 'rpx;'">
                     <view v-for="(item, index) in swiper_new_list" :key="index" :style="'margin-bottom:' + (index < swiper_new_list.length - 1 ? new_style.data_spacing * 2 : 0) + 'rpx;'">
                         <template v-if="!isEmpty(item.split_list)">
-                            <swiper circular="true" autoplay="true" :interval="swiper_interval_time" :duration="interval_time + (1000 * index)" easing-function="linear" :style="'height:' + new_swiper_height * 2 + 'rpx;'" :data-index="index" :data-value="item.split_list.length" @change="swiper_change">
+                            <swiper circular="true" autoplay="true" :acceleration="true" :interval="swiper_interval_time" :duration="interval_time + (1000 * index)" easing-function="linear" :style="'height:' + new_swiper_height * 2 + 'rpx;'" :data-index="index" :data-value="item.split_list.length" @change="swiper_change">
                                 <swiper-item v-for="(new_item, new_index) in item.split_list" :key="new_index">
                                     <view :style="swiper_horizontal_container + 'margin-left:' + (new_index == 0 && swiper_margin_left_list[index].is_left ? slides_offset_before : 0) + 'px;'">
                                         <view class="flex-row align-c" :style="swiper_horizontal_img_container">
@@ -36,7 +36,7 @@
                                             </view>
                                             <text v-if="is_show('time')" class="nowrap" :style="time_style">{{ new_item.add_time }}</text>
                                         </view>
-                                    </view> 
+                                    </view>
                                 </swiper-item>
                             </swiper>
                         </template>
@@ -196,7 +196,7 @@
             // 横向时的显示内容
             get_swiper_horizontal_container(new_style) {
                 const { content_color_list, content_direction, content_radius } = new_style
-                return gradient_handle(content_color_list, content_direction) + radius_computer(content_radius) + 'margin-right:' + new_style.data_spacing * 2 + 'rpx';
+                return gradient_handle(content_color_list, content_direction) + radius_computer(content_radius) + 'margin-right:' + new_style.data_spacing * 2 + 'rpx;';
             },
             // 横向时的图片显示内容
             get_swiper_horizontal_img_container(new_style) {

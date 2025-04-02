@@ -204,7 +204,7 @@
                     if (is_data_source_id.length > 0) {
                         const list = this.get_data_source_content_list(this.propSourceList, new_form);
                         // 数据来源的内容
-                        new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                        new_list = list.length > 0 ? get_swiper_list(list, new_form.data_source_carousel_col, new_style.rolling_fashion, new_form.data_source_direction != 'vertical') : [];
                     } else {
                         if (!isEmpty(this.propSourceList)) {
                             const new_source_list = [ this.propSourceList ];
@@ -314,43 +314,6 @@
                 // 使用reduce方法遍历属性键数组，逐层访问对象属性
                 // 如果当前对象存在且拥有下一个属性键，则继续访问；否则返回空字符串
                 return keys.reduce((o, key) => (o != null && o[key] != null ? o[key] : []), obj) ?? [];
-            },
-            get_list(list, form, new_style) {
-                // 深拷贝一下，确保不会出现问题
-                const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation' && form.data_source_direction != 'vertical') {
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = form.data_source_carousel_col;
-                        // 存储数据显示
-                        let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({
-                                split_list: cloneList.slice(i * num, (i + 1) * num),
-                            });
-                        }
-                        return nav_list;
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        return [
-                            {
-                                split_list: cloneList,
-                            },
-                        ];
-                    }
-                } else {
-                    // 存储数据显示
-                    let nav_list = [];
-                    cloneList.forEach((item) => {
-                        nav_list.push({
-                            split_list: [item],
-                        });
-                    });
-                    return nav_list;
-                }
             },
             slideChange(e) {
                 this.setData({

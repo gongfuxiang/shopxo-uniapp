@@ -6,11 +6,13 @@
                     <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
                         <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
                             <view v-for="(item1, index1) in item.split_list" :key="index1">
-                                <view :style="style_container">
-                                    <view class="wh-auto ht-auto oh" :style="style_img_container">
-                                        <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                <template v-if="!isEmpty(item1)">
+                                    <view :style="style_container">
+                                        <view class="wh-auto ht-auto oh" :style="style_img_container">
+                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                        </view>
                                     </view>
-                                </view>
+                                </template>
                             </view>
                         </view>
                     </view>
@@ -20,9 +22,11 @@
                         <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
                             <view :class="form.data_source_direction != 'horizontal' ? '' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                 <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
-                                    <view class="wh-auto ht-auto oh" :style="style_img_container">
-                                        <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
-                                    </view>
+                                    <template v-if="!isEmpty(item1)">
+                                        <view class="wh-auto ht-auto oh" :style="style_img_container">
+                                            <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propSourceType="form.data_source" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                        </view>
+                                    </template>
                                 </view>
                             </view>
                         </swiper-item>
@@ -55,7 +59,7 @@
 </template>
 
 <script>
-import { padding_computer, isEmpty, margin_computer, gradient_computer, radius_computer, background_computer, common_styles_computer, common_img_computer, border_width, box_shadow_computer, border_computer, old_border_and_box_shadow, old_margin, old_padding, old_radius } from '@/common/js/common/common.js';
+import { padding_computer, isEmpty, margin_computer, gradient_computer, radius_computer, background_computer, common_styles_computer, common_img_computer, border_width, box_shadow_computer, border_computer, old_border_and_box_shadow, old_margin, old_padding, old_radius, get_swiper_list } from '@/common/js/common/common.js';
 import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
 const app = getApp();
 
@@ -179,7 +183,7 @@ export default {
                 } else {
                     list = new_form.data_source_content.data_list;
                 }
-                const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                const new_list = list.length > 0 ? get_swiper_list(list, new_form.data_source_carousel_col, new_style.rolling_fashion, new_form.data_source_direction != 'vertical') : [];
                 // 计算宽度
                 const { padding_left, padding_right, padding_top, padding_bottom } = data_chunk_padding;
                 const { margin_left, margin_right, margin_bottom, margin_top } = data_chunk_margin;
@@ -237,43 +241,6 @@ export default {
                     content_outer_spacing_magin: space_between + 'px',
                     gap_width: `width: calc(${100 / carousel_col}% - ${gap}px);`,
                 });
-            }
-        },
-        get_list(list, form, new_style) {
-            // 深拷贝一下，确保不会出现问题
-            const cloneList = JSON.parse(JSON.stringify(list));
-            if (new_style.rolling_fashion != 'translation' && form.data_source_direction != 'vertical') {
-                // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                if (cloneList.length > 0) {
-                    // 每页显示的数量
-                    const num = form.data_source_carousel_col;
-                    // 存储数据显示
-                    let nav_list = [];
-                    // 拆分的数量
-                    const split_num = Math.ceil(cloneList.length / num);
-                    for (let i = 0; i < split_num; i++) {
-                        nav_list.push({
-                            split_list: cloneList.slice(i * num, (i + 1) * num),
-                        });
-                    }
-                    return nav_list;
-                } else {
-                    // 否则的话，就返回全部的信息
-                    return [
-                        {
-                            split_list: cloneList,
-                        },
-                    ];
-                }
-            } else {
-                // 存储数据显示
-                let nav_list = [];
-                cloneList.forEach((item) => {
-                    nav_list.push({
-                        split_list: [item],
-                    });
-                });
-                return nav_list;
             }
         },
         slideChange(e) {

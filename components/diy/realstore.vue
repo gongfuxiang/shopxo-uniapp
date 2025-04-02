@@ -20,8 +20,8 @@
                                     <view class="flex-col jc-sb gap-10">
                                         <view class="flex-row jc-sb align-c gap-10">
                                             <view class="flex-row align-c gap-3">
-                                                <view v-if="(item.alias || null) != null" :style="shop_label_style">{{ item.alias }}</view>
-                                                <view class="text-line-2" :style="title_style">{{ item.name }}</view>
+                                                <view v-if="(item.alias || null) != null" class="nowrap" :style="shop_label_style">{{ item.alias }}</view>
+                                                <view class="text-line-1" :style="title_style">{{ item.name }}</view>
                                             </view>
                                             <view v-if="['0', '2'].includes(theme) && (!isEmpty(item.service_data.service_tel) || (item.lat != 0 && item.lng != 0))" class="flex-row align-c" :style="'gap:' + new_style.phone_navigation_spacing * 2 + 'rpx;'">
                                                 <view v-if="!isEmpty(item.service_data.service_tel)" :data-value="item.service_data.service_tel" @tap.stop="tel_event">
@@ -76,33 +76,35 @@
                         <swiper-item v-for="(item1, index1) in realstore_content_list" :key="index1">
                             <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
-                                    <view :class="['oh wh-auto ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
-                                        <template v-if="!isEmpty(item)">
-                                            <view class="oh pr wh-auto ht-auto">
-                                                <view v-if="!isEmpty(item.new_cover)" class="wh-auto ht-auto">
-                                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                    <template v-if="!isEmpty(item)">
+                                        <view :class="['oh wh-auto ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
+                                            <template v-if="!isEmpty(item)">
+                                                <view class="oh pr wh-auto ht-auto">
+                                                    <view v-if="!isEmpty(item.new_cover)" class="wh-auto ht-auto">
+                                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                    </view>
+                                                    <view v-else class="wh-auto ht-auto">
+                                                        <imageEmpty :propImageSrc="item.logo" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                    </view>
                                                 </view>
-                                                <view v-else class="wh-auto ht-auto">
-                                                    <imageEmpty :propImageSrc="item.logo" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                            </template>
+                                            <view class="flex-1 flex-col jc-sb gap-10" :style="content_style">
+                                                <view class="flex-row align-c gap-3">
+                                                    <view v-if="(item.alias || null) != null" class="nowrap" :style="shop_label_style">{{ item.alias }}</view>
+                                                    <view class="text-line-1" :style="title_style">{{ item.name }}</view>
                                                 </view>
-                                            </view>
-                                        </template>
-                                        <view class="flex-1 flex-col jc-sb gap-10" :style="content_style">
-                                            <view class="flex-row align-c gap-3">
-                                                <view v-if="(item.alias || null) != null" :style="shop_label_style">{{ item.alias }}</view>
-                                                <view class="text-line-2" :style="title_style">{{ item.name }}</view>
-                                            </view>
-                                            <view class="flex-row jc-sb align-c">
-                                                <view v-if="!isEmpty(item.status_info) && !isEmpty(item.status_info.time)" class="flex-1 flex-row gap-2 align-c">
-                                                    <imgOrIconOrText :propValue="propValue" propType="time" />
-                                                    <span class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
-                                                </view>
-                                                <view v-if="item.lat != 0 && item.lng != 0" :data-index="index1" :data-split="index" @tap.stop="address_map_event">
-                                                    <imgOrIconOrText :propValue="propValue" propType="navigation" />
+                                                <view class="flex-row jc-sb align-c">
+                                                    <view v-if="!isEmpty(item.status_info) && !isEmpty(item.status_info.time)" class="flex-1 flex-row gap-2 align-c">
+                                                        <imgOrIconOrText :propValue="propValue" propType="time" />
+                                                        <span class="text-line-1" :style="state_style + `color: ${ item.status_info.status == 1 ? new_style.realstore_state_color : new_style.realstore_default_state_color }`">{{ item.status_info.msg }}</span>
+                                                    </view>
+                                                    <view v-if="item.lat != 0 && item.lng != 0" :data-index="index1" :data-split="index" @tap.stop="address_map_event">
+                                                        <imgOrIconOrText :propValue="propValue" propType="navigation" />
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
-                                    </view>
+                                    </template>
                                 </view>
                             </view>
                         </swiper-item>
@@ -115,7 +117,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, old_margin, margin_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, get_swiper_list, margin_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     import imgOrIconOrText from '@/components/diy/modules/img-or-icon-or-text.vue';
@@ -257,7 +259,7 @@
                         business_hours_style: this.trends_config('business_hours', new_style),
                         distance_style: this.trends_config('distance', new_style),
                         location_style: this.trends_config('location', new_style),
-                        realstore_content_list: this.get_realstore_content_list(new_list, new_form, new_style),
+                        realstore_content_list: get_swiper_list(new_list, new_form.carousel_col, new_style.rolling_fashion),
                         img_size: img_style,
                         shop_label_style: this.get_shop_label_style(new_style),
                         border_style: this.get_border_style(new_style),
@@ -282,43 +284,6 @@
             // 根据传递的值，显示不同的内容
             style_config(typeface, size, color) {
                 return `font-weight:${typeface}; font-size: ${size}px;color: ${color};`;
-            },
-            get_realstore_content_list(list, form, new_style) {
-                // 深拷贝一下，确保不会出现问题
-                const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation') {
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = form.carousel_col;
-                        // 存储数据显示
-                        let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({
-                                split_list: cloneList.slice(i * num, (i + 1) * num),
-                            });
-                        }
-                        return nav_list;
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        return [
-                            {
-                                split_list: cloneList,
-                            },
-                        ];
-                    }
-                } else {
-                    // 存储数据显示
-                    let nav_list = [];
-                    cloneList.forEach((item) => {
-                        nav_list.push({
-                            split_list: [item],
-                        });
-                    });
-                    return nav_list;
-                }
             },
             get_border_style(new_style) {
                 const { content_border_margin, content_border_size, content_border_is_show, content_border_color, content_border_style } = new_style;

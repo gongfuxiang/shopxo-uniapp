@@ -8,11 +8,13 @@
                             <view class="flex-row flex-wrap" :style="'row-gap:' + new_style.row_gap + 'px;column-gap:' + new_style.column_gap + 'px;'">
                                 <view v-for="(item, index) in data_source_content_list" :key="index" class="ht-auto" :style="gap_width">
                                     <view v-for="(item1, index1) in item.split_list" :key="index1">
-                                        <view :style="style_chunk_container">
-                                            <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                        <template v-if="!isEmpty(item1)">
+                                            <view :style="style_chunk_container">
+                                                <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propDataHeight="form.height" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                                </view>
                                             </view>
-                                        </view>
+                                        </template>
                                     </view>
                                 </view>
                             </view>
@@ -22,9 +24,11 @@
                                 <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
                                     <view :class="form.data_source_direction != 'horizontal' ? 'ht-auto ' : 'flex-row ht-auto'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
                                         <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
-                                            <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
-                                                <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
-                                            </view>
+                                            <template v-if="!isEmpty(item1)">
+                                                <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
+                                                    <dataRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propConfigLoop="form.data_source_is_loop || '1'" :propGroupSourceList="data_source_content_list" :propFieldList="field_list" :propScale="scale" :propDataIndex="index" :propDataSplitIndex="index1" :propIsCustom="form.is_custom_data == '1'" :propShowData="show_data" @url_event="url_event"></dataRendering>
+                                                </view>
+                                            </template>
                                         </view>
                                     </view>
                                 </swiper-item>
@@ -70,7 +74,7 @@
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width, get_swiper_list } from '@/common/js/common/common.js';
     import dataRendering from '@/components/diy/modules/custom/data-rendering.vue';
     const app = getApp();
     var system = app.globalData.get_system_info(null, null, true);
@@ -210,7 +214,7 @@
                     list = new_form.data_source_content?.data_list || [];
                 } 
                 // 数组处理
-                const new_list = list.length > 0 ? this.get_list(list, new_form, new_style) : [];
+                const new_list = list.length > 0 ? get_swiper_list(list, new_form.data_source_carousel_col, new_style.rolling_fashion, new_form.data_source_direction != 'vertical') : [];
                 // 初始化数据
                 const { common_style, data_content_style, data_style } = new_style;
                 // 外层左右间距
@@ -273,43 +277,6 @@
                     show_data: new_form?.show_data || { data_key: 'id', data_name: 'name' },
                     field_list: new_form?.field_list || [],
                 });
-            },
-            get_list(list, form, new_style) {
-                // 深拷贝一下，确保不会出现问题
-                const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation' && form.data_source_direction != 'vertical') {
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = form.data_source_carousel_col;
-                        // 存储数据显示
-                        let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({
-                                split_list: cloneList.slice(i * num, (i + 1) * num),
-                            });
-                        }
-                        return nav_list;
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        return [
-                            {
-                                split_list: cloneList,
-                            },
-                        ];
-                    }
-                } else {
-                    // 存储数据显示
-                    let nav_list = [];
-                    cloneList.forEach((item) => {
-                        nav_list.push({
-                            split_list: [item],
-                        });
-                    });
-                    return nav_list;
-                }
             },
             slideChange(e) {
                 this.setData({

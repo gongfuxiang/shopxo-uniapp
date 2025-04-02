@@ -47,21 +47,23 @@
                         <swiper-item v-for="(item1, index1) in ask_content_list" :key="index1">
                             <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
-                                    <view class="oh ht-auto flex-col gap-10 jc-sb" :style="layout_img_style">
-                                        <view class="flex-row gap-10 align-b">
-                                            <view :style="title_style">{{ item.title }}</view>
-                                        </view>
-                                        <view v-if="is_show('reply_status') || is_show('time')" class="flex-col gap-10">
-                                            <span v-if="is_show('time')" :style="time_style">{{ item.add_time_date }}</span>
-                                            <view class="flex-row">
-                                                <view v-if="is_show('reply_status')" class="flex-row" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
-                                                    <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                        {{ item.is_reply == 0 ? '未回' : '已回'}}
+                                    <template v-if="!isEmpty(item)">
+                                        <view class="oh ht-auto flex-col gap-10 jc-sb" :style="layout_img_style">
+                                            <view class="flex-row gap-10 align-b">
+                                                <view :style="title_style">{{ item.title }}</view>
+                                            </view>
+                                            <view v-if="is_show('reply_status') || is_show('time')" class="flex-col gap-10">
+                                                <span v-if="is_show('time')" :style="time_style">{{ item.add_time_date }}</span>
+                                                <view class="flex-row">
+                                                    <view v-if="is_show('reply_status')" class="flex-row" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
+                                                        <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
+                                                            {{ item.is_reply == 0 ? '未回' : '已回'}}
+                                                        </view>
                                                     </view>
                                                 </view>
                                             </view>
                                         </view>
-                                    </view>
+                                    </template>
                                 </view>
                             </view>
                         </swiper-item>
@@ -74,7 +76,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, gradient_computer, margin_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, gradient_computer, margin_computer, get_swiper_list } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     import imgOrIconOrText from '@/components/diy/modules/img-or-icon-or-text.vue';
@@ -221,7 +223,7 @@
                         title_style: this.trends_config('title', new_style) + 'word-break: break-all;',
                         time_style: this.trends_config('time', new_style),
                         page_view_style: this.trends_config('page_view', new_style),
-                        ask_content_list: this.get_ask_content_list(new_list, new_form, new_style),
+                        ask_content_list: get_swiper_list(new_list, new_form.carousel_col, new_style.rolling_fashion),
                         not_replied_yet_style: this.button_style(new_style.not_replied_yet_style),
                         not_replied_yet_img_style: this.button_img_style(new_style.not_replied_yet_style),
                         returned_style: this.button_style(new_style.returned_style),
@@ -248,43 +250,6 @@
             // 根据传递的值，显示不同的内容
             style_config(typeface, size, color) {
                 return `font-weight:${typeface}; font-size: ${size}px;color: ${color};`;
-            },
-            get_ask_content_list(list, form, new_style) {
-                // 深拷贝一下，确保不会出现问题
-                const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation') {
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = form.carousel_col;
-                        // 存储数据显示
-                        let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({
-                                split_list: cloneList.slice(i * num, (i + 1) * num),
-                            });
-                        }
-                        return nav_list;
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        return [
-                            {
-                                split_list: cloneList,
-                            },
-                        ];
-                    }
-                } else {
-                    // 存储数据显示
-                    let nav_list = [];
-                    cloneList.forEach((item) => {
-                        nav_list.push({
-                            split_list: [item],
-                        });
-                    });
-                    return nav_list;
-                }
             },
             // 容器样式
             get_layout_style(form, new_style) {
