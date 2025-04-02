@@ -4,7 +4,7 @@
             <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
-                    <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onImmersionModelCallBack="immersion_model_call_back" @onLocationBack="choice_location_back"></componentDiyHeader>
+                    <componentDiyHeader :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onLocationBack="choice_location_back"></componentDiyHeader>
                 </view>
                 <view :style="content_padding">
                     <view class="content flex-col" :style="'padding-top:calc(' + (temp_is_header_top ? temp_header_top + temp_sticky_top + 'px)' : '0px)')">
@@ -483,12 +483,6 @@
                 // 缓存数据
                 uni.setStorageSync(this.cache_key + this.tabs_home_id, diy_data);
             },
-            // 顶部导航沉浸模式回调
-            // immersion_model_call_back(bool) {
-            //     this.setData({
-            //         is_immersion_model: bool,
-            //     });
-            // },
             get_index_content(new_diy_index, header, header_style, item) {
                 item.index = new_diy_index;
                 if (new_diy_index == 0) {

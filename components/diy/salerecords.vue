@@ -26,8 +26,8 @@
                         <template v-if="!isEmpty(item.split_list)">
                             <swiper circular="true" autoplay="true" :interval="swiper_interval_time" :duration="interval_time + (1000 * index)" easing-function="linear" :style="'height:' + new_swiper_height * 2 + 'rpx;'" :data-index="index" :data-value="item.split_list.length" @change="swiper_change">
                                 <swiper-item v-for="(new_item, new_index) in item.split_list" :key="new_index">
-                                    <view :style="swiper_horizontal_container + 'margin-right:' + new_style.data_spacing * 2 + 'rpx;margin-left:' + (new_index == 0 && swiper_margin_left_list[index].is_left ? slides_offset_before : 0) + 'px;'">
-                                        <view class="flex-row align-c" :style="swiper_horizontal_img_container + 'gap:' + new_style.content_spacing * 2 + 'rpx;'">
+                                    <view :style="swiper_horizontal_container + 'margin-left:' + (new_index == 0 && swiper_margin_left_list[index].is_left ? slides_offset_before : 0) + 'px;'">
+                                        <view class="flex-row align-c" :style="swiper_horizontal_img_container">
                                             <view v-if="is_show('goods_image') || is_show('goods_title')" class="flex-row align-c" :style="'gap:' + new_style.content_spacing * 2 + 'rpx;'" :data-value="new_item.goods_url" @tap.stop="url_event">
                                                 <template v-if="is_show('goods_image')">
                                                     <imageEmpty :propImageSrc="new_item.images" :propStyle="goods_img_radius" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
@@ -196,7 +196,7 @@
             // 横向时的显示内容
             get_swiper_horizontal_container(new_style) {
                 const { content_color_list, content_direction, content_radius } = new_style
-                return gradient_handle(content_color_list, content_direction) + radius_computer(content_radius);
+                return gradient_handle(content_color_list, content_direction) + radius_computer(content_radius) + 'margin-right:' + new_style.data_spacing * 2 + 'rpx';
             },
             // 横向时的图片显示内容
             get_swiper_horizontal_img_container(new_style) {
@@ -205,7 +205,7 @@
                     background_img_style: content_background_img_style,
                     background_img: content_background_img,
                 }
-                return background_computer(data) + padding_computer(content_padding);
+                return background_computer(data) + padding_computer(content_padding) + 'gap:' + new_style.content_spacing * 2 + 'rpx;';
             },
             get_heading_img_radius(new_style) {
                 const { heading_img_radius, heading_img_width, heading_img_height, heading_img_border_color, heading_img_border_size } = new_style;
