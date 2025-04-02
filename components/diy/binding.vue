@@ -100,7 +100,7 @@
                                                 </view>
                                             </template>
                                             <template v-else>
-                                                <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.content_outer_height * new_scale + 'px' }">
+                                                <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :display-multiple-items="slides_per_group" :style="{ width: '100%', height: new_style.goods_content_outer_height * new_scale + 'px' }">
                                                     <swiper-item v-for="(item1, index1) in match_item.content_goods" :key="index1">
                                                         <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                                             <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.goods_url" @tap.stop="url_event">
@@ -293,11 +293,12 @@
                     const goods_list = goods_style_list.filter(item => item.value == new_form.theme);
                     let goods_img_style = '';
                     if (['0', '2'].includes(new_form.theme)) {
-                        goods_img_style = `width: ${ this.size_handle(new_style, 'goods', 'width', goods_list, scale) };`;
+                        goods_img_style += `width: ${ this.size_handle(new_style, 'goods', 'width', goods_list, scale) };`;
                     }
                     if (!['3'].includes(new_form.theme)) {
-                        goods_img_style = `height: ${ this.size_handle(new_style, 'goods', 'height', goods_list, scale) }`;
+                        goods_img_style += `height: ${ this.size_handle(new_style, 'goods', 'height', goods_list, scale) };`;
                     }
+                    console.log(goods_img_style);
                     const data_handle_list = new_list.map((item) => ({
                         ...item,
                         is_home_show_goods: new_form.is_default_show_goods == '1',
@@ -373,7 +374,7 @@
                 } else if (form.theme == '3') {
                     // 如果不是平移的时候执行
                     if (new_style.rolling_fashion != 'translation') {
-                        size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.content_outer_height * (sys_width / 390) + 'px'};`;
+                        size_style = `width: ${this.get_multicolumn_columns_width(new_style, form)};min-width: ${this.get_multicolumn_columns_width(new_style, form)};height: ${new_style.goods_content_outer_height * (sys_width / 390) + 'px'};`;
                     } else {
                         size_style = `margin-right: ${ (new_style.goods_content_outer_spacing * 2) + (goods_margin.margin_right * 2) }rpx;width: 100%;height: 100%;`;
                     }
@@ -465,6 +466,6 @@
     height: 0rpx;
     transform: scale(0); /* 初始缩放比例 */
     opacity: 0;
-    transition: height 0.4s linear, transform 0.6s linear, opacity 0.6s linear; /* 同时控制缩放, 透明度, 高度 */
+    transition: height 0.3s linear, transform 0.6s linear, opacity 0.6s linear; /* 同时控制缩放, 透明度, 高度 */
 }
 </style>
