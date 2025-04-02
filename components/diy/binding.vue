@@ -298,7 +298,6 @@
                     if (!['3'].includes(new_form.theme)) {
                         goods_img_style += `height: ${ this.size_handle(new_style, 'goods', 'height', goods_list, scale) };`;
                     }
-                    console.log(goods_img_style);
                     const data_handle_list = new_list.map((item) => ({
                         ...item,
                         is_home_show_goods: new_form.is_default_show_goods == '1',
