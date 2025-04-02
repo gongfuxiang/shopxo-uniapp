@@ -40,37 +40,39 @@
                     <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :next-margin="next_margin" :display-multiple-items="slides_per_group" :style="'height:' + carousel_height_computer">
                         <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1">
                             <view class="flex-row ht-auto" :style="article_spacing">
-                                <view v-for="(item, index) in item1.carousel_list" :key="index" class="item oh ht-auto" :style="article_style" :data-value="item.data.url" @tap="url_event">
-                                    <view class="oh flex-col ht-auto" :style="article_img_style">
-                                        <view class="oh pr wh-auto ht-auto flex-row">
-                                            <template v-if="item.new_cover.length > 0">
-                                                <image :src="item.new_cover[0].url" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
-                                            </template>
-                                            <template v-else>
-                                                <image :src="item.data.cover" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
-                                            </template>
-                                            <template v-if="field_show.includes('3') && name_float == '1'">
-                                                <view class="text-line-1" :style="article_name + float_name_style">{{ item.new_title ? item.new_title : item.data.title }}</view>
-                                            </template>
-                                            <!-- 角标 -->
-                                            <subscriptIndex :propValue="propValue"></subscriptIndex>
-                                        </view>
-                                        <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || (field_show.includes('3') && name_float == '0')" class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                            <view class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                                <view v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</view>
-                                                <view v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="article_desc">{{ item.data.describe || '' }}</view>
+                                <view v-for="(item, index) in item1.split_list" :key="index" class="item oh ht-auto" :style="article_style" :data-value="item.data.url" @tap="url_event">
+                                    <template v-if="!isEmpty(item)">
+                                        <view class="oh flex-col ht-auto" :style="article_img_style">
+                                            <view class="oh pr wh-auto ht-auto flex-row">
+                                                <template v-if="item.new_cover.length > 0">
+                                                    <image :src="item.new_cover[0].url" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
+                                                </template>
+                                                <template v-else>
+                                                    <image :src="item.data.cover" class="img" :style="img_radius + 'height:100%;'" mode="aspectFill" />
+                                                </template>
+                                                <template v-if="field_show.includes('3') && name_float == '1'">
+                                                    <view class="text-line-1" :style="article_name + float_name_style">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                                </template>
+                                                <!-- 角标 -->
+                                                <subscriptIndex :propValue="propValue"></subscriptIndex>
                                             </view>
-                                            <view :class="'flex-row jc-sb gap-8 align-e' + ((field_show.includes('3') && name_float == '0') || field_show.includes('2') ? ' margin-top' : '')">
-                                                <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
-                                                <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                                    <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
-                                                    <view>
-                                                        {{ item.data.access_count ? item.data.access_count : '' }}
+                                            <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || (field_show.includes('3') && name_float == '0')" class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
+                                                <view class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
+                                                    <view v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                                    <view v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="article_desc">{{ item.data.describe || '' }}</view>
+                                                </view>
+                                                <view :class="'flex-row jc-sb gap-8 align-e' + ((field_show.includes('3') && name_float == '0') || field_show.includes('2') ? ' margin-top' : '')">
+                                                    <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
+                                                    <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
+                                                        <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
+                                                        <view>
+                                                            {{ item.data.access_count ? item.data.access_count : '' }}
+                                                        </view>
                                                     </view>
                                                 </view>
                                             </view>
                                         </view>
-                                    </view>
+                                    </template>
                                 </view>
                             </view>
                         </swiper-item>
@@ -83,7 +85,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer, gradient_computer, margin_computer, box_shadow_computer, border_computer, old_margin } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer, gradient_computer, margin_computer, box_shadow_computer, border_computer, old_margin, get_swiper_list } from '@/common/js/common/common.js';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -181,6 +183,7 @@
             this.init();
         },
         methods: {
+            isEmpty,
             // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
@@ -309,6 +312,8 @@
                         direction: name_bg_direction,
                     }
                     let location = 'position:absolute;bottom:0;left:0;right:0;'
+                    // 每页显示的数量
+                    const num = Number(temp_carousel_col) + 1;
                     // 轮播宽度
                     this.setData({
                         // 滚动时间
@@ -322,43 +327,9 @@
                         // 文章内容高度
                         article_name_height_computer: `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`,
                         float_name_style: gradient_computer(data) + (!isEmpty(name_bg_radius) ? radius_computer(name_bg_radius) : '') + (!isEmpty(name_bg_padding) ? padding_computer(name_bg_padding) : '' ) + (!isEmpty(name_bg_padding) ? margin_computer(name_bg_margin) : '') + location,
-                        article_img_style: background_computer(article_data)
+                        article_img_style: background_computer(article_data),
+                        article_carousel_list: get_swiper_list(this.data_list, num, new_style.rolling_fashion),
                     });
-                    // 文章轮播数据
-                    const cloneList = JSON.parse(JSON.stringify(this.data_list));
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (new_style.rolling_fashion != 'translation') {
-                        if (cloneList.length > 0) {
-                            // 每页显示的数量
-                            const num = Number(temp_carousel_col) + 1;
-                            // 存储数据显示
-                            let nav_list = [];
-                            // 拆分的数量
-                            const split_num = Math.ceil(cloneList.length / num);
-                            for (let i = 0; i < split_num; i++) {
-                                nav_list.push({ carousel_list: cloneList.slice(i * num, (i + 1) * num) });
-                            }
-                            this.setData({
-                                article_carousel_list: nav_list,
-                            });
-                        } else {
-                            // 否则的话，就返回全部的信息
-                            this.setData({
-                                article_carousel_list: [{ carousel_list: cloneList }],
-                            });
-                        }
-                    } else {
-                        // 存储数据显示
-                        let nav_list = [];
-                        cloneList.forEach((item) => {
-                            nav_list.push({
-                                carousel_list: [item],
-                            });
-                        });
-                        this.setData({
-                            article_carousel_list: nav_list,
-                        });
-                    }
                 }
 
                 if (this.propIsCommonStyle) {

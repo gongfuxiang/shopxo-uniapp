@@ -115,60 +115,62 @@
                         <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
                             <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-index="index1" :data-split-index="index" :data-value="item.goods_url" @tap.stop="url_event">
-                                    <view :class="layout_type" :style="layout_img_style">
-                                        <block v-if="!isEmpty(item)">
-                                            <view class="oh pr" :class="'flex-img' + theme">
-                                                <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
-                                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                                </view>
-                                                <view v-else :class="'flex-img' + theme">
-                                                    <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                                </view>
-                                                <!-- 角标 -->
-                                                <subscriptIndex :propValue="propValue"></subscriptIndex>
-                                            </view>
-                                        </block>
-                                        <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('plugins_view_icon') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
-                                            <view class="flex-col gap-10 top-title">
-                                                <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{ gap: new_style.title_simple_desc_spacing * 2 + 'rpx' }">
-                                                    <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
-                                                    <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" :class="form.simple_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="simple_desc">{{ item.simple_desc }}</view>
-                                                </view>
-                                                <view v-if="show_content && is_show('plugins_view_icon') && !isEmpty(item.plugins_view_icon_data)" class="flex-row gap-5 align-c">
-                                                    <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
-                                                </view>
-                                            </view>
-                                            <view class="flex-row align-c jc-sb">
-                                                <view class="flex-row align-c nowrap">
-                                                    <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
-                                                        <text :style="price_symbol">{{ item.show_price_symbol }}</text>
-                                                        <text :style="price_style">{{ item.min_price }}</text>
-                                                        <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
+                                    <template v-if="!isEmpty(item)">
+                                        <view :class="layout_type" :style="layout_img_style">
+                                            <block v-if="!isEmpty(item)">
+                                                <view class="oh pr" :class="'flex-img' + theme">
+                                                    <view v-if="!isEmpty(item.new_cover)" :class="'flex-img' + theme">
+                                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
                                                     </view>
-                                                    <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
-                                                        <!-- <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image> -->
-                                                        <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]" :style="original_price">
-                                                            {{ item.show_original_price_symbol }}{{ item.min_original_price }}
-                                                            <block v-if="is_show('original_price_unit')">
-                                                                {{ item.show_original_price_unit }}
-                                                            </block>
-                                                        </text>
+                                                    <view v-else :class="'flex-img' + theme">
+                                                        <imageEmpty :propImageSrc="item.images" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                    </view>
+                                                    <!-- 角标 -->
+                                                    <subscriptIndex :propValue="propValue"></subscriptIndex>
+                                                </view>
+                                            </block>
+                                            <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('plugins_view_icon') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
+                                                <view class="flex-col gap-10 top-title">
+                                                    <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{ gap: new_style.title_simple_desc_spacing * 2 + 'rpx' }">
+                                                        <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
+                                                        <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" :class="form.simple_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="simple_desc">{{ item.simple_desc }}</view>
+                                                    </view>
+                                                    <view v-if="show_content && is_show('plugins_view_icon') && !isEmpty(item.plugins_view_icon_data)" class="flex-row gap-5 align-c">
+                                                        <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
                                                     </view>
                                                 </view>
-                                                <view v-if="(form.is_shop_show == '1' && form.shop_button_effect == '1' && item.is_error == 0) || (form.is_shop_show == '1' && form.shop_button_effect == '0')" class="pr" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
-                                                    <block v-if="form.shop_type == 'text'">
-                                                        <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
-                                                    </block>
-                                                    <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
-                                                        <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
+                                                <view class="flex-row align-c jc-sb">
+                                                    <view class="flex-row align-c nowrap">
+                                                        <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
+                                                            <text :style="price_symbol">{{ item.show_price_symbol }}</text>
+                                                            <text :style="price_style">{{ item.min_price }}</text>
+                                                            <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
+                                                        </view>
+                                                        <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
+                                                            <!-- <image v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" model="widthFix"></image> -->
+                                                            <text :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]" :style="original_price">
+                                                                {{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                                                <block v-if="is_show('original_price_unit')">
+                                                                    {{ item.show_original_price_unit }}
+                                                                </block>
+                                                            </text>
+                                                        </view>
                                                     </view>
-                                                    <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
-                                                        <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                                    <view v-if="(form.is_shop_show == '1' && form.shop_button_effect == '1' && item.is_error == 0) || (form.is_shop_show == '1' && form.shop_button_effect == '0')" class="pr" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
+                                                        <block v-if="form.shop_type == 'text'">
+                                                            <view class="plr-11 padding-vertical-xs round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
+                                                        </block>
+                                                        <view v-else class="round padding-horizontal-sm ptb-5" :style="button_gradient">
+                                                            <iconfont :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size * 2 + 'rpx'" propContainerDisplay="flex"></iconfont>
+                                                        </view>
+                                                        <view v-if="form.shop_button_effect == '1'" class="cart-badge-icon pa badge-style">
+                                                            <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                                        </view>
                                                     </view>
                                                 </view>
                                             </view>
                                         </view>
-                                    </view>
+                                    </template>
                                 </view>
                             </view>
                         </swiper-item>
@@ -181,7 +183,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, old_margin, margin_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, old_margin, margin_computer, get_swiper_list } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     import componentBadge from '@/components/badge/badge';
@@ -376,47 +378,10 @@
                         price_symbol: !isEmpty(new_style.shop_price_symbol_color) ? this.trends_config(new_style, 'price_symbol') : 'font-size: 18rpx;color: #EA3323;' ,
                         price_unit: !isEmpty(new_style.shop_price_unit_color) ? this.trends_config(new_style, 'price_unit') : 'font-size: 18rpx;color: #EA3323;',
                         original_price: this.trends_config(new_style, 'original_price'),
-                        shop_content_list: this.get_shop_content_list(new_list, new_form, new_style),
+                        shop_content_list: get_swiper_list(new_list, new_form.carousel_col, new_style.rolling_fashion),
                         slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.carousel_col : 1,
                         img_size: img_style,
                     });
-                }
-            },
-            get_shop_content_list(list, form, new_style) {
-                // 深拷贝一下，确保不会出现问题
-                const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation') {
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = form.carousel_col;
-                        // 存储数据显示
-                        let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({
-                                split_list: cloneList.slice(i * num, (i + 1) * num),
-                            });
-                        }
-                        return nav_list;
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        return [
-                            {
-                                split_list: cloneList,
-                            },
-                        ];
-                    }
-                } else {
-                    // 存储数据显示
-                    let nav_list = [];
-                    cloneList.forEach((item) => {
-                        nav_list.push({
-                            split_list: [item],
-                        });
-                    });
-                    return nav_list;
                 }
             },
             get_text_line(form) {

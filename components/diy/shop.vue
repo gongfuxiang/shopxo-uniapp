@@ -17,16 +17,17 @@
                             </template>
                             <view class="flex-1 flex-row jc-sb gap-10" :style="content_style">
                                 <view class="flex-1 flex-col jc-sb gap-10">
-                                    <view class="text-line-2" :style="title_style">
+                                    <view class="flex-row align-c" :style="title_style">
                                         <template v-if="(item.icon_list || null) != null && item.icon_list.length > 0">
                                             <template v-for="(item1, index1) in item.icon_list">
                                                 <template v-if="!isEmpty(item1.icon)">
-                                                    <img :key="index1" :src="item1.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;vertical-align: middle;'" />
+                                                    <img :key="index1" :src="item1.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;'" />
                                                 </template>
                                             </template>
-                                        </template>{{ item.name }}
+                                        </template>
+                                        <text class="flex-1 text-line-1">{{ item.name }}</text>
                                     </view>
-                                    <span v-if="form.shop_desc == '1'" :class="form.shop_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="desc_style">{{ item.describe }}</span>
+                                    <text v-if="form.shop_desc == '1'" :class="form.shop_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="desc_style">{{ item.describe }}</text>
                                 </view>
                                 <view v-if="theme == '0'" class="flex-row align-c">
                                     <imgOrIconOrText :propValue="propValue" propType="right" />
@@ -40,30 +41,33 @@
                         <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1">
                             <view class="flex-row wh-auto ht-auto" :style="outer_style">
                                 <view v-for="(item, index) in item1.split_list" :key="index" class="pr oh" :style="layout_style" :data-value="item.url" @tap.stop="url_event">
-                                    <view :class="['oh ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
-                                        <template v-if="!isEmpty(item)">
-                                            <view class="oh pr wh-auto ht-auto">
-                                                <view v-if="!isEmpty(item.new_cover)" class="wh-auto ht-auto">
-                                                    <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                    <template v-if="!isEmpty(item)">
+                                        <view :class="['oh ht-auto', ['0', '4'].includes(theme) ? 'flex-row' : 'flex-col' ]" :style="layout_img_style">
+                                            <template v-if="!isEmpty(item)">
+                                                <view class="oh pr wh-auto ht-auto">
+                                                    <view v-if="!isEmpty(item.new_cover)" class="wh-auto ht-auto">
+                                                        <imageEmpty :propImageSrc="item.new_cover[0]" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                    </view>
+                                                    <view v-else class="wh-auto ht-auto">
+                                                        <imageEmpty :propImageSrc="item.logo" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
+                                                    </view>
                                                 </view>
-                                                <view v-else class="wh-auto ht-auto">
-                                                    <imageEmpty :propImageSrc="item.logo" :propStyle="content_img_radius" propErrorStyle="width: 100rpx;height: 100rpx;"></imageEmpty>
-                                                </view>
-                                            </view>
-                                        </template>
-                                        <view class="flex-col jc-sb gap-10" :style="content_style">
-                                            <view class="text-line-2" :style="title_style">
-                                                <template v-if="(item.icon_list || null) != null && item.icon_list.length > 0">
-                                                    <template v-for="(item2, index2) in item.icon_list">
-                                                        <template v-if="!isEmpty(item2.icon)">
-                                                            <img :key="index2" :src="item2.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;vertical-align: middle;'" />
+                                            </template>
+                                            <view class="flex-col jc-sb gap-10" :style="content_style">
+                                                <view class="flex-row align-c" :style="title_style">
+                                                    <template v-if="(item.icon_list || null) != null && item.icon_list.length > 0">
+                                                        <template v-for="(item2, index2) in item.icon_list">
+                                                            <template v-if="!isEmpty(item2.icon)">
+                                                                <img :key="index2" :src="item2.icon" class="title-img" :style="title_img_style + 'margin-right: ' + (index < item.icon_list.length - 1 ? new_style.shop_title_img_inner_spacing * 2 : new_style.shop_title_img_outer_spacing * 2) + 'rpx;'" />
+                                                            </template>
                                                         </template>
                                                     </template>
-                                                </template>{{ item.name }}
+                                                    <text class="flex-1 text-line-1">{{ item.name }}</text>
+                                                </view>
+                                                <text v-if="form.shop_desc == '1'" :class="form.shop_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="desc_style">{{ item.describe }}</text>
                                             </view>
-                                            <span v-if="form.shop_desc == '1'" :class="form.shop_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="desc_style">{{ item.describe }}</span>
                                         </view>
-                                    </view>
+                                    </template>
                                 </view>
                             </view>
                         </swiper-item>
@@ -76,7 +80,7 @@
 
 <script>
     const app = getApp();
-    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, old_margin, margin_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, get_swiper_list, margin_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import subscriptIndex from '@/components/diy/modules/subscript/index.vue';
     import imgOrIconOrText from '@/components/diy/modules/img-or-icon-or-text.vue';
@@ -211,7 +215,7 @@
                         theme: new_form.theme, // 选择的风格
                         title_style: this.trends_config('title', new_style),
                         desc_style: this.trends_config('desc', new_style),
-                        shop_content_list: this.get_shop_content_list(new_list, new_form, new_style),
+                        shop_content_list: get_swiper_list(new_list, new_form.carousel_col, new_style.rolling_fashion),
                         title_img_style: this.get_title_img_style(new_style),
                         img_size: img_style,
                         layout_style: this.get_layout_style(new_form, new_style),
@@ -234,43 +238,6 @@
             get_title_img_style(new_style) {
                 const { shop_title_img_width = 0, shop_title_img_height = 0, shop_title_img_radius } = new_style;
                 return `width: ${shop_title_img_width || 0 }px;height: ${ shop_title_img_height || 0 }px;${ radius_computer(shop_title_img_radius) }`;
-            },
-            get_shop_content_list(list, form, new_style) {
-                // 深拷贝一下，确保不会出现问题
-                const cloneList = JSON.parse(JSON.stringify(list));
-                if (new_style.rolling_fashion != 'translation') {
-                    // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                    if (cloneList.length > 0) {
-                        // 每页显示的数量
-                        const num = form.carousel_col;
-                        // 存储数据显示
-                        let nav_list = [];
-                        // 拆分的数量
-                        const split_num = Math.ceil(cloneList.length / num);
-                        for (let i = 0; i < split_num; i++) {
-                            nav_list.push({
-                                split_list: cloneList.slice(i * num, (i + 1) * num),
-                            });
-                        }
-                        return nav_list;
-                    } else {
-                        // 否则的话，就返回全部的信息
-                        return [
-                            {
-                                split_list: cloneList,
-                            },
-                        ];
-                    }
-                } else {
-                    // 存储数据显示
-                    let nav_list = [];
-                    cloneList.forEach((item) => {
-                        nav_list.push({
-                            split_list: [item],
-                        });
-                    });
-                    return nav_list;
-                }
             },
             // 容器样式
             get_layout_style(form, new_style) {

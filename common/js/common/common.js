@@ -651,3 +651,84 @@ export const location_compute = (size, location, container_size) => {
         return location;
     }
 };
+
+
+/**
+ * 获取轮播列表
+ * 该函数根据输入的列表和数字，以及可选的判断标志，返回一个经过处理的列表
+ * 主要用于处理轮播图的数据显示逻辑，可以根据不同的滑动方式（分页滑动或翻译滑动）来处理数据
+ * 
+ * @param {Array} list - 原始的轮播图列表，包含多个轮播项
+ * @param {Number} num - 每页显示的轮播项数量，或者在翻译滑动模式下使用的数字
+ * @param {Number} rolling_fashion - 滑动切换的方式，分页滑动或平移滑动
+ * @param {Boolean} judgment - 可选参数，默认为true如果为true，则根据分页滑动方式处理数据；如果为false，则根据翻译滑动方式处理数据
+ * @returns {Array} - 返回一个处理后的列表，每个元素包含一个split_list属性，该属性是一个数组，包含当前页的轮播项
+ */
+export const get_swiper_list = (list, num, rolling_fashion, judgment = true) => {
+    // 深拷贝一下，确保不会出现问题
+    const cloneList = JSON.parse(JSON.stringify(list));
+    // 判断滑动方式如果不是翻译滑动并且judgment为true时，按照分页滑动处理
+    if (rolling_fashion != 'translation' && judgment) {
+        // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
+        if (cloneList.length > 0) {
+            // 存储数据显示
+            let nav_list = [];
+            // 拆分的数量
+            const split_num = Math.ceil(cloneList.length / num);
+            // 循环拆分列表，并添加到nav_list中
+            for (let i = 0; i < split_num; i++) {
+                nav_list.push({
+                    split_list: cloneList.slice(i * num, (i + 1) * num),
+                });
+            }
+            // 返回拆分后的列表
+            return nav_list;
+        } else {
+            // 否则的话，就返回全部的信息
+            return [
+                {
+                    split_list: cloneList,
+                },
+            ];
+        }
+    } else {
+        // 如果是平移滑动，则调用另一个函数处理
+        return get_swiper_translation_list(cloneList, num);
+    }
+}
+
+/**
+ * 获取轮播图翻译列表
+ * 
+ * 此函数用于根据给定的列表和数字生成一个特定结构的列表用于轮播图的翻译效果
+ * 它会检查输入列表的长度，如果长度小于给定的数字，它会用空列表填充以达到所需长度
+ * 
+ * @param {Array} cloneList - 原始列表的克隆版本，包含需要显示的元素
+ * @param {number} num - 轮播图需要显示的元素数量
+ * @returns {Array} - 返回一个对象数组，每个对象包含一个split_list属性，该属性是一个列表
+ */
+export const get_swiper_translation_list = (cloneList, num) => {
+    // 存储数据显示
+    let nav_list = [];
+    
+    // 遍历cloneList，为每个元素创建一个对象，并将其添加到nav_list中
+    cloneList.forEach((item) => {
+        nav_list.push({
+            split_list: [item],
+        });
+    });
+    
+    // 如果数据大于等于显示的数量不做处理, 小于显示的内容时需要做处理，添加空的数据
+    if (cloneList.length < num) {
+        const newNum = num - cloneList.length;
+        // 添加空的split_list对象以达到所需的显示数量
+        for (let i = 0; i < newNum; i++) {
+            nav_list.push({
+                split_list: [],
+            });
+        }
+    }
+    
+    // 返回处理后的列表
+    return nav_list;
+};
