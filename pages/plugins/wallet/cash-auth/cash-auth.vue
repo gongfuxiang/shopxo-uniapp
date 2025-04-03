@@ -26,7 +26,7 @@
                     </view>
 
                     <view class="form-gorup form-gorup-submit margin-top-main">
-                        <button class="bg-main cr-white br-main round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
+                        <button class="bg-main cr-white br-main round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.submit')}}</button>
                     </view>
                 </form>
 

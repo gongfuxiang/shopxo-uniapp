@@ -38,7 +38,7 @@
                     </view>
 
                     <view class="form-gorup form-gorup-submit">
-                        <button form-type="submit" class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_button_disabled">{{$t('form.form.4yd066')}}</button>
+                        <button form-type="submit" class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_button_disabled">{{$t('common.submit')}}</button>
                     </view>
                 </form>
             </view>

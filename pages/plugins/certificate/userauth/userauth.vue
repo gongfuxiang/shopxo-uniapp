@@ -205,7 +205,7 @@
                 };
 
                 // 状态
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['id'];
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
                 if (status != -1) {
                     data['status'] = status;
                 }

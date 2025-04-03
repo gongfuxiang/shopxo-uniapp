@@ -3,9 +3,9 @@
         <view class="flex-row flex-wrap">
             <block v-if="propData.length > 0">
                 <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
-                    <text class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
+                    <view v-if="propDelete" class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
                         <iconfont name="icon-bjdz-guanbi" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
-                    </text>
+                    </view>
                     <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
                 </view>
             </block>
@@ -33,10 +33,25 @@
                 type: [Number, String],
                 default: 3,
             },
+            // 是否可以删除
+            propDelete: {
+                type: Boolean,
+                default: true,
+            },
+            // 是否可以预览
+            propPreview: {
+                type: Boolean,
+                default: true,
+            },
             // 路径类型 默认common
             propPathType: {
                 type: String,
                 default: 'common',
+            },
+            // 回调数据
+            propCallData: {
+                type: [Number, String, Array, Object],
+                default: '',
             },
         },
         data() {
@@ -76,7 +91,7 @@
                                     self.setData({
                                         form_images_list: list,
                                     });
-                                    self.$emit('call-back', self.form_images_list);
+                                    self.$emit('call-back', self.form_images_list, self.propCallData);
                                 } else {
                                     app.globalData.showToast(data.msg);
                                 }
@@ -129,7 +144,7 @@
                             self.setData({
                                 form_images_list: list,
                             });
-                            self.$emit('call-back', self.form_images_list);
+                            self.$emit('call-back', self.form_images_list, self.propCallData);
                         }
                     },
                 });
@@ -137,10 +152,12 @@
 
             // 上传图片预览
             upload_show_event(e) {
-                uni.previewImage({
-                    current: this.form_images_list[e.currentTarget.dataset.index],
-                    urls: this.form_images_list,
-                });
+                if(this.propPreview) {
+                    uni.previewImage({
+                        current: this.form_images_list[e.currentTarget.dataset.index],
+                        urls: this.form_images_list,
+                    });
+                }
             },
         },
     };

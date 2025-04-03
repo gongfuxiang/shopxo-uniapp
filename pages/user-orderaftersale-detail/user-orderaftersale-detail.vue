@@ -158,7 +158,7 @@
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">
-                        <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('form.form.4yd066')}}</button>
+                        <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('common.submit')}}</button>
                     </view>
                 </view>
             </view>
@@ -192,7 +192,7 @@
                             <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.8tt862')" :value="form_express_number" />
                         </view>
                         <view class="form-gorup form-gorup-submit">
-                            <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('form.form.4yd066')}}</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('common.submit')}}</button>
                         </view>
                     </view>
                 </view>

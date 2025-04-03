@@ -11,6 +11,7 @@
 		"confirm": "Confirm",
 		"cancel": "Cancel",
 		"not_yet": "Not yet",
+        "submit": "Submit",
 		"save": "Preserve",
 		"add": "Add",
         "copy": "Copy",
@@ -50,6 +51,7 @@
 		"loading_in_text": "Loading",
 		"upload_in_text": "Uploading",
 		"auth_in_text": "Authorizing",
+        "view_examples": "View examples",
 		"warm_tips": "Kind reminder",
 		"no_relevant_data_tips": "No relevant data available",
 		"internet_error_tips": "The internet has wandered off~",
@@ -752,7 +754,6 @@
 		"form": {
 			"s14osm": "Add image（",
 			"2f52v3": "Anonymous publishing",
-			"4yd066": "Submit",
 			"qt0q5u": "Please provide a detailed description of the problem, and we will answer it as soon as possible!",
 			"bniyyt": "Handling errors",
 			"8l3ul5": "User not logged in",
@@ -1939,7 +1940,10 @@
     },
     "certificate-userauth": {
     	"certificate-userauth": {
-    		"tgtwes": "Go authenticate"
+    		"tgtwes": "Go authenticate",
+            "678iff": "Certificate Name",
+            "tufg33": "ID NO",
+            "ftyui3": "Expiration date"
     	}
     }
 }

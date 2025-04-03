@@ -251,7 +251,7 @@
                                         </view>
                                         <view class="bottom-fixed">
                                             <view class="bottom-line-exclude">
-                                                <button type="default" class="bg-main br-main cr-white round text-size" :disabled="form_submit_disabled_status" @tap="modify_superior_submit_event">{{$t('form.form.4yd066')}}</button>
+                                                <button type="default" class="bg-main br-main cr-white round text-size" :disabled="form_submit_disabled_status" @tap="modify_superior_submit_event">{{$t('common.submit')}}</button>
                                             </view>
                                         </view>
                                     </view>

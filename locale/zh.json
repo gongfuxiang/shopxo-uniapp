@@ -11,6 +11,7 @@
 		"confirm": "确认",
 		"cancel": "取消",
 		"not_yet": "暂不",
+        "submit": "提交",
 		"save": "保存",
 		"add": "新增",
         "copy": "复制",
@@ -54,6 +55,7 @@
 		"sending_in_text": "发送中...",
         "payment_in_text": "支付中...",
 		"sending": "发送中",
+        "view_examples": "查看范例",
 		"warm_tips": "温馨提示",
 		"no_relevant_data_tips": "没有相关数据",
 		"internet_error_tips": "网络开小差了哦~",
@@ -742,7 +744,6 @@
 		"form": {
 			"s14osm": "添加图片(",
 			"2f52v3": "匿名发布",
-			"4yd066": "提交",
 			"qt0q5u": "请详细描述问题，我们将尽快为您解答！",
 			"bniyyt": "处理错误",
 			"8l3ul5": "用户未登录",
@@ -1921,7 +1922,10 @@
     },
     "certificate-userauth": {
     	"certificate-userauth": {
-    		"tgtwes": "去认证"
+    		"tgtwes": "去认证",
+            "678iff": "证件名称",
+            "tufg33": "证件号码",
+            "ftyui3": "过期时间"
     	}
     }
 }

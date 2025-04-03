@@ -47,7 +47,7 @@
                     <view class="bottom-line-exclude">
                         <view class="flex-row align-c">
                             <button type="default" class="item cancel-btn round margin-right-sm" @tap="cancel_event">{{$t('common.cancel')}}</button>
-                            <button type="default" class="item submit-btn round margin-left-sm" @tap="submit_event">{{$t('form.form.4yd066')}}</button>
+                            <button type="default" class="item submit-btn round margin-left-sm" @tap="submit_event">{{$t('common.submit')}}</button>
                         </view>
                     </view>
                 </view>

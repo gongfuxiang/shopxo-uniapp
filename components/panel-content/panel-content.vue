@@ -6,12 +6,10 @@
                 <block v-for="(item, index) in data_field" :key="index">
                     <view v-if="(item.is_hide || 0) == 0" class="single-text margin-top-xs">
                         <text class="cr-grey margin-right-xl">{{ item.name }}</text>
-                        <text class="cr-base">
-                            <block v-if="item.type == 'images'">
-                                <image :src="data[item.field]" mode="aspectFit" class="radius panel-item-images"></image>
-                            </block>
-                            <text v-else>{{ data[item.field] }}</text>
-                        </text>
+                        <block v-if="item.type == 'images'">
+                            <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="radius panel-item-images"></image>
+                        </block>
+                        <text v-else class="cr-base">{{ data[item.field] }}</text>
                         <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
                             <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
                         </view>
@@ -35,7 +33,7 @@
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <block v-if="item.type == 'images'">
-                                        <image :src="data[item.field]" mode="aspectFit" class="panel-item-images"></image>
+                                        <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="panel-item-images"></image>
                                     </block>
                                     <text v-else>{{ data[item.field] }}</text>
                                     <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
@@ -44,7 +42,7 @@
                                 </view>
                             </view>
                         </block>
-                        <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap="item_more_event" class="margin-top-sm tc">
+                        <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
                             <text class="cr-grey-c margin-right-sm">{{ $t('common.view_more') }}</text>
                             <iconfont :name="'icon-arrow-' + (more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                         </view>
@@ -155,14 +153,19 @@
                 app.globalData.text_event_handle(e);
             },
 
+            // 图片预览
+            images_show_event(e) {
+                app.globalData.image_show_event(e);
+            },
+
             // 数据项更多事件
             item_more_event(e) {
                 this.data_field_handle(this.data_field);
                 this.setData({
                     more_status: !this.more_status,
                 });
-            },
-        },
+            }
+        }
     };
 </script>
 <style scoped>

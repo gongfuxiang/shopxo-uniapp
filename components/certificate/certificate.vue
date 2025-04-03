@@ -10,7 +10,7 @@
                 <view class="certificate-content">
                     <view>{{config.user_auth_business_data.business_title}}</view>
                     <view class="business-type-data">
-                        <block v-for="(item, index) in config.business_type_data">
+                        <block v-for="(item, index) in config.business_type_data" :key="index">
                             <view v-if="item.status == 1" class="item padding-main tc br radius margin-top-lg" :data-value="item.url" @tap="url_event">
                                 <image v-if="(item.icon || null) != null" :src="item.icon" mode="aspectFit" class="icon radius margin-bottom-sm"></image>
                                 <view>{{item.name || item.name_old}}</view>

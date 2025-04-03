@@ -46,8 +46,7 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">{{$t('user-detail.user-detail.7cufw6')}}<text class="form-group-tips-must">*</text></view>
                             <view class="margin-top-main sp-editor">
-                                <!-- <sp-editor :templates="(data || null) !== null ? data.content : ''" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor> -->
-                                <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+                                <sp-editor @init="init_editor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                             </view>
                         </view>
                     </view>
@@ -95,7 +94,7 @@
                 <!-- 底部操作 -->
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
+                        <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('common.submit')}}</button>
                     </view>
                 </view>
                 <!-- 分类选择 -->
@@ -326,7 +325,7 @@
                     data: new_data,
                 });
             },
-            initEditor(editor) {
+            init_editor(editor) {
                 // 初始化编辑器内容
                 editor.setContents({
                     html: (this.data || null) !== null ? this.data.content : '',

@@ -2259,11 +2259,11 @@
                 return value;
             },
 
-            // 返回上一页、则回到shouy
-            page_back_prev_event() {
+            // 返回上一页、则回到shouy，没有页面的时候url是否指定页面
+            page_back_prev_event(url = null) {
                 var prev_page = this.prev_page();
                 if (prev_page == null) {
-                    this.url_open(this.app_tabbar_pages()[0]);
+                    this.url_open(url || this.app_tabbar_pages()[0]);
                 } else {
                     uni.navigateBack();
                 }
