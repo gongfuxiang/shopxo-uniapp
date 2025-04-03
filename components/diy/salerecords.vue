@@ -1,8 +1,8 @@
 <template>
-    <view class="oh" :style="style_container">
+    <view v-if="!isEmpty(list) || !isEmpty(swiper_new_list)" class="oh" :style="style_container">
         <view :style="style_img_container + 'height:' + swiper_outer_height * 2 + 'rpx;'">
             <template v-if="['translation', 'vertical'].includes(form.rotation_direction)">
-                <swiper circular="true" vertical="true" :autoplay="form.is_roll == '1'" :acceleration="true" :interval="form.rotation_direction == 'vertical' ? swiper_interval_time : interval_time" :duration="form.rotation_direction == 'vertical' ? interval_time : 1000" :easing-function="form.rotation_direction == 'vertical' ? 'linear' : 'default'" :style="'height:' + swiper_height * 2 + 'rpx;'" :display-multiple-items="slides_per_group">
+                <swiper circular="true" vertical="true" :autoplay="form.is_roll == '1'" :interval="form.rotation_direction == 'vertical' ? swiper_interval_time : interval_time" :duration="form.rotation_direction == 'vertical' ? interval_time : 1000" :easing-function="form.rotation_direction == 'vertical' ? 'default' : 'default'" :style="'height:' + swiper_height * 2 + 'rpx;'" :display-multiple-items="slides_per_group">
                     <swiper-item v-for="(item, index) in list" :key="index">
                         <view class="flex-row align-c" :style="'gap:' + new_style.content_spacing * 2 + 'rpx;margin-bottom:' + new_style.content_spacing * 2 + 'rpx;'">
                             <template v-if="!isEmpty(item) && is_show('head')">
@@ -24,7 +24,8 @@
                 <view class="swiper-free-mode swiper-horizontal-free-mode" :style="'height:' + swiper_height * 2 + 'rpx;'">
                     <view v-for="(item, index) in swiper_new_list" :key="index" :style="'margin-bottom:' + (index < swiper_new_list.length - 1 ? new_style.data_spacing * 2 : 0) + 'rpx;'">
                         <template v-if="!isEmpty(item.split_list)">
-                            <swiper circular="true" autoplay="true" :acceleration="true" :interval="swiper_interval_time" :duration="interval_time + (1000 * index)" easing-function="linear" :style="'height:' + new_swiper_height * 2 + 'rpx;'" :data-index="index" :data-value="item.split_list.length" @change="swiper_change">
+                            <!-- #ifndef H5 || MP-BAIDU || APP -->
+                            <swiper circular="true" autoplay="true" :interval="swiper_interval_time" :duration="interval_time + (1000 * index)" easing-function="linear" :style="'height:' + new_swiper_height * 2 + 'rpx;'" :data-index="index" :data-value="item.split_list.length" @change="swiper_change">
                                 <swiper-item v-for="(new_item, new_index) in item.split_list" :key="new_index">
                                     <view :style="swiper_horizontal_container + 'margin-left:' + (new_index == 0 && swiper_margin_left_list[index].is_left ? slides_offset_before : 0) + 'px;'">
                                         <view class="flex-row align-c" :style="swiper_horizontal_img_container">
@@ -39,6 +40,24 @@
                                     </view>
                                 </swiper-item>
                             </swiper>
+                            <!-- #endif -->
+                            <!-- #ifdef H5 || MP-BAIDU || APP -->
+                            <next-notice-bar :key="propKey + '-' + index" :propKey="propKey + '-' + index" :y="false" initPosition="right" :row="1" :speed="(interval_time / 100) + (10 * index)" :propList="item.split_list">
+                                <template #default="{ row }">
+                                    <view :style="swiper_horizontal_container">
+                                        <view class="flex-row align-c" :style="swiper_horizontal_img_container">
+                                            <view v-if="is_show('goods_image') || is_show('goods_title')" class="flex-row align-c" :style="'gap:' + new_style.content_spacing * 2 + 'rpx;'" :data-value="row.goods_url" @tap.stop="url_event">
+                                                <template v-if="is_show('goods_image')">
+                                                    <imageEmpty :propImageSrc="row.images" :propStyle="goods_img_radius" propErrorStyle="width: 20rpx;height: 20rpx;"></imageEmpty>
+                                                </template>
+                                                <view v-if="is_show('goods_title')" class="flex-1 text-line-1" :style="goods_title_style + 'max-width: ' + max_title_width * 2 + 'rpx;white-space: initial;'">{{ row.title }}</view>
+                                            </view>
+                                            <text v-if="is_show('time')" class="nowrap" :style="time_style">{{ row.add_time }}</text>
+                                        </view>
+                                    </view>
+                                </template>
+                            </next-notice-bar>
+                            <!-- #endif -->
                         </template>
                     </view>
                 </view>
@@ -51,11 +70,13 @@
     const app = getApp();
     import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, background_computer, gradient_handle } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    import nextNoticeBar from '@/components/diy/modules/next-notice-bar.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
         components: {
-            imageEmpty
+            imageEmpty,
+            nextNoticeBar
         },
         props: {
             propValue: {
@@ -101,10 +122,7 @@
         watch: {
             propKey(val) {
                 this.init();
-            },
-            propValue(new_value, old_value) {
-                this.init();
-            },
+            }
         },
         created() {
             this.init();
@@ -115,21 +133,10 @@
                 const new_form = this.propValue.content || null;
                 const new_style = this.propValue.style || null;
                 if (new_form != null && new_style != null) {
-                    const default_list = {
-                        user: {
-                            avatar: '',
-                            user_name_view: '测试昵称测试昵称测试昵称测试昵称',
-                        },
-                        title: '测试商品标题测试',
-                        images: '',
-                        add_time: '02-04 23:01:01'
-                    };
                     let new_list = [];
                     if (!isEmpty(new_form.data_auto_list)) {
                         // 筛选商品并且筛选商品数组不为空
                         new_list = new_form.data_auto_list;
-                    } else {
-                        new_list = Array(4).fill(default_list);
                     }
                     // 轮播图高度
                     let swiper_height = 0;
@@ -163,9 +170,9 @@
                         swiper_height = new_swiper_height * new_num + (data_spacing * (new_num - 1));
                     }
                     swiper_outer_height = swiper_height + common_style.padding_top + common_style.padding_bottom;
-                    let swiper_interval_time = (new_form.interval_time * 1000) / 2;
-                    // #ifdef MP-ALIPAY
-                    swiper_interval_time = 0;
+                    let swiper_interval_time = 0;
+                    // #ifdef H5 || MP-BAIDU || APP
+                    swiper_interval_time = (new_form.interval_time * 1000) / 2;
                     // #endif
                     this.setData({
                         form: new_form,
@@ -185,7 +192,7 @@
                         new_swiper_height: new_swiper_height,
                         interval_time: new_form.interval_time * 1000,
                         swiper_interval_time: swiper_interval_time,
-                        slides_offset_before: sys_width - common_style.margin_left + common_style.margin_right - common_style.padding_left - common_style.padding_right - 20,
+                        slides_offset_before: sys_width - common_style.margin_left + common_style.margin_right - common_style.padding_left - common_style.padding_right,
                         swiper_horizontal_container: this.get_swiper_horizontal_container(new_style),
                         swiper_horizontal_img_container: this.get_swiper_horizontal_img_container(new_style),
                         style_container: common_styles_computer(new_style.common_style), // 公共样式
@@ -233,7 +240,7 @@
             // 将偏移量设置为0
             swiper_change(e) {
                 const dataset = e.target.dataset;
-                if (e.target.current >= dataset.value - 1) {
+                if (e.target.current > dataset.value - 2) {
                     const index = dataset.index;
                     const list = this.swiper_margin_left_list;
                     list[index].is_left = false;
