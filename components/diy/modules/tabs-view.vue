@@ -282,6 +282,7 @@
                     tabs_top_img: `height: ${tabs_top_img_height * 2 }rpx;width: ${tabs_top_img_height * 2 }rpx;box-sizing: border-box;` + radius_computer(tabs_top_img_radius),
                 };
                 const { tabs_size_checked, tabs_size, tabs_icon_size_checked = 0, tabs_icon_size = 0, tabs_img_height = 0, tabs_sign_spacing = 0 } = new_style || {};
+                const new_content_tabs_list = new_content?.tabs_list || [];
                 let default_height = 0;
                 if (new_content.tabs_theme == '2') {
                     default_height = 12; // 选中的时候,风格二的内间距
@@ -291,17 +292,17 @@
                     default_height = 4 + tabs_top_img_height + tabs_sign_spacing;
                 }
                 // 筛选出所有的icon
-                const is_icon = new_content?.tabs_list?.findIndex((item) => item.tabs_type === '1' && !isEmpty(item.tabs_icon)) ?? -1;
+                const is_icon = new_content_tabs_list.findIndex((item) => item.tabs_type === '1' && !isEmpty(item.tabs_icon)) ?? -1;
                 // 如果有icon，则取选中的icon大小和未选中的icon大小取最大值，作为图标的高度
                 let icon_height = 0;
                 if (is_icon > -1) {
                     icon_height = Math.max(tabs_icon_size_checked + default_height, tabs_icon_size);
                 }
                 // 筛选出所有的图片, 没有选择图标的时候默认是图片
-                const is_img = new_content?.tabs_list?.findIndex((item) => item.tabs_type === '1' && isEmpty(item.tabs_icon)) ?? -1;
+                const is_img = new_content_tabs_list.findIndex((item) => item.tabs_type === '1' && isEmpty(item.tabs_icon)) ?? -1;
                 // 选项卡高度 五个值，作为判断依据，因为图片没有未选中的大小设置，所以高度判断的时候只取选中的高度, 其余的icon和标题都分别取选中和未选中的大小对比，取出最大的值，作为选项卡的高度，避免选项卡切换时会出现抖动问题
                 const height = Math.max(tabs_size_checked + default_height, tabs_size, icon_height, is_img > -1 ? (tabs_img_height + default_height) : '');
-                const findIndex = new_content.tabs_list.findIndex(item => item.is_sliding_fixed == '1');
+                const findIndex = new_content_tabs_list.findIndex(item => item.is_sliding_fixed == '1');
                 // 参数设置
                 this.setData({
                     form: new_content,
@@ -407,7 +408,7 @@
                 const query = uni.createSelectorQuery().in(this);
                 query.selectAll(`.scroll-item-` + this.propKey)
                 .boundingClientRect((rect) => {
-                    const tabs_index = this.form.tabs_list.findIndex(item => item.is_sliding_fixed == '1');
+                    const tabs_index = this.form?.tabs_list?.findIndex(item => item.is_sliding_fixed == '1');
                     // 如果第一个悬浮了，就取第二个的left加上 第一个的宽度和left
                     let new_width = tabs_index == 0 && index != 0 ? rect[1].left - rect[0].width - rect[0].left : rect[0].left;
                     // 如果悬浮的不是第一个并且选中的是悬浮的内容
