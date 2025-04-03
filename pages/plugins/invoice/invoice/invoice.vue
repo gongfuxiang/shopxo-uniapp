@@ -38,7 +38,7 @@
                 </view>
 
                 <!-- 添加发票 -->
-                <view v-if="(data_base.is_invoice_order || 0) == 1 || (data_base.is_invoice_recharge || 0) == 1" class="bottom-fixed" :style="bottom_fixed_style">
+                <view v-if="(data_base || null) != null && ((data_base.is_invoice_order || 0) == 1 || (data_base.is_invoice_recharge || 0) == 1)" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude flex-row gap-10">
                         <button v-if="(data_base.is_invoice_order || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
                         <button v-if="(data_base.is_invoice_recharge || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/recharge/recharge" @tap="url_event">{{$t('invoice.invoice.bh8yt3')}}</button>
@@ -253,7 +253,7 @@
                     
                             // 是否还有数据
                             this.setData({
-                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                             });
                         } else {
                             this.setData({

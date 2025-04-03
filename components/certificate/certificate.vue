@@ -68,10 +68,10 @@
                 this.init_config(true);
                 // 公共接口已初始化完成
                 if(app.globalData.data.common_data_init_status == 1) {
-                    // 当前缓存用户
                     var user = app.globalData.get_user_cache_info() || null;
+                    var current_page = app.globalData.current_page();
                     // 业务数据
-                    if(user != null && (this.config || null) != null && (this.config.user_auth_business_data || null) != null && (this.config.business_type_data || null) != null) {
+                    if(user != null && current_page.indexOf('pages/plugins/certificate/') == -1 && (this.config || null) != null && (this.config.user_auth_business_data || null) != null && (this.config.business_type_data || null) != null) {
                         this.setData({
                             popup_status: true,
                         });
@@ -89,7 +89,10 @@
 
             // url事件
             url_event(e) {
-                this.popup_close_event();
+                var self = this;
+                setTimeout(function() {
+                    self.popup_close_event();
+                }, 1000);
                 app.globalData.url_event(e);
             }
         }

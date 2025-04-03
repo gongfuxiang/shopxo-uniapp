@@ -143,28 +143,31 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            // 数据列表
+                            var data = res.data.data;
                             if (this.data_page <= 1) {
-                                var temp_data_list = res.data.data.data_list;
+                                var temp_data_list = data.data_list || [];
                             } else {
                                 var temp_data_list = this.data_list || [];
-                                var temp_data = res.data.data.data;
+                                var temp_data = data.data_list;
                                 for (var i in temp_data) {
                                     temp_data_list.push(temp_data[i]);
                                 }
                             }
                             this.setData({
+                                field_list: data.field_list || [],
                                 data_list: temp_data_list,
-                                field_list: res.data.data.field_list || [],
-                                data_total: res.data.data.total,
-                                data_page_total: res.data.data.page_total,
-                                data_list_loding_status: 3,
+                                data_total: data.total,
+                                data_page_total: data.page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_list_loding_msg: '',
                                 data_page: this.data_page + 1,
                                 data_is_loading: 0,
                             });
 
                             // 是否还有数据
                             this.setData({
-                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                             });
                         } else {
                             this.setData({

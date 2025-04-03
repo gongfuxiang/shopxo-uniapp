@@ -676,7 +676,6 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 列表数据处理
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;
@@ -698,7 +697,7 @@
 
                                 // 是否还有数据
                                 this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
                             } else {
                                 this.setData({

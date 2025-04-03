@@ -1,9 +1,9 @@
 <template>
     <view :class="theme_view">
-        <block v-if="data.length > 0">
+        <block v-if="data_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view class="page-bottom-fixed padding-top-main">
-                    <view v-for="(item, index) in data" class="bg-white spacing-mb" :key="index">
+                    <view v-for="(item, index) in data_list" class="bg-white spacing-mb" :key="index">
                         <view class="padding-main flex-row">
                             <view v-if="item.cover" class="padding-right-main">
                                 <image class="blog-img radius" :src="item.cover" mode="aspectFit"></image>
@@ -30,6 +30,10 @@
                 </view>
             </scroll-view>
         </block>
+        <block vc-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
 
         <!-- 底部操作 -->
         <view class="bottom-fixed" :style="bottom_fixed_style">
@@ -42,10 +46,6 @@
                 </button>
             </view>
         </view>
-        <block v-if="data.length == 0 && data_list_loding_status != 3">
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </block>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
@@ -65,7 +65,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 bottom_fixed_style: '',
-                data: [],
+                data_list: [],
                 data_is_loading: 0,
                 data_total: 0,
                 data_page_total: 0,
@@ -163,7 +163,7 @@
                                     }
                                 }
                                 this.setData({
-                                    data: temp_data_list,
+                                    data_list: temp_data_list,
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
@@ -174,17 +174,16 @@
 
                                 // 是否还有数据
                                 this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_total: 0,
                                     data_is_loading: 0,
                                 });
                                 if (this.data_page <= 1) {
                                     this.setData({
-                                        data: [],
+                                        data_list: [],
                                         data_bottom_line_status: false,
                                     });
                                 }
@@ -218,7 +217,7 @@
                 app.globalData.url_event(e);
             },
 
-            // 删除blog
+            // 删除
             del_event(e) {
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
@@ -244,14 +243,14 @@
                             uni.hideLoading();
                             if (res.data.code == 0) {
                                 var temp_list = [];
-                                var temp_data_list = this.data;
+                                var temp_data_list = this.data_list;
                                 for (var i in temp_data_list) {
                                     if (e.id.indexOf(temp_data_list[i]['id']) == -1) {
                                         temp_list.push(temp_data_list[i]);
                                     }
                                 }
                                 this.setData({
-                                    data: temp_list,
+                                    data_list: temp_list,
                                 });
                                 app.globalData.showToast(this.$t('common.del_success'), 'success');
                             } else {

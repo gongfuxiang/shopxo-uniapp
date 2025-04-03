@@ -249,7 +249,6 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

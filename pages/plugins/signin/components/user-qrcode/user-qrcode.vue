@@ -30,7 +30,7 @@
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed">
                         <view class="bottom-line-exclude">
-                            <button class="item cr-white bg-green br-green text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
+                            <button class="item cr-white bg-main br-main text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
                         </view>
                     </view>
                 </view>
@@ -154,21 +154,22 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
+                            var data = res.data.data;
+                            if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
+                                    var temp_data_list = data.data;
                                 } else {
                                     var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
+                                    var temp_data = data.data;
                                     for (var i in temp_data) {
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
                                 this.setData({
-                                    data_base: res.data.data.base || null,
+                                    data_base: data.base || null,
                                     data_list: temp_data_list,
-                                    data_total: res.data.data.total,
-                                    data_page_total: res.data.data.page_total,
+                                    data_total: data.total,
+                                    data_page_total: data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,
@@ -176,16 +177,20 @@
 
                                 // 是否还有数据
                                 this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
                             } else {
                                 this.setData({
-                                    data_base: res.data.data.base || null,
+                                    data_base: data.base || null,
                                     data_list_loding_status: 0,
-                                    data_list: [],
-                                    data_bottom_line_status: false,
                                     data_is_loading: 0,
                                 });
+                                if (this.data_page <= 1) {
+                                    this.setData({
+                                        data_list: [],
+                                        data_bottom_line_status: false,
+                                    });
+                                }
                             }
                         } else {
                             this.setData({

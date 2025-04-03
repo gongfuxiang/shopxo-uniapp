@@ -174,20 +174,21 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
+                            var data = res.data.data;
+                            if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
+                                    var temp_data_list = data.data;
                                 } else {
                                     var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
+                                    var temp_data = data.data;
                                     for (var i in temp_data) {
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
                                 this.setData({
                                     data_list: temp_data_list,
-                                    data_total: res.data.data.total,
-                                    data_page_total: res.data.data.page_total,
+                                    data_total: data.total,
+                                    data_page_total: data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,
@@ -195,13 +196,19 @@
 
                                 // 是否还有数据
                                 this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
                                     data_is_loading: 0,
                                 });
+                                if (this.data_page <= 1) {
+                                    this.setData({
+                                        data_list: [],
+                                        data_bottom_line_status: false,
+                                    });
+                                }
                             }
                         } else {
                             this.setData({
@@ -266,21 +273,22 @@
                             uni.hideLoading();
                             uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
-                                if (res.data.data.data.length > 0) {
+                                var data = res.data.data;
+                                if (data.data.length > 0) {
                                     if ((new_data_list[i].page || 1) <= 1) {
-                                        new_data_list[i].comments_list = res.data.data.data;
+                                        new_data_list[i].comments_list = data.data;
                                     } else {
-                                        new_data_list[i].comments_list = new_data_list[i].comments_list.concat(res.data.data.data);
+                                        new_data_list[i].comments_list = new_data_list[i].comments_list.concat(data.data);
                                     }
-                                    new_data_list[i].hide_comments_list_num = res.data.data.total-new_data_list[i].comments_list.length;
+                                    new_data_list[i].hide_comments_list_num = data.total-new_data_list[i].comments_list.length;
                                     // 判断当前页数是否小于总页数，如果是则继续显示更多按钮，且当前页+1，如果不是则隐藏更多按钮
-                                    if (res.data.data.page < res.data.data.page_total) {
+                                    if (data.page < data.page_total) {
                                         new_data_list[i].hide_more = false;
                                         new_data_list[i].page = (new_data_list[i].page || 1) + 1;
                                     } else {
                                         new_data_list[i].hide_more = true;
                                     }
-                                    new_data_list[i].page_total = res.data.data.page_total;
+                                    new_data_list[i].page_total = data.page_total;
                                     new_data_list[i].bool_api = true;
                                     this.setData({
                                         data_list: new_data_list,
