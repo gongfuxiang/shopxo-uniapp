@@ -71,7 +71,7 @@
                     var user = app.globalData.get_user_cache_info() || null;
                     var current_page = app.globalData.current_page();
                     // 业务数据
-                    if(user != null && current_page.indexOf('pages/plugins/certificate/') == -1 && (this.config || null) != null && (this.config.user_auth_business_data || null) != null && (this.config.business_type_data || null) != null) {
+                    if(user != null && current_page.indexOf('pages/plugins/certificate/') == -1 && current_page.indexOf('pages/web-view/web-view') == -1 && (this.config || null) != null && (this.config.user_auth_business_data || null) != null && (this.config.business_type_data || null) != null) {
                         this.setData({
                             popup_status: true,
                         });
