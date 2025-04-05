@@ -43,7 +43,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-    import componentBuyOrdergoodsform from '@/components/buy-ordergoodsform/buy-ordergoodsform';
+    import componentBuyOrdergoodsform from '@/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {

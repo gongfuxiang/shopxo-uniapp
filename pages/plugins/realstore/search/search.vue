@@ -65,7 +65,7 @@
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentSearch from "@/components/search/search";
-    import componentRealstoreList from "@/components/realstore-list/realstore-list";
+    import componentRealstoreList from "@/pages/plugins/realstore/components/realstore-list/realstore-list";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     var plugins_static_url = app.globalData.get_static_url('realstore', true);
     export default {

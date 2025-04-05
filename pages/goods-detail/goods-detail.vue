@@ -315,7 +315,7 @@
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
                             <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.k5u755')}}</text>
-                            <text class="vice-name cr-grey">({{ goods.comments_count }})</text>
+                            <text class="vice-name cr-grey">({{ plugins_ask_data.ask_total }})</text>
                         </view>
                         <text :data-value="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.goods-detail.q8e577')}}</text>
                     </view>
@@ -633,20 +633,19 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentOnlineService from '@/components/online-service/online-service';
-    import componentRealstoreList from '@/components/realstore-list/realstore-list';
-    import componentShopList from '@/components/shop-list/shop-list';
-    import componentBindingDetailList from '@/components/binding-detail-list/binding-detail-list';
+    import componentRealstoreList from '@/pages/plugins/realstore/components/realstore-list/realstore-list';
+    import componentShopList from '@/pages/plugins/shop/components/shop-list/shop-list';
+    import componentBindingDetailList from '@/pages/plugins/binding/components/binding-detail-list/binding-detail-list';
     import componentSharePopup from '@/components/share-popup/share-popup';
-    import componentGoodsComments from '@/components/goods-comments/goods-comments';
-    import componentAskCommentsGoods from '@/components/ask-comments-goods/ask-comments-goods';
-    import componentCouponCard from '@/components/coupon-card/coupon-card';
+    import componentGoodsComments from '@/pages/goods-detail/components/goods-comments/goods-comments';
+    import componentAskCommentsGoods from '@/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods';
+    import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
     import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
     import componentCategorylimitWarmTips from '@/components/categorylimit-warm-tips/categorylimit-warm-tips';
 
     var common_static_url = app.globalData.get_static_url('common');
-    var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';
     var system_info = app.globalData.get_system_info() || {};
     var bar_height = parseInt(system_info.statusBarHeight || 0);
     var win_width = parseInt(system_info.windowWidth || system_info.screenWidth || 0);
@@ -656,7 +655,6 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: bar_height,
                 common_static_url: common_static_url,
-                ask_static_url: ask_static_url,
                 bottom_fixed_style: '',
                 indicator_dots: false,
                 indicator_color: 'rgba(0, 0, 0, .2)',
@@ -972,7 +970,7 @@
                             }
 
                             // 是否展示门店购物车导航
-                            if((this.plugins_realstore_data || null) != null) {
+                            if((this.plugins_realstore_data || null) != null && (this.$refs.realstore_cart || null) != null) {
                                 // 当前门店信息
                                 if((this.plugins_realstore_data.info || null) != null) {
                                     this.setData({
@@ -1499,7 +1497,6 @@
 
             // 下单类型切换事件、数据刷新事件
             refresh_loading_event(params) {
-                console.log(params)
                 this.setData({params: {...this.params, ...params}});
                 this.init();
             }

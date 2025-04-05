@@ -10,7 +10,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentCart from "@/components/cart/cart";
+    import componentCart from "@/pages/cart/components/cart/cart";
     export default {
         data() {
             return {

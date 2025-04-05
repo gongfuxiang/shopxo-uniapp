@@ -297,19 +297,19 @@
     import componentIconNav from '@/components/icon-nav/icon-nav';
     import componentBanner from '@/components/slider/slider';
     import componentCountdown from '@/components/countdown/countdown';
-    import componentLayout from '@/components/layout/layout';
+    import componentLayout from '@/pages/design/components/layout/layout';
     import componentBadge from '@/components/badge/badge';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentCopyright from '@/components/copyright/copyright';
     import componentOnlineService from '@/components/online-service/online-service';
-    import componentActivityList from '@/components/activity-list/activity-list';
-    import componentBlogList from '@/components/blog-list/blog-list';
-    import componentRealstoreList from '@/components/realstore-list/realstore-list';
-    import componentShopList from '@/components/shop-list/shop-list';
+    import componentActivityList from '@/pages/plugins/activity/components/activity-list/activity-list';
+    import componentBlogList from '@/pages/plugins/blog/components/blog-list/blog-list';
+    import componentRealstoreList from '@/pages/plugins/realstore/components/realstore-list/realstore-list';
+    import componentShopList from '@/pages/plugins/shop/components/shop-list/shop-list';
     import componentGoodsList from '@/components/goods-list/goods-list';
-    import componentBindingList from '@/components/binding-list/binding-list';
-    import componentMagicList from '@/components/magic-list/magic-list';
+    import componentBindingList from '@/pages/plugins/binding/components/binding-list/binding-list';
+    import componentMagicList from '@/pages/plugins/magic/components/magic-list/magic-list';
     import componentDiy from '@/components/diy/diy';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
 

@@ -26,7 +26,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentLayout from "@/components/layout/layout";
+    import componentLayout from "@/pages/design/components/layout/layout";
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentShopHeader from '../components/shop-header/shop-header';

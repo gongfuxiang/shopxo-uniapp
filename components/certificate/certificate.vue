@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-popup :propShow="popup_status" propPosition="bottom" :propMaskTap="(config.is_user_force_select || 0) == 0" @onclose="popup_close_event">
+        <component-popup v-if="(config || null) != null" :propShow="popup_status" propPosition="bottom" :propMaskTap="(config.is_user_force_select || 0) == 0" @onclose="popup_close_event">
             <view :class="'certificate-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
                 <view v-if="(config.is_user_force_select || 0) == 0" class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
@@ -31,7 +31,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 popup_status: false,
-                cconfig: null
+                config: null
             };
         },
 

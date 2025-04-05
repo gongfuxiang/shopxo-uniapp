@@ -362,7 +362,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentTimeSelect from '@/components/time-select/time-select';
     import componentPayment from '@/components/payment/payment';
-    import componentBuyOrdergoodsform from '@/components/buy-ordergoodsform/buy-ordergoodsform';
+    import componentBuyOrdergoodsform from '@/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {

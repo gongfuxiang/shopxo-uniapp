@@ -132,7 +132,7 @@
     import componentSearch from '@/components/search/search';
     import componentBanner from '@/components/slider/slider';
     import componentIconNav from '@/components/icon-nav/icon-nav';
-    import componentRealstoreList from '@/components/realstore-list/realstore-list';
+    import componentRealstoreList from '@/pages/plugins/realstore/components/realstore-list/realstore-list';
     import componentTitle from '@/components/title/title';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     var plugins_static_url = app.globalData.get_static_url('realstore', true);
