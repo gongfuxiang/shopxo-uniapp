@@ -988,6 +988,13 @@
                             }
 
                             // 分享配置
+                            var query = 'id=' + goods.id;
+                            if((this.params.realstore_id || null) != null) {
+                                query += '&realstore_id='+this.params.realstore_id;
+                                if(this.params.buy_use_type_data_index !== undefined) {
+                                    query += '&buy_use_type_data_index='+this.params.buy_use_type_data_index;
+                                }
+                            }
                             this.setData({
                                 // 基础自定义分享
                                 share_info: {
@@ -995,7 +1002,7 @@
                                     kds: goods.seo_keywords || goods.simple_desc,
                                     desc: goods.seo_desc || goods.simple_desc,
                                     path: '/pages/goods-detail/goods-detail',
-                                    query: 'id=' + goods.id,
+                                    query: query,
                                     img: goods.share_images || goods.images,
                                     video: goods.video,
                                 },
