@@ -620,52 +620,28 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card"
-                        },
-                        "componentPlaceholder": {
-                            "component-coupon-card": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card"
-                        },
-                        "componentPlaceholder": {
-                            "component-coupon-card": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "shop/shop",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card"
-                        },
-                        "componentPlaceholder": {
-                            "component-coupon-card": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "user/user",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card"
-                        },
-                        "componentPlaceholder": {
-                            "component-coupon-card": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 }
             ]
@@ -1197,12 +1173,10 @@
                     "style": {
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-layout": "/pages/design/components/layout/layout",
-                            "component-shop-list": "/pages/plugins/shop/components/shop-list/shop-list"
+                            "component-layout": "/pages/design/components/layout/layout"
                         },
                         "componentPlaceholder": {
-                            "component-layout": "view",
-                            "component-shop-list": "view"
+                            "component-layout": "view"
                         }
                     }
                 },
@@ -1255,13 +1229,7 @@
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-activity-list": "/pages/plugins/activity/components/activity-list/activity-list"
-                        },
-                        "componentPlaceholder": {
-                            "component-activity-list": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1292,13 +1260,7 @@
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-blog-list": "/pages/plugins/blog/components/blog-list/blog-list"
-                        },
-                        "componentPlaceholder": {
-                            "component-blog-list": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1357,26 +1319,14 @@
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list"
-                        },
-                        "componentPlaceholder": {
-                            "component-realstore-list": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "search/search",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list"
-                        },
-                        "componentPlaceholder": {
-                            "component-realstore-list": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1613,13 +1563,7 @@
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-buy-ordergoodsform": "/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform"
-                        },
-                        "componentPlaceholder": {
-                            "component-buy-ordergoodsform": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 }
             ]
