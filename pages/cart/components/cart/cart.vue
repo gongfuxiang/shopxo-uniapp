@@ -324,7 +324,7 @@
                 </view>
                 <view class="padding-vertical-main">
                     <block v-if="(plugins_hospital_prescription_data || null) != null && plugins_hospital_prescription_data.choice_data.length > 0">
-                        <block v-for="(item, index) in plugins_hospital_prescription_data.choice_data">
+                        <block v-for="(item, index) in plugins_hospital_prescription_data.choice_data" :key="index">
                             <view class="padding-vertical-xxl pr">
                                 <text>{{item.name}}</text>
                                 <button type="default" size="mini" class="bg-main br-main cr-white round text-size-xs pa top-xxxxxl right-0" :data-index="index" @tap="hospital_prescription_confirm_event">{{item.btn_text}}</button>

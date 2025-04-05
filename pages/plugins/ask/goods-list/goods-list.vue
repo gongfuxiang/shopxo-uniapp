@@ -32,7 +32,7 @@
                         <block v-for="(it, ix) in item.comments_list" :key="ix">
                             <view class="cr-base br-t-f9 padding-vertical-main">{{ it.content }}</view>
                             <view v-if="(it.images || null) != null && it.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
-                                <block v-for="(img, i) in it.images">
+                                <block v-for="(img, i) in it.images" :key="i">
                                     <image class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
                                 </block>
                             </view>

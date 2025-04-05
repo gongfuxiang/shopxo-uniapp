@@ -30,7 +30,7 @@
                     <button type="default" size="mini" class="bg-main-light br-main cr-main text-size-lg circle padding-0 refresh-submit" @tap="refresh_data_event">{{$t('common.refresh_text')}}</button>
                     <view class="bottom-line-exclude flex-row jc-sb margin-top-xl">
                         <block v-if="stats_data.length > 0">
-                            <block v-for="(item, index) in stats_data">
+                            <block v-for="(item, index) in stats_data" :key="index">
                                 <view>
                                     <view class="cr-grey">{{item.name}}</view>
                                     <view class="fw-b text-size-lg" :class="item.type == 1 ? 'cr-green' : (item.type == 0 ? 'cr-yellow' : '')">{{item.value}}</view>

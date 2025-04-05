@@ -884,13 +884,17 @@
 
             // 获取购物车数据
             get_cart_data() {
-                this.$refs.realstore_cart.init({...{source: 'realstore', base: this.data_base, info: this.info}, ...this.params});
+                if((this.$refs.realstore_cart || null) != null) {
+                    this.$refs.realstore_cart.init({...{source: 'realstore', base: this.data_base, info: this.info}, ...this.params});
+                }
             },
 
             // 列表数量事件处理
             buy_number_event_handle(e, type, goods, spec = '') {
                 // 调用门店购物车方法处理
-                this.$refs.realstore_cart.goods_opt_handle(type, goods, spec, 'buy_number', e);
+                if((this.$refs.realstore_cart || null) != null) {
+                    this.$refs.realstore_cart.goods_opt_handle(type, goods, spec, 'buy_number', e);
+                }
             },
 
             // 搜索事件
@@ -906,7 +910,9 @@
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
             search_icon_event(e) {
-                this.$refs.realstore_cart.search_icon_handle(e);
+                if((this.$refs.realstore_cart || null) != null) {
+                    this.$refs.realstore_cart.search_icon_handle(e);
+                }
             },
 
             // 剪切板
@@ -1024,7 +1030,9 @@
 
             // 使用类型事件
             buy_use_type_event(e) {
-                this.$refs.realstore_cart.buy_use_type_event();
+                if((this.$refs.realstore_cart || null) != null) {
+                    this.$refs.realstore_cart.buy_use_type_event();
+                }
             },
 
             // 下单类型切换事件回调
@@ -1039,7 +1047,10 @@
 
             // 获取使用类型数据索引、默认在店0
             buy_use_type_data() {
-                return this.$refs.realstore_cart.buy_use_type_data();
+                if((this.$refs.realstore_cart || null) != null) {
+                    return this.$refs.realstore_cart.buy_use_type_data();
+                }
+                return 0;
             },
 
             // 商品事件

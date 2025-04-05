@@ -13,6 +13,7 @@
                 "enablePullDownRefresh": true,
                 "navigationBarTitleText": "",
                 "usingComponents": {
+                    "component-diy": "/pages/diy/components/diy/diy",
                     "component-layout": "/pages/design/components/layout/layout",
                     "component-binding-list": "/pages/plugins/binding/components/binding-list/binding-list",
                     "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list",
@@ -22,6 +23,7 @@
                     "component-magic-list": "/pages/plugins/magic/components/magic-list/magic-list"
                 },
                 "componentPlaceholder": {
+                    "component-diy": "view",
                     "component-layout": "view",
                     "component-binding-list": "view",
                     "component-realstore-list": "view",

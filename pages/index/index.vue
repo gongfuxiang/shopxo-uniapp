@@ -4,7 +4,7 @@
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
                 <block v-if="(data_list || null) != null && (data_list.config || null) != null">
-                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+                    <component-diy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
                         <!-- 底部内容 -->
                         <template slot="diy-bottom-content">
                             <!-- 结尾 -->
@@ -16,7 +16,7 @@
                         <template slot="diy-bottom-common">
                             <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
                         </template>
-                    </componentDiy>
+                    </component-diy>
                 </block>
                 <block v-else>
                     <component-no-data propStatus="0" propPage="home"></component-no-data>
@@ -310,7 +310,7 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentBindingList from '@/pages/plugins/binding/components/binding-list/binding-list';
     import componentMagicList from '@/pages/plugins/magic/components/magic-list/magic-list';
-    import componentDiy from '@/components/diy/diy';
+    import componentDiy from '@/pages/diy/components/diy/diy';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
 
     // 状态栏高度

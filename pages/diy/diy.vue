@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(data || null) != null && (data.config || null) != null">
             <!-- diy模块 -->
-            <componentDiy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+            <component-diy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
                 <!-- 底部内容 -->
                 <template slot="diy-bottom-content">
                     <!-- 结尾 -->
@@ -12,7 +12,7 @@
                 <template slot="diy-bottom-common">
                     <component-common ref="common"></component-common>
                 </template>
-            </componentDiy>
+            </component-diy>
         </block>
         <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -22,7 +22,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentDiy from '@/components/diy/diy';
+    import componentDiy from '@/pages/diy/components/diy/diy';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     export default {

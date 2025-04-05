@@ -19,7 +19,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentDiyFooter from '@/components/diy/footer';
+    import componentDiyFooter from '@/components/diy-footer/diy-footer';
     import componentModalBusiness from '@/components/modal-business/modal-business';
     export default {
         data() {
