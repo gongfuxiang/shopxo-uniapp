@@ -456,6 +456,18 @@
             ]
         },
         {
+            "root": "pages/paylog-list",
+            "pages": [
+                {
+                    "path": "paylog-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/paylog-detail",
             "pages": [
                 {

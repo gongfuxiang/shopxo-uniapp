@@ -99,6 +99,7 @@
         "web-view": "",
 		"login": "Login",
 		"paytips": "Secure payment",
+        "paylog-list": "Payment Order list",
         "paylog-detail": "Payment Order Details",
 		"goods-search": "Product search",
         "goods-search-start": "Product search",

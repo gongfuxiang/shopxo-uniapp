@@ -5,10 +5,11 @@
             <view class="padding-main">
                 <view class="bg-white border-radius-main">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <view :class="index > 0 ? 'br-t-f5' : ''" class="padding-horizontal-main padding-vertical-xxl oh">
-                            <text>{{$t('order-detail.order-detail.36op8f')}}：</text>
-                            <text>{{item.order_no}}</text>
-                            <text class="cr-green br-green bg-white round padding-horizontal-lg padding-vertical-xs text-size-xs fr" :data-value="item.url" @tap="url_event">{{$t('common.view_text')}}</text>
+                        <view :class="index > 0 ? 'br-t-f5' : ''" class="padding-horizontal-main padding-vertical-xxl pr" :data-value="item.url" @tap="url_event">
+                            <text>{{item.name}}</text>
+                            <view class="pa margin-top-xxl margin-right-main top-0 right-0">
+                                <iconfont name="icon-arrow-right" propClass="iconfont" color="#ccc"></iconfont>
+                            </view>
                         </view>
                     </block>
                 </view>
@@ -84,7 +85,7 @@
                     data_list_loding_status: 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("detail", "paylog"),
+                    url: app.globalData.get_request_url("index", "paylog"),
                     method: "POST",
                     data: this.params,
                     dataType: "json",

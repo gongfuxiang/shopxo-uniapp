@@ -99,6 +99,7 @@
 		"web-view": "",
 		"login": "登录",
 		"paytips": "安全支付",
+        "paylog-list": "支付订单列表",
         "paylog-detail": "支付订单详情",
 		"goods-search": "商品搜索",
         "goods-search-start": "商品搜索",

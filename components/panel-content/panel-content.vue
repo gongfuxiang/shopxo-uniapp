@@ -86,7 +86,7 @@
             },
             // 数据项最大展示数量（0则显示全部）
             propIsItemShowMax: {
-                type: Number,
+                type: [Number,String],
                 default: 0,
             },
             // 指定字段
