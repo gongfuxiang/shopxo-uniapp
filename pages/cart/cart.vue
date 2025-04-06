@@ -10,7 +10,7 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
-    import componentCart from "@/pages/cart/components/cart/cart";
+    import componentCart from "@/components/cart/cart";
     export default {
         data() {
             return {
@@ -46,7 +46,7 @@
 
                 // 公共onshow事件
                 if ((this.$refs.common || null) != null) {
-                    this.$refs.common.on_show({object: this, method: 'init'});
+                    this.$refs.common.on_show();
                 }
             },
 

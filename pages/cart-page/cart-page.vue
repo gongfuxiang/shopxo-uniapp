@@ -14,7 +14,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentQuickNav from '@/components/quick-nav/quick-nav';
-    import componentCart from '@/pages/cart/components/cart/cart';
+    import componentCart from '@/components/cart/cart';
     export default {
         data() {
             return {

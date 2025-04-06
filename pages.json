@@ -67,13 +67,7 @@
                 "enablePullDownRefresh": false,
                 // 禁止页面下拉
                 "disableScroll": true,
-                "navigationBarTitleText": "",
-                "usingComponents": {
-                    "component-cart": "/pages/cart/components/cart/cart"
-                },
-                "componentPlaceholder": {
-                    "component-cart": "view"
-                }
+                "navigationBarTitleText": ""
             }
         },
         {
@@ -172,13 +166,7 @@
                         "enablePullDownRefresh": false,
                         // 禁止页面下拉
                         "disableScroll": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-cart": "/pages/cart/components/cart/cart"
-                        },
-                        "componentPlaceholder": {
-                            "component-cart": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 }
             ]

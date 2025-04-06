@@ -5,6 +5,8 @@
             <block v-if="data_mode == 3">
                 <block v-if="(data_list || null) != null && (data_list.config || null) != null">
                     <component-diy :propValue="data_list.config" :propDataId="data_list.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+                        <!-- 由于diy组件异步加载、默认先加载骨架屏展示 -->
+                        <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="home"></component-no-data>
                         <!-- 底部内容 -->
                         <template slot="diy-bottom-content">
                             <!-- 结尾 -->

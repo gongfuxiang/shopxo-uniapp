@@ -11,7 +11,7 @@
         <view v-else>
             <!-- 1 加载中(0loog, 1名称) -->
             <view v-if="propStatus == 1 && network_type_value != 'none'" :class="'no-data-box tc no-data-loading '+(is_loading_use_skeleton == 1 && (propPage || null) != null ? 'skeleton' : '')">
-                <block v-if="is_loading_use_skeleton == 1 && (propPage || null) != null">
+                <block v-if="(is_loading_use_skeleton == 1 || propLoadingUseSkeleton) && (propPage || null) != null">
                     <!-- 是否展示头站位 -->
                     <view v-if="propIsHeader" class="skeleton-header"></view>
                     <!-- 首页 -->
@@ -141,6 +141,10 @@
             propLoadingLogoTop: {
                 type: String,
                 default: '50%',
+            },
+            propLoadingUseSkeleton: {
+                type: Boolean,
+                default: false,
             }
         },
         // 页面被展示
