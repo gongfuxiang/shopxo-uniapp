@@ -68,7 +68,7 @@ export default {
             img_style: '',
             text_style: '',
             indicator_style: '',
-            new_height: '150rpx',
+            new_height: '300rpx',
             actived_index: 0,
             group_width: '',
             nav_content_list: [],
