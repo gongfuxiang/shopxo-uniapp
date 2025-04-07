@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width, get_is_eligible } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width, get_is_eligible, get_swiper_list } from '@/common/js/common/common.js';
     // a组件调用b组件 b组件调用a组件，为了避免循环引用在uniapp中出问题，复制一个相同的data-group-rendering组件
     import dataGroupRendering from '@/pages/diy/components/diy/modules/custom/data-group-rendering.vue';
     const app = getApp();
