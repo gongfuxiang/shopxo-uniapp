@@ -209,7 +209,7 @@
                             success: (res) => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
-                                    app.globalData.url_open('/pages/plugins/wallet/user/user?type=3', true);
+                                    app.globalData.url_open('/pages/plugins/wallet/user/user?type=transfer', true);
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
                                         app.globalData.showToast(res.data.msg);
