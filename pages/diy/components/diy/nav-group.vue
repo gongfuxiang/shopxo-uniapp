@@ -17,7 +17,7 @@
                     </view>
                 </swiper-item>
             </swiper>
-            <view v-if="form.display_style == 'slide' && new_style.is_show == '1' && new_height !== '0rpx'" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
+            <view v-if="form.display_style == 'slide' && new_style.is_show == '1'" :class="['left', 'right'].includes(new_style.indicator_new_location) ? 'indicator_up_down_location' : 'indicator_about_location'" :style="indicator_location_style">
                 <block v-if="new_style.indicator_style == 'num'">
                     <view :style="indicator_style" class="dot-item">
                         <text :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</text>
@@ -68,7 +68,7 @@ export default {
             img_style: '',
             text_style: '',
             indicator_style: '',
-            new_height: '0rpx',
+            new_height: '150rpx',
             actived_index: 0,
             group_width: '',
             nav_content_list: [],
