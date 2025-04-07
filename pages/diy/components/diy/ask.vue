@@ -8,7 +8,7 @@
                             <view class="oh wh-auto ht-auto flex-col jc-sb gap-10" :style="layout_img_style">
                                 <view class="flex-row gap-10 align-b">
                                     <view v-if="is_show('ranking')" :class="'top-style one' + (index + 1)">{{ index + 1 }}</view>
-                                    <view class="flex-1" :style="title_style">{{ item.title }}</view>
+                                    <view :class="'flex-1' + title_class" :style="title_style">{{ item.title }}</view>
                                 </view>
                                 <view v-if="is_show('reply_status') || is_show('time') || is_show('page_view')" class="flex-row gap-10 align-c" :style="is_show('ranking') ? 'margin-left: 54rpx;' : ''">
                                     <view class="flex-row">
@@ -26,7 +26,7 @@
                         <template v-else>
                             <view class="oh flex-col gap-10 jc-sb" :style="layout_img_style">
                                 <view class="flex-row gap-10 align-b">
-                                    <view :style="title_style">{{ item.title }}</view>
+                                    <view :class="title_class" :style="title_style">{{ item.title }}</view>
                                 </view>
                                 <view v-if="is_show('reply_status') || is_show('time')" class="flex-col gap-10">
                                     <span v-if="is_show('time')" :style="time_style">{{ item.add_time_date }}</span>
@@ -50,7 +50,7 @@
                                     <template v-if="!isEmpty(item)">
                                         <view class="oh ht-auto flex-col gap-10 jc-sb" :style="layout_img_style">
                                             <view class="flex-row gap-10 align-b">
-                                                <view :style="title_style">{{ item.title }}</view>
+                                                <view :class="title_class" :style="title_style">{{ item.title }}</view>
                                             </view>
                                             <view v-if="is_show('reply_status') || is_show('time')" class="flex-col gap-10">
                                                 <span v-if="is_show('time')" :style="time_style">{{ item.add_time_date }}</span>
@@ -127,6 +127,7 @@
                 ask_content_list: [],
                 slides_per_group: 1,
                 // 内容样式
+                title_class: '',
                 title_style: '',
                 time_style: '',
                 page_view_style: '',
@@ -220,6 +221,7 @@
                         list: new_list,
                         new_scale: scale,
                         theme: new_form.theme, // 选择的风格
+                        title_class: new_form.title_display_method == '0' ? '' : 'text-line-' + new_form.title_display_method,
                         title_style: this.trends_config('title', new_style) + 'word-break: break-all;',
                         time_style: this.trends_config('time', new_style),
                         page_view_style: this.trends_config('page_view', new_style),
@@ -249,7 +251,7 @@
             },
             // 根据传递的值，显示不同的内容
             style_config(typeface, size, color) {
-                return `font-weight:${typeface}; font-size: ${size}px;color: ${color};`;
+                return `font-weight:${typeface}; font-size: ${size}px;color: ${color};line-height: 1.5;`;
             },
             // 容器样式
             get_layout_style(form, new_style) {
