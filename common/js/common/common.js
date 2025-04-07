@@ -65,9 +65,9 @@ export const custom_condition_judg = (fieldValue, type, value) => {
         case 'less-than':
         case 'equal':
             // 根据字段值的类型，进行数字间的比较
-            if (typeof fieldValue === 'number') {
-                return compare_numbers(fieldValue, numberValue, type);
-            } else if (Array.isArray(fieldValue) || typeof fieldValue === 'string') {
+            if (typeof fieldValue === 'number' || typeof fieldValue === 'string') {
+                return compare_numbers(Number(fieldValue), numberValue, type);
+            } else if (Array.isArray(fieldValue)) {
                 // 如果字段值是数组或字符串，比较数组长度和指定值
                 const valueLength = fieldValue?.length || 0;
                 return compare_numbers(valueLength, numberValue, type);
