@@ -538,7 +538,7 @@
                 let goods = new_data[index];
                 if (this.theme == '5') {
                     new_data = this.shop_content_list;
-                    goods = new_data[index][split_index];
+                    goods = new_data[index].split_list[split_index];
                 }
                 goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0) + parseInt(e.stock);
                 if (goods['user_cart_count'] > 99) {
@@ -550,7 +550,7 @@
                         list: new_data,
                     });
                 } else {
-                    new_data[index][split_index] = goods;
+                    new_data[index].split_list[split_index] = goods;
                     this.setData({
                         shop_content_list: new_data,
                     });
