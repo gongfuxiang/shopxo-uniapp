@@ -531,7 +531,6 @@
             },
             // 加入购物车成功回调
             goods_cart_back_event(e) {
-                app.globalData.showToast('加入成功', 'success');
                 // 增加数量
                 var { index, split_index } = e.back_data;
                 let new_data = this.list;
@@ -555,6 +554,7 @@
                         shop_content_list: new_data,
                     });
                 }
+                app.globalData.showToast('加入成功', 'success');
             },
         },
     };
