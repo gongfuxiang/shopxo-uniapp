@@ -158,7 +158,7 @@
                     if (!isEmpty(new_form.data_list) && new_form.data_type == '0') {
                         new_list = new_form.data_list.map((item) => ({
                             ...item.data,
-                            title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
+                            name: !isEmpty(item.new_title) ? item.new_title : item.data.name,
                             new_cover: item.new_cover,
                         }));
                     } else if (!isEmpty(new_form.data_auto_list) && new_form.data_type == '1') {
