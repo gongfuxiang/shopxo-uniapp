@@ -397,7 +397,7 @@
             get_layout_style(new_style, form) {
                 const { shop_margin = old_margin } = new_style;
                 const radius = form.theme == '6' ? '' : radius_computer(new_style.shop_radius);
-                const style = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') + margin_computer(shop_margin) + border_computer(new_style) + box_shadow_computer(new_style) : '';
+                const style = form.theme != '6' ? gradient_handle(new_style?.shop_color_list || [], new_style?.shop_direction || '') + margin_computer(shop_margin) + border_computer(new_style) + box_shadow_computer(new_style) + 'box-sizing: border-box;' : '';
                 let size_style = ``;
                 const shop_left_right_width = shop_margin.margin_left + shop_margin.margin_right;
                 if (['1', '4'].includes(form.theme)) {
