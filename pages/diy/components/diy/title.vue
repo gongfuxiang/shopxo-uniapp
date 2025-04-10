@@ -107,20 +107,24 @@
                     right_size: right_size * 2 + 'rpx', // 右边按钮设置
                     right_style: `color:${right_color}; font-size: ${right_size * 2}rpx;`, //右侧按钮样式
                     title_style: `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`, // 标题样式设置
-                    subtitle_style: this.get_subtitle_style(new_style), // 副标题样式设置
+                    subtitle_style: this.get_subtitle_style(new_form, new_style), // 副标题样式设置
                     style_container: common_styles_computer(common_style), // 通用样式区
                     style_img_container: common_img_computer(common_style, this.propIndex), // 通用图片样式区
                 });
             },
             // 副标题样式设置
-            get_subtitle_style(new_style) {
+            get_subtitle_style(new_form, new_style) {
                 let common_styles = '';
                 if (new_style.subtitle_weight == 'italic') {
                     common_styles += `font-style: italic`;
                 } else if (['bold', '500'].includes(new_style.subtitle_weight)) {
                     common_styles += `font-weight: bold;`;
                 }
-                return `color:${new_style.subtitle_color}; font-size: ${new_style.subtitle_size * 2}rpx; ${common_styles}`;
+                let flex = '';
+                if (new_form.is_subtitle_center == '1') {
+                    flex = 'display: flex; justify-content: center;';
+                }
+                return `color:${new_style.subtitle_color}; font-size: ${new_style.subtitle_size * 2}rpx; ${common_styles} ${ flex }`;
             },
             url_event(e) {
                 app.globalData.url_event(e);
