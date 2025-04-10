@@ -13,7 +13,7 @@
                             <iconfont :name="'icon-' + form.icon_class" :size="new_style.icon_size * 2 + 'rpx'" :color="new_style.icon_color" propContainerDisplay="flex"></iconfont>
                         </template>
                         <view v-if="!isEmpty(form.title)" class="nowrap" :style="title_style" :data-value="!isEmpty(form.title_link) ? form.title_link.page : ''" @tap="url_event">{{ form.title }}</view>
-                        <view v-if="!isEmpty(form.subtitle) && new_style.title_line == '1'" class="text-word-break nowrap" :style="subtitle_style">{{ form.subtitle }}</view>
+                        <view v-if="!isEmpty(form.subtitle) && form.title_line == '1'" class="text-word-break nowrap" :style="subtitle_style">{{ form.subtitle }}</view>
                     </view>
                     <view class="flex-row gap-10 align-c right-0 pa">
                         <template v-if="form.keyword_show == '1'">
@@ -29,7 +29,7 @@
                         </view>
                     </view>
                 </view>
-                <view v-if="!isEmpty(form.subtitle) && new_style.title_line != '1'" class="text-word-break" :style="subtitle_style">{{ form.subtitle }}</view>
+                <view v-if="!isEmpty(form.subtitle) && form.title_line != '1'" class="text-word-break" :style="subtitle_style">{{ form.subtitle }}</view>
             </view>
         </view>
     </view>
