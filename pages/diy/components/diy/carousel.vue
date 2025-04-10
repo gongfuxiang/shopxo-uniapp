@@ -14,7 +14,7 @@
                             <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class pa oh" :style="{'bottom': new_style.video_bottom * 2 + 'rpx'}">
                                 <view class="flex-row gap-5 align-c wh-auto ht-auto" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
                                     <block v-if="new_style.video_type == 'img'">
-                                        <image-empty :propImageSrc="new_style.video_img[0]" :propStyle="video_img_style" propImgFit="aspectFit" propErrorStyle="width: 28rpx;height: 28rpx;"></image-empty>
+                                        <image-empty :propImageSrc="new_style.video_img[0]" :propStyle="video_img_style" propImgFit="scaleToFill" propErrorStyle="width: 28rpx;height: 28rpx;"></image-empty>
                                     </block>
                                     <block v-else>
                                         <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" :size="video_icon_size" :color="new_style.video_icon_color" propContainerDisplay="flex"></iconfont>
@@ -34,7 +34,7 @@
                             <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{ 'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class pa oh" :style="{'bottom': new_style.video_bottom * 2 + 'rpx'}">
                                 <view class="flex-row gap-5 align-c wh-auto ht-auto" :style="video_style" :data-value="item.carousel_video" @tap.stop="video_play">
                                     <block v-if="new_style.video_type == 'img'">
-                                        <image-empty :propImageSrc="new_style.video_img[0]" :propStyle="video_img_style" propImgFit="aspectFit" propErrorStyle="width: 28rpx;height: 28rpx;"></image-empty>
+                                        <image-empty :propImageSrc="new_style.video_img[0]" :propStyle="video_img_style" propImgFit="scaleToFill" propErrorStyle="width: 28rpx;height: 28rpx;"></image-empty>
                                     </block>
                                     <block v-else>
                                         <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" :size="video_icon_size" :color="new_style.video_icon_color" propContainerDisplay="flex"></iconfont>
