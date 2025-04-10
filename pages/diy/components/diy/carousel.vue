@@ -182,7 +182,7 @@
                     indicator_location_style: get_indicator_location_style(new_style),
                     dot_style: `bottom: ${ new_style.indicator_bottom * scale }px;`, // 指示器位置
                     video_img_style: `width:${(new_style?.video_image_width || 14) * 2 }rpx;height:${ (new_style?.video_image_height || 14) * 2 }rpx;`,
-                    video_icon_size: `${ (new_style?.video_image_height || 14) * 2 }rpx`,
+                    video_icon_size: `${ (new_style?.video_icon_size || 14) * 2 }rpx`,
                     img_fit: fit, // 图片风格 默认为aspectFill
                     video_style: this.get_video_style(new_style), // 视频播放按钮显示逻辑   
                     swiper_height: new_form.height * scale + 'px', // 轮播图高度
