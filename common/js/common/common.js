@@ -585,7 +585,7 @@ export const border_computer = (new_style) => {
     
     // 根据边框是否需要显示的标志，决定是否构造并返回边框样式字符串
     if (border_is_show == '1') {
-       return `border-width: ${border_size.padding_top}px ${border_size.padding_right}px ${border_size.padding_bottom}px ${border_size.padding_left}px;border-style: ${ border_style };border-color: ${border_color};`
+       return `border-width: ${border_size.padding_top}px ${border_size.padding_right}px ${border_size.padding_bottom}px ${border_size.padding_left}px;border-style: ${ border_style };border-color: ${border_color};box-sizing: border-box;`
     }
     
     // 如果边框不需要显示，返回空字符串
