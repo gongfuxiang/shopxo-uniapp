@@ -200,9 +200,4 @@
     };
 </script>
 <style scoped lang="scss">
-// ::v-deep ::-webkit-scrollbar {
-//     /* 滚动条整体样式 */  
-//     display: block !important;  
-//     width: 4rpx;
-// }
 </style>

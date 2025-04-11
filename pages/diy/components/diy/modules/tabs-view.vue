@@ -590,4 +590,28 @@
     .ma-auto {
         margin: auto;
     }
+    
+    /* #ifdef WEB */
+    .tabs-view {
+        ::v-deep ::-webkit-scrollbar
+        {
+            width: 5rpx!important;
+            height: 5rpx!important;
+            background-color: #F5F5F5;
+        }
+            
+        /*定义滚动条轨道 内阴影+圆角*/
+        ::v-deep ::-webkit-scrollbar-track {
+            border-radius: 5rpx;
+            background-color: #fff;
+        }
+            
+        /*定义滑块 内阴影+圆角*/
+        ::v-deep ::-webkit-scrollbar-thumb{
+            border-radius: 5rpx;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #f7f7f7;
+        }
+    }
+    /* #endif */
 </style>
