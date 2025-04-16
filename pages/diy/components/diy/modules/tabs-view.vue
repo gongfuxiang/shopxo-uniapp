@@ -1,6 +1,6 @@
 <template>
     <!--  66rpx是自定义顶部导航栏的高度-->
-    <view class="tabs-view" :style="tabs_sticky">
+    <view :class="'tabs-view ' + tabs_roll" :style="tabs_sticky">
         <view class="tabs-view" :style="propStyle + propTabsBackground">
             <view class="pr" :style="propsTabsContainer">
                 <view v-if="propIsRotatingBackground" class="pa top-0 wh-auto ht-auto" :style="propBgImgStyle"></view>
@@ -196,6 +196,7 @@
                 tabs_adorn_img_style: '',
                 tabs_width: 0,
                 tabs_scroll_width: 0,
+                tabs_roll: '',
                 // #ifdef MP
                 sticky_top: bar_height,
                 // #endif
@@ -303,8 +304,18 @@
                 // 选项卡高度 五个值，作为判断依据，因为图片没有未选中的大小设置，所以高度判断的时候只取选中的高度, 其余的icon和标题都分别取选中和未选中的大小对比，取出最大的值，作为选项卡的高度，避免选项卡切换时会出现抖动问题
                 const height = Math.max(tabs_size_checked + default_height, tabs_size, icon_height, is_img > -1 ? (tabs_img_height + default_height) : '');
                 const findIndex = new_content_tabs_list.findIndex(item => item.is_sliding_fixed == '1');
+                let roll = '';
+                // #ifdef H5
+                let systemInfo = uni.getSystemInfoSync();
+                if(/(iPhone|iPod|Android|ios|iPad)/i.test(systemInfo.platform)) {
+                    roll = 'tabs_phone';
+                } else {
+                    roll = 'tabs_pc';
+                }
+                // #endif
                 // 参数设置
                 this.setData({
+                    tabs_roll: roll,
                     form: new_content,
                     tabs_list_is_sliding_fixed: findIndex == -1,
                     newPropTop: `calc(${ this.sticky_top * 2}rpx);`,
@@ -591,8 +602,16 @@
         margin: auto;
     }
     
-    /* #ifdef WEB */
-    .tabs-view {
+    /* #ifdef H5 */
+    .tabs_phone {
+        ::v-deep ::-webkit-scrollbar
+        {
+            width: 0rpx!important;
+            height: 0rpx!important;
+            background-color: #F5F5F5;
+        }
+    }
+    .tabs_pc {
         ::v-deep ::-webkit-scrollbar
         {
             width: 5rpx!important;
