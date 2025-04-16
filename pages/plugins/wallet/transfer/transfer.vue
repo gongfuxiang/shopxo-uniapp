@@ -24,7 +24,7 @@
                     <view v-if="is_error_msg" class="error-msg text-size-xs padding-vertical">{{ error_msg }}</view>
                     <view class="border-radius-main bg-white padding-main spacing-mb">
                         <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('transfer.transfer.2q274j')}}</view>
-                        <input name="money" type="number" class="text-size-xl tc cr-red" :placeholder="$t('transfer.transfer.g22y5v')" placeholder-class="cr-grey-c" />
+                        <input name="money" type="digit" class="text-size-xl tc cr-red" :placeholder="$t('transfer.transfer.g22y5v')" placeholder-class="cr-grey-c" />
                         <view class="tc spacing-mt-10 margin-bottom-xxxl padding-bottom-main">
                             <text class="cr-grey-9">{{$t('transfer.transfer.9xe2bl')}}</text>
                             <text class="fw-b">{{ data.normal_money }}</text>

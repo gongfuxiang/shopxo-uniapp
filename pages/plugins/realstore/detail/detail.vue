@@ -327,7 +327,7 @@
                 is_base_mode: 0,
                 is_base_mode_show_type: 0,
                 is_cart_nav: false,
-                params: null,
+                params: {},
                 is_first: 1,
                 scroll_top: 0,
                 scroll_top_old: 0,
@@ -570,12 +570,21 @@
                                 // #endif
 
                                 // 基础自定义分享
+                                // 指定商品
+                                var source_goods_id = this.params.source_goods_id || null;
+                                var source_goods = (source_goods_id == null) ? '' : '&source_goods_id='+source_goods_id;
+                                // 桌码
+                                var tablecode_id = this.params.tablecode_id || null;
+                                var tablecode = (tablecode_id == null) ? '' : '&tablecode_id='+tablecode_id;
+                                // 关键字
+                                var keywords_value = this.search_keywords_value || null;
+                                var keywords = (keywords_value == null) ? '' : '&keywords_value='+keywords_value;
                                 this.setData({
                                     share_info: {
                                         title: this.info.seo_title || this.info.name,
                                         desc: this.info.seo_desc || this.info.describe,
                                         path: '/pages/plugins/realstore/detail/detail',
-                                        query: 'id=' + this.info.id,
+                                        query: 'id=' + this.info.id+source_goods+tablecode+keywords,
                                         img: this.info.share_images || this.info.logo,
                                     },
                                 });
