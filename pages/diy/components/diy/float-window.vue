@@ -98,9 +98,10 @@
                         break;
                     // 快捷导航
                     case 'quick_nav' :
-                        if ((this.$refs.quick_nav || null) != null) {
-                            this.$refs.quick_nav.quick_open_event();
-                        }
+                        this.$emit('btn_event', 'quick_nav');
+                        break;
+                    case 'lang' :
+                        this.$emit('btn_event', 'lang');
                         break;
                 }
             },

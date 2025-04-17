@@ -80,7 +80,8 @@
         "verification_mobile_message": "Please enter the verification code or mobile number",
         "unique_message": "The unique identifier is empty",
         "not_supported_scan_tips": "H5 webpage does not support scanning codes",
-        "copy_link": "Copy link"
+        "copy_link": "Copy link",
+		"multilingual": "multilingual"
 	},
     "client": {
         "weixin": "WeChat",

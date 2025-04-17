@@ -250,6 +250,9 @@ button:before {
 .z-i-deep {
     z-index: 2 !important;
 }
+.z-i-deep-middle {
+    z-index: 100 !important;
+}
 .z-i-deep-must {
     z-index: 999 !important;
 }

@@ -80,7 +80,8 @@
         "verification_mobile_message": "请输入核销码或手机",
         "unique_message": "唯一标识为空",
         "not_supported_scan_tips": "H5网页不支持扫码",
-        "copy_link": "复制链接"
+        "copy_link": "复制链接",
+		"multilingual": "多语言"
 	},
     "client": {
         "weixin": "微信",

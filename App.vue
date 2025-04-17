@@ -239,6 +239,7 @@
                 // 其他数据
                 // 公共数是否已初始化成功
                 common_data_loading_status: 0,
+                common_data_init_config_back_list: [],
                 common_data_init_status: 0,
                 common_data_init_back_timer: null,
                 // 网络状态检查
@@ -1498,6 +1499,9 @@
              */
             init_config(num = 0, object, method, params) {
                 var self = this;
+                if (num == 0) {
+                    self.data.common_data_init_config_back_list.push({ object: object, method: method, params: params})
+                }
                 uni.getNetworkType({
                     success: function (res) {
                         if (res.networkType != 'none') {
@@ -1507,7 +1511,6 @@
                                 // 公共配置初始化返回处理
                                 self.init_config_result_handle(config, self);
                             }
-
                             // 读取远程配置
                             if(self.data.common_data_loading_status == 0) {
                                 // 赋值在加载状态
@@ -1529,10 +1532,14 @@
 
                                             // 公共配置初始化返回处理
                                             self.init_config_result_handle(data, self);
-
                                             // 回调
-                                            if (typeof object === 'object' && (method || null) != null) {
-                                                object[method](params);
+                                            if (self.data.common_data_init_config_back_list.length > 0) {
+                                                self.data.common_data_init_config_back_list.forEach(item => {
+                                                    if (typeof item.object === 'object' && (item.method || null) != null) {
+                                                        item.object[item.method](item.params);
+                                                    }
+                                                })
+                                                self.data.common_data_init_config_back_list = [];
                                             }
                                         } else {
                                             self.showToast(res.data.msg);
@@ -1540,7 +1547,6 @@
                                             if (res.data.code == -10000) {
                                                 self.data.common_data_init_status = 1;
                                             }
-                                
                                             // 首次则再次初始化配置、站点关闭状态则不处理
                                             if (parseInt(num || 0) <= 20 && self.data.common_data_init_status == 0) {
                                                 self.init_config(num+1, object, method, params);

@@ -89,24 +89,8 @@
                     <text>{{ $t('setup.setup.tghrf2') }}</text>
                 </view>
             </view>
-
             <!-- 打开语言选择弹层-->
-            <component-popup :propShow="popup_language_status" propPosition="bottom" :propIsRadius="false" @onclose="popup_language_close_event">
-                <view class="popup-language">
-                    <view class="flex-row align-c jc-sb padding-main">
-                        <view @tap="popup_language_close_event">
-                            <iconfont name="icon-close-o" size="28rpx"></iconfont>
-                        </view>
-                        <view class="text-size" @tap="popup_sub_language_event">{{ $t('common.confirm') }}</view>
-                    </view>
-                    <view class="br-t-f5 padding-main list">
-                        <view v-for="(value, key) in language_list" :key="key" class="spacing-mb flex-row jc-sb align-c" :class="language_key == key ? 'cr-main' : ''" :data-key="key" :data-value="value" @tap="checked_language_event">
-                            {{ value }}
-                            <iconfont v-if="language_key == key" name="icon-checked" size="32rpx"></iconfont>
-                        </view>
-                    </view>
-                </view>
-            </component-popup>
+            <component-lang-switch ref="lang_switch" @popup_sub_language_event="popup_sub_language_event"></component-lang-switch>
         </view>
 
         <!-- 公共 -->
@@ -117,6 +101,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
+    import componentLangSwitch from '@/components/lang-switch/lang-switch';
     export default {
         data() {
             return {
@@ -128,14 +113,7 @@
                 home_user_login_type: [],
                 common_user_is_mandatory_bind_mobile: 0,
 
-                // 多语言
-                system_locale: '',
-                application_locale: '',
                 home_use_multilingual_status: 0,
-                // 语言选择
-                popup_language_status: false,
-                language_list: '',
-                language_key: '',
                 // 实际提交的语言字段
                 language: '',
                 
@@ -146,24 +124,16 @@
 
         components: {
             componentCommon,
-            componentPopup
+            componentPopup,
+            componentLangSwitch
         },
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
-
             // 多语言
-            let system_info = uni.getSystemInfoSync();
-            this.system_locale = system_info.language;
-            this.application_locale = app.globalData.get_language_value();
-            uni.onLocaleChange((e) => {
-                this.application_locale = e.locale;
-            });
             var language_key = app.globalData.get_language_value();
             var language_list = this.$t('language');
             this.setData({
-                language_list: language_list,
-                language_key: language_key,
                 language: language_list[language_key],
             });
         },
@@ -174,7 +144,7 @@
 
             // 初始化配置
             app.globalData.init_config(0, this, 'init_config');
-
+            
             // 数据加载
             this.init();
 
@@ -286,47 +256,20 @@
             remove_user_cache_event(e) {
                 app.globalData.remove_user_cache_event(false);
             },
-
-            // 打开语言选择弹窗
-            open_language_event() {
-                this.setData({
-                    popup_language_status: !this.popup_language_status,
-                });
+            open_language_event () {
+                if ((this.$refs.lang_switch || null) != null) {
+                    this.$refs.lang_switch.lang_open_event();
+                }
             },
-
-            // 关闭语言弹窗
-            popup_language_close_event() {
-                this.setData({
-                    popup_language_status: false,
-                });
-            },
-
-            // 选择语言
-            checked_language_event(e) {
-                this.setData({
-                    language_key: e.currentTarget.dataset.key,
-                });
-            },
-
             // 提交语言选择
-            popup_sub_language_event() {
-                this.language_change(this.language_key);
-                var language_list = this.$t('language');
+            popup_sub_language_event(e) {
                 this.setData({
-                    language_list: language_list,
-                    language: language_list[this.language_key],
-                    popup_language_status: false,
+                    language: e,
                 });
                 // 重新设置当前页面导航标题
                 app.globalData.set_pages_navigation_bar_title();
                 // 重新读取数据配置
                 app.globalData.init_config();
-            },
-
-            // 多语言切换
-            language_change(key) {
-                uni.setLocale(key);
-                this.$i18n.locale = key;
             },
         },
     };

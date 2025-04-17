@@ -47,7 +47,7 @@
                                         <component-diy-activity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-activity>
                                         <component-diy-salerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-salerecords>
                                         <!-- 工具组件 -->
-                                        <component-diy-float-window v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data"></component-diy-float-window>
+                                        <component-diy-float-window v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data" @btn_event="btn_event"></component-diy-float-window>
                                         <component-diy-title v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></component-diy-title>
                                         <component-diy-auxiliary-line v-else-if="item.key == 'row-line'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-auxiliary-line>
                                         <component-diy-rich-text v-else-if="item.key == 'rich-text'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-rich-text>
@@ -77,7 +77,7 @@
                             <slot name="diy-bottom-common"></slot>
                         </template>
 
-                        <view class="z-i-deep">
+                        <view class="z-i-deep-middle">
                             <!-- 商品购买 -->
                             <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
                             <!-- 视频播放 -->
@@ -87,6 +87,10 @@
                                     <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#ccc" propContainerDisplay="flex" @tap="video_close"></iconfont>
                                 </view>
                             </uni-popup>
+                            <!-- 快捷导航 -->
+                            <component-quick-nav ref="quick_nav" :propIsBtn="false"></component-quick-nav>
+                            <!-- 语言选择 -->
+                            <component-lang-switch ref="lang_switch" @popup_sub_language_event="popup_sub_language_event"></component-lang-switch>
                         </view>
                     </view>
                 </view>
@@ -95,7 +99,6 @@
                     <component-diy-footer :propKey="footer_data.id" :propValue="footer_data.com_data" @onFooterHeight="footer_height_value_event"></component-diy-footer>
                     <view v-if="footer_height_value > 0" :style="'height:' + footer_height_value + 'rpx;'"></view>
                 </block>
-
                 <!-- 底部卡槽 -->
                 <slot name="bottom"></slot>
             </scroll-view>
@@ -146,7 +149,8 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentSearch from '@/components/search/search';
-    
+    import componentQuickNav from '@/components/quick-nav/quick-nav';
+    import componentLangSwitch from '@/components/lang-switch/lang-switch';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
 
@@ -212,6 +216,8 @@
             componentBottomLine,
             componentGoodsBuy,
             componentSearch,
+            componentLangSwitch,
+            componentQuickNav
         },
         data() {
             return {
@@ -801,6 +807,26 @@
                     this.tabs_click_event(this.tabs_id, this.is_tabs_type);
                 }
             },
+            btn_event(name) {
+                switch(name) {
+                    case 'quick_nav' :
+                        if ((this.$refs.quick_nav || null) != null) {
+                            this.$refs.quick_nav.quick_open_event();
+                        }
+                    break;
+                    case 'lang' :
+                        if ((this.$refs.lang_switch || null) != null) {
+                            this.$refs.lang_switch.lang_open_event();
+                        }
+                    break;
+                }
+            }, 
+            popup_sub_language_event(e) {
+                // 重新设置当前页面导航标题
+                app.globalData.set_pages_navigation_bar_title();
+                // 重新读取数据配置
+                app.globalData.init_config();
+            }
         },
     };
 </script>
