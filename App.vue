@@ -2865,7 +2865,16 @@
 
             // 获取当前语言
             get_language_value() {
-                return uni.getLocale() || this.data.default_language;
+                // 当前系统语言、默认中文
+                let value = uni.getLocale() || this.data.default_language;
+                // 语言标识转换和后端一致
+                let arr = {
+                    'zh-Hans': 'zh',
+                    'zh-Hant': 'cht',
+                    'es': 'spa',
+                    'fra': 'fr',
+                };
+                return ((arr[value] || null) == null) ? value : arr[value];
             },
 
             // 选择用户地理位置

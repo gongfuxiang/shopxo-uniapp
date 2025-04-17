@@ -2,20 +2,24 @@
     <view :class="theme_view">
         <!-- 弹窗 -->
         <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="lang_close_event">
-            <view class="nav-popup-container">
+            <view class="lang-popup-container">
                 <view class="close oh flex-row">
-                    <view class="fr" @tap.stop="lang_close_event">
+                    <view class="fr" @tap="lang_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <div class="nav-popup-title">{{ $t('common.multilingual') }}</div>
-                <view class="nav-popup-content">
+                <div class="lang-popup-title">{{ $t('common.multilingual') }}</div>
+                <view class="lang-popup-content">
                     <view v-if="!isEmpty(language_list)" class="nav-data-list">
-                        <view v-for="(value, key) in language_list" :key="key" class="nav-popup-list flex-row jc-sb align-c" :class="language_key == key ? 'cr-main' : ''" :data-key="key" :data-value="value" @tap.stop="checked_language_event">
+                        <view v-for="(value, key) in language_list" :key="key" class="lang-popup-list flex-row jc-sb align-c" :class="language_key == key ? 'cr-main' : ''" :data-key="key" :data-value="value" @tap.stop="checked_language_event">
                             {{ value }}
                             <iconfont v-if="language_key == key" name="icon-checked" size="32rpx"></iconfont>
                         </view>
-                        <view class="confirm-button flex-row align-c jc-c bg-main" @tap.stop="popup_sub_language_event">{{ $t('common.confirm') }}</view>
+                        <view class="margin-top-xxxl">
+                            <view class="bottom-line-exclude oh">
+                                <button type="default" class="bg-main br-main cr-white round text-size " @tap="popup_sub_language_event">{{ $t('common.confirm') }}</button>
+                            </view>
+                        </view>
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
@@ -49,6 +53,7 @@
             isEmpty,
             lang_open_event() {
                 var language_key = app.globalData.get_language_value();
+                console.log(language_key)
                 var language_list = this.$t('language');
                 this.setData({
                     language_list: language_list,
@@ -86,18 +91,18 @@
     /**
      * 弹窗
      */
-    .nav-popup-container {
+    .lang-popup-container {
         padding: 20rpx 10rpx 0 10rpx;
         background: #fff;
     }
 
-    .nav-popup-container .close {
+    .lang-popup-container .close {
         position: absolute;
         top: 24rpx;
         right: 20rpx;
         z-index: 2;
     }
-    .nav-popup-title {
+    .lang-popup-title {
         position: absolute;
         top: 20rpx;
         left: 50%;
@@ -106,21 +111,14 @@
         font-size: 32rpx;
     }
 
-    .nav-popup-content {
+    .lang-popup-content {
         max-height: 80vh;
         overflow-y: scroll;
         overflow-x: hidden;
-        padding: 50rpx 60rpx;
-        padding-bottom: 30rpx;
+        padding: 50rpx 20rpx;
+        padding-bottom: 40rpx;
     }
-    .confirm-button {
-        color: #fff;
-        height: 60rpx;
-        border-radius: 100rpx;
-        padding: 6rpx 22rpx;
-        margin-top: 40rpx;
-    }
-    .nav-popup-list {
+    .lang-popup-list {
         padding: 20rpx 0;
         border-bottom: 1px solid #f5f5f5;
         font-size: 32rpx;
