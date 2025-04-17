@@ -6,12 +6,12 @@
                     <view>
                         <!-- 多语言切换、绑定账户不展示语言切换 -->
                         <view v-if="home_use_multilingual_status == 1 && current_opt_form != 'bind_platform'" class="flex-row tr padding-top-sm padding-horizontal-lg padding-bottom-lg margin-bottom-xl">
-                            <view class="flex-1 cr-base text-size" @tap="open_language_event">
-                                <view class="pr top-sm margin-right-sm dis-inline-block">
+                            <view class="flex-1 cr-base" @tap="open_language_event">
+                                <view class="pr top-sm margin-right-sm dis-inline-block va-m">
                                     <iconfont name="icon-login-language" size="32rpx"></iconfont>
                                 </view>
-                                {{ language }}
-                                <view class="margin-left-sm dis-inline-block">
+                                <text class="va-m text-size-sm">{{ language }}</text>
+                                <view class="margin-left-sm dis-inline-block va-m">
                                     <iconfont name="icon-login-down-arrow" size="16rpx"></iconfont>
                                 </view>
                             </view>
