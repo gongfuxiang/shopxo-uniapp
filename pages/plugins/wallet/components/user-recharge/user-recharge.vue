@@ -112,7 +112,7 @@
                 default_payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
-                to_appoint_page: '/pages/plugins/wallet/user/user?type=1',
+                to_appoint_page: '/pages/plugins/wallet/user/user?type=wallet',
             };
         },
 

@@ -108,7 +108,7 @@
                 payment_id: 0,
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/wallet/user/user',
-                to_appoint_page: '/pages/plugins/wallet/user/user?type=3',
+                to_appoint_page: '/pages/plugins/wallet/user/user?type=recharge',
             };
         },
 

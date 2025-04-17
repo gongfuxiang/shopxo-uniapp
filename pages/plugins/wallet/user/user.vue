@@ -56,12 +56,12 @@
                                 <view class="padding-main padding-top-xxxl">
                                     <!-- 导航 -->
                                     <view v-if="nav_list.length > 0" class="nav oh margin-bottom-xl">
-                                        <view class="flex-row jc-sb align-c">
+                                        <view :class="'flex-row align-c '+(nav_list.length <= 3 ? 'gap-20' : 'jc-sb')">
                                             <block v-for="(item, index) in nav_list" :key="index">
-                                                <view class="text-size fw-b" :data-index="index" @tap="nav_change">
+                                                <view class="text-size fw-b" :data-value="item.control" @tap="nav_change">
                                                     <view class="pr dis-inline-block">
                                                         {{ item.title }}
-                                                        <view v-if="current === index" class="pa active" :style="'background: linear-gradient(90deg, ' + theme_color + ' 0%, rgba(255, 255, 255, 0.27) 100%)'"></view>
+                                                        <view v-if="current == item.control" class="pa active" :style="'background: linear-gradient(90deg, ' + theme_color + ' 0%, rgba(255, 255, 255, 0.27) 100%)'"></view>
                                                     </view>
                                                 </view>
                                             </block>
@@ -69,16 +69,16 @@
                                     </view>
                                     <!-- 明细 -->
                                     <view class="nav-detail margin-bottom-lg">
-                                        <view v-if="current === 0">
+                                        <view v-if="current == 'wallet'">
                                             <component-wallet-log :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-wallet-log>
                                         </view>
-                                        <view v-if="current === 1">
+                                        <view v-if="current == 'recharge'">
                                             <component-user-recharge :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
                                         </view>
-                                        <view v-if="current === 2">
+                                        <view v-if="current == 'cash'">
                                             <component-user-cash :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-user-cash>
                                         </view>
-                                        <view v-if="current === 3">
+                                        <view v-if="current == 'transfer'">
                                             <component-transfer :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-transfer>
                                         </view>
                                     </view>
@@ -142,7 +142,7 @@
                 is_price_show: false,
                 // 账户明细
                 params: null,
-                current: 0,
+                current: 'wallet',
                 propPullDownRefresh: false,
                 scroll_lower_bool: false,
                 payment_page_url: null,
@@ -168,7 +168,7 @@
             if ((params.type || null) != null) {
                 this.setData({
                     params: params,
-                    current: Number(params.type),
+                    current: params.type || 'wallet',
                 });
             }
 
@@ -177,7 +177,7 @@
             if (pay_data !== null) {
                 uni.removeStorageSync(ck);
                 this.setData({
-                    current: pay_data.type || 0,
+                    current: pay_data.type || 'wallet',
                 });
                 setTimeout(() => {
                     app.globalData.update_query_string_parameter([{ key: 'type', value: pay_data.type }]);
@@ -263,10 +263,11 @@
             },
             // 明细导航切换
             nav_change(e) {
+                var value = e.currentTarget.dataset.value || 'wallet';
                 this.setData({
-                    current: e.currentTarget.dataset.index || 0,
+                    current: value,
                 });
-                app.globalData.update_query_string_parameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
+                app.globalData.update_query_string_parameter([{ key: 'type', value: value }]);
             },
 
             // 滚动加载
