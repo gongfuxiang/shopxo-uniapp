@@ -30,6 +30,7 @@
                                         <component-data-tabs v-else-if="item.key == 'data-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance" @goods_buy_event="goods_buy_event"></component-data-tabs>
                                         <component-diy-goods-tabs v-else-if="item.key == 'goods-tabs'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance" @goods_buy_event="goods_buy_event"></component-diy-goods-tabs>
                                         <component-diy-goods-list v-else-if="item.key == 'goods-list'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-goods-list>
+                                        <component-diy-goods-magic v-else-if="item.key == 'goods-magic'" :ref="'diy_goods_buy' + index" :propIndex="get_prop_index(item)" :propDiyIndex="index" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-goods-magic>
                                         <component-diy-data-magic v-else-if="item.key == 'data-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-data-magic>
                                         <component-diy-custom v-else-if="item.key == 'custom'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-custom>
                                         <component-diy-img-magic v-else-if="item.key == 'img-magic'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-img-magic>
@@ -130,6 +131,7 @@
     import componentDiyAuxiliaryBlank from '@/pages/diy/components/diy/auxiliary-blank';
     import componentDiyNavGroup from '@/pages/diy/components/diy/nav-group';
     import componentDiyGoodsList from '@/pages/diy/components/diy/goods-list';
+    import componentDiyGoodsMagic from '@/pages/diy/components/diy/goods-magic';
     import componentDiyGoodsTabs from '@/pages/diy/components/diy/goods-tabs';
     import componentDiyDataMagic from '@/pages/diy/components/diy/data-magic';
     import componentDiyCustom from '@/pages/diy/components/diy/custom';
@@ -217,7 +219,8 @@
             componentGoodsBuy,
             componentSearch,
             componentLangSwitch,
-            componentQuickNav
+            componentQuickNav,
+            componentDiyGoodsMagic
         },
         data() {
             return {
