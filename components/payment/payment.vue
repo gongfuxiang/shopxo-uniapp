@@ -633,7 +633,9 @@
                             self.order_item_pay_success_handle(data, order_id);
                         },
                         fail: (res) => {
-                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                            let msg = res.memo || res.errMsg || self.$t('paytips.paytips.6y488i');
+                            let code = res.resultCode || res.errCode || res.errNo || null;
+                            self.order_item_pay_fail_handle(data, order_id, msg+(code == null ? '' : '('+code+')'));
                         },
                     });
                 }

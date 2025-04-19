@@ -168,25 +168,37 @@
             },
 
             // 头像事件
-            choose_avatar_event(e) {
-                var self = this;
-                if (this.application_client_type == 'weixin') {
-                    self.upload_handle(e.detail.avatarUrl);
+            choose_avatar_event(e = null) {
+                let self = this;
+                let arr = ['weixin', 'alipay'];
+                if (arr.indexOf(this.application_client_type) != -1) {
+                    if(e !== null) {
+                        let temp_url = e.detail.avatarUrl;
+                        if(this.application_client_type == 'alipay') {
+                            // 支付宝如果是临时文件走文件上传，普通图片地址走表单
+                            if(temp_url.substr(-6) == '.image') {
+                                self.upload_handle(temp_url, self);
+                            } else {
+                                self.upload_url_handle(temp_url, self);
+                            }
+                        } else {
+                            self.upload_handle(temp_url, self);
+                        }
+                    }
                 } else {
                     uni.chooseImage({
                         count: 1,
                         success(res) {
                             if (res.tempFilePaths.length > 0) {
-                                self.upload_handle(res.tempFilePaths[0]);
+                                self.upload_handle(res.tempFilePaths[0], self);
                             }
                         },
                     });
                 }
             },
-
+            
             // 上传处理
-            upload_handle(image) {
-                var self = this;
+            upload_handle(image, self) {
                 uni.uploadFile({
                     url: app.globalData.get_request_url('useravatarupload', 'personal'),
                     filePath: image,
@@ -203,6 +215,33 @@
                                 app.globalData.showToast(data.msg);
                             }
                         }
+                    },
+                });
+            },
+            
+            // form上传url
+            upload_url_handle(image, self) {
+                uni.showLoading({
+                    title: this.$t('common.upload_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('useravatarupload', 'personal'),
+                    method: 'POST',
+                    data: {file: image},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var temp = self.user_data;
+                            temp['avatar'] = res.data.data;
+                            self.setData({ user_data: temp });
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

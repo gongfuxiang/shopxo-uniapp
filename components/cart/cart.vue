@@ -1563,7 +1563,7 @@
         margin-left: 18rpx;
     }
     .cart-nav-remove-submit {
-        padding: 0rpx 18rpx;
+        padding: 0rpx 12rpx;
     }
 
     /*

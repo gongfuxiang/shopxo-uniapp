@@ -356,27 +356,44 @@
              * url     url地址
              */
             request_params_handle(url) {
+                // 拼接字符
+                let query_str = '';
                 // 用户信息
-                var user = this.get_user_cache_info();
-                var token = user == null ? '' : user.token || '';
-                var uuid = this.request_uuid();
-                var client_value = this.application_client_type();
-                var client_brand = this.application_client_brand();
+                let user = this.get_user_cache_info();
+                let token = user == null ? '' : user.token || '';
+                let uuid = this.request_uuid();
+                let client_value = this.application_client_type();
+                let client_brand = this.application_client_brand();
+                    query_str += '&application_client_type=' + client_value + '&application_client_brand=' + client_brand+'&token=' + token+'&uuid=' + uuid;
+
                 // 启动参数
-                var params = this.get_launch_cache_info();
-                var referrer = params == null ? null : params.referrer || null;
-                var referrer_params = referrer == null ? '' : '&referrer=' + referrer;
+                let params = this.get_launch_cache_info() || null;
+                // 邀请信息
+                if(params != null && ( params.referrer || null) != null) {
+                    query_str += '&referrer=' +  params.referrer;
+                }
+
                 // 用户位置
-                var user_location = this.choice_user_location_init();
-                var user_location_params = (user_location || null) != null && (user_location.status || 0) == 1 ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
+                let user_location = this.choice_user_location_init() || null;
+                if(user_location != null && (user_location.status || 0) == 1) {
+                    query_str += '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat;
+                }
+
                 // 当前语言
-                var lang = this.get_language_value();
+                let lang = this.get_language_value();
+                    query_str += '&lang=' + lang;
                 // 当前主题
-                var theme = this.get_theme_value();
+                let theme = this.get_theme_value();
+                    query_str += '&theme='+theme;
+
+                // 第三方登录插件 3dsky平台跳转过来 登录token
+                if(params != null && (params['mztToken'] || null) != null) {
+                    query_str += '&mzt_token='+params['mztToken'];
+                }
 
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&application_client_brand=' + client_brand + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app'+ query_str;
             },
 
             /**

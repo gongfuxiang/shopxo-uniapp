@@ -53,7 +53,7 @@
                                     <!-- #endif -->
                                     <!-- #ifdef MP-ALIPAY -->
                                     <button class="chat-btn" open-type="contact" :class="'alipay-contact '+common_ent">
-                                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="40rpx*40rpx" />
+                                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="50px*50px" />
                                     </button>
                                     <!-- #endif -->
                                     <!-- #ifdef H5 || APP -->
@@ -85,7 +85,7 @@
                                     <!-- #endif -->
                                     <!-- #ifdef MP-ALIPAY -->
                                     <button class="chat-btn alipay-contact" :class="common_ent" open-type="contact">
-                                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="40rpx*40rpx" />
+                                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_image" size="50px*50px" />
                                     </button>
                                     <!-- #endif -->
                                     <!-- #ifdef H5 || APP -->
@@ -423,6 +423,7 @@
     .spread .ring {
         /* 速度为1.5 * 层数 = 实际运行速度，速度修改则 animation-delay 属性也修改相同速度 */
         animation: pulsing 1.5s ease-out infinite;
+        z-index: -1;
     }
     /* 速度为1*层数 */
     .spread .ring:nth-of-type(1) {
