@@ -209,6 +209,9 @@
             picker_time_change_event(e) {
                 var sign = e.currentTarget.dataset.sign;
                 var temp_data = this.data;
+                if((temp_data[sign] || null) == null) {
+                    temp_data[sign] = {};
+                }
                 temp_data[sign]['licence_expire_time'] = e.detail.value || '';
                 this.setData({
                     data: temp_data
