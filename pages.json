@@ -250,7 +250,13 @@
                     "path": "user-address-save",
                     "style": {
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-region-picker": "/pages/common/components/region-picker/region-picker"
+                        },
+                        "componentPlaceholder": {
+                            "component-region-picker": "view"
+                        }
                     }
                 }
             ]

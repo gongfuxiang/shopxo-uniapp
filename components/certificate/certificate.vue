@@ -72,9 +72,12 @@
                     var current_page = app.globalData.current_page();
                     // 业务数据
                     if(user != null && current_page.indexOf('pages/plugins/certificate/') == -1 && current_page.indexOf('pages/web-view/web-view') == -1 && (this.config || null) != null && (this.config.user_auth_business_data || null) != null && (this.config.business_type_data || null) != null) {
-                        this.setData({
-                            popup_status: true,
-                        });
+                        // 必须还没认证，可以选择业务
+                        if(!this.config.user_auth_business_data.auth_status && this.config.user_auth_business_data.is_select) {
+                            this.setData({
+                                popup_status: true,
+                            });
+                        }
                     }
                 }
                 return this.popup_status;

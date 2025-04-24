@@ -167,7 +167,7 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentRegionPicker from '@/components/region-picker/region-picker';
+    import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
     var common_static_url = app.globalData.get_static_url('common');
     const theme_color = app.globalData.get_theme_color();
@@ -737,22 +737,23 @@
                 });
             },
             region_event(address1, address2, address3) {
-                if((address1 || null) == null) {
-                    address1 = {};
+                let data = uni.getStorageSync(app.globalData.data.cache_region_picker_choice_key) || {};
+                if((data.province || null) == null) {
+                    data.province = {};
                 }
-                if((address2 || null) == null) {
-                    address2 = {};
+                if((data.city || null) == null) {
+                    data.city = {};
                 }
-                if((address3 || null) == null) {
-                    address3 = {};
+                if((data.areal || null) == null) {
+                    data.areal = {};
                 }
                 this.setData({
-                    province_id: address1.id || null,
-                    city_id: address2.id || null,
-                    county_id: address3.id || null,
-                    province_name: address1.name || '',
-                    city_name: address2.name || '',
-                    county_name: address3.name || '',
+                    province_id: data.province.id || null,
+                    city_id: data.city.id || null,
+                    county_id: data.areal.id || null,
+                    province_name: data.province.name || '',
+                    city_name: data.city.name || '',
+                    county_name: data.areal.name || '',
                 });
             },
             // 地址粘贴板

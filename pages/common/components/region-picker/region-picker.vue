@@ -39,6 +39,8 @@ export default {
             // 下标
             columns_index: [[0], [0], [0]],
             indicatorStyle: `height: ${uni.upx2px(88)}px;`,
+            // 缓存key
+            cache_key: app.globalData.data.cache_region_picker_choice_key,
         };
     },
     components: {
@@ -201,8 +203,13 @@ export default {
             let province = this.columns[0][this.columns_index[0]];
             let city = this.columns[1][this.columns_index[1]];
             let areal = this.columns[2][this.columns_index[2]];
+            uni.setStorageSync(this.cache_key, {
+                province: province,
+                city: city,
+                areal: areal
+            });
             this.popup_close_event();
-            this.$emit("call-back", province, city, areal);
+            this.$emit("call-back");
         },
     },
 };
