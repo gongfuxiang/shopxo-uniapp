@@ -77,7 +77,8 @@ export default {
         get_region_value(index, id) {
             var data = this.columns[index];
             var data_id = id;
-            var list_index = [];
+            // 添加初始值为0,避免没有对比上为空的情况
+            var list_index = [0];
             data.forEach((d, i) => {
                 if (d.id == data_id) {
                     list_index = [i];
@@ -201,10 +202,9 @@ export default {
         },
         //提交按钮
         sub_ragion_event(e) {
-            // 修改如果为空的情况下就取第0条数据
-            let province = this.columns[0][isEmpty(this.columns_index[0]) ? 0 : this.columns_index[0]];
-            let city = this.columns[1][isEmpty(this.columns_index[1]) ? 0 : this.columns_index[1]];
-            let areal = this.columns[2][isEmpty(this.columns_index[2]) ? 0 : this.columns_index[2]];
+            let province = this.columns[0][this.columns_index[0]];
+            let city = this.columns[1][this.columns_index[1]];
+            let areal = this.columns[2][this.columns_index[2]];
             uni.setStorageSync(this.cache_key, {
                 province: province,
                 city: city,
