@@ -269,9 +269,9 @@
         "plugins-hospital-patient": "Add/Edit Patient",
         "plugins-hospital-patient-list": "Patient List",
         "plugins-hospital-prescription": "Consultation and prescription",
-        "plugins-certificate-userauth": "User auth",
-        "plugins-certificate-userauth-saveinfo": "User auth editor",
-        "plugins-certificate-userauth-detail": "User auth detail"
+        "plugins-certificate-userauth": "Certificate",
+        "plugins-certificate-userauth-saveinfo": "Certificate editor",
+        "plugins-certificate-userauth-detail": "Certificate detail"
 	},
 	"login": {
 		"login": {

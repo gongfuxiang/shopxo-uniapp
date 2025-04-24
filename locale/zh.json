@@ -267,9 +267,9 @@
         "plugins-hospital-patient": "就诊人添加/编辑",
         "plugins-hospital-patient-list": "就诊人列表",
         "plugins-hospital-prescription": "问诊开方",
-        "plugins-certificate-userauth": "用户认证",
-        "plugins-certificate-userauth-saveinfo": "用户认证编辑",
-        "plugins-certificate-userauth-detail": "用户认证详情"
+        "plugins-certificate-userauth": "资质认证",
+        "plugins-certificate-userauth-saveinfo": "资质认证编辑",
+        "plugins-certificate-userauth-detail": "资质认证详情"
 	},
 	"login": {
 		"login": {
