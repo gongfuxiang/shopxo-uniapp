@@ -736,7 +736,7 @@
                     region_picker_show: false,
                 });
             },
-            region_event(address1, address2, address3) {
+            region_event() {
                 let data = uni.getStorageSync(app.globalData.data.cache_region_picker_choice_key) || {};
                 if((data.province || null) == null) {
                     data.province = {};

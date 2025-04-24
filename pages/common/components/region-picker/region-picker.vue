@@ -29,6 +29,7 @@
 </template>
 <script>
 const app = getApp();
+import { isEmpty } from '@/common/js/common/common.js';
 import componentPopup from "@/components/popup/popup";
 export default {
     data() {
@@ -200,9 +201,10 @@ export default {
         },
         //提交按钮
         sub_ragion_event(e) {
-            let province = this.columns[0][this.columns_index[0]];
-            let city = this.columns[1][this.columns_index[1]];
-            let areal = this.columns[2][this.columns_index[2]];
+            // 修改如果为空的情况下就取第0条数据
+            let province = this.columns[0][isEmpty(this.columns_index[0]) ? 0 : this.columns_index[0]];
+            let city = this.columns[1][isEmpty(this.columns_index[1]) ? 0 : this.columns_index[1]];
+            let areal = this.columns[2][isEmpty(this.columns_index[2]) ? 0 : this.columns_index[2]];
             uni.setStorageSync(this.cache_key, {
                 province: province,
                 city: city,
