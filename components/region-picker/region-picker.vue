@@ -33,6 +33,7 @@ import componentPopup from "@/components/popup/popup";
 export default {
     data() {
         return {
+            show: false,
             theme_view: app.globalData.get_theme_value_view(),
             columns: [[0], [0], [0]],
             // 下标
@@ -80,7 +81,9 @@ export default {
                     return false;
                 }
             });
-            this.$set(this.columns_index, index, list_index);
+            this.$nextTick(() => {
+                this.$set(this.columns_index, index, list_index);
+            });
         },
         // picker 滚动change事件
         changeHandler(e) {
