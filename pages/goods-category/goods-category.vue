@@ -398,6 +398,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
+                load_status: 0,
                 user: null,
                 params: null,
                 tabbar_params: null,
@@ -497,7 +498,11 @@
             this.init();
 
             // 初始化配置
-            this.init_config();
+            if(app.globalData.get_config('status') == 1) {
+                app.globalData.init_config(0, this, 'init_config', true);
+            } else {
+                app.globalData.is_config(this, 'init_config');
+            }
 
             // 清除tab参数
             app.globalData.remove_page_tabbar_switch_params();
@@ -555,8 +560,6 @@
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         category_show_level: app.globalData.get_config('config.category_show_level'),
                     });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
                 }
             },
 
@@ -602,6 +605,7 @@
                             }
                             // 设置分类及右侧数据和及基础数据
                             var upd_data = {
+                                load_status: 1,
                                 category_list: temp_category,
                                 data_content: temp_category[active_index] || null,
                                 nav_active_index: active_index,

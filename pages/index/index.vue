@@ -436,7 +436,11 @@
             this.init();
 
             // 初始化配置
-            this.init_config();
+            if(app.globalData.get_config('status') == 1) {
+                app.globalData.init_config(0, this, 'init_config', true);
+            } else {
+                app.globalData.is_config(this, 'init_config');
+            }
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
@@ -469,8 +473,6 @@
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
                     });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
                 }
             },
 

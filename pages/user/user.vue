@@ -180,6 +180,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
+                load_status: 0,
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
                 user: null,
@@ -227,7 +228,11 @@
             this.set_resources_data();
 
             // 初始化配置
-            this.init_config();
+            if(app.globalData.get_config('status') == 1) {
+                app.globalData.init_config(0, this, 'init_config', true);
+            } else {
+                app.globalData.is_config(this, 'init_config');
+            }
 
             // 数据加载
             this.init();
@@ -305,8 +310,6 @@
                         membership_page_url: membership_page_url,
                         payment_page_url: payment_page_url,
                     });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
                 }
             },
 
@@ -440,6 +443,7 @@
 
                             // 数据设置
                             var upd_data = {
+                                load_status: 1,
                                 message_total: parseInt(data.message_total || 0),
                                 head_nav_list: temp_head_nav_list,
                                 navigation: temp_navigation,

@@ -15,6 +15,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                load_status: 0,
                 footer_height_value: 0
             };
         },
@@ -39,14 +40,29 @@
         methods: {
             // 初始化
             init() {
-                // 数据加载
-                if ((this.$refs.cart || null) != null) {
-                    this.$refs.cart.init();
+                // 调用购物车
+                if(app.globalData.get_config('status') == 1) {
+                    app.globalData.init_config(0, this, 'init_config', true);
+                } else {
+                    app.globalData.is_config(this, 'init_config');
                 }
 
                 // 公共onshow事件
                 if ((this.$refs.common || null) != null) {
                     this.$refs.common.on_show();
+                }
+            },
+
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        load_status: 1
+                    });
+                    // 数据加载
+                    if ((this.$refs.cart || null) != null) {
+                        this.$refs.cart.init();
+                    }
                 }
             },
 

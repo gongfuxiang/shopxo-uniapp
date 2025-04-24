@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <block v-if="is_first == 0">
+        <block v-if="load_status == 1">
             <block v-if="(plugins_realstore_info || null) != null">
                 <!-- 顶部导航 -->
                 <component-nav-back propClass="bg-white" propColor="#333" :propFixed="false" :propIsShowBack="propSourceType == 'page'">
@@ -363,7 +363,7 @@
                 common_static_url: common_static_url,
                 user: null,
                 no_cart_data_btn_text: this.$t('login.login.6yfr9g'),
-                is_first: 1,
+                load_status: 0,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
@@ -476,26 +476,19 @@
         created: function () {
             // 数据加载
             this.init();
-
-            // 初始化配置
-            this.init_config();
         },
 
         methods: {
             // 初始化配置
-            init_config(status) {
-                if ((status || false) == true) {
-                    this.setData({
-                        currency_symbol: app.globalData.get_config('currency_symbol'),
-                        common_site_type: app.globalData.get_config('config.common_site_type'),
-                        common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text') || this.$t('cart.cart.31h34v'),
-                        common_is_cart_show_guess_you_like: parseInt(app.globalData.get_config('config.common_is_cart_show_guess_you_like', 0)),
-                        common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
-                        is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
-                    });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
-                }
+            init_config() {
+                this.setData({
+                    currency_symbol: app.globalData.get_config('currency_symbol'),
+                    common_site_type: app.globalData.get_config('config.common_site_type'),
+                    common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text') || this.$t('cart.cart.31h34v'),
+                    common_is_cart_show_guess_you_like: parseInt(app.globalData.get_config('config.common_is_cart_show_guess_you_like', 0)),
+                    common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                    is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
+                });
             },
 
             // 获取数据
@@ -505,6 +498,11 @@
                     app.globalData.network_type_handle(this, 'init');
                     return false;
                 }
+
+                // 初始化配置
+                this.init_config();
+
+                // 用户信息
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
                     this.setData({
@@ -516,12 +514,12 @@
                     this.get_data();
 
                     // 猜你喜欢、仅首次读取、还未加载过
-                    if (this.is_first == 1 && this.goods_is_loading == 0) {
+                    if (this.load_status == 0 && this.goods_is_loading == 0) {
                         this.get_data_list(1);
                     }
                 } else {
                     this.setData({
-                        is_first: 0,
+                        load_status: 1,
                         user: null,
                         data_list: [],
                         plugins_realstore_info: null,
@@ -603,7 +601,7 @@
 
                             // 设置数据
                             this.setData({
-                                is_first: 0,
+                                load_status: 1,
                                 data_is_loading: 0,
                                 data_list: data_list,
                                 data_list_loding_status: data_list.length == 0 ? 0 : 3,
@@ -641,7 +639,7 @@
                             app.globalData.set_tab_bar_badge('cart', data.buy_number);
                         } else {
                             this.setData({
-                                is_first: 0,
+                                load_status: 1,
                                 data_is_loading: 0,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
@@ -661,7 +659,7 @@
                     },
                     fail: () => {
                         this.setData({
-                            is_first: 0,
+                            load_status: 1,
                             data_is_loading: 0,
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
@@ -1439,7 +1437,7 @@
                 }
                 this.setData({
                     bottom_fixed_style: 'bottom:'+value+value_unit,
-                    scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 200 : 70)-(this.is_first == 1 ? 100 : 0))+'rpx)',
+                    scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 200 : 70)-(this.load_status == 0 ? 100 : 0))+'rpx)',
                 });
             }
         }
