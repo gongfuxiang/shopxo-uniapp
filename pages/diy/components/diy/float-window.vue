@@ -119,9 +119,10 @@
     .float-window-movable-container {
         position: fixed;
         width: 100%;
+        max-width: 1600rpx;
         height: 100%;
         top: 0;
-        left: 0;
+        // left: 0;
         background: transparent;
         pointer-events: none;
         z-index: 103;
@@ -135,6 +136,7 @@
         z-index: 1;
         width: 100rpx;
         height: 100rpx;
+        padding: 10rpx;
         border-radius: 50%;
     }
     .float-window-spread .ring {
