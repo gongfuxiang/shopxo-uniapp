@@ -1,21 +1,23 @@
 <template>
     <view :class="'wh-auto pr allSignList-' + propIndex + propKey" :style="'height:' + propDataHeight * propScale + 'px;'">
-       <view v-for="(item, index) in new_list" :key="index" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :class="'sign-' + propIndex + propKey + ' main-content ' + get_animation_class(item.com_data)" :style="'left:' + get_percentage_count(item.location.x, item.com_data.data_follow, 'left') + ';top:' + get_percentage_count(item.location.y, item.com_data.data_follow, 'top') + ';width:' + get_percentage_count(item.com_data.com_width, item.com_data.data_follow, 'width', item.com_data.is_width_auto, item.com_data.max_width, item.key) + ';height:' + get_percentage_count(item.com_data.com_height, item.com_data.data_follow, 'height', item.com_data.is_height_auto, item.com_data.max_height, item.key) + ';z-index:' + (new_list.length - 1 > 0 ? (new_list.length - 1) - index : 0)">
-            <template v-if="item.key == 'text'">
-                <model-text :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" :propTitleParams="propShowData.data_name" @url_event="url_event"></model-text>
-            </template>
-            <template v-else-if="item.key == 'img'">
-                <model-image :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" :propImgParams="propShowData.data_logo" @url_event="url_event"></model-image>
-            </template>
-            <template v-else-if="item.key == 'auxiliary-line'">
-                <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId"></model-lines>
-            </template>
-            <template v-else-if="item.key == 'icon'">
-                <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-icon>
-            </template>
-            <template v-else-if="item.key == 'panel'">
-                <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-panel>
-            </template>
+       <view v-for="(item, index) in new_list" :key="index" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :class="'sign-' + propIndex + propKey + ' main-content ' + get_animation_class(item.com_data)" :style="'left:' + get_percentage_count(item.location.x, item.com_data.data_follow, 'left') + ';top:' + get_percentage_count(item.location.y, item.com_data.data_follow, 'top') + ';width:' + get_percentage_count(item.com_data.com_width, item.com_data.data_follow, 'width', item.com_data.is_width_auto, item.com_data.max_width, item.key, item.is_enable) + ';height:' + get_percentage_count(item.com_data.com_height, item.com_data.data_follow, 'height', item.com_data.is_height_auto, item.com_data.max_height, item.key, item.is_enable) + ';z-index:' + (item.is_enable == '1' ? (new_list.length - 1 > 0 ? (new_list.length - 1) - index : 0) : -999)">
+            <view v-if="item.is_enable == '1'" :class="'wh-auto ht-auto ' + get_animation_class(item.com_data)">
+                <template v-if="item.key == 'text'">
+                    <model-text :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" :propTitleParams="propShowData.data_name" @url_event="url_event"></model-text>
+                </template>
+                <template v-else-if="item.key == 'img'">
+                    <model-image :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" :propImgParams="propShowData.data_logo" @url_event="url_event"></model-image>
+                </template>
+                <template v-else-if="item.key == 'auxiliary-line'">
+                    <model-lines :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId"></model-lines>
+                </template>
+                <template v-else-if="item.key == 'icon'">
+                    <model-icon :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-icon>
+                </template>
+                <template v-else-if="item.key == 'panel'">
+                    <model-panel :propKey="propKey" :propValue="item.com_data" :propScale="propScale" :propFieldList="propFieldList" :propSourceList="propSourceList" :propConfigLoop="propConfigLoop" :propIsCustom="propIsCustom" :propIsCustomGroup="propIsCustomGroup" :propCustomGroupFieldId="propCustomGroupFieldId" @url_event="url_event"></model-panel>
+                </template>
+            </view>    
         </view>
     </view>
 </template>
@@ -120,7 +122,7 @@ export default {
     },
     computed: {
         get_percentage_count() {
-            return (num, data_follow, type, is_auto = '0', max_size = 0, key = '') => {
+            return (num, data_follow, type, is_auto = '0', max_size = 0, key = '', is_enable = '0') => {
                 // 检查类型是否为'left'或'top'，如果是，则根据跟随数据计算样式
                 if (['left', 'top'].includes(type)) {
                     const { id = '', type: follow_type = 'left' } = data_follow || { id: '', type: 'left' };
@@ -145,14 +147,20 @@ export default {
                             }
                         }
                     } else {
-                        // 微信小程序图片等比缩放对小数点后的内容支持的不是特别的好，需要取向上取整数
-                        if (key == 'img' && ['width', 'height'].includes(type)) {
-                            // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
-                            return `${ Math.round(num * this.propScale) }px`;
+                        // 如果隐藏了，返回宽高为空的值
+                        if (is_enable == '1') {
+                            // 微信小程序图片等比缩放对小数点后的内容支持的不是特别的好，需要取向上取整数
+                            if (key == 'img' && ['width', 'height'].includes(type)) {
+                                // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
+                                return `${ Math.round(num * this.propScale) }px`;
+                            } else {
+                                // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
+                                return `${num * this.propScale}px`;
+                            }
                         } else {
-                            // 如果is_auto未设置或条件不满足，则根据比例缩放num并返回
-                            return `${num * this.propScale}px`;
+                            return `0px`;
                         }
+                        
                     }
                 }
             };

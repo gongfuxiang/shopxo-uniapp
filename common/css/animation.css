@@ -1,7 +1,47 @@
+/* // 放大缩小 */
+.scale-up-center {
+	-webkit-animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
 
-/*
-* 垂直放大
-*/
+.scale-up-center-infinite {
+	-webkit-animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite both;
+	        animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite both;
+}
+
+@keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.5);
+              transform: scale(0.5);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+/* // 中心缩小 */
+.scale-out-center {
+	-webkit-animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+	        animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+.scale-out-center-infinite {
+	-webkit-animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) infinite both;
+	        animation: scale-out-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) infinite both;
+}
+
+@keyframes scale-out-center {
+    0% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      opacity: 1;
+    }
+}
+/* // 垂直放大 */
 .scale-up-ver-bottom {
 	-webkit-animation: scale-up-ver-bottom 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-ver-bottom 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
@@ -37,9 +77,7 @@
                 transform: rotate(0);
     }
 }
-/*
-* 交替垂直放大
-*/
+/* // 交替垂直放大 */
 .scale-up-ver-bottom-alternate {
     -webkit-animation: scale-up-ver-bottom-alternate 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) alternate both;
 	        animation: scale-up-ver-bottom-alternate 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) alternate both;
@@ -62,9 +100,7 @@
                 transform-origin: 0% 100%;
     }
 }
-/*
-* 中间区域放大
-*/
+// 中间区域放大
 .scale-up-ver-center {
 	-webkit-animation: scale-up-ver-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-ver-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
@@ -85,10 +121,8 @@
     }
 }
 
-/*
-* 淡出
-.
-*/fade-out-fwd {
+/* // 淡出 */
+.fade-out-fwd {
 	-webkit-animation: fade-out-fwd 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: fade-out-fwd 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
@@ -108,9 +142,7 @@
       opacity: 0;
     }
 }
-/*
-* 淡入
-*/
+/* // 淡入 */
 .fade-in-bck {
 	-webkit-animation: fade-in-bck 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: fade-in-bck 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
@@ -119,9 +151,7 @@
 	-webkit-animation: fade-in-bck 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite both;
 	        animation: fade-in-bck 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite both;
 }
-/*
-* 淡入淡出
-*/
+/* // 淡入淡出 */
 .fade-in-bck-alternate {
     -webkit-animation: fade-in-bck 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) alternate both;
 	        animation: fade-in-bck 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) alternate both;
@@ -142,9 +172,7 @@
       opacity: 1;
     }
 }
-/*
-* 文字铺开
-*/
+/* //文字铺开 */
 .tracking-in-expand {
 	-webkit-animation: tracking-in-expand 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
 	        animation: tracking-in-expand 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
@@ -168,9 +196,7 @@
     }
 }
 
-/*
-* 心跳
-*/
+/* // 心跳 */
 .heartbeat {
 	-webkit-animation: heartbeat 1s ease-in-out both;
 	        animation: heartbeat 1s ease-in-out both;
@@ -216,9 +242,7 @@
     }
 }
 
-/*
-* 脉动
-*/
+/* // 脉动 */
 .pulsate-bck {
 	-webkit-animation: pulsate-bck 1s ease-in-out both;
 	        animation: pulsate-bck 1s ease-in-out both;
@@ -244,9 +268,7 @@
     }
 }
 
-/*
-* 向上弹跳
-*/
+/* // 向上弹跳 */
 .bounce-top {
 	-webkit-animation: bounce-top 1.5s both;
 	        animation: bounce-top 1.5s both;
@@ -283,9 +305,7 @@
     }
 }
 
-/*
-* 向下弹跳
-*/
+/* // 向下弹跳 */
 .bounce-bottom {
 	-webkit-animation: bounce-bottom 1.5s both;
 	        animation: bounce-bottom 1.5s both;
@@ -322,9 +342,7 @@
     }
 }
 
-/*
-* 向左弹跳
-*/
+/* // 向左弹跳 */
 .bounce-left {
 	-webkit-animation: bounce-left 1.5s both;
 	        animation: bounce-left 1.5s both;
@@ -360,9 +378,7 @@
                 animation-timing-function: ease-in;
     }
 }
-/*
-* 向右弹跳
-*/
+/* // 向右弹跳 */
 .bounce-right {
 	-webkit-animation: bounce-right 1.5s both;
 	        animation: bounce-right 1.5s both;
@@ -398,9 +414,7 @@
                 animation-timing-function: ease-in;
     }
 }
-/*
-* 左侧弹跳
-*/
+/* // 左侧弹跳 */
 .bounce-in-left {
 	-webkit-animation: bounce-in-left 2s both;
 	        animation: bounce-in-left 2s both;
@@ -463,9 +477,7 @@
     }
 }
 
-/*
-* 翻转
-*/
+/* // 翻转 */
 .flip-in-diag-2-tl {
 	-webkit-animation: flip-in-diag-2-tl 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: flip-in-diag-2-tl 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -488,9 +500,7 @@
     }
 }
 
-/*
-* 从左滑动
-*/
+/* // 从左滑动 */
 .slide-in-left {
 	-webkit-animation: slide-in-left 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-left 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -514,9 +524,7 @@
     }
 }
 
-/*
-* 在fwd中心滑动
-*/
+/* // 在fwd中心滑动 */
 .slide-in-fwd-center {
 	-webkit-animation: slide-in-fwd-center 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-fwd-center 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -539,9 +547,7 @@
       opacity: 1;
     }
   }
-/*
-* 左前轮旋转
-*/
+/* // 左前轮旋转 */
 .swirl-in-left-fwd {
 	-webkit-animation: swirl-in-left-fwd 2s ease-out both;
 	        animation: swirl-in-left-fwd 2s ease-out both;
@@ -566,9 +572,7 @@
       opacity: 1;
     }
 }
-/*
-* 摇动
-*/
+/* // 摇动 */
 .shake-bottom {
 	-webkit-animation: shake-bottom 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 	        animation: shake-bottom 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
@@ -605,9 +609,7 @@
                 transform-origin: 50%;
     }
   }
-/*
-* 震动
-*/
+/* // 震动 */
 .vibrate {
 	-webkit-animation: vibrate 0.3s linear both;
 	        animation: vibrate 0.3s linear both;
@@ -643,9 +645,7 @@
               transform: translate(0);
     }
 }
-/*
-* 模糊显示
-*/
+/* // 模糊显示 */
 .text-focus-in {
 	-webkit-animation: text-focus-in 2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 	        animation: text-focus-in 2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
@@ -668,9 +668,7 @@
     }
 }
   
-/*
-* 果冻
-*/
+/* // 果冻 */
 .jello-horizontal {
 	-webkit-animation: jello-horizontal 0.9s both;
 	        animation: jello-horizontal 0.9s both;
