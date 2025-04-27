@@ -3,7 +3,12 @@
     <view :style="style_container">
         <view :style="style_img_container">
             <view class="video pr" :style="style">
+                <!-- #ifndef APP -->
                 <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" style="object-fit: cover"></video>
+                <!-- #endif-->
+                <!-- #ifdef APP -->
+                <video-player ref="domVideoPlayer" :poster="video_img" :src="video" objectFit="cover" controls />
+                <!-- #endif-->
             </view>
         </view>
     </view>
@@ -11,7 +16,11 @@
 
 <script>
     import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
+    import VideoPlayer from '@/pages/diy/components/diy/modules/video-player/video-player.vue';
     export default {
+        components: {
+            VideoPlayer,
+        },
         props: {
             propValue: {
                 type: Object,
