@@ -189,7 +189,6 @@
                     swiper_bg_style: this.get_swiper_bg_style(new_form, 0),
                     swiper_bg_img_style: this.get_swiper_bg_img_style(new_form, 0),
                 });
-                console.log(this.video_img_style);
                 
                 // 风格二显示逻辑
                 if (new_form.carousel_type == 'card') {
