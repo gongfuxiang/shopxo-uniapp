@@ -16,7 +16,7 @@
 
 <script>
     import { common_styles_computer, common_img_computer } from '@/common/js/common/common.js';
-    import VideoPlayer from '@/components/video-player/video-player.vue';
+    import VideoPlayer from '@/pages/diy/components/diy/modules/video-player/video-player.vue';
     export default {
         components: {
             VideoPlayer,
