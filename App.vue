@@ -168,8 +168,11 @@
                 // 获取位置选择缓存key
                 cache_userlocation_key: 'cache_userlocation_key',
 
-                // 地区选择缓存key
+                // 地区组件选择缓存key
                 cache_region_picker_choice_key: 'cache_region_picker_choice_key',
+
+                // 时间组件选择缓存key
+                cache_time_select_choice_key: 'cache_time_select_choice_key',
 
                 // 页面支付临时缓存key
                 cache_page_pay_key: 'cache_page_pay_key',

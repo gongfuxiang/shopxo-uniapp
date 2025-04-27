@@ -360,7 +360,7 @@
     import componentCommon from '@/components/common/common';
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
-    import componentTimeSelect from '@/components/time-select/time-select';
+    import componentTimeSelect from '@/pages/common/components/time-select/time-select';
     import componentPayment from '@/components/payment/payment';
     import componentBuyOrdergoodsform from '@/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform';
 
@@ -1201,11 +1201,12 @@
             },
 
             // 下单选择时间
-            buy_datetime_event(e) {
-                var temp = this.buy_datetime_info;
+            buy_datetime_event() {
+                let data = uni.getStorageSync(app.globalData.data.cache_time_select_choice_key) || '';
+                let temp = this.buy_datetime_info;
                 temp['status'] = !temp.status;
-                if (e != 'open' && e != 'close') {
-                    temp['value'] = ((e || null) != null ? e.value : '') || '';
+                if (data != 'open' && data != 'close') {
+                    temp['value'] = ((data || null) != null ? data.value : '') || '';
                 }
                 this.setData({
                     buy_datetime_info: temp,

@@ -673,7 +673,13 @@
                     "path": "buy/buy",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-time-select": "/pages/common/components/time-select/time-select"
+                        },
+                        "componentPlaceholder": {
+                            "component-time-select": "view"
+                        }
                     }
                 },
                 {

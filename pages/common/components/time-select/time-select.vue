@@ -33,6 +33,21 @@
 <script>
     const app = getApp();
     export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                timeList: [],
+                selectDateStr: '',
+                select_dateStr: '',
+                selectTime: '',
+                selectEndime: '',
+                activeTimeArr: [],
+                day_active_index: 0,
+                time_active_index: '',
+                // 缓存key
+                cache_key: app.globalData.data.cache_time_select_choice_key,
+            };
+        },
         props: {
             propTitle: {
                 type: String,
@@ -101,19 +116,6 @@
                 default: () => [],
             },
         },
-        data() {
-            return {
-                theme_view: app.globalData.get_theme_value_view(),
-                timeList: [],
-                selectDateStr: '',
-                select_dateStr: '',
-                selectTime: '',
-                selectEndime: '',
-                activeTimeArr: [],
-                day_active_index: 0,
-                time_active_index: '',
-            };
-        },
         beforeMount() {
             this._initDay();
         },
@@ -139,7 +141,8 @@
                 }
             },
             _selectEvent(data = '') {
-                this.$emit('selectEvent', data);
+                uni.setStorageSync(this.cache_key, data);
+                this.$emit('selectEvent');
             },
             _changeDay(e) {
                 let _ind = e - 0;

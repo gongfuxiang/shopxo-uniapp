@@ -201,7 +201,7 @@ export default {
             this.$emit("onclose", false);
         },
         //提交按钮
-        sub_ragion_event(e) {
+        sub_ragion_event() {
             let province = this.columns[0][this.columns_index[0]];
             let city = this.columns[1][this.columns_index[1]];
             let areal = this.columns[2][this.columns_index[2]];
@@ -211,8 +211,8 @@ export default {
                 areal: areal
             });
             this.popup_close_event();
-            this.$emit("call-back");
-        },
+            this.$emit("callBackEvent");
+        }
     },
 };
 </script>

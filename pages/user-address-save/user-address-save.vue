@@ -35,7 +35,7 @@
                                                     <text v-if="province_name"> {{ province_name }}{{ city_name ? '-' + city_name : '' }}{{ county_name ? '-' + county_name : '' }} </text>
                                                     <text v-else class="cr-grey-9">{{$t('extraction-apply.extraction-apply.cy87k6')}}</text>
                                                 </view>
-                                                <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
+                                                <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
                                                 <input type="text" :value="address_data.address_last_code || ''" maxlength="30" placeholder-class="cr-grey-9" class="code-input cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
