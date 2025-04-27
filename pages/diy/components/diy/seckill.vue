@@ -295,7 +295,7 @@
                 const new_style = this.propValue.style;
                 const data = new_form.data;
                 let new_list = [];
-                if (data && !isEmpty(data.current)) {
+                if (data && !isEmpty(data.current) && !isEmpty(data.current.time)) {
                     if (!isEmpty(data.current.goods)) {
                         new_list = data.current.goods;
                     }
@@ -308,15 +308,13 @@
                             time_first_text: time_first_text,
                         },
                     });
-                    if (time_first_text !== '已结束') {
-                        // 先执行一次倒计时，后续的等待倒计时执行
-                        setTimeout(() => {
-                            this.updateCountdown();
-                        }, 0);
-                        this.setData({
-                            intervalId: setInterval(this.updateCountdown, 1000),
-                        });
-                    }
+                    // 先执行一次倒计时，后续的等待倒计时执行
+                    setTimeout(() => {
+                        this.updateCountdown();
+                    }, 0);
+                    this.setData({
+                        intervalId: setInterval(this.updateCountdown, 1000),
+                    });
                 }
                 // 默认数据
                 const product_style_list = [
