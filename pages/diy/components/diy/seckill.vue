@@ -299,7 +299,7 @@
                     if (!isEmpty(data.current.goods)) {
                         new_list = data.current.goods;
                     }
-                    const { status, time_first_text } = data.current.time;
+                    const { status = '1', time_first_text = '已结束' } = data?.current?.time || {};
                     this.setData({
                         seckill_time: {
                             time_end_number: Number(data.current.time_end_number + '000'),
@@ -308,13 +308,15 @@
                             time_first_text: time_first_text,
                         },
                     });
-                    // 先执行一次倒计时，后续的等待倒计时执行
-                    setTimeout(() => {
-                        this.updateCountdown();
-                    }, 0);
-                    this.setData({
-                        intervalId: setInterval(this.updateCountdown, 1000),
-                    });
+                    if (time_first_text !== '已结束') {
+                        // 先执行一次倒计时，后续的等待倒计时执行
+                        setTimeout(() => {
+                            this.updateCountdown();
+                        }, 0);
+                        this.setData({
+                            intervalId: setInterval(this.updateCountdown, 1000),
+                        });
+                    }
                 }
                 // 默认数据
                 const product_style_list = [
