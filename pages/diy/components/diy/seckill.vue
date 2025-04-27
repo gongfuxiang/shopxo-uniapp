@@ -295,11 +295,11 @@
                 const new_style = this.propValue.style;
                 const data = new_form.data;
                 let new_list = [];
-                if (data && !isEmpty(data.current)) {
+                if (data && !isEmpty(data.current) && !isEmpty(data.current.time)) {
                     if (!isEmpty(data.current.goods)) {
                         new_list = data.current.goods;
                     }
-                    const { status, time_first_text } = data.current.time;
+                    const { status = '1', time_first_text = '已结束' } = data?.current?.time || {};
                     this.setData({
                         seckill_time: {
                             time_end_number: Number(data.current.time_end_number + '000'),
