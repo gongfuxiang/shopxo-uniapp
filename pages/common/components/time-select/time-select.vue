@@ -170,10 +170,10 @@
                     this.selectTime = timeArr[_ind].time;
                     this.selectEndime = timeArr[_ind].endtime;
                     _data = this._handleData();
+                    _data['value'] = this.propRangeType ? _data._dateRange : _data._date;
                 }
                 this.time_active_index = e;
                 this.activeTimeArr = timeArr;
-                _data['value'] = this.propRangeType ? _data._dateRange : _data._date;
                 this._selectEvent(_data);
             },
             _handleData() {
