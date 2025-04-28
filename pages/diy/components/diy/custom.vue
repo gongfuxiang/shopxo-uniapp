@@ -95,6 +95,10 @@
                 type: [String, Number],
                 default: '',
             },
+            propTabsDataType: {
+                type: String,
+                default: 'custom',
+            },
             // 组件渲染的下标
             propIndex: {
                 type: Number,
@@ -184,6 +188,9 @@
             percentage_count,
             isEmpty,
             init() {
+                if (this.propTabsDataType !== 'custom') {
+                    return;
+                }
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
                 // 不包含新创建的数组时，将历史数据放到手动添加数组中
