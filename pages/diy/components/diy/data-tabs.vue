@@ -19,9 +19,9 @@
                                 </view>
                             </view>
                         </template>
-                        <template v-show="tabs_data_type == 'custom'">
+                        <view v-show="tabs_data_type == 'custom'" class="wh-auto ht-auto">
                             <component-diy-custom-list :propKey="diy_key" :propTabsDataType="tabs_data_type" :propValue="tabs_list" :propOuterContainerPadding="outer_container_width" :propIsCommonStyle="false"></component-diy-custom-list>
-                        </template>
+                        </view>
                     </view>
                 </view>
             </view>
