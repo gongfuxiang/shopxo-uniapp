@@ -19,8 +19,8 @@
                                 </view>
                             </view>
                         </template>
-                        <template v-else-if="tabs_data_type == 'custom'">
-                            <component-diy-custom-list :propKey="diy_key" :propValue="tabs_list" :propOuterContainerPadding="outer_container_width" :propIsCommonStyle="false"></component-diy-custom-list>
+                        <template v-show="tabs_data_type == 'custom'">
+                            <component-diy-custom-list :propKey="diy_key" :propTabsDataType="tabs_data_type" :propValue="tabs_list" :propOuterContainerPadding="outer_container_width" :propIsCommonStyle="false"></component-diy-custom-list>
                         </template>
                     </view>
                 </view>
@@ -250,9 +250,8 @@
                 };
                 const data_content = new_style?.data_content || old_border_and_box_shadow;
                 const tabs_content = new_style?.tabs_content || old_border_and_box_shadow;
-                
                 //显示的数据处理
-                this.tabs_click_event(0);
+                this.tabs_click_event(this.tabs_index);
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     sticky_top: this.propTop + (new_style?.tabs_margin?.margin_top || 0),
