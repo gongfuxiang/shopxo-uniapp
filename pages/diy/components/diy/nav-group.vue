@@ -68,7 +68,7 @@ export default {
             img_style: '',
             text_style: '',
             indicator_style: '',
-            new_height: '300rpx',
+            new_height: '',
             actived_index: 0,
             group_width: '',
             nav_content_list: [],
@@ -127,7 +127,8 @@ export default {
             const new_style = this.propValue.style;
 
             let group = 1;
-            let group_width = `width: ${100 / (new_content.single_line || 4)}%;`;
+            let single_line = parseInt(new_content.single_line || 4);
+            let group_width = `width: ${100 / single_line}%;`;
             // 判断是否是轮播图
             if (new_content?.display_style == 'slide') {
                 if (new_content.row == 1 && new_style.rolling_fashion == 'translation') {
@@ -135,8 +136,19 @@ export default {
                     group_width = 'width: 100%;';
                 } else {
                     group = 1;
-                    group_width = `width: ${100 / (new_content.single_line || 4)}%;`;
+                    group_width = `width: ${100 / single_line}%;`;
                 }
+            }
+
+            // 容器默认高度
+            let height = '126rpx';
+            let temp_nav_content = new_content.nav_content_list || [];
+            if(temp_nav_content.length > single_line*3) {
+                height = '496rpx';
+            } else if(temp_nav_content.length > single_line*2) {
+                height = '384rpx';
+            } else if(temp_nav_content.length > single_line) {
+                height = '272rpx';
             }
 
             this.setData({
@@ -156,6 +168,7 @@ export default {
                 img_size: 'width:' + (new_style.img_size || 0) * 2 + 'rpx;height:' + (new_style.img_size || 0) * 2 + 'rpx;', // 图片大小
                 nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                 nav_content_list: this.get_nav_content_list(new_content, new_style),
+                new_height: height,
             });
             setTimeout(() => {
                 const query = uni.createSelectorQuery().in(this);
