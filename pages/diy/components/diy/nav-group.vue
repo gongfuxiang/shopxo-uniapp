@@ -34,7 +34,7 @@
 
 <script>
 const app = getApp();
-import { isEmpty, common_styles_computer, common_img_computer, radius_computer, padding_computer, get_indicator_style, get_indicator_location_style } from '@/common/js/common/common.js';
+import { isEmpty, common_styles_computer, common_img_computer, radius_computer, padding_computer, get_indicator_style, get_indicator_location_style, old_padding } from '@/common/js/common/common.js';
 import imageEmpty from '@/pages/diy/components/diy/modules/image-empty.vue';
 import subscriptIndex from '@/pages/diy/components/diy/modules/subscript/index.vue';
 export default {
@@ -68,7 +68,7 @@ export default {
             img_style: '',
             text_style: '',
             indicator_style: '',
-            new_height: '',
+            new_height: '0rpx',
             actived_index: 0,
             group_width: '',
             nav_content_list: [],
@@ -125,39 +125,28 @@ export default {
         init() {
             const new_content = this.propValue.content;
             const new_style = this.propValue.style;
-
+            
             let group = 1;
-            let single_line = parseInt(new_content.single_line || 4);
-            let group_width = `width: ${100 / single_line}%;`;
+            // 每行显示的数量
+            const single_line = new_content.single_line || 4;
+            let group_width = `width: ${100 / (single_line)}%;`;
             // 判断是否是轮播图
             if (new_content?.display_style == 'slide') {
                 if (new_content.row == 1 && new_style.rolling_fashion == 'translation') {
-                    group = new_content.single_line || 4;
+                    group = single_line;
                     group_width = 'width: 100%;';
                 } else {
                     group = 1;
-                    group_width = `width: ${100 / single_line}%;`;
+                    group_width = `width: ${100 / (single_line)}%;`;
                 }
             }
-
-            // 容器默认高度
-            let height = '126rpx';
-            let temp_nav_content = new_content.nav_content_list || [];
-            if(temp_nav_content.length > single_line*3) {
-                height = '496rpx';
-            } else if(temp_nav_content.length > single_line*2) {
-                height = '384rpx';
-            } else if(temp_nav_content.length > single_line) {
-                height = '272rpx';
-            }
-
             this.setData({
                 form: new_content,
                 new_style: new_style,
                 style_container: common_styles_computer(new_style.common_style), // 用于样式显示
                 style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                 img_style: radius_computer(new_style), // 图片的设置
-                text_style: `font-size: ${new_style.title_size * 2 || 24}rpx; color: ${new_style.title_color || '#000'};`, // 标题的样式
+                text_style: `font-size: ${new_style.title_size * 2 || 24}rpx;line-height:${new_style.title_size * 2 || 24}rpx;height:${new_style.title_size * 2 || 24}rpx;color: ${new_style.title_color || '#000'};`, // 标题的样式
                 indicator_style: get_indicator_style(new_style), // 指示器的样式
                 indicator_location_style: get_indicator_location_style(new_style), // 指示器位置处理
                 actived_color: new_style.actived_color || '#2A94FF', // 轮播图显示样式
@@ -168,7 +157,7 @@ export default {
                 img_size: 'width:' + (new_style.img_size || 0) * 2 + 'rpx;height:' + (new_style.img_size || 0) * 2 + 'rpx;', // 图片大小
                 nav_style: new_content.nav_style || 'image_with_text', // 是否显示文字和图片
                 nav_content_list: this.get_nav_content_list(new_content, new_style),
-                new_height: height,
+                new_height: this.get_new_height(new_content, new_style),
             });
             setTimeout(() => {
                 const query = uni.createSelectorQuery().in(this);
@@ -185,6 +174,40 @@ export default {
                     })
                     .exec(); // 执行查询
             }, 500);
+        },
+        get_new_height(new_content, new_style) {
+            const { nav_content_list = Array(4), single_line = 4, row = 1, nav_style = 'image_with_text' } = new_content;
+            const { img_size = 0, title_size = 0, title_space = 0, space = 0, data_padding = old_padding } = new_style;
+            const temp_nav_content = nav_content_list;
+            // 每页的总行数
+            let total_num = 1;
+            // 每行显示的数量
+            const quantity_per_row = single_line;
+            // 判断是否是滑动显示
+            if (new_content.display_style == 'slide') {
+                // 每页需要显示的总数量
+                const num = quantity_per_row * row;
+                // 数量大于显示的总数量，每页的总行数就按照配置的来，否则的话，取总数除以每行显示的数量
+                if (temp_nav_content.length > num) {
+                    total_num = row;
+                } else {
+                    total_num = Math.ceil(temp_nav_content.length / quantity_per_row);
+                }
+            } else {
+                // 拆分的数量
+                total_num = Math.ceil(temp_nav_content.length / quantity_per_row);
+            }
+            // 每行的总高度，由图片的高度加上标题的高度加上标题间距
+            let each_row_height = img_size + title_size + title_space;
+            // 如果只有图片的话，只计算图片的高度
+            if (nav_style == 'image') {
+                each_row_height = img_size;
+            } else if (nav_style == 'text') {
+                // 如果只有文字的话，只计算文字的高度
+                each_row_height = title_size;
+            }
+            // 总高度
+            return ((each_row_height * total_num) + ((total_num - 1) * space) + (data_padding.padding_top + data_padding.padding_bottom)) * 2 + 'rpx';
         },
         get_nav_content_list(data, new_style) {
             // 深拷贝一下，确保不会出现问题
