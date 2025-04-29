@@ -316,7 +316,7 @@
                         var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                         if (user != false) {
                             var temp_list = this.data_list;
-                            if (temp_list[coupon_index]['is_operable'] != 0) {
+                            if (temp_list[coupon_index]['status_type'] == 0) {
                                 uni.showLoading({
                                     title: this.$t('common.processing_in_text'),
                                 });
@@ -331,12 +331,17 @@
             },
             // 全部领取
             receive_all_event() {
-                const filter_data_list = this.data_list.map((item) => {
-                    if (item.is_operable != 0 && item.status_type == 0) {
-                        return item.id;
-                    }
-                });
-                this.coupon_api(filter_data_list.join(','));
+                // 判断是否可领取的数量
+                const temp_list = this.data_list.filter(item => item.status_type == 0);
+                // 可以领取的数量大于0的时候调接口
+                if (temp_list.length > 0) {
+                    const filter_data_list = this.data_list.map((item) => {
+                        if (item.status_type == 0) {
+                            return item.id;
+                        }
+                    });
+                    this.coupon_api(filter_data_list.join(','));
+                }
             },
             // 优惠劵领取事件
             coupon_api(val, index) {

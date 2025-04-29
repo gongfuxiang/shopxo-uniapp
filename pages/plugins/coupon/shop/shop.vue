@@ -180,7 +180,7 @@
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
                     var temp_list = this.data_list;
-                    if (temp_list[index]['is_operable'] != 0) {
+                    if (temp_list[index]['status_type'] == 0) {
                         uni.showLoading({
                             title: this.$t('common.processing_in_text'),
                         });

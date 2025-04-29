@@ -162,7 +162,7 @@
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
                     var data = this.data;
-                    if (data['is_operable'] != 0) {
+                    if (data['status_type'] == 0) {
                         uni.showLoading({
                             title: this.$t('common.processing_in_text'),
                         });
