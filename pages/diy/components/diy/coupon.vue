@@ -335,7 +335,7 @@
                 const temp_list = this.data_list.filter(item => item.status_type == 0);
                 // 可以领取的数量大于0的时候调接口
                 if (temp_list.length > 0) {
-                    const filter_data_list = this.data_list.map((item) => {
+                    const filter_data_list = temp_list.map((item) => {
                         if (item.status_type == 0) {
                             return item.id;
                         }
@@ -355,6 +355,7 @@
                     success: (res) => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            let temp_list = this.data_list;
                             app.globalData.showToast(res.data.msg, 'success');
                             if (index) {
                                 temp_list = res.data.data.coupon || [];
