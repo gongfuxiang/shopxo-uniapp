@@ -2894,6 +2894,7 @@
                 let arr = {
                     'zh-Hans': 'zh',
                     'zh-Hant': 'cht',
+                    'en-US': 'en',
                     'es': 'spa',
                     'fra': 'fr',
                 };
