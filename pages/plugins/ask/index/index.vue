@@ -299,13 +299,10 @@
             },
 
             nav_change_event(e) {
-                // 索引值
-                var index = e.currentTarget.dataset.index || 0;
-                var type = e.currentTarget.dataset.type || 0;
                 this.setData({
+                    nav_index: e.currentTarget.dataset.index,
+                    nav_type: e.currentTarget.dataset.type,
                     data_list: [],
-                    nav_index: index,
-                    nav_type: type,
                     data_page: 1,
                 });
                 this.reset_scroll();
