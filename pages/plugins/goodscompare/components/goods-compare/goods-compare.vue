@@ -17,16 +17,14 @@
                         <view class="data-list">
                             <block v-for="(item, index) in data_list" :key="index">
                                 <view class="goods-item flex-row align-c bs-bb padding-main pr wh-auto cp">
-                                    <view @tap="selected_event" :data-index="index" class="cart-selected pr z-i">
+                                    <view @tap="selected_event" :data-index="index" class="selected pr z-i">
                                         <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                     </view>
                                     <view class="item oh padding-left-main flex-1 flex-row">
                                         <image class="goods-image fl radius br" :src="item.images" :data-value="item.goods_url" @tap="url_event" mode="aspectFill"></image>
                                         <view class="goods-base padding-left-sm flex-1 pr">
-                                            <view :data-value="item.goods_url" @tap="url_event" class="cp">
-                                                <view class="cart-goods-title multi-text margin-bottom-sm fw-b">{{ item.title }}</view>
-                                            </view>
-                                            <view class="sales-price">{{item.symbol}}{{item.price}}</view>
+                                            <view class="goods-title multi-text cp" :data-value="item.goods_url" @tap="url_event">{{ item.title }}</view>
+                                            <view class="sales-price margin-top-sm">{{item.symbol}}{{item.price}}</view>
                                             <view class="cr-red text-size-xs pa right-0 bottom-0" :data-index="index" @tap="remove_event">{{$t('common.remove')}}</view>
                                         </view>
                                     </view>
