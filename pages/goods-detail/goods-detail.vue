@@ -564,8 +564,8 @@
             <!-- 商品服务弹层 -->
             <component-popup :propShow="popup_goodsservice_status" propPosition="bottom" @onclose="popup_goodsservice_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh">
-                        <view class="fr" @tap.stop="popup_goodsservice_close_event">
+                    <view class="close oh pa top-0 right-0 z-i-deep">
+                        <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_goodsservice_close_event">
                             <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
@@ -616,7 +616,10 @@
         <block v-if="(plugins_categorylimit_data || null) != null">
             <component-categorylimit-warm-tips :propData="plugins_categorylimit_data"></component-categorylimit-warm-tips>
         </block>
-        
+
+        <!-- 商品对比 -->
+        <component-goods-compare :propGoods="goods"></component-goods-compare>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -643,7 +646,8 @@
     import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
-    import componentCategorylimitWarmTips from '@/components/categorylimit-warm-tips/categorylimit-warm-tips';
+    import componentCategorylimitWarmTips from '@/pages/goods-detail/components/categorylimit-warm-tips/categorylimit-warm-tips';
+    import componentGoodsCompare from '@/pages/plugins/goodscompare/components/goods-compare/goods-compare';
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -800,7 +804,8 @@
             componentRealstoreCart,
             componentGoodsList,
             componentWholesaleRules,
-            componentCategorylimitWarmTips
+            componentCategorylimitWarmTips,
+            componentGoodsCompare
         },
 
         onLoad(params) {

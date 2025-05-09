@@ -15,10 +15,16 @@
 		"save": "保存",
 		"add": "新增",
         "copy": "复制",
+        "remove": "移除",
+        "remove_success": "移除成功",
+        "remove_fail": "移除失败",
 		"del": "删除",
         "del_record": "删除记录",
         "del_success": "删除成功",
         "del_fail": "删除失败",
+        "join": "加入",
+        "join_success": "加入成功",
+        "join_fail": "加入失败",
 		"edit": "编辑",
         "link": "链接",
         "gift": "礼物",
@@ -269,7 +275,8 @@
         "plugins-hospital-prescription": "问诊开方",
         "plugins-certificate-userauth": "资质认证",
         "plugins-certificate-userauth-saveinfo": "资质认证编辑",
-        "plugins-certificate-userauth-detail": "资质认证详情"
+        "plugins-certificate-userauth-detail": "资质认证详情",
+        "plugins-goodscompare-index": "商品对比"
 	},
 	"login": {
 		"login": {
@@ -1085,7 +1092,6 @@
 			"57zrl5": "图标",
 			"3vk50b": "建议100*100px",
 			"5ws7m3": "关联商品",
-			"q536vp": "移除",
 			"27goz3": "+ 选择商品",
 			"6rlju7": "当前展示",
 			"q4qr64": "标题格式1~60个字符",

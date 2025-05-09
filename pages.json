@@ -122,7 +122,8 @@
                             "component-shop-list": "/pages/plugins/shop/components/shop-list/shop-list",
                             "component-ask-comments-goods": "/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods",
                             "component-goods-comments": "/pages/goods-detail/components/goods-comments/goods-comments",
-                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card"
+                            "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card",
+                            "component-goods-compare": "/pages/plugins/goodscompare/components/goods-compare/goods-compare"
                         },
                         "componentPlaceholder": {
                             "component-binding-detail-list": "view",
@@ -130,7 +131,8 @@
                             "component-shop-list": "view",
                             "component-ask-comments-goods": "view",
                             "component-goods-comments": "view",
-                            "component-coupon-card": "view"
+                            "component-coupon-card": "view",
+                            "component-goods-compare": "view"
                         }
                     }
                 }
@@ -1870,6 +1872,18 @@
                 },
                 {
                     "path": "userauth-detail/userauth-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/goodscompare",
+            "pages": [
+                {
+                    "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

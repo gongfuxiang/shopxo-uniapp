@@ -2,8 +2,8 @@
     <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
             <view :class="'user-base-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
-                <view class="close fr oh">
-                    <view class="fr" @tap.stop="popup_close_event">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
                         <iconfont name="icon-close-o" size="24rpx" color="#999"></iconfont>
                     </view>
                 </view>
@@ -439,12 +439,6 @@
     .user-base-popup {
         padding: 36rpx;
         position: relative;
-    }
-    .user-base-popup .close {
-        position: absolute;
-        top: 36rpx;
-        right: 36rpx;
-        z-index: 2;
     }
     .user-base-avatar {
         width: 80rpx;

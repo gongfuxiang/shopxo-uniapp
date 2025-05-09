@@ -2,8 +2,8 @@
     <view :class="theme_view" class="z-i-deep">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
-                <view class="close fr oh">
-                    <view class="fr" @tap.stop="popup_close_event">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
@@ -850,12 +850,6 @@
     };
 </script>
 <style>
-    .goods-spec-choice-container .close {
-        position: absolute;
-        top: 20rpx;
-        right: 20rpx;
-        z-index: 2;
-    }
     .goods-spec-base {
         height: 230rpx;
     }

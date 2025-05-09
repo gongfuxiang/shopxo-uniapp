@@ -10,7 +10,7 @@
         <!-- 弹窗 -->
         <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
             <view :class="'nav-popup-container ' + common_ent">
-                <view class="close oh">
+                <view class="close oh pa top-xxxxl right-xxxxl z-i-deep">
                     <view class="fr" @tap.stop="quick_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -153,7 +153,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     /**
      * 按钮
      */
@@ -193,14 +193,6 @@
         padding: 20rpx 10rpx 0 10rpx;
         background: #fff;
     }
-
-    .nav-popup-container .close {
-        position: absolute;
-        top: 20rpx;
-        right: 20rpx;
-        z-index: 2;
-    }
-
     .nav-popup-content {
         max-height: 80vh;
         overflow-y: scroll;

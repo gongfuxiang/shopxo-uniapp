@@ -15,10 +15,16 @@
 		"save": "Preserve",
 		"add": "Add",
         "copy": "Copy",
+        "remove": "Remove",
+        "remove_success": "Remove successful",
+        "remove_fail": "Remove failed",
 		"del": "Delete",
         "del_record": "Delete record",
         "del_success": "Delete successful",
         "del_fail": "Delete failed",
+        "join": "Join",
+        "join_success": "Join successful",
+        "join_fail": "Join failed",
 		"edit": "Edit",
         "link": "Link",
         "gift": "Gift",
@@ -271,7 +277,8 @@
         "plugins-hospital-prescription": "Consultation and prescription",
         "plugins-certificate-userauth": "Certificate",
         "plugins-certificate-userauth-saveinfo": "Certificate editor",
-        "plugins-certificate-userauth-detail": "Certificate detail"
+        "plugins-certificate-userauth-detail": "Certificate detail",
+        "plugins-goodscompare-index": "Goods Compare"
 	},
 	"login": {
 		"login": {
@@ -1097,7 +1104,6 @@
 			"57zrl5": "icon",
 			"3vk50b": "Suggest 100 * 100px",
 			"5ws7m3": "Related products",
-			"q536vp": "remove",
 			"27goz3": "+Select product",
 			"6rlju7": "Current Display",
 			"q4qr64": "Title format: 1~60 characters",
