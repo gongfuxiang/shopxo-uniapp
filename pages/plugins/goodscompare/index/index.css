@@ -31,10 +31,13 @@
     height: 44rpx;
 }
 .table-container .head.goods_score,
-.table-container .content.goods_score{
+.table-container .content.goods_score {
     height: 90rpx;
 }
 .table-container .table-header .head,
 .table-container .table-header .goods-info {
     height: 428rpx;
+}
+.highlight {
+    background: #ffffef;
 }

@@ -25,7 +25,7 @@
                             </view>
                         </view>
                         <block v-for="(item, index) in data.goods" :key="index">
-                            <view class="goods-info padding-sm br-l dis-inline-block">
+                            <view class="goods-info padding-sm br-l dis-inline-block padding-bottom">
                                 <image class="goods-image radius" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
                                 <view class="goods-title multi-text cp" :data-value="item.goods_url" @tap="url_event">{{item.title}}</view>
                                 <view class="sales-price margin-top-sm">{{item.show_price_symbol}}{{item.price}}{{item.show_price_unit}}</view>
@@ -47,19 +47,15 @@
                         </view>
                     </view>
                     <block v-for="(items, indexs) in item.data" :key="indexs">
-                        <view class="table-body">
+                        <view v-if="identical_data[item.key+indexs] != true" class="table-body">
                             <view class="dis-inline-block">
                                 <view class="padding-sm br-t dis-inline-block sticky">
                                     <view class="head single-text" :class="indexs">{{items}}</view>
                                 </view>
                                 <block v-for="(gv, gk) in data.goods" :key="gk">
-                                    <view class="padding-sm br-t br-l dis-inline-block">
-                                        <view v-if="item.key == 'specifications'" class="content single-text" :class="indexs">
-                                            <text v-if="(gv['specifications'] || null) != null && (gv['specifications'][indexs] || null)">{{gv['specifications'][indexs]}}</text>
-                                            <text v-else class="cr-grey-d">-</text>
-                                        </view>
-                                        <view v-else-if="item.key == 'parameters'" class="content single-text" :class="indexs">
-                                            <text v-if="(gv['parameters'] || null) != null && (gv['parameters'][indexs] || null)">{{gv['parameters'][indexs]}}</text>
+                                    <view class="padding-sm br-t br-l dis-inline-block" :class="(highlight_data[item.key+indexs] == true ? ' highlight' : '')">
+                                        <view v-if="item.key == 'specifications' || item.key == 'parameters'" class="content single-text" :class="indexs">
+                                            <text v-if="(gv[item.key] || null) != null && (gv[item.key][indexs] || null)">{{gv[item.key][indexs]}}</text>
                                             <text v-else class="cr-grey-d">-</text>
                                         </view>
                                         <block v-else>
@@ -119,7 +115,9 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 params: null,
-                data: {}
+                data: {},
+                highlight_data: {},
+                identical_data: {},
             };
         },
 
@@ -138,8 +136,8 @@
                 params: app.globalData.launch_params_handle(params),
             });
 
-            // 数据加载
-            this.init();
+            // 获取数据
+            this.get_data()
         },
 
         onShow() {
@@ -158,19 +156,6 @@
         },
 
         methods: {
-            // 初始化
-            init() {
-                var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
-                    this.get_data();
-                } else {
-                    this.setData({
-                        data_list_loding_status: 0,
-                        data_bottom_line_status: false,
-                    });
-                }
-            },
-
             // 获取数据
             get_data() {
                 uni.request({
@@ -206,20 +191,62 @@
 
             // 高亮不同项
             highlight_event(e) {
+                var highlight_data = {};
                 if(e.detail.value.length > 0) {
-                    console.log('选择');
-                } else {
-                    console.log('取消');
+                    var temp_data = this.data;
+                    for(var i in temp_data.head) {
+                        if(temp_data.head[i]['key'] == 'specifications' || temp_data.head[i]['key'] == 'parameters') {
+                            for(var x in temp_data.head[i]['data']) {
+                                var status = false;
+                                var temp = [];
+                                for(var g in temp_data.goods) {
+                                    var value = temp_data.goods[g][temp_data.head[i]['key']][x];
+                                    if(temp.length > 0) {
+                                        if(temp.indexOf(value) == -1)
+                                        {
+                                            status = true;
+                                        }
+                                    }
+                                    temp.push(value);
+                                }
+                                highlight_data[temp_data.head[i]['key']+x] = status;
+                            }
+                        }
+                    }
                 }
+                this.setData({
+                    highlight_data: highlight_data
+                });
             },
 
             // 隐藏相同项
             identical_event(e) {
+                var identical_data = {};
                 if(e.detail.value.length > 0) {
-                    console.log('选择');
-                } else {
-                    console.log('取消');
+                    var temp_data = this.data;
+                    for(var i in temp_data.head) {
+                        if(temp_data.head[i]['key'] == 'specifications' || temp_data.head[i]['key'] == 'parameters') {
+                            for(var x in temp_data.head[i]['data']) {
+                                var status = true;
+                                var temp = [];
+                                for(var g in temp_data.goods) {
+                                    var value = temp_data.goods[g][temp_data.head[i]['key']][x];
+                                    if(temp.length > 0) {
+                                        if(temp.indexOf(value) == -1)
+                                        {
+                                            status = false;
+                                        }
+                                    }
+                                    temp.push(value);
+                                }
+                                identical_data[temp_data.head[i]['key']+x] = status;
+                            }
+                        }
+                    }
                 }
+                this.setData({
+                    identical_data: identical_data
+                });
             },
 
             // url事件
