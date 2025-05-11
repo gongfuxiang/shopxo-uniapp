@@ -10,7 +10,7 @@
                                     <checkbox-group @change="highlight_event">
                                         <label>
                                             <checkbox value="1" style="transform:scale(0.7)" />
-                                            <text class="va-m">高亮不同项</text>
+                                            <text class="va-m">{{data.base.highlight_text}}</text>
                                         </label>
                                     </checkbox-group>
                                 </view>
@@ -18,17 +18,18 @@
                                     <checkbox-group @change="identical_event">
                                         <label>
                                             <checkbox value="1" style="transform:scale(0.7)" />
-                                            <text class="va-m">隐藏相同项</text>
+                                            <text class="va-m">{{data.base.identical_text}}</text>
                                         </label>
                                     </checkbox-group>
                                 </view>
                             </view>
                         </view>
                         <block v-for="(item, index) in data.goods" :key="index">
-                            <view class="goods-info padding-sm br-l dis-inline-block padding-bottom">
+                            <view class="goods-info padding-sm br-l dis-inline-block padding-bottom pr">
                                 <image class="goods-image radius" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
                                 <view class="goods-title multi-text cp" :data-value="item.goods_url" @tap="url_event">{{item.title}}</view>
                                 <view class="sales-price margin-top-sm">{{item.show_price_symbol}}{{item.price}}{{item.show_price_unit}}</view>
+                                <view class="cr-red text-size-xs pa right-xxxl bottom-xxxl" :data-index="index" @tap="remove_event">{{$t('common.remove')}}</view>
                             </view>
                         </block>
                     </view>
@@ -62,26 +63,26 @@
                                             <view v-if="indexs == 'goods_score'" class="content single-text" :class="indexs">
                                                 <block v-if="(gv[indexs] || null) != null && gv[indexs]['score'] != undefined">
                                                     <view>
-                                                        <text class="cr-grey text-size-xs">好评度</text>
+                                                        <text class="cr-grey text-size-xs">{{data.base.positive_rating_text}}</text>
                                                         <text class="cr-red">
                                                             <text class="text-size-lg fw-b">{{gv[indexs]['score']}}</text>
                                                             <text>%</text>
                                                             <text v-if="gv[indexs]['avg'] != undefined" class="text-size-xs margin-left-lg">
-                                                                <text class="cr-grey">评分</text>
+                                                                <text class="cr-grey">{{data.base.score_text}}</text>
                                                                 <text>{{gv[indexs]['avg']}}</text>
                                                             </text>
                                                         </text>
                                                     </view>
                                                     <view v-if="gv[indexs]['count'] != undefined" class="text-size-xs">
-                                                        <text class="cr-grey">累计评价</text>
+                                                        <text class="cr-grey">{{data.base.cumulative_evaluation_text}}</text>
                                                         <text class="fw-b">{{gv[indexs]['count']}}</text>
-                                                        <text class="cr-grey">条</text>
+                                                        <text class="cr-grey">{{data.base.strip_text}}</text>
                                                     </view>
                                                 </block>
                                             </view>
                                             <view v-else-if="indexs == 'give_integral'" class="content single-text" :class="indexs">
-                                                <text class="cr-grey text-size-xs">售价</text>
-                                                <text>{{gv[indexs]}}%比例</text>
+                                                <text class="cr-grey text-size-xs">{{data.base.sales_price_text}}</text>
+                                                <text>{{gv[indexs]}}%{{data.base.proportion_text}}</text>
                                             </view>
                                             <view v-else-if="indexs == 'inventory'" class="content single-text" :class="indexs">{{gv[indexs]}}{{gv['inventory_unit']}}</view>
                                             <view v-else class="content single-text" :class="indexs">{{gv[indexs]}}</view>
@@ -178,6 +179,7 @@
                                 data_list_loding_msg: res.data.msg,
                             });
                         }
+                        this.set_share_info();
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
@@ -247,6 +249,40 @@
                 this.setData({
                     identical_data: identical_data
                 });
+            },
+
+            // 移除
+            remove_event(e) {
+                // 数据处理
+                var temp_data = this.data;
+                var index = e.currentTarget.dataset.index || 0;
+                var temp_item = temp_data.goods[index];
+                temp_data.goods.splice(index, 1);
+                // 参数处理
+                var temp_params = this.params;
+                var arr = temp_params.gid.split('|').filter(item => parseInt(item) != parseInt(temp_item.id));
+                temp_params.gid = arr.join('|');
+                this.setData({
+                    data: temp_data,
+                    params: temp_params,
+                });
+                uni.setStorageSync(this.cache_key, temp_data);
+                app.globalData.showToast(this.$t('common.remove_success'), 'success');
+                this.set_share_info();
+            },
+
+            // 分享设置
+            set_share_info() {
+                if((this.data.base || null) != null) {
+                    this.setData({
+                        share_info: {
+                            title: this.data.base.seo_title,
+                            desc: this.data.base.seo_desc,
+                            path: "/pages/plugins/goodscompare/index/index",
+                            query: "gid=" + this.params.gid,
+                        },
+                    });
+                }
             },
 
             // url事件

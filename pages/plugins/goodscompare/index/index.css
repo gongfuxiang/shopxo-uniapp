@@ -5,10 +5,10 @@
 .table-container .content,
 .table-container .goods-info .goods-title,
 .table-container .goods-info .goods-image {
-    width: 300rpx;
+    width: 340rpx;
 }
 .table-container .goods-info .goods-image {
-    height: 300rpx;
+    height: 340rpx;
 }
 .table-container .sticky {
     position: sticky;
@@ -36,8 +36,8 @@
 }
 .table-container .table-header .head,
 .table-container .table-header .goods-info {
-    height: 428rpx;
+    height: 468rpx;
 }
-.highlight {
+.table-container .table-header .highlight {
     background: #ffffef;
 }

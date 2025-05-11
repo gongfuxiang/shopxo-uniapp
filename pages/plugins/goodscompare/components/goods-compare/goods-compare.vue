@@ -33,7 +33,7 @@
                         </view>
                         <view class="padding-main">
                             <view class="bottom-line-exclude oh">
-                                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap="compare_confirm_event" hover-class="none">去对比</button>
+                                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap="compare_confirm_event" hover-class="none">{{$t('common.compare')}}</button>
                             </view>
                         </view>
                     </block>
