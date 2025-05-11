@@ -176,11 +176,8 @@
 
             // 对比确认
             compare_confirm_event(e) {
-                var user = app.globalData.get_user_info(this, 'compare_confirm_event', e);
-                if (user != false) {
-                    var goods_ids = this.data_list.map(function(v){return v.goods_id;}).join('|');
-                    app.globalData.url_open('/pages/plugins/goodscompare/index/index?gid='+goods_ids);
-                }
+                var goods_ids = this.data_list.map(function(v){return v.goods_id;}).join('|');
+                app.globalData.url_open('/pages/plugins/goodscompare/index/index?gid='+goods_ids);
             }
         },
     };
