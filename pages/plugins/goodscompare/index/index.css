@@ -38,6 +38,6 @@
 .table-container .table-header .goods-info {
     height: 468rpx;
 }
-.table-container .table-header .highlight {
+.table-container .table-body .highlight {
     background: #ffffef;
 }
