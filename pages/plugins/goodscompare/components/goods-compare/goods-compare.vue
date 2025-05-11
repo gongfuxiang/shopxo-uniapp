@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <block v-if="(config || null) != null && (config.is_compare_run_app || 0) == 1 && (config.compare_run_icon_app || null) != null">
-            <image class="compare-run-icon pf right-xxxxxl" :src="config.compare_run_icon_app" mode="aspectFit" @tap="compare_run_event"></image>
+            <image class="compare-run-icon pf" :src="config.compare_run_icon_app" mode="aspectFit" @tap="compare_run_event"></image>
         </block>
 
         <!-- 弹窗 -->
@@ -190,7 +190,16 @@
         width: 90rpx;
         height: 90rpx;
         bottom: 15%;
+        right: 24rpx;
     }
+    /* #ifdef H5 */
+    @media only screen and (min-width: 1600rpx) {
+        .compare-run-icon {
+            left: 24rpx;
+            left: calc(50% + 686rpx);
+        }
+    }
+    /* #endif */
     .data-list {
         max-height: 80vh;
         overflow-y: scroll;
