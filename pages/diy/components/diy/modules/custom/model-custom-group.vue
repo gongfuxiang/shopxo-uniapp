@@ -17,10 +17,10 @@
                         </view>
                     </template>
                     <view v-else-if="data_source_content_list.length > 0 && ['vertical-scroll', 'horizontal'].includes(form.data_source_direction)" class="oh ht-auto">
-                        <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
+                        <swiper class="w flex" circular="true" :vertical="form.data_source_direction != 'horizontal'" :next-margin="new_style.rolling_fashion != 'translation' ? '' : '-' + content_outer_spacing_magin" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_view" :style="{ width: '100%', height: swiper_height + 'px' }" @change="slideChange">
                             <swiper-item v-for="(item, index) in data_source_content_list" :key="index">
-                                <view :class="form.data_source_direction != 'horizontal' ? 'wh-auto ht-auto' : 'flex-row'" :style="form.data_source_direction == 'horizontal' ? 'column-gap:' + new_style.column_gap + 'px;' : ''">
-                                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="wh-auto ht-auto" :style="style_chunk_container + swiper_width + (form.data_source_direction == 'horizontal' ? gap_width : 'margin-bottom:' + content_outer_spacing_magin)">
+                                <view :class="form.data_source_direction != 'horizontal' ? 'flex-col ht-auto ' : 'flex-row ht-auto'" :style="new_style.rolling_fashion != 'translation' ? 'column-gap:' + new_style.column_gap + 'px;row-gap:' + new_style.row_gap + 'px;' : ''">
+                                    <view v-for="(item1, index1) in item.split_list" :key="index1" :style="style_chunk_container + split_list_height + swiper_width">
                                         <view class="wh-auto ht-auto oh" :style="style_chunk_img_container">
                                             <dataGroupRendering :propKey="propKey" :propCustomList="form.custom_list" :propIndex="index1" :propSourceList="item1" :propFieldList="propFieldList" :propDataHeight="propDataHeight" :propScale="custom_scale" :propIsCustom="propIsCustom" :propIsCustomGroup="true" :propShowData="propShowData" :propConfigLoop="propConfigLoop !== '1' ? form.is_use_parent_data : '1'" :propDataIndex="index" :propDataSplitIndex="index1" @url_event="url_event"></dataGroupRendering>
                                         </view>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width, get_is_eligible, get_swiper_list } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, percentage_count, isEmpty, get_indicator_style, get_indicator_location_style, border_width, get_is_eligible, get_swiper_list, old_data_style } from '@/common/js/common/common.js';
     // a组件调用b组件 b组件调用a组件，为了避免循环引用在uniapp中出问题，复制一个相同的data-group-rendering组件
     import dataGroupRendering from '@/pages/diy/components/diy/modules/custom/data-group-rendering.vue';
     const app = getApp();
@@ -154,29 +154,9 @@
                 indicator_style: '',
                 slides_per_view: 1,
                 show_data: { data_key: 'id', data_name: 'name' },
-                old_data_style: {
-                    color_list: [{ color: 'rgb(244, 252, 255)', color_percentage: undefined }],
-                    direction: '180deg',
-                    background_img_style: '2',
-                    background_img: [],
-                    radius: 0,
-                    radius_top_left: 0,
-                    radius_top_right: 0,
-                    radius_bottom_left: 0,
-                    radius_bottom_right: 0,
-                    padding: 0,
-                    padding_top: 0,
-                    padding_bottom: 0,
-                    padding_left: 0,
-                    padding_right: 0,
-                    margin: 0,
-                    margin_top: 0,
-                    margin_bottom: 0,
-                    margin_left: 0,
-                    margin_right: 0,
-                },
                 content_outer_spacing_magin: '0rpx',
                 gap_width: '',
+                split_list_height: '',
                 is_show: true
             };
         },
@@ -239,8 +219,8 @@
                 // 自定义组的比例
                 const scale_number = width / this.propDataWidth;
                 const custom_scale = scale_number > 0 ? scale_number : 0;
-                const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
-                const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
+                const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : old_data_style;
+                const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : old_data_style;
                 // 判断是平移还是整屏滚动
                 const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
@@ -258,7 +238,29 @@
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (new_style.column_gap * (carousel_col - 1)) / carousel_col;
                 // 横向的时候，根据选择的行数和每行显示的个数来区分具体是显示多少个
-                const swiper_width = (new_form.data_source_direction == 'horizontal' && new_style.rolling_fashion != 'translation') ? `width: ${ 100 / carousel_col }%;`: 'width: 100%;';
+                let swiper_width = '';
+                let split_list_height = '';
+                // 容器的左右外间距
+                const horizontalMargin = new_data_style.margin_left + new_data_style.margin_right;
+                // 容器的上下外间距
+                const verticalMargin = new_data_style.margin_top + new_data_style.margin_bottom;
+                // 横向滑动的时候的处理
+                if (new_form.data_source_direction == 'horizontal') {
+                    // 平移时的处理逻辑
+                    if (new_style.rolling_fashion == 'translation') {
+                        swiper_width = `width: calc(100% - ${ (space_between + horizontalMargin) * 2 }rpx);`;
+                    } else {
+                        swiper_width = `width: calc(${100 / carousel_col}%);`;
+                    }
+                    split_list_height = `height: calc(100% - ${ (verticalMargin) * 2 }rpx);`;
+                } else { // 纵向时的显示处理
+                    swiper_width = `width: calc(100% - ${ horizontalMargin * 2 }rpx);`;
+                    if (new_style.rolling_fashion == 'translation') {
+                        split_list_height = `height: calc(100% - ${ (space_between + verticalMargin) * 2 }rpx);`;
+                    } else {
+                        split_list_height = `height: calc(${100 / carousel_col}%);`;
+                    }
+                }
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -270,6 +272,7 @@
                     style_content_img_container: common_img_computer(new_data_content_style),
                     style_chunk_container: common_styles_computer(new_data_style) + 'box-sizing: border-box;', // 用于样式显示
                     style_chunk_img_container: common_img_computer(new_data_style),
+                    split_list_height: split_list_height,
                     style_chunk_width: width,
                     data_source_content_list: new_list,
                     data_source: !isEmpty(new_form.data_source)? new_form.data_source : '',
