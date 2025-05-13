@@ -4,6 +4,11 @@ export const old_radius = { radius: 0, radius_top_left: 0, radius_top_right: 0, 
 export const old_padding = { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 };
 export const old_margin = { margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0 };
 export const old_border_and_box_shadow = { border_is_show: '0', border_color: '#FF3F3F', border_style: 'solid',border_size: { padding: 1, padding_top: 1, padding_right: 1, padding_bottom: 1, padding_left: 1, }, box_shadow_color: '', box_shadow_x: 0, box_shadow_y: 0, box_shadow_blur: 0, box_shadow_spread: 0 };
+export const old_data_style = { color_list: [{ color: 'rgb(244, 252, 255)', color_percentage: undefined }], direction: '180deg', background_img_style: '2', background_img: [], radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0, padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0, margin: 0, margin_top: 0, margin_bottom: 0, margin_left: 0, margin_right: 0}
+// 工具函数：确保变量为数字，否则返回默认值
+export function ensureNumber(value, defaultValue = 0) {
+    return typeof value === 'number' && !isNaN(value) ? value : defaultValue;
+}
 
 /**
  * 判断一个对象是否为空。
