@@ -459,7 +459,7 @@
                     // 提前定义用于后续处理的数据
                     const scaleComponents = new Set(this.scale_component_list);
                     // 数据比例
-                    let scale = (sys_width / 390).toFixed(1);
+                    let scale = sys_width / 390;
                     // 最大是2倍比例
                     scale = scale > 2 ? 2 : scale;
                     // 过滤数据
