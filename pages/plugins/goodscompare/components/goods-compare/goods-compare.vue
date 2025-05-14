@@ -58,25 +58,25 @@
                 popup_status: false,
                 data_list: [],
                 goods: null,
-                config: null,
+                config: null
             };
         },
         components: {
             componentPopup,
-            componentNoData,
+            componentNoData
         },
         // 属性
         props: {
             propGoods: {
                 type: [Array,Object,String],
-                default: '',
+                default: ''
             },
         },
         // 页面被展示
         created: function () {
             this.init_config();
             this.setData({
-                goods: this.propGoods,
+                goods: this.propGoods
             });
         },
         // 属性值改变监听
@@ -84,7 +84,7 @@
             // 是否灰度
             propGoods(value, old_value) {
                 this.setData({
-                    goods: value,
+                    goods: value
                 });
             },
         },

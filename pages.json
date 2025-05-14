@@ -117,20 +117,20 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
+                            "component-goods-comments": "/pages/goods-detail/components/goods-comments/goods-comments",
                             "component-binding-detail-list": "/pages/plugins/binding/components/binding-detail-list/binding-detail-list",
                             "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list",
                             "component-shop-list": "/pages/plugins/shop/components/shop-list/shop-list",
                             "component-ask-comments-goods": "/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods",
-                            "component-goods-comments": "/pages/goods-detail/components/goods-comments/goods-comments",
                             "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card",
                             "component-goods-compare": "/pages/plugins/goodscompare/components/goods-compare/goods-compare"
                         },
                         "componentPlaceholder": {
+                            "component-goods-comments": "view",
                             "component-binding-detail-list": "view",
                             "component-realstore-list": "view",
                             "component-shop-list": "view",
                             "component-ask-comments-goods": "view",
-                            "component-goods-comments": "view",
                             "component-coupon-card": "view",
                             "component-goods-compare": "view"
                         }

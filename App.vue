@@ -769,7 +769,6 @@
                                             }
                                         }
                                     } else {
-                                        uni.hideLoading();
                                         self.showToast(res.data.msg);
                                     }
                                 },
