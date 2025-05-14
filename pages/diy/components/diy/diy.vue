@@ -16,7 +16,7 @@
                         </view>
                         <template v-if="is_tabs_type">
                             <template v-if="diy_data.length > 0">
-                                <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx;z-index:1' : -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx;z-index:' + (!isEmpty(item.com_data.style.common_style.module_z_index) ? item.com_data.style.common_style.module_z_index : 0))">
+                                <view v-for="(item, index) in diy_data" :key="index" :style="'margin-top:' + (['float-window'].includes(item.key) ? '0rpx;' : item.floating_up + 'z-index:' + (!isEmpty(item.com_data.style.common_style.module_z_index) ? item.com_data.style.common_style.module_z_index : 0))">
                                     <!-- 基础组件 -->
                                     <template v-if="item.is_enable == '1'">
                                         <component-diy-search v-if="item.key == 'search'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-search>
@@ -224,6 +224,7 @@
         },
         data() {
             return {
+                scale_component_list: [ 'carousel', 'custom', 'data-magic', 'img-magic', 'video' ], 
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 // 是否有选项卡
@@ -448,8 +449,28 @@
                     new_diy_data = diy_data;
                 } else {
                     new_tabs_data = tabs_data;
+                    const newMarginTopList = diy_data.filter((item) => {
+                        const style = item.com_data?.style?.common_style;
+                        return style && style.floating_up > 0;
+                    });
+
+                    const newMarginTopMap = new Set(newMarginTopList.map(item => item.id));
+
+                    // 提前定义用于后续处理的数据
+                    const scaleComponents = new Set(this.scale_component_list);
+                    // 数据比例
+                    let scale = sys_width / 390;
+                    // 最大是2倍比例
+                    scale = scale > 2 ? 2 : scale;
                     // 过滤数据
-                    diy_data.forEach((item) => {
+                    diy_data.forEach((item, index) => {
+                        // 缩放处理
+                        const style = item.com_data?.style?.common_style;
+                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key)) {
+                            item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
+                        } else {
+                            item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
+                        }
                         // 判断是否是商品列表
                         if (item.com_name == 'float-window') {
                             item.index = -1;
