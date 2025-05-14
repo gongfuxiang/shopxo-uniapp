@@ -461,7 +461,11 @@
                     // 数据比例
                     let scale = sys_width / 390;
                     // 最大是2倍比例
-                    scale = scale > 2 ? 2 : scale;
+                    if (sys_width <= 800) {
+                        scale = scale > 2 ? 2 : scale;
+                    } else {
+                        scale = scale;
+                    }
                     // 过滤数据
                     diy_data.forEach((item, index) => {
                         // 缩放处理
