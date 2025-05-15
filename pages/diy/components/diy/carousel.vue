@@ -27,7 +27,7 @@
                 </block>
                 <block v-else>
                     <swiper-item v-for="(item, index) in new_list" :key="index">
-                        <view class="ht-auto pr" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-right:' + new_style.image_spacing * 2 + 'rpx;' : ''" :data-value="item.carousel_link.page" @tap="url_open">
+                        <view class="ht-auto pr" :style="['oneDragOne', 'twoDragOne'].includes(form.carousel_type) ? 'padding-left:' + data_left_spacing * 2 + 'rpx;margin-right:' + new_style.image_spacing * 2 + 'rpx;' : data_spacing" :data-value="item.carousel_link.page" @tap="url_open">
                             <view class="wh-auto ht-auto" :style="img_style">
                                 <image-empty :propImageSrc="item.carousel_img[0]" :propStyle="img_style" :propImgFit="img_fit" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
                             </view>
@@ -63,7 +63,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer, get_indicator_location_style, get_indicator_style, background_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, common_img_computer, radius_computer, isEmpty, gradient_computer, padding_computer, get_indicator_location_style, get_indicator_style, background_computer, old_padding } from '@/common/js/common/common.js';
     import imageEmpty from '@/pages/diy/components/diy/modules/image-empty.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
@@ -106,6 +106,8 @@
                 // 图片的设置
                 img_style: '',
                 outer_img_style: '',
+                data_spacing: '',
+                data_left_spacing: 0,
                 // 指示器的样式
                 indicator_style: '',
                 seat_list: [],
@@ -154,7 +156,7 @@
                 // 将80%的宽度分成16份
                 const block = (windowWidth * 0.8) / 16;
 
-                const { common_style, actived_color } = new_style;
+                const { common_style, actived_color, data_left_spacing = 0, data_padding = old_padding } = new_style;
                 // scaleToFill 对应 fill aspectFit 对应 contain  aspectFill 对应 cover
                 let fit = '';
                 if (new_form.img_fit == 'contain') {
@@ -170,6 +172,8 @@
                 this.setData({
                     form: new_form,
                     new_style: new_style,
+                    data_left_spacing: data_left_spacing,
+                    data_spacing: padding_computer(data_padding),
                     seat_list: this.get_seat_list(new_form),
                     new_list: new_form.carousel_list.concat(this.get_seat_list(new_form)),
                     popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
@@ -203,7 +207,7 @@
                     // 风格三，四显示逻辑
                     // this.$nextTick(() => {
                         this.setData({
-                            nextMargin: '50px',
+                            nextMargin: 50 + data_left_spacing + 'px',
                             slides_per_group: new_form.carousel_type == 'twoDragOne' ? 2 : 1,
                         });
                     // });
