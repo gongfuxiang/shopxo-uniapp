@@ -15,14 +15,14 @@
                                             <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                                             <!-- #ifndef MP-ALIPAY -->
                                             <view v-if="!is_tabbar_pages && is_left_back_btn_show == '1'" class="z-i dis-inline-block margin-top-xs" @tap="top_nav_left_back_event">
-                                                <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :color="form.style.left_back_btn_color || '#333'"></iconfont>
+                                                <iconfont name="icon-arrow-left" size="40rpx" propContainerDisplay="flex" :propStyle="up_slide_left_back_btn_style"></iconfont>
                                             </view>
                                             <!-- #endif -->
                                             <!-- #ifdef MP-ALIPAY -->
                                             <view class="dis-inline-block padding-left-sm"></view>
                                             <!-- #endif -->
                                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1">
-                                                <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
+                                                <view class="flex-row align-c jc-c ht-auto gap-16" :class="position_class" :style="text_style + up_slide_title_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                                     <template v-if="['2', '3'].includes(form.content.theme)">
                                                         <view v-if="form.content.logo.length > 0" class="logo-outer-style re flex-row align-c" :data-value="form.content.link.page" @tap.stop="url_event">
                                                             <template v-if="form.style.up_slide_logo && form.style.up_slide_logo.length > 0">
@@ -51,7 +51,7 @@
                                             <view v-else-if="['4', '5'].includes(form.content.theme)" class="flex-1 flex-row align-c">
                                                 <view v-if="form.content.positioning_name_float !== '1'" class="flex-row align-c gap-2">
                                                     <view :style="location_margin">
-                                                        <component-choice-location :propLocationContainerStyle="style_location_container" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIconLocationSize="location_left_size" :propIconArrowSize="location_right_size" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="location_name_style" propContainerDisplay="flex" @onBack="choice_location_back"></component-choice-location>
+                                                        <component-choice-location :propLocationContainerStyle="style_location_container" :propUpSlideStyle="up_slide_location_style" :propLocationImgContainerStyle="style_location_img_container" :propBaseColor="location_color" :propTextDefaultName="form.content.positioning_name" :propIsLeftIconArrow="form.content.is_location_left_icon_show == '1'" :propLeftImgValue="form.content.location_left_img" :propLeftIconValue="'icon-' + form.content.location_left_icon" :propIconLocationSize="location_left_size" :propIconArrowSize="location_right_size" :propIsRightIconArrow="form.content.is_location_right_icon_show == '1'" :propRightImgValue="form.content.location_right_img" :propRightIconValue="'icon-' + form.content.location_right_icon" :propTextMaxWidth="location_name_style" propContainerDisplay="flex" @onBack="choice_location_back"></component-choice-location>
                                                     </view>
                                                 </view>
                                                 <template v-if="['5'].includes(form.content.theme) && !is_search_alone_row">
@@ -181,6 +181,9 @@
                 up_slide_style: '',
                 up_slide_img_style: '',
                 up_slide_icon_style: '',
+                up_slide_title_style: '',
+                up_slide_location_style: '',
+                up_slide_left_back_btn_style: '',
                 // 当前页面是否在底部菜单中
                 is_tabbar_pages: app.globalData.is_tabbar_pages(),
                 is_left_back_btn_show: '0',
@@ -205,7 +208,7 @@
         watch: {
             // 监听滚动距离
             propScrollTop(newVal) {
-                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display, img_color = '', up_slide_icon_color = '' } = this.propValue.style || {};
+                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display, img_color = '', up_slide_icon_color = '',  header_background_title_color = '', up_slide_title_color = '',  location_color = '', up_slide_location_color = '', left_back_btn_color = '#333', up_slide_left_back_btn_color = '' } = this.propValue.style || {};
                 if (up_slide_display == '1') {
                     // 渐变
                     const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
@@ -220,10 +223,14 @@
                     // =0是大小误差
                     this.up_slide_style = gradient_computer(gradient) + up_slide_opacity;
                     // 图标更换
-                    this.up_slide_icon_style = up_slide_icon_color == '' || opacity <= 0 ? `color: ${ img_color };` : `color: ${ up_slide_icon_color };${ this.up_slide_opacity }`;
+                    this.up_slide_icon_style = this.get_up_slide_style(img_color, up_slide_icon_color, opacity);
+                    // 标题更换
+                    this.up_slide_title_style = this.get_up_slide_style(header_background_title_color, up_slide_title_color, opacity);
+                    // 定位更换
+                    this.up_slide_location_style = this.get_up_slide_style(location_color, up_slide_location_color, opacity);
+                    // 返回图标更换
+                    this.up_slide_left_back_btn_style = this.get_up_slide_style(left_back_btn_color, up_slide_left_back_btn_color, opacity);
                     this.up_slide_img_style = background_computer(back);
-                } else {
-                    this.up_slide_icon_style = `color: ${ img_color };`
                 }
             },
             propKey(val) {
@@ -313,6 +320,12 @@
                 } else {
                     return `${(100 + width) * 2}rpx;`;
                 }
+            },
+            // 封装公共逻辑函数
+            get_up_slide_style(defaultColor, customColor, opacityValue) {
+                const opacityStr = opacityValue > 0 ? `opacity: ${opacityValue};` : '';
+                const color = (customColor === '' || opacityValue <= 0) ? defaultColor : customColor;
+                return `color: ${color};${opacityStr}`;
             },
             // 定位设置
             get_style_location_container(new_style) {

@@ -7,16 +7,16 @@
                         <image :src="propLeftImgValue[0].url" class="dis-block" mode="heightFix"></image>
                     </block>
                     <block v-else>
-                        <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor" :propContainerDisplay="propContainerDisplay"></iconfont>
+                        <iconfont :name="propLeftIconValue" :size="propIconLocationSize" propClass="lh" :color="propIconLocationColor || propBaseColor" :propStyle="propUpSlideStyle" :propContainerDisplay="propContainerDisplay"></iconfont>
                     </block>
                 </view>
-                <view :class="'va-m dis-inline-block margin-left-xs single-text text' + (propType == 'header' ? ' text-size-md' : ' text-size-xs')" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';'">{{ location.text || '' }}</view>
+                <view :class="'va-m dis-inline-block margin-left-xs single-text text' + (propType == 'header' ? ' text-size-md' : ' text-size-xs')" :style="'max-width:' + propTextMaxWidth + ';color:' + (propTextColor || propBaseColor) + ';' + propUpSlideStyle">{{ location.text || '' }}</view>
                 <view v-if="propIsRightIconArrow" class="va-m lh dis-inline-block margin-left-xs">
                     <block v-if="(propRightImgValue || null) != null && propRightImgValue.length > 0">
                         <image :src="propRightImgValue[0].url" class="dis-block" mode="heightFix"></image>
                     </block>
                     <block v-else>
-                        <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor" :propContainerDisplay="propContainerDisplay"></iconfont>
+                        <iconfont :name="propRightIconValue" :size="propIconArrowSize" propClass="lh-xs" :color="propIconArrowColor || propBaseColor" :propStyle="propUpSlideStyle" :propContainerDisplay="propContainerDisplay"></iconfont>
                     </block>
                 </view>
             </view>
@@ -109,7 +109,11 @@
             propContainerDisplay: {
                 type: String,
                 default: 'inline-block',
-            }
+            },
+            propUpSlideStyle: {
+                type: String,
+                default: '',
+            },
         },
         // 页面被展示
         created: function () {
