@@ -5,7 +5,7 @@
             <view v-if="data_list.length > 0" class="coupon-content bg-white pr padding-top-main page-bottom-fixed">
                 <view class="flex-col">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                        <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                     </block>
                 </view>
                 <!-- 结尾 -->
@@ -162,54 +162,50 @@
             },
 
             // 优惠劵领取事件
-            coupon_receive_event(index, value) {
+            coupon_receive_back_event() {
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                // 参数处理
-                if ((index || null) == null && (value || null) == null) {
-                    var index = this.temp_coupon_receive_index;
-                    var value = this.temp_coupon_receive_value;
-                } else {
-                    this.setData({
-                        temp_coupon_receive_index: index,
-                        temp_coupon_receive_value: value,
-                    });
-                }
-                // 登录校验
-                var user = app.globalData.get_user_info(this, 'coupon_receive_event');
-                if (user != false) {
-                    var temp_list = this.data_list;
-                    if (temp_list[index]['status_type'] == 0) {
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
-                            method: 'POST',
-                            data: {
-                                coupon_id: value,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                    temp_list[index] = res.data.data.coupon;
-                                    this.setData({
-                                        data_list: temp_list,
-                                    });
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
-                                        app.globalData.showToast(res.data.msg);
+                // 缓存
+                let res = uni.getStorageSync('cache_plugins_coupon_receive_key') || null;
+                if(res != null) {
+                    // 登录校验
+                    let user = app.globalData.get_user_info(this, 'coupon_receive_back_event');
+                    if (user != false) {
+                        let index = res.index;
+                        let value = res.value;
+                        let temp_list = this.data_list;
+                        if (temp_list[index]['status_type'] == 0) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
+                                method: 'POST',
+                                data: {
+                                    coupon_id: value,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                        temp_list[index] = res.data.data.coupon;
+                                        this.setData({
+                                            data_list: temp_list,
+                                        });
+                                    } else {
+                                        if (app.globalData.is_login_check(res.data, this, 'coupon_receive_back_event')) {
+                                            app.globalData.showToast(res.data.msg);
+                                        }
                                     }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
                     }
                 }
             },

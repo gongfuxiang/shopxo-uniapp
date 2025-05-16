@@ -59,14 +59,12 @@
                                             <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
-                                            <view>
-                                                <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
-                                                    <!-- 图片 -->
-                                                    <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
-                                                    <!-- 错误 -->
-                                                    <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
-                                                        <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
-                                                    </view>
+                                            <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
+                                                <!-- 图片 -->
+                                                <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                                <!-- 错误 -->
+                                                <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
+                                                    <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
                                                 </view>
                                             </view>
 

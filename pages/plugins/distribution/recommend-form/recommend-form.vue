@@ -47,7 +47,7 @@
                                                 <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
                                             </view>
                                             <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
-                                            <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">{{$t('recommend-form.recommend-form.q536vp')}}</text>
+                                            <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">{{$t('common.remove')}}</text>
                                         </view>
                                     </view>
                                 </block>

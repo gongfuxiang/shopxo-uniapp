@@ -2,8 +2,8 @@
     <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
             <view class="share-popup bg-white">
-                <view class="close fr oh">
-                    <view class="fr" @tap.stop="popup_close_event">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
@@ -259,13 +259,6 @@
     .share-popup {
         padding: 20rpx 10rpx 0 10rpx;
         position: relative;
-    }
-    .share-popup .close {
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 2;
-        padding: 20rpx;
     }
     .share-popup-content {
         padding: 0 20rpx;

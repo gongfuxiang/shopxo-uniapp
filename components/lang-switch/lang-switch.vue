@@ -4,8 +4,8 @@
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="lang_close_event">
             <view class="lang-popup-container">
                 <!--弹出框关闭按钮 -->
-                <view class="close oh flex-row">
-                    <view class="fr" @tap="lang_close_event">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap="lang_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
@@ -105,13 +105,6 @@
         padding: 20rpx 10rpx 0 10rpx;
         background: #fff;
     }
-
-    .lang-popup-container .close {
-        position: absolute;
-        top: 24rpx;
-        right: 20rpx;
-        z-index: 2;
-    }
     .lang-popup-title {
         position: absolute;
         top: 20rpx;
@@ -120,12 +113,11 @@
         z-index: 2;
         font-size: 32rpx;
     }
-
     .lang-popup-content {
         max-height: 80vh;
         overflow-y: scroll;
         overflow-x: hidden;
-        padding: 50rpx 20rpx;
+        padding: 60rpx 20rpx;
         padding-bottom: 40rpx;
     }
     .lang-popup-list {

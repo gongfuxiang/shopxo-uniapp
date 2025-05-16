@@ -45,6 +45,13 @@
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                common_static_url: common_static_url,
+            };
+        },
+
         props: {
             propData: {
                 type: [Array,String],
@@ -60,12 +67,6 @@
                 type: String,
                 default: '',
             },
-        },
-        data() {
-            return {
-                theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
-            };
         },
 
         created: function () {},
