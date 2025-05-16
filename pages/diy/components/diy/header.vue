@@ -63,7 +63,7 @@
                                             <view v-if="!isEmpty(form.content.icon_setting) && !is_icon_alone_row" class="flex-row align-c z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                                 <view v-for="(item, index) in form.content.icon_setting" :key="index" class="pr" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                                     <image-empty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
-                                                    <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color" propContainerDisplay="flex"></iconfont>
+                                                    <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :propStyle="up_slide_icon_style" propContainerDisplay="flex"></iconfont>
                                                     <view v-if="!isEmpty(item.badge) && item.badge !== 0" class="pa badge-style">
                                                         <component-badge :propNumber="item.badge || 0"></component-badge>
                                                     </view>
@@ -79,7 +79,7 @@
                                             <view v-if="!isEmpty(form.content.icon_setting) && is_icon_alone_row" class="flex-row align-c z-i" :class="['1'].includes(form.content.theme) ? 'right-0' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                                 <view v-for="(item, index) in form.content.icon_setting" :key="index" class="pr" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }" :data-value="item.link.page" @tap="url_event">
                                                     <image-empty v-if="item.img.length > 0" :propImageSrc="item.img[0].url" :propErrorStyle="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
-                                                    <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :color="form.style.img_color" propContainerDisplay="flex"></iconfont>
+                                                    <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" :propStyle="up_slide_icon_style" propContainerDisplay="flex"></iconfont>
                                                     <view v-if="!isEmpty(item.badge) && item.badge !== 0" class="pa badge-style">
                                                         <component-badge :propNumber="item.badge || 0"></component-badge>
                                                     </view>
@@ -180,6 +180,7 @@
                 up_slide_old_logo_style: '',
                 up_slide_style: '',
                 up_slide_img_style: '',
+                up_slide_icon_style: '',
                 // 当前页面是否在底部菜单中
                 is_tabbar_pages: app.globalData.is_tabbar_pages(),
                 is_left_back_btn_show: '0',
@@ -204,19 +205,25 @@
         watch: {
             // 监听滚动距离
             propScrollTop(newVal) {
-                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display } = this.propValue.style || {};
+                const { up_slide_background_color_list, up_slide_background_direction, up_slide_background_img, up_slide_background_img_style, up_slide_display, img_color = '', up_slide_icon_color = '' } = this.propValue.style || {};
                 if (up_slide_display == '1') {
                     // 渐变
                     const gradient = { color_list: up_slide_background_color_list, direction: up_slide_background_direction };
                     // 背景图
                     const back = { background_img: up_slide_background_img, background_img_style: up_slide_background_img_style };
-                    const up_slide_opacity = 'opacity:' + ((newVal - 20) / this.header_top > 1 ? 1 : ((newVal - 20) / this.header_top).toFixed(2)) + ';';
+                    // 渐变显示数据
+                    const opacity = (newVal - 20) / this.header_top > 1 ? 1 : ((newVal - 20) / this.header_top).toFixed(2);
+                    const up_slide_opacity = 'opacity:' +  opacity + ';';
                     this.up_slide_opacity = up_slide_opacity;
                     // 来的logo要比新的隐藏的快，所以要比原来的logo快一点
                     this.up_slide_old_logo_style = 'opacity:' + ((newVal - 5) / this.header_top > 1 ? 0 : (1 - (newVal - 5) / this.header_top).toFixed(2)) + ';';
                     // =0是大小误差
                     this.up_slide_style = gradient_computer(gradient) + up_slide_opacity;
+                    // 图标更换
+                    this.up_slide_icon_style = up_slide_icon_color == '' || opacity <= 0 ? `color: ${ img_color };` : `color: ${ up_slide_icon_color };${ this.up_slide_opacity }`;
                     this.up_slide_img_style = background_computer(back);
+                } else {
+                    this.up_slide_icon_style = `color: ${ img_color };`
                 }
             },
             propKey(val) {

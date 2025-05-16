@@ -1,6 +1,6 @@
 <template>
     <view class="iconfont-container" :class="propClass" :style="'display:'+propContainerDisplay+';'">
-        <text class="iconfont" :class="name" :style="[{ color: color }, { 'font-size': size }]" @tap="$emit('click', $event)"></text>
+        <text class="iconfont" :class="name" :style="'color:'+ color + ';font-size:'+ size + ';' + propStyle" @tap="$emit('click', $event)"></text>
     </view>
 </template>
 
@@ -26,7 +26,11 @@
             propContainerDisplay: {
                 type: String,
                 default: 'inline-block',
-            }
+            },
+            propStyle: {
+                type: String,
+                default: '',
+            },
         },
     };
 </script>
