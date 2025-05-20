@@ -9,7 +9,7 @@
                         </view>
                     </template>
                     <template v-else>
-                        <view class="wh-auto ht-auto" :style="shop_spacing">
+                        <view class="w h" :style="shop_spacing">
                             <product-list-show :propKey="propKey" :propOuterflex="propValue.data_content.goods_outerflex" :propFlex="propValue.data_content.goods_flex" :propNum="show_num" :propActived="propActived" :propIsShow="propValue.data_content.is_show" :propChunkPadding="propValue.data_style.chunk_padding" :propValue="item1.split_list" :propGoodStyle="propGoodStyle" :propContentImgRadius="propValue.data_style.get_img_radius" @url_event="url_event"></product-list-show>
                         </view>
                     </template>
@@ -120,7 +120,7 @@
                         style_container: gradient_computer(style_data) + radius_computer(data_radius) + margin_computer(data_chunk_margin) + box_shadow_computer(data_pattern) + border_computer(data_pattern), // 用于样式显示
                         style_img_container: padding_computer(data_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                         next_margin: rolling_fashion == 'translation' && rotation_direction == 'horizontal' ? `-${ data_goods_gap * 2 }rpx` : '0rpx',
-                        shop_spacing: this.propType === 'img' ? 'margin-right: 0px;' : `margin-right: ${ data_goods_gap * 2 }rpx;`,
+                        shop_spacing: rolling_fashion == 'translation' && rotation_direction == 'horizontal' ? `padding-right: ${ data_goods_gap * 2 }rpx;box-sizing: border-box;` : 'padding-right: 0px;box-sizing: border-box;',
                         slides_per_view: slides_per_view,
                         show_num: show_num,
                     });
@@ -139,4 +139,11 @@
     };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.w {
+    width: 100%;
+}
+.h {
+    height: 100%;
+}
+</style>

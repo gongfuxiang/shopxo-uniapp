@@ -1,8 +1,8 @@
 <template>
     <view :class="['align-c flex-1 w h', (propOuterflex == 'row' ? 'flex-row' : 'flex-col')]" :style="'gap:' + propGoodStyle.data_goods_gap + 'px;'">
         <template v-if="propFlex === 'row'">
-            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h">
-                <view class="w h oh" :style="style_container">
+            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h flex-row">
+                <view class="flex-1 oh" :style="style_container">
                     <view class="w h flex-row gap-10" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                         <template v-if="!isEmpty(item.new_cover)">
                             <view class="w h">
@@ -29,8 +29,8 @@
             </view>
         </template>
         <template v-else-if="propFlex === 'col_price_float'">
-            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h">
-                <view class="w h oh" :style="style_container">
+            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h flex-row">
+                <view class="flex-1 oh" :style="style_container">
                     <view class="w h flex-col gap-10" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                         <view class="w h flex-1 pr oh">
                             <template v-if="!isEmpty(item.new_cover)">
@@ -56,8 +56,8 @@
             </view>
         </template>
         <template v-else>
-            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h">
-                <view class="w h oh" :style="style_container">
+            <view v-for="(item, index) in propValue" :key="index" :style="block_size" class="w h flex-row">
+                <view class="flex-1 oh" :style="style_container">
                     <view class="w h flex-col" :style="style_img_container" :data-index="index" :data-value="item.goods_url" @tap="url_event">
                         <template v-if="!isEmpty(item.new_cover)">
                             <view class="w h">
@@ -69,7 +69,7 @@
                                 <image-empty :propImageSrc="item.images" :propStyle="propContentImgRadius" propErrorStyle="width: 80rpx;height: 80rpx;"></image-empty>
                             </view>
                         </template>
-                        <view v-if="!isEmpty(propIsShow)" class="flex-col w h tl jc-sb">
+                        <view v-if="!isEmpty(propIsShow)" class="flex-1 flex-col w h tl jc-sb" :style="style_img_col_container">
                             <view v-if="propIsShow.includes('title')" class="text-line-2" :style="propGoodStyle.goods_title_style + 'height:'+ ((propGoodStyle.goods_title_size + 3) * 4) + 'rpx;'">{{ item.title || '' }}</view>
                             <view v-if="propIsShow.includes('price')" :style="propGoodStyle.goods_price_style">
                                 <text :style="propGoodStyle.goods_price_symbol_style">{{ item.show_price_symbol || ''}}</text>{{ item.min_price || '' }}
@@ -200,6 +200,7 @@
                         style_container: gradient_computer(style_data) + radius_computer(goods_radius) + margin_computer(goods_chunk_margin) + border_computer(this.propGoodStyle) + box_shadow_computer(this.propGoodStyle), // 用于样式显示
                         style_img_container: this.propFlex == 'col' ? background_computer(style_img_data) : padding_computer(goods_chunk_padding) + background_computer(style_img_data) + 'box-sizing: border-box;',
                         block_size: this.propOuterflex == 'row' ?  'height:calc(100% - ' +  shop_top_bottom_width_margin.value + 'px);width:calc((100% - ' + all_width + 'px) / ' + this.propNum  + ');' : 'width:calc(100% - ' +  shop_left_right_width_margin.value + 'px);height:calc((100% - ' + all_height + 'px) / ' + this.propNum  + ');',
+                        style_img_col_container: this.propFlex == 'col' ? padding_computer(goods_chunk_padding) + 'box-sizing: border-box;' : '',
                     });
                 } else {
                     return '';
