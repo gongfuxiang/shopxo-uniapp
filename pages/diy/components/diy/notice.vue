@@ -67,7 +67,7 @@
 
 <script>
     const app = getApp();
-    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, radius_computer } from '@/common/js/common/common.js';
+    import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, radius_computer, padding_computer, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -130,15 +130,28 @@
                 const new_content = this.propValue.content || {};
                 const new_style = this.propValue.style || {};
                 // 容器背景
-                const { container_color_list, container_direction, container_background_img_style, container_background_img } = new_style;
+                const { container_color_list, container_direction, container_background_img_style, container_background_img, container_padding = '' } = new_style;
                 const temp_obj = {
                     color_list: container_color_list,
                     direction: container_direction,
                     background_img: container_background_img,
                     background_img_style: container_background_img_style,
                 };
+                // 新增容器内边距
+                let padding = '';
+                // 不等于空的时候使用新数据
+                if (!isEmpty(container_padding)) {
+                    padding = padding_computer(container_padding);
+                } else {
+                    // 为空的时候使用默认数据
+                    let old_padding = { padding: 15, padding_top: 15, padding_right: 15, padding_bottom: 15, padding_left: 15 };
+                    if (new_content.notice_style === 'inherit') {
+                        old_padding = { padding: 0, padding_top: 0, padding_right: 10, padding_bottom: 0, padding_left: 10, }
+                    }
+                    padding = padding_computer(old_padding);
+                }
                 const temp_container_background_style = gradient_computer(temp_obj) + radius_computer(new_style.container_radius) + `overflow:hidden;`;
-                const temp_container_background_img_style = background_computer(temp_obj);
+                const temp_container_background_img_style = background_computer(temp_obj) + padding + 'box-sizing: border-box;';
                 // 标题渐变色处理
                 const gradient = gradient_handle(new_style.title_color_list, '90deg');
                 const time = (new_style.interval_time || 2) * 1000;
@@ -179,11 +192,9 @@
 <style lang="scss" scoped>
     .news-box {
         overflow: hidden;
-        padding: 0 20rpx;
         background: #fff;
     }
     .news-card {
-        padding: 30rpx;
         background: #fff;
     }
     .num {
