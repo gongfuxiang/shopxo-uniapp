@@ -139,6 +139,7 @@
             return {
                 style_container: '',
                 style_img_container: '',
+                style_img_col_container: '',
                 block_size: '',
                 float_pirce_style: '',
             };
