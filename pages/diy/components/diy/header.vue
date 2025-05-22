@@ -302,6 +302,14 @@
                     location_right_size: !isEmpty(new_style.location_right_icon_size) ? new_style.location_right_icon_size * 2 + 'rpx' : '24rpx',
                     location_color: !isEmpty(new_style.location_color) ? new_style.location_color : new_style?.position_color || '',
                     location_name_style: this.get_location_name_style(new_content),
+                    // 图标更换
+                    up_slide_icon_style:`color: ${ new_style.img_color};`,
+                    // 标题更换
+                    up_slide_title_style: `color: ${ new_style.header_background_title_color };`,
+                    // 定位更换
+                    up_slide_location_style: `color: ${ new_style.location_color };`,
+                    // 返回图标更换
+                    up_slide_left_back_btn_style:`color: ${ new_style.left_back_btn_color };`,
                     location_margin: `padding: ${location_margin.margin_top * 2}rpx ${location_margin.margin_right * 2}rpx ${location_margin.margin_bottom * 2}rpx ${location_margin.margin_left * 2}rpx;`, // 悬浮之后有间距，所以要将margin设置成外padding
                 });
                 // this.$emit('onImmersionModelCallBack', this.is_immersion_model);
