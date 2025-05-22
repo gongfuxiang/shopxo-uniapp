@@ -225,7 +225,7 @@
         data() {
             return {
                 scale_component_list: [ 'carousel', 'custom', 'data-magic', 'img-magic', 'video' ], 
-                subset_scale_component_list: [ 'carousel', 'custom', 'data-magic', 'img-magic', 'video', 'goods-list' ], 
+                subset_scale_component_list: [ 'auxiliary-blank', 'auxiliary-line', 'coupon', 'float-window', 'rich-text', 'nav-group', 'salerecords', 'search', 'tabs',  'title', 'user-info'], 
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 // 是否有选项卡
@@ -472,7 +472,7 @@
                     diy_data.forEach((item, index) => {
                         // 缩放处理
                         const style = item.com_data?.style?.common_style;
-                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key) && subset_scale_component_list.has(item.key)) {
+                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key) && !subset_scale_component_list.has(item.key)) {
                             item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
                         } else {
                             item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
