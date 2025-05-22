@@ -225,6 +225,7 @@
         data() {
             return {
                 scale_component_list: [ 'carousel', 'custom', 'data-magic', 'img-magic', 'video' ], 
+                subset_scale_component_list: [ 'carousel', 'custom', 'data-magic', 'img-magic', 'video', 'goods-list' ], 
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 // 是否有选项卡
@@ -458,6 +459,7 @@
 
                     // 提前定义用于后续处理的数据
                     const scaleComponents = new Set(this.scale_component_list);
+                    const subset_scale_component_list = new Set(this.subset_scale_component_list);
                     // 数据比例
                     let scale = sys_width / 390;
                     // 最大是2倍比例
@@ -470,7 +472,7 @@
                     diy_data.forEach((item, index) => {
                         // 缩放处理
                         const style = item.com_data?.style?.common_style;
-                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key) && scaleComponents.has(item.key)) {
+                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key) && subset_scale_component_list.has(item.key)) {
                             item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
                         } else {
                             item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
