@@ -470,7 +470,7 @@
                     diy_data.forEach((item, index) => {
                         // 缩放处理
                         const style = item.com_data?.style?.common_style;
-                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key)) {
+                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key) && scaleComponents.has(item.key)) {
                             item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
                         } else {
                             item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
