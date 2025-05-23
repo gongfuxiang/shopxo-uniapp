@@ -285,7 +285,7 @@
                                 // 是否需要弹出下单类型选择
                                 // 打开开关，并且店铺必须存在下单类型
                                 var cache_index = this.get_cache_buy_use_type_active_index();
-                                if((this.base || null) != null && parseInt(this.base.is_tips_user_choice_buy_use_type || 0) == 1 && (cache_index === null || cache_index === '') && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 1 && (this.info.status_info || null) != null && this.info.status_info.status == 1) {
+                                if(this.params.buy_use_type == undefined && (this.base || null) != null && parseInt(this.base.is_tips_user_choice_buy_use_type || 0) == 1 && (cache_index === null || cache_index === '') && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 1 && (this.info.status_info || null) != null && this.info.status_info.status == 1) {
                                     // 门店、商品是否开启了弹窗提示
                                     var key = 'is_tips_user_choice_buy_use_type_'+this.params.source+'_detail';
                                     if(parseInt(this.base[key] || 0) == 1) {
