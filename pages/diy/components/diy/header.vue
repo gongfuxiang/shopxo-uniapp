@@ -332,7 +332,7 @@
             // 封装公共逻辑函数
             get_up_slide_style(defaultColor, customColor, opacityValue) {
                 const opacityStr = opacityValue > 0 ? `opacity: ${opacityValue};` : '';
-                const color = (customColor === '' || opacityValue <= 0) ? defaultColor : customColor;
+                const color = customColor === '' ? defaultColor : opacityValue <= 0 ? defaultColor : customColor;
                 return `color: ${color};${opacityStr}`;
             },
             // 定位设置
