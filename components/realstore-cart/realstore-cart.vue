@@ -911,10 +911,12 @@
                 }
                 // 门店信息
                 if((this.info || null) != null) {
+                    // 门店下单类型列表
+                    var use_type_list = this.info.buy_use_type_list;
                     // 用户未设置类型则使用默认的
                     var active_index = this.get_cache_buy_use_type_active_index();
                     if(active_index !== null && active_index !== '') {
-                        var temp = this.info.buy_use_type_list[active_index] || null;
+                        var temp = use_type_list[active_index] || null;
                         if(temp != null) {
                             data['active_index'] = active_index;
                             data['data_index'] = temp.index;
@@ -923,12 +925,23 @@
                         // 是否默认类型
                         if(this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
                             // 不在店铺设置的类型列表则默认0
-                            for (var i in this.info.buy_use_type_list) {
-                                if(this.info.buy_use_type_list[i]['index'] == this.info.default_buy_use_type) {
+                            for (var i in use_type_list) {
+                                if(use_type_list[i]['index'] == this.info.default_buy_use_type) {
                                     data['active_index'] = i;
-                                    data['data_index'] = this.info.buy_use_type_list[i]['index'];
+                                    data['data_index'] = use_type_list[i]['index'];
                                     break;
                                 }
+                            }
+                        }
+                    }
+                    // 是否指定类型
+                    if(this.params.buy_use_type !== undefined) {
+                        var buy_use_type = parseInt(this.params.buy_use_type);
+                        for (var i in use_type_list) {
+                            if(use_type_list[i]['index'] == buy_use_type) {
+                                data['active_index'] = i;
+                                data['data_index'] = use_type_list[i]['index'];
+                                break;
                             }
                         }
                     }

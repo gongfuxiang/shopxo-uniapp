@@ -1059,7 +1059,10 @@
                 if((this.$refs.realstore_cart || null) != null) {
                     return this.$refs.realstore_cart.buy_use_type_data();
                 }
-                return 0;
+                return {
+                    active_index: 0,
+                    data_index: 0,
+                };
             },
 
             // 商品事件

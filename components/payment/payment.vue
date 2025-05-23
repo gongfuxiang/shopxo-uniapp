@@ -633,9 +633,15 @@
                             self.order_item_pay_success_handle(data, order_id);
                         },
                         fail: (res) => {
-                            let msg = res.memo || res.errMsg || self.$t('paytips.paytips.6y488i');
-                            let code = res.resultCode || res.errCode || res.errNo || null;
-                            self.order_item_pay_fail_handle(data, order_id, msg+(code == null ? '' : '('+code+')'));
+                            let error = res.memo || res.errMsg || null;
+                            if(error != null) {
+                                let code = res.resultCode || res.errCode || res.errNo || null;
+                                if(code != null) {
+                                    error += '('+code+')';
+                                }
+                                console.log(error);
+                            }
+                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
                         },
                     });
                 }
