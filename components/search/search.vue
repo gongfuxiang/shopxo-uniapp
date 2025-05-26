@@ -7,7 +7,7 @@
             <input
                 type="text"
                 confirm-type="search"
-                :class="'input round wh-auto dis-block '+propClass"
+                :class="'input round dis-block '+propClass+' '+(propIsBtn ? ' input-search-btn' : '')"
                 :placeholder="(propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5'))"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
@@ -215,10 +215,15 @@
     .search-content .input {
         box-sizing: border-box;
         font-size: 24rpx;
-        padding: 0 32rpx 0 64rpx;
+        padding: 0;
         height: 56rpx;
         line-height: 56rpx;
         background: transparent;
+        margin-left: 64rpx;
+        width: calc(100% - 96rpx);
+    }
+    .search-content .input.input-search-btn {
+        width: calc(100% - 184rpx);
     }
     .search-content .search-btn {
         width: 106rpx;
