@@ -1,6 +1,6 @@
 <template>
-    <view class="img-magic" :style="'height:' + container_size + ';' + style_container">
-        <view class="magic-container w h pr" :style="style_img_container">
+    <view class="img-magic" :style="style_container">
+        <view class="magic-container w h pr" :style="'height:' + container_height + ';' + style_img_container">
             <view class="pr" :style="'width:calc(100% + ' + outer_spacing + ');height:calc(100% + ' + outer_spacing + ');margin:-' + spacing + ';'">
                 <!-- 风格9 -->
                 <template v-if="form.style_actived == 7">
@@ -166,7 +166,7 @@
                 // content_img_radius: '',
                 data_magic_list: [],
                 cubeCellWidth: 0,
-                container_size: 0,
+                container_height: 0,
                 style_container: '',
                 style_img_container: '',
                 div_width: 0,
@@ -201,10 +201,10 @@
             init() {
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
-                const container_height = !isEmpty(new_form.container_height) ? new_form.container_height : sys_width;
+                const height = !isEmpty(new_form.container_height) ? new_form.container_height : sys_width;
                 const density = !isEmpty(new_form.magic_cube_density) ? new_form.magic_cube_density : 4;
-                const { margin_left, margin_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right - border_width(new_style.common_style) - this.propOuterContainerPadding;
+                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
+                const width = sys_width - margin_left - margin_right - padding_left - padding_right - border_width(new_style.common_style) - this.propOuterContainerPadding;
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -218,7 +218,7 @@
                     magic_scale: width / 390,
                     div_width: sys_width,
                     cubeCellWidth: sys_width / density,
-                    container_size: container_height * (width / 390) + 'px',
+                    container_height: height * (sys_width / 390) + 'px',
                 });
             },
             get_data_magic_list(data, new_style) {
