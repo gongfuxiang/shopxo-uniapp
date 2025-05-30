@@ -1040,6 +1040,9 @@
                                     discount_detail_list: data.goods_list,
                                 });
                             } else {
+                                this.setData({
+                                    already_valid_selected_status: false
+                                });
                                 app.globalData.showToast(res.data.msg);
                             }
                         },
