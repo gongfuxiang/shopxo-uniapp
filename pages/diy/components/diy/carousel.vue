@@ -166,9 +166,9 @@
                 } else if (new_form.img_fit == 'cover') {
                     fit = 'aspectFill';
                 }
-                const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
-                const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
-                const scale = width / 390;
+                // const { margin_left, margin_right, padding_left, padding_right } = new_style.common_style;
+                // const width = sys_width - margin_left - margin_right - padding_left - padding_right - this.propOuterContainerPadding;
+                const scale = sys_width / 390;
                 this.setData({
                     form: new_form,
                     new_style: new_style,
@@ -207,7 +207,7 @@
                     // 风格三，四显示逻辑
                     // this.$nextTick(() => {
                         this.setData({
-                            nextMargin: 50 + data_left_spacing + 'px',
+                            nextMargin: (new_form.carousel_type == 'twoDragOne' ? 50 : 84) + data_left_spacing + 'px',
                             slides_per_group: new_form.carousel_type == 'twoDragOne' ? 2 : 1,
                         });
                     // });
