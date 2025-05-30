@@ -203,29 +203,30 @@
                                 <!-- 购物车商品列表 -->
                                 <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
                                     <view class="content flex-row flex-wrap">
-                                        <!-- 数据列表 -->
-                                        <view v-for="(item, index) in data_list" :key="index" class="item">
-                                            <view class="padding-sm pr">
-                                                <!-- 选择 -->
-                                                <view v-if="common_site_type != 4" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
-                                                    <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
-                                                </view>
-                                                <view>
-                                                    <view class="cp">
-                                                        <!-- 图片 -->
-                                                        <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
-                                                        <!-- 错误 -->
-                                                        <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
-                                                            <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
-                                                        </view>
+                                        <block v-for="(item, index) in data_list" :key="index">
+                                            <view v-if="(item.is_error || 0) != 1" class="item">
+                                                <view class="padding-sm pr">
+                                                    <!-- 选择 -->
+                                                    <view v-if="common_site_type != 4" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
+                                                        <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                                     </view>
-                                                    <view class="flex-row jc-sb align-c margin-top-xs">
-                                                        <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ currency_symbol }}{{ item.price }} </view>
-                                                        <view class="text-size-xss cr-grey-9">x{{ item.stock }}</view>
+                                                    <view>
+                                                        <view class="cp">
+                                                            <!-- 图片 -->
+                                                            <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                                            <!-- 错误 -->
+                                                            <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
+                                                                <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
+                                                            </view>
+                                                        </view>
+                                                        <view class="flex-row jc-sb align-c margin-top-xs">
+                                                            <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ item.show_price_symbol }}{{ item.price }} </view>
+                                                            <view class="text-size-xss cr-grey-9">x{{ item.stock }}</view>
+                                                        </view>
                                                     </view>
                                                 </view>
                                             </view>
-                                        </view>
+                                        </block>
                                     </view>
                                 </scroll-view>
                                 <view v-if="data_list.length > 4" class="tc padding-top-sm" @tap="open_goods_list_event">
