@@ -440,6 +440,7 @@
                 let new_diy_index = 0;
                 let new_tabs_data = [];
                 let new_diy_data = [];
+                // 数据逻辑处理，区别是否有选项卡头部区域
                 if (tabs_data.length > 0) {
                     tabs_data.forEach((item) => {
                         // 修改item的内容
@@ -450,33 +451,8 @@
                     new_diy_data = diy_data;
                 } else {
                     new_tabs_data = tabs_data;
-                    const newMarginTopList = diy_data.filter((item) => {
-                        const style = item.com_data?.style?.common_style;
-                        return style && style.floating_up > 0;
-                    });
-
-                    const newMarginTopMap = new Set(newMarginTopList.map(item => item.id));
-
-                    // 提前定义用于后续处理的数据
-                    const scaleComponents = new Set(this.scale_component_list);
-                    const subset_scale_component_list = new Set(this.subset_scale_component_list);
-                    // 数据比例
-                    let scale = sys_width / 390;
-                    // 最大是2倍比例
-                    // if (sys_width <= 800) {
-                    //     scale = scale > 2 ? 2 : scale;
-                    // } else {
-                    //     scale = scale;
-                    // }
                     // 过滤数据
                     diy_data.forEach((item, index) => {
-                        // 缩放处理
-                        const style = item.com_data?.style?.common_style;
-                        if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data[index - 1].key) && !subset_scale_component_list.has(item.key)) {
-                            item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
-                        } else {
-                            item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
-                        }
                         // 判断是否是商品列表
                         if (item.com_name == 'float-window') {
                             item.index = -1;
@@ -495,7 +471,7 @@
                 this.setData({
                     header_data: header,
                     footer_data: this.propValue.footer,
-                    diy_data: new_diy_data,
+                    diy_data: this.set_diy_data_floating_up(new_diy_data),
                     tabs_data: new_tabs_data,
                     page_style: common_styles_computer(header_style.common_style),
                     page_img_style: background_computer(header_style.common_style),
@@ -533,6 +509,38 @@
                     return item;
                 }
                 return item;
+            },
+            set_diy_data_floating_up(diy_data_list) {
+                // 获取到内部数据之后的处理
+                const newMarginTopList = diy_data_list.filter((item) => {
+                    const style = item.com_data?.style?.common_style;
+                    return style && style.floating_up > 0;
+                });
+
+                const newMarginTopMap = new Set(newMarginTopList.map(item => item.id));
+
+                // 提前定义用于后续处理的数据
+                const scaleComponents = new Set(this.scale_component_list);
+                const subset_scale_component_list = new Set(this.subset_scale_component_list);
+                // 数据比例
+                let scale = sys_width / 390;
+                // 最大是2倍比例
+                // if (sys_width <= 800) {
+                //     scale = scale > 2 ? 2 : scale;
+                // } else {
+                //     scale = scale;
+                // }
+                // 修改缩放比例参数
+                diy_data_list.forEach((item, index) => {
+                    // 缩放处理
+                    const style = item.com_data?.style?.common_style;
+                    if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data_list[index - 1].key) && !subset_scale_component_list.has(item.key)) {
+                        item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
+                    } else {
+                        item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
+                    }
+                });
+                return diy_data_list;
             },
             // 选项卡回调更新数据
             tabs_click_event(tabs_id, bool, params = {}) {
