@@ -1123,8 +1123,13 @@
                             break;
                         // 跳转到外部小程序
                         case 2:
+                            // 打开外部小程序协议（appid|/pages/index/index?pv=hello|extraData|envVersion）
+                            var values = value.split('|');
                             uni.navigateToMiniProgram({
-                                appId: value,
+                                appId: values[0],
+                                path: values[1] || '',
+                                extraData: values[2] || '',
+                                envVersion: values[3] || 'release'
                             });
                             break;
                         // 跳转到地图查看位置
