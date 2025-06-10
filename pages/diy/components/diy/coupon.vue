@@ -357,7 +357,7 @@
                         if (res.data.code == 0) {
                             let temp_list = this.data_list;
                             app.globalData.showToast(res.data.msg, 'success');
-                            if (index) {
+                            if (index == null) {
                                 temp_list = res.data.data.coupon || [];
                             } else {
                                 temp_list[index] = res.data.data.coupon || {};
