@@ -56,9 +56,9 @@
                         </view>
                     </view>
                     <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
-                        <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
+                        <view :class="'flex-row jc-sa gap-20 buy-nav-btn-number-' + (opt_button.length || 0)">
                             <block v-for="(item, index) in opt_button" :key="index">
-                                <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
+                                <view v-if="(item.name || null) != null && (item.type || null) != null" class="item">
                                     <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" :data-business="item.business || ''" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
@@ -905,7 +905,7 @@
     }
     .goods-spec-choice-container .number-content {
         position: absolute;
-        right: 20rpx;
+        right: 0;
         top: 0;
         background: #eee;
         border: 1px solid #eee;

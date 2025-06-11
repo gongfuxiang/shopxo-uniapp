@@ -98,6 +98,6 @@
         border: 0;
     }
     .no-ask {
-        width: 174rpx;
+        width: 100rpx;
     }
 </style>

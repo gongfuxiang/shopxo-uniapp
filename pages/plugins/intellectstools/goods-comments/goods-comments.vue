@@ -25,13 +25,15 @@
                         </checkbox-group>
                     </view>
                 </view>
-                <view class="sub-btn">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('common.submit') }}</button>
+                <view class="bottom-fixed" :style="bottom_fixed_style">
+                    <view class="bottom-line-exclude">
+                        <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('common.submit') }}</button>
+                    </view>
                 </view>
             </form>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
         </view>
         <block v-else>
@@ -54,6 +56,10 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: theme_color,
+                data_list_loding_status: 1,
+                data_list_loding_msg: this.$t('form.form.bniyyt'),
+                bottom_fixed_style: '',
+                form_submit_loading: false,
                 data: {},
                 rate_value: 0,
                 image_list: [],
@@ -61,9 +67,6 @@
                 goods_id: '',
                 is_anonymous: '0',
                 text_num: 0,
-                theme_color: theme_color,
-                data_list_loding_status: 1,
-                data_list_loding_msg: this.$t('form.form.bniyyt'),
             };
         },
 
@@ -124,6 +127,7 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
+                                    data_list_loding_msg: res.data.msg,
                                 });
                             }
                         },
@@ -131,8 +135,8 @@
                             uni.stopPullDownRefresh();
                             this.setData({
                                 data_list_loding_status: 2,
+                                data_list_loding_msg: this.$t('common.internet_error_tips'),
                             });
-                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 } else {

@@ -55,7 +55,7 @@
         </form>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
 
         <!-- 公共 -->
@@ -126,7 +126,7 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    this.get_data_list();
+                    this.get_data();
                 } else {
                     // 提示错误
                     this.setData({
@@ -137,7 +137,7 @@
             },
 
             // 获取初始化信息
-            get_data_list() {
+            get_data() {
                 uni.showLoading({
                     title: this.$t('common.loading_in_text'),
                 });
@@ -166,15 +166,14 @@
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
                         uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 0,
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
