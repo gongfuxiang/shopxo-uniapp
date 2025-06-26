@@ -1,7 +1,9 @@
 <template>
     <radio-group :value="form_value" @change="data_change" class="flex-row gap-10 flex-wrap">
         <label v-for="item in option_list" :key="item.value">
-            <radio :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)"><view :style="option_style(item)">{{ item.name }}</view></radio>
+            <radio :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)">
+                <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
+            </radio>
         </label>
     </radio-group>
 </template>
@@ -34,6 +36,7 @@
                 option_list: [],
                 form_value: [],
                 com_data: {},
+                color_style: '',
                 is_multicolour: '0',
                 dialog_value: '',
             };
@@ -43,17 +46,6 @@
                 // 初始化
                 this.init();
             },
-        },
-        computed: {
-            option_style() {
-                return (item) => {
-                    if (this.is_multicolour == '1') {
-                        return `background:${ item.color };color:${ item.is_other == '1' ? '#141E31' : '#fff'};border-radius:8rpx;${ this.get_color_style }`;
-                    } else {
-                        return `${ this.get_color_style }padding-left:0rpx;padding-right:0rpx;`;
-                    }
-                }
-            }
         },
         mounted() {
             this.init();
@@ -65,7 +57,7 @@
                 this.setData({
                     com_data: com_data,
                     is_multicolour: com_data.is_multicolour,
-                    get_color_style: get_color_style(this.propMobile),
+                    color_style: get_color_style(this.propMobile),
                     option_list: com_data?.option_list || [],
                     form_value: com_data?.form_value || [], 
                 });
@@ -80,7 +72,7 @@
                     form_value: e.detail.value,
                 });
                 this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
-            }
+            },
         }
     }
 </script>

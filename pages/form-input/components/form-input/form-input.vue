@@ -1,6 +1,6 @@
 <template>
     <view class="re oh wh-auto ht-auto">
-        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" scroll-with-animation="true">
+        <scroll-view :scroll-y="true" class="scroll-box" scroll-with-animation="true">
             <view class="abs w h" :style="content_style">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
@@ -19,22 +19,25 @@
                             </view>
                         </view>
                         <view class="flex-1 wh-auto flex-col gap-5">
-                            <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" class="wh-auto" :style="get_form_border_style(item.com_data.common_config, flex_direction)">
+                            <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" class="wh-auto" :style="item.com_data.common_style">
                                 <componentInput :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentInput>
                             </view>
-                            <view v-if="item.key == 'multi-text'" class="wh-auto" :style="get_form_border_style(item.com_data.common_config, flex_direction) + 'padding: 18rpx 8rpx;'">
+                            <view v-else-if="item.key == 'multi-text'" class="wh-auto" :style="item.com_data.common_style + 'padding: 18rpx 8rpx;'">
                                 <componentTextarea :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentTextarea>
                             </view>
-                            <view v-if="item.key == 'checkbox'" class="wh-auto">
+                            <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox'" class="wh-auto">
                                 <componentCheckbox :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></componentCheckbox>
                             </view>
-                            <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns'" class="wh-auto">
+                            <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns'" class="wh-auto">
                                 <componentRadio :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentRadio>
                             </view>
-                            <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select'" class="wh-auto">
-                                <componentSelect :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentSelect>
+                            <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select'" class="wh-auto" :style="item.com_data.common_style">
+                                <componentSelect :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentSelect>
                             </view>
-                            <view v-if="item.key == 'number'" class="wh-auto" :style="get_form_border_style(item.com_data.common_config, flex_direction) + 'padding: 18rpx 8rpx;'">
+                            <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi'" class="wh-auto" :style="item.com_data.common_style">
+                                <componentSelectMulti :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></componentSelectMulti>
+                            </view>
+                            <view v-else-if="item.key == 'number'" class="wh-auto" :style="item.com_data.common_style">
                                <componentNumber :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentNumber>
                             </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
@@ -71,6 +74,7 @@ import componentCheckbox from '@/pages/form-input/components/form-input/checkbox
 import componentRadio from '@/pages/form-input/components/form-input/radio.vue';
 import componentSelect from '@/pages/form-input/components/form-input/select.vue';
 import componentNumber from '@/pages/form-input/components/form-input/number.vue';
+import componentSelectMulti from '@/pages/form-input/components/form-input/select-multi.vue';
 export default {
     name: 'diy',
     components: {
@@ -80,6 +84,7 @@ export default {
         componentRadio,
         componentNumber,
         componentSelect,
+        componentSelectMulti,
     },
     props: {
         propValue: {
@@ -121,14 +126,6 @@ export default {
             this.init();
         },
     },
-    computed: {
-        // 获取表单数据
-        get_form_border_style() {
-            return (item, flex_direction) => {
-                 return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 8rpx;';
-            };
-        },
-    },
     mounted() {
         this.init();
     },
@@ -140,6 +137,10 @@ export default {
             // 公共配置信息
             const overall_config = data.config?.overall_config || {};
             const mobile = overall_config?.style_settings?.mobile || {};
+            data.config.diy_data.forEach(item => {
+                // 边框样式处理
+                item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row');
+            });
             this.setData({
                 data_list: data.config.diy_data,
                 form_name: data.name,
@@ -156,6 +157,9 @@ export default {
                 help_icon_style: `font-size:${mobile.help_icon_size_type == 'big' ? 40 : mobile.help_icon_size_type == 'middle' ? 28 : 24}rpx;`,
                 field_label_style: `${ mobile.flex_direction == 'column'? 'justify-content:flex-start;' : `width:${ mobile.filed_title_width * 2 }rpx;justify-content: ${ mobile.filed_title_justification };` }`,
             });
+        },
+        get_form_border_style(item, flex_direction) {
+            return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 8rpx;';
         },
         data_check(e) {
             const { is_error, error_text, value, index } = e;

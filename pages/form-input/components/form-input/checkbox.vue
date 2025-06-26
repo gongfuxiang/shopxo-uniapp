@@ -2,12 +2,14 @@
     <view class="flex-col gap-5">
         <checkbox-group :value="form_value" @change="data_change" class="flex-row gap-10 flex-wrap">
             <label v-for="item in option_list" :key="item.value">
-                <checkbox :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)"><view :style="option_style(item)">{{ item.name }}</view></checkbox>
+                <checkbox :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)">
+                    <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
+                </checkbox>
             </label>
         </checkbox-group>
-        <view class="add-option flex-row gap-10 align-c" @tap="add_option">
+        <view v-if="com_data.is_add_option == '1'" class="add-option flex-row gap-10 align-c" @tap="add_option">
             <iconfont name="icon-xzdz-tianjiabiaoq" size="14" color="#2a94ff"/>
-            <view class="size-14 cr-primary">添加选项</view>
+            <view class="size-14 cr-blue">添加选项</view>
         </view>
         <!-- 选项弹出框 -->
         <uni-popup ref="inputDialog" type="dialog">
@@ -48,6 +50,7 @@
                 option_list: [],
                 form_value: [],
                 com_data: {},
+                color_style: '',
                 is_multicolour: '0',
                 dialog_value: '',
                 custom_option_list: [],
@@ -59,17 +62,6 @@
                 this.init();
             },
         },
-        computed: {
-            option_style() {
-                return (item) => {
-                    if (this.is_multicolour == '1') {
-                        return `background:${ item.color };color:${ item.is_other == '1' ? '#141E31' : '#fff'};border-radius:8rpx;${ this.get_color_style }`;
-                    } else {
-                        return `${ this.get_color_style }padding-left:0rpx;padding-right:0rpx;`;
-                    }
-                }
-            }
-        },
         mounted() {
             this.init();
         },
@@ -80,7 +72,7 @@
                 this.setData({
                     com_data: com_data,
                     is_multicolour: com_data.is_multicolour,
-                    get_color_style: get_color_style(this.propMobile),
+                    color_style: get_color_style(this.propMobile),
                     custom_option_list: com_data?.custom_option_list || [],
                     option_list: com_data?.option_list.concat(com_data?.custom_option_list || []) || [],
                     form_value: com_data?.form_value || [], 
@@ -125,7 +117,7 @@
                     form_value: e.detail.value,
                 });
                 this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
-            }
+            },
         }
     }
 </script>
