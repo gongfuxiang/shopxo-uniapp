@@ -5,7 +5,7 @@
                 <template v-if="isEmpty(form_value)"><view class="placeholder">{{ placeholder }}</view></template>
                 <template v-else>
                     <view :class="'flex-row align-c' + (is_multicolour == '1' ? ' gap-10' : '')">
-                        <view class="text-size-sm nowrap" v-for="(item, index) in form_value_data" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name || item.value  }}{{ index != form_value_data.length - 1 && is_multicolour !== '1' ? ',' : ''}}</view>
+                        <view class="text-size-sm nowrap" v-for="(item, index) in form_value_data" :key="index" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name || item.value  }}{{ index != form_value_data.length - 1 && is_multicolour !== '1' ? ',' : ''}}</view>
                     </view>
                 </template>
             </view>
@@ -34,12 +34,12 @@
                         <view :class="'flex-col gap-10 mt-10' + ( com_data.is_add_option == '1' ? 'popup-add-list' : 'popup-list')">
                            <checkbox-group :value="select_value" @change="data_all_change" class="flex-col gap-10">
                                 <label class="popup-checkbox">
-                                    <checkbox value="all" :checked="select_value == 'all'"><view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view></checkbox>
+                                    <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c"><view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view></checkbox>
                                 </label>
                             </checkbox-group>
                             <checkbox-group :value="popup_list" @change="data_checkbox_change" class="flex-col gap-10">
                                 <label v-for="item in new_option_list" class="popup-checkbox" :key="item.value">
-                                    <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)">
+                                    <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c">
                                         <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
                                     </checkbox>
                                 </label>
@@ -163,10 +163,6 @@
                     form_value_data: form_value_data,
                 });
             },
-            data_check(e) {
-                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value);
-                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, index: this.propDataIndex });
-            },
             /**
              * 下拉框选择事件
              */
@@ -274,6 +270,10 @@
                     popup_status: false,
                     form_value_data: form_value_data,
                 });
+                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, this.popup_list, true, 'checkbox');
+                // 校验数据
+                this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, index: this.propDataIndex });
+                // 数据更新时的处理
                 this.$emit('dataChange', { value: this.popup_list, index: this.propDataIndex });
             }
         }

@@ -62,10 +62,6 @@
                     form_value: com_data?.form_value || [], 
                 });
             },
-            data_check(e) {
-                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value, false, 'radio');
-                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, index: this.propDataIndex });
-            },
             data_change(e) {
                 // 重新编辑一下历史数据
                 this.setData({

@@ -908,3 +908,28 @@ export const color_change = (length) => {
         return predefine_colors[length];
     }
 };
+
+/**
+ * 格式化数字字符串或数值
+ * 此函数根据是否需要转换，将输入的数字字符串或数值格式化为带有逗号分隔的字符串
+ * 如果不需要转换，则移除输入中的所有逗号
+ *
+ * @param num - 输入的数字字符串或数值
+ * @param is_convert - 指示是否需要转换的布尔值
+ * @returns 格式化后的数字字符串
+ */
+export const formatNumber = (num, is_convert) => {
+    if (is_convert) {
+        // 将输入转换为字符串形式以便处理
+        const number = num.toString();
+        // 使用正则表达式将整数部分每三位用逗号分隔
+        const integerPart = number.split('.')[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        // 避免小数为空的时候也处理
+        const decimalPart = number.split('.')[1] == null ? '' : '.' + number.split('.')[1];
+        // 组合整数部分和小数部分
+        return integerPart + decimalPart;
+    } else {
+        // 如果不需要转换，移除所有逗号并返回
+        return num.toString().replace(/,/g, '');
+    }
+};
