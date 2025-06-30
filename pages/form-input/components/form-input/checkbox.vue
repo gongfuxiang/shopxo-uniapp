@@ -1,10 +1,11 @@
 <template>
     <view class="flex-col gap-5">
-        <checkbox-group :value="form_value" @change="data_change" class="flex-row gap-10 flex-wrap">
-            <label v-for="item in option_list" :key="item.value">
-                <checkbox :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" class="flex-row align-c">
-                    <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
-                </checkbox>
+        <checkbox-group @change="data_change" class="flex-row gap-10 flex-wrap">
+            <label v-for="item in option_list" :key="item.value" class="flex-row align-c">
+                <view>
+                    <checkbox :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" class="flex-row align-c" />
+                </view>
+                <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
             </label>
         </checkbox-group>
         <view v-if="com_data.is_add_option == '1'" class="add-option flex-row gap-10 align-c" @tap="add_option">

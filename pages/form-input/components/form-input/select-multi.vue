@@ -2,7 +2,7 @@
     <view class="wh-auto">
         <view class="flex-row align-c wh-auto gap-10" :style="propStyle" @tap="data_value_event">
             <view class="flex-1 oh">
-                <template v-if="isEmpty(form_value)"><view class="placeholder">{{ placeholder }}</view></template>
+                <template v-if="isEmpty(form_value_data)"><view class="placeholder">{{ placeholder }}</view></template>
                 <template v-else>
                     <view :class="'flex-row align-c' + (is_multicolour == '1' ? ' gap-10' : '')">
                         <view class="text-size-sm nowrap" v-for="(item, index) in form_value_data" :key="index" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name || item.value  }}{{ index != form_value_data.length - 1 && is_multicolour !== '1' ? ',' : ''}}</view>
@@ -21,8 +21,8 @@
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb margin-bottom">
-                    <view class="text-size-sm cr-blue" @tap="quick_close_event">取消</view>
-                    <view class="text-size-sm cr-blue" @tap="data_change">确定</view>
+                    <view class="text-size-sm cr-blue" @tap.stop="quick_close_event">取消</view>
+                    <view class="text-size-sm cr-blue" @tap.stop="data_change">确定</view>
                 </view>
                 <!-- 内容区域的样式 -->
                 <view class="flex-1 flex-col gap-10">
@@ -31,17 +31,19 @@
                         <input :value="popup_search_value" class="uni-input flex-1" type="text" placeholder="搜索(多个关键字用空格隔开)" @input="search_input" />
                     </view>
                     <template v-if="new_option_list.length > 0">
-                        <view :class="'flex-col gap-10 mt-10' + ( com_data.is_add_option == '1' ? 'popup-add-list' : 'popup-list')">
-                           <checkbox-group :value="select_value" @change="data_all_change" class="flex-col gap-10">
-                                <label class="popup-checkbox">
-                                    <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c"><view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view></checkbox>
+                        <view :class="'flex-col gap-10 mt-10 ' + ( com_data.is_add_option == '1' ? 'popup-add-list' : 'popup-list')">
+                           <checkbox-group @change="data_all_change" class="flex-col gap-10">
+                                <label class="popup-checkbox flex-row">
+                                    <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c" />
+                                    <view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view>
                                 </label>
                             </checkbox-group>
-                            <checkbox-group :value="popup_list" @change="data_checkbox_change" class="flex-col gap-10">
-                                <label v-for="item in new_option_list" class="popup-checkbox" :key="item.value">
-                                    <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c">
-                                        <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
-                                    </checkbox>
+                            <checkbox-group @change="data_checkbox_change" class="flex-col gap-10">
+                                <label v-for="(item, index) in new_option_list" class="popup-checkbox flex-row" :key="index">
+                                    <view>
+                                        <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c" />
+                                    </view>
+                                    <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
                                 </label>
                             </checkbox-group>
                         </view>
@@ -160,6 +162,7 @@
                     custom_option_list: com_data?.custom_option_list || [],
                     color_style: get_color_style(this.propMobile),
                     form_value: com_data?.form_value || '',
+                    popup_list: com_data?.form_value || [],
                     form_value_data: form_value_data,
                 });
             },
@@ -169,7 +172,7 @@
             data_value_event() {
                 const count = this.new_option_list.reduce((acc, item) => this.form_value.includes(item.value) ? acc + 1 : acc, 0);
                 this.setData({
-                    select_value: count == this.new_option_list.length ? ['all'] : '',
+                    select_value: count == this.new_option_list.length ? 'all' : '',
                     popup_list: this.form_value,
                     popup_status: true,
                 });
@@ -224,7 +227,7 @@
                 const count = list.reduce((acc, item) => this.popup_list.includes(item.value) ? acc + 1 : acc, 0);
                 // 搜索
                 this.setData({
-                    select_value: count == list.length ? ['all'] : '',
+                    select_value: count == list.length ? 'all' : '',
                     popup_search_value: e.detail.value,
                 });
             }, 
@@ -250,7 +253,7 @@
                 const val = new_data.concat(e.detail.value);
                 const count = this.new_option_list.reduce((acc, item) => val.includes(item.value) ? acc + 1 : acc, 0);
                 this.setData({
-                    select_value: count == this.new_option_list.length ? ['all'] : '',
+                    select_value: count == this.new_option_list.length ? 'all' : '',
                     popup_list: val,
                 });
             },

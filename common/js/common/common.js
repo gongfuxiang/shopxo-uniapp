@@ -973,7 +973,12 @@ export const time_stamp = (time, date_style = 'horizontal', date_type) => {
     if (isEmpty(time)) {
         return '';
     }
-    const date = new Date(time);
+    let new_time = time.replace(/-/g, '/').replace(/年|月|日/g, '/').replace(/\/+$/, '');
+    // 检查时间是否符合日期格式, 不符合的话，添加上固定的年月日
+    if (['option1', 'option2'].includes(date_type) && isNaN(new Date(new_time).getTime())) {
+        new_time = '1970/01/01 ' + time.replace(/时|分|秒/g, ':').replace(/:+$/, '');
+    }
+    const date = new Date(new_time);
     // 获取各时间组件
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');

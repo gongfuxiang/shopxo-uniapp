@@ -31,7 +31,7 @@
                     </view>
                     <template v-if="new_option_list.length > 0">
                         <view class="flex-col gap-10 mt-10 popup-list">
-                            <radio-group :value="form_value" @change="data_change" class="flex-col gap-10">
+                            <radio-group @change="data_change" class="flex-col gap-10">
                                 <label v-for="item in new_option_list" class="popup-radio" :key="item.value">
                                     <radio :value="item.value" :checked="!isEmpty(form_value) && form_value == item.value">
                                         <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>

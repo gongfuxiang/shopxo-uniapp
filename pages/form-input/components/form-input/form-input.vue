@@ -43,6 +43,9 @@
                             <view v-else-if="item.key == 'date'" class="wh-auto" :style="item.com_data.common_style">
                                <componentDate :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentDate>
                             </view>
+                            <view v-else-if="item.key == 'date-group'" class="wh-auto" :style="item.com_data.common_style">
+                               <componentDateGroup :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentDateGroup>
+                            </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
                     </view>
@@ -78,6 +81,7 @@ import componentRadio from '@/pages/form-input/components/form-input/radio.vue';
 import componentSelect from '@/pages/form-input/components/form-input/select.vue';
 import componentNumber from '@/pages/form-input/components/form-input/number.vue';
 import componentDate from '@/pages/form-input/components/form-input/date.vue';
+import componentDateGroup from '@/pages/form-input/components/form-input/date-group.vue';
 import componentSelectMulti from '@/pages/form-input/components/form-input/select-multi.vue';
 export default {
     name: 'diy',
@@ -90,6 +94,7 @@ export default {
         componentSelect,
         componentSelectMulti,
         componentDate,
+        componentDateGroup,
     },
     props: {
         propValue: {
@@ -206,6 +211,7 @@ export default {
     height: calc(100vh - 110rpx);
 }
 .bottom-fixed { 
+    background: #fff;
     width: 100%;
     border-top: 2rpx solid #eee;
     .save_draft_title {

@@ -137,7 +137,7 @@
 				// 判断传递过来的时间是否为空
 				if (timeStr) {
 					const time = this.dataType == 'date' ? timeStr : '1970-01-01 ' + timeStr.replace(/时|分|秒/g, ':').replace(/:+$/, ''); // 去除末尾多余的冒号;
-					dateObj = new Date(time.replace(/-/g,'/'));
+					dateObj = new Date(time.replace(/-/g,'/').replace(/年|月|日/g, '/').replace(/\/+$/, ''));
 				}
 				const timeObj = {
 					year: dateObj.getFullYear(),
@@ -162,8 +162,7 @@
 				}, 100)
 			},
 			// 确认
-			submit_event () {
-				debugger;
+			submit_event() {
 				var num = parseInt(this.shownum) || 3
 				if (num <= 0 || num > 3) {
 					num = 3
@@ -173,9 +172,9 @@
 					if (num == 1) {
 						date = this.year;
 					} else if (num == 2) {
-						date = this.year + '-' + this.month;
+						date = this.year + '/' + this.month;
 					} else if (num == 3) {
-						date = this.year + '-' + this.month + '-' + this.day;
+						date = this.year + '/' + this.month + '/' + this.day;
 					}
 				} else {
 					if (num == 1) {

@@ -1,13 +1,15 @@
 <template>
     <view class="flex-row align-c wh-auto pr" :style="propStyle">
         <template v-if="['option1', 'option2'].includes(date_type)">
-            <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="time_change"></myDatetime>
+            <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_date_change"></myDatetime>
         </template>
         <template v-else-if="date_type == 'option3'">
-            <myDatetime ref="option4" :shownum="2" @timeSubmit="time_change"></myDatetime>
+            <myDatetime ref="option4" :shownum="2" @timeSubmit="data_date_change"></myDatetime>
         </template>
         <template v-else>
-            <uni-datetime-picker ref="option4" class="datetime-picker" :value="form_value" :border="false" :type="date_type == 'option4' ? 'date' : 'datetime'" :hideSecond="date_type == 'option4'" @change="data_date_change" />
+            <view class="datetime-picker">
+                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'date' : 'datetime'" :hideSecond="date_type !== 'option4'" @change="data_date_change" />
+            </view>
         </template>
         <view class="bg-white wh-auto ht-auto flex-row align-c" @tap="data_time_change">
             <template v-if="isEmpty(form_value)">
@@ -69,8 +71,10 @@
             isEmpty,
             init() {
                 const com_data = this.propValue;
-                const date = time_stamp(com_data?.form_value || '', com_data.date_style, com_data.date_type);
-                debugger;
+                let date = com_data.form_value;
+                if (!isEmpty(com_data.form_value)) {
+                    date = time_stamp(com_data.form_value, com_data.date_style, com_data.date_type);
+                }
                 this.$nextTick(() => {
                     this.setData({
                         com_data: com_data,
@@ -82,7 +86,6 @@
                 });
             },
             data_time_change() {
-                console.log(this.$refs.option4);
                 if (['option1', 'option2', 'option3'].includes(this.date_type)) {
                     this.$refs.option4.open(this.form_value || '');
                 } else {
@@ -101,18 +104,6 @@
                 });
                 this.$emit('dataChange', { value: date, index: this.propDataIndex });
             },
-            data_change(e) {
-                const date = time_stamp(e.detail.value, this.date_style, this.date_type);
-                debugger;
-                // 重新编辑一下历史数据
-                this.setData({
-                    form_value: date,
-                });
-                this.$emit('dataChange', { value: date, index: this.propDataIndex });
-            },
-            time_change(e) {
-                console.log(e);
-            }
         }
     }
 </script>
