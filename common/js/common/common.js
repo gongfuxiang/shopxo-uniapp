@@ -933,3 +933,69 @@ export const formatNumber = (num, is_convert) => {
         return num.toString().replace(/,/g, '');
     }
 };
+
+// 明确声明 styles 类型
+const date_styles = {
+    horizontal: {
+        year: '-',
+        month: '-',
+        day: ' ',
+        hour: ':',
+        minute: ':',
+        second: '',
+    },
+    slash: {
+        year: '/',
+        month: '/',
+        day: ' ',
+        hour: ':',
+        minute: ':',
+        second: '',
+    },
+    chinese: {
+        year: '年',
+        month: '月',
+        day: '日 ',
+        hour: '时',
+        minute: '分',
+        second: '秒',
+    },
+};
+
+/**
+ * 将时间戳转换为指定格式的日期字符串
+ * @param {number|string} time - 时间
+ * @param {string} [date_style='horizontal'] - 日期格式风格：horizontal/slash/chinese
+ * @returns {string} 格式化后的日期时间字符串
+ */
+export const time_stamp = (time, date_style = 'horizontal', date_type) => {
+    // 如果时间为空或不是数字，则返回空字符串
+    if (isEmpty(time)) {
+        return '';
+    }
+    const date = new Date(time);
+    // 获取各时间组件
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    // 获取对应的分隔符配置
+    const style = date_styles[date_style] || date_styles.horizontal;
+    // 组合成完整日期时间字符串
+    if (date_type == 'option1') {
+        return `${hours}${style.hour}${minutes}${date_style == 'chinese' ? style.minute : ''}`;
+    } else if (date_type == 'option2'){
+        return `${hours}${style.hour}${minutes}${style.minute}${seconds}${date_style == 'chinese' ? style.second : ''}`;
+    } else if (date_type == 'option3'){
+        return `${year}${style.year}${month}${date_style == 'chinese' ? style.month : ''}`;
+    } else if (date_type == 'option4'){
+        return `${year}${style.year}${month}${style.month}${day}${ date_style == 'chinese' ? style.day : ''}`;
+    } else if (date_type == 'option5'){
+        return `${year}${style.year}${month}${style.month}${day}${style.day}${hours}${style.hour}${minutes}${date_style == 'chinese' ? style.minute : ''}`;
+    } else {
+        return `${year}${style.year}${month}${style.month}${day}${style.day}${hours}${style.hour}${minutes}${style.minute}${seconds}${date_style == 'chinese' ? style.second : ''}`;
+    }
+}
