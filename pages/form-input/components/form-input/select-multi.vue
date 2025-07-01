@@ -75,7 +75,6 @@
     import { get_format_checks, isEmpty, get_color_style, color_change } from '@/common/js/common/common.js';
     import componentPopup from '@/components/popup/popup';
     export default {
-        name: 'diy',
         components: {
             componentPopup,
         },

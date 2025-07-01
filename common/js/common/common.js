@@ -853,8 +853,7 @@ export const get_format_checks_v2 = (common_config, value) => {
             error_text = '';
         } else {
             is_error = '1';
-            const error_text = item.value == 'telephone-number' ? `请输入正确的电话号码或手机号码格式` : `请输入正确的${item.name}格式`;
-            error_text = error_text;
+            error_text = item.value == 'telephone-number' ? `请输入正确的电话号码或手机号码格式` : `请输入正确的${item.name}格式`;
         }
     } else {
         // 如果值为空，重置错误状态
@@ -973,12 +972,16 @@ export const time_stamp = (time, date_style = 'horizontal', date_type) => {
     if (isEmpty(time)) {
         return '';
     }
-    let new_time = time.replace(/-/g, '/').replace(/年|月|日/g, '/').replace(/\/+$/, '');
+    let new_time = time;
     // 检查时间是否符合日期格式, 不符合的话，添加上固定的年月日
     if (['option1', 'option2'].includes(date_type) && isNaN(new Date(new_time).getTime())) {
         new_time = '1970/01/01 ' + time.replace(/时|分|秒/g, ':').replace(/:+$/, '');
     }
-    const date = new Date(new_time);
+    let date = new Date(new_time.replace(/-/g, '/').replace(/年|月|日/g, '/').replace(/\/+$/, ''));
+    // 如果可以直接解析成功，就使用直接解析好的数据
+    if (!isNaN(new Date(new_time).getTime())) {
+        date = new Date(new_time);
+    }
     // 获取各时间组件
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');

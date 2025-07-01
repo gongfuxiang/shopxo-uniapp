@@ -8,7 +8,6 @@
 <script>
     import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
     export default {
-        name: 'diy',
         props: {
             propValue: {
                 type: Object,

@@ -12,7 +12,6 @@
     import { get_format_checks, isEmpty, get_color_style } from '@/common/js/common/common.js';
     const app = getApp();
     export default {
-        name: 'diy',
         props: {
             propValue: {
                 type: Object,
