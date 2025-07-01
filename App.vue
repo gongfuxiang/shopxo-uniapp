@@ -161,8 +161,6 @@
 
                 // 用户地址选择缓存key
                 cache_buy_user_address_select_key: 'cache_buy_user_address_select_key',
-                // 用户地址选择缓存key
-                cache_region_all_address_key: 'cache_region_all_address_key',
 
                 // 启动参数缓存key
                 cache_launch_info_key: 'cache_shop_launch_info_key',
