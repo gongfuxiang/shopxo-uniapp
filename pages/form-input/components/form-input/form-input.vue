@@ -52,6 +52,9 @@
                             <view v-else-if="item.key == 'phone'">
                                <componentPhone :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></componentPhone>
                             </view>
+                            <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
+                               <componentPwd :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></componentPwd>
+                            </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
                     </view>
@@ -92,6 +95,7 @@ import componentDateGroup from '@/pages/form-input/components/form-input/date-gr
 import componentAddress from '@/pages/form-input/components/form-input/address.vue';
 import componentSelectMulti from '@/pages/form-input/components/form-input/select-multi.vue';
 import componentPhone from '@/pages/form-input/components/form-input/phone.vue';
+import componentPwd from '@/pages/form-input/components/form-input/pwd.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -108,6 +112,7 @@ export default {
         componentAddress,
         componentRegionPicker,
         componentPhone,
+        componentPwd,
     },
     props: {
         propValue: {
