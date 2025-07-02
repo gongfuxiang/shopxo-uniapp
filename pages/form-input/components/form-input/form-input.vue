@@ -12,7 +12,7 @@
                     <!-- 左右模式 -->
                     <!-- <template v-if="flex_direction == 'row'"> -->
                     <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? 'flex-row align-b gap-10' : 'flex-col gap-10')">
-                        <view class="field-label flex-row align-c gap-10" :style="field_label_style">
+                        <view v-if="item.key !== 'auxiliary-line'" class="field-label flex-row align-c gap-10" :style="field_label_style">
                             <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
                             <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
                                 <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
@@ -67,6 +67,12 @@
                             <view v-else-if="item.key == 'text'">
                                 <component-text :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-text>
                             </view>
+                            <view v-else-if="item.key == 'attachments'">
+                                <component-attachments :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-attachments>
+                            </view>
+                            <view v-else-if="item.key == 'auxiliary-line'">
+                                <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-auxiliary-line>
+                            </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
                     </view>
@@ -112,6 +118,8 @@ import componentScore from '@/pages/form-input/components/form-input/score.vue';
 import componentImage from '@/pages/form-input/components/form-input/image.vue';
 import componentVideo from '@/pages/form-input/components/form-input/video.vue';
 import componentText from '@/pages/form-input/components/form-input/text.vue';
+import componentAttachments from '@/pages/form-input/components/form-input/attachments.vue';
+import componentAuxiliaryLine from '@/pages/form-input/components/form-input/auxiliary-line.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -132,7 +140,9 @@ export default {
         componentScore,
         componentImage,
         componentVideo,
-        componentText
+        componentText,
+        componentAttachments,
+        componentAuxiliaryLine
     },
     props: {
         propValue: {

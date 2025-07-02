@@ -1,7 +1,6 @@
 <template>
-    <!-- 视频 -->
-    <view :style="propStyle + 'height:100%;color:' + com_data.text_color + ';'">
-       {{ isEmpty(form_value) ? '没有内容' : form_value }}
+    <view class="content w flex-1 flex-row" :style="propStyle + 'height: 100%;' + line_location">
+        <view :style="border_style"></view>
     </view>
 </template>
 
@@ -33,7 +32,8 @@
         data() {
             return {
                 com_data: {},
-                form_value: '',
+                line_location: '',
+                border_style: '',
             };
         },
         watch: {
@@ -50,9 +50,20 @@
             // 初始化数据
             init() {
                 const com_data = this.propValue;
+                let border_style = '';
+                 if (!this.propIsCustom) {
+                    border_style =`width: ${ com_data.line_width }%;border-bottom: ${ com_data.line_size }px ${ com_data.line_style } ${ com_data.line_color };`;
+                } else {
+                    if (com_data.line_type === 'horizontal') {
+                        border_style = `width: ${com_data.com_width * 2}rpx;margin: 10rpx 0;border-bottom: ${com_data.line_size * 2 }rpx ${com_data.line_style} ${com_data.line_color};`;
+                    } else {
+                        border_style = `height: ${com_data.com_height * 2}rpx;margin: 0 10rpx;border-right: ${com_data.line_size * 2 }rpx ${com_data.line_style} ${com_data.line_color};`;
+                    }
+                }
                 this.setData({
                     com_data: com_data,
-                    form_value: com_data?.form_value || '',
+                    border_style: border_style,
+                    line_location: `justify-content: ${ com_data.line_location };`
                 });
             }
         },
