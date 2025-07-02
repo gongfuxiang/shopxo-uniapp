@@ -12,12 +12,21 @@
                     <!-- 左右模式 -->
                     <!-- <template v-if="flex_direction == 'row'"> -->
                     <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? 'flex-row align-b gap-10' : 'flex-col gap-10')">
-                        <view v-if="item.key !== 'auxiliary-line'" class="field-label flex-row align-c gap-10" :style="field_label_style">
+                        <view v-if="!['rich-text', 'auxiliary-line'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="field_label_style">
                             <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
                             <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
                                 <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
                             </view>
                         </view>
+                        <!-- 富文本仅支持H5、APP-PLUS、微信小程序、百度小程序 -->
+                        <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
+                        <view v-if="item.key == 'rich-text'" class="field-label flex-row align-c gap-10" :style="field_label_style">
+                            <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
+                            <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
+                                <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
+                            </view>
+                        </view>
+                        <!-- #endif -->
                         <view class="flex-1 wh-auto flex-col gap-5">
                             <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                                 <component-input :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
@@ -73,6 +82,11 @@
                             <view v-else-if="item.key == 'auxiliary-line'">
                                 <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-auxiliary-line>
                             </view>
+                            <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
+                            <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
+                                <component-rich-text :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-rich-text>
+                            </view>
+                            <!-- #endif -->
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
                     </view>
@@ -120,6 +134,7 @@ import componentVideo from '@/pages/form-input/components/form-input/video.vue';
 import componentText from '@/pages/form-input/components/form-input/text.vue';
 import componentAttachments from '@/pages/form-input/components/form-input/attachments.vue';
 import componentAuxiliaryLine from '@/pages/form-input/components/form-input/auxiliary-line.vue';
+import componentRichText from '@/pages/form-input/components/form-input/rich-text.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -142,7 +157,8 @@ export default {
         componentVideo,
         componentText,
         componentAttachments,
-        componentAuxiliaryLine
+        componentAuxiliaryLine,
+        componentRichText
     },
     props: {
         propValue: {
