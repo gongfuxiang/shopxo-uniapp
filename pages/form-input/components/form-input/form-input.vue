@@ -64,6 +64,9 @@
                             <view v-else-if="item.key == 'video'">
                                <component-video :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-video>
                             </view>
+                            <view v-else-if="item.key == 'text'">
+                                <component-text :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-text>
+                            </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
                     </view>
@@ -108,6 +111,7 @@ import componentPwd from '@/pages/form-input/components/form-input/pwd.vue';
 import componentScore from '@/pages/form-input/components/form-input/score.vue';
 import componentImage from '@/pages/form-input/components/form-input/image.vue';
 import componentVideo from '@/pages/form-input/components/form-input/video.vue';
+import componentText from '@/pages/form-input/components/form-input/text.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -127,7 +131,8 @@ export default {
         componentPwd,
         componentScore,
         componentImage,
-        componentVideo
+        componentVideo,
+        componentText
     },
     props: {
         propValue: {

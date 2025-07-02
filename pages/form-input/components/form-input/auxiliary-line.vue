@@ -1,16 +1,13 @@
 <template>
-    <view class="form-input-image"> 
-        <image-empty :propImageSrc="img_src" :propStyle="img_style" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
+    <!-- 视频 -->
+    <view :style="propStyle + 'height:100%;color:' + com_data.text_color + ';'">
+       {{ isEmpty(form_value) ? '没有内容' : form_value }}
     </view>
 </template>
 
-<script> 
+<script>
     import { isEmpty } from '@/common/js/common/common.js';
-    import imageEmpty from '@/pages/form-input/components/form-input/modules/image-empty.vue';
     export default {
-        components: {
-            imageEmpty
-        },
         props: {
             propValue: {
                 type: Object,
@@ -36,8 +33,7 @@
         data() {
             return {
                 com_data: {},
-                img_src: '',
-                img_style: 'width: 100%;height:100%;',
+                form_value: '',
             };
         },
         watch: {
@@ -51,23 +47,16 @@
         },
         methods: {
             isEmpty,
+            // 初始化数据
             init() {
                 const com_data = this.propValue;
-                let img_style = `width: 100%;height:100%;`;
-                if (!this.propIsCustom && !isEmpty(com_data)) {
-                    const { img_width, img_scale_type } = com_data;
-                    const height = img_scale_type === '1' ? img_width : img_scale_type == '0' ? (img_width * 9) / 16 : (img_width * 3) / 4;
-                    img_style = `width: ${ img_width * 2 }rpx;height:${ height * 2 }rpx;`
-                }
                 this.setData({
                     com_data: com_data,
-                    img_src: com_data.img_src.length > 0 ? com_data.img_src[0] : '',
-                    img_style: img_style,
+                    form_value: com_data?.form_value || '',
                 });
             }
-        }
-    }
+        },
+    };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style></style>

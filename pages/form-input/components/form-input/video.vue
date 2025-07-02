@@ -62,12 +62,14 @@
                 const com_data = this.propValue;
                 let video_style = `width: 100%;height:100%;`;
                 if (!this.propIsCustom && !isEmpty(com_data)) {
-                    const { video_width, video_scale_type } = form.value;
+                    const { video_width, video_scale_type } = com_data;
                     const height = video_scale_type === '1' ? video_width : video_scale_type == '0' ? (video_width * 9) / 16 : (video_width * 3) / 4;
                     video_style = `width: ${ video_width * 2 }rpx;height:${ height * 2 }rpx;`
                 }
                 this.setData({
                     com_data: com_data,
+                    video: com_data.video.length > 0 ? com_data.video[0].url : '',
+                    video_img: com_data.video_img.length > 0 ? com_data.video_img[0].url : '',
                     video_style: video_style,
                 });
             }
