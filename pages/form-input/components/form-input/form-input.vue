@@ -20,43 +20,49 @@
                         </view>
                         <view class="flex-1 wh-auto flex-col gap-5">
                             <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
-                                <componentInput :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentInput>
+                                <component-input :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
                             </view>
                             <view v-else-if="item.key == 'multi-text'" :style="item.com_data.common_style + 'padding: 18rpx 22rpx;'">
-                                <componentTextarea :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentTextarea>
+                                <component-textarea :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
                             </view>
                             <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox'">
-                                <componentCheckbox :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></componentCheckbox>
+                                <component-checkbox :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-checkbox>
                             </view>
                             <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns'">
-                                <componentRadio :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentRadio>
+                                <component-radio :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-radio>
                             </view>
                             <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select'" :style="item.com_data.common_style">
-                                <componentSelect :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentSelect>
+                                <component-select :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-select>
                             </view>
                             <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi'" :style="item.com_data.common_style">
-                                <componentSelectMulti :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></componentSelectMulti>
+                                <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-select-multi>
                             </view>
                             <view v-else-if="item.key == 'number'" :style="item.com_data.common_style">
-                               <componentNumber :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentNumber>
+                               <component-number :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-number>
                             </view>
                             <view v-else-if="item.key == 'date'" :style="item.com_data.common_style">
-                               <componentDate :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentDate>
+                               <component-date :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date>
                             </view>
                             <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style">
-                               <componentDateGroup :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></componentDateGroup>
+                               <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date-group>
                             </view>
                             <view v-else-if="item.key == 'address'">
-                               <componentAddress :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @openRagion="open_ragion" @dataAddressChange="dataAddressChange"></componentAddress>
+                               <component-address :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @openRagion="open_ragion" @dataAddressChange="dataAddressChange"></component-address>
                             </view>
                             <view v-else-if="item.key == 'phone'">
-                               <componentPhone :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></componentPhone>
+                               <component-phone :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></component-phone>
                             </view>
                             <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
-                               <componentPwd :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></componentPwd>
+                               <component-pwd :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
                             </view>
                             <view v-else-if="item.key == 'score'">
-                               <componentScore :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></componentScore>
+                               <component-score :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-score>
+                            </view>
+                            <view v-else-if="item.key == 'img'">
+                               <component-image :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-image>
+                            </view>
+                            <view v-else-if="item.key == 'video'">
+                               <component-video :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-video>
                             </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
@@ -100,6 +106,8 @@ import componentSelectMulti from '@/pages/form-input/components/form-input/selec
 import componentPhone from '@/pages/form-input/components/form-input/phone.vue';
 import componentPwd from '@/pages/form-input/components/form-input/pwd.vue';
 import componentScore from '@/pages/form-input/components/form-input/score.vue';
+import componentImage from '@/pages/form-input/components/form-input/image.vue';
+import componentVideo from '@/pages/form-input/components/form-input/video.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -118,7 +126,8 @@ export default {
         componentPhone,
         componentPwd,
         componentScore,
-
+        componentImage,
+        componentVideo
     },
     props: {
         propValue: {
