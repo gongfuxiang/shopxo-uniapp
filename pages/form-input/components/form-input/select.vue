@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" @onclose="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col gap-10">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb">
@@ -47,17 +47,13 @@
                     </template>
                 </view>
             </view>
-        </component-popup>
+        </uni-popup>
     </view>
 </template>
 
 <script>
-    import { get_format_checks, isEmpty, get_color_style } from '@/common/js/common/common.js';
-    import componentPopup from '@/components/popup/popup';
+    import { isEmpty, get_color_style } from '@/common/js/common/common.js';
     export default {
-        components: {
-            componentPopup,
-        },
         props: {
             propValue: {
                 type: Object,
@@ -133,7 +129,7 @@
                 this.setData({
                     com_data: com_data,
                     is_multicolour: com_data.is_multicolour,
-                    placeholder: com_data?.placeholder || '请输入内容...',
+                    placeholder: com_data.placeholder,
                     option_list: com_data?.option_list || [],
                     color_style: get_color_style(this.propMobile),
                     form_value: com_data?.form_value || '',
@@ -144,17 +140,13 @@
              * 下拉框选择事件
              */
             data_value_event() {
-                this.setData({
-                    popup_status: true,
-                });
+                this.$refs.selectPopup.open();
             },
             /**
              * 快速关闭事件
              */
             quick_close_event() {
-                this.setData({
-                    popup_status: false,
-                });
+                this.$refs.selectPopup.close();
             },
             /**
              * 搜索事件
@@ -180,9 +172,11 @@
                 // 重新编辑一下历史数据
                 this.setData({
                     form_value: e.detail.value,
-                    popup_status: false,
                     form_value_data: form_value_data,
                 });
+                // 关闭选择框
+                this.$refs.selectPopup.close();
+
                 this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
             }
         }

@@ -93,7 +93,7 @@
                 }
                 this.setData({
                     com_data: com_data,
-                    placeholder: com_data?.placeholder || '请输入内容...',
+                    placeholder: com_data.placeholder,
                     form_value: com_data?.form_value || '', 
                     form_value_code: com_data?.form_value_code || '',
                     format: com_data.format,

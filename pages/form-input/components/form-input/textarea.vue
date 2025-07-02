@@ -51,7 +51,7 @@
                 this.setData({
                     com_data: com_data,
                     max_length: com_data.is_limit_num == '1' && !isEmpty(com_data.max_num) ? com_data.max_num : '-1',
-                    placeholder: com_data?.placeholder || '请输入内容...',
+                    placeholder: com_data?.placeholder,
                     form_value: com_data?.form_value || '', 
                 });
             },

@@ -77,8 +77,8 @@
                 this.setData({
                     com_data: com_data,
                     address_type: com_data.address_type || 'noDetailed',
-                    placeholder: com_data?.placeholder || '请选择内容...',
-                    form_value: com_data?.form_value || '', 
+                    placeholder: com_data.placeholder,
+                    form_value: com_data.form_value , 
                     detailed_value: com_data?.detailed_value || '',
                     province_id: com_data?.form_value[0] || '',
                     city_id: com_data?.form_value[1] || '',

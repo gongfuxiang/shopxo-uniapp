@@ -86,7 +86,7 @@
                 this.$nextTick(() => {
                     this.setData({
                         com_data: com_data,
-                        placeholder: com_data?.placeholder || '请输入内容...',
+                        placeholder: com_data?.placeholder,
                         form_value: date_list, 
                         date_style: com_data.date_style,
                         date_type: com_data.date_type,

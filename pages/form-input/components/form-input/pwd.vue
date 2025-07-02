@@ -53,7 +53,7 @@
                 const com_data = this.propValue;
                 this.setData({
                     com_data: com_data,
-                    placeholder: com_data?.placeholder || '请输入密码...',
+                    placeholder: com_data.placeholder,
                     form_value: com_data?.form_value || '', 
                     is_show: true,
                 });

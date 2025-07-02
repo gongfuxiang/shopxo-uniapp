@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" @onclose="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb margin-bottom">
@@ -59,7 +59,7 @@
                     <view class="size-14 cr-blue">添加选项</view>
                 </view>
             </view>
-        </component-popup>
+        </uni-popup>
         <!-- 选项弹出框 -->
         <uni-popup ref="inputDialog" type="dialog">
             <uni-popup-dialog ref="inputClose" mode="input" title="输入内容" :value="dialog_value" before-close placeholder="请输入内容" @close="dialog_input_close" @confirm="dialog_input_confirm"></uni-popup-dialog>
@@ -73,11 +73,7 @@
 
 <script>
     import { get_format_checks, isEmpty, get_color_style, color_change } from '@/common/js/common/common.js';
-    import componentPopup from '@/components/popup/popup';
     export default {
-        components: {
-            componentPopup,
-        },
         props: {
             propValue: {
                 type: Object,
@@ -156,7 +152,7 @@
                 this.setData({
                     com_data: com_data,
                     is_multicolour: com_data.is_multicolour,
-                    placeholder: com_data?.placeholder || '请输入内容...',
+                    placeholder: com_data?.placeholder,
                     option_list: com_data?.option_list.concat(com_data?.custom_option_list || []) || [],
                     custom_option_list: com_data?.custom_option_list || [],
                     color_style: get_color_style(this.propMobile),
@@ -173,8 +169,8 @@
                 this.setData({
                     select_value: count == this.new_option_list.length ? 'all' : '',
                     popup_list: this.form_value,
-                    popup_status: true,
                 });
+                this.$refs.selectPopup.open();
             },
             add_option() {
                 this.setData({
@@ -209,9 +205,7 @@
              * 快速关闭事件
              */
             quick_close_event() {
-                this.setData({
-                    popup_status: false,
-                });
+                this.$refs.selectPopup.close();
             },
             /**
              * 搜索事件
@@ -269,9 +263,9 @@
                 // 重新编辑一下历史数据
                 this.setData({
                     form_value: this.popup_list,
-                    popup_status: false,
                     form_value_data: form_value_data,
                 });
+                this.$refs.selectPopup.close();
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, this.popup_list, true, 'checkbox');
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, index: this.propDataIndex });

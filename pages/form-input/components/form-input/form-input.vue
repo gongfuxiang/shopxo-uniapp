@@ -55,6 +55,9 @@
                             <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
                                <componentPwd :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></componentPwd>
                             </view>
+                            <view v-else-if="item.key == 'score'">
+                               <componentScore :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></componentScore>
+                            </view>
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
                         </view>
                     </view>
@@ -96,6 +99,7 @@ import componentAddress from '@/pages/form-input/components/form-input/address.v
 import componentSelectMulti from '@/pages/form-input/components/form-input/select-multi.vue';
 import componentPhone from '@/pages/form-input/components/form-input/phone.vue';
 import componentPwd from '@/pages/form-input/components/form-input/pwd.vue';
+import componentScore from '@/pages/form-input/components/form-input/score.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -113,6 +117,8 @@ export default {
         componentRegionPicker,
         componentPhone,
         componentPwd,
+        componentScore,
+
     },
     props: {
         propValue: {
@@ -268,7 +274,7 @@ export default {
             const list = this.data_list;
             list[this.address_index].com_data = {
                 ...list[this.address_index].com_data,
-                form_value: [data.province.id, data.city.id, data.areal.id],
+                form_value: [ data.province.id, data.city.id, data.areal.id ],
                 province_name: data.province.name || '',
                 city_name: data.city.name || '',
                 county_name: data.areal.name || '',
