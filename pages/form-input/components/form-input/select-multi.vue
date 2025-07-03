@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <uni-popup ref="selectPopup" type="bottom" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" @onclose="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb margin-bottom">
@@ -297,6 +297,9 @@
 }
 ::v-deep .uni-radio-input {
     transform: scale(0.7);
+}
+::v-deep .vue-ref {
+    background: #fff !important;
 }
 .add-option {
     height: 80rpx;

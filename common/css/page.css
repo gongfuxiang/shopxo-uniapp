@@ -1421,3 +1421,7 @@ button[disabled].bg-grey {
 .indicator_about_location .dot-item {
     margin: 0 6rpx;
 }
+
+.popup-bottom .vue-ref {
+    background: #fff !important;
+}

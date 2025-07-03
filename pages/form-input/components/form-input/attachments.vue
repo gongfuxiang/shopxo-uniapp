@@ -2,21 +2,23 @@
     <!-- 视频 -->
     <view>
        <template v-if="file.length > 0">
-            <view class="flex-row gap-20 align-c">
-                <span class="file-title text-line-1" :style="propStyle + 'width:auto;height:100%'">{{ file[0].original || '' }}</span>
+            <!-- <view class="flex-row gap-20 align-c">
+                <view class="file-title text-line-1" :style="propStyle + 'width:auto;height:100%'">
+                    {{ file[0].original || '' }}
+                </view>
                 <view class="oprate cr-blue">
                     <view class="icon" :data-url="file[0].url" @tap="copy">
                         <iconfont name="icon-copy" size="20rpx" />
                     </view>
-                    <span class="divider"></span>
+                    <view class="divider"></view>
                     <view class="icon" :data-name="file[0].original" :data-url="file[0].url" @tap="download">
                         <iconfont name="icon-download-btn" size="20rpx" />
                     </view>
                 </view>
-            </view>
+            </view> -->
         </template>
         <template v-else>
-            <span class="file-title" :style="propStyle + 'width:100%;height:100%'">暂无文件</span>
+            <view class="file-title" :style="propStyle + 'width:100%;height:100%'">暂无文件</view>
         </template>
     </view>
 </template>
@@ -74,7 +76,7 @@
             },
             // 复制到剪切板
             copy(e) {
-                const { url, name } = e.currentTarget.dataset;
+                const url = e.currentTarget.dataset.url;
                 /* 创建一个临时的textarea元素 */
                 const textarea = document.createElement('textarea');
                 textarea.value = url;
@@ -100,7 +102,7 @@
                 link.click();
                 document.body.removeChild(link);
             }
-        },
+        }
     };
 </script>
 
@@ -123,12 +125,12 @@
     border-radius: 30rpx;
     background: #FFFFFF;
     box-shadow: 0px 2rpx 8rpx 0px rgba(0,0,0,0.1);
-    .icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        padding: 12rpx 24rpx;
-    }
+}
+.oprate .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 12rpx 24rpx;
 }
 </style>

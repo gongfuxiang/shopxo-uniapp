@@ -27,6 +27,15 @@
                             </view>
                         </view>
                         <!-- #endif -->
+                        <!-- 上传文件仅支持H5、微信小程序、QQ小程序 -->
+                        <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
+                        <view v-if="item.key == 'upload-attachments'" class="field-label flex-row align-c gap-10" :style="field_label_style">
+                            <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
+                            <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
+                                <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
+                            </view>
+                        </view>
+                        <!-- #endif -->
                         <view class="flex-1 wh-auto flex-col gap-5">
                             <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                                 <component-input :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
@@ -82,6 +91,14 @@
                             <view v-else-if="item.key == 'auxiliary-line'">
                                 <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-auxiliary-line>
                             </view>
+                            <view v-else-if="['upload-img', 'upload-video'].includes(item.key)">
+                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataId="propDataId" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
+                            </view>
+                            <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
+                            <view v-else-if="item.key == 'upload-attachments'">
+                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataId="propDataId" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
+                            </view>
+                            <!-- #endif -->
                             <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
                             <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
                                 <component-rich-text :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-rich-text>
@@ -135,6 +152,7 @@ import componentText from '@/pages/form-input/components/form-input/text.vue';
 import componentAttachments from '@/pages/form-input/components/form-input/attachments.vue';
 import componentAuxiliaryLine from '@/pages/form-input/components/form-input/auxiliary-line.vue';
 import componentRichText from '@/pages/form-input/components/form-input/rich-text.vue';
+import componentUpload from '@/pages/form-input/components/form-input/upload.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -158,7 +176,8 @@ export default {
         componentText,
         componentAttachments,
         componentAuxiliaryLine,
-        componentRichText
+        componentRichText,
+        componentUpload
     },
     props: {
         propValue: {

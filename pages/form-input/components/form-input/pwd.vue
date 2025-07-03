@@ -1,7 +1,7 @@
 <template>
     <view class="flex-row align-c wh-auto gap-10" :style="propStyle">
         <iconfont :name="'icon-' + com_data.icon_name" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
-        <input :value="form_value" class="uni-input flex-1" :style="propStyle" :password="is_show" :type="is_show ? '' : 'text'" :placeholder="placeholder" @focus="focus_input" @blur="data_check" @input="input_value_event" />
+        <input :value="form_value" class="uni-input flex-1" :style="propStyle" :password="is_show" :type="is_show ? '' : 'text'" :placeholder="placeholder" @blur="data_check" @input="input_value_event" />
         <view @tap="eye_change">
             <iconfont :name="'icon-' + (is_show ? 'eye' : 'eye-close')" size="24rpx" color="#666" propContainerDisplay="flex"></iconfont>
         </view>

@@ -5,7 +5,7 @@
         <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" style="object-fit: cover"></video>
         <!-- #endif-->
         <!-- #ifdef APP -->
-        <video-player ref="domVideoPlayer" :poster="video_img" :src="video" objectFit="cover" controls />
+        <video-player :poster="video_img" :src="video" objectFit="cover" controls />
         <!-- #endif-->
     </view>
 </template>
