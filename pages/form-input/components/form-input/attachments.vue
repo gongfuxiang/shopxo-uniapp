@@ -2,7 +2,7 @@
     <!-- 视频 -->
     <view>
        <template v-if="file.length > 0">
-            <!-- <view class="flex-row gap-20 align-c">
+            <view class="flex-row gap-20 align-c">
                 <view class="file-title text-line-1" :style="propStyle + 'width:auto;height:100%'">
                     {{ file[0].original || '' }}
                 </view>
@@ -15,7 +15,7 @@
                         <iconfont name="icon-download-btn" size="20rpx" />
                     </view>
                 </view>
-            </view> -->
+            </view>
         </template>
         <template v-else>
             <view class="file-title" :style="propStyle + 'width:100%;height:100%'">暂无文件</view>

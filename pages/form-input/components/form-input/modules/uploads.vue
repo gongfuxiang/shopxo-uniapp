@@ -102,6 +102,10 @@
                 type: [Number, String, Array, Object],
                 default: '',
             },
+            propKey: {
+                type: [String, Number],
+                default: 0,
+            },
         },
         data() {
             return {
@@ -128,18 +132,26 @@
                 }
             }
         },
+        watch: {
+            propKey(val) {
+                this.init();
+            }
+        },
         mounted() {
-            // 将80%的宽度分成16份
-            const block = (sys_width * 0.8) / 16;
-            this.setData({
-                popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
-                popup_height: block * 9 * 2 + 'rpx',  // 视频的高度
-                form_images_list: this.propData,
-            });
+            this.init();
         },
         created: function () {},
 
         methods: {
+            init() {
+                // 将80%的宽度分成16份
+                const block = (sys_width * 0.8) / 16;
+                this.setData({
+                    popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
+                    popup_height: block * 9 * 2 + 'rpx',  // 视频的高度
+                    form_images_list: this.propData,
+                });
+            },
             // 采用递归的方式上传多张
             upload_one_by_one(img_paths, success, fail, count, length, action) {
                 var self = this;
@@ -189,9 +201,6 @@
                         },
                     });
                 }
-            },
-            message(e) {
-                console.log(e);
             },
             // 文件上传
             file_upload_event(e) {
@@ -253,6 +262,8 @@
 
             // 图片删除
             upload_delete_event(e) {
+                console.log('删除');
+                
                 var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),

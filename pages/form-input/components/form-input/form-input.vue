@@ -12,7 +12,7 @@
                     <!-- 左右模式 -->
                     <!-- <template v-if="flex_direction == 'row'"> -->
                     <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? 'flex-row align-b gap-10' : 'flex-col gap-10')">
-                        <view v-if="!['rich-text', 'auxiliary-line'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="field_label_style">
+                        <view v-if="!['rich-text', 'auxiliary-line', 'upload-attachments'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="field_label_style">
                             <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
                             <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
                                 <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>

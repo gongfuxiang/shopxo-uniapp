@@ -1,5 +1,5 @@
 <template>
-    <uploads :propType="propType" :propData="form_value" :propMaxNum="max_num" :propPathType="pathType" :propBorderStyle="border_style" @call-back="call_back"></uploads>
+    <uploads :propKey="propKey" :propType="propType" :propData="form_value" :propMaxNum="max_num" :propPathType="pathType" :propBorderStyle="border_style" @call-back="call_back"></uploads>
 </template>
 
 <script>
@@ -52,7 +52,7 @@
             propKey(val) {
                 // 初始化
                 this.init();
-            },
+            }
         },
         mounted() {
             this.init();
