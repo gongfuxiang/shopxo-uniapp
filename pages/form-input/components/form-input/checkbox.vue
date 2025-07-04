@@ -36,9 +36,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propMobile: {
                 type: Object,
@@ -99,7 +99,7 @@
                         dialog_value: '',
                     });
                     this.$refs.inputDialog.close();
-                    this.$emit('data_option_change', { list: custom_option_list, value: this.form_value, index: this.propDataIndex });
+                    this.$emit('data_option_change', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
                     this.$refs.message.open();
                 }
@@ -109,14 +109,14 @@
             },
             data_check(e) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value, true, 'checkbox');
-                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
             },
             data_change(e) {
                 // 重新编辑一下历史数据
                 this.setData({
                     form_value: e.detail.value,
                 });
-                this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
         }
     }

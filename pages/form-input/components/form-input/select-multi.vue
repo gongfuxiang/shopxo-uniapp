@@ -83,9 +83,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -193,7 +193,7 @@
                         dialog_value: '',
                     });
                     this.$refs.inputDialog.close();
-                    this.$emit('data_option_change', { list: custom_option_list, value: this.form_value, index: this.propDataIndex });
+                    this.$emit('data_option_change', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
                     this.$refs.message.open();
                 }
@@ -268,9 +268,9 @@
                 this.$refs.selectPopup.close();
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, this.popup_list, true, 'checkbox');
                 // 校验数据
-                this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, index: this.propDataIndex });
+                this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, id: this.propDataId });
                 // 数据更新时的处理
-                this.$emit('dataChange', { value: this.popup_list, index: this.propDataIndex });
+                this.$emit('dataChange', { value: this.popup_list, id: this.propDataId });
             }
         }
     }

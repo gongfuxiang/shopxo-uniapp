@@ -36,9 +36,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,

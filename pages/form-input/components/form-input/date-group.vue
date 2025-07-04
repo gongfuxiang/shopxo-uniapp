@@ -45,9 +45,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -107,7 +107,7 @@
             },
             data_check(e) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value);
-                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
             },
             data_change(e) {
                 const date = time_stamp(e, this.date_style, this.date_type);
@@ -118,7 +118,7 @@
                 this.setData({
                     form_value: data,
                 });
-                this.$emit('dataChange', { value: value, index: this.propDataIndex });
+                this.$emit('dataChange', { value: value, id: this.propDataId });
             },
             date_handle(time0, time1) {
                 if (isEmpty(time0) || isEmpty(time1)) {
@@ -160,7 +160,7 @@
                 this.setData({
                     form_value: date,
                 });
-                this.$emit('dataChange', { value: date, index: this.propDataIndex });
+                this.$emit('dataChange', { value: date, id: this.propDataId });
             },
         }
     }

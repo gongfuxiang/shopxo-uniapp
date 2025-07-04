@@ -22,9 +22,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -103,14 +103,14 @@
             },
             data_check(val) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, val, true, 'number');
-                this.$emit('dataCheck', { is_error, error_text, value: val, index: this.propDataIndex });
+                this.$emit('dataCheck', { is_error, error_text, value: val, id: this.propDataId });
             },
             input_value_event(e) {
                 // 重新编辑一下历史数据
                 this.setData({
                     form_value: e.detail.value,
                 });
-                this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             }
         }
     }

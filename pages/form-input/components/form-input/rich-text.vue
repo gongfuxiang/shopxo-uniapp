@@ -15,9 +15,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -65,7 +65,7 @@
                 this.setData({
                     form_value: new_data,
                 });
-                this.$emit('dataChange', { value: new_data, index: this.propDataIndex });
+                this.$emit('dataChange', { value: new_data, id: this.propDataId });
             },
             // 上传图片
             up_in_image_event(tempFiles, editorCtx) {

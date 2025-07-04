@@ -8,7 +8,7 @@
             </view>
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row" :style="heading_title_style">{{ form_name }}</view>
             <view class="data-list">
-                <view v-for="(item, index) in data_list" :key="index" :class="(flex_direction == 'row' ? 'row-item' : 'column-item mb-10') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')">
+                <view v-for="(item, index) in filteredDiyData" :key="index" :class="(flex_direction == 'row' ? 'row-item' : 'column-item mb-10') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')">
                     <!-- 左右模式 -->
                     <!-- <template v-if="flex_direction == 'row'"> -->
                     <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? 'flex-row align-b gap-10' : 'flex-col gap-10')">
@@ -38,73 +38,73 @@
                         <!-- #endif -->
                         <view class="flex-1 wh-auto flex-col gap-5">
                             <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
-                                <component-input :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
+                                <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
                             </view>
                             <view v-else-if="item.key == 'multi-text'" :style="item.com_data.common_style + 'padding: 18rpx 22rpx;'">
-                                <component-textarea :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
+                                <component-textarea :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
                             </view>
                             <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox'">
-                                <component-checkbox :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-checkbox>
+                                <component-checkbox :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-checkbox>
                             </view>
                             <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns'">
-                                <component-radio :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-radio>
+                                <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-radio>
                             </view>
                             <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select'" :style="item.com_data.common_style">
-                                <component-select :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-select>
+                                <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-select>
                             </view>
                             <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi'" :style="item.com_data.common_style">
-                                <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-select-multi>
+                                <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-select-multi>
                             </view>
                             <view v-else-if="item.key == 'number'" :style="item.com_data.common_style">
-                               <component-number :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-number>
+                               <component-number :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-number>
                             </view>
                             <view v-else-if="item.key == 'date'" :style="item.com_data.common_style">
-                               <component-date :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date>
+                               <component-date :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date>
                             </view>
                             <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style">
-                               <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date-group>
+                               <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date-group>
                             </view>
                             <view v-else-if="item.key == 'address'">
-                               <component-address :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @openRagion="open_ragion" @dataAddressChange="dataAddressChange"></component-address>
+                               <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @openRagion="open_ragion" @dataAddressChange="dataAddressChange"></component-address>
                             </view>
                             <view v-else-if="item.key == 'phone'">
-                               <component-phone :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></component-phone>
+                               <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></component-phone>
                             </view>
                             <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
-                               <component-pwd :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
+                               <component-pwd :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
                             </view>
                             <view v-else-if="item.key == 'score'">
-                               <component-score :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-score>
+                               <component-score :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-score>
                             </view>
                             <view v-else-if="item.key == 'img'">
-                               <component-image :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-image>
+                               <component-image :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-image>
                             </view>
                             <view v-else-if="item.key == 'video'">
-                               <component-video :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-video>
+                               <component-video :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-video>
                             </view>
                             <view v-else-if="item.key == 'text'">
-                                <component-text :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-text>
+                                <component-text :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-text>
                             </view>
                             <view v-else-if="item.key == 'attachments'">
-                                <component-attachments :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-attachments>
+                                <component-attachments :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-attachments>
                             </view>
                             <view v-else-if="item.key == 'auxiliary-line'">
-                                <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-auxiliary-line>
+                                <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-auxiliary-line>
                             </view>
                             <view v-else-if="['upload-img', 'upload-video'].includes(item.key)">
-                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataId="propDataId" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
+                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
                             </view>
                             <view v-else-if="item.key == 'position'">
-                                <component-position :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-position>
+                                <component-position :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-position>
                             </view>
                             <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                             <view v-else-if="item.key == 'upload-attachments'">
-                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataId="propDataId" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
+                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
                             </view>
                             <!-- #endif -->
                             <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
                             <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
-                                <component-rich-text :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-rich-text>
+                                <component-rich-text :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-rich-text>
                             </view>
                             <!-- #endif -->
                             <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
@@ -189,7 +189,7 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        propDataId: {
+        propDataFormId: {
             type: [String, Number],
             default: '',
         },
@@ -217,7 +217,7 @@ export default {
             bottom_fixed_style: '',
             popup_help_content: '',
             // 地址弹出框的处理
-            address_index: 0,
+            address_id: '',
             province_id: '',
             city_id: '',
             county_id: '',
@@ -229,6 +229,36 @@ export default {
             // 初始化
             this.init();
         },
+    },
+    computed: { 
+        filteredDiyData() {
+            const componentMap = new Map(this.data_list.map(item => [item.id, item]));
+
+            // 取出所有设置显隐规则的组件
+            const list = this.data_list.filter(item => ['single-text', 'select', 'radio-btns'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type) && item.com_data.show_hidden_list.length > 0);
+            const list_map = list.map(item => ({ id: item.id, list: item.com_data.show_hidden_list }));
+            return this.data_list.filter(item => {
+                // 优先判断是否启用
+                if (item.is_enable !== '1') return false;
+
+                if (list_map.length === 0) return true;
+                // 将所有的内容的组件进行筛选
+                const isShownByRule = list_map.some(list_item => {
+                    const targetComponent = componentMap.get(list_item.id);
+                    // 判断显隐规则对应的组件是否存在
+                    if (!targetComponent) return false;
+                    return list_item.list.some(hidden_item => {
+                        // 判断当前组件是否在显隐规则中，如果不在，直接显示，否则的话判断值是否存在
+                        if (hidden_item.is_show.includes(item.id)) {
+                            return targetComponent.com_data.form_value.includes(hidden_item.value);
+                        } else {
+                            return true;
+                        }
+                    });
+                });
+                return isShownByRule;
+            });
+        }
     },
     mounted() {
         this.init();
@@ -265,58 +295,87 @@ export default {
             return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
         },
         data_check(e) {
-            const { is_error, error_text, value, index } = e;
-            const data = this.data_list;
-            data[index].com_data.form_value = value;
-            data[index].com_data.common_config.is_error = is_error;
-            data[index].com_data.common_config.error_text = error_text;
+            const { is_error, error_text, value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data && item.com_data.common_config) {
+                    item.com_data.form_value = value;
+                    item.com_data.common_config.is_error = is_error;
+                    item.com_data.common_config.error_text = error_text;
+                }
+            });
             this.setData({ data_list: data });
         },
         data_code_check(e) {
-            const { is_error, error_text, value, index } = e;
-            const data = this.data_list;
-            data[index].com_data.form_value_code = value;
-            data[index].com_data.common_config.is_error = is_error;
-            data[index].com_data.common_config.error_text = error_text;
+            const { is_error, error_text, value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data && item.com_data.common_config) {
+                    item.com_data.form_value_code = value;
+                    item.com_data.common_config.is_error = is_error;
+                    item.com_data.common_config.error_text = error_text;
+                }
+            });
             this.setData({ data_list: data });
         },
         data_change(e) {
-            const { value, index } = e;
-            const data = this.data_list;
-            data[index].com_data.form_value = value;
+            const { value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.form_value = value;
+                }
+            });
             this.setData({ data_list: data });
         },
         data_code_chage(e) {
-            const { value, index } = e;
-            const data = this.data_list;
-            data[index].com_data.form_value_code = value;
+            const { value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.form_value_code = value;
+                }
+            });
             this.setData({ data_list: data });
         },
         data_option_change(e) {
-            const { list, value, index } = e;
-            const data = this.data_list;
-            data[index].com_data.form_value = value;
-            data[index].com_data.custom_option_list = list;
+            const { list, value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.form_value = value;
+                    item.com_data.custom_option_list = list;
+                }
+            });
             this.setData({ data_list: data });
         },
         dataAddressChange(e) {
-            const { value, index } = e;
-            const data = this.data_list;
-            data[index].com_data.detailed_value = value;
+            const { value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.detailed_value = value;
+                }
+            });
             this.setData({ data_list: data });
         },
-        
         help_icon_event(e) {
             this.setData({ popup_help_content: e.currentTarget.dataset.value });
             this.$refs.popup.open();
         },
-        open_ragion(index, province_id, city_id, county_id) {
+        open_ragion(id, province_id, city_id, county_id) {
             this.setData({ 
                 region_picker_show: true, 
                 province_id, 
                 city_id, 
                 county_id,
-                address_index: index,
+                address_id: id,
             });
         },
         close_event(e) {
@@ -335,14 +394,17 @@ export default {
             if((data.areal || null) == null) {
                 data.areal = {};
             }
-            const list = this.data_list;
-            list[this.address_index].com_data = {
-                ...list[this.address_index].com_data,
-                form_value: [ data.province.id, data.city.id, data.areal.id ],
-                province_name: data.province.name || '',
-                city_name: data.city.name || '',
-                county_name: data.areal.name || '',
-            }
+            // 改变对应id的数据
+            const data_list = [...this.data_list];
+            data_list.forEach(item => {
+                if (item.id == this.address_id && item.com_data) {
+                    item.com_data.form_value = [ data.province.id, data.city.id, data.areal.id ];
+                    item.com_data.province_name = data.province.name || '';
+                    item.com_data.city_name = data.city.name || '';
+                    item.com_data.county_name = data.areal.name || '';
+                }
+            });
+            this.setData({ data_list: data_list });
         }
     }
 }

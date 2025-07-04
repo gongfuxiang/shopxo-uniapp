@@ -5,7 +5,7 @@
             <input :value="form_value" class="uni-input flex-1" :style="propStyle" type="text" :placeholder="placeholder" @blur="data_check" @input="input_value_event" />
         </view>
         <view v-if="com_data.is_sms_verification == '1'" class="flex-row gap-10">
-            <input :value="form_value_code" class="uni-input flex-1" :style="com_data.common_style + propStyle" type="text" placeholder="请输入手机验证码" @blur="data_code_check" @input="input_code_value_event" />
+            <input :value="form_value_code" class="uni-input flex-1" :style="com_data.common_style + propStyle" type="text" placeholder="请输入验证码" @blur="data_code_check" @input="input_code_value_event" />
             <button :class="'uni-button flex-row align-c' + ( verify_submit_disabled ? 'verify_disabled' : '')" :style="propStyle + 'height:auto;'" type="default" :disabled="verify_submit_disabled" @click="verify_send_event">{{ verify_submit_text }}</button>
         </view>
         <!-- 图片验证码弹层 -->
@@ -47,9 +47,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -107,7 +107,7 @@
                     data.common_config.format = data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
                 }
                 const { is_error = '0', error_text = '' } = get_format_checks(data, this.form_value, true);
-                this.$emit('dataCheck', { is_error, error_text, value: this.form_value, index: this.propDataIndex });
+                this.$emit('dataCheck', { is_error, error_text, value: this.form_value, id: this.propDataId });
             },
             data_code_check() {
                 let is_error = '0';
@@ -117,7 +117,7 @@
                     is_error = '1';
                     error_text = '短信验证码不能为空';
                 }
-                this.$emit('dataCodeCheck', { is_error, error_text, value: this.form_value_code, index: this.propDataIndex });
+                this.$emit('dataCodeCheck', { is_error, error_text, value: this.form_value_code, id: this.propDataId });
             },
             verify_send_event() {
                 if (this.com_data.is_img_sms_verification == '1') {
@@ -230,14 +230,14 @@
                     form_value: e.detail.value,
                     verify_submit_disabled: !isEmpty(e.detail.value) ? false : true,
                 });
-                this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
             input_code_value_event(e) {
                 // 重新编辑一下历史数据
                 this.setData({
                     form_value_code: e.detail.value,
                 });
-                this.$emit('dataCodeChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataCodeChange', { value: e.detail.value, id: this.propDataId });
             }
         }
     }

@@ -63,9 +63,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -177,7 +177,7 @@
                 // 关闭选择框
                 this.$refs.selectPopup.close();
 
-                this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             }
         }
     }

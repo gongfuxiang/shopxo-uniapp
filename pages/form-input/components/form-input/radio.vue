@@ -21,9 +21,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propMobile: {
                 type: Object,
@@ -66,7 +66,7 @@
                 this.setData({
                     form_value: e.detail.value,
                 });
-                this.$emit('dataChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
         }
     }

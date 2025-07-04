@@ -40,9 +40,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -97,7 +97,7 @@
                 this.setData({
                     form_value: index,
                 });
-                this.$emit('dataChange', { value: index, index: this.propDataIndex });
+                this.$emit('dataChange', { value: index, id: this.propDataId });
             }
         }
     }

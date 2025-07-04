@@ -29,9 +29,9 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -99,18 +99,18 @@
                 });
             },
             open_ragion() {
-                this.$emit('openRagion', this.propDataIndex, this.province_id, this.city_id, this.county_id);
+                this.$emit('openRagion', this.propDataId, this.province_id, this.city_id, this.county_id);
             },
             data_check(val) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, val, true, 'number');
-                this.$emit('dataCheck', { is_error, error_text, value: val, index: this.propDataIndex });
+                this.$emit('dataCheck', { is_error, error_text, value: val, id: this.propDataId });
             },
             input_value_event(e) {
                 // 重新编辑一下历史数据
                 this.setData({
                     detailed_value: e.detail.value,
                 });
-                this.$emit('dataAddressChange', { value: e.detail.value, index: this.propDataIndex });
+                this.$emit('dataAddressChange', { value: e.detail.value, id: this.propDataId });
             }
         }
     }

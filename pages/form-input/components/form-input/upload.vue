@@ -22,13 +22,13 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataId: {
+            propDataFormId: {
                 type: [String, Number],
                 default: '',
             },
-            propDataIndex: {
-                type: Number,
-                default: 0,
+            propDataId: {
+                type: String,
+                default: '',
             },
             propStyle: {
                 type: String,
@@ -65,7 +65,7 @@
                 this.setData({
                     com_data: com_data,
                     max_num: com_data.is_limit_num == '1' ? com_data.limit : 1000,
-                    pathType: `forminputdata-${this.propDataId}`,
+                    pathType: `forminputdata-${this.propDataFormId}`,
                     form_value: com_data.form_value || [],
                     border_style: common_form_styles_computer(com_data.common_config)
                 });
@@ -74,7 +74,7 @@
                 this.setData({
                     form_value: list,
                 });
-                this.$emit('dataChange', { value: list, index: this.propDataIndex });
+                this.$emit('dataChange', { value: list, id: this.propDataId });
             }
         },
     };
