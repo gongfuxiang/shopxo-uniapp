@@ -1,5 +1,20 @@
 <template>
-    <view class="flex-row align-c wh-auto pr" :style="propStyle">
+    <view class="flex-row align-c wh-auto pr " :style="propStyle">
+        <view class="bg-white wh-auto ht-auto flex-row align-c gap-5 oh">
+            <template v-if="isEmpty(form_value)">
+                <view class="datetime-placeholder flex-1 flex-row align-c ht-auto gap-5 oh">
+                    <view class="flex-1 flex-row align-c jc-c" :data-index="0" @tap="data_time_change">{{ com_data.start_placeholder }}</view>-
+                    <view class="flex-1 flex-row align-c jc-c" :data-index="1" @tap="data_time_change">{{ com_data.end_placeholder }}</view>
+                </view>
+            </template>
+            <template v-else>
+                <view class="datetime-value flex-1 flex-row align-c ht-auto gap-5 oh">
+                    <view class="flex-1 flex-row align-c jc-c ht-auto nowrap text-line-1" :data-index="0" @tap="data_time_change">{{ form_value[0] || '' }}</view>-
+                    <view class="flex-1 flex-row align-c jc-c ht-auto nowrap text-line-1" :data-index="1" @tap="data_time_change">{{ form_value[1] || '' }}</view>
+                </view>
+            </template>
+            <iconfont :name="'icon-'+ com_data.icon_name" class="ml-5" size="28rpx" color="#333333" />
+        </view>
         <template v-if="['option1', 'option2'].includes(date_type)">
             <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_change"></myDatetime>
         </template>
@@ -8,24 +23,9 @@
         </template>
         <template v-else>
             <view class="datetime-picker">
-                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'daterange' : 'datetimerange'" :hideSecond="date_type !== 'option4'" @change="data_date_change" />
+                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'daterange' : 'datetimerange'" :hideSecond="date_type !== 'option6'" @change="data_date_change" />
             </view>
         </template>
-        <view class="bg-white wh-auto ht-auto flex-row align-c">
-            <template v-if="isEmpty(form_value)">
-                <view class="datetime-placeholder flex-1 flex-row align-c ht-auto">
-                    <view class="flex-1 flex-row align-c jc-c" :data-index="0" @tap="data_time_change">{{ com_data.start_placeholder }}</view>-
-                    <view class="flex-1 flex-row align-c jc-c" :data-index="1" @tap="data_time_change">{{ com_data.end_placeholder }}</view>
-                </view>
-            </template>
-            <template v-else>
-                <view class="datetime-value flex-1 flex-row align-c ht-auto">
-                    <view class="flex-1 flex-row align-c jc-c ht-auto" :data-index="0" @tap="data_time_change">{{ form_value[0] || '' }}</view>-
-                    <view class="flex-1 flex-row align-c jc-c ht-auto" :data-index="1" @tap="data_time_change">{{ form_value[1] || '' }}</view>
-                </view>
-            </template>
-            <iconfont :name="'icon-'+ com_data.icon_name" class="ml-5" size="28rpx" color="#333333" />
-        </view>
     </view>
 </template>
 

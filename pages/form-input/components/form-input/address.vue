@@ -1,5 +1,5 @@
 <template>
-    <view class="flex-col gap-10">
+    <view :class="'flex-col' + (propDirection == 'row' ? '' : 'gap-10')">
         <view class="flex-row align-c" :style="com_data.common_style + propStyle" @tap="open_ragion">
             <text v-if="province_name" class="flex-1">{{ province_name }}{{ city_name ? ' / ' + city_name : '' }}{{ county_name ? ' / ' + county_name : '' }}</text>
             <text v-else class="placeholder flex-1">{{ placeholder }}</text>
@@ -10,8 +10,9 @@
                 <iconfont name="icon-arrow-bottom" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
             </template>
         </view>
+        <view v-if="propDirection == 'row' && address_type == 'detailed'" class="border-line"></view>
         <view v-if="address_type == 'detailed'" class="flex-row">
-            <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" :style="com_data.common_style + propStyle + 'padding: 18rpx 22rpx;min-height:100rpx;'" placeholder="请输入详细地址" @input="input_value_event" />
+            <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" :style="com_data.common_style + propStyle + 'min-height:100rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" />
         </view>
     </view>
 </template>
@@ -59,8 +60,11 @@
             };
         },
         watch: {
-            propValue(val) {
-                this.init();
+            propValue: {
+                handler(newVal) {
+                    this.init();
+                },
+                deep: true
             },
             propKey(val) {
                 // 初始化
@@ -123,5 +127,9 @@
 .placeholder {
     color: #606266;
     opacity: 0.6;
+}
+.border-line {
+    border-top: 2rpx solid #eee;
+    margin: 10rpx 0;
 }
 </style>

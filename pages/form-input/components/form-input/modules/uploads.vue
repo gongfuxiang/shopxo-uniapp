@@ -26,7 +26,7 @@
             </view>
         </template>
         <template v-else>
-            <view v-if="propData.length > 0" class="flex-col gap-5 margin-bottom">
+            <view v-if="propData.length > 0" class="flex-col gap-5 margin-vertical margin-horizontal-xs">
                 <view v-for="(item, index) in propData" :key="index" class="upload-file-content flex-row align-c gap-10">
                     <view v-if="item" class="flex-1 flex-row align-c upload-file-title w h">
                         <span class="text-line-1">{{ new_name(item.name)[0] || '' }}</span><span>.{{ new_name(item.name)[1] || '' }}</span>

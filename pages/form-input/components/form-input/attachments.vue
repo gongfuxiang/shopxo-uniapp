@@ -1,6 +1,6 @@
 <template>
     <!-- 视频 -->
-    <view>
+    <view class="margin-vertical-xs">
        <template v-if="file.length > 0">
             <view class="flex-row gap-20 align-c">
                 <view class="file-title text-line-1" :style="propStyle + 'width:auto;height:100%'">

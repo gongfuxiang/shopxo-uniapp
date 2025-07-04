@@ -6,12 +6,12 @@
                     <image :src="img_url" mode="aspectFit" />
                 </template>
             </view>
-            <view v-if="is_show_heading_title == '1'" class="head-title flex-row" :style="heading_title_style">{{ form_name }}</view>
-            <view class="data-list">
-                <view v-for="(item, index) in filteredDiyData" :key="index" :class="(flex_direction == 'row' ? 'row-item' : 'column-item mb-10') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')">
+            <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style">{{ form_name }}</view>
+            <view class="data-list bg-white">
+                <view v-for="(item, index) in filteredDiyData" :key="index" :class="(flex_direction == 'row' ? 'row-item' : 'column-item mb-10') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :style="( item.key == 'auxiliary-line' ? 'border-bottom: 0rpx' : '')">
                     <!-- 左右模式 -->
                     <!-- <template v-if="flex_direction == 'row'"> -->
-                    <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? 'flex-row align-b gap-10' : 'flex-col gap-10')">
+                    <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? (['video', 'img'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
                         <view v-if="!['rich-text', 'auxiliary-line', 'upload-attachments'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="field_label_style">
                             <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
                             <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
@@ -36,23 +36,23 @@
                             </view>
                         </view>
                         <!-- #endif -->
-                        <view class="flex-1 wh-auto flex-col gap-5">
+                        <view class="flex-1 wh-auto flex-col gap-5 oh">
                             <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                                 <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
                             </view>
                             <view v-else-if="item.key == 'multi-text'" :style="item.com_data.common_style + 'padding: 18rpx 22rpx;'">
                                 <component-textarea :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
                             </view>
-                            <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox'">
+                            <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && flex_direction !== 'row'">
                                 <component-checkbox :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-checkbox>
                             </view>
-                            <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns'">
+                            <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction !== 'row'">
                                 <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-radio>
                             </view>
-                            <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select'" :style="item.com_data.common_style">
+                            <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction == 'row')" :style="item.com_data.common_style">
                                 <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-select>
                             </view>
-                            <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi'" :style="item.com_data.common_style">
+                            <view v-else-if="(['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && flex_direction == 'row')" :style="item.com_data.common_style">
                                 <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-select-multi>
                             </view>
                             <view v-else-if="item.key == 'number'" :style="item.com_data.common_style">
@@ -442,6 +442,7 @@ export default {
     .row-item {
         padding: 10rpx 15rpx;
         border-bottom: 2rpx solid #eee;
+        overflow: hidden;
     }
     .row-item:last-child {
         border-bottom: none;
