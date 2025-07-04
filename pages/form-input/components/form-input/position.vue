@@ -1,22 +1,33 @@
 <template>
-    <view class="flex-col gap-10">
-        <!-- 定位 -->
-        <view class="pc-disable flex-row align-c jc-c w h" :style="com_data.common_style" @tap="choose_user_location">
-            <view class="flex-row align-c jc-c gap-10 pa-5">
-                <iconfont name="icon-latitude-location" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
-                获取定位
+    <view :class="propDirection == 'row' ? '' : 'flex-col gap-10'" >
+        <template v-if="propDirection == 'row'">
+            <view class="flex-row gap-10 align-c" @tap="choose_user_location">
+                <view class="flex-1 flex-row align-c" :style="propStyle"> 
+                    <view v-if="isEmpty(form_value)" class="placeholder">获取定位</view>
+                    <view>{{ form_value.address }}</view>
+                </view>
+                <iconfont name="icon-latitude-location" size="32rpx" color="#666" propContainerDisplay="flex" ></iconfont>
             </view>
-        </view>
-        <view v-if="!isEmpty(form_value)" class="flex-col gap-10 jc-c">
-            <view class="flex-row align-c gap-5">
-                <iconfont name="icon-location" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
-                <view class="nowrap">{{ form_value.address }}</view>
+        </template>
+        <template v-else>
+            <!-- 定位 -->
+            <view class="pc-disable flex-row align-c jc-c w h" :style="com_data.common_style + propStyle" @tap="choose_user_location">
+                <view class="flex-row align-c jc-c gap-10 pa-5">
+                    <iconfont name="icon-latitude-location" size="32rpx" color="#666" propContainerDisplay="flex" ></iconfont>
+                    获取定位
+                </view>
             </view>
-            <view v-if="com_data.is_longitude_and_latitude == '1'" class="flex-row align-c gap-10">
-                <view>经度坐标：{{ form_value.lng }}</view>
-                <view>纬度坐标：{{ form_value.lat }}</view>
+            <view v-if="!isEmpty(form_value)" class="flex-col gap-10 jc-c" :style="propStyle + 'height: 100%;'">
+                <view class="flex-row align-c gap-5">
+                    <iconfont name="icon-location" size="32rpx" color="#666" propContainerDisplay="flex" ></iconfont>
+                    <view class="nowrap">{{ form_value.address }}</view>
+                </view>
+                <view v-if="com_data.is_longitude_and_latitude == '1'" class="flex-row align-c gap-10">
+                    <view>经度坐标：{{ form_value.lng }}</view>
+                    <view>纬度坐标：{{ form_value.lat }}</view>
+                </view>
             </view>
-        </view>
+        </template>
     </view>
 </template>
 
@@ -44,6 +55,10 @@
             propIsCustom: {
                 type: Boolean,
                 default: false,
+            },
+            propDirection: {
+                type: String,
+                default: 'row',
             }
         },
         data() {
@@ -109,5 +124,9 @@
 }
 .gap-5 {
     gap: 10rpx;
+}
+.placeholder {
+    color: #606266;
+    opacity: 0.6;
 }
 </style>

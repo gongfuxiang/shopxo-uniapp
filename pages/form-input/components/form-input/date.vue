@@ -1,5 +1,14 @@
 <template>
     <view class="flex-row align-c wh-auto pr" :style="propStyle">
+        <view class="bg-white wh-auto ht-auto flex-row align-c" @tap="data_time_change">
+            <template v-if="isEmpty(form_value)">
+                <view class="datetime-placeholder flex-1">{{ com_data.placeholder }}</view>
+            </template>
+            <template v-else>
+                <view class="datetime-value flex-1">{{ form_value }}</view>
+            </template>
+            <iconfont :name="'icon-'+ com_data.icon_name" class="ml-5" size="28rpx" color="#333333" />
+        </view>
         <template v-if="['option1', 'option2'].includes(date_type)">
             <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_date_change"></myDatetime>
         </template>
@@ -11,15 +20,6 @@
                 <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'date' : 'datetime'" :hideSecond="date_type !== 'option4'" @change="data_date_change" />
             </view>
         </template>
-        <view class="bg-white wh-auto ht-auto flex-row align-c" @tap="data_time_change">
-            <template v-if="isEmpty(form_value)">
-                <view class="datetime-placeholder flex-1">{{ com_data.placeholder }}</view>
-            </template>
-            <template v-else>
-                <view class="datetime-value flex-1">{{ form_value }}</view>
-            </template>
-            <iconfont :name="'icon-'+ com_data.icon_name" class="ml-5" size="28rpx" color="#333333" />
-        </view>
     </view>
 </template>
 
