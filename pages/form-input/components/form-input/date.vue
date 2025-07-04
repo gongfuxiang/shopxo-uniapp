@@ -2,7 +2,7 @@
     <view class="flex-row align-c wh-auto pr" :style="propStyle">
         <view class="bg-white wh-auto ht-auto flex-row align-c" @tap="data_time_change">
             <template v-if="isEmpty(form_value)">
-                <view class="datetime-placeholder flex-1">{{ com_data.placeholder }}</view>
+                <view class="cr-gray flex-1">{{ com_data.placeholder }}</view>
             </template>
             <template v-else>
                 <view class="datetime-value flex-1">{{ form_value }}</view>

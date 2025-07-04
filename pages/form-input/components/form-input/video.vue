@@ -2,10 +2,10 @@
     <!-- 视频 -->
     <view class="video pr" :style="video_style">
         <!-- #ifndef APP -->
-        <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="cover" style="object-fit: cover"></video>
+        <video :src="video" class="wh-auto ht-auto" :poster="video_img" objectFit="contain" style="object-fit: contain"></video>
         <!-- #endif-->
         <!-- #ifdef APP -->
-        <video-player :poster="video_img" :src="video" objectFit="cover" controls />
+        <video-player :poster="video_img" :src="video" objectFit="contain" controls />
         <!-- #endif-->
     </view>
 </template>

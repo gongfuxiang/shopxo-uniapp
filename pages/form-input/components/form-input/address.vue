@@ -2,7 +2,7 @@
     <view :class="'flex-col' + (propDirection == 'row' ? '' : 'gap-10')">
         <view class="flex-row align-c" :style="com_data.common_style + propStyle" @tap="open_ragion">
             <text v-if="province_name" class="flex-1">{{ province_name }}{{ city_name ? ' / ' + city_name : '' }}{{ county_name ? ' / ' + county_name : '' }}</text>
-            <text v-else class="placeholder flex-1">{{ placeholder }}</text>
+            <text v-else class="cr-gray flex-1">{{ placeholder }}</text>
             <template v-if="propDirection == 'row'">
                 <iconfont name="icon-arrow-right" size="24rpx" color="#666" propContainerDisplay="flex"></iconfont>
             </template>
@@ -103,7 +103,7 @@
                 });
             },
             open_ragion() {
-                this.$emit('openRagion', this.propDataId, this.province_id, this.city_id, this.county_id);
+                this.$emit('openRegion', this.propDataId, this.province_id, this.city_id, this.county_id);
             },
             data_check(val) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, val, true, 'number');
@@ -123,10 +123,6 @@
 <style lang="scss" scoped>
 .number-icon {
     color: #ccc;
-}
-.placeholder {
-    color: #606266;
-    opacity: 0.6;
 }
 .border-line {
     border-top: 2rpx solid #eee;

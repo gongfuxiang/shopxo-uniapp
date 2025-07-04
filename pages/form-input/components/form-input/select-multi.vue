@@ -2,7 +2,7 @@
     <view class="wh-auto">
         <view class="flex-row align-c wh-auto gap-10" :style="propStyle" @tap="data_value_event">
             <view class="flex-1 oh">
-                <template v-if="isEmpty(form_value_data)"><view class="placeholder">{{ placeholder }}</view></template>
+                <template v-if="isEmpty(form_value_data)"><view class="placeholder cr-gray">{{ placeholder }}</view></template>
                 <template v-else>
                     <view :class="'flex-row align-c' + (is_multicolour == '1' ? ' gap-10' : '')">
                         <view class="text-size-sm nowrap" v-for="(item, index) in form_value_data" :key="index" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name || item.value  }}{{ index != form_value_data.length - 1 && is_multicolour !== '1' ? ',' : ''}}</view>
@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @onclose="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb margin-bottom">
@@ -193,7 +193,7 @@
                         dialog_value: '',
                     });
                     this.$refs.inputDialog.close();
-                    this.$emit('data_option_change', { list: custom_option_list, value: this.form_value, id: this.propDataId });
+                    this.$emit('dataOptionChange', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
                     this.$refs.message.open();
                 }
@@ -277,9 +277,6 @@
 </script>
 
 <style lang="scss" scoped>
-.placeholder {
-    color: gray;
-}
 .popup-content {
     height: 800rpx;
 }
@@ -297,9 +294,6 @@
 }
 ::v-deep .uni-radio-input {
     transform: scale(0.7);
-}
-::v-deep .vue-ref {
-    background: #fff !important;
 }
 .add-option {
     height: 80rpx;

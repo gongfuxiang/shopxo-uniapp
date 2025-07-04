@@ -2,7 +2,7 @@
     <view class="wh-auto">
         <view class="flex-row align-c wh-auto" :style="propStyle" @tap="data_value_event">
             <view class="flex-1">
-                <template v-if="isEmpty(form_value)"><view class="placeholder">{{ placeholder }}</view></template>
+                <template v-if="isEmpty(form_value)"><view class="placeholder cr-gray">{{ placeholder }}</view></template>
                 <template v-else>
                     <view class="flex-row align-c">
                         <view class="text-size-sm" :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @onclose="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col gap-10">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb">
@@ -184,9 +184,6 @@
 </script>
 
 <style lang="scss" scoped>
-.placeholder {
-    color: gray;
-}
 .popup-content {
     height: 800rpx;
 }

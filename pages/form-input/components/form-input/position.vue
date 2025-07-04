@@ -3,7 +3,7 @@
         <template v-if="propDirection == 'row'">
             <view class="flex-row gap-10 align-c" @tap="choose_user_location">
                 <view class="flex-1 flex-row align-c" :style="propStyle"> 
-                    <view v-if="isEmpty(form_value)" class="placeholder">获取定位</view>
+                    <view v-if="isEmpty(form_value)" class="cr-gray">获取定位</view>
                     <view>{{ form_value.address }}</view>
                 </view>
                 <iconfont name="icon-latitude-location" size="32rpx" color="#666" propContainerDisplay="flex" ></iconfont>
@@ -124,9 +124,5 @@
 }
 .gap-5 {
     gap: 10rpx;
-}
-.placeholder {
-    color: #606266;
-    opacity: 0.6;
 }
 </style>

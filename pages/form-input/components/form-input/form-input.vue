@@ -1,6 +1,6 @@
 <template>
     <view class="re oh wh-auto ht-auto">
-        <scroll-view :scroll-y="true" class="scroll-box" scroll-with-animation="true">
+        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' ? false : true" class="scroll-box" scroll-with-animation> 
             <view class="abs w h" :style="content_style">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
@@ -8,109 +8,26 @@
             </view>
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style">{{ form_name }}</view>
             <view class="data-list bg-white">
-                <view v-for="(item, index) in filteredDiyData" :key="index" :class="(flex_direction == 'row' ? 'row-item' : 'column-item mb-10') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :style="( item.key == 'auxiliary-line' ? 'border-bottom: 0rpx' : '')">
-                    <!-- 左右模式 -->
-                    <!-- <template v-if="flex_direction == 'row'"> -->
-                    <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? (['video', 'img'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
-                        <view v-if="!['rich-text', 'auxiliary-line', 'upload-attachments'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="field_label_style">
-                            <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
-                            <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                                <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
-                            </view>
-                        </view>
-                        <!-- 富文本仅支持H5、APP-PLUS、微信小程序、百度小程序 -->
-                        <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
-                        <view v-if="item.key == 'rich-text'" class="field-label flex-row align-c gap-10" :style="field_label_style">
-                            <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
-                            <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                                <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
-                            </view>
-                        </view>
-                        <!-- #endif -->
-                        <!-- 上传文件仅支持H5、微信小程序、QQ小程序 -->
-                        <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
-                        <view v-if="item.key == 'upload-attachments'" class="field-label flex-row align-c gap-10" :style="field_label_style">
-                            <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
-                            <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                                <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
-                            </view>
-                        </view>
-                        <!-- #endif -->
-                        <view class="flex-1 wh-auto flex-col gap-5 oh">
-                            <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
-                                <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
-                            </view>
-                            <view v-else-if="item.key == 'multi-text'" :style="item.com_data.common_style + 'padding: 18rpx 22rpx;'">
-                                <component-textarea :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
-                            </view>
-                            <view v-else-if="['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && flex_direction !== 'row'">
-                                <component-checkbox :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-checkbox>
-                            </view>
-                            <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction !== 'row'">
-                                <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-radio>
-                            </view>
-                            <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction == 'row')" :style="item.com_data.common_style">
-                                <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-select>
-                            </view>
-                            <view v-else-if="(['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && flex_direction == 'row')" :style="item.com_data.common_style">
-                                <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @data_option_change="data_option_change"></component-select-multi>
-                            </view>
-                            <view v-else-if="item.key == 'number'" :style="item.com_data.common_style">
-                               <component-number :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-number>
-                            </view>
-                            <view v-else-if="item.key == 'date'" :style="item.com_data.common_style">
-                               <component-date :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date>
-                            </view>
-                            <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style">
-                               <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-date-group>
-                            </view>
-                            <view v-else-if="item.key == 'address'">
-                               <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @openRagion="open_ragion" @dataAddressChange="dataAddressChange"></component-address>
-                            </view>
-                            <view v-else-if="item.key == 'phone'">
-                               <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></component-phone>
-                            </view>
-                            <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
-                               <component-pwd :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
-                            </view>
-                            <view v-else-if="item.key == 'score'">
-                               <component-score :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change"></component-score>
-                            </view>
-                            <view v-else-if="item.key == 'img'">
-                               <component-image :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-image>
-                            </view>
-                            <view v-else-if="item.key == 'video'">
-                               <component-video :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-video>
-                            </view>
-                            <view v-else-if="item.key == 'text'">
-                                <component-text :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-text>
-                            </view>
-                            <view v-else-if="item.key == 'attachments'">
-                                <component-attachments :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-attachments>
-                            </view>
-                            <view v-else-if="item.key == 'auxiliary-line'">
-                                <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction"></component-auxiliary-line>
-                            </view>
-                            <view v-else-if="['upload-img', 'upload-video'].includes(item.key)">
-                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
-                            </view>
-                            <view v-else-if="item.key == 'position'">
-                                <component-position :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-position>
-                            </view>
-                            <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
-                            <view v-else-if="item.key == 'upload-attachments'">
-                                <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
-                            </view>
-                            <!-- #endif -->
-                            <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
-                            <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
-                                <component-rich-text :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-rich-text>
-                            </view>
-                            <!-- #endif -->
-                            <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
-                        </view>
-                    </view>
-                </view>
+                <!-- 组件显示逻辑 -->
+                <component-show 
+                    :propValue="filteredDiyData" 
+                    :propFieldLabelStyle="field_label_style"
+                    :propTitleStyle="title_style"
+                    :propHelpIconStyle="help_icon_style"
+                    :propDataFormId="propDataFormId" 
+                    :propKey="propKey" 
+                    :propDirection="flex_direction" 
+                    :propMobile="mobile" 
+                    :propComponentStyle="component_style"
+                    @dataChange="data_change"
+                    @dataCheck="data_check"
+                    @dataOptionChange="data_option_change"
+                    @dataCodeChange="data_code_change"
+                    @dataCodeCheck="data_code_check"
+                    @dataAddressChange="data_address_change"
+                    @openRegion="open_region"
+                    @helpIconEvent="help_icon_event"
+                />
             </view>
         </scroll-view>
         <view v-if="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1'"  class="bottom-fixed" :style="bottom_fixed_style">
@@ -136,53 +53,13 @@
 <script>
 import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
 const app = getApp();
-import componentInput from '@/pages/form-input/components/form-input/input.vue';
-import componentTextarea from '@/pages/form-input/components/form-input/textarea.vue';
-import componentCheckbox from '@/pages/form-input/components/form-input/checkbox.vue';
-import componentRadio from '@/pages/form-input/components/form-input/radio.vue';
-import componentSelect from '@/pages/form-input/components/form-input/select.vue';
-import componentNumber from '@/pages/form-input/components/form-input/number.vue';
-import componentDate from '@/pages/form-input/components/form-input/date.vue';
-import componentDateGroup from '@/pages/form-input/components/form-input/date-group.vue';
-import componentAddress from '@/pages/form-input/components/form-input/address.vue';
-import componentSelectMulti from '@/pages/form-input/components/form-input/select-multi.vue';
-import componentPhone from '@/pages/form-input/components/form-input/phone.vue';
-import componentPwd from '@/pages/form-input/components/form-input/pwd.vue';
-import componentScore from '@/pages/form-input/components/form-input/score.vue';
-import componentImage from '@/pages/form-input/components/form-input/image.vue';
-import componentVideo from '@/pages/form-input/components/form-input/video.vue';
-import componentText from '@/pages/form-input/components/form-input/text.vue';
-import componentAttachments from '@/pages/form-input/components/form-input/attachments.vue';
-import componentAuxiliaryLine from '@/pages/form-input/components/form-input/auxiliary-line.vue';
-import componentRichText from '@/pages/form-input/components/form-input/rich-text.vue';
-import componentUpload from '@/pages/form-input/components/form-input/upload.vue';
-import componentPosition from '@/pages/form-input/components/form-input/position.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
+import componentShow from '@/pages/form-input/components/form-input/modules/component-show/index.vue';
 export default {
     name: 'formInput',
     components: {
-        componentInput,
-        componentTextarea,
-        componentCheckbox,
-        componentRadio,
-        componentNumber,
-        componentSelect,
-        componentSelectMulti,
-        componentDate,
-        componentDateGroup,
-        componentAddress,
         componentRegionPicker,
-        componentPhone,
-        componentPwd,
-        componentScore,
-        componentImage,
-        componentVideo,
-        componentText,
-        componentAttachments,
-        componentAuxiliaryLine,
-        componentRichText,
-        componentUpload,
-        componentPosition
+        componentShow
     },
     props: {
         propValue: {
@@ -222,6 +99,7 @@ export default {
             city_id: '',
             county_id: '',
             region_picker_show: false,
+            scrollTop: 0,
         };
     },
     watch: {
@@ -290,6 +168,11 @@ export default {
                 help_icon_style: `font-size:${mobile.help_icon_size_type == 'big' ? 40 : mobile.help_icon_size_type == 'middle' ? 28 : 24}rpx;`,
                 field_label_style: `${ mobile.flex_direction == 'column'? 'justify-content:flex-start;' : `width:${ mobile.filed_title_width * 2 }rpx;justify-content: ${ mobile.filed_title_justification };` }`,
             });
+            setTimeout(() => {
+                this.setData({
+                    scrollTop: 0.01
+                })
+            }, 500);
         },
         get_form_border_style(item, flex_direction) {
             return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
@@ -354,7 +237,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        dataAddressChange(e) {
+        data_address_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
             const data = [...this.data_list];
@@ -365,11 +248,11 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        help_icon_event(e) {
-            this.setData({ popup_help_content: e.currentTarget.dataset.value });
+        help_icon_event(val) {
+            this.setData({ popup_help_content: val });
             this.$refs.popup.open();
         },
-        open_ragion(id, province_id, city_id, county_id) {
+        open_region(id, province_id, city_id, county_id) {
             this.setData({ 
                 region_picker_show: true, 
                 province_id, 
@@ -439,31 +322,6 @@ export default {
 }
 .data-list {
     padding: 15rpx 0;
-    .row-item {
-        padding: 10rpx 15rpx;
-        border-bottom: 2rpx solid #eee;
-        overflow: hidden;
-    }
-    .row-item:last-child {
-        border-bottom: none;
-    }
-    .column-item {
-        padding: 20rpx 15rpx;
-        padding-bottom: 20rpx;
-    }
-    .item_error {
-        background: #fef6e6;
-    }
-    .field-invalid-info {
-        color: #FF5353;
-        font-size: 24rpx;
-        line-height: 40rpx;
-    }
-}
-.required {
-    color: #FF5353;
-    font-weight: 700;
-    padding-left: 6rpx;
 }
 .popup-content {
     background: #fff;

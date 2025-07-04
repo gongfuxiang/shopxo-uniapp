@@ -99,7 +99,7 @@
                         dialog_value: '',
                     });
                     this.$refs.inputDialog.close();
-                    this.$emit('data_option_change', { list: custom_option_list, value: this.form_value, id: this.propDataId });
+                    this.$emit('dataOptionChange', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
                     this.$refs.message.open();
                 }

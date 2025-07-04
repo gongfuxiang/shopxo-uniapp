@@ -45,7 +45,7 @@
                 <view class="popup-close oh" @tap="popup_close">
                     <iconfont name="icon-close" size="32rpx" color="#fff"></iconfont>
                 </view>
-                <video :src="video_src" autoplay controls class="radius-md" objectFit="cover" :style="{ width: popup_width, height: popup_height }"></video>
+                <video :src="video_src" autoplay controls class="radius-md" objectFit="contain" :style="{ width: popup_width, height: popup_height }"></video>
             </view>
         </uni-popup>
     </view>

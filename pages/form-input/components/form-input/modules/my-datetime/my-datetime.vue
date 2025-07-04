@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<uni-popup ref="popup" type="bottom" :animation="true">
+		<uni-popup ref="popup" type="bottom" background-color="#fff" :animation="true">
 			<view class="popup-content">
 				<view>
 				  <view class="headBox">
-						<view @tap="close"><text class="text1">取消</text></view>
+						<view @tap="close"><text class="text-size-sm">取消</text></view>
 						<!-- <view class="uni-page-head-title" v-if="titleShow">{{timeTitle}}</view> -->
-						<view><text class="text1 blue" @tap="submit_event">确定</text></view>
+						<view><text class="text-size-sm cr-blue" @tap="submit_event">确定</text></view>
 					</view>
 					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange">
 						<picker-view-column v-for="(arr, n) in dateTimeArr" :key="n">
@@ -221,17 +221,6 @@
 <style scoped>
 	.popup-content{
 		background-color: #FFFFFF;
-	}
-	.text1{
-		padding: 0 28rpx;
-		font-size: 34rpx;
-		line-height: 90rpx;
-		color: #888;
-		float: left;
-	}
-	.blue{
-		float: right;
-		color: #007aff;
 	}
 	.uni-page-head-title {
 		display: inline-block;
