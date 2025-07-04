@@ -253,13 +253,13 @@ export default {
             this.setData({ popup_help_content: val });
             this.$refs.popup.open();
         },
-        open_region(id, province_id, city_id, county_id) {
+        open_region(e) {
             this.setData({ 
                 region_picker_show: true, 
-                province_id, 
-                city_id, 
-                county_id,
-                address_id: id,
+                province_id: e?.province_id || '', 
+                city_id: e?.city_id || '', 
+                county_id: e?.county_id || '',
+                address_id: e?.id || '', 
             });
         },
         close_event(e) {

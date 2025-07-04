@@ -87,6 +87,9 @@
                     <view v-else-if="item.key == 'position'">
                         <component-position :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-position>
                     </view>
+                    <view v-else-if="['rect', 'round'].includes(item.key)" :class="propIsCustom ? 'wh-auto ht-auto' : ''">
+                        <component-rect-or-round :propValue="item.com_data" :propKey="propKey"></component-rect-or-round>
+                    </view>
                     <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                     <view v-else-if="item.key == 'upload-attachments'">
                         <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
@@ -127,6 +130,7 @@ import componentAuxiliaryLine from '@/pages/form-input/components/form-input/aux
 import componentRichText from '@/pages/form-input/components/form-input/rich-text.vue';
 import componentUpload from '@/pages/form-input/components/form-input/upload.vue';
 import componentPosition from '@/pages/form-input/components/form-input/position.vue';
+import componentRectOrRound from '@/pages/form-input/components/form-input/rect-or-round.vue';
 export default {
     name: 'formInput',
     components: {
@@ -150,7 +154,8 @@ export default {
         componentAuxiliaryLine,
         componentRichText,
         componentUpload,
-        componentPosition
+        componentPosition,
+        componentRectOrRound
     },
     props: {
         propValue: {

@@ -103,7 +103,7 @@
                 });
             },
             open_ragion() {
-                this.$emit('openRegion', this.propDataId, this.province_id, this.city_id, this.county_id);
+                this.$emit('openRegion', { id: this.propDataId, province_id: this.province_id, city_id: this.city_id, county_id: this.county_id});
             },
             data_check(val) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, val, true, 'number');
