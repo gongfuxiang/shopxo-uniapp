@@ -1,13 +1,13 @@
 <template>
-    <view class="re oh wh-auto ht-auto">
+    <view class="pr oh wh-auto ht-auto">
         <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' ? false : true" class="scroll-box" scroll-with-animation> 
-            <view class="abs w h" :style="content_style">
+            <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
                 </template>
             </view>
-            <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style">{{ form_name }}</view>
-            <view class="data-list bg-white">
+            <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
+            <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                 <!-- 组件显示逻辑 -->
                 <component-show 
                     :propValue="filteredDiyData" 
@@ -19,6 +19,7 @@
                     :propDirection="flex_direction" 
                     :propMobile="mobile" 
                     :propComponentStyle="component_style"
+                    :propIsCustom="overall_config.type_value == 'free'"
                     @dataChange="data_change"
                     @dataCheck="data_check"
                     @dataOptionChange="data_option_change"
@@ -298,6 +299,7 @@ export default {
     word-wrap: break-word;
     font-size: 40rpx;
     padding: 16rpx 11rpx 0;
+    box-sizing: border-box;
     word-break: break-word;
 }
 .scroll-box {

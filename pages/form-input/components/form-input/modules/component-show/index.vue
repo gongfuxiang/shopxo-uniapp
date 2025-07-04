@@ -1,10 +1,8 @@
 <template>
-    <view class="wh-auto ht-auto">
-        <view v-for="(item, index) in data_list" :key="index" :class="(propDirection == 'row' ? 'row-item' : 'column-item mb-10') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :style="( item.key == 'auxiliary-line' ? 'border-bottom: 0rpx' : '')">
-            <!-- 左右模式 -->
-            <!-- <template v-if="propDirection == 'row'"> -->
+    <view class="wh-auto ht-auto pr">
+        <view v-for="(item, index) in data_list" :key="index" :class="(propIsCustom ? 'pa ' : (propDirection == 'row' ? 'row-item ' : 'column-item mb-10 ')) + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :style="(item.key == 'auxiliary-line' ? 'border-bottom: 0rpx; ' : '') + (propIsCustom ? ('left:' + item.location.x + 'px;top:' + item.location.y + 'px;width:' + item.com_data.com_width + 'px;height:' + item.com_data.com_height + 'px;z-index:' + (item.is_enable == '1' ? (data_list.length - 1 > 0 ? (data_list.length - 1) - index : 0) : -999) + ';') : '')">
             <view :class="'wh-auto ht-auto ' + (propDirection == 'row' ? (['video', 'img', 'upload-img', 'upload-video', 'multi-text'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
-                <view v-if="!['rich-text', 'auxiliary-line', 'upload-attachments'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
+                <view v-if="(!propIsCustom && !['rich-text', 'auxiliary-line', 'upload-attachments'].includes(item.key)) || (propIsCustom && !['img', 'video', 'auxiliary-line', 'rect', 'round'].includes(item.key))" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
                     <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
                     <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
                         <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
@@ -68,11 +66,11 @@
                     <view v-else-if="item.key == 'score'">
                         <component-score :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change"></component-score>
                     </view>
-                    <view v-else-if="item.key == 'img'">
-                        <component-image :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-image>
+                    <view v-else-if="item.key == 'img'" :class="propIsCustom ? 'wh-auto ht-auto' : ''">
+                        <component-image :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" :propIsCustom="propIsCustom"></component-image>
                     </view>
-                    <view v-else-if="item.key == 'video'">
-                        <component-video :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-video>
+                    <view v-else-if="item.key == 'video'" :class="propIsCustom ? 'wh-auto ht-auto' : ''">
+                        <component-video :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" :propIsCustom="propIsCustom"></component-video>
                     </view>
                     <view v-else-if="item.key == 'text'">
                         <component-text :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-text>
@@ -190,6 +188,15 @@ export default {
         propComponentStyle: {
             type: String,
             default: '',
+        },
+        propIsCustom: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    data() {
+        return {
+            data_list: []
         }
     },
     watch: {
@@ -201,11 +208,6 @@ export default {
         },
         propKey(val) {
            this.init();
-        }
-    },
-    data() {
-        return {
-            data_list: []
         }
     },
     mounted() {

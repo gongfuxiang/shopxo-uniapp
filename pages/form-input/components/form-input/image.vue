@@ -1,5 +1,5 @@
 <template>
-    <view class="form-input-image"> 
+    <view class="form-input-image" :style="img_style"> 
         <image-empty :propImageSrc="img_src" :propStyle="img_style" propErrorStyle="width: 100rpx;height: 100rpx;"></image-empty>
     </view>
 </template>
@@ -58,6 +58,8 @@
                     const { img_width, img_scale_type } = com_data;
                     const height = img_scale_type === '1' ? img_width : img_scale_type == '0' ? (img_width * 9) / 16 : (img_width * 3) / 4;
                     img_style = `width: ${ img_width * 2 }rpx;height:${ height * 2 }rpx;`
+                } else {
+                    img_style = `width: 100%;height:100%;`
                 }
                 this.setData({
                     com_data: com_data,
