@@ -94,6 +94,9 @@
                             <view v-else-if="['upload-img', 'upload-video'].includes(item.key)">
                                 <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataId="propDataId" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
                             </view>
+                            <view v-else-if="item.key == 'position'">
+                                <component-position :propValue="item.com_data" :propKey="propKey" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-position>
+                            </view>
                             <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                             <view v-else-if="item.key == 'upload-attachments'">
                                 <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataId="propDataId" :propDataIndex="index" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
@@ -153,6 +156,7 @@ import componentAttachments from '@/pages/form-input/components/form-input/attac
 import componentAuxiliaryLine from '@/pages/form-input/components/form-input/auxiliary-line.vue';
 import componentRichText from '@/pages/form-input/components/form-input/rich-text.vue';
 import componentUpload from '@/pages/form-input/components/form-input/upload.vue';
+import componentPosition from '@/pages/form-input/components/form-input/position.vue';
 import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 export default {
     name: 'formInput',
@@ -177,7 +181,8 @@ export default {
         componentAttachments,
         componentAuxiliaryLine,
         componentRichText,
-        componentUpload
+        componentUpload,
+        componentPosition
     },
     props: {
         propValue: {

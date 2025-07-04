@@ -12,7 +12,6 @@
 
 <script>
     import { get_format_checks, isEmpty, formatNumber } from '@/common/js/common/common.js';
-    const app = getApp();
     export default {
         props: {
             propValue: {
