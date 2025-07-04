@@ -2,15 +2,15 @@
 	<view>
 		<uni-popup ref="popup" type="bottom" background-color="#fff" :animation="true">
 			<view class="popup-content">
-				<view>
-				  <view class="headBox">
+				<view >
+				  <view class="headBox padding-main">
 						<view @tap="close"><text class="text-size-sm">取消</text></view>
 						<!-- <view class="uni-page-head-title" v-if="titleShow">{{timeTitle}}</view> -->
 						<view><text class="text-size-sm cr-blue" @tap="submit_event">确定</text></view>
 					</view>
 					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange">
 						<picker-view-column v-for="(arr, n) in dateTimeArr" :key="n">
-							<view class="item" v-for="(obj, index) in arr" :key="index">{{obj}}{{ dataType == 'date' ? dateUnitArr[n] || '' : timeUnitArr[n] || '' }}</view>
+							<view class="item flex-row align-c jc-c" v-for="(obj, index) in arr" :key="index">{{obj}}{{ dataType == 'date' ? dateUnitArr[n] || '' : timeUnitArr[n] || '' }}</view>
 						</picker-view-column>
 					</picker-view>
 				</view>
@@ -234,7 +234,6 @@
 	.headBox{
 		display: flex;
 		justify-content: space-between;
-		border-bottom: 1px solid #e5e5e5;
 	}
 	picker-view {
 		width: 100%;
@@ -242,9 +241,9 @@
 		margin-top:20rpx;
 	}
 	.item {
-	  line-height: 100rpx;
+	   	/* line-height: 100rpx; */
 		height: 100rpx;
-	  text-align: center;
+	  	text-align: center;
 		font-size: 30rpx;
 	}
 </style>

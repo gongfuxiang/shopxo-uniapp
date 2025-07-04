@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view :class="'flex-col' + (propDirection == 'row' ? '' : 'gap-10')">
+        <view :class="'flex-col' + (propDirection == 'row' ? '' : ' gap-10')">
             <view class="flex-row align-c gap-5" :style="com_data.common_style + propStyle">
                 <iconfont name="icon-phone" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
                 <input :value="form_value" class="uni-input flex-1" :style="propStyle" type="text" :placeholder="placeholder" @blur="data_check" @input="input_value_event" />
