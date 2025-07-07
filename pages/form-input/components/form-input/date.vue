@@ -2,22 +2,22 @@
     <view class="flex-row align-c wh-auto pr" :style="propStyle">
         <view class="bg-white wh-auto ht-auto flex-row align-c" @tap="data_time_change">
             <template v-if="isEmpty(form_value)">
-                <view class="cr-gray flex-1">{{ com_data.placeholder }}</view>
+                <view class="cr-gray flex-1 text-line-1">{{ com_data.placeholder }}</view>
             </template>
             <template v-else>
-                <view class="datetime-value flex-1">{{ form_value }}</view>
+                <view class="datetime-value flex-1 text-line-1">{{ form_value }}</view>
             </template>
             <iconfont :name="'icon-'+ com_data.icon_name" class="ml-5" size="28rpx" color="#333333" />
         </view>
         <template v-if="['option1', 'option2'].includes(date_type)">
-            <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_date_change"></myDatetime>
+            <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_date_change" @maskClick="mask_click"></myDatetime>
         </template>
         <template v-else-if="date_type == 'option3'">
-            <myDatetime ref="option4" :shownum="2" @timeSubmit="data_date_change"></myDatetime>
+            <myDatetime ref="option4" :shownum="2" @timeSubmit="data_date_change" @maskClick="mask_click"></myDatetime>
         </template>
         <template v-else>
             <view class="datetime-picker">
-                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'date' : 'datetime'" :hideSecond="date_type !== 'option4'" @change="data_date_change" />
+                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'date' : 'datetime'" :hideSecond="date_type !== 'option4'" @change="data_date_change" @maskClick="mask_click" />
             </view>
         </template>
     </view>
@@ -85,6 +85,8 @@
                 });
             },
             data_time_change() {
+                // 进行操作时，将当前组件的层级调到最高，避免弹出框被其他的盖住
+                this.z_index_change(this.propDataId);
                 if (['option1', 'option2', 'option3'].includes(this.date_type)) {
                     this.$refs.option4.open(this.form_value || '');
                 } else {
@@ -101,8 +103,18 @@
                 this.setData({
                     form_value: date,
                 });
+                this.z_index_change('');
                 this.$emit('dataChange', { value: date, id: this.propDataId });
             },
+            mask_click() {
+                this.z_index_change('');
+            },
+            /**
+             * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
+             */
+            z_index_change(e) {
+                this.$emit('zIndexChange', e);
+            }
         }
     }
 </script>

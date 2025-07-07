@@ -2,10 +2,10 @@
     <view class="wh-auto">
         <view class="flex-row align-c wh-auto" :style="propStyle" @tap="data_value_event">
             <view class="flex-1">
-                <template v-if="isEmpty(form_value)"><view class="placeholder cr-gray">{{ placeholder }}</view></template>
+                <template v-if="isEmpty(form_value)"><view class="placeholder cr-gray text-line-1">{{ placeholder }}</view></template>
                 <template v-else>
                     <view class="flex-row align-c">
-                        <view class="text-size-sm" :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
+                        <view class="text-size-sm text-line-1" :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
                     </view>
                 </template>
             </view>
@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col gap-10">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb">
@@ -140,12 +140,15 @@
              * 下拉框选择事件
              */
             data_value_event() {
+                // 进行操作时，将当前组件的层级调到最高，避免弹出框被其他的盖住
+                this.z_index_change(this.propDataId);
                 this.$refs.selectPopup.open();
             },
             /**
              * 快速关闭事件
              */
             quick_close_event() {
+                this.z_index_change('');
                 this.$refs.selectPopup.close();
             },
             /**
@@ -174,10 +177,16 @@
                     form_value: e.detail.value,
                     form_value_data: form_value_data,
                 });
+                this.z_index_change('');
                 // 关闭选择框
                 this.$refs.selectPopup.close();
-
                 this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
+            },
+            /**
+             * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
+             */
+            z_index_change(e) {
+                this.$emit('zIndexChange', e);
             }
         }
     }

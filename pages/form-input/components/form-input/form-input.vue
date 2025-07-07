@@ -1,6 +1,6 @@
 <template>
     <view class="pr oh wh-auto ht-auto">
-        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' ? false : true" class="scroll-box" scroll-with-animation> 
+        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" class="scroll-box" lower-threshold="60" scroll-with-animation> 
             <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
@@ -8,7 +8,7 @@
             </view>
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
             <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
-                <!-- 组件显示逻辑 -->
+                <!-- form表单子组件显示 -->
                 <component-show 
                     :propValue="filteredDiyData" 
                     :propFieldLabelStyle="field_label_style"
@@ -28,6 +28,7 @@
                     @dataAddressChange="data_address_change"
                     @openRegion="open_region"
                     @helpIconEvent="help_icon_event"
+                    @zIndexChange="z_index_change"
                 />
             </view>
         </scroll-view>
@@ -101,6 +102,7 @@ export default {
             county_id: '',
             region_picker_show: false,
             scrollTop: 0,
+            z_index_id: '',
         };
     },
     watch: {
@@ -151,9 +153,10 @@ export default {
             const mobile = overall_config?.style_settings?.mobile || {};
             data.config.diy_data.forEach(item => {
                 // 边框样式处理
-                item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row');
+                item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
             });
             this.setData({
+                z_index_id: '',
                 data_list: data.config.diy_data,
                 form_name: data.name,
                 mobile: mobile,
@@ -169,15 +172,24 @@ export default {
                 help_icon_style: `font-size:${mobile.help_icon_size_type == 'big' ? 40 : mobile.help_icon_size_type == 'middle' ? 28 : 24}rpx;`,
                 field_label_style: `${ mobile.flex_direction == 'column'? 'justify-content:flex-start;' : `width:${ mobile.filed_title_width * 2 }rpx;justify-content: ${ mobile.filed_title_justification };` }`,
             });
+            // 
             setTimeout(() => {
                 this.setData({
                     scrollTop: 0.01
                 })
             }, 500);
         },
-        get_form_border_style(item, flex_direction) {
-            return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
+        // 获取子表单样式
+        get_form_border_style(item, flex_direction, type_value) {
+            // 如果是默认模式需要区分是上下还是左右来判断是否显示边框
+            if (type_value == 'default') {
+                return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
+            } else {
+                // 自定义模式不管是上下还是左右都显示边框
+                return common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
+            }
         },
+        // 子表单校验逻辑
         data_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
@@ -191,6 +203,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 手机号验证码的校验
         data_code_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
@@ -204,6 +217,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 子表单内容参数修改
         data_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -215,6 +229,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 子表单验证码参数修改
         data_code_chage(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -226,6 +241,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 子表单新增选项变化时的处理
         data_option_change(e) {
             const { list, value, id } = e;
             // 改变对应id的数据
@@ -238,6 +254,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 子表单地址详细信息的处理
         data_address_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -249,10 +266,12 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 帮助图标点击事件
         help_icon_event(val) {
             this.setData({ popup_help_content: val });
             this.$refs.popup.open();
         },
+        // 打开地区选择器
         open_region(e) {
             this.setData({ 
                 region_picker_show: true, 
@@ -262,11 +281,13 @@ export default {
                 address_id: e?.id || '', 
             });
         },
+        // 地区选择器关闭事件
         close_event(e) {
            this.setData({ 
                 region_picker_show: false 
             });
         },
+        // 地区选择器提交事件
         region_event(e) {
             let data = uni.getStorageSync(app.globalData.data.cache_region_picker_choice_key) || {};
             if((data.province || null) == null) {
@@ -289,6 +310,11 @@ export default {
                 }
             });
             this.setData({ data_list: data_list });
+        },
+        z_index_change(e) {
+            this.setData({
+                z_index_id: e
+            });
         }
     }
 }

@@ -3,8 +3,8 @@
         <view class="bg-white wh-auto ht-auto flex-row align-c gap-5 oh">
             <template v-if="isEmpty(form_value)">
                 <view class="flex-1 flex-row align-c ht-auto gap-5 oh cr-gray">
-                    <view class="flex-1 flex-row align-c jc-c" :data-index="0" @tap="data_time_change">{{ com_data.start_placeholder }}</view>-
-                    <view class="flex-1 flex-row align-c jc-c" :data-index="1" @tap="data_time_change">{{ com_data.end_placeholder }}</view>
+                    <view class="flex-1 flex-row align-c jc-c text-line-1" :data-index="0" @tap="data_time_change">{{ com_data.start_placeholder }}</view>-
+                    <view class="flex-1 flex-row align-c jc-c text-line-1" :data-index="1" @tap="data_time_change">{{ com_data.end_placeholder }}</view>
                 </view>
             </template>
             <template v-else>
@@ -16,14 +16,14 @@
             <iconfont :name="'icon-'+ com_data.icon_name" class="ml-5" size="28rpx" color="#333333" />
         </view>
         <template v-if="['option1', 'option2'].includes(date_type)">
-            <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_change"></myDatetime>
+            <myDatetime ref="option4" dataType="time" :shownum="date_type == 'option1' ? 2 : 3" @timeSubmit="data_change" @maskClick="mask_click"></myDatetime>
         </template>
         <template v-else-if="date_type == 'option3'">
-            <myDatetime ref="option4" :shownum="2" @timeSubmit="data_change"></myDatetime>
+            <myDatetime ref="option4" :shownum="2" @timeSubmit="data_change" @maskClick="mask_click"></myDatetime>
         </template>
         <template v-else>
             <view class="datetime-picker">
-                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'daterange' : 'datetimerange'" :hideSecond="date_type !== 'option6'" @change="data_date_change" />
+                <uni-datetime-picker ref="option4" :value="form_value" :border="false" :type="date_type == 'option4' ? 'daterange' : 'datetimerange'" :hideSecond="date_type !== 'option6'" @change="data_date_change"  @maskClick="mask_click" />
             </view>
         </template>
     </view>
@@ -94,6 +94,8 @@
                 });
             },
             data_time_change(e) {
+                // 进行操作时，将当前组件的层级调到最高，避免弹出框被其他的盖住
+                this.z_index_change(this.propDataId);
                 if (['option1', 'option2', 'option3'].includes(this.date_type)) {
                     const index = e.currentTarget.dataset.index;
                     const val = this.form_value[index] || '';
@@ -118,6 +120,8 @@
                 this.setData({
                     form_value: data,
                 });
+                // 数据发生变化之后再改回原样
+                this.z_index_change('');
                 this.$emit('dataChange', { value: value, id: this.propDataId });
             },
             date_handle(time0, time1) {
@@ -160,7 +164,17 @@
                 this.setData({
                     form_value: date,
                 });
+                this.z_index_change('');
                 this.$emit('dataChange', { value: date, id: this.propDataId });
+            },
+            mask_click() {
+               this.z_index_change('');
+            },
+            /**
+             * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
+             */
+            z_index_change(e) {
+                this.$emit('zIndexChange', e);
             },
         }
     }

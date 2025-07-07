@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-popup ref="popup" type="bottom" background-color="#fff" :animation="true">
+		<uni-popup ref="popup" type="bottom" background-color="#fff" :animation="true" @maskClick="maskClick">
 			<view class="popup-content">
 				<view >
 				  <view class="headBox padding-main">
@@ -213,6 +213,9 @@
 					this.minute = this.minArr[val[1] || 0]
 					this.second = this.secondArr[val[2] || 0]
 				}
+			},
+			maskClick() {
+				this.$emit('maskClick')
 			}
 		}
 	}

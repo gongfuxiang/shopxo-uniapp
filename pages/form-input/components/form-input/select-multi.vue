@@ -2,10 +2,10 @@
     <view class="wh-auto">
         <view class="flex-row align-c wh-auto gap-10" :style="propStyle" @tap="data_value_event">
             <view class="flex-1 oh">
-                <template v-if="isEmpty(form_value_data)"><view class="placeholder cr-gray">{{ placeholder }}</view></template>
+                <template v-if="isEmpty(form_value_data)"><view class="placeholder cr-gray text-line-1">{{ placeholder }}</view></template>
                 <template v-else>
                     <view :class="'flex-row align-c' + (is_multicolour == '1' ? ' gap-10' : '')">
-                        <view class="text-size-sm nowrap" v-for="(item, index) in form_value_data" :key="index" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name || item.value  }}{{ index != form_value_data.length - 1 && is_multicolour !== '1' ? ',' : ''}}</view>
+                        <view class="text-size-sm nowrap text-line-1" v-for="(item, index) in form_value_data" :key="index" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name || item.value  }}{{ index != form_value_data.length - 1 && is_multicolour !== '1' ? ',' : ''}}</view>
                     </view>
                 </template>
             </view>
@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @onclose="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb margin-bottom">
@@ -170,6 +170,8 @@
                     select_value: count == this.new_option_list.length ? 'all' : '',
                     popup_list: this.form_value,
                 });
+                // 进行popup操作时，将当前组件的层级调到最高，避免弹出框被其他的盖住
+                this.z_index_change(this.propDataId);
                 this.$refs.selectPopup.open();
             },
             add_option() {
@@ -192,6 +194,7 @@
                         custom_option_list: [...this.custom_option_list, data],
                         dialog_value: '',
                     });
+                    this.z_index_change('');
                     this.$refs.inputDialog.close();
                     this.$emit('dataOptionChange', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
@@ -205,6 +208,7 @@
              * 快速关闭事件
              */
             quick_close_event() {
+                this.z_index_change('');
                 this.$refs.selectPopup.close();
             },
             /**
@@ -265,12 +269,19 @@
                     form_value: this.popup_list,
                     form_value_data: form_value_data,
                 });
+                this.z_index_change('');
                 this.$refs.selectPopup.close();
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, this.popup_list, true, 'checkbox');
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, id: this.propDataId });
                 // 数据更新时的处理
                 this.$emit('dataChange', { value: this.popup_list, id: this.propDataId });
+            },
+            /**
+             * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
+             */
+            z_index_change(e) {
+                this.$emit('zIndexChange', e);
             }
         }
     }

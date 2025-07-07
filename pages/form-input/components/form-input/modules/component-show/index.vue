@@ -1,6 +1,6 @@
 <template>
     <view class="wh-auto ht-auto pr">
-        <view v-for="(item, index) in data_list" :key="index" :class="(propIsCustom ? 'pa ' : (propDirection == 'row' ? 'row-item ' : 'column-item mb-10 ')) + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :style="(item.key == 'auxiliary-line' ? 'border-bottom: 0rpx; ' : '') + (propIsCustom ? ('left:' + item.location.x + 'px;top:' + item.location.y + 'px;width:' + item.com_data.com_width + 'px;height:' + item.com_data.com_height + 'px;z-index:' + (item.is_enable == '1' ? (data_list.length - 1 > 0 ? (data_list.length - 1) - index : 0) : -999) + ';') : '')">
+        <view v-for="(item, index) in data_list" :key="index" :class="(propIsCustom ? 'pa ' : (propDirection == 'row' ? 'row-item ' : 'column-item mb-10 ')) + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :style="(item.key == 'auxiliary-line' ? 'border-bottom: 0rpx; ' : '') + (propIsCustom ? ('left:' + item.location.x + 'px;top:' + item.location.y + 'px;width:' + item.com_data.com_width + 'px;height:' + item.com_data.com_height + 'px;z-index:' + (z_index_id == item.id ? '999' : (item.is_enable == '1' ? (data_list.length - 1 > 0 ? (data_list.length - 1) - index : 0) : -999)) + ';') : '')">
             <view :class="'wh-auto ht-auto ' + (propDirection == 'row' ? (['video', 'img', 'upload-img', 'upload-video', 'multi-text'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
                 <view v-if="(!propIsCustom && !['rich-text', 'auxiliary-line', 'upload-attachments'].includes(item.key)) || (propIsCustom && !['img', 'video', 'auxiliary-line', 'rect', 'round'].includes(item.key))" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
                     <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
@@ -26,7 +26,7 @@
                     </view>
                 </view>
                 <!-- #endif -->
-                <view class="flex-1 wh-auto flex-col gap-5 oh">
+                <view class="flex-1 wh-auto ht-auto flex-col gap-5 oh">
                     <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                         <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-input>
                     </view>
@@ -40,25 +40,25 @@
                         <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-radio>
                     </view>
                     <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && propDirection == 'row')" :style="item.com_data.common_style">
-                        <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-select>
+                        <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-select>
                     </view>
                     <view v-else-if="(['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && propDirection == 'row')" :style="item.com_data.common_style">
-                        <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change"></component-select-multi>
+                        <component-select-multi :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change" @zIndexChange="z_index_change"></component-select-multi>
                     </view>
                     <view v-else-if="item.key == 'number'" :style="item.com_data.common_style">
                         <component-number :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-number>
                     </view>
                     <view v-else-if="item.key == 'date'" :style="item.com_data.common_style">
-                        <component-date :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-date>
+                        <component-date :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date>
                     </view>
                     <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style">
-                        <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-date-group>
+                        <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date-group>
                     </view>
                     <view v-else-if="item.key == 'address'">
                         <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @openRegion="open_region" @dataAddressChange="data_address_change"></component-address>
                     </view>
                     <view v-else-if="item.key == 'phone'">
-                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage"></component-phone>
+                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_chage" @zIndexChange="z_index_change"></component-phone>
                     </view>
                     <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
                         <component-pwd :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
@@ -201,7 +201,8 @@ export default {
     },
     data() {
         return {
-            data_list: []
+            data_list: [],
+            z_index_id: '',
         }
     },
     watch: {
@@ -222,7 +223,8 @@ export default {
         isEmpty,
         init() {
             this.setData({
-                data_list: this.propValue
+                data_list: this.propValue,
+                z_index_id: '',
             })
         },
         help_icon_event() {
@@ -249,6 +251,12 @@ export default {
         open_region(e) {
             this.$emit('openRegion', e);
         },
+        z_index_change(e) {
+            this.setData({
+                z_index_id: e
+            });
+            this.$emit('zIndexChange', e);
+        }
     }
 }
 </script>

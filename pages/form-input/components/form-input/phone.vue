@@ -133,6 +133,8 @@
                         popup_image_verify_status: true,
                         verify_disabled: true,
                     });
+                    // 进行操作时，将当前组件的层级调到最高，避免弹出框被其他的盖住
+                    this.z_index_change(this.propDataId);
                 } else {
                     this.verify_send_handle();
                 }
@@ -168,6 +170,7 @@
                 this.setData({
                     popup_image_verify_status: false,
                 });
+                this.z_index_change('');
             },
             popup_image_verify_submit_event() {
                 this.verify_send_handle();
@@ -192,6 +195,7 @@
                                 this.setData({
                                     popup_image_verify_status: false,
                                 });
+                                this.z_index_change('');
                             }
                             // 倒计时处理
                             var temp_time = this.verify_time_total;
@@ -245,6 +249,12 @@
                     form_value_code: e.detail.value,
                 });
                 this.$emit('dataCodeChange', { value: e.detail.value, id: this.propDataId });
+            },
+            /**
+             * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
+             */
+            z_index_change(e) {
+                this.$emit('zIndexChange', e);
             }
         }
     }

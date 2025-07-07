@@ -1,8 +1,8 @@
 <template>
-    <view :class="'flex-col' + (propDirection == 'row' ? '' : 'gap-10')">
+    <view :class="'flex-col ' + (propDirection == 'row' ? '' : 'gap-10')">
         <view class="flex-row align-c" :style="com_data.common_style + propStyle" @tap="open_ragion">
-            <text v-if="province_name" class="flex-1">{{ province_name }}{{ city_name ? ' / ' + city_name : '' }}{{ county_name ? ' / ' + county_name : '' }}</text>
-            <text v-else class="cr-gray flex-1">{{ placeholder }}</text>
+            <text v-if="province_name" class="flex-1 text-line-1">{{ province_name }}{{ city_name ? ' / ' + city_name : '' }}{{ county_name ? ' / ' + county_name : '' }}</text>
+            <text v-else class="cr-gray flex-1 text-line-1">{{ placeholder }}</text>
             <template v-if="propDirection == 'row'">
                 <iconfont name="icon-arrow-right" size="24rpx" color="#666" propContainerDisplay="flex"></iconfont>
             </template>
