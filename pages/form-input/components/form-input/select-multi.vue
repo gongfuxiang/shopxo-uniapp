@@ -194,7 +194,6 @@
                         custom_option_list: [...this.custom_option_list, data],
                         dialog_value: '',
                     });
-                    this.z_index_change('');
                     this.$refs.inputDialog.close();
                     this.$emit('dataOptionChange', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
@@ -208,8 +207,8 @@
              * 快速关闭事件
              */
             quick_close_event() {
-                this.z_index_change('');
                 this.$refs.selectPopup.close();
+                this.z_index_change('');
             },
             /**
              * 搜索事件
@@ -269,8 +268,9 @@
                     form_value: this.popup_list,
                     form_value_data: form_value_data,
                 });
-                this.z_index_change('');
+                // 关闭弹窗
                 this.$refs.selectPopup.close();
+                this.z_index_change('');
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, this.popup_list, true, 'checkbox');
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, id: this.propDataId });

@@ -148,8 +148,8 @@
              * 快速关闭事件
              */
             quick_close_event() {
-                this.z_index_change('');
                 this.$refs.selectPopup.close();
+                this.z_index_change('');
             },
             /**
              * 搜索事件
@@ -177,9 +177,9 @@
                     form_value: e.detail.value,
                     form_value_data: form_value_data,
                 });
-                this.z_index_change('');
                 // 关闭选择框
                 this.$refs.selectPopup.close();
+                this.z_index_change('');
                 this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
             /**
