@@ -512,6 +512,9 @@
                     uni.setStorageSync(app.globalData.data.cache_user_info_key, user);
                 }
             }
+
+            // 数据初始化
+            this.init();
         },
 
         // 页面显示
@@ -521,9 +524,6 @@
 
             // 异步初始化配置
             this.init_config();
-
-            // 数据初始化
-            this.init();
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {

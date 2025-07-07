@@ -23,11 +23,14 @@
                         </view>
                     </view>
                 </view>
+                <view v-if="item.status == 1" class="item-operation tr margin-top-main">
+                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="receive_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('pages.plugins-coin-collection')}}</button>
+                </view>
             </view>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" propLoadingLogoTop="85%"></component-no-data>
         </view>
 
         <!-- 结尾 -->
@@ -219,6 +222,73 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+
+            // 收款
+            receive_event(e) {
+                if (uni.canIUse('requestMerchantTransfer')) {
+                    // 参数
+                    var id = e.currentTarget.dataset.value;
+                    var index = e.currentTarget.dataset.index;
+                    
+                    // 加载loding
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('receivedata', 'cash', 'wallet'),
+                        method: 'POST',
+                        data: {
+                            id: id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                var temp_data_list = this.data_list;
+                                uni.requestMerchantTransfer({
+                                    mchId: res.data.data.mchid,
+                                    appId: res.data.data.appid,
+                                    package: res.data.data.package,
+                                    success: (res) => {
+                                        temp_data_list[index]['status'] = 2;
+                                        temp_data_list[index]['status_name'] = this.$t('user-cash.user-cash.t7gtu0');
+                                        this.setData({
+                                            data_list: temp_data_list,
+                                        });
+                                        uni.request({
+                                            url: app.globalData.get_request_url('payrefresh', 'cash', 'wallet'),
+                                            method: 'POST',
+                                            data: {
+                                                id: id,
+                                            },
+                                            dataType: 'json'
+                                        });
+                                    },
+                                    fail: (res) => {
+                                        if(res.errMsg.indexOf('cancel') == -1) {
+                                            uni.showModal({
+                                                content: res.errMsg,
+                                                showCancel: false,
+                                            });
+                                        }
+                                    },
+                                });
+                            } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                } else {
+                    uni.showModal({
+                        content: '你的微信版本过低，请更新至最新版本。',
+                        showCancel: false,
+                    });
+                }
             },
 
             // 导航事件
