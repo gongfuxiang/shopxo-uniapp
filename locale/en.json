@@ -88,7 +88,8 @@
         "unique_message": "The unique identifier is empty",
         "not_supported_scan_tips": "H5 webpage does not support scanning codes",
         "copy_link": "Copy link",
-		"multilingual": "multilingual"
+		"multilingual": "multilingual",
+        "ver_update_tips": "Your WeChat version is too low, please update to the latest version!"
 	},
     "client": {
         "weixin": "WeChat",
@@ -1778,6 +1779,7 @@
 	"user-cash": {
 		"user-cash": {
 			"3v1gzc": "Unpay",
+            "678iuy": "Receive Pay",
 			"t7gtu0": "Paid",
 			"x47iu3": "Fail Pay"
 		}

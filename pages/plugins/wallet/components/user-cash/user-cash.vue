@@ -1,10 +1,12 @@
 <template>
     <view :class="theme_view">
         <!-- 导航 -->
-        <view class="nav-child flex-row align-c margin-bottom-lg">
-            <view v-for="(item, index) in nav_status_list" :key="index">
-                <view class="item dis-inline-block round margin-right-main tc" :class="nav_status_index == index ? 'cr-main bg-main-light' : 'cr-grey bg-grey-e'" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </view>
+        <view class="nav-child flex-row align-c margin-bottom-lg scroll-view-horizontal">
+            <scroll-view :scroll-x="true" :show-scrollbar="false">
+                <block v-for="(item, index) in nav_status_list" :key="index">
+                    <view class="item dis-inline-block round margin-right-main tc" :class="nav_status_index == index ? 'cr-main bg-main-light' : 'cr-grey bg-grey-e'" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                </block>
+            </scroll-view>
         </view>
 
         <!-- 列表 -->
@@ -12,7 +14,7 @@
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
                     <text class="cr-grey-9">{{ item.add_time }}</text>
-                    <text :class="item.status === 0 ? 'cr-black' : item.status === 1 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
+                    <text :class="item.status === 0 ? 'cr-black' : (item.status === 2 ? 'cr-grey-c' : 'cr-red')">{{ item.status_name }}</text>
                 </view>
                 <view :data-value="'/pages/plugins/wallet/user-cash-detail/user-cash-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
                     <view v-for="(fv, fi) in content_list" :key="fi">
@@ -67,8 +69,9 @@
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
                     { name: this.$t('user-cash.user-cash.3v1gzc'), value: '0' },
-                    { name: this.$t('user-cash.user-cash.t7gtu0'), value: '1' },
-                    { name: this.$t('user-cash.user-cash.x47iu3'), value: '2' },
+                    { name: this.$t('user-cash.user-cash.678iuy'), value: '1' },
+                    { name: this.$t('user-cash.user-cash.t7gtu0'), value: '2' },
+                    { name: this.$t('user-cash.user-cash.x47iu3'), value: '3' },
                 ],
                 nav_status_index: 0,
                 content_list: [
@@ -285,7 +288,7 @@
                     });
                 } else {
                     uni.showModal({
-                        content: '你的微信版本过低，请更新至最新版本。',
+                        content: this.$t('common.ver_update_tips'),
                         showCancel: false,
                     });
                 }

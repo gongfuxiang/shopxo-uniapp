@@ -88,7 +88,8 @@
         "unique_message": "唯一标识为空",
         "not_supported_scan_tips": "H5网页不支持扫码",
         "copy_link": "复制链接",
-		"multilingual": "多语言"
+		"multilingual": "多语言",
+        "ver_update_tips": "你的微信版本过低，请更新至最新版本！"
 	},
     "client": {
         "weixin": "微信",
@@ -1761,7 +1762,8 @@
 	"user-cash": {
 		"user-cash": {
 			"3v1gzc": "未打款",
-			"t7gtu0": "已打款",
+			"678iuy": "待收款",
+            "t7gtu0": "已打款",
 			"x47iu3": "打款失败"
 		}
 	},
