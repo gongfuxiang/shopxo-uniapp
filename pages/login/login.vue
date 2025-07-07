@@ -199,7 +199,7 @@
                                         <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.t59dho') }}</view>
                                         <!-- 账号密码 -->
                                         <block v-if="current_opt_type == 'reg_username'">
-                                            <input type="text" :placeholder="$t('login.login.6yfr9g')" maxlength="60" name="accounts" key="reg_username_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login.rihgdf')" maxlength="60" name="accounts" key="reg_username_1" class="form-item margin-vertical-xl wh-auto" />
                                             <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_username_2" class="form-item margin-vertical-xl wh-auto" />
                                             <view v-if="home_user_register_img_verify_state == 1" class="verify pr margin-vertical-xl">
                                                 <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="reg_username_3" @input="form_input_image_verify_event" />
