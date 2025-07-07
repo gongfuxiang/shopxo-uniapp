@@ -28,6 +28,7 @@
                     @dataAddressChange="data_address_change"
                     @openRegion="open_region"
                     @helpIconEvent="help_icon_event"
+                    @subformHelpIconEvent="subform_help_icon_event"
                     @zIndexChange="z_index_change"
                 />
             </view>
@@ -269,6 +270,11 @@ export default {
         // 帮助图标点击事件
         help_icon_event(val) {
             this.setData({ popup_help_content: val });
+            this.$refs.popup.open();
+        },
+        // 子表单帮助图标点击事件
+        subform_help_icon_event(e) {
+            this.setData({ popup_help_content: e });
             this.$refs.popup.open();
         },
         // 打开地区选择器
