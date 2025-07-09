@@ -153,11 +153,12 @@ export default {
                     const { com_data } = item;
                     item.com_data.data_list = [];
                     let data_list = [];
-                    com_data.form_value.forEach(item => {
+                    com_data.form_value.forEach(item1 => {
                         const data = JSON.parse(JSON.stringify(com_data?.children || []));
                         data.forEach(child => {
-                            if (!isEmpty(item[child.id])) {
-                                child.com_data.form_value = item[child.id];
+                            child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
+                            if (!isEmpty(item1[child.id])) {
+                                child.com_data.form_value = item1[child.id];
                             }
                         });
                         data_list.push({

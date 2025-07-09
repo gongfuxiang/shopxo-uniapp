@@ -48,7 +48,7 @@
                             :propDataFormId="propDataFormId"
                             :propKey="propKey"
                             :propIndex="index"
-                            propDirection="row" 
+                            :propDirection="propDirection" 
                             :propMobile="propMobile" 
                             :propComponentStyle="propStyle"
                             @dataChange="data_change"
@@ -115,6 +115,10 @@
             propTitleStyle: {
                 type: String,
                 default: '',
+            },
+            propDirection: {
+                type: String,
+                default: 'row',
             },
             propHelpIconStyle: {
                 type: String,
