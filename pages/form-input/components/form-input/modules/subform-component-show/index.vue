@@ -8,15 +8,6 @@
                         <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
-                <!-- 富文本仅支持H5、APP-PLUS、微信小程序、百度小程序 -->
-                <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
-                <view v-if="item.key == 'rich-text'" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle">
-                    <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
-                    <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
-                    </view>
-                </view>
-                <!-- #endif -->
                 <!-- 上传文件仅支持H5、微信小程序、QQ小程序 -->
                 <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                 <view v-if="item.key == 'upload-attachments'" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle">
@@ -63,13 +54,13 @@
                     <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style">
                         <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date-group>
                     </view>
-                    <!-- 地址 -->
+                    <!-- 地址选择器 -->
                     <view v-else-if="item.key == 'address'">
                         <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @regionEvent="region_event" @dataAddressChange="data_address_change" @zIndexChange="z_index_change"></component-address>
                     </view>
                     <!-- 手机 -->
                     <view v-else-if="item.key == 'phone'">
-                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_change" @zIndexChange="z_index_change"></component-phone>
+                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-phone>
                     </view>
                     <!-- 密码 -->
                     <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
@@ -95,7 +86,7 @@
                     <view v-else-if="item.key == 'attachments'">
                         <component-attachments :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-attachments>
                     </view>
-                    <!-- 辅助线 -->
+                    <!-- 分割线 -->
                     <view v-else-if="item.key == 'auxiliary-line'">
                         <component-auxiliary-line :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-auxiliary-line>
                     </view>
@@ -107,37 +98,10 @@
                     <view v-else-if="item.key == 'position'">
                         <component-position :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-position>
                     </view>
-                    <!-- 圆形和矩形 -->
-                    <view v-else-if="['rect', 'round'].includes(item.key)" :class="propIsCustom ? 'wh-auto ht-auto' : ''">
-                        <component-rect-or-round :propValue="item.com_data" :propKey="propKey"></component-rect-or-round>
-                    </view>
-                    <!-- 子表单 -->
-                    <view v-else-if="item.key == 'subform'">
-                        <component-subform 
-                            :propValue="item.com_data" 
-                            :propKey="propKey" 
-                            :propDataId="item.id" 
-                            :propMobile="propMobile" 
-                            :propStyle="propComponentStyle" 
-                            :propDirection="propDirection" 
-                            :propTitleStyle="propTitleStyle" 
-                            :propHelpIconStyle="propHelpIconStyle"
-                            :propFieldLabelStyle="propFieldLabelStyle"
-                            :propDataFormId="propDataFormId" 
-                            @subformHelpIconEvent="subform_help_icon_event"
-                            @subformDataChange="subform_data_change"
-                        />
-                    </view>
                     <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                     <!-- 上传文件 -->
                     <view v-else-if="item.key == 'upload-attachments'">
                         <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
-                    </view>
-                    <!-- #endif -->
-                    <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
-                    <!-- 富文本 -->
-                    <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
-                        <component-rich-text :propValue="item.com_data"  :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-rich-text>
                     </view>
                     <!-- #endif -->
                     <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
@@ -239,7 +203,11 @@ export default {
         propIsCustom: {
             type: Boolean,
             default: false,
-        }
+        },
+        propIndex: {
+            type: Number,
+            default: 0,
+        },
     },
     data() {
         return {
@@ -273,37 +241,28 @@ export default {
             this.$emit('helpIconEvent', e.currentTarget.dataset.value);
         },
         subform_help_icon_event(e) {
-            this.$emit('subformHelpIconEvent', e);
+            this.$emit('subformHelpIconEvent', e, this.propIndex);
         },
         data_change(e) {
-            this.$emit('dataChange', e);
+            this.$emit('dataChange', e, this.propIndex);
         },
         data_check(e) {
-            this.$emit('dataCheck', e);
+            this.$emit('dataCheck', e, this.propIndex);
         },
         data_option_change(e) {
-            this.$emit('dataOptionChange', e);
+            this.$emit('dataOptionChange', e, this.propIndex);
         },
-        data_code_change(e) {
-            this.$emit('dataCodeChange', e);
-        },
-        data_code_check(e) {
-            this.$emit('dataCodeCheck', e);
-        },
-        data_address_change(e) {
-            this.$emit('dataAddressChange', e);
-        },
-        subform_data_change(e, id) {
-            this.$emit('subformDataChange', e, id);
+        open_region(e) {
+            this.$emit('openRegion', e, this.propIndex);
         },
         region_event(e) {
-            this.$emit('regionEvent', e);
+            this.$emit('regionEvent', e, this.propIndex);
         },
         z_index_change(e) {
             this.setData({
                 z_index_id: e
             });
-            this.$emit('zIndexChange', e);
+            this.$emit('zIndexChange', e, this.propIndex);
         }
     }
 }

@@ -30,6 +30,8 @@
                     @helpIconEvent="help_icon_event"
                     @subformHelpIconEvent="subform_help_icon_event"
                     @zIndexChange="z_index_change"
+                    @regionEvent="region_event"
+                    @subformDataChange="subform_data_change"
                 />
             </view>
         </scroll-view>
@@ -48,7 +50,6 @@
             <uni-popup ref="popup" type="center" border-radius="20rpx">
                 <view class="popup-content">{{ popup_help_content }}</view>
             </uni-popup>
-            <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
         </view>
     </view>
 </template>
@@ -56,12 +57,10 @@
 <script>
 import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
 const app = getApp();
-import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
 import componentShow from '@/pages/form-input/components/form-input/modules/component-show/index.vue';
 export default {
     name: 'formInput',
     components: {
-        componentRegionPicker,
         componentShow
     },
     props: {
@@ -96,12 +95,6 @@ export default {
             submit_bg_color: '',
             bottom_fixed_style: '',
             popup_help_content: '',
-            // 地址弹出框的处理
-            address_id: '',
-            province_id: '',
-            city_id: '',
-            county_id: '',
-            region_picker_show: false,
             scrollTop: 0,
             z_index_id: '',
         };
@@ -155,6 +148,25 @@ export default {
             data.config.diy_data.forEach(item => {
                 // 边框样式处理
                 item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
+                // 子表单需要统一规整一下数据
+                if (item.key == 'subform') {
+                    const { com_data } = item;
+                    item.com_data.data_list = [];
+                    let data_list = [];
+                    com_data.form_value.forEach(item => {
+                        const data = JSON.parse(JSON.stringify(com_data?.children || []));
+                        data.forEach(child => {
+                            if (!isEmpty(item[child.id])) {
+                                child.com_data.form_value = item[child.id];
+                            }
+                        });
+                        data_list.push({
+                            is_expand: false,
+                            data_list: data
+                        });
+                    });
+                    item.com_data.data_list = data_list;
+                }
             });
             this.setData({
                 z_index_id: '',
@@ -277,45 +289,30 @@ export default {
             this.setData({ popup_help_content: e });
             this.$refs.popup.open();
         },
-        // 打开地区选择器
-        open_region(e) {
-            this.setData({ 
-                region_picker_show: true, 
-                province_id: e?.province_id || '', 
-                city_id: e?.city_id || '', 
-                county_id: e?.county_id || '',
-                address_id: e?.id || '', 
-            });
-        },
-        // 地区选择器关闭事件
-        close_event(e) {
-           this.setData({ 
-                region_picker_show: false 
-            });
-        },
         // 地区选择器提交事件
         region_event(e) {
-            let data = uni.getStorageSync(app.globalData.data.cache_region_picker_choice_key) || {};
-            if((data.province || null) == null) {
-                data.province = {};
-            }
-            if((data.city || null) == null) {
-                data.city = {};
-            }
-            if((data.areal || null) == null) {
-                data.areal = {};
-            }
+            const { value, id, province_name, city_name, county_name } = e;
             // 改变对应id的数据
-            const data_list = [...this.data_list];
-            data_list.forEach(item => {
-                if (item.id == this.address_id && item.com_data) {
-                    item.com_data.form_value = [ data.province.id, data.city.id, data.areal.id ];
-                    item.com_data.province_name = data.province.name || '';
-                    item.com_data.city_name = data.city.name || '';
-                    item.com_data.county_name = data.areal.name || '';
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.form_value = value;
+                    item.com_data.province_name = province_name;
+                    item.com_data.city_name = city_name;
+                    item.com_data.county_name = county_name;
                 }
             });
-            this.setData({ data_list: data_list });
+            this.setData({ data_list: data });
+        },
+        subform_data_change(e, id) {
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.data_list = e
+                }
+            });
+            this.setData({ data_list: data });
         },
         z_index_change(e) {
             this.setData({
