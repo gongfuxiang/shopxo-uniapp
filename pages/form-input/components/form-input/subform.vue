@@ -55,7 +55,7 @@
                             @dataCheck="data_check"
                             @dataOptionChange="data_option_change"
                             @openRegion="open_region"
-                            @helpIconEvent="help_icon_event"
+                            @helpIconEvent="subform_help_icon_event"
                             @regionEvent="region_event"
                             @zIndexChange="z_index_change"
                         />
@@ -142,6 +142,12 @@
             };
         },
         watch: {
+            propValue: {
+                handler(val) {
+                    this.init();
+                },
+                deep: true,
+            },
             propKey(val) {
                 // 初始化
                 this.init();
@@ -230,6 +236,9 @@
             },
             help_icon_event(e) {
                 this.$emit('helpIconEvent', e.currentTarget.dataset.value);
+            },
+            subform_help_icon_event(e) {
+                this.$emit('helpIconEvent', e);
             },
             // 子表单校验逻辑
             data_check(e, index) {

@@ -5,7 +5,7 @@
                 <template v-if="isEmpty(form_value)"><view class="placeholder cr-gray text-line-1">{{ placeholder }}</view></template>
                 <template v-else>
                     <view class="flex-row align-c">
-                        <view class="text-size-sm text-line-1" :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
+                        <view class="text-size-sm" :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
                     </view>
                 </template>
             </view>

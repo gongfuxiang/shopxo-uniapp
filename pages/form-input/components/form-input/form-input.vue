@@ -28,7 +28,6 @@
                     @dataAddressChange="data_address_change"
                     @openRegion="open_region"
                     @helpIconEvent="help_icon_event"
-                    @subformHelpIconEvent="subform_help_icon_event"
                     @zIndexChange="z_index_change"
                     @regionEvent="region_event"
                     @subformDataChange="subform_data_change"
@@ -42,7 +41,7 @@
                         <iconfont name="icon-detail" size="30rpx" color="#666" propContainerDisplay="flex" ></iconfont>
                         {{ overall_config.save_draft_title }}
                     </view>
-                    <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default">{{ overall_config.submit_title }}</button>
+                    <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default" :disable="is_submit_disable" @tap="submit_click">{{ overall_config.submit_title }}</button>
                 </view>
             </view>
         </view>
@@ -55,7 +54,7 @@
 </template>
 
 <script>
-import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
+import { isEmpty, common_form_styles_computer, get_format_checks } from '@/common/js/common/common.js';
 const app = getApp();
 import componentShow from '@/pages/form-input/components/form-input/modules/component-show/index.vue';
 export default {
@@ -97,6 +96,7 @@ export default {
             popup_help_content: '',
             scrollTop: 0,
             z_index_id: '',
+            is_submit_disable: false
         };
     },
     watch: {
@@ -284,11 +284,6 @@ export default {
             this.setData({ popup_help_content: val });
             this.$refs.popup.open();
         },
-        // 子表单帮助图标点击事件
-        subform_help_icon_event(e) {
-            this.setData({ popup_help_content: e });
-            this.$refs.popup.open();
-        },
         // 地区选择器提交事件
         region_event(e) {
             const { value, id, province_name, city_name, county_name } = e;
@@ -313,6 +308,244 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+        },
+        submit_click() {
+            // 校验所有的必填项和逻辑
+            const new_data = this.submit_data_check();
+            // 处理所有的错误项
+            const data = new_data.find((item) => item.com_data.common_config.is_error === '1' || (item.key === 'subform' && item.com_data.data_list.some((item1) => item1.data_list.some(list_item => list_item.com_data.common_config.is_error === '1'))));
+            if (!isEmpty(data)) {
+                if (data.key === 'subform') {
+                    // 如果子表单外层为error直接显示名称出来
+                    if (data.com_data.common_config.is_error == '1') {
+                        app.globalData.showToast(`${data.com_data.title}「${data.com_data.common_config.error_text}」`, 'error');
+                    } else {
+                        // 如果是内部问题，让用户自己检查子表单内的填写
+                        app.globalData.showToast(`请检查${data.com_data.title}内的填写`, 'error');
+                    }
+                } else {
+                    app.globalData.showToast(`${data.com_data.title}「${data.com_data.common_config.error_text}」`, 'error');
+                }
+                // 更新数据，将报错信息或者解除报错信息赋值给原数据
+                const old_data = [...this.data_list];
+                const data_list = old_data.map(item => {
+                    const match = new_data.find(el => el.id === item.id);
+                    return { ...item, ...match };
+                });
+                this.setData({ data_list: data_list });
+            } else {
+                this.submit_data_parameter_handle();
+            }
+        },
+        submit_data_parameter_handle() {
+            const submit_data = {};
+            const filter_data = ['video', 'img', 'auxiliary-line', 'position', 'rect', 'round', 'text', 'attachments'];
+            // 规整字段信息
+            this.filteredDiyData.forEach((item) => {
+                if (!filter_data.includes(item.key)) {
+                    const name = isEmpty(item.form_name) ? item.id : item.form_name;
+                    const value = isEmpty(item.com_data.form_value) ? '' : item.com_data.form_value;
+                    const com_data = item.com_data;
+                    if (item.key ==='subform') {
+                        const data_list = com_data.data_list;
+                        submit_data[name] = data_list.map((subform_item) => {
+                            const data = {};
+                            // 子表单中每一行的数据显示
+                            subform_item.data_list.forEach((item1) => {
+                                const subform_name = isEmpty(item1.form_name) ? item1.id : item1.form_name;
+                                const subform_com_data = item1.com_data;
+                                const subform_value = isEmpty(subform_com_data.form_value) ? '' : subform_com_data.form_value;
+                                if (!filter_data.includes(item1.key)) {
+                                    if (item1.key == 'address') {
+                                        data[`${ subform_name }_province_id`] = subform_value[0] || '';
+                                        data[`${ subform_name }_city_id`] = subform_value[1] || '';
+                                        data[`${ subform_name }_county_id`] = subform_value[2] || '';
+                                        // 省市区中文名称
+                                        submit_data[`${ name }_province_name`] = subform_com_data.province_name || '';
+                                        submit_data[`${ name }_city_name`] = subform_com_data.city_name || ''
+                                        submit_data[`${ name }_county_name`] = subform_com_data.county_name || ''
+                                    } else {
+                                        data[subform_name] = subform_value;
+                                    }
+                                }
+                            });
+                            return data;
+                        });
+                    } else if (item.key ==='phone') {
+                        submit_data[`${ name }`] = value || '';
+                        // 判断是否需要发送短信验证码
+                        if (com_data.is_sms_verification == '1') {
+                            submit_data[`${ name }_verify`] = com_data?.form_value_code || '';
+                        }
+                    } else if (item.key == 'address') {
+                        submit_data[`${ name }_province_id`] = value[0] || '';
+                        submit_data[`${ name }_city_id`] = value[1] || '';
+                        submit_data[`${ name }_county_id`] = value[2] || '';
+                        // 省市区中文名称
+                        submit_data[`${ name }_province_name`] = com_data.province_name || '';
+                        submit_data[`${ name }_city_name`] = com_data.city_name || ''
+                        submit_data[`${ name }_county_name`] = com_data.county_name || ''
+                        // 判断类型是否包含详细地址
+                        if (com_data.address_type == 'detailed') {
+                            submit_data[`${ name }_address`] = com_data?.detailed_value || '';
+                        }
+                    } else if (['select', 'radio-btns'].includes(item.key)) {
+                        submit_data[name] = value;
+                        const value_list = com_data.option_list.filter((item) => item.is_other == '1');
+                        if (value_list.length > 0) {
+                        submit_data[`${ name }_other_value`] = com_data?.other_value || '';
+                        }
+                    } else {
+                        submit_data[name] = value;
+                    }
+                }
+            });
+            const params = {
+                forminput_id: this.propDataFormId,
+                ...submit_data
+            }
+            this.is_submit_disable = true;
+            uni.request({
+                url: app.globalData.get_request_url('save', 'forminputdata'),
+                method: 'POST',
+                data: params,
+                dataType: 'json',
+                success: (res) => {
+                    this.is_submit_disable = false;
+                    app.globalData.showToast('提交成功', 'success');
+                },
+                fail: (res) => {
+                    this.is_submit_disable = false;
+                    app.globalData.showToast('提交失败', 'error');
+                }
+            });
+        },
+        submit_data_check() {
+            // 定义字段类型与检查参数的映射
+            const fieldCheckMap = {
+                'address': { is_format: false, type: 'address' },
+                'number': { is_format: false, type: 'number' },
+                'checkbox': { is_format: true, type: 'checkbox' },
+                'select-multi': { is_format: true, type: 'checkbox' },
+                'date': { is_format: false, type: 'time' },
+                'date-group': { is_format: false, type: 'time' },
+                'single-text': { is_format: false, type: '' },
+                'multi-text': { is_format: false, type: '' },
+                'rich-text': { is_format: false, type: '' },
+                'radio-btns': { is_format: false, type: 'radio' },
+                'select': { is_format: false, type: 'select' },
+                'pwd': { is_format: false, type: '' },
+                'score': { is_format: false, type: 'score' },
+                'upload-attachments': { is_format: false, type: 'upload' },
+                'upload-img': { is_format: false, type: 'upload' },
+                'upload-video': { is_format: false, type: 'upload' }
+            };
+            const data = JSON.parse(JSON.stringify(this.filteredDiyData));
+            // 遍历所有过滤后的自定义数据项
+            data?.forEach((item) => {
+                const com_data = item.com_data;
+                // 跳过非必填项
+                if (com_data.is_required === '1') {
+                    // 特殊字段验证：手机号
+                    if (item.key === 'phone') {
+                        const { is_error = '0', error_text = '' } = this.handlePhoneValidation(com_data);
+                        com_data.common_config.is_error = is_error;
+                        com_data.common_config.error_text = error_text;
+                    } 
+                    // 其他字段的格式验证
+                    else if (fieldCheckMap[item.key]) {
+                        const { is_format, type } = fieldCheckMap[item.key];
+                        const { is_error = '0', error_text = '' } = get_format_checks(com_data, com_data.form_value, is_format, type);
+                        com_data.common_config.is_error = is_error;
+                        com_data.common_config.error_text = error_text;
+                    }
+                };
+                /**
+                 * 子表单处理逻辑
+                 * 1. 检查子表单中是否有必填项
+                 * 2. 验证子表单整体必填性
+                 * 3. 处理子表单内各字段的验证
+                 */
+                if (item.key === 'subform') {
+                    // 子表单整体必填验证
+                    if (com_data.is_required === '1' && com_data.data_list.length <= 0) {
+                        com_data.common_config.is_error = '1';
+                        com_data.common_config.error_text = '请填写至少一条记录';
+                    } else {
+                        com_data.common_config.is_error = '0';
+                        com_data.common_config.error_text = '';
+                    }
+                    // 处理子表单内各字段的验证
+                    if (com_data.data_list.length > 0) {
+                        // 验证子表单内各字段
+                        com_data.data_list.forEach((form_item, index) => {
+                            // 取出对应列的数据信息
+                            const form_data = this.filtered_Data(form_item.data_list);
+                            form_data.forEach((data_item) => {
+                                // 跳过非必填项
+                                if (data_item.com_data.is_required !== '1') return;
+                                // 执行字段验证
+                                const checkConfig = fieldCheckMap[data_item.key];
+                                if (checkConfig) {
+                                    // 特殊字段验证：手机号
+                                    if (data_item.key === 'phone') {
+                                        const { is_error = '0', error_text = '' } = this.handlePhoneValidation(data_item);
+                                        data_item.com_data.common_config.is_error = is_error;
+                                        data_item.com_data.common_config.error_text = error_text;
+                                    } 
+                                    // 其他字段的格式验证
+                                    else if (fieldCheckMap[data_item.key]) {
+                                        const { is_format, type } = fieldCheckMap[data_item.key];
+                                        const { is_error = '0', error_text = '' } = get_format_checks(data_item.com_data, data_item.com_data.form_value, is_format, type);
+                                        data_item.com_data.common_config.is_error = is_error;
+                                        data_item.com_data.common_config.error_text = error_text;
+                                    }
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+            return data;
+        },
+        // 处理手机号验证逻辑
+        handlePhoneValidation(com_data) {
+            if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value_code)) {
+                com_data.common_config.is_error = '1';
+                com_data.common_config.error_text = '短信验证码不能为空';
+                return;
+            }
+            com_data.common_config.format = com_data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
+            return get_format_checks(com_data, com_data.form_value_code, true);
+        },
+        // 子表单显隐规则数据处理
+        filtered_Data(children) { 
+            const componentMap = new Map(children.map((item) => [item.id, item]));
+
+            // 取出所有设置显隐规则的组件
+            const list = children.filter((item) => ['single-text', 'select', 'radio-btns'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type) && item.com_data.show_hidden_list.length > 0);
+            const list_map = list.map((item) => ({ id: item.id, list: item.com_data.show_hidden_list }));
+            return children.filter((item) => {
+                // 优先判断是否启用
+                if (item.is_enable !== '1') return false;
+
+                if (list_map.length === 0) return true;
+                // 将所有的内容的组件进行筛选
+                const isShownByRule = list_map.some((list_item) => {
+                    const targetComponent = componentMap.get(list_item.id);
+                    // 判断显隐规则对应的组件是否存在
+                    if (!targetComponent) return false;
+                    return list_item.list.some(hidden_item => {
+                        // 判断当前组件是否在显隐规则中，如果不在，直接显示，否则的话判断值是否存在
+                        if (hidden_item.is_show.includes(item.id)) {
+                            return targetComponent.com_data.form_value.includes(hidden_item.value);
+                        } else {
+                            return true;
+                        }
+                    });
+                });
+                return isShownByRule;
+            });
         },
         z_index_change(e) {
             this.setData({

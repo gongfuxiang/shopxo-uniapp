@@ -123,8 +123,8 @@
                             :propTitleStyle="propTitleStyle" 
                             :propHelpIconStyle="propHelpIconStyle"
                             :propFieldLabelStyle="propFieldLabelStyle"
-                            :propDataFormId="propDataFormId" 
-                            @subformHelpIconEvent="subform_help_icon_event"
+                            :propDataFormId="propDataFormId"
+                            @helpIconEvent="subform_help_icon_event"
                             @subformDataChange="subform_data_change"
                         />
                     </view>
@@ -273,7 +273,7 @@ export default {
             this.$emit('helpIconEvent', e.currentTarget.dataset.value);
         },
         subform_help_icon_event(e) {
-            this.$emit('subformHelpIconEvent', e);
+            this.$emit('helpIconEvent', e);
         },
         data_change(e) {
             this.$emit('dataChange', e);

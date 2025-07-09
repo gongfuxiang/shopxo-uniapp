@@ -240,9 +240,6 @@ export default {
         help_icon_event(e) {
             this.$emit('helpIconEvent', e.currentTarget.dataset.value);
         },
-        subform_help_icon_event(e) {
-            this.$emit('subformHelpIconEvent', e, this.propIndex);
-        },
         data_change(e) {
             this.$emit('dataChange', e, this.propIndex);
         },
