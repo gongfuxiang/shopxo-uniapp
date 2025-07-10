@@ -1,5 +1,5 @@
 <template>
-    <view :class="'wh-auto ht-auto pr ' + (propIsTable ? 'flex-row ' : 'flex-col')">
+    <view class="wh-auto ht-auto pr">
         <view v-for="(item, index) in data_list" :key="index" :class="(propDirection == 'row' ? 'row-item ' : 'column-item mb-10 ') + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :style="(item.key == 'auxiliary-line' ? 'border-bottom: 0rpx; ' : '')">
             <view :class="'wh-auto ht-auto ' + (propDirection == 'row' ? (['video', 'img', 'upload-img', 'upload-video', 'multi-text'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
                 <view v-if="!['rich-text', 'auxiliary-line', 'upload-attachments', 'subform'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
@@ -203,15 +203,7 @@ export default {
         propIndex: {
             type: Number,
             default: 0,
-        },
-        propIsTable: {
-            type: Boolean,
-            default: false,
-        },
-        propIsTableTitle: {
-            type: Boolean,
-            default: false,
-        },
+        }
     },
     data() {
         return {

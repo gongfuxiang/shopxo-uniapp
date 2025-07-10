@@ -235,6 +235,8 @@
             init() {
                 let custom_height = '100%';
                 const com_data = this.propValue;
+                // 移动端配置参数
+                const mobile = com_data.mobile || {};
                 if (this.propIsCustom) {
                     const filed_title_size_type = this.propMobile.filed_title_size_type || 'small';
                     const text_height = filed_title_size_type == 'big' ? 31 : filed_title_size_type == 'middle' ? 22.5 : 16.5;
@@ -244,10 +246,8 @@
                 // 子表单数据
                 const children_list = JSON.parse(JSON.stringify(com_data?.children || []));
                 children_list.forEach(item => {
-                    item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, this.propDirection);
+                    item.com_data.common_style = this.get_form_border_style(item.com_data.common_config,  mobile.arrange == 'direction' ? this.propDirection : 'column');
                 })
-                // 移动端配置参数
-                const mobile = com_data.mobile || {};
                 this.setData({
                     com_data: com_data,
                     custom_height: custom_height,

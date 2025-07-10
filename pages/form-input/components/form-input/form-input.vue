@@ -157,7 +157,7 @@ export default {
                         const data = JSON.parse(JSON.stringify(com_data?.children || []));
                         if (data.length > 0) {
                             data.forEach(child => {
-                                child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
+                                child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.arrang == 'direction' ? (emobile.flex_direction || 'row') : 'column', overall_config.type_value);
                                 if (!isEmpty(item1[child.id])) {
                                     child.com_data.form_value = item1[child.id];
                                 }
