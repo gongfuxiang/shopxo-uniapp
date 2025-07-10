@@ -174,7 +174,14 @@
              * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
              */
             z_index_change(e) {
-                this.$emit('zIndexChange', e);
+                // 如果为空的时候延时关闭，避免因为关闭动画效果导致其他组件提前显示
+                if (e == '') {
+                    setTimeout(() => {
+                        this.$emit('zIndexChange', e);
+                    }, 200)
+                } else {
+                    this.$emit('zIndexChange', e);
+                }
             },
         }
     }

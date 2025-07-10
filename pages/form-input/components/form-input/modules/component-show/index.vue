@@ -118,6 +118,7 @@
                             :propKey="propKey" 
                             :propDataId="item.id" 
                             :propMobile="propMobile" 
+                            :propIsCustom="propIsCustom"
                             :propStyle="propComponentStyle" 
                             :propDirection="propDirection" 
                             :propTitleStyle="propTitleStyle" 

@@ -8,68 +8,73 @@
                     <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
                 </view>
             </view>
-            <view class="flex-row align-c gap-10">
+            <view v-if="!isEmpty(data_list)" class="flex-row align-c gap-10">
                 <button class="title_btn" @tap="add_item">
                     <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                 </button>    
-                <button v-if="!isEmpty(data_list)" class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
+                <button class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
             </view>
         </view>
-        <view v-if="mobile.arrange == 'direction'" class="direction-style">
-            <view v-for="(item, index) in data_list" :key="index" class="subform-line oh" :style="'height:' + (item.is_expand ? '100%;' : '150rpx;')">
-                <!-- 标题操作 -->
-                <view class="subform-title-btns flex-row align-c jc-sb">
-                    <span class="subform-number">{{ index + 1 }}</span>
-                    <view class="flex-row align-c gap-10">
-                        <view class="cr-blue size-12" :data-index="index" @tap="more_click">更多</view>
-                        <view class="cr-blue size-12" :data-index="index" @tap="delete_item">删除</view>
-                        <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? '收起' : '展开' }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
+        <view v-if="data_list.length > 0" class="overflow-auto" :style="'height:' + custom_height">
+            <view v-if="mobile.arrange == 'direction'" class="direction-style">
+                <view v-for="(item, index) in data_list" :key="index" class="subform-line oh" :style="'height:' + (item.is_expand ? '100%;' : '150rpx;')">
+                    <!-- 标题操作 -->
+                    <view class="subform-title-btns flex-row align-c jc-sb">
+                        <span class="subform-number">{{ index + 1 }}</span>
+                        <view class="flex-row align-c gap-10">
+                            <view class="cr-blue size-12" :data-index="index" @tap="more_click">更多</view>
+                            <view class="cr-blue size-12" :data-index="index" @tap="delete_item">删除</view>
+                            <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? '收起' : '展开' }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
+                        </view>
+                    </view>
+                    <view>
+                        <template v-if="!item.is_expand">
+                            <view :class="'flex-row align-c jc-s gap-5 expand-title text-line-1 nowrap' + (is_error(item.data_list) ? ' required-error' : '')">
+                                <template v-if="!isEmpty(show_list(item.data_list))">
+                                    <view v-for="(briefing_item, briefing_index) in show_list(item.data_list)" :key="briefing_index" class="flex-row align-c gap-5">
+                                        <view :class="data_conversion(briefing_item) == 'empty_conversion' ? 'empty' : ''">{{ data_conversion(briefing_item) == 'empty_conversion' ? '暂无内容' : data_conversion(briefing_item) }}</view><span v-if="briefing_index < show_list(item.data_list).length - 1" class="empty">|</span>
+                                    </view>
+                                </template>
+                                <template v-else>
+                                    暂无数据
+                                </template>
+                            </view>
+                        </template>
+                        <template v-else>
+                            <subform-component-show
+                                :propValue="filteredDiyData(item.data_list)"
+                                :propFieldLabelStyle="propFieldLabelStyle"
+                                :propTitleStyle="propTitleStyle"
+                                :propHelpIconStyle="propHelpIconStyle"
+                                :propDataFormId="propDataFormId"
+                                :propKey="propKey"
+                                :propIndex="index"
+                                :propDirection="propDirection" 
+                                :propMobile="propMobile" 
+                                :propComponentStyle="propStyle"
+                                @dataChange="data_change"
+                                @dataCheck="data_check"
+                                @dataOptionChange="data_option_change"
+                                @openRegion="open_region"
+                                @helpIconEvent="subform_help_icon_event"
+                                @regionEvent="region_event"
+                                @zIndexChange="z_index_change"
+                            />
+                        </template>
                     </view>
                 </view>
-                <view>
-                    <template v-if="!item.is_expand">
-                        <view :class="'flex-row align-c jc-s gap-5 expand-title text-line-1 nowrap' + (is_error(item.data_list) ? ' required-error' : '')">
-                            <template v-if="!isEmpty(show_list(item.data_list))">
-                                <view v-for="(briefing_item, briefing_index) in show_list(item.data_list)" :key="briefing_index" class="flex-row align-c gap-5">
-                                    <view :class="data_conversion(briefing_item) == 'empty_conversion' ? 'empty' : ''">{{ data_conversion(briefing_item) == 'empty_conversion' ? '暂无内容' : data_conversion(briefing_item) }}</view><span v-if="briefing_index < show_list(item.data_list).length - 1" class="empty">|</span>
-                                </view>
-                            </template>
-                            <template v-else>
-                                暂无数据
-                            </template>
-                        </view>
-                    </template>
-                    <template v-else>
-                        <subform-component-show
-                            :propValue="filteredDiyData(item.data_list)"
-                            :propFieldLabelStyle="propFieldLabelStyle"
-                            :propTitleStyle="propTitleStyle"
-                            :propHelpIconStyle="propHelpIconStyle"
-                            :propDataFormId="propDataFormId"
-                            :propKey="propKey"
-                            :propIndex="index"
-                            :propDirection="propDirection" 
-                            :propMobile="propMobile" 
-                            :propComponentStyle="propStyle"
-                            @dataChange="data_change"
-                            @dataCheck="data_check"
-                            @dataOptionChange="data_option_change"
-                            @openRegion="open_region"
-                            @helpIconEvent="subform_help_icon_event"
-                            @regionEvent="region_event"
-                            @zIndexChange="z_index_change"
-                        />
-                    </template>
+                <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
+                    <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
+                    添加记录
                 </view>
             </view>
-            <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
-                <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
-                添加记录
+            <view v-else>
+                
             </view>
         </view>
-        <view v-else>
-
-        </view>
+        <template v-else>
+            <view class="subform-data">暂无可用字段</view>
+        </template>
         <!-- 弹窗 -->
         <uni-popup ref="morePopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_close_event">
             <view class="bg-white popup-content action-sheet">
@@ -132,10 +137,15 @@
                 type: Object,
                 default: () => {},
             },
+            propIsCustom: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {
                 com_data: {},
+                custom_height: '100%',
                 form_value: [],
                 data_list: [],
                 children_list: [],
@@ -223,13 +233,21 @@
             isEmpty,
             // 初始化数据
             init() {
+                let custom_height = '100%';
                 const com_data = this.propValue;
+                if (this.propIsCustom) {
+                    const filed_title_size_type = this.propMobile.filed_title_size_type || 'small';
+                    const text_height = filed_title_size_type == 'big' ? 31 : filed_title_size_type == 'middle' ? 22.5 : 16.5;
+                    // 20是按钮与表格和标题与表格之间的间隔 text_height 是表头的高度
+                    custom_height = (com_data.com_height - 30 - text_height) * 2 + 'rpx;';
+                }
                 // 子表单数据
                 const children_list = JSON.parse(JSON.stringify(com_data?.children || []));
                 // 移动端配置参数
                 const mobile = com_data.mobile || {};
                 this.setData({
                     com_data: com_data,
+                    custom_height: custom_height,
                     direction_fixed: mobile.direction_fixed,
                     briefing_field: mobile?.briefing_field || [],
                     data_list: com_data?.data_list || [],
@@ -440,6 +458,7 @@
     font-size: 24rpx;
 }
 .direction-style {
+    background: #fff;
     border: 2rpx solid #ccc;
     border-radius: 16rpx;
     overflow: hidden;
@@ -503,5 +522,21 @@
 }
 .required-error {
     background: #fef6e6;
+}
+.subform-data {
+    width: 100%;
+    height: 120rpx;
+    background: #f0f1f4;
+    font-size: 32rpx;
+    color: #838892;
+    border-radius: 6rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.overflow-auto {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
 }
 </style>

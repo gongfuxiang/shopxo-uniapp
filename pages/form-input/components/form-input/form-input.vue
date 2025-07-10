@@ -155,16 +155,18 @@ export default {
                     let data_list = [];
                     com_data.form_value.forEach(item1 => {
                         const data = JSON.parse(JSON.stringify(com_data?.children || []));
-                        data.forEach(child => {
-                            child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
-                            if (!isEmpty(item1[child.id])) {
-                                child.com_data.form_value = item1[child.id];
-                            }
-                        });
-                        data_list.push({
-                            is_expand: false,
-                            data_list: data
-                        });
+                        if (data.length > 0) {
+                            data.forEach(child => {
+                                child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
+                                if (!isEmpty(item1[child.id])) {
+                                    child.com_data.form_value = item1[child.id];
+                                }
+                            });
+                            data_list.push({
+                                is_expand: false,
+                                data_list: data
+                            });
+                        }
                     });
                     item.com_data.data_list = data_list;
                 }
