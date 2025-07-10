@@ -90,7 +90,7 @@
 </template>
 
 <script>
-    import { isEmpty } from '@/common/js/common/common.js';
+    import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
     import subformComponentShow from '@/pages/form-input/components/form-input/modules/subform-component-show/index.vue';
     export default {
         components: {
@@ -243,6 +243,9 @@
                 }
                 // 子表单数据
                 const children_list = JSON.parse(JSON.stringify(com_data?.children || []));
+                children_list.forEach(item => {
+                    item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, this.propDirection);
+                })
                 // 移动端配置参数
                 const mobile = com_data.mobile || {};
                 this.setData({
@@ -255,6 +258,11 @@
                     form_value: com_data?.form_value || [],
                     children_list: children_list,
                 });
+            },
+            // 获取子表单样式
+            get_form_border_style(item, flex_direction) {
+                // 如果是默认模式需要区分是上下还是左右来判断是否显示边框
+                return flex_direction == 'row' ? '' : common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
             },
             help_icon_event(e) {
                 this.$emit('helpIconEvent', e.currentTarget.dataset.value);
@@ -389,6 +397,7 @@
             add_item() {
                 const data = [...this.data_list];
                 const list = this.data_list.filter(item => item.is_expand);
+                console.log(this.children_list);
                 data.push({
                     is_expand: list.length == this.data_list.length,
                     data_list: JSON.parse(JSON.stringify(this.children_list))
