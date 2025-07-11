@@ -127,6 +127,7 @@
                             :propDataFormId="propDataFormId"
                             @helpIconEvent="subform_help_icon_event"
                             @subformDataChange="subform_data_change"
+                            @zIndexChange="z_index_change"
                         />
                     </view>
                     <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->

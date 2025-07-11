@@ -2,88 +2,88 @@
     <view class="flex-1 wh-auto flex-col gap-5 oh">
         <!-- 输入框 -->
         <view v-if="['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'single-text'" :style="data_item.com_data.common_style">
-            <component-input :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-input>
+            <component-input :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-input>
         </view>
         <!-- 多行输入框 -->
         <view v-else-if="data_item.key == 'multi-text'" :style="data_item.com_data.common_style + 'padding: 18rpx 22rpx;'">
-            <component-textarea :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
+            <component-textarea :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
         </view>
         <!-- 复选按钮组 -->
         <view v-else-if="['select-multi', 'checkbox'].includes(data_item.key) && data_item.com_data.type == 'checkbox' && propDirection !== 'row'">
-            <component-checkbox :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change"></component-checkbox>
+            <component-checkbox :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change"></component-checkbox>
         </view>
         <!-- 单选按钮组 -->
         <view v-else-if="['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'radio-btns' && propDirection !== 'row'">
-            <component-radio :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-radio>
+            <component-radio :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-radio>
         </view>
         <!-- 下拉框 -->
         <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'radio-btns' && propDirection == 'row')" :style="data_item.com_data.common_style">
-            <component-select :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-select>
+            <component-select :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-select>
         </view>
         <!-- 下拉复选框 -->
         <view v-else-if="(['select-multi', 'checkbox'].includes(data_item.key) && data_item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(data_item.key) && data_item.com_data.type == 'checkbox' && propDirection == 'row')" :style="data_item.com_data.common_style">
-            <component-select-multi :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change" @zIndexChange="z_index_change"></component-select-multi>
+            <component-select-multi :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change" @zIndexChange="z_index_change"></component-select-multi>
         </view>
         <!-- 数字 -->
         <view v-else-if="data_item.key == 'number'" :style="data_item.com_data.common_style">
-            <component-number :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-number>
+            <component-number :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-number>
         </view>
         <!-- 时间选择器 -->
         <view v-else-if="data_item.key == 'date'" :style="data_item.com_data.common_style">
-            <component-date :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date>
+            <component-date :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date>
         </view>
         <!-- 时间选择器组 -->
         <view v-else-if="data_item.key == 'date-group'" :style="data_item.com_data.common_style">
-            <component-date-group :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date-group>
+            <component-date-group :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date-group>
         </view>
         <!-- 地址选择器 -->
         <view v-else-if="data_item.key == 'address'">
-            <component-address :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @regionEvent="region_event" @dataAddressChange="data_address_change" @zIndexChange="z_index_change"></component-address>
+            <component-address :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @regionEvent="region_event" @dataAddressChange="data_address_change" @zIndexChange="z_index_change"></component-address>
         </view>
         <!-- 手机 -->
         <view v-else-if="data_item.key == 'phone'">
-            <component-phone :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-phone>
+            <component-phone :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-phone>
         </view>
         <!-- 密码 -->
         <view v-else-if="data_item.key == 'pwd'" :style="data_item.com_data.common_style">
-            <component-pwd :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
+            <component-pwd :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change"></component-pwd>
         </view>
         <!-- 评分 -->
         <view v-else-if="data_item.key == 'score'">
-            <component-score :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change"></component-score>
+            <component-score :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change"></component-score>
         </view>
         <!-- 图片 -->
         <view v-else-if="data_item.key == 'img'">
-            <component-image :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-image>
+            <component-image :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-image>
         </view>
         <!-- 视频 -->
         <view v-else-if="data_item.key == 'video'">
-            <component-video :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-video>
+            <component-video :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-video>
         </view>
         <!-- 文本 -->
         <view v-else-if="data_item.key == 'text'">
-            <component-text :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-text>
+            <component-text :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-text>
         </view>
         <!-- 文件 -->
         <view v-else-if="data_item.key == 'attachments'">
-            <component-attachments :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-attachments>
+            <component-attachments :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-attachments>
         </view>
         <!-- 分割线 -->
         <view v-else-if="data_item.key == 'auxiliary-line'">
-            <component-auxiliary-line :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-auxiliary-line>
+            <component-auxiliary-line :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection"></component-auxiliary-line>
         </view>
         <!-- 上传视频或图片 -->
         <view v-else-if="['upload-img', 'upload-video'].includes(data_item.key)" :class="propDirection == 'row' ? 'padding-vertical-sm' : ''">
-            <component-upload :propValue="data_item.com_data" :propType="data_item.key == 'upload-img' ? 'img' : ( data_item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :data_itemFormId="data_itemFormId" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
+            <component-upload :propValue="data_item.com_data" :propType="data_item.key == 'upload-img' ? 'img' : ( data_item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :data_itemFormId="data_itemFormId" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
         </view>
         <!-- 定位 -->
         <view v-else-if="data_item.key == 'position'">
-            <component-position :propValue="data_item.com_data" :propKey="propKey" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-position>
+            <component-position :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-position>
         </view>
         <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
         <!-- 上传文件 -->
         <view v-else-if="data_item.key == 'upload-attachments'">
-            <component-upload :propValue="data_item.com_data" propType="file" :propKey="propKey" :data_itemFormId="data_itemFormId" :data_itemId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
+            <component-upload :propValue="data_item.com_data" propType="file" :propKey="propKey" :data_itemFormId="data_itemFormId" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
         </view>
         <!-- #endif -->
     </view>
@@ -173,7 +173,6 @@ export default {
     },
     data() {
         return {
-            z_index_id: '',
             data_item: {}
         }
     },
@@ -196,7 +195,6 @@ export default {
         init() {
             this.setData({
                 data_item: this.propData,
-                z_index_id: '',
             })
         },
         data_change(e) {
@@ -215,9 +213,6 @@ export default {
             this.$emit('regionEvent', e, this.propIndex);
         },
         z_index_change(e) {
-            this.setData({
-                z_index_id: e
-            });
             this.$emit('zIndexChange', e, this.propIndex);
         }
     }
