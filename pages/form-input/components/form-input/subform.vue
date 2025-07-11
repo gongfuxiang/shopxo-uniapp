@@ -774,6 +774,7 @@
     }
 }
 .direction-bottom {
+    background: #fff;
     padding: 20rpx;
     overflow: hidden;
 }
