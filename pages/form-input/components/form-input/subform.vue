@@ -1,137 +1,139 @@
 <template>
-    <view class="wh-auto ht-auto flex-col gap-10">
-        <!-- 标题显示处理 -->
-        <view class="flex-row align-c jc-sb">
-            <view class="flex-1 flex-row align-c gap-10">
-                <view class="flex-row align-c" :style="propTitleStyle">{{ com_data.title }}<view v-if="com_data.is_required == '1'" class="required">*</view></view>
-                <view v-if="com_data.common_config && com_data.common_config.help_is_show == '1' && !isEmpty(com_data.common_config.help_explain)" :data-value="com_data.common_config.help_explain" @tap="help_icon_event">
-                    <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+    <view class="wh-auto ht-auto">
+        <view class="wh-auto ht-auto flex-col gap-10">
+            <!-- 标题显示处理 -->
+            <view class="flex-row align-c jc-sb">
+                <view class="flex-1 flex-row align-c gap-10">
+                    <view class="flex-row align-c" :style="propTitleStyle">{{ com_data.title }}<view v-if="com_data.is_required == '1'" class="required">*</view></view>
+                    <view v-if="com_data.common_config && com_data.common_config.help_is_show == '1' && !isEmpty(com_data.common_config.help_explain)" :data-value="com_data.common_config.help_explain" @tap="help_icon_event">
+                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="flex-row align-c gap-10">
+                    <button class="title_btn" @tap="add_item">
+                        <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
+                    </button>    
+                    <button class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
                 </view>
             </view>
-            <view v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="flex-row align-c gap-10">
-                <button class="title_btn" @tap="add_item">
-                    <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
-                </button>    
-                <button class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
-            </view>
-        </view>
-        <view v-if="data_list.length > 0" class="overflow-auto" :style="'height:' + custom_height">
-            <view v-if="mobile.arrange == 'direction'" class="direction-style">
-                <view v-for="(item, index) in data_list" :key="index" class="subform-line oh" :style="'height:' + (item.is_expand ? '100%;' : '150rpx;')">
-                    <!-- 标题操作 -->
-                    <view class="subform-title-btns flex-row align-c jc-sb">
-                        <span class="subform-number">{{ index + 1 }}</span>
-                        <view class="flex-row align-c gap-10">
-                            <view class="cr-blue size-12" :data-index="index" @tap="more_click">更多</view>
-                            <view class="cr-blue size-12" :data-index="index" @tap="delete_click">删除</view>
-                            <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? '收起' : '展开' }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
+            <view v-if="data_list.length > 0" class="overflow-auto" :style="'height:' + custom_height">
+                <view v-if="mobile.arrange == 'direction'" class="direction-style">
+                    <view v-for="(item, index) in data_list" :key="index" class="subform-line oh" :style="'height:' + (item.is_expand ? '100%;' : '150rpx;')">
+                        <!-- 标题操作 -->
+                        <view class="subform-title-btns flex-row align-c jc-sb">
+                            <span class="subform-number">{{ index + 1 }}</span>
+                            <view class="flex-row align-c gap-10">
+                                <view class="cr-blue size-12" :data-index="index" @tap="more_click">更多</view>
+                                <view class="cr-blue size-12" :data-index="index" @tap="delete_click">删除</view>
+                                <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? '收起' : '展开' }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
+                            </view>
+                        </view>
+                        <view>
+                            <template v-if="!item.is_expand">
+                                <view :class="'flex-row align-c jc-s gap-5 expand-title text-line-1 nowrap' + (is_error(item.data_list) ? ' required-error' : '')">
+                                    <template v-if="!isEmpty(show_list(item.data_list))">
+                                        <view v-for="(briefing_item, briefing_index) in show_list(item.data_list)" :key="briefing_index" class="flex-row align-c gap-5">
+                                            <view :class="data_conversion(briefing_item) == 'empty_conversion' ? 'empty' : ''">{{ data_conversion(briefing_item) == 'empty_conversion' ? '暂无内容' : data_conversion(briefing_item) }}</view><span v-if="briefing_index < show_list(item.data_list).length - 1" class="empty">|</span>
+                                        </view>
+                                    </template>
+                                    <template v-else>
+                                        暂无数据
+                                    </template>
+                                </view>
+                            </template>
+                            <template v-else>
+                                <subform-component-show
+                                    :propValue="filteredDiyDataItem(item.data_list)"
+                                    :propFieldLabelStyle="propFieldLabelStyle"
+                                    :propTitleStyle="propTitleStyle"
+                                    :propHelpIconStyle="propHelpIconStyle"
+                                    :propDataFormId="propDataFormId"
+                                    :propKey="propKey"
+                                    :propIndex="index"
+                                    :propDirection="propDirection" 
+                                    :propMobile="propMobile" 
+                                    :propComponentStyle="propStyle"
+                                    @dataChange="data_change"
+                                    @dataCheck="data_check"
+                                    @dataOptionChange="data_option_change"
+                                    @openRegion="open_region"
+                                    @helpIconEvent="subform_help_icon_event"
+                                    @regionEvent="region_event"
+                                    @zIndexChange="z_index_change"
+                                />
+                            </template>
                         </view>
                     </view>
-                    <view>
-                        <template v-if="!item.is_expand">
-                            <view :class="'flex-row align-c jc-s gap-5 expand-title text-line-1 nowrap' + (is_error(item.data_list) ? ' required-error' : '')">
-                                <template v-if="!isEmpty(show_list(item.data_list))">
-                                    <view v-for="(briefing_item, briefing_index) in show_list(item.data_list)" :key="briefing_index" class="flex-row align-c gap-5">
-                                        <view :class="data_conversion(briefing_item) == 'empty_conversion' ? 'empty' : ''">{{ data_conversion(briefing_item) == 'empty_conversion' ? '暂无内容' : data_conversion(briefing_item) }}</view><span v-if="briefing_index < show_list(item.data_list).length - 1" class="empty">|</span>
-                                    </view>
-                                </template>
-                                <template v-else>
-                                    暂无数据
-                                </template>
-                            </view>
-                        </template>
-                        <template v-else>
-                            <subform-component-show
-                                :propValue="filteredDiyDataItem(item.data_list)"
-                                :propFieldLabelStyle="propFieldLabelStyle"
-                                :propTitleStyle="propTitleStyle"
-                                :propHelpIconStyle="propHelpIconStyle"
-                                :propDataFormId="propDataFormId"
-                                :propKey="propKey"
-                                :propIndex="index"
-                                :propDirection="propDirection" 
-                                :propMobile="propMobile" 
-                                :propComponentStyle="propStyle"
-                                @dataChange="data_change"
-                                @dataCheck="data_check"
-                                @dataOptionChange="data_option_change"
-                                @openRegion="open_region"
-                                @helpIconEvent="subform_help_icon_event"
-                                @regionEvent="region_event"
-                                @zIndexChange="z_index_change"
-                            />
-                        </template>
+                    <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
+                        <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
+                        添加记录
                     </view>
                 </view>
-                <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
-                    <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
-                    添加记录
-                </view>
-            </view>
-            <view v-else>
-                <view class="table-container rendering-area">
-                    <view class="table-header flex">
-                        <view class="flex-row align-c jc-c head">
-                            <view class="head-label flex-row align-c jc-c shrink"></view>
-                            <view class="flex-row align-c">
-                                <!-- 头部标题显示 -->
-                                <view v-for="(item, index) in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width * 2 + 'rpx;'">
-                                    <span v-if="item.com_data.is_required == '1'" class="required">*</span>
-                                    {{ item.com_data.title }}
-                                    <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_icon)"></view><view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
-                                    </view>
-                                </view>
-                            </view>
-                            <view class="head-more shrink"></view>
-                        </view>
-                    </view>
-                    <view class="table-body">
-                        <view class="flex-1 flex-col">
-                            <view v-for="(item, index) in data_list" :key="index" class="table-row flex-row">
-                                <view class="cell-num flex-row align-c jc-c shrink re">
-                                    <view class="row-num flex-row align-c jc-c">
-                                        <template v-if="isEmpty(line_error(index))">{{ index + 1 }}</template>
-                                        <template v-else><view class="error-icon" :data-value="line_error(index)" @tap="error_text">!</view></template>
-                                    </view>
-                                </view>
+                <view v-else>
+                    <view class="table-container rendering-area">
+                        <view class="table-header flex">
+                            <view class="flex-row align-c jc-c head">
+                                <view class="head-label flex-row align-c jc-c shrink"></view>
                                 <view class="flex-row align-c">
-                                    <view v-for="(children_item, children_index) in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width * 2 + 'rpx;'">
-                                        <template v-if="show_row(index, children_item.id)">
-                                            <components-combination
-                                                :propData="children_item"
-                                                :propDataFormId="propDataFormId"
-                                                :propKey="propKey"
-                                                :propIndex="index"
-                                                :propDirection="propDirection" 
-                                                :propMobile="propMobile" 
-                                                :propComponentStyle="propStyle"
-                                                @dataChange="data_change"
-                                                @dataCheck="data_check"
-                                                @dataOptionChange="data_option_change"
-                                                @openRegion="open_region"
-                                                @regionEvent="region_event"
-                                                @zIndexChange="z_index_change"
-                                            />
-                                        </template>
+                                    <!-- 头部标题显示 -->
+                                    <view v-for="(item, index) in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width * 2 + 'rpx;'">
+                                        <span v-if="item.com_data.is_required == '1'" class="required">*</span>
+                                        {{ item.com_data.title }}
+                                        <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_icon)"></view><view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
+                                            <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
-                                <view class="cell-more shrink flex-row align-c jc-c" :data-index="index" @tap="table_more_event">
-                                    <iconfont name="icon-arrow-right" size="28rpx" color="#333" />
+                                <view class="head-more shrink"></view>
+                            </view>
+                        </view>
+                        <view class="table-body">
+                            <view class="flex-1 flex-col">
+                                <view v-for="(item, index) in data_list" :key="index" class="table-row flex-row">
+                                    <view class="cell-num flex-row align-c jc-c shrink re">
+                                        <view class="row-num flex-row align-c jc-c">
+                                            <template v-if="isEmpty(line_error(index))">{{ index + 1 }}</template>
+                                            <template v-else><view class="error-icon" :data-value="line_error(index)" @tap="error_text">!</view></template>
+                                        </view>
+                                    </view>
+                                    <view class="flex-row align-c">
+                                        <view v-for="(children_item, children_index) in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width * 2 + 'rpx;'">
+                                            <template v-if="show_row(index, children_item.id)">
+                                                <components-combination
+                                                    :propData="children_item"
+                                                    :propDataFormId="propDataFormId"
+                                                    :propKey="propKey"
+                                                    :propIndex="index"
+                                                    :propDirection="propDirection" 
+                                                    :propMobile="propMobile" 
+                                                    :propComponentStyle="propStyle"
+                                                    @dataChange="data_change"
+                                                    @dataCheck="data_check"
+                                                    @dataOptionChange="data_option_change"
+                                                    @openRegion="open_region"
+                                                    @regionEvent="region_event"
+                                                    @zIndexChange="z_index_change"
+                                                />
+                                            </template>
+                                        </view>
+                                    </view>
+                                    <view class="cell-more shrink flex-row align-c jc-c" :data-index="index" @tap="table_more_event">
+                                        <iconfont name="icon-arrow-right" size="28rpx" color="#333" />
+                                    </view>
                                 </view>
                             </view>
                         </view>
                     </view>
-                </view>
-                <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" style="border: 2rpx solid #ccc;" @tap="add_item">
-                    <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
-                    添加记录
+                    <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" style="border: 2rpx solid #ccc;" @tap="add_item">
+                        <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
+                        添加记录
+                    </view>
                 </view>
             </view>
+            <template v-else>
+                <view class="subform-data">暂无可用字段</view>
+            </template>
         </view>
-        <template v-else>
-            <view class="subform-data">暂无可用字段</view>
-        </template>
         <!-- 表格详情 -->
         <uni-popup ref="tableMorePopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_table_more_event">
             <view class="bg-white subform-row">
@@ -713,6 +715,8 @@
 <style lang="scss" scoped>
 .title_btn {
     font-size: 24rpx;
+    background: #fff;
+    border: 2rpx solid #ccc;
 }
 .direction-style {
     background: #fff;
