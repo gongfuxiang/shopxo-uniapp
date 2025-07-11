@@ -76,7 +76,7 @@
                                 <view class="head-label flex-row align-c jc-c shrink" :style="left_0_sticky"></view>
                                 <view class="flex-row align-c">
                                     <!-- 头部标题显示 -->
-                                    <view v-for="(item, index) in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width + 'px;' + (!isEmpty(item.com_data) && !isEmpty(item.com_data.sticky_style) ? item.com_data.sticky_style : '')">
+                                    <view v-for="item in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width + 'px;' + (!isEmpty(item.com_data) && !isEmpty(item.com_data.sticky_style) ? item.com_data.sticky_style : '')">
                                         <span v-if="item.com_data.is_required == '1'" class="required">*</span>
                                         {{ item.com_data.title }}
                                         <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_icon)"></view><view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
@@ -97,7 +97,7 @@
                                         </view>
                                     </view>
                                     <view class="flex-row align-c">
-                                        <view v-for="(children_item, children_index) in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width  + 'px;' + (!isEmpty(item.com_data) && !isEmpty(item.com_data.sticky_style) ? item.com_data.sticky_style : '')">
+                                        <view v-for="children_item in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width  + 'px;' + (!isEmpty(children_item.com_data) && !isEmpty(children_item.com_data.sticky_style) ? children_item.com_data.sticky_style : '')">
                                             <template v-if="show_row(index, children_item.id)">
                                                 <components-combination
                                                     :propData="children_item"
