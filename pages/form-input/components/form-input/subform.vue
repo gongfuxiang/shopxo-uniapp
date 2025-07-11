@@ -8,7 +8,7 @@
                     <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
                 </view>
             </view>
-            <view v-if="!isEmpty(data_list)" class="flex-row align-c gap-10">
+            <view v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="flex-row align-c gap-10">
                 <button class="title_btn" @tap="add_item">
                     <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                 </button>    
@@ -23,7 +23,7 @@
                         <span class="subform-number">{{ index + 1 }}</span>
                         <view class="flex-row align-c gap-10">
                             <view class="cr-blue size-12" :data-index="index" @tap="more_click">更多</view>
-                            <view class="cr-blue size-12" :data-index="index" @tap="delete_item">删除</view>
+                            <view class="cr-blue size-12" :data-index="index" @tap="delete_click">删除</view>
                             <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? '收起' : '展开' }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
                         </view>
                     </view>
@@ -42,7 +42,7 @@
                         </template>
                         <template v-else>
                             <subform-component-show
-                                :propValue="filteredDiyData(item.data_list)"
+                                :propValue="filteredDiyDataItem(item.data_list)"
                                 :propFieldLabelStyle="propFieldLabelStyle"
                                 :propTitleStyle="propTitleStyle"
                                 :propHelpIconStyle="propHelpIconStyle"
@@ -69,15 +69,118 @@
                 </view>
             </view>
             <view v-else>
-                
+                <view class="table-container rendering-area">
+                    <view class="table-header flex">
+                        <view class="flex-row align-c jc-c head">
+                            <view class="head-label flex-row align-c jc-c shrink"></view>
+                            <view class="flex-row align-c">
+                                <!-- 头部标题显示 -->
+                                <view v-for="(item, index) in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width * 2 + 'rpx;'">
+                                    <span v-if="item.com_data.is_required == '1'" class="required">*</span>
+                                    {{ item.com_data.title }}
+                                    <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_icon)"></view><view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
+                                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="head-more shrink"></view>
+                        </view>
+                    </view>
+                    <view class="table-body">
+                        <view class="flex-1 flex-col">
+                            <view v-for="(item, index) in data_list" :key="index" class="table-row flex-row">
+                                <view class="cell-num flex-row align-c jc-c shrink re">
+                                    <view class="row-num flex-row align-c jc-c">
+                                        <template v-if="isEmpty(line_error(index))">{{ index + 1 }}</template>
+                                        <template v-else><view class="error-icon" :data-value="line_error(index)" @tap="error_text">!</view></template>
+                                    </view>
+                                </view>
+                                <view class="flex-row align-c">
+                                    <view v-for="(children_item, children_index) in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width * 2 + 'rpx;'">
+                                        <template v-if="show_row(index, children_item.id)">
+                                            <components-combination
+                                                :propData="children_item"
+                                                :propDataFormId="propDataFormId"
+                                                :propKey="propKey"
+                                                :propIndex="index"
+                                                :propDirection="propDirection" 
+                                                :propMobile="propMobile" 
+                                                :propComponentStyle="propStyle"
+                                                @dataChange="data_change"
+                                                @dataCheck="data_check"
+                                                @dataOptionChange="data_option_change"
+                                                @openRegion="open_region"
+                                                @regionEvent="region_event"
+                                                @zIndexChange="z_index_change"
+                                            />
+                                        </template>
+                                    </view>
+                                </view>
+                                <view class="cell-more shrink flex-row align-c jc-c" :data-index="index" @tap="table_more_event">
+                                    <iconfont name="icon-arrow-right" size="28rpx" color="#333" />
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" style="border: 2rpx solid #ccc;" @tap="add_item">
+                    <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
+                    添加记录
+                </view>
             </view>
         </view>
         <template v-else>
             <view class="subform-data">暂无可用字段</view>
         </template>
-        <!-- 弹窗 -->
+        <!-- 表格详情 -->
+        <uni-popup ref="tableMorePopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_table_more_event">
+            <view class="bg-white subform-row">
+                <view class="subform-row-head">
+                    <span class="title">{{ com_data.title }}</span><span>（{{ table_more_index + 1 }}）</span>
+                </view>
+                <view v-if="data_list.length > 0 && !isEmpty(data_list[table_more_index])" class="subform-row-content">
+                    <subform-component-show
+                        :propValue="filteredDiyDataItem(data_list[table_more_index].data_list)"
+                        :propFieldLabelStyle="propFieldLabelStyle"
+                        :propTitleStyle="propTitleStyle"
+                        :propHelpIconStyle="propHelpIconStyle"
+                        :propDataFormId="propDataFormId"
+                        :propKey="propKey"
+                        :propIndex="table_more_index"
+                        :propDirection="propDirection" 
+                        :propMobile="propMobile" 
+                        :propComponentStyle="propStyle"
+                        @dataChange="data_change"
+                        @dataCheck="data_check"
+                        @dataOptionChange="data_option_change"
+                        @openRegion="open_region"
+                        @helpIconEvent="subform_help_icon_event"
+                        @regionEvent="region_event"
+                        @zIndexChange="z_index_change"
+                    />
+                </view>
+                <view class="flex-row align-c jc-sb subform-row-switch">
+                    <button class="flex-row align-c gap-5 subform-row-switch-item" :disabled="table_more_index == 0" :data-index="table_more_index - 1" @tap="previous_or_next"><iconfont name="icon-arrow-left" size="28rpx" />上一条</button>
+                    <button class="flex-row align-c gap-5 subform-row-switch-item" :disabled="table_more_index >= data_list.length - 1" :data-index="table_more_index + 1" @tap="previous_or_next">下一条<iconfont name="icon-arrow-right" size="28rpx" /></button>
+                </view>
+                <view class="subform-row-footer flex-row align-c gap-10">
+                    <view class="save_del flex-col jc-c align-c" :data-index="table_more_index" @tap="delete_click">
+                        <iconfont name="icon-del" size="30rpx" color="#eb5050" propContainerDisplay="flex"></iconfont>删除
+                    </view>
+                    <view class="save_more flex-col jc-c align-c" :data-index="table_more_index" @tap="more_click">
+                        <iconfont name="icon-more-four-pieces" size="30rpx" color="#666" propContainerDisplay="flex"></iconfont>更多
+                    </view>
+                    <button class="flex-1 submit_title flex-row align-c jc-c"  type="default" @tap="quick_table_more_event">完成</button>
+                </view>
+            </view>
+        </uni-popup>
+        <!-- 删除提示弹出框 -->
+        <uni-popup ref="deletePopup" type="dialog" @maskClick="delete_close">
+            <uni-popup-dialog cancelText="取消" confirmText="确定" title="" content="是否确认删除这条数据" @confirm="delete_confirm" @close="delete_close"></uni-popup-dialog>
+        </uni-popup>
+        <!-- 更多弹窗 -->
         <uni-popup ref="morePopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_close_event">
-            <view class="bg-white popup-content action-sheet">
+            <view class="bg-white action-sheet">
                 <view class="action-sheet-item" data-value="copy" @tap="copy">复制到下一行</view>
                 <view class="action-sheet-item" data-value="copy_last" @tap="copy">复制到最后一行</view>
                 <view class="action-sheet-item" data-value="insert_up" @tap="copy">向上插入记录</view>
@@ -86,15 +189,21 @@
                 <view class="action-sheet-item" @tap="quick_close_event">取消</view>
             </view>
         </uni-popup>
+        <!-- 表格报错提示 -->
+        <uni-popup ref="popup_error" type="center" border-radius="20rpx" @maskClick="quick_close_event">
+            <view class="popup-error-content">{{ popup_error_content }}</view>
+        </uni-popup>
     </view>
 </template>
 
 <script>
     import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
     import subformComponentShow from '@/pages/form-input/components/form-input/modules/subform-component-show/index.vue';
+    import componentsCombination from '@/pages/form-input/components/form-input/modules/components-combination/index.vue';
     export default {
         components: {
-            subformComponentShow
+            subformComponentShow,
+            componentsCombination
         },
         props: {
             propValue: {
@@ -153,6 +262,8 @@
                 direction_fixed: 'the_first_three',
                 briefing_field: [],
                 more_index: 0,
+                popup_error_content: '',
+                table_more_index: 0,
             };
         },
         watch: {
@@ -168,15 +279,44 @@
             },
         },
         computed: { 
-            is_all_away() {
-                if (this.data_list.length == 0) {
-                    return true;
+            // 判断当前行是否有错误
+            line_error() {
+                return (index) => {
+                    const item = this.data_list[index];
+                    if (item) {
+                        const line_error = item.data_list.filter((item) => item.com_data.common_config.is_error === '1')
+                        if (line_error.length > 0) {
+                            const err_list = line_error[0].com_data;
+                            // 如果当前行有错误
+                            if (err_list && err_list.common_config && err_list.common_config.is_error == '1') {
+                                if (err_list.common_config.error_text == '此项为必填项') {
+                                    return `请填写「${err_list.title}」`;
+                                } else {
+                                    return `请正确填写「${err_list.title}」`;
+                                }
+                            }
+                        } else {
+                           return '';
+                        }
+                    } else {
+                        return '';
+                    }
+                };
+            },
+            // index: 列索引 id: 组件id
+            show_row() {
+                return (index, id) => {
+                    const show_children = this.filteredDiyData('value', index);
+                    const children_index = show_children.findIndex((item) => item.id === id);
+                    return children_index !== -1;
                 }
+            },
+            is_all_away() {
                 const list = this.data_list.filter(item => item.is_expand);
                 return list.length == this.data_list.length;
             },
-            filteredDiyData() {
-                return (children_item) => {
+            filteredDiyDataItem() {
+                return (children_item, type = 'vertical') => {
                     const componentMap = new Map(children_item.map((item) => [item.id, item]));
 
                     // 取出所有设置显隐规则的组件
@@ -195,7 +335,56 @@
                             return list_item.list.some(hidden_item => {
                                 // 判断当前组件是否在显隐规则中，如果不在，直接显示，否则的话判断值是否存在
                                 if (hidden_item.is_show.includes(item.id)) {
-                                    return targetComponent.com_data.form_value.includes(hidden_item.value);
+                                    // 如果类型是纵向的话，则只需要判断当前行是否显示就可以了
+                                    if (type === 'vertical') {
+                                        return targetComponent.com_data.form_value.includes(hidden_item.value);
+                                    } else {
+                                        // 如果是表格类型的需要判断全部是否有符合条件的，确保表格列跟下边的内容对齐
+                                        const data = this.data_list.filter((form_item) => form_item.data_list.some((data_item_list) => data_item_list.id == list_item.id && data_item_list.com_data.form_value.includes(hidden_item.value)))
+                                        return data.length > 0;
+                                    }
+                                } else {
+                                    return true;
+                                }
+                            });
+                        });
+                        return isShownByRule;
+                    });
+                }
+            },
+            filteredDiyData() {
+                return (type, index = null) => {
+                    const componentMap = new Map(this.children_list.map((item) => [item.id, item]));
+                    // 取出所有设置显隐规则的组件
+                    const list = this.children_list.filter((item) => ['single-text', 'select', 'radio-btns'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type) && item.com_data.show_hidden_list.length > 0);
+                    const list_map = list.map((item) => ({ id: item.id, list: item.com_data.show_hidden_list }));
+                    return this.children_list.filter((item) => {
+                        // 优先判断是否启用
+                        if (item.is_enable !== '1') return false;
+
+                        if (list_map.length === 0) return true;
+                        // 将所有的内容的组件进行筛选
+                        const isShownByRule = list_map.some((list_item) => {
+                            const targetComponent = componentMap.get(list_item.id);
+                            // 判断显隐规则对应的组件是否存在
+                            if (!targetComponent) return false;
+                            return list_item.list.some((hidden_item) => {
+                                // 判断当前组件是否在显隐规则中，如果不在，直接显示，否则的话判断值是否存在
+                                if (hidden_item.is_show.includes(item.id)) {
+                                    if (type == 'all') {
+                                        // 判断所有的是否满足条件
+                                        const data = this.data_list.filter((form_item) => form_item.data_list.some((data_item_list) => data_item_list.id == list_item.id && data_item_list.com_data.form_value.includes(hidden_item.value)))
+                                        return data.length > 0;
+                                    } else {
+                                        // 判断是单个还是多个内容
+                                        if (index == null) {
+                                            return false;
+                                        } else {
+                                            // 否则判断当前组件的值是否存在
+                                            const data = this.data_list[index];
+                                            return data.data_list.some((data_item_list) => data_item_list.id == list_item.id && data_item_list.com_data.form_value.includes(hidden_item.value) )
+                                        }
+                                    }
                                 } else {
                                     return true;
                                 }
@@ -258,6 +447,13 @@
                     form_value: com_data?.form_value || [],
                     children_list: children_list,
                 });
+            },
+            error_text(e) {
+                this.setData({
+                    popup_error_content: e.currentTarget.dataset.value,
+                });
+                this.z_index_change(this.propDataId);
+                this.$refs.popup_error.open();
             },
             // 获取子表单样式
             get_form_border_style(item, flex_direction) {
@@ -356,41 +552,72 @@
                 data[index].is_expand = !data[index].is_expand;
                 this.setData({ data_list: data });
             },
+            table_more_event(e) {
+                const { index } = e.currentTarget.dataset;
+                this.setData({
+                    table_more_index: index
+                })
+                this.z_index_change(this.propDataId);
+                this.$refs.tableMorePopup.open();
+            },
+            previous_or_next(e) {
+                const { index } = e.currentTarget.dataset;
+                this.setData({
+                    table_more_index: index
+                });
+            },
             more_click(e) {
                 const { index } = e.currentTarget.dataset;
                 this.setData({
                     more_index: index
                 });
+                this.z_index_change(this.propDataId);
                 this.$refs.morePopup.open();
             },
+            quick_table_more_event() {
+                this.$refs.tableMorePopup.close();
+                this.z_index_change('');
+            },
             quick_close_event() {
-               this.$refs.morePopup.close(); 
+               this.$refs.morePopup.close();
+               this.$refs.popup_error.close();
+               this.z_index_change('');
             },
             copy(e) {
                 const { value } = e.currentTarget.dataset;
                 const data = [...this.data_list];
                 const data_index = data[this.more_index];
+                let new_index = this.more_index;
                 if (value == 'copy') {
+                    new_index = this.more_index + 1;
                     // 复制到下一行
-                    data.splice(this.more_index + 1, 0, JSON.parse(JSON.stringify(data_index)));
+                    data.splice(new_index, 0, JSON.parse(JSON.stringify(data_index)));
                 } else if (value == 'copy_last') {
+                    new_index = data.length;
                     // 复制到最后一行
-                    data.splice(data.length, 0, JSON.parse(JSON.stringify(data_index)));
+                    data.splice(new_index, 0, JSON.parse(JSON.stringify(data_index)));
                 } else if (value == 'insert_up') {
+                    new_index = this.more_index;
                     // 向上插入记录
-                    data.splice(this.more_index, 0, {
+                    data.splice(new_index, 0, {
                         is_expand: data_index.is_expand,
                         data_list: JSON.parse(JSON.stringify(this.children_list))
                     });
                 } else if (value == 'insert_down') {
+                    new_index = this.more_index + 1;
                     // 向下插入记录
-                    data.splice(this.more_index + 1, 0, {
+                    data.splice(new_index, 0, {
                         is_expand: data_index.is_expand,
                         data_list: JSON.parse(JSON.stringify(this.children_list))
                     });
                 }
+                
                 this.$refs.morePopup.close();
-                this.setData({ data_list: data });
+                if (this.mobile.arrange == 'direction') {
+                    this.setData({ data_list: data });
+                } else {
+                    this.setData({ data_list: data, table_more_index: new_index });
+                }
                 this.$emit('subformDataChange', data, this.propDataId);
             },
             // 添加记录
@@ -412,9 +639,30 @@
                 });
                 this.setData({ data_list: data });
             },
-            // 删除某一个子表单数据
-            delete_item(e) {
+            // 点击删除按钮的时候
+            delete_click(e) {
                 const { index } = e.currentTarget.dataset;
+                this.setData({
+                    delete_index: index
+                })
+                this.z_index_change(this.propDataId);
+                this.$refs.deletePopup.open();
+            },
+            delete_confirm() {
+                this.delete_item(this.delete_index);
+                if (this.mobile.arrange != 'direction') {
+                    setTimeout(() => {
+                        this.$refs.tableMorePopup.close();
+                        this.z_index_change('');
+                    }, 100);
+                }
+            },
+            delete_close() {
+                this.$refs.deletePopup.close();
+                this.z_index_change('');
+            },
+            // 删除某一个子表单数据
+            delete_item(index) {
                 const data = [...this.data_list];
                 data.splice(index, 1);
                 this.setData({
@@ -422,7 +670,7 @@
                 })
                 this.$emit('subformDataChange', data, this.propDataId);
             },
-            // 获取选择的中文名称
+            // 获取选择的中文名称 empty_conversion 是用来区分有没有值,有值和没有值的颜色不一致
             data_conversion(item) {
                 if (!isEmpty(item.com_data.form_value)) {
                     const value = item.com_data.form_value;
@@ -471,9 +719,6 @@
     border: 2rpx solid #ccc;
     border-radius: 16rpx;
     overflow: hidden;
-    // .subform-line {
-    //     transition: height 0.1s linear;
-    // }
     .subform-line+.subform-line {
         border-top: 2rpx solid #ccc;
         border-top-left-radius: 20rpx;
@@ -547,5 +792,171 @@
     height: 100%;
     width: 100%;
     overflow: auto;
+}
+// 表格模式下的样式
+.table-container {
+    padding-bottom: 10rpx;
+    overflow: auto; /* 允许滚动 */
+    .table-header {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        display: flex;
+        .head-label, .head-more {
+            background: #f0f1f4;
+            border: 2rpx solid #e6e8ed;
+            border-top-left-radius: 6rpx;
+            width: 78rpx;
+            height: 70rpx;
+            padding: 10rpx;
+            box-sizing: border-box;
+        }
+        .head-more {
+            border: 2rpx solid #e6e8ed;
+            border-top-left-radius: 0;
+            border-top-right-radius: 6rpx;
+            position: sticky;
+            right: 0;
+        }
+        .item-label {
+            flex-shrink: 0;
+            height: 70rpx;
+            padding: 10rpx;
+            background: #f0f1f4;
+            font-size: 28rpx;
+            color: #141E31;
+            border: 2rpx solid #e6e8ed;
+            border-left: 0;
+            box-sizing: border-box;
+        }
+        .item-label:last-child {
+            border: 2rpx solid #e6e8ed;
+            border-left: 0;
+            border-right: 0 !important;
+        }
+    }
+    .table-body {
+        display: flex;
+        .table-row .cell-num, .table-row .cell-more {
+            text-align: center;
+            background: #fff;
+            border: 2rpx solid #e6e8ed;
+            border-top: 0;
+            width: 78rpx;
+            min-height: 62rpx;
+            line-height: 62rpx;
+            box-sizing: border-box;
+        }
+        .table-row .cell-more {
+            border: 2rpx solid #e6e8ed;
+            border-top: 0;
+            position: sticky;
+            right: 0;
+        }
+        .table-row .cell {
+            flex-shrink: 0;
+            background: #fff;
+            padding: 10rpx;
+            min-height: 62rpx;
+            height: 100%;
+            border: 2rpx solid #e6e8ed;
+            border-left: 0;
+            border-top: 0;
+            box-sizing: border-box;
+        }
+        .table-row .cell:last-child {
+            border-right: 0 !important;
+        }
+        .item-row-error {
+            background: #fef6e6 !important;
+        }
+        .table-row:hover {
+            .cell {
+                background: #f0f1f4 !important;
+            }
+            .item-row-error {
+                background: #fdeeee !important;
+            }
+            .operate {
+                display: flex;
+            }
+        }
+    }
+    .row-num {
+        font-size: 28rpx;
+    }
+}
+.shrink {
+    flex-shrink: 0;
+}
+.error-icon {
+    width: 40rpx;
+    height: 40rpx;
+    font-size: 32rpx;
+    line-height: 32rpx;
+    background: #eb5050;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.required {
+    color: #FF5353;
+    font-weight: 700;
+    padding-left: 6rpx;
+}
+.popup-error-content {
+    background: #fff;
+    padding: 32rpx;
+    border-radius: 10rpx;
+    color: red;
+}
+// 表格更多数据
+.subform-row {
+    .subform-row-head {
+        font-size: 28rpx;
+        font-weight: bold;
+        line-height: 60rpx;
+        border-bottom: 2rpx solid #ccc;
+        padding: 0 22rpx;
+    }
+    .subform-row-content {
+        padding: 20rpx 0;
+        max-height: 1000rpx;
+        overflow-y: auto;
+    }
+    .subform-row-switch {
+        height: 70rpx;
+        border-top: 2rpx solid #ccc;
+        border-bottom: 2rpx solid #ccc;
+        .subform-row-switch-item {
+            background: #fff;
+            // color: #525967;
+            font-size: 24rpx;
+            padding: 0 22rpx;
+            margin-left: 0;
+            margin-right: 0;
+            height: 70rpx;
+        }
+    }
+    .subform-row-footer {
+        padding: 10rpx 22rpx;
+        .save_del, .save_more {
+            min-width: 180rpx;
+            font-size: 24rpx;
+        }
+        .save_del {
+            color: #eb5050;
+        }
+        .submit_title {
+            background: #2a94ff;
+            text-align: center;
+            height: 64rpx;
+            color: #fff;
+            border-radius: 40rpx;
+            font-size: 32rpx;
+        }
+    }
 }
 </style>

@@ -208,7 +208,6 @@ export default {
     data() {
         return {
             data_list: [],
-            z_index_id: '',
         }
     },
     watch: {
@@ -230,7 +229,6 @@ export default {
         init() {
             this.setData({
                 data_list: this.propValue,
-                z_index_id: '',
             })
         },
         help_icon_event(e) {
@@ -252,10 +250,7 @@ export default {
             this.$emit('regionEvent', e, this.propIndex);
         },
         z_index_change(e) {
-            this.setData({
-                z_index_id: e
-            });
-            this.$emit('zIndexChange', e, this.propIndex);
+            this.$emit('zIndexChange', e);
         }
     }
 }

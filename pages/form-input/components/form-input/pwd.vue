@@ -39,6 +39,12 @@
             };
         },
         watch: {
+            propValue: {
+                handler(newVal) {
+                    this.init();
+                },
+                deep: true
+            },
             propKey(val) {
                 // 初始化
                 this.init();

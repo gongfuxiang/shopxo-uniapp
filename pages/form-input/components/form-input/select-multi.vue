@@ -117,9 +117,11 @@
             };
         },
         watch: {
-            propValue(val) {
-                // 初始化
-                this.init();
+            propValue: {
+                handler(newVal) {
+                    this.init();
+                },
+                deep: true
             },
             propKey(val) {
                 // 初始化
