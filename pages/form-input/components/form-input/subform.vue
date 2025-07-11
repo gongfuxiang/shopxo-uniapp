@@ -73,10 +73,10 @@
                     <view class="table-container rendering-area">
                         <view class="table-header flex">
                             <view class="flex-row align-c jc-c head">
-                                <view class="head-label flex-row align-c jc-c shrink"></view>
+                                <view class="head-label flex-row align-c jc-c shrink" :style="left_0_sticky"></view>
                                 <view class="flex-row align-c">
                                     <!-- 头部标题显示 -->
-                                    <view v-for="(item, index) in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width * 2 + 'rpx;'">
+                                    <view v-for="(item, index) in filteredDiyData('all')" :key="item.id" class="item-label flex-row align-c shrink" :style="'width:' + item.com_data.com_width + 'px;' + (!isEmpty(item.com_data) && !isEmpty(item.com_data.sticky_style) ? item.com_data.sticky_style : '')">
                                         <span v-if="item.com_data.is_required == '1'" class="required">*</span>
                                         {{ item.com_data.title }}
                                         <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_icon)"></view><view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
@@ -90,14 +90,14 @@
                         <view class="table-body">
                             <view class="flex-1 flex-col">
                                 <view v-for="(item, index) in data_list" :key="index" class="table-row flex-row">
-                                    <view class="cell-num flex-row align-c jc-c shrink re">
+                                    <view class="cell-num flex-row align-c jc-c shrink re" :style="left_0_sticky">
                                         <view class="row-num flex-row align-c jc-c">
                                             <template v-if="isEmpty(line_error(index))">{{ index + 1 }}</template>
                                             <template v-else><view class="error-icon" :data-value="line_error(index)" @tap="error_text">!</view></template>
                                         </view>
                                     </view>
                                     <view class="flex-row align-c">
-                                        <view v-for="(children_item, children_index) in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width * 2 + 'rpx;'">
+                                        <view v-for="(children_item, children_index) in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width  + 'px;' + (!isEmpty(item.com_data) && !isEmpty(item.com_data.sticky_style) ? item.com_data.sticky_style : '')">
                                             <template v-if="show_row(index, children_item.id)">
                                                 <components-combination
                                                     :propData="children_item"
@@ -266,6 +266,7 @@
                 more_index: 0,
                 popup_error_content: '',
                 table_more_index: 0,
+                left_0_sticky: '',
             };
         },
         watch: {
@@ -324,7 +325,7 @@
                     // 取出所有设置显隐规则的组件
                     const list = children_item.filter((item) => ['single-text', 'select', 'radio-btns'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type) && item.com_data.show_hidden_list.length > 0);
                     const list_map = list.map((item) => ({ id: item.id, list: item.com_data.show_hidden_list }));
-                    return children_item.filter((item) => {
+                    const children_list = children_item.filter((item) => {
                         // 优先判断是否启用
                         if (item.is_enable !== '1') return false;
 
@@ -352,6 +353,12 @@
                         });
                         return isShownByRule;
                     });
+                    if (this.mobile.arrange != 'direction') {
+                        children_list.forEach((item, index) => {
+                            item.com_data.sticky_style = this.left_sticky(index + 1, children_list, this.com_data);
+                        })
+                    }
+                    return children_list;
                 }
             },
             filteredDiyData() {
@@ -360,7 +367,7 @@
                     // 取出所有设置显隐规则的组件
                     const list = this.children_list.filter((item) => ['single-text', 'select', 'radio-btns'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type) && item.com_data.show_hidden_list.length > 0);
                     const list_map = list.map((item) => ({ id: item.id, list: item.com_data.show_hidden_list }));
-                    return this.children_list.filter((item) => {
+                    const children_list = this.children_list.filter((item) => {
                         // 优先判断是否启用
                         if (item.is_enable !== '1') return false;
 
@@ -394,6 +401,12 @@
                         });
                         return isShownByRule;
                     });
+                    if (this.mobile.arrange != 'direction') {
+                        children_list.forEach((item, index) => {
+                            item.com_data.sticky_style = this.left_sticky(index + 1, children_list, this.com_data);
+                        })
+                    }
+                    return children_list;
                 }
             },
             show_list() {
@@ -448,6 +461,7 @@
                     mobile: mobile,
                     form_value: com_data?.form_value || [],
                     children_list: children_list,
+                    left_0_sticky: mobile.arrange != 'direction' ? this.left_sticky(0, [], com_data) : '',
                 });
             },
             error_text(e) {
@@ -705,6 +719,34 @@
                     return 'empty_conversion';
                 }
             },
+            /**
+             * 计算左侧粘性定位样式
+             * 
+             * @param index - 当前元素的索引位置
+             * @returns 返回CSS粘性定位样式字符串，若不符合条件则返回空字符串
+            */
+            left_sticky(index, childrenList = [], com_data) {
+                // 从表单数据中获取是否启用固定和固定数量配置
+                const { is_fixed = '0', horizontal_fixed_num = 1 } = com_data?.mobile || {};
+                
+                // 检查是否满足粘性定位条件：启用固定且索引在固定数量范围内
+                if (is_fixed !== '1' || index >= horizontal_fixed_num || horizontal_fixed_num <= 0) {
+                    return '';
+                }
+
+                // 初始左侧偏移量：第一个元素为0，其他元素默认78px
+                let left = index === 0 ? 0 : 40;
+                
+                // 计算当前元素之前的兄弟元素宽度总和作为偏移量
+                if (index > 0) {
+                    for (let i = 1; i < index; i++) {
+                        left += childrenList[i - 1]?.com_data?.com_width || 0;
+                    }
+                }
+                
+                // 生成粘性定位CSS样式
+                return `position: sticky;left: ${left}px;z-index: 2;`;
+            },
             z_index_change(e) {
                 this.$emit('zIndexChange', e);
             }
@@ -810,7 +852,7 @@
             background: #f0f1f4;
             border: 2rpx solid #e6e8ed;
             border-top-left-radius: 6rpx;
-            width: 78rpx;
+            width: 40px;
             height: 70rpx;
             padding: 10rpx;
             box-sizing: border-box;
@@ -846,7 +888,7 @@
             background: #fff;
             border: 2rpx solid #e6e8ed;
             border-top: 0;
-            width: 78rpx;
+            width: 40px;
             min-height: 62rpx;
             line-height: 62rpx;
             box-sizing: border-box;
