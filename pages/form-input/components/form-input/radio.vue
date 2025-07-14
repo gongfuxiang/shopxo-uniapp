@@ -1,15 +1,16 @@
 <template>
     <radio-group @change="data_change" class="flex-row gap-10 flex-wrap">
-        <label v-for="item in option_list" :key="item.value">
-            <radio :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)">
-                <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
-            </radio>
+        <label v-for="item in option_list" :key="item.value" class="flex-row align-c">
+            <view>
+                <radio :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" />
+            </view>
+            <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
         </label>
     </radio-group>
 </template>
 
 <script>
-    import { get_format_checks, isEmpty, get_color_style } from '@/common/js/common/common.js';
+    import { isEmpty, get_color_style } from '@/common/js/common/common.js';
     const app = getApp();
     export default {
         props: {
