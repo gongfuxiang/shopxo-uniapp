@@ -1,6 +1,6 @@
 <template>
     <view class="pr oh wh-auto ht-auto">
-        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box' : 'ht-auto'" lower-threshold="60" scroll-with-animation> 
+        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box' : 'ht'" lower-threshold="60" scroll-with-animation> 
             <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />

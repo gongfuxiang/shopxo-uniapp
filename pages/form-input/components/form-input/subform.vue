@@ -9,11 +9,11 @@
                         <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
-                <view v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="flex-row align-c gap-10">
+                <view class="flex-row align-c gap-10">
                     <button class="title_btn" @tap="add_item">
                         <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                     </button>    
-                    <button class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
+                    <button v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
                 </view>
             </view>
             <view v-if="data_list.length > 0" class="overflow-auto" :style="'height:' + custom_height">
@@ -923,6 +923,7 @@
             border-top: 0;
             position: sticky;
             right: 0;
+            z-index: 2;
         }
         .table-row .cell {
             flex-shrink: 0;
