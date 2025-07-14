@@ -451,7 +451,13 @@
                     custom_height = (com_data.com_height - 30 - text_height) * 2 + 'rpx;';
                 }
                 // 子表单数据
-                const children_list = JSON.parse(JSON.stringify(com_data?.children || []));
+                let children_list = JSON.parse(JSON.stringify(com_data?.children || []));
+                let data_list = com_data?.data_list || [];
+                // #ifndef H5 || MP-WEIXIN || MP-QQ
+                    // 上传文件只支持H5 微信小程序， qq小程序，其余的需要端需要过滤掉数据
+                    children_list = children_list.filter(item => item.com_type != 'upload-attachments');
+                    data_list = data_list.filter(item => item.com_type != 'upload-attachments');
+                // #endif
                 children_list.forEach(item => {
                     item.com_data.common_style = this.get_form_border_style(item.com_data.common_config,  mobile.arrange == 'direction' ? this.propDirection : 'column');
                 })
@@ -460,7 +466,7 @@
                     custom_height: custom_height,
                     direction_fixed: mobile.direction_fixed,
                     briefing_field: mobile?.briefing_field || [],
-                    data_list: com_data?.data_list || [],
+                    data_list: data_list,
                     mobile: mobile,
                     form_value: com_data?.form_value || [],
                     children_list: children_list,
