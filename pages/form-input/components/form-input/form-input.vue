@@ -574,6 +574,7 @@ export default {
     background: #fff;
     width: 100%;
     border-top: 2rpx solid #eee;
+    z-index: 99999 !important;
     .save_draft_title {
         min-width: 180rpx;
         font-size: 24rpx;

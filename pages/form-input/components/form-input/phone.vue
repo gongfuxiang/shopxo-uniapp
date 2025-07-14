@@ -264,7 +264,7 @@
                 if (e == '') {
                     setTimeout(() => {
                         this.$emit('zIndexChange', e);
-                    }, 200)
+                    }, 400)
                 } else {
                     this.$emit('zIndexChange', e);
                 }

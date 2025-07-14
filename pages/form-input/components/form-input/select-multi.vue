@@ -287,7 +287,7 @@
                 if (e == '') {
                     setTimeout(() => {
                         this.$emit('zIndexChange', e);
-                    }, 200)
+                    }, 400)
                 } else {
                     this.$emit('zIndexChange', e);
                 }
@@ -306,6 +306,7 @@
     padding: 0 20rpx;
     .uni-input {
         height: 64rpx;
+        background: #f5f6f8;
     }
 }
 .popup-checkbox {
