@@ -874,20 +874,20 @@ export const get_color_style = (config) => {
     let size = '24';
     switch (config.filed_title_size_type) {
         case 'big':
-            size = '32';
+            // size = '32';
             padding = '22rpx 24rpx';
             break;
         case 'middle':
-            size = '28';
+            // size = '28';
             padding = '10rpx 12rpx';
             break;
         default:
-            size = '24';
+            // size = '24';
             padding = '0 12rpx';
             break;
     }
     // 根据文件标题字体大小决定图标尺寸
-    return `padding:${padding};line-height:44rpx;font-size:${size}rpx;`;
+    return `padding:${padding};line-height:44rpx;`;
 };
 
 // 定义一组预定义的颜色数组，用于在各种场景中轻松引用这些颜色

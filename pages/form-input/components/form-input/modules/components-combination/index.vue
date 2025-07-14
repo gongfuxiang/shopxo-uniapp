@@ -1,5 +1,5 @@
 <template>
-    <view class="flex-1 wh-auto flex-col gap-5 oh">
+    <view class="wh-auto flex-col gap-5 oh">
         <!-- 输入框 -->
         <view v-if="['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'single-text'" :style="data_item.com_data.common_style">
             <component-input :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-input>

@@ -99,21 +99,24 @@
                                     <view class="flex-row align-c">
                                         <view v-for="children_item in filteredDiyDataItem(item.data_list, 'table')" :key="children_item.id" :class="['cell pr flex-row align-c jc-c shrink', { 'item-row-error': children_item.com_data.common_config.is_error == '1' }]" :style="'width:' + children_item.com_data.com_width  + 'px;' + (!isEmpty(children_item.com_data) && !isEmpty(children_item.com_data.sticky_style) ? (children_item.com_data.sticky_style + (children_item.id == z_index_id && index == z_index ? 'z-index: 999;' : '')) : '')">
                                             <template v-if="show_row(index, children_item.id)">
-                                                <components-combination
-                                                    :propData="children_item"
-                                                    :propDataFormId="propDataFormId"
-                                                    :propKey="propKey"
-                                                    :propIndex="index"
-                                                    :propDirection="propDirection" 
-                                                    :propMobile="propMobile" 
-                                                    :propComponentStyle="propStyle"
-                                                    @dataChange="data_change"
-                                                    @dataCheck="data_check"
-                                                    @dataOptionChange="data_option_change"
-                                                    @openRegion="open_region"
-                                                    @regionEvent="region_event"
-                                                    @zIndexChange="table_z_index_change"
-                                                />
+                                                <view class="flex-1 wh-auto">
+                                                    <components-combination
+                                                        :propData="children_item"
+                                                        :propDataFormId="propDataFormId"
+                                                        :propKey="propKey"
+                                                        :propIndex="index"
+                                                        :propDirection="propDirection" 
+                                                        :propMobile="propMobile" 
+                                                        :propComponentStyle="propStyle"
+                                                        @dataChange="data_change"
+                                                        @dataCheck="data_check"
+                                                        @dataOptionChange="data_option_change"
+                                                        @openRegion="open_region"
+                                                        @regionEvent="region_event"
+                                                        @zIndexChange="table_z_index_change"
+                                                    />
+                                                </view>
+                                                
                                             </template>
                                         </view>
                                     </view>
