@@ -33,13 +33,13 @@
                     <template v-if="new_option_list.length > 0">
                         <view :class="'flex-col gap-10 mt-10 ' + ( com_data.is_add_option == '1' ? 'popup-add-list' : 'popup-list')">
                            <checkbox-group @change="data_all_change" class="flex-col gap-10">
-                                <label class="popup-checkbox flex-row">
+                                <label class="popup-checkbox flex-row align-c">
                                     <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c" />
                                     <view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view>
                                 </label>
                             </checkbox-group>
                             <checkbox-group @change="data_checkbox_change" class="flex-col gap-10">
-                                <label v-for="(item, index) in new_option_list" class="popup-checkbox flex-row" :key="index">
+                                <label v-for="(item, index) in new_option_list" class="popup-checkbox flex-row align-c" :key="index">
                                     <view>
                                         <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c" />
                                     </view>
