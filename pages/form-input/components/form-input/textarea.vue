@@ -1,7 +1,7 @@
 <template>
     <view class="flex-row align-c wh-auto pr" :style="propStyle + 'min-height:200rpx;'">
-        <textarea :value="form_value" class="uni-input wh-auto" :style="propStyle + 'min-height:200rpx;'" :placeholder="placeholder" :maxlength="max_length" @blur="data_check" @input="input_value_event" />
-        <view class="input-limit-num" v-if="com_data.is_limit_num == '1' && !isEmpty(com_data.max_num)">{{ form_value.length }}/{{ com_data.max_num }}</view>
+        <textarea :value="form_value" class="uni-input wh-auto" :style="propStyle + 'min-height:200rpx;'" :placeholder="placeholder" placeholder-style="color: gray;" :maxlength="max_length" @blur="data_check" @input="input_value_event" />
+        <view class="input-limit-num cr-gray" v-if="com_data.is_limit_num == '1' && !isEmpty(com_data.max_num)">{{ form_value.length }}/{{ com_data.max_num }}</view>
     </view>
 </template>
 

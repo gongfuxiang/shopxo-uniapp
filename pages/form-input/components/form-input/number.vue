@@ -3,7 +3,7 @@
         <template v-if="com_data.is_display_money == '1'">
             <view class="number-icon padding-right-sm">{{ com_data.money_sign }}</view>
         </template>
-        <input :value="form_value" class="uni-input flex-1" :style="propStyle" type="text" :placeholder="placeholder" @focus="focus_input" @blur="blur_input" @input="input_value_event" />
+        <input :value="form_value" class="uni-input flex-1" :style="propStyle" type="text" :placeholder="placeholder" placeholder-style="color: gray;" @focus="focus_input" @blur="blur_input" @input="input_value_event" />
         <template v-if="com_data.format == 'percentage'">
              <view class="number-icon padding-left">%</view>
         </template>

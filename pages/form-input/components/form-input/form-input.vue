@@ -148,7 +148,16 @@ export default {
             // 公共配置信息
             const overall_config = data.config?.overall_config || {};
             const mobile = overall_config?.style_settings?.mobile || {};
-            data.config.diy_data.forEach(item => {
+            let diy_data = data.config.diy_data || [];
+            // #ifndef H5 || MP-WEIXIN || MP-QQ
+                // 上传文件只支持H5 微信小程序， qq小程序，其余的需要端需要过滤掉数据
+                diy_data = diy_data.filter(item => item.key !== 'upload-attachments');
+            // #endif
+            // #ifndef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU
+                // 富文本只支持APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU
+                diy_data = diy_data.filter(item => item.key !== 'rich-text');
+            // #endif
+            diy_data.forEach(item => {
                 // 边框样式处理
                 item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
                 // 子表单需要统一规整一下数据
@@ -176,7 +185,7 @@ export default {
             });
             this.setData({
                 z_index_id: '',
-                data_list: data.config.diy_data,
+                data_list: diy_data,
                 form_name: data.name,
                 mobile: mobile,
                 flex_direction: mobile.flex_direction || 'row',
