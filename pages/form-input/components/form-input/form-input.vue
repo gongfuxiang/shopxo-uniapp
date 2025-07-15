@@ -1,6 +1,6 @@
 <template>
     <view class="pr oh wh-auto ht-auto">
-        <view :class="(overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto') + ' scroll-y ' + (overall_config.type_value == 'default' || z_index_id !== '' ? '' : ' scroll-x ')">
+        <view :class="(overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto') + ' scroll-y ' + (overall_config.type_value == 'default' || z_index_id !== '' ? ' scroll-x-hidden' : ' scroll-x ')">
             <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
@@ -601,6 +601,9 @@ export default {
 }
 .scroll-y {
     overflow-y: auto;
+}
+.scroll-x-hidden {
+    overflow-x: hidden;
 }
 .scroll-x {
     overflow-x: auto;
