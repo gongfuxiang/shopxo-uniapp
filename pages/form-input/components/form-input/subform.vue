@@ -652,7 +652,6 @@
             add_item() {
                 const data = [...this.data_list];
                 const list = this.data_list.filter(item => item.is_expand);
-                console.log(this.children_list);
                 data.push({
                     is_expand: list.length == this.data_list.length,
                     data_list: JSON.parse(JSON.stringify(this.children_list))

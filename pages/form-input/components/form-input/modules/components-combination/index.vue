@@ -177,12 +177,6 @@ export default {
         }
     },
     watch: {
-        propData: {
-            handler(newVal) {
-                this.init();
-            },
-            deep: true
-        },
         propKey(val) {
            this.init();
         }

@@ -190,10 +190,11 @@
                         value: value,
                         color: color_change(this.option_list.length - 1),
                     };
+                    const custom_option_list = [...this.custom_option_list, data];
                     this.setData({
                         option_list: [...this.option_list, data],
                         popup_list: [...this.popup_list, value],
-                        custom_option_list: [...this.custom_option_list, data],
+                        custom_option_list: custom_option_list,
                         dialog_value: '',
                     });
                     this.$refs.inputDialog.close();
