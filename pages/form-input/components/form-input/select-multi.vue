@@ -34,7 +34,7 @@
                         <view :class="'flex-col gap-10 mt-10 ' + ( com_data.is_add_option == '1' ? 'popup-add-list' : 'popup-list')">
                            <checkbox-group @change="data_all_change" class="flex-col gap-10">
                                 <label class="popup-checkbox flex-row align-c">
-                                    <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c" style="transform:scale(0.7)" />
+                                    <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c" style="transform:scale(0.8)" />
                                     <view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view>
                                 </label>
                             </checkbox-group>
