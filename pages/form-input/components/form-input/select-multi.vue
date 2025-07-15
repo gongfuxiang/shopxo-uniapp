@@ -41,7 +41,7 @@
                             <checkbox-group @change="data_checkbox_change" class="flex-col gap-10">
                                 <label v-for="(item, index) in new_option_list" class="popup-checkbox flex-row align-c" :key="index">
                                     <view>
-                                        <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c" />
+                                        <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c" style="transform:scale(0.8)"/>
                                     </view>
                                     <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
                                 </label>

@@ -2,30 +2,12 @@
     <view class="wh-auto ht-auto pr">
         <view v-for="(item, index) in data_list" :key="index" :class="(propIsCustom ? 'pa ' : (propDirection == 'row' ? 'row-item ' : 'column-item mb-10 ')) + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :style="(item.key == 'auxiliary-line' ? 'border-bottom: 0rpx; ' : '') + (propIsCustom ? ('left:' + item.location.x + 'px;top:' + item.location.y + 'px;width:' + item.com_data.com_width + 'px;height:' + item.com_data.com_height + 'px;z-index:' + (z_index_id == item.id ? '999999' : (item.is_enable == '1' ? (data_list.length - 1 > 0 ? (data_list.length - 1) - index : 0) : -999)) + ';') : '')">
             <view :class="'wh-auto ht-auto ' + (propDirection == 'row' ? (['video', 'img', 'upload-img', 'upload-video', 'multi-text'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
-                <view v-if="(!propIsCustom && !['rich-text', 'auxiliary-line', 'upload-attachments', 'subform'].includes(item.key)) || (propIsCustom && !['img', 'video', 'auxiliary-line', 'rect', 'round', 'rich-text', 'upload-attachments', 'subform'].includes(item.key))" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
+                <view v-if="(!propIsCustom && !['auxiliary-line', 'subform'].includes(item.key)) || (propIsCustom && !['img', 'video', 'auxiliary-line', 'rect', 'round', 'subform'].includes(item.key))" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
                     <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
                     <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
                         <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
-                <!-- 富文本仅支持H5、APP-PLUS、微信小程序、百度小程序 -->
-                <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
-                <view v-if="item.key == 'rich-text'" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle">
-                    <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
-                    <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
-                    </view>
-                </view>
-                <!-- #endif -->
-                <!-- 上传文件仅支持H5、微信小程序、QQ小程序 -->
-                <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
-                <view v-if="item.key == 'upload-attachments'" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle">
-                    <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
-                    <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
-                    </view>
-                </view>
-                <!-- #endif -->
                 <view class="flex-1 wh-auto ht-auto flex-col gap-5 oh">
                     <!-- 输入框 -->
                     <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
@@ -136,7 +118,7 @@
                         <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
                     </view>
                     <!-- #endif -->
-                    <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
+                    <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN -->
                     <!-- 富文本 -->
                     <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
                         <component-rich-text :propValue="item.com_data"  :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-rich-text>

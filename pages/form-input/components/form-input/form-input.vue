@@ -1,6 +1,6 @@
 <template>
     <view class="pr oh wh-auto ht-auto">
-        <view :class="(overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto') + ' scroll-y ' + (overall_config.type_value == 'default' || z_index_id !== '' ? '' : ' scroll-x ')">
+        <view :class="(overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto') + ' scroll-y ' + (overall_config.type_value == 'default' || z_index_id !== '' ? ' scroll-x-hidden' : ' scroll-x ')">
             <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
@@ -57,9 +57,14 @@
 </template>
 
 <script>
-import { isEmpty, common_form_styles_computer, get_format_checks } from '@/common/js/common/common.js';
 const app = getApp();
+import { isEmpty, common_form_styles_computer, get_format_checks } from '@/common/js/common/common.js';
 import componentShow from '@/pages/form-input/components/form-input/modules/component-show/index.vue';
+// 状态栏高度
+var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+// #ifdef MP-TOUTIAO
+bar_height = 0;
+// #endif
 export default {
     name: 'formInput',
     components: {
@@ -99,7 +104,17 @@ export default {
             popup_help_content: '',
             scrollTop: 0,
             z_index_id: '',
-            is_submit_disable: false
+            is_submit_disable: false,
+            // 5,7,0 是误差,bar_height是不同小程序下的导航栏距离顶部的高度
+            // #ifdef MP
+            sticky_top: bar_height + 5,
+            // #endif
+            // #ifdef H5 || MP-TOUTIAO
+            sticky_top: bar_height + 7,
+            // #endif
+            // #ifdef APP
+            sticky_top: bar_height + 0,
+            // #endif
         };
     },
     watch: {
@@ -148,7 +163,16 @@ export default {
             // 公共配置信息
             const overall_config = data.config?.overall_config || {};
             const mobile = overall_config?.style_settings?.mobile || {};
-            data.config.diy_data.forEach(item => {
+            let diy_data = data.config.diy_data || [];
+            // #ifndef H5 || MP-WEIXIN || MP-QQ
+                // 上传文件只支持H5 微信小程序， qq小程序，其余的需要端需要过滤掉数据
+                diy_data = diy_data.filter(item => item.key !== 'upload-attachments');
+            // #endif
+            // #ifndef APP-PLUS || H5 || MP-WEIXIN
+                // 富文本只支持APP-PLUS || H5 || MP-WEIXIN
+                diy_data = diy_data.filter(item => item.key !== 'rich-text');
+            // #endif
+            diy_data.forEach(item => {
                 // 边框样式处理
                 item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
                 // 子表单需要统一规整一下数据
@@ -176,12 +200,12 @@ export default {
             });
             this.setData({
                 z_index_id: '',
-                data_list: data.config.diy_data,
+                data_list: diy_data,
                 form_name: data.name,
                 mobile: mobile,
                 flex_direction: mobile.flex_direction || 'row',
                 img_url: mobile?.heading_image && mobile?.heading_image.length > 0 ?  mobile?.heading_image[0]?.url || '' : '',
-                content_style: `min-height:64rpx;background: ${ mobile.heading_color };`,
+                content_style: `padding-top:${ this.sticky_top }px;min-height:64rpx;background: ${ mobile.heading_color };`,
                 is_show_heading_title: mobile.is_show_heading_title || '0',
                 heading_title_style: `justify-content:${ mobile.heading_title_location };color:${ mobile.heading_title_color };font-size:${ mobile.heading_title_size }px;font-weight:${ mobile.heading_title_font_weight };`,
                 overall_config: overall_config,
@@ -601,6 +625,9 @@ export default {
 }
 .scroll-y {
     overflow-y: auto;
+}
+.scroll-x-hidden {
+    overflow-x: hidden;
 }
 .scroll-x {
     overflow-x: auto;

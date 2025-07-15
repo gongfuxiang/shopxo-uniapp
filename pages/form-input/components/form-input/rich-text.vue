@@ -1,5 +1,7 @@
 <template>
-    <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+    <view class="sp-editor">
+        <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+    </view>
 </template>
 
 <script>
@@ -119,4 +121,8 @@
     };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.sp-editor {
+    height: 500rpx;
+}
+</style>
