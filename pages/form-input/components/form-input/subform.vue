@@ -657,6 +657,7 @@
                     data_list: JSON.parse(JSON.stringify(this.children_list))
                 });
                 this.setData({ data_list: data });
+                this.$emit('subformDataChange', data, this.propDataId);
             },
             expand_all(e) {
                 const { value } = e.currentTarget.dataset;
