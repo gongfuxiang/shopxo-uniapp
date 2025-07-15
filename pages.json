@@ -122,6 +122,9 @@
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
+                    },
+                    "usingComponents": {
+                        "baidu-editor": "dynamicLib://editorLib/editor"
                     }
                 }
             ]

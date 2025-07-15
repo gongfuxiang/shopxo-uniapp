@@ -207,7 +207,12 @@
         "appid" : "",
         "setting" : {
             "urlCheck" : false
-        }
+        },
+        "dynamicLib": {//引入百度小程序动态库
+			"editorLib": {
+				"provider": "swan-editor"
+			}
+		}
     },
     "mp-toutiao" : {
         "usingComponents" : true,

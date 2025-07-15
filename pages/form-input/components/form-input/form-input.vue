@@ -57,9 +57,14 @@
 </template>
 
 <script>
-import { isEmpty, common_form_styles_computer, get_format_checks } from '@/common/js/common/common.js';
 const app = getApp();
+import { isEmpty, common_form_styles_computer, get_format_checks } from '@/common/js/common/common.js';
 import componentShow from '@/pages/form-input/components/form-input/modules/component-show/index.vue';
+// 状态栏高度
+var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+// #ifdef MP-TOUTIAO
+bar_height = 0;
+// #endif
 export default {
     name: 'formInput',
     components: {
@@ -99,7 +104,17 @@ export default {
             popup_help_content: '',
             scrollTop: 0,
             z_index_id: '',
-            is_submit_disable: false
+            is_submit_disable: false,
+            // 5,7,0 是误差,bar_height是不同小程序下的导航栏距离顶部的高度
+            // #ifdef MP
+            sticky_top: bar_height + 5,
+            // #endif
+            // #ifdef H5 || MP-TOUTIAO
+            sticky_top: bar_height + 7,
+            // #endif
+            // #ifdef APP
+            sticky_top: bar_height + 0,
+            // #endif
         };
     },
     watch: {
@@ -153,8 +168,8 @@ export default {
                 // 上传文件只支持H5 微信小程序， qq小程序，其余的需要端需要过滤掉数据
                 diy_data = diy_data.filter(item => item.key !== 'upload-attachments');
             // #endif
-            // #ifndef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU
-                // 富文本只支持APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU
+            // #ifndef APP-PLUS || H5 || MP-WEIXIN
+                // 富文本只支持APP-PLUS || H5 || MP-WEIXIN
                 diy_data = diy_data.filter(item => item.key !== 'rich-text');
             // #endif
             diy_data.forEach(item => {
@@ -190,7 +205,7 @@ export default {
                 mobile: mobile,
                 flex_direction: mobile.flex_direction || 'row',
                 img_url: mobile?.heading_image && mobile?.heading_image.length > 0 ?  mobile?.heading_image[0]?.url || '' : '',
-                content_style: `min-height:64rpx;background: ${ mobile.heading_color };`,
+                content_style: `padding-top:${ this.sticky_top }px;min-height:64rpx;background: ${ mobile.heading_color };`,
                 is_show_heading_title: mobile.is_show_heading_title || '0',
                 heading_title_style: `justify-content:${ mobile.heading_title_location };color:${ mobile.heading_title_color };font-size:${ mobile.heading_title_size }px;font-weight:${ mobile.heading_title_font_weight };`,
                 overall_config: overall_config,

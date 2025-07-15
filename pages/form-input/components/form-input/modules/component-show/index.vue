@@ -118,7 +118,7 @@
                         <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
                     </view>
                     <!-- #endif -->
-                    <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU -->
+                    <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN -->
                     <!-- 富文本 -->
                     <view v-else-if="item.key == 'rich-text'" :style="item.com_data.common_style + 'padding:0;'">
                         <component-rich-text :propValue="item.com_data"  :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-rich-text>
