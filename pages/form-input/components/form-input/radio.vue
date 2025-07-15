@@ -1,8 +1,8 @@
 <template>
     <radio-group @change="data_change" class="flex-row gap-10 flex-wrap">
-        <label v-for="item in option_list" :key="item.value" class="flex-row align-c">
+        <label v-for="item in option_list" :key="item.value" class="flex-row align-c margin-right-xxl">
             <view>
-                <radio :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" />
+                <radio :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" style="transform:scale(0.7)"/>
             </view>
             <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
         </label>
