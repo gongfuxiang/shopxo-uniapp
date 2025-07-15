@@ -186,19 +186,18 @@
             }
         },
         "__usePrivacyCheck__" : true,
-        "plugins" : {
-            // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
-            // "routePlan" : {
-            //     "version" : "1.0.19",
-            //     "provider" : "wx50b5593e81dd937a"
-            // },
-            // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
-            // "live-player-plugin" : {
-            //     "version" : "1.3.5",
-            //     "provider" : "wx2b03c6e691cd7370"
-            // }
-        }
+        "plugins" : {}
     },
+    // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
+    // "routePlan" : {
+    //     "version" : "1.0.19",
+    //     "provider" : "wx50b5593e81dd937a"
+    // },
+    // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
+    // "live-player-plugin" : {
+    //     "version" : "1.3.5",
+    //     "provider" : "wx2b03c6e691cd7370"
+    // }
     "mp-alipay" : {
         "usingComponents" : true,
         "appid" : "2021001173639600"

@@ -14,6 +14,7 @@
                 "navigationBarTitleText": "",
                 "usingComponents": {
                     "component-diy": "/pages/diy/components/diy/diy",
+                    "component-form-input": "/pages/form-input/components/form-input/form-input",
                     "component-layout": "/pages/design/components/layout/layout",
                     "component-binding-list": "/pages/plugins/binding/components/binding-list/binding-list",
                     "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list",
@@ -24,6 +25,7 @@
                 },
                 "componentPlaceholder": {
                     "component-diy": "view",
+                    "component-form-input": "view",
                     "component-layout": "view",
                     "component-binding-list": "view",
                     "component-realstore-list": "view",
@@ -91,6 +93,25 @@
             "pages": [
                 {
                     "path": "diy",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "always",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/form-input",
+            "pages": [
+                {
+                    "path": "form-input",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
@@ -1922,6 +1943,16 @@
             },
             {
                 "pagePath": "pages/user/user"
+            }
+        ]
+    },
+    "condition" : { //模式配置，仅开发期间生效
+        "current": 0, //当前激活的模式(list 的索引项)
+        "list": [
+            {
+                "name": "", //模式名称
+                "path": "", //启动页面，必选
+                "query": "" //启动参数，在页面的onLoad函数里面得到
             }
         ]
     }

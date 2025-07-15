@@ -742,3 +742,268 @@ export const get_swiper_translation_list = (cloneList, num) => {
     // 返回处理后的列表
     return nav_list;
 };
+
+/**
+ * 格式检查函数
+ * @param data 待检查的数据对象
+ */
+export const get_format_checks = (data, form_value, is_format = false, type = '') => {
+    let is_error = '0';
+    let error_text = '';
+    // 判断是否是必填字段,并且没有值
+    if (data.is_required == '1' && isEmpty(form_value)) {
+        // 是否报错显示
+        is_error = '1';
+        error_text = `${ ['select', 'checkbox', 'upload', 'time', 'address', 'score', 'radio'].includes(type) ? '必选' : '必填'}字段不能为空`;
+    } else {
+        if (is_format) {
+            if (type == 'number') {
+                // 数字组件的校验逻辑
+                return number_range_handle(data, form_value);
+            } else if (type == 'checkbox') {
+                // 复选框和复选下拉框的校验逻辑
+                return checkbox_range_handle(data, form_value);
+            } else {
+                // 单行文本的校验逻辑
+                // 对字段进行格式检查
+                return get_format_checks_v2(data.common_config, form_value);
+            }
+        }
+    }
+    return { is_error, error_text }
+};
+// 复选框和复选下拉框的校验逻辑
+export const checkbox_range_handle = (data, form_value) => {
+    const { min_num = '', max_num = '' } = data;
+    const length = form_value?.length || 0;
+    const minNum = Number(min_num);
+    const maxNum = Number(max_num);
+    let is_error = '0'
+    let error_text = ''
+    if ((!isEmpty(min_num) && length < minNum) || (!isEmpty(max_num) && length > maxNum)) {
+        // 是否报错显示
+        is_error = '1';
+        error_text = `请选择${min_num}~${max_num}项`;
+    }
+    return { is_error, error_text }
+};
+// 数字组件的校验逻辑
+export const number_range_handle = (data, form_value) => {
+    const { min_num = '', max_num = '', format = 'num' } = data;
+    const num = Number(form_value);
+    const minNum = Number(min_num);
+    const maxNum = Number(max_num);
+    let is_error = '0'
+    let error_text = ''
+    if ((!isEmpty(min_num) && num < minNum) || (!isEmpty(max_num) && num > maxNum)) {
+        // 是否报错显示
+        is_error = '1';
+        error_text = `请输入${min_num}${format == 'num' ? '' : '%'}~${max_num}${format == 'num' ? '' : '%'}之间的数`;
+    }
+    return { is_error, error_text }
+};
+
+const type_config = [
+    { name: '手机号码', value: 'phone-number', check: /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/ },
+    { name: '电话号码', value: 'telephone-number', check: [/^0\d{0,3}-?\d{7,8}$/, /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/] },
+    { name: '邮政编码', value: 'postal-code', check: /^[1-9]\d{5}$/ },
+    { name: '身份证号码', value: 'id-no', check: /^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|X|x)$/ },
+    { name: '邮箱', value: 'email', check: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+];
+
+// 构建 Map 提升查找效率
+const typeConfigMap = new Map(type_config.map((item) => [item.value, item]));
+
+/**
+ * 根据通用配置和给定值进行格式校验
+ * 该函数用于检查输入值是否符合特定的格式要求，主要应用于用户输入验证
+ *
+ * @param common_config 通用配置对象，包含格式和错误信息的配置
+ * @param value 需要进行格式校验的值
+ */
+export const get_format_checks_v2 = (common_config, value) => {
+    let is_error = '0';
+    let error_text = '';
+    // 检查值是否为空，如果为空则直接重置错误状态
+    if (!isEmpty(value)) {
+        // 根据通用配置中的格式，从类型配置映射中获取对应的格式检查项
+        const item = typeConfigMap.get(common_config.format);
+        // 如果找不到对应的格式检查项，则不进行后续操作
+        if (!item) return;
+
+        // 初始化验证状态为不通过
+        let isValid = false;
+        // 检查项可能是一个数组，包含多个正则表达式，循环遍历直到找到一个匹配的正则表达式
+        if (Array.isArray(item.check)) {
+            for (const regex of item.check) {
+                // 如果当前正则表达式匹配成功，则标记验证状态为通过，并停止循环
+                if (regex.test(value)) {
+                    isValid = true;
+                    break;
+                }
+            }
+        } else {
+            // 如果检查项不是一个数组，直接进行正则表达式匹配
+            isValid = item.check.test(value);
+        }
+
+        // 根据验证结果更新通用配置对象的错误状态和错误信息
+        if (isValid) {
+            is_error = '0';
+            error_text = '';
+        } else {
+            is_error = '1';
+            error_text = item.value == 'telephone-number' ? `请输入正确的电话号码或手机号码格式` : `请输入正确的${item.name}格式`;
+        }
+    } else {
+        // 如果值为空，重置错误状态
+        is_error = '0';
+        error_text = '';
+    }
+    return { is_error, error_text };
+};
+
+
+export function common_form_styles_computer(new_style) {
+    return radius_computer(new_style.border_radius) + border_computer(new_style) + `background:#fff;overflow:hidden;`;
+}
+
+export const get_color_style = (config) => {
+    // 提取配置对象中的计算机相关数据
+    let padding = '6rpx 12rpx';
+    let size = '24';
+    switch (config.filed_title_size_type) {
+        case 'big':
+            // size = '32';
+            padding = '22rpx 24rpx';
+            break;
+        case 'middle':
+            // size = '28';
+            padding = '10rpx 12rpx';
+            break;
+        default:
+            // size = '24';
+            padding = '0 12rpx';
+            break;
+    }
+    // 根据文件标题字体大小决定图标尺寸
+    return `padding:${padding};line-height:44rpx;`;
+};
+
+// 定义一组预定义的颜色数组，用于在各种场景中轻松引用这些颜色
+// 这些颜色包括从白色到黑色的不同灰度，以及一些鲜艳的颜色，格式有十六进制、RGB、RGBA、HSV、HSL等
+export const predefine_colors = ['#eb5050', '#f0a800', '#46c26f', '#a2c204', '#00aed1', '#5865f5', '#c643e0', '#f0437d', '#fa8118', '#d6c504', '#00b899', '#6ac73c', '#2f7deb', '#7e47eb', '#d941c0', '#485970', '#f9cbcb', '#fbe5b3', '#c8edd4', '#e3edb4', '#b3e7f1', '#cdd1fc', '#eec7f6', '#fbc7d8', '#fed9ba', '#f3eeb4', '#b3eae0', '#d2eec5', '#c1d8f9', '#d8c8f9', '#f4c6ec', '#c8cdd4'];
+
+export const color_change = (length) => {
+    // 如果大于这个大小，就按照多余的数量来获取颜色
+    if (length > predefine_colors.length) {
+        const new_length = predefine_colors.length - length;
+        if (new_length > predefine_colors.length) {
+            color_change(new_length);
+        } else {
+            return predefine_colors[length];
+        }
+    } else {
+        return predefine_colors[length];
+    }
+};
+
+/**
+ * 格式化数字字符串或数值
+ * 此函数根据是否需要转换，将输入的数字字符串或数值格式化为带有逗号分隔的字符串
+ * 如果不需要转换，则移除输入中的所有逗号
+ *
+ * @param num - 输入的数字字符串或数值
+ * @param is_convert - 指示是否需要转换的布尔值
+ * @returns 格式化后的数字字符串
+ */
+export const formatNumber = (num, is_convert) => {
+    if (is_convert) {
+        // 将输入转换为字符串形式以便处理
+        const number = num.toString();
+        // 使用正则表达式将整数部分每三位用逗号分隔
+        const integerPart = number.split('.')[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        // 避免小数为空的时候也处理
+        const decimalPart = number.split('.')[1] == null ? '' : '.' + number.split('.')[1];
+        // 组合整数部分和小数部分
+        return integerPart + decimalPart;
+    } else {
+        // 如果不需要转换，移除所有逗号并返回
+        return num.toString().replace(/,/g, '');
+    }
+};
+
+// 明确声明 styles 类型
+const date_styles = {
+    horizontal: {
+        year: '-',
+        month: '-',
+        day: ' ',
+        hour: ':',
+        minute: ':',
+        second: '',
+    },
+    slash: {
+        year: '/',
+        month: '/',
+        day: ' ',
+        hour: ':',
+        minute: ':',
+        second: '',
+    },
+    chinese: {
+        year: '年',
+        month: '月',
+        day: '日 ',
+        hour: '时',
+        minute: '分',
+        second: '秒',
+    },
+};
+
+/**
+ * 将时间戳转换为指定格式的日期字符串
+ * @param {number|string} time - 时间
+ * @param {string} [date_style='horizontal'] - 日期格式风格：horizontal/slash/chinese
+ * @returns {string} 格式化后的日期时间字符串
+ */
+export const time_stamp = (time, date_style = 'horizontal', date_type) => {
+    // 如果时间为空或不是数字，则返回空字符串
+    if (isEmpty(time)) {
+        return '';
+    }
+    let new_time = time;
+    // 检查时间是否符合日期格式, 不符合的话，添加上固定的年月日
+    if (['option1', 'option2'].includes(date_type) && isNaN(new Date(new_time).getTime())) {
+        new_time = '1970/01/01 ' + time.replace(/时|分|秒/g, ':').replace(/:+$/, '');
+    }
+    let date = new Date(new_time.replace(/-/g, '/').replace(/年|月|日/g, '/').replace(/\/+$/, ''));
+    // 如果可以直接解析成功，就使用直接解析好的数据
+    if (!isNaN(new Date(new_time).getTime())) {
+        date = new Date(new_time);
+    }
+    // 获取各时间组件
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    // 获取对应的分隔符配置
+    const style = date_styles[date_style] || date_styles.horizontal;
+    // 组合成完整日期时间字符串
+    if (date_type == 'option1') {
+        return `${hours}${style.hour}${minutes}${date_style == 'chinese' ? style.minute : ''}`;
+    } else if (date_type == 'option2'){
+        return `${hours}${style.hour}${minutes}${style.minute}${seconds}${date_style == 'chinese' ? style.second : ''}`;
+    } else if (date_type == 'option3'){
+        return `${year}${style.year}${month}${date_style == 'chinese' ? style.month : ''}`;
+    } else if (date_type == 'option4'){
+        return `${year}${style.year}${month}${style.month}${day}${ date_style == 'chinese' ? style.day : ''}`;
+    } else if (date_type == 'option5'){
+        return `${year}${style.year}${month}${style.month}${day}${style.day}${hours}${style.hour}${minutes}${date_style == 'chinese' ? style.minute : ''}`;
+    } else {
+        return `${year}${style.year}${month}${style.month}${day}${style.day}${hours}${style.hour}${minutes}${style.minute}${seconds}${date_style == 'chinese' ? style.second : ''}`;
+    }
+}

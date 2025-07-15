@@ -568,6 +568,9 @@ button:before {
 .cr-blue-dark {
     color: #B3BFCB !important;
 }
+.cr-gray {
+    color: gray !important;
+}
 
 /**
  * 统一背景色
