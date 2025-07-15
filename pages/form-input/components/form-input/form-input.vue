@@ -1,6 +1,6 @@
 <template>
     <view class="pr oh wh-auto ht-auto">
-        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box' : 'ht'" lower-threshold="60" scroll-with-animation> 
+        <view :class="(overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto') + ' scroll-y ' + (overall_config.type_value == 'default' || z_index_id !== '' ? '' : ' scroll-x ')">
             <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
                     <image :src="img_url" mode="aspectFit" />
@@ -33,7 +33,10 @@
                     @subformDataChange="subform_data_change"
                 />
             </view>
-        </scroll-view>
+        </view>
+        <!-- 支付宝小程序 不支持同时上下左右滑动-->
+        <!-- <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto'"  enable-flex lower-threshold="60" scroll-with-animation>  -->
+        <!-- </scroll-view> -->
         <view v-if="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1'"  class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <view class="form-footer flex-row align-c">
@@ -595,5 +598,11 @@ export default {
     background: #fff;
     padding: 32rpx;
     border-radius: 10rpx;
+}
+.scroll-y {
+    overflow-y: auto;
+}
+.scroll-x {
+    overflow-x: auto;
 }
 </style>

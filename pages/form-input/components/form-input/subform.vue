@@ -783,6 +783,8 @@
     font-size: 24rpx;
     background: #fff;
     border: 2rpx solid #ccc;
+    padding: 0 28rpx;
+    border-radius: 10rpx;
 }
 .direction-style {
     background: #fff;
