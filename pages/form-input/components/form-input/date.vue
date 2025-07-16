@@ -25,7 +25,7 @@
 
 <script>
     import { get_format_checks, isEmpty, time_stamp } from '@/common/js/common/common.js';
-    import myDatetime from '@/pages/form-input/components/form-input/modules/my-datetime/my-datetime.vue';
+    import myDatetime from '@/pages/form-input/components/form-input/modules/my-datetime.vue';
     export default {
         components: {
             myDatetime

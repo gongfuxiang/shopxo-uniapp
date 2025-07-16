@@ -203,8 +203,8 @@
 
 <script>
     import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
-    import subformComponentShow from '@/pages/form-input/components/form-input/modules/subform-component-show/index.vue';
-    import componentsCombination from '@/pages/form-input/components/form-input/modules/components-combination/index.vue';
+    import subformComponentShow from '@/pages/form-input/components/form-input/modules/subform-component-show.vue';
+    import componentsCombination from '@/pages/form-input/components/form-input/modules/components-combination.vue';
     export default {
         components: {
             subformComponentShow,

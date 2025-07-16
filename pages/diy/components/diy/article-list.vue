@@ -86,7 +86,7 @@
 <script>
     const app = getApp();
     import { isEmpty, common_styles_computer, common_img_computer, padding_computer, radius_computer, get_math, gradient_handle, background_computer, gradient_computer, margin_computer, box_shadow_computer, border_computer, old_margin, get_swiper_list } from '@/common/js/common/common.js';
-    import subscriptIndex from '@/pages/diy/components/diy/modules/subscript/index.vue';
+    import subscriptIndex from '@/pages/diy/components/diy/modules/subscript.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {

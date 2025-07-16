@@ -185,7 +185,7 @@
     const app = getApp();
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, padding_computer, radius_computer, isEmpty, margin_computer, box_shadow_computer, border_computer, old_margin, old_border_and_box_shadow, get_swiper_list } from '@/common/js/common/common.js';
     import imageEmpty from '@/pages/diy/components/diy/modules/image-empty.vue';
-    import subscriptIndex from '@/pages/diy/components/diy/modules/subscript/index.vue';
+    import subscriptIndex from '@/pages/diy/components/diy/modules/subscript.vue';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
     export default {
