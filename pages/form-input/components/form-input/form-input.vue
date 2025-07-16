@@ -32,7 +32,7 @@
 <script>
 const app = getApp();
 import { isEmpty } from '@/common/js/common/common.js';
-import formInputBase from '@/pages/form-input/components/form-input/modules/form-input-base.vue';
+import formInputBase from '@/pages/form-input/components/form-input/form-input-base.vue';
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
 // #ifdef MP-TOUTIAO
