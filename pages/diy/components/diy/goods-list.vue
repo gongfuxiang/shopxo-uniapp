@@ -185,7 +185,7 @@
     const app = getApp();
     import { isEmpty, common_styles_computer, common_img_computer, gradient_handle, padding_computer, radius_computer, background_computer, border_computer, box_shadow_computer, old_margin, margin_computer, get_swiper_list } from '@/common/js/common/common.js';
     import imageEmpty from '@/pages/diy/components/diy/modules/image-empty.vue';
-    import subscriptIndex from '@/pages/diy/components/diy/modules/subscript/index.vue';
+    import subscriptIndex from '@/pages/diy/components/diy/modules/subscript.vue';
     import componentBadge from '@/components/badge/badge';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);

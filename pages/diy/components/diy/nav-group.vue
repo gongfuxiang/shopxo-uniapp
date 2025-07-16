@@ -36,7 +36,7 @@
 const app = getApp();
 import { isEmpty, common_styles_computer, common_img_computer, radius_computer, padding_computer, get_indicator_style, get_indicator_location_style, old_padding } from '@/common/js/common/common.js';
 import imageEmpty from '@/pages/diy/components/diy/modules/image-empty.vue';
-import subscriptIndex from '@/pages/diy/components/diy/modules/subscript/index.vue';
+import subscriptIndex from '@/pages/diy/components/diy/modules/subscript.vue';
 export default {
     components: {
         imageEmpty,
