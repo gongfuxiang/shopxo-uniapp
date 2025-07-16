@@ -652,12 +652,12 @@
             add_item() {
                 const data = [...this.data_list];
                 const list = this.data_list.filter(item => item.is_expand);
-                console.log(this.children_list);
                 data.push({
                     is_expand: list.length == this.data_list.length,
                     data_list: JSON.parse(JSON.stringify(this.children_list))
                 });
                 this.setData({ data_list: data });
+                this.$emit('subformDataChange', data, this.propDataId);
             },
             expand_all(e) {
                 const { value } = e.currentTarget.dataset;
