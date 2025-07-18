@@ -557,7 +557,7 @@ export default {
                 'select-multi': { is_format: true, type: 'checkbox' },
                 'date': { is_format: false, type: 'time' },
                 'date-group': { is_format: false, type: 'time' },
-                'single-text': { is_format: false, type: '' },
+                'single-text': { is_format: true, type: '' },
                 'multi-text': { is_format: false, type: '' },
                 'rich-text': { is_format: false, type: '' },
                 'radio-btns': { is_format: false, type: 'radio' },
@@ -582,7 +582,11 @@ export default {
                     } 
                     // 其他字段的格式验证
                     else if (fieldCheckMap[item.key]) {
-                        const { is_format, type } = fieldCheckMap[item.key];
+                        let field_data = fieldCheckMap[data_item.key];
+                        if (['single-text', 'select', 'radio-btns'].includes(data_item.key)) {
+                            field_data = fieldCheckMap[data_item.com_data.type];
+                        }
+                        const { is_format, type } = field_data;
                         const { is_error = '0', error_text = '' } = get_format_checks(com_data, com_data.form_value, is_format, type);
                         com_data.common_config.is_error = is_error;
                         com_data.common_config.error_text = error_text;
@@ -623,7 +627,11 @@ export default {
                                     } 
                                     // 其他字段的格式验证
                                     else if (fieldCheckMap[data_item.key]) {
-                                        const { is_format, type } = fieldCheckMap[data_item.key];
+                                        let field_data = fieldCheckMap[data_item.key];
+                                        if (['single-text', 'select', 'radio-btns'].includes(data_item.key)) {
+                                           field_data = fieldCheckMap[data_item.com_data.type];
+                                        }
+                                        const { is_format, type } = field_data;
                                         const { is_error = '0', error_text = '' } = get_format_checks(data_item.com_data, data_item.com_data.form_value, is_format, type);
                                         data_item.com_data.common_config.is_error = is_error;
                                         data_item.com_data.common_config.error_text = error_text;

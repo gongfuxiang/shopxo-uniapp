@@ -829,7 +829,7 @@ export const get_format_checks_v2 = (common_config, value) => {
         // 根据通用配置中的格式，从类型配置映射中获取对应的格式检查项
         const item = typeConfigMap.get(common_config.format);
         // 如果找不到对应的格式检查项，则不进行后续操作
-        if (!item) return;
+        if (!item) return [{ is_error, error_text }];
 
         // 初始化验证状态为不通过
         let isValid = false;
