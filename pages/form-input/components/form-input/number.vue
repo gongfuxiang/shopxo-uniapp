@@ -82,10 +82,11 @@
                 });
             },
             blur_input(e){
+                let num = '';
                 if (!isEmpty(e.detail.value)) {
                     let all_list = e.detail.value.replace(/[^0-9.]/g, '');
                     // 去除不是数字和.的值
-                    let num = Number(formatNumber(all_list, false)).toFixed(this.decimal_num);
+                    num = Number(formatNumber(all_list, false)).toFixed(this.decimal_num);
                     // 为数字并且时千分位的是你
                     if (this.format == 'num' && this.is_thousandths_symbol == '1') {
                         // 如果有多个.的话，去除多个.
@@ -96,16 +97,13 @@
                         }
                         num = formatNumber(Number(formatNumber(all_list, false)).toFixed(this.decimal_num).toString(), true)
                     }
-                    this.data_check(num);
-                    this.setData({ 
-                        form_value: num,
-                    });
-                } else {
-                    this.setData({ 
-                        form_value: '',
-                    });
-                    this.data_check('');
+                    
                 }
+                this.data_check(num);
+                this.setData({ 
+                    form_value: num,
+                });
+                this.$emit('dataChange', { value: num, id: this.propDataId });
             },
             data_check(val) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, val, true, 'number');
