@@ -509,6 +509,9 @@ export default {
                             if (com_data.is_sms_verification == '1') {
                                 submit_data[`${ name }_verify`] = com_data?.form_value_code || '';
                             }
+                        } else if (item.key ==='date-group') {
+                            submit_data[`${ name }_start`] = value[0] || '';
+                            submit_data[`${ name }_end`] = value[1] || '';
                         } else if (item.key == 'address') {
                             submit_data[`${ name }_province_id`] = value[0] || '';
                             submit_data[`${ name }_city_id`] = value[1] || '';
@@ -618,7 +621,7 @@ export default {
                                         const { is_error = '0', error_text = '' } = this.handlePhoneValidation(data_item);
                                         data_item.com_data.common_config.is_error = is_error;
                                         data_item.com_data.common_config.error_text = error_text;
-                                    } 
+                                    }
                                     // 其他字段的格式验证
                                     else if (fieldCheckMap[data_item.key]) {
                                         let field_data = fieldCheckMap[data_item.key];

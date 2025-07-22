@@ -1,6 +1,6 @@
 <template>
     <view class="flex-col gap-5">
-        <checkbox-group @change="data_change" class="flex-row gap-10 flex-wrap">
+        <checkbox-group @change="data_change" :class="(com_data.arrangement == 'horizontal' ? 'flex-row flex-wrap' : 'flex-col') + ' gap-10'">
             <label v-for="item in option_list" :key="item.value" class="flex-row align-c margin-right-xxl">
                 <view>
                     <checkbox :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" class="flex-row align-c" style="transform:scale(0.7)" />
