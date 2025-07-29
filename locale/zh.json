@@ -89,7 +89,10 @@
         "not_supported_scan_tips": "H5网页不支持扫码",
         "copy_link": "复制链接",
 		"multilingual": "多语言",
-        "ver_update_tips": "你的微信版本过低，请更新至最新版本！"
+        "ver_update_tips": "你的微信版本过低，请更新至最新版本！",
+        "click_pay_text" : "点击发起支付",
+        "again_pay_text" : "重新发起支付",
+        "back_app_text" : "返回APP"
 	},
     "client": {
         "weixin": "微信",
@@ -740,6 +743,7 @@
 			"y2639j": "开播时间",
 			"fa8h7j": "海报",
 			"eg25j9": "进入直播",
+            "567uyh": "后台没有配置微信原始id",
 			"86g7e1": "未安装微信APP",
 			"9d3o6w": "请在微信小程序中打开",
 			"6xvl35": "生成中...",

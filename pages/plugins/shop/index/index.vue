@@ -126,11 +126,13 @@
         methods: {
             // 初始化
             get_data(params = {}) {
+                // #ifdef APP
                 // 网络检查
                 if((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'get_data', params);
                     return false;
                 }
+                // #endif
 
                 // 请求数据
                 uni.request({

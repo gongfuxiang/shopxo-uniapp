@@ -8,7 +8,9 @@
                 </block>
                 <block v-else>
                     <view class="fw-b text-size cr-base margin-bottom-sm">{{ popup_view_pay_data.name }}</view>
-                    <image :src="popup_view_pay_data.qrcode_url" mode="aspectFit" class="dis-block auto max-w"></image>
+                    <view class="dis-inline-block">
+                        <w-qrcode :options="{code:popup_view_pay_data.qrcode_url, size:450}"></w-qrcode>
+                    </view>
                     <view v-if="(popup_view_pay_data.msg || null) != null" class="cr-yellow margin-top-sm">{{ popup_view_pay_data.msg }}</view>
                     <!-- #ifdef H5 -->
                     <view v-if="popup_view_pay_data.pay_url != null" class="margin-top-xl">
@@ -102,6 +104,8 @@
                 pay_response_data: {},
                 // 支付确认弹窗
                 payment_confirm_modal_status: false,
+                // 微信app
+                weixinapp: null,
             };
         },
         props: {
@@ -235,6 +239,25 @@
                 payment_list: this.propPaymentList,
                 payment_id: Number(this.propPaymentId) == 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
             });
+
+            // #ifdef APP
+            // 是否存在微信app
+            var self = this;
+            plus.share.getServices(res => {
+                let weixinapp = null;
+                for(let i in res) {
+                    if(res[i].id == 'weixin') {
+                        weixinapp = res[i];
+                        break;
+                    }
+                }
+                if(weixinapp) {
+                    self.setData({
+                        weixinapp: weixinapp
+                    });
+                }
+            });
+            // #endif
         },
         methods: {
             // 支付弹窗关闭
@@ -461,6 +484,7 @@
             app_pay_handle(self, data, order_id) {
                 var arr = {
                     Alipay: 'alipay',
+                    AlipayCert: 'alipay',
                     Weixin: 'wxpay',
                     PayPal: 'paypal'
                 }
@@ -494,6 +518,26 @@
                         }
                     });
                 } else {
+                    // 是否打开微信app
+                    var status = true;
+                    if(data.data.substr(0, 12) == 'weixinapp://') {
+                        if(this.weixinapp == null) {
+                            app.globalData.showToast(this.$t('detail.detail.86g7e1'));
+                            return false;
+                        }
+                        var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id', null);
+                        if(weixin_original_id == null) {
+                            app.globalData.showToast(this.$t('detail.detail.567uyh'));
+                            return false;
+                        }
+                        this.weixinapp.launchMiniProgram({
+                            id: weixin_original_id,
+                            type: 0,
+                            path: data.data.substr(12)
+                        });
+                        status = false;
+                    }
+
                     // 先清除定时任务
                     if(self.open_pay_url_timer != null) {
                         clearTimeout(self.open_pay_url_timer);
@@ -508,14 +552,16 @@
                         open_pay_url_status: true
                     });
                     // 打开url
-                    plus.runtime.openURL(data.data, function(error) {
-                        uni.hideLoading();
-                        // 打开url失败、并进入提示失败环节
-                        self.setData({
-                            open_pay_url_status: false
+                    if(status) {
+                        plus.runtime.openURL(data.data, function(error) {
+                            uni.hideLoading();
+                            // 打开url失败、并进入提示失败环节
+                            self.setData({
+                                open_pay_url_status: false
+                            });
+                            self.order_item_pay_fail_handle(data, order_id, error.message+'('+error.code+')');
                         });
-                        self.order_item_pay_fail_handle(data, order_id, error.message+'('+error.code+')');
-                    });
+                    }
                     // 定时3秒后提示用户确认支付状态
                     self.open_pay_url_timer = setTimeout(function() {
                         if(self.open_pay_url_status) {
@@ -633,15 +679,17 @@
                             self.order_item_pay_success_handle(data, order_id);
                         },
                         fail: (res) => {
-                            let error = res.memo || res.errMsg || null;
-                            if(error != null) {
+                            let msg = res.memo || res.errMsg || null;
+                            if(msg != null) {
                                 let code = res.resultCode || res.errCode || res.errNo || null;
                                 if(code != null) {
-                                    error += '('+code+')';
+                                    msg += '('+code+')';
                                 }
-                                console.log(error);
+                                if(msg.indexOf('cancel') != -1) {
+                                    msg = null;
+                                }
                             }
-                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                            self.order_item_pay_fail_handle(data, order_id, msg || self.$t('paytips.paytips.6y488i'));
                         },
                     });
                 }

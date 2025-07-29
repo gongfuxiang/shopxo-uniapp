@@ -89,7 +89,10 @@
         "not_supported_scan_tips": "H5 webpage does not support scanning codes",
         "copy_link": "Copy link",
 		"multilingual": "multilingual",
-        "ver_update_tips": "Your WeChat version is too low, please update to the latest version!"
+        "ver_update_tips": "Your WeChat version is too low, please update to the latest version!",
+        "click_pay_text" : "Click to initiate payment",
+        "again_pay_text" : "Restart payment",
+        "back_app_text" : "Return to APP"
 	},
     "client": {
         "weixin": "WeChat",
@@ -750,6 +753,7 @@
 			"y2639j": "Start time",
 			"fa8h7j": "poster",
 			"eg25j9": "Enter live",
+            "567uyh": "WeChat original ID is not configured in the background",
 			"86g7e1": "No WeChat app installed",
 			"9d3o6w": "Please open it in the WeChat mini program",
 			"6xvl35": "Generating",

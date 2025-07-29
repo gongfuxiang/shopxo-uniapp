@@ -2,24 +2,6 @@
     <view :class="theme_view">
         <view v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
-                <!-- 地址 -->
-                <view v-if="(detail.address_data || null) != null" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="address-base oh">
-                        <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{ detail.address_data.alias }}</text>
-                        <text data-event="copy" :data-value="detail.address_data.name" @tap="text_event">{{ detail.address_data.name }}</text>
-                        <text class="fr" data-event="tel" :data-value="detail.address_data.tel" @tap="text_event">{{ detail.address_data.tel }}</text>
-                    </view>
-                    <view class="address-detail oh margin-bottom-main">
-                        <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
-                        <view class="text fr">
-                            <text data-event="copy" :data-value="detail.address_data.province_name + detail.address_data.city_name + detail.address_data.county_name + detail.address_data.address" @tap="text_event"
-                                >{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text
-                            >
-                        </view>
-                    </view>
-                    <view class="address-divider spacing-mb"></view>
-                </view>
-
                 <!-- 基础信息 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('order-detail.order-detail.9er1pc')}}</view>

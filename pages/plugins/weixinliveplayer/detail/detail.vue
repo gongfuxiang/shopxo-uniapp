@@ -210,6 +210,7 @@
                         for(let i in res) {
                             if(res[i].id == 'weixin') {
                                 sweixin = res[i];
+                                break;
                             }
                         }
                         //唤醒微信小程序
@@ -223,6 +224,8 @@
                             app.globalData.showToast(this.$t('detail.detail.86g7e1'));
                         }
                     });
+                } else {
+                    app.globalData.showToast(this.$t('detail.detail.567uyh'));
                 }
                 return false;
                 // #endif

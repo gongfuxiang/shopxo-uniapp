@@ -511,11 +511,13 @@
 
             // 获取数据-初始化
             get_detail_init(params = {}) {
+                // #ifdef APP
                 // 网络检查
                 if((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'get_detail_init');
                     return false;
                 }
+                // #endif
 
                 // 请求数据
                 uni.request({
