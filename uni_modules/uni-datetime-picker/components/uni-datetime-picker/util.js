@@ -444,6 +444,10 @@ function checkDate(date){
 
 const dateTimeReg = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])( [0-5]?[0-9]:[0-5]?[0-9]:[0-5]?[0-9])?$/
 function fixIosDateFormat(value) {
+	// 将年月日时分秒转换为对应的时间
+	if (value != '' && typeof value === 'string') {
+		value = value.replace(/年/g, '/').replace(/月/g, '/').replace(/日/g, '').replace(/时/g, ' :').replace(/分/g, ':').replace(/秒/g, '');
+	}
   if (typeof value === 'string' && dateTimeReg.test(value)) {
     value = value.replace(/-/g, '/')
   }

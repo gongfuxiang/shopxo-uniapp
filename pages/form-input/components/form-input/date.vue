@@ -136,12 +136,25 @@
 ::v-deep .uniui-calendar::before {
     content: '',
 }
+/* #ifdef H5 */
+.datetime-picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    ::v-deep .uni-date-editor {
+        visibility: hidden;
+    }
+}
+/* #endif */
+/* #ifndef H5 */
 .datetime-picker {
     position: absolute;
     top: 160rpx;
     left: 0;
     width: 0;
 }
+/* #endif */
 .datetime-placeholder {
     color: #606266;
     opacity: 0.6;

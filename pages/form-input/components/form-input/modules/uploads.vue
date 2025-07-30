@@ -40,7 +40,7 @@
                 请选择文件，最多可以上传{{ propMaxNum }}个
             </view>
         </template>
-        <uni-popup ref="popup" type="center" border-radius="20rpx" mask-background-color="rgba(0,0,0,0.8)">
+        <uni-popup ref="popup" type="center" border-radius="20rpx" class="forminput-popup" mask-background-color="rgba(0,0,0,0.8)">
             <view class="wh-auto ht-auto">
                 <view class="popup-close oh" @tap="popup_close">
                     <iconfont name="icon-close" size="32rpx" color="#fff"></iconfont>

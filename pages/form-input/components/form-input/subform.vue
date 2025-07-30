@@ -138,7 +138,7 @@
             </template>
         </view>
         <!-- 表格详情 -->
-        <uni-popup ref="tableMorePopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_table_more_event">
+        <uni-popup ref="tableMorePopup" type="bottom" class="popup-bottom forminput-popup" background-color="#fff" :animation="true" @maskClick="quick_table_more_event">
             <view class="bg-white subform-row">
                 <view class="subform-row-head">
                     <span class="title">{{ com_data.title }}</span><span>（{{ table_more_index + 1 }}）</span>
@@ -180,11 +180,11 @@
             </view>
         </uni-popup>
         <!-- 删除提示弹出框 -->
-        <uni-popup ref="deletePopup" type="dialog" @maskClick="delete_close">
+        <uni-popup ref="deletePopup" type="dialog" class="forminput-popup" @maskClick="delete_close">
             <uni-popup-dialog cancelText="取消" confirmText="确定" title="" content="是否确认删除这条数据" @confirm="delete_confirm" @close="delete_close"></uni-popup-dialog>
         </uni-popup>
         <!-- 更多弹窗 -->
-        <uni-popup ref="morePopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_close_event">
+        <uni-popup ref="morePopup" type="bottom" class="popup-bottom forminput-popup" background-color="#fff" :animation="true" @maskClick="quick_close_event">
             <view class="bg-white action-sheet">
                 <view class="action-sheet-item" data-value="copy" @tap="copy">复制到下一行</view>
                 <view class="action-sheet-item" data-value="copy_last" @tap="copy">复制到最后一行</view>
@@ -195,7 +195,7 @@
             </view>
         </uni-popup>
         <!-- 表格报错提示 -->
-        <uni-popup ref="popup_error" type="center" border-radius="20rpx" @maskClick="quick_close_event">
+        <uni-popup ref="popup_error" type="center" class="forminput-popup" border-radius="20rpx" @maskClick="quick_close_event">
             <view class="popup-error-content">{{ popup_error_content }}</view>
         </uni-popup>
     </view>
