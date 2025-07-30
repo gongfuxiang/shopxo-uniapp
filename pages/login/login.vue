@@ -541,6 +541,7 @@
                     current_opt_type_title: {
                         auth: this.$t('login.login.jw378f'),
                         bind: this.$t('login.login.np9177'),
+                        bind_verify: this.$t('login.login.np9177'),
                         bind_email: this.$t('login.login.tgsa4d'),
                         login_username: this.$t('login.login.725312'),
                         login_sms: this.$t('login.login.158yg2'),
@@ -1473,6 +1474,7 @@
                 // 重新设置静态资源
                 this.set_resources_data();
                 // 设置这标题
+                console.log( this.current_opt_type_title[this.navigation_bar_title_key] )
                 uni.setNavigationBarTitle({
                     title: this.current_opt_type_title[this.navigation_bar_title_key],
                 });

@@ -6,7 +6,7 @@
                 <view class="padding-main">
                     <form @submit="form_bind_pwd">
                         <view class="margin-top-xxxl">
-                            <view class="pr">
+                            <view v-if="(user.is_setup_pwd || 0) == 1" class="pr">
                                 <input type="text" :placeholder="$t('password.password.4e24j1')" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="1" @tap="eyes_event"><iconfont :name="eyes1 ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" color="#666" size="32rpx"></iconfont></view>
                             </view>
@@ -46,6 +46,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 form_submit_loading: false,
+                user: {},
                 // 是否显示密码
                 eyes1: false,
                 eyes2: false,
@@ -107,11 +108,12 @@
             // 绑定表单
             form_bind_pwd(e) {
                 // 数据验证
-                var validation = [
-                    { fields: 'my_pwd', msg: this.$t('login.login.277w03') },
-                    { fields: 'new_pwd', msg: this.$t('password.password.1lwiaz') },
-                    { fields: 'confirm_new_pwd', msg: this.$t('password.password.3pp6t7') },
-                ];
+                var validation = [];
+                if((this.user.is_setup_pwd || 0) == 1) {
+                    validation.push({ fields: 'my_pwd', msg: this.$t('login.login.277w03') });
+                }
+                validation.push({ fields: 'new_pwd', msg: this.$t('password.password.1lwiaz') });
+                validation.push({ fields: 'confirm_new_pwd', msg: this.$t('password.password.3pp6t7') });
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),
@@ -131,12 +133,20 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast(res.data.msg, 'success');
                             if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                                if((res.data.data || null) != null) {
+                                    this.setData({
+                                        user: res.data.data
+                                    });
+                                    uni.setStorageSync(app.globalData.data.cache_user_info_key, res.data.data);
+                                }
                                 setTimeout(() => {
                                     // 默认返回上一页
                                     uni.navigateBack();
                                 }, 1500);
+                            } else {
+                                app.globalData.showToast(res.data.msg);
                             }
                         },
                         fail: () => {

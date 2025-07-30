@@ -3065,6 +3065,13 @@
                 var client_value = this.application_client_type();
                 // 当前页面地址
                 var url = this.current_page(false);
+                // 不参与设置页面标题
+                var no_setup_pages = [
+                    'pages/login/login'
+                ];
+                if(no_setup_pages.indexOf(url) != -1) {
+                    return false;
+                }
                 // 支付宝平台以下条件不增加标题
                 if(client_value == 'alipay') {
                     // 自定义头页面
@@ -3076,6 +3083,7 @@
                         'pages/plugins/signin/detail/detail',
                         'pages/plugins/membershiplevelvip/index/index',
                         'pages/plugins/ask/index/index',
+                        'pages/cashier/cashier'
                     ];
                     // 当前tab页面
                     if(this.is_system_tabbar_pages('/'+url) != -1 || pages_always.indexOf(url) != -1) {
