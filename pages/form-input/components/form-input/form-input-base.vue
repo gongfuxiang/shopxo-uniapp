@@ -643,7 +643,7 @@ export default {
         },
         // 处理手机号验证逻辑
         handlePhoneValidation(com_data) {
-            if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value)) {
+            if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value_code)) {
                 com_data.common_config.is_error = '1';
                 com_data.common_config.error_text = '短信验证码不能为空';
                 return;
