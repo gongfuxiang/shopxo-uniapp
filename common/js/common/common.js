@@ -829,7 +829,7 @@ export const get_format_checks_v2 = (common_config, value) => {
         // 根据通用配置中的格式，从类型配置映射中获取对应的格式检查项
         const item = typeConfigMap.get(common_config.format);
         // 如果找不到对应的格式检查项，则不进行后续操作
-        if (!item) return;
+        if (!item) return [{ is_error, error_text }];
 
         // 初始化验证状态为不通过
         let isValid = false;
@@ -918,9 +918,10 @@ export const color_change = (length) => {
  * @returns 格式化后的数字字符串
  */
 export const formatNumber = (num, is_convert) => {
+    let new_num = num.replace(/[^0-9.,]/g, '');
     if (is_convert) {
         // 将输入转换为字符串形式以便处理
-        const number = num.toString();
+        const number = new_num.toString();
         // 使用正则表达式将整数部分每三位用逗号分隔
         const integerPart = number.split('.')[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         // 避免小数为空的时候也处理
@@ -929,7 +930,7 @@ export const formatNumber = (num, is_convert) => {
         return integerPart + decimalPart;
     } else {
         // 如果不需要转换，移除所有逗号并返回
-        return num.toString().replace(/,/g, '');
+        return new_num.toString().replace(/,/g, '');
     }
 };
 

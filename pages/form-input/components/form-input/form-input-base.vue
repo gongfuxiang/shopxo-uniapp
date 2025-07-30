@@ -3,7 +3,7 @@
         <view v-for="(item, index) in filteredDiyData" :key="index" :class="(is_custom ? 'pa ' : (flex_direction == 'row' ? 'row-item ' : 'column-item mb-10 ')) + (item.com_data.common_config.is_error == '1' ? ' item_error' : '')" :data-id="item.id" :data-location-x="item.location.x" :data-location-y="item.location.y" :style="(item.key == 'auxiliary-line' ? 'border-bottom: 0rpx; ' : '') + (is_custom ? ('left:' + item.location.x + 'px;top:' + item.location.y + 'px;width:' + item.com_data.com_width + 'px;height:' + item.com_data.com_height + 'px;z-index:' + (z_index_id == item.id ? '999999' : (item.is_enable == '1' ? (data_list.length - 1 > 0 ? (data_list.length - 1) - index : 0) : -999)) + ';') : '')">
             <view :class="'wh-auto ht-auto ' + (flex_direction == 'row' ? (['video', 'img', 'upload-img', 'upload-video', 'multi-text'].includes(item.key) ? 'flex-row align-s gap-10' : 'flex-row align-b gap-10')  : 'flex-col gap-10')">
                 <view v-if="(!is_custom && !['auxiliary-line', 'subform'].includes(item.key)) || (is_custom && !['img', 'video', 'auxiliary-line', 'rect', 'round', 'subform'].includes(item.key))" class="field-label flex-row align-c gap-10" :style="field_label_style + (flex_direction == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (flex_direction == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
-                    <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required == '1'" class="required">*</view></view>
+                    <view class="flex-row align-c" :style="title_style">{{ item.com_data.title }}<view v-if="item.com_data.is_required && item.com_data.is_required == '1'" class="required">*</view></view>
                     <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
                         <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
                     </view>
@@ -247,12 +247,6 @@ export default {
         }
     },
     watch: {
-        propValue: {
-            handler(newVal) {
-                this.init();
-            },
-            deep: true
-        },
         propKey(val) {
            this.init();
         }
@@ -265,9 +259,9 @@ export default {
         init() {
             const data = this.propValue;
             // 公共配置信息
-            const overall_config = data.config?.overall_config || {};
+            const overall_config = data?.overall_config || {};
             const mobile = overall_config?.style_settings?.mobile || {};
-            let diy_data = data.config.diy_data || [];
+            let diy_data = data.diy_data || [];
             // #ifndef H5 || MP-WEIXIN || MP-QQ
                 // 上传文件只支持H5 微信小程序， qq小程序，其余的需要端需要过滤掉数据
                 diy_data = diy_data.filter(item => item.key !== 'upload-attachments');
@@ -515,6 +509,9 @@ export default {
                             if (com_data.is_sms_verification == '1') {
                                 submit_data[`${ name }_verify`] = com_data?.form_value_code || '';
                             }
+                        } else if (item.key ==='date-group') {
+                            submit_data[`${ name }_start`] = value[0] || '';
+                            submit_data[`${ name }_end`] = value[1] || '';
                         } else if (item.key == 'address') {
                             submit_data[`${ name }_province_id`] = value[0] || '';
                             submit_data[`${ name }_city_id`] = value[1] || '';
@@ -557,7 +554,7 @@ export default {
                 'select-multi': { is_format: true, type: 'checkbox' },
                 'date': { is_format: false, type: 'time' },
                 'date-group': { is_format: false, type: 'time' },
-                'single-text': { is_format: false, type: '' },
+                'single-text': { is_format: true, type: '' },
                 'multi-text': { is_format: false, type: '' },
                 'rich-text': { is_format: false, type: '' },
                 'radio-btns': { is_format: false, type: 'radio' },
@@ -582,7 +579,11 @@ export default {
                     } 
                     // 其他字段的格式验证
                     else if (fieldCheckMap[item.key]) {
-                        const { is_format, type } = fieldCheckMap[item.key];
+                        let field_data = fieldCheckMap[data_item.key];
+                        if (['single-text', 'select', 'radio-btns'].includes(data_item.key)) {
+                            field_data = fieldCheckMap[data_item.com_data.type];
+                        }
+                        const { is_format, type } = field_data;
                         const { is_error = '0', error_text = '' } = get_format_checks(com_data, com_data.form_value, is_format, type);
                         com_data.common_config.is_error = is_error;
                         com_data.common_config.error_text = error_text;
@@ -620,10 +621,14 @@ export default {
                                         const { is_error = '0', error_text = '' } = this.handlePhoneValidation(data_item);
                                         data_item.com_data.common_config.is_error = is_error;
                                         data_item.com_data.common_config.error_text = error_text;
-                                    } 
+                                    }
                                     // 其他字段的格式验证
                                     else if (fieldCheckMap[data_item.key]) {
-                                        const { is_format, type } = fieldCheckMap[data_item.key];
+                                        let field_data = fieldCheckMap[data_item.key];
+                                        if (['single-text', 'select', 'radio-btns'].includes(data_item.key)) {
+                                           field_data = fieldCheckMap[data_item.com_data.type];
+                                        }
+                                        const { is_format, type } = field_data;
                                         const { is_error = '0', error_text = '' } = get_format_checks(data_item.com_data, data_item.com_data.form_value, is_format, type);
                                         data_item.com_data.common_config.is_error = is_error;
                                         data_item.com_data.common_config.error_text = error_text;
@@ -644,7 +649,7 @@ export default {
                 return;
             }
             com_data.common_config.format = com_data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
-            return get_format_checks(com_data, com_data.form_value_code, true);
+            return get_format_checks(com_data, com_data.form_value, true);
         },
         // 子表单显隐规则数据处理
         filtered_Data(children) { 
