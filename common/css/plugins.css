@@ -263,3 +263,13 @@
     min-height: 72rpx;
     line-height: 36rpx;
 }
+/* #ifdef H5 */
+.forminput-popup {
+    [name="content"], [name="mask"]{
+        max-width: 1600rpx;
+        width: 100%;
+        left: 50% !important;
+        transform: translateX(-50%) !important;    
+    }   
+}
+/* #endif */

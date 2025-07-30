@@ -197,12 +197,25 @@
 ::v-deep .uniui-calendar::before {
     content: '',
 }
+/* #ifdef H5 */
+.datetime-picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    ::v-deep .uni-date-editor {
+        visibility: hidden;
+    }
+}
+/* #endif */
+/* #ifndef H5 */
 .datetime-picker {
     position: absolute;
     top: 160rpx;
     left: 0;
     width: 0;
 }
+/* #endif */
 .datetime-value {
     color: #606266;
     line-height: 1.5;

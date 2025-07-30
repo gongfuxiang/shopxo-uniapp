@@ -17,7 +17,7 @@
             </template>
         </view>
         <!-- 弹窗 -->
-        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom" background-color="#fff" :animation="true" @maskClick="quick_close_event">
+        <uni-popup ref="selectPopup" type="bottom" class="popup-bottom forminput-popup" background-color="#fff" :animation="true" @maskClick="quick_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col gap-10">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb">

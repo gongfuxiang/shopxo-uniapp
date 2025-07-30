@@ -8,7 +8,7 @@
                         <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="flex-1 wh-auto ht-auto flex-col gap-5 oh">
+                <view :class="'flex-1 wh-auto ht-auto flex-col gap-5 '+ (['date', 'date-group'].includes(item.key) ? '' : 'oh')">
                     <!-- 输入框 -->
                     <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                         <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
@@ -38,11 +38,11 @@
                         <component-number :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-number>
                     </view>
                     <!-- 时间选择器 -->
-                    <view v-else-if="item.key == 'date'" :style="item.com_data.common_style">
+                    <view v-else-if="item.key == 'date'" :style="item.com_data.common_style + 'overflow: none;'">
                         <component-date :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date>
                     </view>
                     <!-- 时间选择器组 -->
-                    <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style">
+                    <view v-else-if="item.key == 'date-group'" :style="item.com_data.common_style + 'overflow: none;'">
                         <component-date-group :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-date-group>
                     </view>
                     <!-- 地址 -->
@@ -129,7 +129,7 @@
             </view>
         </view>
         <view class="z-i-deep-must">
-            <uni-popup ref="popup" type="center" border-radius="20rpx">
+            <uni-popup ref="popup" type="center" border-radius="20rpx" class="forminput-popup">
                 <view class="popup-content">{{ popup_help_content }}</view>
             </uni-popup>
         </view>

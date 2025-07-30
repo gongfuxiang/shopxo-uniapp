@@ -13,11 +13,11 @@
             <view class="size-14 cr-blue">添加选项</view>
         </view>
         <!-- 选项弹出框 -->
-        <uni-popup ref="inputDialog" type="dialog">
+        <uni-popup ref="inputDialog" type="dialog" class="forminput-popup" >
             <uni-popup-dialog ref="inputClose" mode="input" title="输入内容" :value="dialog_value" before-close placeholder="请输入内容" @close="dialog_input_close" @confirm="dialog_input_confirm"></uni-popup-dialog>
         </uni-popup>
         <!-- 失败提示 -->
-        <uni-popup ref="message" type="message">
+        <uni-popup ref="message" type="message" class="forminput-popup">
             <uni-popup-message type="error" message="选项名称不能为空" :duration="2000"></uni-popup-message>
         </uni-popup>
     </view>

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-popup ref="popup" type="bottom" background-color="#fff" :animation="true" @maskClick="maskClick">
+		<uni-popup ref="popup" type="bottom" background-color="#fff" class="forminput-popup" :animation="true" @maskClick="maskClick">
 			<view class="popup-content">
 				<view >
 				  <view class="headBox padding-main">
