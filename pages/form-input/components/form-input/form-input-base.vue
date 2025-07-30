@@ -259,9 +259,9 @@ export default {
         init() {
             const data = this.propValue;
             // 公共配置信息
-            const overall_config = data.config?.overall_config || {};
+            const overall_config = data?.overall_config || {};
             const mobile = overall_config?.style_settings?.mobile || {};
-            let diy_data = data.config.diy_data || [];
+            let diy_data = data.diy_data || [];
             // #ifndef H5 || MP-WEIXIN || MP-QQ
                 // 上传文件只支持H5 微信小程序， qq小程序，其余的需要端需要过滤掉数据
                 diy_data = diy_data.filter(item => item.key !== 'upload-attachments');
@@ -643,13 +643,13 @@ export default {
         },
         // 处理手机号验证逻辑
         handlePhoneValidation(com_data) {
-            if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value_code)) {
+            if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value)) {
                 com_data.common_config.is_error = '1';
                 com_data.common_config.error_text = '短信验证码不能为空';
                 return;
             }
             com_data.common_config.format = com_data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
-            return get_format_checks(com_data, com_data.form_value_code, true);
+            return get_format_checks(com_data, com_data.form_value, true);
         },
         // 子表单显隐规则数据处理
         filtered_Data(children) { 

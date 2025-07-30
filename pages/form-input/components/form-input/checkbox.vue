@@ -96,7 +96,7 @@
                     const data = {
                         name: val,
                         value: value,
-                        color: color_change(this.option_list.length - 1),
+                        color: color_change(this.option_list.length),
                     };
                     const custom_option_list = [...this.custom_option_list, data];
                     this.setData({
