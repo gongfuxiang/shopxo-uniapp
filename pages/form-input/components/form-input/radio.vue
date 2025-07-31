@@ -9,7 +9,7 @@
             </label>
         </radio-group>
         <template v-if="!isEmpty(option_value) && form_value == option_value">
-            <input :value="outer_value" class="uni-input flex-1" :style="propStyle" type="text" placeholder="请输入其他内容" placeholder-style="color: gray;" @blur="data_outer_check" @input="input_outer_value_event" />
+            <input :value="other_value" class="uni-input" :style="propStyle"  type="text" placeholder="请输入其他内容" placeholder-style="color: gray;" @blur="data_other_check" @input="input_other_value_event" />
         </template>
     </view>
 </template>
@@ -49,7 +49,7 @@
                 is_multicolour: '0',
                 dialog_value: '',
                 option_value: '',
-                outer_value: '',
+                other_value: '',
             };
         },
         watch: {
@@ -83,22 +83,22 @@
                     color_style: get_color_style(this.propMobile),
                     option_list: com_data?.option_list || [],
                     form_value: com_data?.form_value || [], 
-                    outer_value: com_data?.outer_value || '',
+                    other_value: com_data?.other_value || '',
                     option_value: option_value,
                 });
             },
-            input_outer_value_event(e) {
+            input_other_value_event(e) {
                 this.setData({
-                    outer_value: e.detail.value,
+                    other_value: e.detail.value,
                 });
                 // 执行校验逻辑
-                this.data_outer_check({ detail: { value: this.outer_value } });
+                this.data_other_check({ detail: { value: this.other_value } });
                 // 传递参数给父级
-                this.$emit('dataOuterChange', { value: e.detail.value, id: this.propDataId });
+                this.$emit('dataOtherChange', { value: e.detail.value, id: this.propDataId });
             },
-            data_outer_check(e) {
+            data_other_check(e) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value, false, '');
-                this.$emit('dataOuterCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
+                this.$emit('dataOtherCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
             },
             // 校验逻辑
             data_check(e) {

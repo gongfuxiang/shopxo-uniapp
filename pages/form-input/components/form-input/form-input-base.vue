@@ -23,11 +23,11 @@
                     </view>
                     <!-- 单选按钮组 -->
                     <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction !== 'row'">
-                        <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @dataOuterChange="data_outer_change" @dataOuterCheck="data_outer_check"></component-radio>
+                        <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style + item.com_data.common_style" @dataCheck="data_check" @dataChange="data_change" @dataOtherChange="data_other_change" @dataOtherCheck="data_other_check"></component-radio>
                     </view>
                     <!-- 下拉框 -->
-                    <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction == 'row')" :style="item.com_data.common_style">
-                        <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change" @dataOuterChange="data_outer_change" @dataOuterCheck="data_outer_check"></component-select>
+                    <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction == 'row')">
+                        <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" :propCommonStyle="item.com_data.common_style" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change" @dataOtherChange="data_other_change" @dataOtherCheck="data_other_check"></component-select>
                     </view>
                     <!-- 下拉复选框 -->
                     <view v-else-if="(['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && flex_direction == 'row')" :style="item.com_data.common_style">
@@ -368,7 +368,7 @@ export default {
                             com_data.form_value = this.propData[name] || '';
                             com_data.form_value_code = this.propData[`${ name }_verify`] || '';
                         } else if (item.key ==='date-group') {
-                            com_data.form_value = [ this.propData[`${ name }`].start || '' , this.propData[`${ name }`].end || ''] || [];
+                            com_data.form_value = [ this.propData[`${ name }_start`] || '' , this.propData[`${ name }_end`] || ''] || [];
                         } else if (item.key == 'address') {
                             com_data.province_id = this.propData[`${ name }_province_id`] || '';
                             com_data.city_id = this.propData[`${ name }_city_id`] || '';
@@ -444,13 +444,13 @@ export default {
         /*
         * 其他的备注信息修改
         */
-        data_outer_change(e) {
+        data_other_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {
                 if (item.id == id && item.com_data) {
-                    item.com_data.outer_value = value;
+                    item.com_data.other_value = value;
                 }
             });
             this.setData({ data_list: data });
@@ -478,13 +478,13 @@ export default {
         /*
         * 其他的值修改后校验的数据更新
         */
-        data_outer_check(e) {
+        data_other_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {
                 if (item.id == id && item.com_data && item.com_data.common_config) {
-                    item.com_data.outer_value = value
+                    item.com_data.other_value = value
                     item.com_data.common_config.is_error = is_error;
                     item.com_data.common_config.error_text = error_text;
                 }
@@ -647,7 +647,8 @@ export default {
                                 submit_data[`${ name }_verify`] = com_data?.form_value_code || '';
                             }
                         } else if (item.key ==='date-group') {
-                            submit_data[`${ name }`] = { 'start': value[0] || '' , 'end': value[1] || '' } || {};
+                            submit_data[`${ name }_start`] = value[0] || '';
+                            submit_data[`${ name }_end`] = value[1] || '';
                         } else if (item.key == 'address') {
                             submit_data[`${ name }_province_id`] = value[0] || '';
                             submit_data[`${ name }_city_id`] = value[1] || '';
@@ -699,9 +700,9 @@ export default {
                     } 
                     // 其他字段的格式验证
                     else if (this.fieldCheckMap[item.key]) {
-                        let field_data = this.fieldCheckMap[data_item.key];
-                        if (['single-text', 'select', 'radio-btns'].includes(data_item.com_data.type)) {
-                            field_data = this.fieldCheckMap[data_item.com_data.type];
+                        let field_data = this.fieldCheckMap[item.key];
+                        if (['single-text', 'select', 'radio-btns'].includes(item.com_data.type)) {
+                            field_data = this.fieldCheckMap[item.com_data.type];
                         }
                         const { is_format, type } = field_data;
                         const { is_error = '0', error_text = '' } = get_format_checks(com_data, com_data.form_value, is_format, type);
@@ -791,7 +792,8 @@ export default {
                             submit_data[`${ subform_name }_city_name`] = subform_com_data.city_name || ''
                             submit_data[`${ subform_name }_county_name`] = subform_com_data.county_name || ''
                         } else if (item.key ==='date-group') {
-                            submit_data[`${ subform_name }`] = { 'start': value[0] || '' , 'end': value[1] || '' } || {};
+                            submit_data[`${ subform_name }_start`] = subform_value[0] || '';
+                            submit_data[`${ subform_name }_end`] = subform_value[1] || '';
                         } else if (['checkbox', 'select-multi'].includes(item.key)) {
                             submit_data[subform_name] = subform_value;
                             if (subform_com_data.is_add_option == '1') {
