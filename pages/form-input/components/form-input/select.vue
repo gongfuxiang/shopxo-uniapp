@@ -1,24 +1,26 @@
 <template>
     <view class="wh-auto">
         <view class="flex-col gap-10">
-            <view class="flex-row align-c wh-auto" :style="propStyle" @tap="data_value_event">
-                <view class="flex-1">
-                    <template v-if="isEmpty(form_value)"><view class="placeholder cr-gray text-line-1">{{ placeholder }}</view></template>
+            <view :style="propCommonStyle" @tap="data_value_event">
+                <view class="flex-row align-c wh-auto" :style="propStyle">
+                    <view class="flex-1">
+                        <template v-if="isEmpty(form_value)"><view class="placeholder cr-gray text-line-1">{{ placeholder }}</view></template>
+                        <template v-else>
+                            <view class="flex-row align-c">
+                                <view :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
+                            </view>
+                        </template>
+                    </view>
+                    <template v-if="propDirection == 'row'">
+                        <iconfont name="icon-arrow-right" size="24rpx" color="#666" propContainerDisplay="flex"></iconfont>
+                    </template>
                     <template v-else>
-                        <view class="flex-row align-c">
-                            <view :style="is_multicolour == '1' ? 'background:' + form_value_data.color + ';color:' + (form_value_data.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ form_value_data.name || form_value  }}</view>
-                        </view>
+                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
                     </template>
                 </view>
-                <template v-if="propDirection == 'row'">
-                    <iconfont name="icon-arrow-right" size="24rpx" color="#666" propContainerDisplay="flex"></iconfont>
-                </template>
-                <template v-else>
-                    <iconfont name="icon-arrow-bottom" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
-                </template>
             </view>
             <template v-if="!isEmpty(option_value) && form_value == option_value">
-                <input :value="outer_value" class="uni-input flex-1" :style="propStyle" type="text" placeholder="请输入其他内容" placeholder-style="color: gray;" @blur="data_outer_check" @input="input_outer_value_event" />
+                <input :value="other_value" class="uni-input" :style="propStyle + propCommonStyle" type="text" placeholder="请输入其他内容" placeholder-style="color: gray;" @blur="data_other_check" @input="input_other_value_event" />
             </template>
         </view>
         <!-- 弹窗 -->
@@ -77,6 +79,10 @@
                 type: String,
                 default: '',
             },
+            propCommonStyle: {
+                type: String,
+                default: '',
+            },
             propMobile: {
                 type: Object,
                 default: () => ({}),
@@ -98,7 +104,7 @@
                 color_style: '',
                 form_value_data: {},
                 option_value: '',
-                outer_value: '',
+                other_value: '',
             };
         },
         watch: {
@@ -150,7 +156,7 @@
                     color_style: get_color_style(this.propMobile),
                     form_value: com_data?.form_value || '',
                     form_value_data: form_value_data,
-                    outer_value: com_data?.outer_value || '',
+                    other_value: com_data?.other_value || '',
                     option_value: option_value,
                 });
             },
@@ -206,19 +212,19 @@
                 this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
             // 其他参数内容修改
-            input_outer_value_event(e) {
+            input_other_value_event(e) {
                 this.setData({
-                    outer_value: e.detail.value,
+                    other_value: e.detail.value,
                 });
                 // 执行校验逻辑
-                this.data_outer_check({ detail: { value: this.outer_value } });
+                this.data_other_check({ detail: { value: this.other_value } });
                 // 传递参数给父级
-                this.$emit('dataOuterChange', { value: e.detail.value, id: this.propDataId });
+                this.$emit('dataOtherChange', { value: e.detail.value, id: this.propDataId });
             },
             // 其他参数改变
-            data_outer_check(e) {
+            data_other_check(e) {
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value, false, '');
-                this.$emit('dataOuterCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
+                this.$emit('dataOtherCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
             },
             /**
              * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
