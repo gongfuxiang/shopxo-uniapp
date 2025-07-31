@@ -117,13 +117,19 @@ export default {
                 })
             }, 500);
         },
+        /*
+        * 点击提交按钮触发方法
+        */
         on_submit_event() { 
             this.$refs.componentForm.on_submit_event();
         },
+        /*
+        * 表单校验完成之后返回的数据内容
+        */
         submit_event(e) {
             const { type = 'success', message = '', submit_data = {}} = e;
             if (type == 'error') {
-                app.globalData.showToast(message, 'error');
+                app.globalData.showToast(message);
             } else {
                 const params = {
                     forminput_id: this.propDataFormId,
@@ -140,12 +146,12 @@ export default {
                         if (res.data.code == 0) {
                             app.globalData.showToast('提交成功', 'success');
                         } else {
-                            app.globalData.showToast('提交失败', 'error');
+                            app.globalData.showToast('提交失败');
                         }
                     },
                     fail: (res) => {
                         this.is_submit_disable = false;
-                        app.globalData.showToast('提交失败', 'error');
+                        app.globalData.showToast('提交失败');
                     }
                 });
             }

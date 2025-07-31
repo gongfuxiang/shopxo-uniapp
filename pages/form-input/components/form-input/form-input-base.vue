@@ -306,6 +306,9 @@ export default {
                 is_custom: overall_config.type_value == 'free',
             });
         },
+        /*
+        * 初始表单数据整合
+        */
         set_default_values(diy_data, overall_config, mobile) {
             diy_data.forEach(item => {
                 const com_data = item.com_data;
@@ -341,6 +344,8 @@ export default {
                                     subform_com_data.province_name = new_prop_data[`${ subform_name }_province_name`] || '';
                                     subform_com_data.city_name = new_prop_data[`${ subform_name }_city_name`] || '';
                                     subform_com_data.county_name = new_prop_data[`${ subform_name }_county_name`] || '';
+                                } else if (item2.key ==='date-group') {
+                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_start`] || '' , new_prop_data[`${ subform_name }_end`] || ''] || [];
                                 } else if (['checkbox', 'select-multi'].includes(item2.key)) {
                                     subform_com_data.form_value = new_prop_data[subform_name] || [];
                                     if (subform_com_data.is_add_option == '1') {
@@ -363,8 +368,7 @@ export default {
                             com_data.form_value = this.propData[name] || '';
                             com_data.form_value_code = this.propData[`${ name }_verify`] || '';
                         } else if (item.key ==='date-group') {
-                            com_data.form_value[0] = this.propData[`${ name }_start`] || '';
-                            com_data.form_value[1] = this.propData[`${ name }_end`] || '';
+                            com_data.form_value = [ this.propData[`${ name }`].start || '' , this.propData[`${ name }`].end || ''] || [];
                         } else if (item.key == 'address') {
                             com_data.province_id = this.propData[`${ name }_province_id`] || '';
                             com_data.city_id = this.propData[`${ name }_city_id`] || '';
@@ -407,15 +411,23 @@ export default {
                 return common_form_styles_computer(item) + 'padding: 0px 22rpx;box-sizing:content-box;';
             }
         },
+        /*
+        * 帮助提示说明
+        */
         help_icon_event(e) {
             this.setData({ popup_help_content: e.currentTarget.dataset.value });
             this.$refs.popup.open();
         },
+        /*
+        * 子表单帮助提示说明
+        */
         subform_help_icon_event(e) {
             this.setData({ popup_help_content: e });
             this.$refs.popup.open();
         },
-        // 表单数据更新处理
+        /*
+        * 表单数据更新处理
+        */
         data_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -429,6 +441,9 @@ export default {
             // 触发数据修改的事件
             this.verify_when_data_changes(id);
         },
+        /*
+        * 其他的备注信息修改
+        */
         data_outer_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -442,7 +457,9 @@ export default {
             // 触发数据修改的事件
             this.verify_when_data_changes(id);
         },
-        // 表单校验逻辑
+        /*
+        * 表单内数据的校验完成后的数据更新
+        */
         data_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
@@ -458,6 +475,9 @@ export default {
             // 触发数据修改的事件
             this.on_item_event(e);
         },
+        /*
+        * 其他的值修改后校验的数据更新
+        */
         data_outer_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
@@ -473,7 +493,9 @@ export default {
             // 触发数据修改的事件
             this.on_item_event(e);
         },
-        // 添加新选项时的处理
+        /*
+        * 添加新选项时的处理
+        */
         data_option_change(e) {
             const { list, value, id } = e;
             // 改变对应id的数据
@@ -486,7 +508,9 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        // 手机号验证码的值的修改
+        /*
+        * 手机号验证码的值的修改
+        */
         data_code_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -498,7 +522,9 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        // 手机号验证码的校验
+        /*
+        * 手机号验证码的校验
+        */
         data_code_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
@@ -514,18 +540,9 @@ export default {
             // 触发数据修改的事件
             this.on_item_event(e);
         },
-        data_address_change(e) {
-            const { value, id } = e;
-            // 改变对应id的数据
-            const data = [...this.data_list];
-            data.forEach(item => {
-                if (item.id == id && item.com_data) {
-                    item.com_data.detailed_value = value;
-                }
-            });
-            this.setData({ data_list: data });
-        },
-        // 子表单数据更新
+        /*
+        * 子表单数据更新
+        */
         subform_data_change(e, id) {
             // 改变对应id的数据
             const data = [...this.data_list];
@@ -538,7 +555,9 @@ export default {
             // 触发数据修改的事件
             this.verify_when_data_changes(id);
         },
-        // 地址信息更新
+        /*
+        * 地址信息更新
+        */
         region_event(e) {
             const { value, id, province_name, city_name, county_name } = e;
             // 改变对应id的数据
@@ -553,6 +572,23 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        /*
+        * 详细地址信息处理
+        */
+        data_address_change(e) {
+            const { value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.detailed_value = value;
+                }
+            });
+            this.setData({ data_list: data });
+        },
+        /*
+        * 表单提交
+        */
         on_submit_event() {
             try {
                 // 校验所有的必填项和逻辑
@@ -587,6 +623,9 @@ export default {
                 this.$emit('submitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
             }
         },
+        /*
+        * 表单提交参数处理
+        */
         submit_data_parameter_handle() {
             try { 
                 const submit_data = {};
@@ -608,8 +647,7 @@ export default {
                                 submit_data[`${ name }_verify`] = com_data?.form_value_code || '';
                             }
                         } else if (item.key ==='date-group') {
-                            submit_data[`${ name }_start`] = value[0] || '';
-                            submit_data[`${ name }_end`] = value[1] || '';
+                            submit_data[`${ name }`] = { 'start': value[0] || '' , 'end': value[1] || '' } || {};
                         } else if (item.key == 'address') {
                             submit_data[`${ name }_province_id`] = value[0] || '';
                             submit_data[`${ name }_city_id`] = value[1] || '';
@@ -643,6 +681,9 @@ export default {
                 this.$emit('submitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
             }
         },
+        /*
+        * 表单提交校验逻辑
+        */
         submit_data_check() {
             const data = JSON.parse(JSON.stringify(this.filteredDiyData));
             // 遍历所有过滤后的自定义数据项
@@ -680,7 +721,9 @@ export default {
             });
             return data;
         },
-        // 子表单的数据校验
+        /*
+        * 子表单的校验
+        */
         subform_data_check(com_data) { 
             // 子表单整体必填验证
             if (com_data.is_required === '1' && com_data.data_list.length <= 0) {
@@ -725,7 +768,9 @@ export default {
             }
             return com_data;
         },
-        // 子表单内的数据提取
+        /*
+        * 子表单内的数据提取
+        */
         subform_data_extraction(data_list) {
             return data_list.map((subform_item) => {
                 const data = {};
@@ -745,6 +790,8 @@ export default {
                             submit_data[`${ subform_name }_province_name`] = subform_com_data.province_name || '';
                             submit_data[`${ subform_name }_city_name`] = subform_com_data.city_name || ''
                             submit_data[`${ subform_name }_county_name`] = subform_com_data.county_name || ''
+                        } else if (item.key ==='date-group') {
+                            submit_data[`${ subform_name }`] = { 'start': value[0] || '' , 'end': value[1] || '' } || {};
                         } else if (['checkbox', 'select-multi'].includes(item.key)) {
                             submit_data[subform_name] = subform_value;
                             if (subform_com_data.is_add_option == '1') {
@@ -758,7 +805,9 @@ export default {
                 return data;
             });
         },
-        // 处理手机号验证逻辑
+        /*
+        * 处理手机号验证逻辑
+        */
         handle_phone_validation(com_data) {
             if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value_code)) {
                 com_data.common_config.is_error = '1';
@@ -768,7 +817,9 @@ export default {
             com_data.common_config.format = com_data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
             return get_format_checks(com_data, com_data.form_value, true);
         },
-        // 子表单显隐规则数据处理
+        /*
+        * 子表单显隐规则数据处理
+        */
         filtered_Data(children) { 
             const componentMap = new Map(children.map((item) => [item.id, item]));
 
@@ -843,7 +894,9 @@ export default {
                 });
             }
         },
-        // 单个文件更新触发的事件
+        /*
+        * 单个文件更新触发的事件
+        */
         on_item_event(e) {
             // 取出对应id的数据
             const data = this.data_list.find((item) => item.id == e.id);
@@ -852,6 +905,9 @@ export default {
                this.$emit('onItemEvent', { type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: e.value, form_name: data.form_name });
             }
         },
+        /*
+        * 层级修改
+        */
         z_index_change(e) {
             this.setData({
                 z_index_id: e

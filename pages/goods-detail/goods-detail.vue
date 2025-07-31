@@ -243,6 +243,12 @@
                         <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                     </view>
                 </view>
+                
+                <view class="bg-white padding-sm border-radius-main spacing-mb">
+                    <view>form - input -data</view>
+                    <component-form-input-base ref="componentForm" :propValue="order_goods_form_data_config" @submitData="order_goods_form_submit_data"></component-form-input-base>
+                </view>
+                
             </view>
 
             <view class="padding-horizontal-main">
@@ -650,6 +656,7 @@
     import componentAskCommentsGoods from '@/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods';
     import componentCouponCard from '@/pages/plugins/coupon/components/coupon-card/coupon-card';
     import componentGoodsCompare from '@/pages/plugins/goodscompare/components/goods-compare/goods-compare';
+    import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -780,6 +787,9 @@
                 plugins_wholesale_data: null,
                 // 品类限制插件
                 plugins_categorylimit_data: null,
+                
+                
+                order_goods_form_data_config: {"diy_data":[{"name":"单行文本","id":"huycy5dmuha","form_name":"huycy5dmuha","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"single-text","children":[],"com_data":{"type":"single-text","option_list":[{"name":"选项1","value":"kl0rnmc09o","color":"#eb5050"},{"name":"选项2","value":"198jbwrpsez","color":"#f0a800"},{"name":"选项3","value":"yoc7tflcsuk","color":"#46c26f"}],"show_hidden_list":[],"title":"联系人","form_value":"","other_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","max_num":"","min_num":"","is_desensitization":"0","desensitization_value":[],"is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"手机","id":"vb6e5ndybcg","form_name":"vb6e5ndybcg","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"phone","children":[],"com_data":{"title":"手机","form_value":"","form_value_code":"","placeholder":"请输入内容","icon_name":"phone","is_required":"0","is_telephone":"0","is_sms_verification":"0","is_img_sms_verification":"0","is_desensitization":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"日期时间","id":"d9ndhfr5gb","form_name":"d9ndhfr5gb","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"date","children":[],"com_data":{"title":"预约时间","form_value":"","placeholder":"请选择时间","is_required":"0","date_style":"horizontal","date_type":"option6","icon_name":"date","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"地址","id":"n8tstmx6od","form_name":"n8tstmx6od","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"address","children":[],"com_data":{"title":"联系地址","address_type":"detailed","form_value":[],"province_name":"","city_name":"","county_name":"","detailed_value":"","placeholder":"请选择内容","is_required":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"复选框组","id":"lqb32v7iq7","form_name":"lqb32v7iq7","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"checkbox","children":[],"com_data":{"type":"checkbox","title":"设计师","form_value":[],"is_multicolour":"0","option_list":[{"name":"小龙","value":"kajd3i5zszn","color":"#eb5050"},{"name":"小花","value":"gf07xhy7gzd","color":"#f0a800"},{"name":"小李","value":"gg0jvm24yr","color":"#46c26f"},{"name":"小红","value":"kpjgnvm6r4q","color":"#a2c204"}],"custom_option_list":[],"placeholder":"请选择内容","is_required":"0","is_add_option":"0","is_limit_num":"0","min_num":"","max_num":"","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}}],"overall_config":{"type_value":"default","custom_size_type":"A3","custom_width":842,"custom_height":1191,"is_style_settings":"1","style_settings":{"computer":{"background_type":"img","background_color":"#933B3B","background_image":[],"heading_type":"color","heading_color":"#C643E0","heading_image":[],"is_show_heading_title":"1","heading_title_location":"center","heading_title_size":25,"heading_title_font_weight":"bold","heading_title_color":"#000000","submit_color":"#C643E0","flex_direction":"row","filed_title_width":88,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default","input_width":554},"mobile":{"background_type":"color","background_color":"#F8F8F8","background_image":[],"heading_type":"color","heading_color":"#C1EBFF","heading_image":[],"is_show_heading_title":"0","heading_title_location":"flex-start","heading_title_size":14,"heading_title_font_weight":"400","heading_title_color":"#000000","submit_color":"#2A94FF","flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default","input_width":354}},"is_front_end_cache":"1","is_show_submit":"1","submit_title":"提交99","is_show_save_draft":"1","save_draft_title":"保存草稿","is_layout_settings":"0","layout_settings":{"computer":{"flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default"},"mobile":{"flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default"}}}},
             };
         },
 
@@ -805,7 +815,8 @@
             componentWholesaleRules,
             componentAskCommentsGoods,
             componentCouponCard,
-            componentGoodsCompare
+            componentGoodsCompare,
+            componentFormInputBase
         },
 
         onLoad(params) {
