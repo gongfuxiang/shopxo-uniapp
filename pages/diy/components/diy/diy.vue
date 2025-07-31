@@ -534,7 +534,7 @@
                 diy_data_list.forEach((item, index) => {
                     // 缩放处理
                     const style = item.com_data?.style?.common_style;
-                    if (style && newMarginTopMap.has(item.id) && scaleComponents.has(diy_data_list[index - 1].key) && !subset_scale_component_list.has(item.key)) {
+                    if (style && newMarginTopMap.has(item.id) && index > 0 && scaleComponents.has(diy_data_list[index - 1].key) && !subset_scale_component_list.has(item.key)) {
                         item.floating_up = '-' + (style?.floating_up || 0) * scale + 'px;';
                     } else {
                         item.floating_up = '-' + (style?.floating_up || 0) * 2 + 'rpx;';
