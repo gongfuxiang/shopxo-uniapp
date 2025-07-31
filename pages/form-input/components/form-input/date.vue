@@ -99,10 +99,6 @@
                     this.$refs.option4.show();
                 }
             },
-            data_check(e) {
-                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, e.detail.value);
-                this.$emit('dataCheck', { is_error, error_text, value: e.detail.value, id: this.propDataId });
-            },
             data_date_change(e) { 
                 const date = time_stamp(e, this.date_style, this.date_type);
                 // 重新编辑一下历史数据
@@ -110,6 +106,11 @@
                     form_value: date,
                 });
                 this.z_index_change('');
+                // 执行校验逻辑
+                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, date, false, 'time');
+                // 校验数据
+                this.$emit('dataCheck', { is_error, error_text, value: date, id: this.propDataId });
+                
                 this.$emit('dataChange', { value: date, id: this.propDataId });
             },
             mask_click() {

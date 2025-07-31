@@ -8,7 +8,7 @@
                         <iconfont name="icon-miaosha-hdgz" :size="help_icon_style" color="#999"></iconfont>
                     </view>
                 </view>
-                <view :class="'flex-1 wh-auto ht-auto flex-col gap-5 '+ (['date', 'date-group'].includes(item.key) ? '' : 'oh')">
+                <view :class="'flex-1 wh-auto ht-auto flex-col gap-5 '+ (['date', 'date-group', 'upload-img', 'upload-video'].includes(item.key) ? '' : 'oh')">
                     <!-- 输入框 -->
                     <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                         <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-input>
@@ -23,11 +23,11 @@
                     </view>
                     <!-- 单选按钮组 -->
                     <view v-else-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction !== 'row'">
-                        <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change"></component-radio>
+                        <component-radio :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @dataOuterChange="data_outer_change" @dataOuterCheck="data_outer_check"></component-radio>
                     </view>
                     <!-- 下拉框 -->
                     <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'radio-btns' && flex_direction == 'row')" :style="item.com_data.common_style">
-                        <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-select>
+                        <component-select :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propDirection="flex_direction" :propStyle="component_style" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change" @dataOuterChange="data_outer_change" @dataOuterCheck="data_outer_check"></component-select>
                     </view>
                     <!-- 下拉复选框 -->
                     <view v-else-if="(['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(item.key) && item.com_data.type == 'checkbox' && flex_direction == 'row')" :style="item.com_data.common_style">
@@ -189,7 +189,11 @@ export default {
         componentSubform
     },
     props: {
-        propValue: {
+        propConfig: {
+            type: Object,
+            default: () => {},
+        },
+        propData: {
             type: Object,
             default: () => {},
         },
@@ -213,7 +217,26 @@ export default {
             help_icon_style: '',
             mobile: {},
             popup_help_content: '',
-            is_custom: false
+            is_custom: false,
+            // 定义字段类型与检查参数的映射
+            fieldCheckMap: {
+                'address': { is_format: false, type: 'address' },
+                'number': { is_format: true, type: 'number' },
+                'checkbox': { is_format: true, type: 'checkbox' },
+                'select-multi': { is_format: true, type: 'checkbox' },
+                'date': { is_format: false, type: 'time' },
+                'date-group': { is_format: false, type: 'time' },
+                'single-text': { is_format: true, type: '' },
+                'multi-text': { is_format: false, type: '' },
+                'rich-text': { is_format: false, type: '' },
+                'radio-btns': { is_format: false, type: 'radio' },
+                'select': { is_format: false, type: 'select' },
+                'pwd': { is_format: false, type: '' },
+                'score': { is_format: false, type: 'score' },
+                'upload-attachments': { is_format: false, type: 'upload' },
+                'upload-img': { is_format: false, type: 'upload' },
+                'upload-video': { is_format: false, type: 'upload' }
+            },
         }
     },
     computed: { 
@@ -257,7 +280,7 @@ export default {
     methods: {
         isEmpty,
         init() {
-            const data = this.propValue;
+            const data = this.propConfig;
             // 公共配置信息
             const overall_config = data?.overall_config || {};
             const mobile = overall_config?.style_settings?.mobile || {};
@@ -270,13 +293,25 @@ export default {
                 // 富文本只支持APP-PLUS || H5 || MP-WEIXIN
                 diy_data = diy_data.filter(item => item.key !== 'rich-text');
             // #endif
+            const new_diy_data = this.set_default_values(diy_data, overall_config, mobile);
+            this.setData({
+                z_index_id: '',
+                data_list: new_diy_data,
+                mobile: mobile,
+                flex_direction: mobile.flex_direction || 'row',
+                title_style: `color:#333;font-size:${ mobile.filed_title_size_type == 'big' ? 44 : mobile.filed_title_size_type == 'middle' ? 32 : 24 }rpx;font-weight:blod;`,
+                component_style: `height:${mobile.filed_title_size_type == 'big' ? 108 : mobile.filed_title_size_type == 'middle' ? 80 : 60}rpx;font-size:${mobile.filed_title_size_type == 'big' ? 44 : mobile.filed_title_size_type == 'middle' ? 32 : 24}rpx;`,
+                help_icon_style: `font-size:${mobile.help_icon_size_type == 'big' ? 40 : mobile.help_icon_size_type == 'middle' ? 28 : 24}rpx;`,
+                field_label_style: `${ mobile.flex_direction == 'column'? 'justify-content:flex-start;' : `width:${ mobile.filed_title_width * 2 }rpx;justify-content: ${ mobile.filed_title_justification };` }`,
+                is_custom: overall_config.type_value == 'free',
+            });
+        },
+        set_default_values(diy_data, overall_config, mobile) {
             diy_data.forEach(item => {
-                // 边框样式处理
-                item.com_data.common_style = this.get_form_border_style(item.com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
+                const com_data = item.com_data;
                 // 子表单需要统一规整一下数据
                 if (item.key == 'subform') {
-                    const { com_data } = item;
-                    item.com_data.data_list = [];
+                    com_data.data_list = [];
                     let data_list = [];
                     com_data.form_value.forEach(item1 => {
                         const data = JSON.parse(JSON.stringify(com_data?.children || []));
@@ -293,20 +328,74 @@ export default {
                             });
                         }
                     });
-                    item.com_data.data_list = data_list;
-                }
+                    if (!isEmpty(this.propData)) {
+                        // 子表单数据重组
+                        data_list.forEach((item1, index) => {
+                            item1.data_list.forEach(item2 => {
+                                const new_prop_data = this.propData[index];
+                                const subform_com_data = item2.com_data;
+                                const subform_name = subform_com_data.form_name;
+                                if (item2.key == 'address') {
+                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_province_id`] || '', new_prop_data[`${ subform_name }_city_id`] || '', new_prop_data[`${ subform_name }_county_id`] || '' ];
+                                    // 省市区中文名称
+                                    subform_com_data.province_name = new_prop_data[`${ subform_name }_province_name`] || '';
+                                    subform_com_data.city_name = new_prop_data[`${ subform_name }_city_name`] || '';
+                                    subform_com_data.county_name = new_prop_data[`${ subform_name }_county_name`] || '';
+                                } else if (['checkbox', 'select-multi'].includes(item2.key)) {
+                                    subform_com_data.form_value = new_prop_data[subform_name] || [];
+                                    if (subform_com_data.is_add_option == '1') {
+                                        subform_com_data.custom_option_list = new_prop_data[`${ subform_name }_custom_option_list`] || [];
+                                    }
+                                } else {
+                                    subform_com_data.form_value = new_prop_data[subform_name] || '';
+                                }
+                            });
+                        });
+                    }
+                    com_data.data_list = data_list;
+                } else {
+                    // 边框样式处理
+                    com_data.common_style = this.get_form_border_style(com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
+                    if (!isEmpty(this.propData)) {
+                        const name = item.form_name;
+                        item.com_data.form_value = this.propData[item.form_name];
+                        if (item.key ==='phone') {
+                            com_data.form_value = this.propData[name] || '';
+                            com_data.form_value_code = this.propData[`${ name }_verify`] || '';
+                        } else if (item.key ==='date-group') {
+                            com_data.form_value[0] = this.propData[`${ name }_start`] || '';
+                            com_data.form_value[1] = this.propData[`${ name }_end`] || '';
+                        } else if (item.key == 'address') {
+                            com_data.province_id = this.propData[`${ name }_province_id`] || '';
+                            com_data.city_id = this.propData[`${ name }_city_id`] || '';
+                            com_data.county_id = this.propData[`${ name }_county_id`] || '';
+                            // 省市区中文名称
+                            com_data.province_name = this.propData[`${ name }_province_name`] || '';
+                            com_data.city_name = this.propData[`${ name }_city_name`] || ''
+                            com_data.county_name = this.propData[`${ name }_county_name`] || ''
+                            // 判断类型是否包含详细地址
+                            if (com_data.address_type == 'detailed') {
+                                com_data.detailed_value = this.propData[`${ name }_address`] || '';
+                            }
+                        } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
+                            com_data.form_value = this.propData[name] || '';
+                            // 判断是否显示其他
+                            const value_list = com_data.option_list.filter((item) => item.is_other == '1');
+                            if (value_list.length > 0) {
+                                com_data.other_value = this.propData[`${ name }_other_value`] || '';
+                            }
+                        } else if (['checkbox', 'select-multi'].includes(item.key)) {
+                            com_data.form_value = this.propData[name] || '';
+                            if (com_data.is_add_option == '1') {
+                                com_data.custom_option_list = this.propData[`${ name }_custom_option_list`] || [];
+                            }
+                        } else {
+                           com_data.form_value = this.propData[name] || '';
+                        }
+                    }
+                } 
             });
-            this.setData({
-                z_index_id: '',
-                data_list: diy_data,
-                mobile: mobile,
-                flex_direction: mobile.flex_direction || 'row',
-                title_style: `color:#333;font-size:${ mobile.filed_title_size_type == 'big' ? 44 : mobile.filed_title_size_type == 'middle' ? 32 : 24 }rpx;font-weight:blod;`,
-                component_style: `height:${mobile.filed_title_size_type == 'big' ? 108 : mobile.filed_title_size_type == 'middle' ? 80 : 60}rpx;font-size:${mobile.filed_title_size_type == 'big' ? 44 : mobile.filed_title_size_type == 'middle' ? 32 : 24}rpx;`,
-                help_icon_style: `font-size:${mobile.help_icon_size_type == 'big' ? 40 : mobile.help_icon_size_type == 'middle' ? 28 : 24}rpx;`,
-                field_label_style: `${ mobile.flex_direction == 'column'? 'justify-content:flex-start;' : `width:${ mobile.filed_title_width * 2 }rpx;justify-content: ${ mobile.filed_title_justification };` }`,
-                is_custom: overall_config.type_value == 'free',
-            });
+            return diy_data;
         },
         // 获取子表单样式
         get_form_border_style(item, flex_direction, type_value) {
@@ -337,6 +426,21 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.verify_when_data_changes(id);
+        },
+        data_outer_change(e) {
+            const { value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.outer_value = value;
+                }
+            });
+            this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.verify_when_data_changes(id);
         },
         // 表单校验逻辑
         data_check(e) {
@@ -351,6 +455,23 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.on_item_event(e);
+        },
+        data_outer_check(e) {
+            const { is_error, error_text, value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data && item.com_data.common_config) {
+                    item.com_data.outer_value = value
+                    item.com_data.common_config.is_error = is_error;
+                    item.com_data.common_config.error_text = error_text;
+                }
+            });
+            this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.on_item_event(e);
         },
         // 添加新选项时的处理
         data_option_change(e) {
@@ -365,7 +486,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        // 手机号验证码的校验
+        // 手机号验证码的值的修改
         data_code_change(e) {
             const { value, id } = e;
             // 改变对应id的数据
@@ -377,6 +498,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
+        // 手机号验证码的校验
         data_code_check(e) {
             const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
@@ -389,6 +511,8 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.on_item_event(e);
         },
         data_address_change(e) {
             const { value, id } = e;
@@ -411,6 +535,8 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.verify_when_data_changes(id);
         },
         // 地址信息更新
         region_event(e) {
@@ -427,7 +553,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        submit_click() {
+        on_submit_event() {
             try {
                 // 校验所有的必填项和逻辑
                 const new_data = this.submit_data_check();
@@ -453,12 +579,12 @@ export default {
                         return { ...item, ...match };
                     });
                     this.setData({ data_list: data_list });
-                    this.$emit('submitData', { type: 'error', submit_data: {}, message: message });
+                    this.$emit('submitEvent', { type: 'error', submit_data: {}, message: message });
                 } else {
                     this.submit_data_parameter_handle();
                 }
             } catch (error) {
-                this.$emit('submitData', { type: 'error', submit_data: {}, message: '数据错误'});
+                this.$emit('submitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
             }
         },
         submit_data_parameter_handle() {
@@ -473,36 +599,8 @@ export default {
                         const com_data = item.com_data;
                         if (item.key ==='subform') {
                             const data_list = com_data.data_list;
-                            submit_data[name] = data_list.map((subform_item) => {
-                                const data = {};
-                                // 子表单中每一行的数据显示
-                                subform_item.data_list.forEach((item1) => {
-                                    // 子表单中每个独立的数据name
-                                    const subform_name = isEmpty(item1.form_name) ? item1.id : item1.form_name;
-                                    const subform_com_data = item1.com_data;
-                                    // 对应的value
-                                    const subform_value = isEmpty(subform_com_data.form_value) ? '' : subform_com_data.form_value;
-                                    if (!filter_data.includes(item1.key)) {
-                                        if (item1.key == 'address') {
-                                            data[`${ subform_name }_province_id`] = subform_value[0] || '';
-                                            data[`${ subform_name }_city_id`] = subform_value[1] || '';
-                                            data[`${ subform_name }_county_id`] = subform_value[2] || '';
-                                            // 省市区中文名称
-                                            submit_data[`${ subform_name }_province_name`] = subform_com_data.province_name || '';
-                                            submit_data[`${ subform_name }_city_name`] = subform_com_data.city_name || ''
-                                            submit_data[`${ subform_name }_county_name`] = subform_com_data.county_name || ''
-                                        } else if (['checkbox', 'select-multi'].includes(item.key)) {
-                                            submit_data[subform_name] = subform_value;
-                                            if (subform_com_data.is_add_option == '1') {
-                                                submit_data[`${ subform_name }_custom_option_list`] = subform_com_data?.custom_option_list || [];
-                                            }
-                                        } else {
-                                            data[subform_name] = subform_value;
-                                        }
-                                    }
-                                });
-                                return data;
-                            });
+                            // 子表单中每一行的数据显示
+                            submit_data[name] = this.subform_data_extraction(data_list);
                         } else if (item.key ==='phone') {
                             submit_data[`${ name }`] = value || '';
                             // 判断是否需要发送短信验证码
@@ -524,7 +622,7 @@ export default {
                             if (com_data.address_type == 'detailed') {
                                 submit_data[`${ name }_address`] = com_data?.detailed_value || '';
                             }
-                        } else if (['select', 'radio-btns'].includes(item.key)) {
+                        } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
                             submit_data[name] = value;
                             const value_list = com_data.option_list.filter((item) => item.is_other == '1');
                             if (value_list.length > 0) {
@@ -540,48 +638,29 @@ export default {
                         }
                     }
                 });
-                this.$emit('submitData', { type: 'success', submit_data: submit_data, message: ''});
+                this.$emit('submitEvent', { type: 'success', submit_data: submit_data, message: ''});
             } catch (error) {
-                this.$emit('submitData', { type: 'error', submit_data: {}, message: '数据错误'});
+                this.$emit('submitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
             }
         },
         submit_data_check() {
-            // 定义字段类型与检查参数的映射
-            const fieldCheckMap = {
-                'address': { is_format: false, type: 'address' },
-                'number': { is_format: true, type: 'number' },
-                'checkbox': { is_format: true, type: 'checkbox' },
-                'select-multi': { is_format: true, type: 'checkbox' },
-                'date': { is_format: false, type: 'time' },
-                'date-group': { is_format: false, type: 'time' },
-                'single-text': { is_format: true, type: '' },
-                'multi-text': { is_format: false, type: '' },
-                'rich-text': { is_format: false, type: '' },
-                'radio-btns': { is_format: false, type: 'radio' },
-                'select': { is_format: false, type: 'select' },
-                'pwd': { is_format: false, type: '' },
-                'score': { is_format: false, type: 'score' },
-                'upload-attachments': { is_format: false, type: 'upload' },
-                'upload-img': { is_format: false, type: 'upload' },
-                'upload-video': { is_format: false, type: 'upload' }
-            };
             const data = JSON.parse(JSON.stringify(this.filteredDiyData));
             // 遍历所有过滤后的自定义数据项
             data?.forEach((item) => {
-                const com_data = item.com_data;
+                let com_data = item.com_data;
                 // 跳过非必填项
                 if (com_data.is_required === '1') {
                     // 特殊字段验证：手机号
                     if (item.key === 'phone') {
-                        const { is_error = '0', error_text = '' } = this.handlePhoneValidation(com_data);
+                        const { is_error = '0', error_text = '' } = this.handle_phone_validation(com_data);
                         com_data.common_config.is_error = is_error;
                         com_data.common_config.error_text = error_text;
                     } 
                     // 其他字段的格式验证
-                    else if (fieldCheckMap[item.key]) {
-                        let field_data = fieldCheckMap[data_item.key];
-                        if (['single-text', 'select', 'radio-btns'].includes(data_item.key)) {
-                            field_data = fieldCheckMap[data_item.com_data.type];
+                    else if (this.fieldCheckMap[item.key]) {
+                        let field_data = this.fieldCheckMap[data_item.key];
+                        if (['single-text', 'select', 'radio-btns'].includes(data_item.com_data.type)) {
+                            field_data = this.fieldCheckMap[data_item.com_data.type];
                         }
                         const { is_format, type } = field_data;
                         const { is_error = '0', error_text = '' } = get_format_checks(com_data, com_data.form_value, is_format, type);
@@ -596,53 +675,91 @@ export default {
                  * 3. 处理子表单内各字段的验证
                  */
                 if (item.key === 'subform') {
-                    // 子表单整体必填验证
-                    if (com_data.is_required === '1' && com_data.data_list.length <= 0) {
-                        com_data.common_config.is_error = '1';
-                        com_data.common_config.error_text = '请填写至少一条记录';
-                    } else {
-                        com_data.common_config.is_error = '0';
-                        com_data.common_config.error_text = '';
-                    }
-                    // 处理子表单内各字段的验证
-                    if (com_data.data_list.length > 0) {
-                        // 验证子表单内各字段
-                        com_data.data_list.forEach((form_item, index) => {
-                            // 取出对应列的数据信息
-                            const form_data = this.filtered_Data(form_item.data_list);
-                            form_data.forEach((data_item) => {
-                                // 跳过非必填项
-                                if (data_item.com_data.is_required !== '1') return;
-                                // 执行字段验证
-                                const checkConfig = fieldCheckMap[data_item.key];
-                                if (checkConfig) {
-                                    // 特殊字段验证：手机号
-                                    if (data_item.key === 'phone') {
-                                        const { is_error = '0', error_text = '' } = this.handlePhoneValidation(data_item);
-                                        data_item.com_data.common_config.is_error = is_error;
-                                        data_item.com_data.common_config.error_text = error_text;
-                                    }
-                                    // 其他字段的格式验证
-                                    else if (fieldCheckMap[data_item.key]) {
-                                        let field_data = fieldCheckMap[data_item.key];
-                                        if (['single-text', 'select', 'radio-btns'].includes(data_item.key)) {
-                                           field_data = fieldCheckMap[data_item.com_data.type];
-                                        }
-                                        const { is_format, type } = field_data;
-                                        const { is_error = '0', error_text = '' } = get_format_checks(data_item.com_data, data_item.com_data.form_value, is_format, type);
-                                        data_item.com_data.common_config.is_error = is_error;
-                                        data_item.com_data.common_config.error_text = error_text;
-                                    }
-                                }
-                            });
-                        });
-                    }
+                    com_data = this.subform_data_check(com_data);
                 }
             });
             return data;
         },
+        // 子表单的数据校验
+        subform_data_check(com_data) { 
+            // 子表单整体必填验证
+            if (com_data.is_required === '1' && com_data.data_list.length <= 0) {
+                com_data.common_config.is_error = '1';
+                com_data.common_config.error_text = '请填写至少一条记录';
+            } else {
+                com_data.common_config.is_error = '0';
+                com_data.common_config.error_text = '';
+            }
+            // 处理子表单内各字段的验证
+            if (com_data.data_list.length > 0) {
+                // 验证子表单内各字段
+                com_data.data_list.forEach((form_item, index) => {
+                    // 取出对应列的数据信息
+                    const form_data = this.filtered_Data(form_item.data_list);
+                    form_data.forEach((data_item) => {
+                        // 跳过非必填项
+                        if (data_item.com_data.is_required !== '1') return;
+                        // 执行字段验证
+                        const checkConfig = this.fieldCheckMap[data_item.key];
+                        if (checkConfig) {
+                            // 特殊字段验证：手机号
+                            if (data_item.key === 'phone') {
+                                const { is_error = '0', error_text = '' } = this.handle_phone_validation(data_item);
+                                data_item.com_data.common_config.is_error = is_error;
+                                data_item.com_data.common_config.error_text = error_text;
+                            }
+                            // 其他字段的格式验证
+                            else if (this.fieldCheckMap[data_item.key]) {
+                                let field_data = this.fieldCheckMap[data_item.key];
+                                if (['single-text', 'select', 'radio-btns'].includes(data_item.com_data.type)) {
+                                    field_data = this.fieldCheckMap[data_item.com_data.type];
+                                }
+                                const { is_format, type } = field_data;
+                                const { is_error = '0', error_text = '' } = get_format_checks(data_item.com_data, data_item.com_data.form_value, is_format, type);
+                                data_item.com_data.common_config.is_error = is_error;
+                                data_item.com_data.common_config.error_text = error_text;
+                            }
+                        }
+                    });
+                });
+            }
+            return com_data;
+        },
+        // 子表单内的数据提取
+        subform_data_extraction(data_list) {
+            return data_list.map((subform_item) => {
+                const data = {};
+                // 子表单中每一行的数据显示
+                subform_item.data_list.forEach((item1) => {
+                    // 子表单中每个独立的数据name
+                    const subform_name = isEmpty(item1.form_name) ? item1.id : item1.form_name;
+                    const subform_com_data = item1.com_data;
+                    // 对应的value
+                    const subform_value = isEmpty(subform_com_data.form_value) ? '' : subform_com_data.form_value;
+                    if (!filter_data.includes(item1.key)) {
+                        if (item1.key == 'address') {
+                            data[`${ subform_name }_province_id`] = subform_value[0] || '';
+                            data[`${ subform_name }_city_id`] = subform_value[1] || '';
+                            data[`${ subform_name }_county_id`] = subform_value[2] || '';
+                            // 省市区中文名称
+                            submit_data[`${ subform_name }_province_name`] = subform_com_data.province_name || '';
+                            submit_data[`${ subform_name }_city_name`] = subform_com_data.city_name || ''
+                            submit_data[`${ subform_name }_county_name`] = subform_com_data.county_name || ''
+                        } else if (['checkbox', 'select-multi'].includes(item.key)) {
+                            submit_data[subform_name] = subform_value;
+                            if (subform_com_data.is_add_option == '1') {
+                                submit_data[`${ subform_name }_custom_option_list`] = subform_com_data?.custom_option_list || [];
+                            }
+                        } else {
+                            data[subform_name] = subform_value;
+                        }
+                    }
+                });
+                return data;
+            });
+        },
         // 处理手机号验证逻辑
-        handlePhoneValidation(com_data) {
+        handle_phone_validation(com_data) {
             if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value_code)) {
                 com_data.common_config.is_error = '1';
                 com_data.common_config.error_text = '短信验证码不能为空';
@@ -679,6 +796,61 @@ export default {
                 });
                 return isShownByRule;
             });
+        },
+        /*
+        * 没有办法监听用户离开时进行校验逻辑的组件，直接使用数据更新时的执行校验逻辑，并抛给父级
+        */
+        verify_when_data_changes (id) { 
+            const data = JSON.parse(JSON.stringify(this.filteredDiyData));
+            const filter_data_list = data.filter((item) => ['subform', 'position', 'rich-text', 'upload-attachments', 'upload-img', 'upload-video'].includes(item.key) && item.id === id);
+            if (filter_data_list.length > 0) {
+                filter_data_list?.forEach((item) => {
+                    let com_data = item.com_data;
+                    if (item.key === 'subform') {
+                        com_data = this.subform_data_check(com_data);
+                        // 子表单中每一行的数据显示
+                        const subform_data = this.subform_data_extraction(com_data.data_list);
+                        let is_error = '0';
+                        // 如果子表单外层为error直接显示名称出来
+                        if (com_data.common_config.is_error == '1') {
+                            is_error = '1';
+                            message = `${com_data.title}「${com_data.common_config.error_text}」`;
+                        } else {
+                            // 判断子表单每一行是否有报错提示
+                            const is_list_error = com_data.data_list.some((item1) => item1.data_list.some(list_item => list_item.com_data.common_config.is_error === '1'));
+                            if (is_list_error) {
+                                is_error = '1';
+                                // 如果是内部问题，让用户自己检查子表单内的填写
+                                message = `请检查${com_data.title}内的填写`;
+                            }
+                        }
+                        this.on_item_event({ id: item.id, key: item.key, value: subform_data, is_error: is_error, error_text: message });
+                    } else {
+                        // 跳过非必填项
+                        if (com_data.is_required === '1') {
+                            if (this.fieldCheckMap[item.key]) {
+                                let field_data = this.fieldCheckMap[item.key];
+                                if (['single-text', 'select', 'radio-btns'].includes(com_data.type)) {
+                                    field_data = this.fieldCheckMap[com_data.type];
+                                }
+                                const { is_format, type } = field_data;
+                                const { is_error = '0', error_text = '' } = get_format_checks(com_data, com_data.form_value, is_format, type);
+                                // 文件进行校验
+                                this.on_item_event({ id: item.id, key: item.key, value: com_data.form_value, is_error, error_text });
+                            }
+                        }
+                    }
+                });
+            }
+        },
+        // 单个文件更新触发的事件
+        on_item_event(e) {
+            // 取出对应id的数据
+            const data = this.data_list.find((item) => item.id == e.id);
+            // 判断是否为空，为空则不进行处理
+            if (data) {
+               this.$emit('onItemEvent', { type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: e.value, form_name: data.form_name });
+            }
         },
         z_index_change(e) {
             this.setData({

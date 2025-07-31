@@ -9,7 +9,7 @@
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
             <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                 <!-- form表单子组件显示 -->
-                <form-input-base ref="componentForm" :propValue="propValue.config" :propDataFormId="propDataFormId" @submitData="submit_data" />
+                <form-input-base ref="componentForm" :propConfig="propValue.config" :propDataFormId="propDataFormId" @submitEvent="submit_event" />
             </view>
         </view>
         <!-- 支付宝小程序 不支持同时上下左右滑动-->
@@ -22,7 +22,7 @@
                         <iconfont name="icon-detail" size="30rpx" color="#666" propContainerDisplay="flex" ></iconfont>
                         {{ overall_config.save_draft_title }}
                     </view>
-                    <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default" :disable="is_submit_disable" @tap="submit_click">{{ overall_config.submit_title }}</button>
+                    <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default" :disable="is_submit_disable" @tap="on_submit_event">{{ overall_config.submit_title }}</button>
                 </view>
             </view>
         </view>
@@ -117,10 +117,10 @@ export default {
                 })
             }, 500);
         },
-        submit_click() { 
-            this.$refs.componentForm.submit_click();
+        on_submit_event() { 
+            this.$refs.componentForm.on_submit_event();
         },
-        submit_data(e) {
+        submit_event(e) {
             const { type = 'success', message = '', submit_data = {}} = e;
             if (type == 'error') {
                 app.globalData.showToast(message, 'error');
@@ -137,7 +137,11 @@ export default {
                     dataType: 'json',
                     success: (res) => {
                         this.is_submit_disable = false;
-                        app.globalData.showToast('提交成功', 'success');
+                        if (res.data.code == 0) {
+                            app.globalData.showToast('提交成功', 'success');
+                        } else {
+                            app.globalData.showToast('提交失败', 'error');
+                        }
                     },
                     fail: (res) => {
                         this.is_submit_disable = false;

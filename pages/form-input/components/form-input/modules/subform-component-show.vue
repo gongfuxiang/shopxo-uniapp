@@ -8,7 +8,7 @@
                         <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
-                <view :class="'flex-1 wh-auto ht-auto flex-col gap-5 ' + (['date', 'date-group'].includes(item.key) ? '' : 'oh')">
+                <view :class="'flex-1 wh-auto ht-auto flex-col gap-5 ' + (['date', 'date-group', 'upload-img', 'upload-video'].includes(item.key) ? '' : 'oh')">
                     <!-- 输入框 -->
                     <view v-if="['single-text', 'radio-btns', 'select'].includes(item.key) && item.com_data.type == 'single-text'" :style="item.com_data.common_style">
                         <component-input :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-input>

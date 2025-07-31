@@ -13,7 +13,7 @@
             </view>
             <view v-if="propDirection == 'row' && address_type == 'detailed'" class="border-line"></view>
             <view v-if="address_type == 'detailed'" class="flex-row">
-                <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" :style="com_data.common_style + propStyle + 'min-height:100rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" />
+                <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" />
             </view>
         </view>
         <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
@@ -143,12 +143,11 @@
                     city_name: data.city.name || '',
                     county_name: data.areal.name || '',
                 });
+                // 地址信息校验
+                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, data.province.id, false, 'address');
+                this.$emit('dataCheck', { is_error, error_text, value: [ data.province.id, data.city.id, data.areal.id ], id: this.propDataId });
                 // 改变对应id的数据
                 this.$emit('regionEvent', { value: [ data.province.id, data.city.id, data.areal.id ], province_name: data.province.name, city_name: data.city.name, county_name: data.areal.name, id: this.propDataId });
-            },
-            data_check(val) {
-                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, val, true, 'number');
-                this.$emit('dataCheck', { is_error, error_text, value: val, id: this.propDataId });
             },
             input_value_event(e) {
                 // 重新编辑一下历史数据

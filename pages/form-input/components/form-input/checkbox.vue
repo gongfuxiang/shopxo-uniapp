@@ -106,6 +106,9 @@
                         dialog_value: '',
                     });
                     this.$refs.inputDialog.close();
+                    // 执行校验逻辑
+                    this.data_check({ detail: { value: this.form_value } });
+                    
                     this.$emit('dataOptionChange', { list: custom_option_list, value: this.form_value, id: this.propDataId });
                 } else {
                     this.$refs.message.open();
@@ -123,6 +126,9 @@
                 this.setData({
                     form_value: e.detail.value,
                 });
+                // 执行校验逻辑
+                this.data_check(e);
+                // 将值传递给父级组件
                 this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
         }
