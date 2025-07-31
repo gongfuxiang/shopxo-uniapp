@@ -72,7 +72,7 @@
 </template>
 
 <script>
-    import { get_format_checks, isEmpty, get_color_style, color_change } from '@/common/js/common/common.js';
+    import { get_format_checks, isEmpty, get_color_style, color_change, get_math } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -274,6 +274,7 @@
                 // 关闭弹窗
                 this.$refs.selectPopup.close();
                 this.z_index_change('');
+                // 执行校验逻辑
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, this.popup_list, true, 'checkbox');
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: this.popup_list, id: this.propDataId });

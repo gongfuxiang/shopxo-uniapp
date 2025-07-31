@@ -103,6 +103,11 @@
                 this.setData({
                     form_value: index,
                 });
+                // 执行校验逻辑
+                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, index, false, 'score');
+                // 校验数据
+                this.$emit('dataCheck', { is_error, error_text, value: index, id: this.propDataId });
+                
                 this.$emit('dataChange', { value: index, id: this.propDataId });
             }
         }

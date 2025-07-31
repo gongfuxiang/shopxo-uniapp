@@ -1,18 +1,18 @@
 <template>
     <view :class="theme_view">
         <template v-if="propType !== 'file'">
-            <view class="flex-row flex-wrap">
+            <view class="flex-row flex-wrap padding-top-xs">
                 <template v-if="propData.length > 0">
                     <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
                         <view v-if="propDelete" class="delete-icon pa z-i-deep" @tap="upload_delete_event" :data-index="index">
                             <iconfont name="icon-bjdz-guanbi" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
                         </view>
                         <template v-if="propType == 'img'">
-                            <image :src="item.url" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
+                            <image :src="item.url" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh box-shadow-img"></image>
                         </template>
                         <template v-else-if="propType == 'video'">
                             <view class="pr show-video">
-                                <video :src="item.url" class="video border-radius-main oh" :show-center-play-btn="false" :controls="false" objectFit="cover" style="object-fit: cover" ></video>
+                                <video :src="item.url" class="video border-radius-main oh box-shadow-video" :show-center-play-btn="false" :controls="false" objectFit="cover" style="object-fit: cover" ></video>
                                 <view class="video-container border-radius-main z-i flex-row align-c jc-c" :data-index="index" @tap="upload_show_event">
                                     <iconfont name="icon-bofang" size="32rpx" color="#fff"></iconfont>
                                 </view>
@@ -348,4 +348,7 @@
         background: #fff;
         border-radius: 8rpx;
 	}
+    .box-shadow-img, .box-shadow-video {
+        box-shadow: 0px 0px 5px 0px rgba(207, 207, 207, 0.5);
+    }
 </style>

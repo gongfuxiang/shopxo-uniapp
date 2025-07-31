@@ -121,14 +121,19 @@
                 const date = time_stamp(e, this.date_style, this.date_type);
                 const value = this.form_value;
                 value[this.form_index] = date;
-                const data = this.date_handle(value[0], value[1]);
+                const new_time_data = this.date_handle(value[0], value[1]);
                 // 重新编辑一下历史数据
                 this.setData({
-                    form_value: data,
+                    form_value: new_time_data,
                 });
                 // 数据发生变化之后再改回原样
                 this.z_index_change('');
-                this.$emit('dataChange', { value: value, id: this.propDataId });
+                // 执行校验逻辑
+                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, new_time_data, false, 'time');
+                // 校验数据
+                this.$emit('dataCheck', { is_error, error_text, value: new_time_data, id: this.propDataId });
+                // 发送数据
+                this.$emit('dataChange', { value: new_time_data, id: this.propDataId });
             },
             date_handle(time0, time1) {
                 if (isEmpty(time0) || isEmpty(time1)) {
@@ -171,6 +176,11 @@
                     form_value: date,
                 });
                 this.z_index_change('');
+                // 执行校验逻辑
+                const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, date, false, 'time');
+                // 校验数据
+                this.$emit('dataCheck', { is_error, error_text, value: date, id: this.propDataId });
+
                 this.$emit('dataChange', { value: date, id: this.propDataId });
             },
             mask_click() {
