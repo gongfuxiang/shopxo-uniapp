@@ -123,7 +123,7 @@ export default {
         submit_event(e) {
             const { type = 'success', message = '', submit_data = {}} = e;
             if (type == 'error') {
-                app.globalData.showToast(message, 'error');
+                app.globalData.showToast(message);
             } else {
                 const params = {
                     forminput_id: this.propDataFormId,
@@ -140,12 +140,12 @@ export default {
                         if (res.data.code == 0) {
                             app.globalData.showToast('提交成功', 'success');
                         } else {
-                            app.globalData.showToast('提交失败', 'error');
+                            app.globalData.showToast('提交失败');
                         }
                     },
                     fail: (res) => {
                         this.is_submit_disable = false;
-                        app.globalData.showToast('提交失败', 'error');
+                        app.globalData.showToast('提交失败');
                     }
                 });
             }
