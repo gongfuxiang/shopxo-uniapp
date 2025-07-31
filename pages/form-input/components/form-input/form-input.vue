@@ -117,9 +117,15 @@ export default {
                 })
             }, 500);
         },
+        /*
+        * 点击提交按钮触发方法
+        */
         on_submit_event() { 
             this.$refs.componentForm.on_submit_event();
         },
+        /*
+        * 表单校验完成之后返回的数据内容
+        */
         submit_event(e) {
             const { type = 'success', message = '', submit_data = {}} = e;
             if (type == 'error') {
