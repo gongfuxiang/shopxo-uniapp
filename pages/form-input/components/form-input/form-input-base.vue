@@ -615,12 +615,12 @@ export default {
                         return { ...item, ...match };
                     });
                     this.setData({ data_list: data_list });
-                    this.$emit('submitEvent', { type: 'error', submit_data: {}, message: message });
+                    this.$emit('onSubmitEvent', { type: 'error', submit_data: {}, message: message });
                 } else {
                     this.submit_data_parameter_handle();
                 }
             } catch (error) {
-                this.$emit('submitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
+                this.$emit('onSubmitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
             }
         },
         /*
@@ -677,9 +677,9 @@ export default {
                         }
                     }
                 });
-                this.$emit('submitEvent', { type: 'success', submit_data: submit_data, message: ''});
+                this.$emit('onSubmitEvent', { type: 'success', submit_data: submit_data, message: ''});
             } catch (error) {
-                this.$emit('submitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
+                this.$emit('onSubmitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
             }
         },
         /*

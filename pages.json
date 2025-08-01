@@ -130,6 +130,30 @@
             ]
         },
         {
+            "root": "pages/form-input-data",
+            "pages": [
+                {
+                    "path": "form-input-data",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/form-input-data-detail",
+            "pages": [
+                {
+                    "path": "form-input-data-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/goods-detail",
             "pages": [
                 {

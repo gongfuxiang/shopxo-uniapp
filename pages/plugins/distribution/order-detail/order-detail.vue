@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 基础信息 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('order-detail.order-detail.9er1pc')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.base_info_text')}}</view>
                     <view class="panel-content oh">
                         <view class="item br-b oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{$t('order-detail.order-detail.pyw6xg')}}</view>

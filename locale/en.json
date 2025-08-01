@@ -92,7 +92,9 @@
         "ver_update_tips": "Your WeChat version is too low, please update to the latest version!",
         "click_pay_text" : "Click to initiate payment",
         "again_pay_text" : "Restart payment",
-        "back_app_text" : "Return to APP"
+        "back_app_text" : "Return to APP",
+        "base_info_text": "Basic info",
+        "form_input_data_text": "Form input Data"
 	},
     "client": {
         "weixin": "WeChat",
@@ -110,6 +112,9 @@
 		"buy": "acknowledgement of order",
         "web-view": "",
 		"login": "Login",
+        "form-input": "Form input",
+        "form-input-data": "Form input data",
+        "form-input-data-detail": "Form input data detail",
 		"paytips": "Secure payment",
         "paylog-list": "Payment Order list",
         "paylog-detail": "Payment Order Details",
@@ -929,7 +934,6 @@
 	},
 	"order-detail": {
 		"order-detail": {
-			"9er1pc": "Basic info",
 			"36op8f": "Order number",
             "ygvc34": "Merchant name",
 			"x3ge6c": "Order amount",

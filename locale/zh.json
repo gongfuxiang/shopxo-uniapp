@@ -92,7 +92,9 @@
         "ver_update_tips": "你的微信版本过低，请更新至最新版本！",
         "click_pay_text" : "点击发起支付",
         "again_pay_text" : "重新发起支付",
-        "back_app_text" : "返回APP"
+        "back_app_text" : "返回APP",
+        "base_info_text": "基础信息",
+        "form_input_data_text": "表单数据"
 	},
     "client": {
         "weixin": "微信",
@@ -110,6 +112,9 @@
 		"buy": "订单确认",
 		"web-view": "",
 		"login": "登录",
+        "form-input": "表单",
+        "form-input-data": "表单数据",
+        "form-input-data-detail": "表单数据详情",
 		"paytips": "安全支付",
         "paylog-list": "支付订单列表",
         "paylog-detail": "支付订单详情",
@@ -919,7 +924,6 @@
 	},
 	"order-detail": {
 		"order-detail": {
-			"9er1pc": "基础信息",
 			"36op8f": "订单号",
             "ygvc34": "商户名称",
 			"x3ge6c": "订单金额",

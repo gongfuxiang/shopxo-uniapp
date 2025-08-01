@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 简洁的数据，一般列表展示使用 -->
-        <view v-if="propIsTerse" class="content margin-top cp">
+        <view v-if="propIsTerse" class="terse-content margin-top cp">
             <block v-if="data != null && data_field.length > 0">
                 <block v-for="(item, index) in data_field" :key="index">
                     <view v-if="(item.is_hide || 0) == 0" class="single-text margin-top-xs">
@@ -81,8 +81,8 @@
             },
             // 数据字段
             propDataField: {
-                type: Array,
-                default: [],
+                type: [Array,String],
+                default: '',
             },
             // 数据项最大展示数量（0则显示全部）
             propIsItemShowMax: {
@@ -132,20 +132,22 @@
         methods: {
             // 数据字段处理
             data_field_handle(data) {
-                var appoint = (this.propAppointField || null) == null ? [] : this.propAppointField.split(',');
-                var exclude = (this.propExcludeField || null) == null ? [] : this.propExcludeField.split(',');
-                var temp_data = [];
-                var index = 0;
-                for (var i in data) {
-                    if ((exclude.length == 0 && appoint.length > 0 && appoint.indexOf(data[i]['field']) != -1) || (appoint.length == 0 && (exclude.length == 0 || exclude.indexOf(data[i]['field']) == -1))) {
-                        data[i]['is_hide'] = (data[i]['is_hide'] || 0) == 0 ? (index >= this.propIsItemShowMax && this.propIsItemShowMax > 0 ? 1 : 0) : 0;
-                        temp_data.push(data[i]);
-                        index++;
+                if((data || null) != null && data.length > 0) {
+                    var appoint = (this.propAppointField || null) == null ? [] : this.propAppointField.split(',');
+                    var exclude = (this.propExcludeField || null) == null ? [] : this.propExcludeField.split(',');
+                    var temp_data = [];
+                    var index = 0;
+                    for (var i in data) {
+                        if ((exclude.length == 0 && appoint.length > 0 && appoint.indexOf(data[i]['field']) != -1) || (appoint.length == 0 && (exclude.length == 0 || exclude.indexOf(data[i]['field']) == -1))) {
+                            data[i]['is_hide'] = (data[i]['is_hide'] || 0) == 0 ? (index >= this.propIsItemShowMax && this.propIsItemShowMax > 0 ? 1 : 0) : 0;
+                            temp_data.push(data[i]);
+                            index++;
+                        }
                     }
+                    this.setData({
+                        data_field: temp_data,
+                    });
                 }
-                this.setData({
-                    data_field: temp_data,
-                });
             },
 
             // 文本事件
@@ -169,6 +171,9 @@
     };
 </script>
 <style scoped>
+    .terse-content .single-text {
+        max-height: 40rpx;
+    }
     .panel-item-images {
         width: 40rpx;
         height: 40rpx;
