@@ -406,7 +406,7 @@
                         if(limit_type.length > 0) {
                             var type_data = this.buy_use_type_data();
                             if(limit_type.indexOf(type_data.data_index) != -1 || limit_type.indexOf(type_data.data_index.toString()) != -1) {
-                                return temp['name'] + this.$t('realstore-cart.realstore-cart.miv944')+ this.propCurrencySymbol + starting_price;
+                                return this.$t('realstore-cart.realstore-cart.miv944')+ this.propCurrencySymbol + starting_price;
                             }
                         } else {
                             return this.$t('realstore-cart.realstore-cart.miv944') + this.propCurrencySymbol + starting_price;

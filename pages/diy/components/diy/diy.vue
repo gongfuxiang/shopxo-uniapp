@@ -92,6 +92,8 @@
                             <component-quick-nav ref="quick_nav" :propIsBtn="false"></component-quick-nav>
                             <!-- 语言选择 -->
                             <component-lang-switch ref="lang_switch" @popup_sub_language_event="popup_sub_language_event"></component-lang-switch>
+                            <!-- 分享页面 -->
+                            <component-share-popup ref="share"></component-share-popup>
                         </view>
                     </view>
                 </view>
@@ -153,6 +155,7 @@
     import componentSearch from '@/components/search/search';
     import componentQuickNav from '@/components/quick-nav/quick-nav';
     import componentLangSwitch from '@/components/lang-switch/lang-switch';
+    import componentSharePopup from '@/components/share-popup/share-popup';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
 
@@ -219,6 +222,7 @@
             componentGoodsBuy,
             componentSearch,
             componentLangSwitch,
+            componentSharePopup,
             componentQuickNav,
             componentDiyGoodsMagic
         },
@@ -845,18 +849,27 @@
                     this.tabs_click_event(this.tabs_id, this.is_tabs_type);
                 }
             },
+            // 悬浮按钮事件
             btn_event(name) {
                 switch(name) {
+                    // 快捷导航
                     case 'quick_nav' :
                         if ((this.$refs.quick_nav || null) != null) {
                             this.$refs.quick_nav.quick_open_event();
                         }
-                    break;
+                        break;
+                    // 多语言
                     case 'lang' :
                         if ((this.$refs.lang_switch || null) != null) {
                             this.$refs.lang_switch.lang_open_event();
                         }
-                    break;
+                        break;
+                    // 分享页面
+                    case 'share' :
+                        if ((this.$refs.share || null) != null) {
+                            this.$refs.share.init();
+                        }
+                        break;
                 }
             }, 
             popup_sub_language_event(e) {

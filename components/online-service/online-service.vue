@@ -34,7 +34,7 @@
             <view v-else>
                 <block v-if="is_online_service_fixed == 1">
                     <block v-if="propIsMovable">
-                        <movable-area class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
+                        <movable-area :class="propIsDiy ? '' : 'online-service-movable-container'" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
                             <movable-view direction="all" :x="x" :y="y" :animation="false" :class="'online-service-event-submit '+(propIsSpread ? ' spread' : '')">
                                 <block v-if="propIsSpread">
                                     <view class="ring"></view>
@@ -66,7 +66,7 @@
                         </movable-area>
                     </block>
                     <block v-else>
-                        <view class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
+                        <view :class="propIsDiy ? '' : 'online-service-movable-container'" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
                             <view :class="'online-service-event-submit '+(propIsSpread ? ' spread' : '')">
                                 <block v-if="propIsSpread">
                                     <view class="ring"></view>
@@ -190,6 +190,10 @@
             	type: Boolean,
             	default: true
             },
+            propIsDiy: {
+            	type: Boolean,
+            	default: false
+            }
         },
         // 属性值改变监听
         watch: {

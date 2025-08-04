@@ -15,7 +15,7 @@
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
                             <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
-                                <image class="goods-img fl radius" :src="item.images" mode="aspectFit"></image>
+                                <image class="goods-img fl radius" :class="goods_cover_class" :src="item.images" mode="aspectFill"></image>
                                 <view class="base fr">
                                     <view class="multi-text">{{ item.title }}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm text-size-sm">{{ item.simple_desc }}</view>
@@ -61,7 +61,7 @@
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
                             <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
-                                <image class="goods-img dis-block wh-auto" :src="item.images" mode="widthFix"></image>
+                                <image class="goods-img dis-block wh-auto" :class="goods_cover_class" :src="item.images" mode="aspectFill"></image>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{ item.title }}</view>
                                     <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-sm flex-row jc-sb align-c pr">
@@ -116,7 +116,7 @@
                                     <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                         <!-- 商品主体内容 -->
                                         <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
-                                            <image class="goods-img dis-block wh-auto" :src="item.images" mode="scaleToFill"></image>
+                                            <image class="goods-img dis-block wh-auto border-radius-main" :class="goods_cover_class" :src="item.images" mode="aspectFill"></image>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="single-text text-size-xs">{{ item.title }}</view>
                                                 <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-xs flex-row align-c">
@@ -188,6 +188,7 @@
                     border_radius: '24rpx',
                     padding: '6rpx 16rpx',
                     font_size: '24rpx',
+                    goods_cover_class: '',
                 },
             };
         },
@@ -295,10 +296,12 @@
         created: function () {
             var is_app_mourning = app.globalData.is_app_mourning();
             var is_show_cart = app.globalData.data.is_goods_list_show_cart_opt == 1 ? (is_app_mourning && this.propSource == 'index' ? false : true) : false;
+            var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
             this.setData({
                 data: this.propData,
                 is_show_cart: is_show_cart,
                 grid_btn_config: Object.assign({}, this.grid_btn_config, this.propGridBtnConfig),
+                goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
             });
         },
         methods: {

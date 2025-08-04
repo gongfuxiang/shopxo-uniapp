@@ -501,11 +501,13 @@
                     params['is_cache'] = 0;
                 }
 
+                // #ifdef APP
                 // 网络检查
                 if ((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'init', params);
                     return false;
                 }
+                // #endif
 
                 // 没有缓存数据则开启加载层
                 if (upd_data == null) {

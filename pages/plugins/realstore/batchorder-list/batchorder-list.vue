@@ -22,8 +22,8 @@
                         <view class="cr-base">{{ item.name }}</view>
                         <view v-if="(item.describe || null) != null" class="cr-grey margin-top-xs">{{ item.describe }}</view>
                     </view>
-                    <block v-if="(item.detail_data || null) != null && item.detail_data.length > 0">
-                        <view v-for="(detail, di) in item.detail_data" :key="di" class="br-b-dashed oh padding-vertical-main">
+                    <block v-if="(item.detail_data || null) != null && (item.detail_data.data || null) != null && item.detail_data.data.length > 0">
+                        <view v-for="(detail, di) in item.detail_data.data" :key="di" class="br-b-dashed oh padding-vertical-main">
                             <block v-for="(fv, fi) in content_list" :key="fi">
                                 <view class="single-text margin-top-xs">
                                     <text class="cr-grey margin-right-xl">{{ fv.name }}</text>

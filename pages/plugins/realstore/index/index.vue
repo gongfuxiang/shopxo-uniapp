@@ -237,11 +237,13 @@
         methods: {
             // 初始化
             get_data(params = {}) {
+                // #ifdef APP
                 // 网络检查
                 if((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'get_data', params);
                     return false;
                 }
+                // #endif
 
                 // 请求数据
                 var lng = 0;
@@ -278,6 +280,9 @@
                                 data_list_loding_status: data_list.length > 0 ? 3 : 0,
                                 data_bottom_line_status: true,
                             });
+
+                            // 用户位置初始化
+                            this.user_location_init();
 
                             if ((this.data_base || null) != null) {
                                 // 基础自定义分享
@@ -407,9 +412,14 @@
             user_location_init() {
                 var res = app.globalData.choice_user_location_init();
                 this.setData({
-                    user_location: res,
-                    location_tips_close_status: res.status != 1
+                    user_location: res
                 });
+                // 未选择位置，但是未开启自动获取位置的情况下提示位置弹窗让用户选择
+                if(res.status != 1 && (this.data_base || null) != null && parseInt(this.data_base.is_home_auto_user_location || 0) != 1) {
+                    this.setData({
+                        location_tips_close_status: true
+                    });
+                }
             },
 
             // 地址选择提示关闭事件

@@ -56,27 +56,27 @@
                 <!-- 服务信息 -->
                 <view v-if="(detail.service_data || null) != null" class="service-data panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.567ygf')}}</view>
-                    <view class="panel-content oh padding-top-main">
-                        <view class="item br-b-dashed oh padding-vertical-main">
+                    <view v-for="(item, index) in detail.service_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
+                        <view class="item oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.gsfw4d')}}</view>
-                            <view class="content fl br-l padding-left-main">{{ detail.service_data.service_name }}</view>
+                            <view class="content fl br-l padding-left-main">{{ item.service_name }}</view>
                         </view>
-                        <view class="item br-b-dashed oh padding-vertical-main">
+                        <view class="item oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.6ygfew')}}</view>
-                            <view class="content fl br-l padding-left-main" :data-value="detail.service_data.service_mobile" @tap="text_copy_event">
-                                <text>{{ detail.service_data.service_mobile }}</text>
+                            <view class="content fl br-l padding-left-main" :data-value="item.service_mobile" @tap="text_copy_event">
+                                <text>{{ item.service_mobile }}</text>
                                 <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
                             </view>
                         </view>
-                        <view v-if="(detail.service_data.service_duration_minute_text || null) != null" class="item br-b-dashed oh padding-vertical-main">
+                        <view v-if="(item.service_duration_minute_text || null) != null" class="item oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.67ujfr')}}</view>
-                            <view class="content fl br-l padding-left-main">{{ detail.service_data.service_duration_minute_text }}</view>
+                            <view class="content fl br-l padding-left-main">{{ item.service_duration_minute_text }}</view>
                         </view>
-                        <view class="item br-b-dashed oh padding-vertical-main">
+                        <view class="item oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{$t('common.service_time')}}</view>
                             <view class="content fl br-l padding-left-main">
-                                <view v-if="(detail.service_data.service_start_time || null) != null">{{ detail.service_data.service_start_time }}</view>
-                                <view v-if="(detail.service_data.service_end_time || null) != null">{{ detail.service_data.service_end_time }}</view>
+                                <view v-if="(item.service_start_time || null) != null">{{ item.service_start_time }}</view>
+                                <view v-if="(item.service_end_time || null) != null">{{ item.service_end_time }}</view>
                             </view>
                         </view>
                     </view>

@@ -9,7 +9,7 @@
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
             <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                 <!-- form表单子组件显示 -->
-                <form-input-base ref="componentForm" :propConfig="propValue.config" :propDataFormId="propDataFormId" @submitEvent="submit_event" />
+                <form-input-base ref="componentForm" :propConfig="propValue.config" :propDataFormId="propDataFormId" @onSubmitEvent="submit_event" />
             </view>
         </view>
         <!-- 支付宝小程序 不支持同时上下左右滑动-->

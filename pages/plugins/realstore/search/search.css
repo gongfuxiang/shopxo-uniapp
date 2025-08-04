@@ -7,7 +7,7 @@
     line-height: 56rpx;
 }
 .nav-search {
-    width: calc(100% - 260rpx);
+    width: calc(100% - 320rpx);
 }
 .nav-search.map {
     width: 100%;

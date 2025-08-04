@@ -565,11 +565,13 @@
 
             // 获取数据
             init(params = {}) {
+                // #ifdef APP
                 // 网络检查
                 if ((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'init', params);
                     return false;
                 }
+                // #endif
 
                 // 请求数据
                 if (this.is_first == 1) {

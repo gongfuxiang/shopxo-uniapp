@@ -1,10 +1,12 @@
 <template>
     <view :class="theme_view">
         <!-- 导航 -->
-        <view class="nav-child flex-row align-c margin-bottom-lg">
-            <view v-for="(item, index) in nav_status_list" :key="index">
-                <view class="item dis-inline-block round margin-right-main tc" :class="nav_status_index == index ? 'cr-main bg-main-light' : 'cr-grey bg-grey-e'" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </view>
+        <view class="nav-child flex-row align-c margin-bottom-lg scroll-view-horizontal">
+            <scroll-view :scroll-x="true" :show-scrollbar="false">
+                <block v-for="(item, index) in nav_status_list" :key="index">
+                    <view class="item dis-inline-block round margin-right-main tc" :class="nav_status_index == index ? 'cr-main bg-main-light' : 'cr-grey bg-grey-e'" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                </block>
+            </scroll-view>
         </view>
 
         <!-- 列表 -->
@@ -12,7 +14,7 @@
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
                     <text class="cr-grey-9">{{ item.add_time }}</text>
-                    <text :class="item.status === 0 ? 'cr-black' : item.status === 1 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
+                    <text :class="item.status === 0 ? 'cr-black' : (item.status === 2 ? 'cr-grey-c' : 'cr-red')">{{ item.status_name }}</text>
                 </view>
                 <view :data-value="'/pages/plugins/wallet/user-cash-detail/user-cash-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
                     <view v-for="(fv, fi) in content_list" :key="fi">
@@ -23,11 +25,14 @@
                         </view>
                     </view>
                 </view>
+                <view v-if="item.status == 1" class="item-operation tr margin-top-main">
+                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="receive_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('pages.plugins-coin-collection')}}</button>
+                </view>
             </view>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" propLoadingLogoTop="85%"></component-no-data>
         </view>
 
         <!-- 结尾 -->
@@ -64,8 +69,9 @@
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
                     { name: this.$t('user-cash.user-cash.3v1gzc'), value: '0' },
-                    { name: this.$t('user-cash.user-cash.t7gtu0'), value: '1' },
-                    { name: this.$t('user-cash.user-cash.x47iu3'), value: '2' },
+                    { name: this.$t('user-cash.user-cash.678iuy'), value: '1' },
+                    { name: this.$t('user-cash.user-cash.t7gtu0'), value: '2' },
+                    { name: this.$t('user-cash.user-cash.x47iu3'), value: '3' },
                 ],
                 nav_status_index: 0,
                 content_list: [
@@ -219,6 +225,73 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+
+            // 收款
+            receive_event(e) {
+                if (uni.canIUse('requestMerchantTransfer')) {
+                    // 参数
+                    var id = e.currentTarget.dataset.value;
+                    var index = e.currentTarget.dataset.index;
+                    
+                    // 加载loding
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('receivedata', 'cash', 'wallet'),
+                        method: 'POST',
+                        data: {
+                            id: id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                var temp_data_list = this.data_list;
+                                uni.requestMerchantTransfer({
+                                    mchId: res.data.data.mchid,
+                                    appId: res.data.data.appid,
+                                    package: res.data.data.package,
+                                    success: (res) => {
+                                        temp_data_list[index]['status'] = 2;
+                                        temp_data_list[index]['status_name'] = this.$t('user-cash.user-cash.t7gtu0');
+                                        this.setData({
+                                            data_list: temp_data_list,
+                                        });
+                                        uni.request({
+                                            url: app.globalData.get_request_url('payrefresh', 'cash', 'wallet'),
+                                            method: 'POST',
+                                            data: {
+                                                id: id,
+                                            },
+                                            dataType: 'json'
+                                        });
+                                    },
+                                    fail: (res) => {
+                                        if(res.errMsg.indexOf('cancel') == -1) {
+                                            uni.showModal({
+                                                content: res.errMsg,
+                                                showCancel: false,
+                                            });
+                                        }
+                                    },
+                                });
+                            } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                } else {
+                    uni.showModal({
+                        content: this.$t('common.ver_update_tips'),
+                        showCancel: false,
+                    });
+                }
             },
 
             // 导航事件

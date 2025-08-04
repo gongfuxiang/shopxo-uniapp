@@ -1,10 +1,10 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-binding-data-list oh">
+        <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-binding-data-list oh" :class="goods_cover_class">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item border-radius-main bg-white padding-main oh pr spacing-mb">
                     <view class="oh flex-row" :data-value="item.url" @tap="url_event">
-                        <image :src="item.images" mode="aspectFit" class="images dis-block border-radius-main"></image>
+                        <image :src="item.images" mode="aspectFill" class="images dis-block border-radius-main"></image>
                         <view class="flex-1 flex-width flex-col jc-sb">
                             <view class="base-right bs-bb padding-left-main">
                                 <view class="fw-b text-size-lg cr-base single-text">{{ item.title }}</view>
@@ -23,11 +23,11 @@
                             <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}{{$t('binding-list.binding-list.kh7951')}}</button>
                         </view>
                     </view>
-                    <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * 134 + 12 : '0') + 'rpx'">
+                    <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * ((goods_cover_class || null) == null ? 134 : 158) + 12 : '0') + 'rpx'">
                         <view class="padding-horizontal-main padding-top-main padding-bottom-main oh">
                             <block v-for="(gv, gi) in item.goods" :key="gi">
                                 <view class="goods-item oh margin-bottom-lg" :data-value="gv.goods_url" @tap="url_event">
-                                    <image :src="gv.images" mode="aspectFit" class="goods-images fl dis-block radius"></image>
+                                    <image :src="gv.images" mode="aspectFill" class="goods-images fl dis-block radius"></image>
                                     <view class="goods-right fr bs-bb">
                                         <view class="single-text text-size-sm">{{ gv.title }}</view>
                                         <view v-if="(gv.show_field_price_status || 0) == 1" class="single-text">
@@ -59,6 +59,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 config: {},
                 data_list: [],
+                goods_cover_class: '',
             };
         },
         components: {},
@@ -95,9 +96,11 @@
             init() {
                 var config = ((this.propConfig || null) == null ? app.globalData.get_config('plugins_base.binding.data') : this.propConfig) || {};
                 var data_list = ((this.propData || null) == null || (this.propData.data || null) == null || this.propData.data.length == 0) ? [] : this.propData.data;
+                var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
                 this.setData({
                     config: config,
                     data_list: data_list,
+                    goods_cover_class: (goods_cover_size_type == 1) ? 'goods-cover-tall' : '',
                 });
             },
 
@@ -169,5 +172,14 @@
         100% {
             background-position: 0% 50%;
         }
+    }
+    /**
+     * 商品图片高度模式
+     */
+    .plugins-binding-data-list.goods-cover-tall .item .binding-goods-list .goods-item {
+        height: 124rpx;
+    }
+    .plugins-binding-data-list.goods-cover-tall .item .binding-goods-list .goods-item .goods-images {
+        height: 120rpx !important;
     }
 </style>

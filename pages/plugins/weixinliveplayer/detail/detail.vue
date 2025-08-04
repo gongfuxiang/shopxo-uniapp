@@ -200,40 +200,7 @@
                     })
                 );
                 var url = `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${this.detail.roomid}&custom_params=${params}`;
-
-                // #ifdef APP
-                // APP则直接打开微信小程序直播
-                var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id', null);
-                if(weixin_original_id != null) {
-                    plus.share.getServices(res => {
-                        let sweixin = null;
-                        for(let i in res) {
-                            if(res[i].id == 'weixin') {
-                                sweixin = res[i];
-                            }
-                        }
-                        //唤醒微信小程序
-                        if(sweixin) {
-                            sweixin.launchMiniProgram({
-                                id: weixin_original_id,
-                                type: 0,
-                                path: url
-                            });
-                        } else {
-                            app.globalData.showToast(this.$t('detail.detail.86g7e1'));
-                        }
-                    });
-                }
-                return false;
-                // #endif
-
-                // #ifdef MP-WEIXIN
                 app.globalData.url_open(url);
-                return false;
-                // #endif
-
-                // 非微信环境和APP环境
-                app.globalData.showToast(this.$t('detail.detail.9d3o6w'));
             },
 
             // 海报分享

@@ -11,16 +11,26 @@
                         <view :class="'cr-'+(pay_status == 1 ? 'green' : (pay_status == 2 ? 'red' : 'grey'))">{{pay_msg}}</view>
                     </view>
                     <view v-if="pay_status == 2" class="margin-top-xxxxl padding-vertical-xxxxl">
-                        <button class="bg-green br-green cr-white round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" @tap="pay_handle">重新发起支付</button>
+                        <button class="bg-green br-green cr-white round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" @tap="pay_handle">{{pay_btn_text}}</button>
                     </view>
                 </block>
                 <block v-else>
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </block>
-                
                 <view v-if="is_back_btn && pay_status != 0" class="margin-top-xxxxl padding-top-xxxxl tc">
-                    <button class="bg-white br-main cr-main round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" open-type="launchApp" app-parameter="wechat">返回APP</button>
+                    <button class="bg-white br-main cr-main round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" open-type="launchApp" app-parameter="wechat">{{pay_back_app_text}}</button>
+                </view>
+            </view>
+        </view>
+
+        <!-- 支付中提示弹窗 -->
+        <view v-if="payment_confirm_modal_status" class="payment-confirm-modal">
+            <view class="content padding-xl margin-xxl tc bg-white border-radius-main">
+                <view class="padding-vertical-xxxxl">{{$t('common.payment_in_text')}}</view>
+                <view class="margin-top-lg">
+                    <button type="default" size="mini" class="bg-white br-black cr-black text-size-sm round margin-right-xxxxl" data-type="0" @tap="payment_confirm_event">{{$t('common.not_have_name')}}</button>
+                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round margin-left-xxxxl" data-type="1" @tap="payment_confirm_event">{{$t('order.order.s8g966')}}</button>
                 </view>
             </view>
         </view>
@@ -47,6 +57,10 @@
                 data: {},
                 pay_status: 0,
                 pay_msg: '',
+                payment_confirm_modal_status: false,
+                is_first: 1,
+                pay_btn_text: this.$t('common.again_pay_text'),
+                pay_back_app_text: this.$t('common.back_app_text')
             };
         },
 
@@ -98,7 +112,7 @@
                     success: (res) => {
                         if (res.code) {
                             uni.request({
-                                url: app.globalData.get_request_url("paydata", "cashier", "allocation"),
+                                url: app.globalData.get_request_url("paydata", "cashier", self.params.plugins || ''),
                                 method: 'POST',
                                 data: {...self.params, ...{authcode: res.code}},
                                 dataType: 'json',
@@ -115,6 +129,7 @@
                                         this.pay_handle();
                                     } else {
                                         this.setData({
+                                            is_first: 0,
                                             data_list_loding_status: 0,
                                             data_list_loding_msg: res.data.msg,
                                         });
@@ -123,6 +138,7 @@
                                 fail: () => {
                                     uni.stopPullDownRefresh();
                                     this.setData({
+                                        is_first: 0,
                                         data_list_loding_status: 0,
                                         data_list_loding_msg: self.$t('common.internet_error_tips'),
                                     });
@@ -133,6 +149,7 @@
                     fail: (e) => {
                         uni.stopPullDownRefresh();
                         this.setData({
+                            is_first: 0,
                             data_list_loding_status: 0,
                             data_list_loding_msg: self.$t('login.login.3nmrg2'),
                         });
@@ -141,37 +158,83 @@
             },
 
             // 支付处理
-            pay_handle(e) {
-                if(this.pay_status != 1)
-                {
+            pay_handle() {
+                if(this.pay_status != 1) {
+                    var self = this;
+                    var data = self.data.pay_data;
+                    // 是否打开另一个小程序
+                    if (typeof data != 'string' && (data.appid || null) != null && (data.path || null) != null && (data.order_no || null) != null) {
+                        uni.navigateToMiniProgram({
+                            appId: data.appid,
+                            path: data.path,
+                            extraData: data.extra_data || {},
+                            success(res) {
+                                // 提示弹窗
+                                self.setData({
+                                    is_first: 0,
+                                    payment_confirm_modal_status: true,
+                                });
+                            },
+                            fail(res) {
+                                self.setData({
+                                    is_first: 0,
+                                    pay_status: 2,
+                                    pay_msg: self.is_first == 1 ? '' : self.$t('paytips.paytips.6y488i'),
+                                    pay_btn_text: self.is_first == 1 ? self.$t('common.click_pay_text') : self.$t('common.again_pay_text'),
+                                });
+                            }
+                        });
+                    } else {
+                        self.setData({
+                            is_first: 0,
+                            pay_status: 0,
+                            pay_msg: self.$t('common.payment_in_text'),
+                        });
+                        uni.requestPayment({
+                            timeStamp: data.timeStamp,
+                            nonceStr: data.nonceStr,
+                            package: data.package,
+                            signType: data.signType,
+                            paySign: data.paySign,
+                            success: (res) => {
+                                self.setData({
+                                    pay_status: 1,
+                                    pay_msg: self.$t('paytips.paytips.679rxu'),
+                                });
+                            },
+                            fail: (res) => {
+                                self.setData({
+                                    pay_status: 2,
+                                    pay_msg: self.$t('paytips.paytips.6y488i'),
+                                });
+                            },
+                        });
+                    }
+                }
+            },
+
+            // 支付确认弹窗事件
+            payment_confirm_event(e) {
+                // 关闭弹窗清除定时任务
+                this.setData({
+                    payment_confirm_modal_status: false,
+                });
+                // 回调处理
+                if(parseInt(e.currentTarget.dataset.type || 0) == 1) {
                     this.setData({
-                        pay_status: 0,
-                        pay_msg: this.$t('common.payment_in_text'),
+                        pay_status: 1,
+                        pay_msg: this.$t('paytips.paytips.679rxu'),
                     });
-                    uni.requestPayment({
-                        timeStamp: this.data.pay_data.timeStamp,
-                        nonceStr: this.data.pay_data.nonceStr,
-                        package: this.data.pay_data.package,
-                        signType: this.data.pay_data.signType,
-                        paySign: this.data.pay_data.paySign,
-                        success: (res) => {
-                            this.setData({
-                                pay_status: 1,
-                                pay_msg: this.$t('paytips.paytips.679rxu'),
-                            });
-                        },
-                        fail: (res) => {
-                            this.setData({
-                                pay_status: 2,
-                                pay_msg: this.$t('paytips.paytips.6y488i'),
-                            });
-                        },
+                } else {
+                    this.setData({
+                        pay_status: 2,
+                        pay_msg: this.$t('paytips.paytips.6y488i'),
                     });
                 }
             }
         }
     };
 </script>
-<style>
+<style scoped>
     @import './cashier.css';
 </style>

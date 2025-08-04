@@ -10,7 +10,7 @@
                     <!-- 商品 -->
                     <view class="data-list oh">
                         <view v-for="(item, index) in data.goods" :key="index" class="item padding-main border-radius-main bg-white oh spacing-mb flex-row pr">
-                            <image class="goods-img dis-block border-radius-main" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
+                            <image class="goods-img dis-block border-radius-main" :class="goods_cover_class" :src="item.images" mode="aspectFill" :data-value="item.goods_url" @tap="url_event"></image>
                             <view class="right-base flex-1 flex-width padding-left-main">
                                 <view class="flex-row jc-c">
                                     <view :class="'multi-text flex-1 flex-width ' + (data.type == 1 ? 'padding-right' : '')">{{ item.title }}</view>
@@ -134,6 +134,7 @@
                 user: null,
                 data_base: null,
                 data: null,
+                goods_cover_class: '',
                 // 自定义分享信息
                 share_info: {},
                 theme_color: app.globalData.get_theme_color(),
@@ -184,8 +185,10 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
+                        goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');

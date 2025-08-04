@@ -7,7 +7,7 @@
             </block>
             <view class="img oh" :style="content_style">
                 <block v-if="(form || null) != null && form.button_jump == 'customer_service'">
-                    <component-online-service :propChatImage="img_url" :propIsSpread="false" :propIsMovable="false"></component-online-service>
+                    <component-online-service :propChatImage="img_url" :propIsSpread="false" :propIsMovable="false" :propIsDiy="true"></component-online-service>
                 </block>
                 <block v-else>
                     <image-empty :propImageSrc="img_url" propImgFit="aspectFill" propErrorStyle="width: 60rpx;height: 60rpx;"></image-empty>
@@ -100,8 +100,13 @@
                     case 'quick_nav' :
                         this.$emit('btn_event', 'quick_nav');
                         break;
+                    // 多语言
                     case 'lang' :
                         this.$emit('btn_event', 'lang');
+                        break;
+                    // 分享页面
+                    case 'share' :
+                        this.$emit('btn_event', 'share');
                         break;
                 }
             },
@@ -125,7 +130,7 @@
         // left: 0;
         background: transparent;
         pointer-events: none;
-        z-index: 103;
+        z-index: 99;
     }
     /**
     * 呼吸灯
