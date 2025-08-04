@@ -6,7 +6,7 @@
             <view :style="carousel_margin_top">
                 <view :style="carousel_container">
                     <view :style="carousel_img_container">
-                        <component-diycarousel :propValue="propValue" :propIsCommon="false" @onVideoPlay="video_play" @slideChange="slideChange"></component-diycarousel>
+                        <component-diycarousel :propValue="propValue" :propIsCommonStyle="false" @onVideoPlay="video_play" @slideChange="slideChange"></component-diycarousel>
                     </view>
                 </view>
             </view>

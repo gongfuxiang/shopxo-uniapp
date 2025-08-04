@@ -78,7 +78,7 @@
                     return {};
                 },
             },
-            propIsCommon: {
+            propIsCommonStyle: {
                 type: Boolean,
                 default: true,
             },
@@ -178,8 +178,8 @@
                     new_list: new_form.carousel_list.concat(this.get_seat_list(new_form)),
                     popup_width: block * 16 * 2 + 'rpx', // 视频的宽度，依照16:9比例来算
                     popup_height: block * 9 * 2 + 'rpx',  // 视频的高度
-                    style_container: this.propIsCommon ? common_styles_computer(common_style) : '', // 公共样式显示
-                    style_img_container: this.propIsCommon ? common_img_computer(common_style, this.propIndex) : '', // 公共样式显示
+                    style_container: this.propIsCommonStyle ? common_styles_computer(common_style) : '', // 公共样式显示
+                    style_img_container: this.propIsCommonStyle ? common_img_computer(common_style, this.propIndex) : '', // 公共样式显示
                     img_style: new_form.carousel_type == 'inherit' ? '' : radius_computer(new_style), // 图片的设置
                     outer_img_style: new_form.carousel_type == 'inherit' ? radius_computer(new_style) + 'overflow: hidden;' : '',
                     indicator_style: get_indicator_style(new_style), // 指示器的样式
@@ -214,7 +214,7 @@
                 }
             },
             get_swiper_bg_style(form, actived_index) {
-                if (!this.propIsCommon) {
+                if (!this.propIsCommonStyle) {
                     return '';
                 }
                 const style = form?.carousel_list?.[actived_index]?.style;
@@ -233,7 +233,7 @@
                 return '';
             },
             get_swiper_bg_img_style(form, actived_index) {
-                if (!this.propIsCommon) {
+                if (!this.propIsCommonStyle) {
                     return '';
                 }
                 const { carousel_img, style = {} } = form?.carousel_list[actived_index] || {};
@@ -282,7 +282,7 @@
                         actived_index = 0;
                     }
                 }
-                if (!this.propIsCommon) {
+                if (!this.propIsCommonStyle) {
                     this.$emit('slideChange', actived_index);
                 }
                 this.setData({
