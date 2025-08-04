@@ -1789,14 +1789,7 @@
             // 是否为page页面地址
             is_page(value) {
                 var arr = ['/pages', 'pages/'];
-                var status = arr.indexOf(value.substr(0, 6)) != -1;
-                if(!status) {
-                    // 是否打开插件地址
-                    if(value.substr(0, 17) == 'plugin-private://') {
-                        status = true;
-                    }
-                }
-                return status;
+                return arr.indexOf(value.substr(0, 6)) != -1;
             },
 
             // url打开
@@ -1841,6 +1834,53 @@
                     } else if (value.substr(0, 7) == 'scan://') {
                         // 扫码协议
                         this.scan_handle();
+                    } else if(value.substr(0, 17) == 'plugin-private://') {
+                        // 是否打开插件地址
+                        // #ifdef APP
+                        // APP则直接打开微信小程序直播
+                        var self = this;
+                        var weixin_original_id = self.get_config('config.common_app_mini_weixin_share_original_id', null);
+                        if(weixin_original_id != null) {
+                            plus.share.getServices(res => {
+                                let sweixin = null;
+                                for(let i in res) {
+                                    if(res[i].id == 'weixin') {
+                                        sweixin = res[i];
+                                        break;
+                                    }
+                                }
+                                //唤醒微信小程序
+                                if(sweixin) {
+                                    sweixin.launchMiniProgram({
+                                        id: weixin_original_id,
+                                        type: 0,
+                                        path: value
+                                    });
+                                } else {
+                                    self.showToast(i18n.t('detail.detail.86g7e1'));
+                                }
+                            });
+                        } else {
+                            self.showToast(i18n.t('detail.detail.567uyh'));
+                        }
+                        return false;
+                        // #endif
+
+                        // #ifdef MP-WEIXIN
+                        if (is_redirect) {
+                            uni.redirectTo({
+                                url: value
+                            });
+                        } else {
+                            uni.navigateTo({
+                                url: value
+                            });
+                        }
+                        return false;
+                        // #endif
+
+                        // 非微信环境和APP环境
+                        this.showToast(i18n.t('detail.detail.9d3o6w'));
                     } else {
                         // 默认切换或跳转页面
                         if (this.is_page(value)) {

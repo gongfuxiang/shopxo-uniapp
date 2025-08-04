@@ -6,6 +6,10 @@
     height: 160rpx !important;
 }
 
+.data-list .item .goods-img.cover-tall {
+    height: 194rpx !important;
+}
+
 .data-list .item .binding-check {
     width: 40rpx;
 }

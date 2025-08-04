@@ -57,7 +57,7 @@
                 <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="swiper" :style="'height: ' + photo_height + ' !important;'">
                     <block v-for="(item, index) in goods_photo" :key="index">
                         <swiper-item>
-                            <image class="swiper-item wh-auto" @tap="goods_photo_view_event" :data-index="index" :src="item.images" mode="scaleToFill" :style="'height: ' + photo_height + ' !important;'"></image>
+                            <image class="swiper-item wh-auto" @tap="goods_photo_view_event" :data-index="index" :src="item.images" mode="aspectFill" :style="'height: ' + photo_height + ' !important;'"></image>
                         </swiper-item>
                     </block>
                 </swiper>
@@ -662,6 +662,8 @@
     var system_info = app.globalData.get_system_info() || {};
     var bar_height = parseInt(system_info.statusBarHeight || 0);
     var win_width = parseInt(system_info.windowWidth || system_info.screenWidth || 0);
+    var win_height = parseInt(system_info.windowHeight || system_info.screenHeight || 0);
+    var photo_height = (win_width <= 0) ? '55vh' : app.globalData.window_width_handle(win_width) + 'px';
     export default {
         data() {
             return {
@@ -680,7 +682,7 @@
                 data_loading_status: 0,
                 params: null,
                 system_info: system_info,
-                photo_height: win_width <= 0 ? '55vh' : app.globalData.window_width_handle(win_width) + 'px',
+                photo_height: photo_height,
                 goods: null,
                 guess_you_like: [],
                 goods_photo: [],
@@ -909,14 +911,20 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
-                    this.setData({
+                    var upd_data = {
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_content_show_photo: app.globalData.get_config('config.common_is_goods_detail_content_show_photo'),
                         common_is_goods_detail_show_comments: app.globalData.get_config('config.common_is_goods_detail_show_comments'),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
-                    });
+                    };
+                    // 商品相册尺寸类型
+                    var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
+                    if(goods_cover_size_type == 1) {
+                        upd_data['photo_height'] = parseInt(win_height*0.7)+'px';
+                    }
+                    this.setData(upd_data);
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }

@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <view v-if="(data_goods_list || null) != null && data_goods_list.length > 0">
-            <view v-for="(item, index) in data_goods_list" :key="index" class="plugins-magic-content border-radius-main oh spacing-mb">
+            <view v-for="(item, index) in data_goods_list" :key="index" class="plugins-magic-content border-radius-main oh spacing-mb" :class="goods_cover_class">
                 <view v-if="(item.data || null) != null && item.data.length > 0" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : (((item.is_text_white || 0) == 1) ? 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 80%);' : 'background: #fff;')">
                     <!-- 上下滚动 -->
                     <view v-if="item.show_style == 0" :class="'hot-list flex-row flex-wrap padding-vertical-main '+(((item.is_text_white || 0) == 1) ? 'is-text-white' : '')">
@@ -24,7 +24,7 @@
                                                     <view :class="'flex-row gap-10 goods-item-number-'+itemss.length">
                                                         <view v-for="(gv, gi) in itemss" :key="gi" :class="'bg-white border-radius-main oh flex-width-half '+(itemss.length % 2 != 0 && itemss.length-1 == gi ? 'wh-auto' : '')">
                                                             <view class="tc" :data-index="index" :data-indexs="indexs" :data-indexss="indexss" :data-gi="gi" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="goods_event">
-                                                                <image :src="(gv.images || null) !== null ? gv.images : ''" :mode="itemss.length % 2 != 0 && itemss.length-1 == gi ? 'aspectFit' : 'scaleToFill'" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || 0) == 1) ? '' : 'border-radius-main')"> </image>
+                                                                <image :src="(gv.images || null) !== null ? gv.images : ''" mode="aspectFill" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || 0) == 1) ? '' : 'border-radius-main')"> </image>
                                                                 <view v-if="(gv.show_field_price_status || 0) == 1" :class="'price tc single-text text-line-1 '+(((item.is_text_white || 0) == 1) ? 'padding-horizontal-xs padding-bottom-xs' : '')">
                                                                     <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
                                                                     <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
@@ -48,7 +48,7 @@
                             <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'switch-tabs-item-' + (show_style1_active_index[index] || 0)">
                                 <block v-for="(items, indexs) in item.data" :key="indexs">
                                     <view :class="'tc cp dis-inline-block '+(indexs > 0 ? 'margin-left-xxl' : '')" :id="'switch-tabs-item-' + indexs" :data-index="index" :data-indexs="indexs" @tap="switch_tabs_event">
-                                        <image v-if="(items.icon || null) != null" :src="items.icon" class="switch-tabs-item-icon va-m margin-right-xs" mode="aspectFit"></image>
+                                        <image v-if="(items.icon || null) != null" :src="items.icon" class="switch-tabs-item-icon va-m margin-right-xs" mode="aspectFill"></image>
                                         <text :class="'text-size va-m cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'black')+' '+((show_style1_active_index[index] || 0) == indexs ? 'fw-b cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'main') : '')">{{ items.title }} </text>
                                         <view class="lh-xs">
                                             <iconfont name="icon-down-mark" size="36rpx" :color="(show_style1_active_index[index] || 0) == indexs ? (((item.is_text_white || 0) == 1) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
@@ -90,6 +90,7 @@
                 theme_color_light: app.globalData.get_theme_color(null, true),
                 data_goods_list: [],
                 show_style1_active_index: {},
+                goods_cover_class: '',
             };
         },
         props: {
@@ -184,8 +185,10 @@
                             break;
                     }
                 });
+                var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
                 this.setData({
                     data_goods_list: goods,
+                    goods_cover_class: (goods_cover_size_type == 1) ? 'goods-cover-tall' : '',
                 });
             },
         },
@@ -242,5 +245,15 @@
     .plugins-magic-content .switch-tabs-item-list .switch-tabs-item-icon {
         width: 32rpx !important;
         height: 32rpx !important;
+    }
+    
+    /**
+     * 商品图片高度模式
+     */
+    .plugins-magic-content.goods-cover-tall .hot-list .swiper-list {
+        height: 256rpx;
+    }
+    .plugins-magic-content.goods-cover-tall .hot-list .swiper-list .swiper-img {
+        height: 180rpx !important;
     }
 </style>

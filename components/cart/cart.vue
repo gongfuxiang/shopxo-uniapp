@@ -61,7 +61,7 @@
                                         <view class="items oh padding-left-main flex-1 flex-row">
                                             <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
                                                 <!-- 图片 -->
-                                                <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                                <image :class="'cart-goods-image fl radius '+goods_cover_class+' ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                                 <!-- 错误 -->
                                                 <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
                                                     <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
@@ -201,7 +201,7 @@
                             </view>
                             <view class="oh border-radius-main bg-white padding-sm discount_detail-popup-goods-list">
                                 <!-- 购物车商品列表 -->
-                                <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
+                                <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup '+goods_cover_class+' ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
                                     <view class="content flex-row flex-wrap">
                                         <block v-for="(item, index) in data_list" :key="index">
                                             <view v-if="(item.is_error || 0) != 1" class="item">
@@ -213,7 +213,7 @@
                                                     <view>
                                                         <view class="cp">
                                                             <!-- 图片 -->
-                                                            <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                                            <image :class="'cart-goods-image radius br-e '+goods_cover_class+' ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                                             <!-- 错误 -->
                                                             <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
                                                                 <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
@@ -378,6 +378,7 @@
                 is_selected_all: false,
                 already_selected_status: false,
                 already_valid_selected_status: false,
+                goods_cover_class: '',
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 common_site_type: 0,
@@ -480,6 +481,7 @@
         methods: {
             // 初始化配置
             init_config() {
+                var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
                 this.setData({
                     currency_symbol: app.globalData.get_config('currency_symbol'),
                     common_site_type: app.globalData.get_config('config.common_site_type'),
@@ -487,6 +489,7 @@
                     common_is_cart_show_guess_you_like: parseInt(app.globalData.get_config('config.common_is_cart_show_guess_you_like', 0)),
                     common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                     is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
+                    goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
                 });
             },
 
@@ -1466,6 +1469,9 @@
         width: 156rpx;
         height: 156rpx;
     }
+    .cart-goods-image.cover-tall {
+        height: 190rpx;
+    }
     .cart-goods-base {
         width: calc(100% - 170rpx);
     }
@@ -1662,6 +1668,9 @@
     .scroll-box-popup.close {
         transition: all 0.3s ease;
         height: 234rpx;
+    }
+    .scroll-box-popup.close.cover-tall {
+        height: 274rpx;
     }
     .scroll-box-popup .content {
         padding-bottom: 0 !important;

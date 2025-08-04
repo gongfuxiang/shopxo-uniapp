@@ -1007,6 +1007,9 @@ button[disabled].bg-grey {
     width: 190rpx !important;
     height: 190rpx !important;
 }
+.goods-data-list .goods-img.cover-tall {
+    height: 230rpx !important;
+}
 .goods-data-list .base {
     width: calc(100% - 220rpx);
 }
@@ -1029,6 +1032,9 @@ button[disabled].bg-grey {
 .goods-data-rolling-list .item .goods-img {
     height: 210rpx !important;
 }
+.goods-data-rolling-list .item .goods-img.cover-tall {
+    height: 260rpx !important;
+}
 .goods-data-rolling-list .item .error-msg {
     line-height: 210rpx;
 }
@@ -1036,11 +1042,16 @@ button[disabled].bg-grey {
 /**
  * 商品列表 - 九方格
  */
-
 .goods-data-grid-list .item {
     width: calc(50% - 12rpx);
     padding-bottom: 24rpx;
     margin-bottom: 24rpx;
+}
+.goods-data-grid-list .item .goods-img {
+    height: 340rpx !important;
+}
+.goods-data-grid-list .item .goods-img.cover-tall {
+    height: 420rpx !important;
 }
 .goods-data-grid-list .item:nth-of-type(2n + 1) {
     margin-right: 12rpx;
