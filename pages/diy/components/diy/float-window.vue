@@ -37,6 +37,10 @@
                     return {};
                 },
             },
+            propIsHalf: {
+                type: Boolean,
+                default: false,
+            },
             propKey: {
                 type: [String,Number],
                 default: '',
@@ -107,6 +111,9 @@
                     // 分享页面
                     case 'share' :
                         this.$emit('btn_event', 'share');
+                        break;
+                    case 'gotop' :
+                        this.$emit('btn_event', 'gotop');
                         break;
                 }
             },

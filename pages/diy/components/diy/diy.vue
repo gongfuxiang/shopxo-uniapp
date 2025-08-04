@@ -1,7 +1,7 @@
 <template>
     <view :style="page_style">
         <view :style="page_img_style">
-            <scroll-view :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
+            <scroll-view :scroll-top="scroll_num_top" :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
                     <component-diy-header :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onLocationBack="choice_location_back"></component-diy-header>
@@ -48,7 +48,7 @@
                                         <component-diy-activity v-else-if="item.key == 'activity'" :ref="'diy_goods_buy' + index" :propDiyIndex="index" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" @goods_buy_event="goods_buy_event"></component-diy-activity>
                                         <component-diy-salerecords v-else-if="item.key == 'salerecords'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-salerecords>
                                         <!-- 工具组件 -->
-                                        <component-diy-float-window v-else-if="item.key == 'float-window'" :propKey="item.id + index" :propValue="item.com_data" @btn_event="btn_event"></component-diy-float-window>
+                                        <component-diy-float-window v-else-if="(item.key == 'float-window' && item.com_data.content.button_jump !== 'gotop') || (item.key == 'float-window' && item.com_data.content.button_jump === 'gotop' && getPropIsHalf)" :propKey="item.id + index" :propValue="item.com_data" @btn_event="btn_event"></component-diy-float-window>
                                         <component-diy-title v-else-if="item.key == 'title'" :propKey="item.id + index" :propIndex="get_prop_index(item)" :propValue="item.com_data"></component-diy-title>
                                         <component-diy-auxiliary-line v-else-if="item.key == 'row-line'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-auxiliary-line>
                                         <component-diy-rich-text v-else-if="item.key == 'rich-text'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-rich-text>
@@ -158,7 +158,7 @@
     import componentSharePopup from '@/components/share-popup/share-popup';
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
-
+    var sys_height = app.globalData.window_height_handle(system);
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -307,6 +307,8 @@
                 is_the_safe_distance_enabled: false,
                 // 是否开启置顶
                 is_tabs_data_topped: false,
+                scroll_num: 0,
+                scroll_num_top: 0,
             };
         },
         computed: {
@@ -395,6 +397,9 @@
                 is_tabs_use_safe_distance = this.is_immersion_model && this.is_header_top;
                 // #endif
                 return is_tabs_use_safe_distance || !this.is_immersion_model;
+            },
+            getPropIsHalf() {
+                return sys_height / 2 <= this.scroll_num;
             }
         },
         watch: {
@@ -781,6 +786,9 @@
                 }
                 //#endif
                 this.scroll_timer_compute(scroll_num);
+                this.setData({
+                    scroll_num: scroll_num,
+                });
             },
 
             scroll_timer_compute(scroll_num) {
@@ -869,6 +877,13 @@
                         if ((this.$refs.share || null) != null) {
                             this.$refs.share.init();
                         }
+                        break;
+                    case 'gotop' :
+                        const num = Math.random();
+                        this.setData({
+                            scroll_num_top: num,
+                            scroll_num: num,
+                        });
                         break;
                 }
             }, 
