@@ -156,6 +156,10 @@
             propTabsSlidingFixedBg: {
                 type: String,
                 default: ''
+            },
+            propsTabsSlidingFixedStyle: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -229,7 +233,7 @@
             },
             get_item_style() {
                 return (val) => {
-                    return val == '1' ? `${ this.propTabsSlidingFixedBg };position: sticky;left: 0;z-index: 11;` : ''
+                    return val == '1' ? `${ isEmpty(this.propsTabsSlidingFixedStyle) ? this.propTabsSlidingFixedBg : this.propsTabsSlidingFixedStyle };position: sticky;left: 0;z-index: 11;` : ''
                 }
             }
         },
@@ -254,7 +258,7 @@
                 } else {
                     this.tabs_sticky = '';
                 }
-            },
+            }
         },
         mounted() {
             this.init();

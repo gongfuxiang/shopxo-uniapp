@@ -5,7 +5,8 @@
             <view :style="style_margin_container">
                 <view class="tabs-contents bs-bb pr" :style="style_container">
                     <view :class="top_up == '1' ? 'bs-bb' : 'wh-auto bs-bb'" :style="style_img_container">
-                        <component-diy-modules-tabs-view :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer + (propIsRotatingBackground ? propBgStyle : '')" :propIsRotatingBackground="propIsRotatingBackground" :propBgImgStyle="propBgImgStyle" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></component-diy-modules-tabs-view>
+                        {{ propIsRotatingBackground }}
+                        <component-diy-modules-tabs-view :propKey="propKey" :propValue="tabs_data" :propIsTabsIcon="true" :propTop="propTop" :propsTabsContainer="propsTabsContainer + (propIsRotatingBackground ? propBgStyle : '')" :propIsRotatingBackground="propIsRotatingBackground" :propBgImgStyle="propBgImgStyle" :propsTabsImgContainer="propsTabsImgContainer" :propStyle="propStyle" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propsTabsSlidingFixedStyle="propIsRotatingBackground ? propsTabsSlidingFixedStyle : ''" @onTabsTap="tabs_click_event" @tabsZindex="tabsZindex"></component-diy-modules-tabs-view>
                     </view>
                 </view>
             </view>
@@ -103,6 +104,10 @@
                 default: ''
             },
             propBgImgStyle: {
+                type: String,
+                default: ''
+            },
+            propsTabsSlidingFixedStyle: {
                 type: String,
                 default: ''
             },

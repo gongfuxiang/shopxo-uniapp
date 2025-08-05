@@ -2,7 +2,7 @@
     <view class="pr" :style="style_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="wh-auto" :style="style_img_container + (!isEmpty(swiper_bg_img_style) ? swiper_bg_img_style_null : '')">
-            <component-diy-tabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
+            <component-diy-tabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propsTabsSlidingFixedStyle="sliding_fixed_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
             <view :style="carousel_margin_top">
                 <view :style="carousel_container">
                     <view :style="carousel_img_container">
@@ -100,6 +100,7 @@
                 swiper_bg_style: '',
                 swiper_bg_img_style: '',
                 swiper_bg_img_style_null: `background-image: url('')`,
+                sliding_fixed_style: '',
                 is_rotating_background: false,
                 new_is_tabs_safe_distance: false,
             };
@@ -172,6 +173,7 @@
                     },
                     swiper_bg_style: this.get_swiper_bg_style(new_content, 0),
                     swiper_bg_img_style: this.get_swiper_bg_img_style(new_content, 0),
+                    sliding_fixed_style: this.get_sliding_fixed_style(new_content, 0),
                 });
             },
             // tab点击
@@ -185,6 +187,26 @@
             // 视频播放
             video_play(url, popup_width, popup_height) {
                 this.$emit('onVideoPlay', url, popup_width, popup_height);
+            },
+            get_sliding_fixed_style(form, actived_index) {
+                const style = form?.carousel_list?.[actived_index]?.style;
+                if (style && !isEmpty(style.color_list)) {
+                    const color_list = style.color_list;
+                    const list = color_list.filter((item) => !isEmpty(item.color));
+                    if (list.length > 0) {
+                        try {
+                            if (style.background_img.length > 0) {
+                                return `background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 0%) 0%)`;
+                            } else {
+                                return gradient_computer(style);
+                            }
+                        } catch (error) {
+                            return '';
+                        }
+                    }
+                    return '';
+                }
+                return '';
             },
             get_swiper_bg_style(form, actived_index) {
                 const style = form?.carousel_list?.[actived_index]?.style;
@@ -222,6 +244,7 @@
                     actived_index: index,
                     swiper_bg_style: this.get_swiper_bg_style(this.propValue.content || {}, index),
                     swiper_bg_img_style: this.get_swiper_bg_img_style(this.propValue.content || {}, index),
+                    sliding_fixed_style: this.get_sliding_fixed_style(this.propValue.content || {}, index),
                 });
             },
         },

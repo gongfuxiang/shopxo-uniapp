@@ -2,7 +2,7 @@
     <view class="pr" :style="style_container + style_active_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="wh-auto" :style="style_img_container + style_active_img_container + (!isEmpty(swiper_bg_img_style) ? swiper_bg_img_style_null : '')">
-            <component-diy-tabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propsIsTabsMagic="true" :propsTabsMagicStyle="tabs_magic_value_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
+            <component-diy-tabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propsIsTabsMagic="true" :propsTabsMagicStyle="tabs_magic_value_common_style" :propsTabsSlidingFixedStyle="sliding_fixed_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
             <view :style="magic_margin_top">
                 <view :style="magic_container">
                     <view :style="magic_img_container">
@@ -162,6 +162,7 @@
                 swiper_bg_style: '',
                 swiper_bg_img_style: '',
                 swiper_bg_img_style_null: `background-image: url('')`,
+                sliding_fixed_style: '',
                 new_is_tabs_safe_distance: false,
                 diy_key: '',
                 new_tabs_data_list: [],
@@ -318,6 +319,7 @@
                     this.setData({
                         swiper_bg_style: this.get_swiper_bg_style(0),
                         swiper_bg_img_style: this.get_swiper_bg_img_style(0),
+                        sliding_fixed_style: this.get_sliding_fixed_style(0),
                     })
                 }, 100);
             },
@@ -331,6 +333,7 @@
                     this.setData({
                         swiper_bg_style: this.get_swiper_bg_style(0),
                         swiper_bg_img_style: this.get_swiper_bg_img_style(0),
+                        sliding_fixed_style: this.get_sliding_fixed_style(0),
                     })
                 }, 100);
                 this.$emit('onTabsTap', tabs_id, is_micro_page);
@@ -342,6 +345,28 @@
             // 视频播放
             video_play(url, popup_width, popup_height) {
                 this.$emit('onVideoPlay', url, popup_width, popup_height);
+            },
+            get_sliding_fixed_style(actived_index) {
+                if (this.tabs_magic_type == 'carousel') {
+                    const style = this.tabs_magic_value.content?.carousel_list?.[actived_index]?.style;
+                    if (style && !isEmpty(style.color_list)) {
+                        const color_list = style.color_list;
+                        const list = color_list.filter((item) => !isEmpty(item.color));
+                        if (list.length > 0) {
+                            try {
+                                if (style.background_img.length > 0) {
+                                    return `background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 0%) 0%)`;
+                                } else {
+                                    return gradient_computer(style);
+                                }
+                            } catch (error) {
+                                return '';
+                            }
+                        }
+                        return '';
+                    }
+                }
+                return '';
             },
             get_swiper_bg_style(actived_index) {
                 if (this.tabs_magic_type == 'carousel') {
@@ -383,6 +408,7 @@
                     actived_index: index,
                     swiper_bg_style: this.get_swiper_bg_style(index),
                     swiper_bg_img_style: this.get_swiper_bg_img_style(index),
+                    sliding_fixed_style: this.get_sliding_fixed_style(index),
                 });
             },
             goods_buy_event(index, goods = {}, params = {}, back_data = null) {
