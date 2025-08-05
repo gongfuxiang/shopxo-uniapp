@@ -105,6 +105,14 @@
             propBgImgStyle: {
                 type: String,
                 default: ''
+            },
+            propsIsTabsMagic: {
+                type: Boolean,
+                default: false
+            },
+            propsTabsMagicStyle: {
+                type: Object,
+                default: {}
             }
         },
         components: {
@@ -160,6 +168,10 @@
                 // 初始化
                 this.init();
             },
+            propsTabsMagicStyle(val) {
+                // 初始化
+                this.init();
+            }
         },
         methods: {
             // 初始化数据
@@ -190,9 +202,9 @@
                 this.setData({
                     tabs_data: new_tabs_data,
                     tabs_sliding_fixed_bg: this.propIsCommon ? gradient_computer(new_style.common_style) : this.propTabsSlidingFixedBg,
-                    style_container: `max-width: calc(1600rpx - ${ max_width * 2 }rpx);` + (this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : ''), // 如果是选项卡轮播，不需要走默认样式
+                    style_container: `max-width: calc(1600rpx - ${ max_width * 2 }rpx);` + (this.propIsCommon ? new_tabs_background + common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? new_tabs_background + gradient_computer(this.propsIsTabsMagic && this.propsTabsMagicStyle.is_show == '1' ? this.propsTabsMagicStyle : new_style.common_style) + margin_computer(this.propSpacingCommonStyle) : ''), // 如果是选项卡轮播，不需要走默认样式
                     // 如果开了滑动置顶，并且开了沉浸式，不需要走传递过来的index，否则的话就用传递过来的index
-                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, false) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
+                    style_img_container: this.propIsCommon ? common_img_computer(new_style.common_style, this.propIndex) : new_content.tabs_top_up == '1' ? background_computer(this.propsIsTabsMagic && this.propsTabsMagicStyle.is_show == '1' ? this.propsTabsMagicStyle : new_style.common_style) + padding_computer(this.propSpacingCommonStyle, 1, false) + 'box-sizing: border-box;' : '', // 如果是选项卡轮播，不需要走默认样式
                     tabs_top_style: new_tabs_top_style,
                     // 沉浸模式下并且开通了安全距离 会显示-的margin
                     style_margin_container: this.propIsImmersionModel && this.propNewIsTabsSafeDistance ? `margin-top: -${ newPropTop }px;` : '',

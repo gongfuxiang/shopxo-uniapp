@@ -2,7 +2,7 @@
     <view class="pr" :style="style_container + style_active_container + swiper_bg_style">
         <view class="pa top-0 wh-auto ht-auto" :style="swiper_bg_img_style"></view>
         <view class="wh-auto" :style="style_img_container + style_active_img_container + (!isEmpty(swiper_bg_img_style) ? swiper_bg_img_style_null : '')">
-            <component-diy-tabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
+            <component-diy-tabs :propKey="propKey" :propContentPadding="propContentPadding" :propValue="propValue" :propTop="propTop" :propIsRotatingBackground="is_rotating_background" :propBgStyle="swiper_bg_style" :propBgImgStyle="swiper_bg_img_style" :propStickyTop="propStickyTop" :propIsImmersionModel="propIsImmersionModel" :propNewIsTabsSafeDistance="new_is_tabs_safe_distance" :propNavIsTop="propNavIsTop" :propTabsIsTop="propTabsIsTop" :propIsCommon="false" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propSpacingCommonStyle="spacing_common_style" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propsIsTabsMagic="true" :propsTabsMagicStyle="tabs_magic_value_common_style" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
             <view :style="magic_margin_top">
                 <view :style="magic_container">
                     <view :style="magic_img_container">
@@ -192,6 +192,14 @@
                     return {};
                 }
             },
+            // 当前选中的公共样式
+            tabs_magic_value_common_style() {
+                if (!isEmpty(this.tabs_magic_value)) {
+                    return this.tabs_magic_value.style.magic_common;
+                } else {
+                    return {};
+                }
+            },
             // 是否开启轮播图背景设置
             is_rotating_background() {
                 if (!isEmpty(this.active_tabs_value)) {
@@ -202,16 +210,16 @@
             },
             // 当前选项卡的公共样式
             style_active_container() {
-                if (!isEmpty(this.tabs_magic_value)) {
-                    return this.tabs_magic_value.style.magic_common.is_show == '1' ? gradient_computer(this.tabs_magic_value.style.magic_common) : '';
+                if (!isEmpty(this.tabs_magic_value_common_style)) {
+                    return this.tabs_magic_value_common_style.is_show == '1' ? gradient_computer(this.tabs_magic_value_common_style) : '';
                 } else {
                     return '';
                 }
             },
             // 当前选项卡的公共图片样式
             style_active_img_container() {
-                if (!isEmpty(this.tabs_magic_value)) {
-                    return this.tabs_magic_value.style.magic_common.is_show == '1' ? background_computer(this.tabs_magic_value.style.magic_common) : '';
+                if (!isEmpty(this.tabs_magic_value_common_style)) {
+                    return this.tabs_magic_value_common_style.is_show == '1' ? background_computer(this.tabs_magic_value_common_style) : '';
                 } else {
                     return '';
                 }
