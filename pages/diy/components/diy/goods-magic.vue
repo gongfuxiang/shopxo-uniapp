@@ -1,5 +1,5 @@
 <template>
-    <componentGoodsList ref="diy_goods_list" :propDiyIndex="propDiyIndex" :propKey="propKey" :propIndex="propIndex" :propValue="propValue" :propNewList="data_source_content_list" :propIsUseAuto="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
+    <componentGoodsList ref="diy_goods_list" :propDiyIndex="propDiyIndex" :propKey="propKey" :propIndex="propIndex" :propIsCommonStyle="propIsCommonStyle" :propValue="propValue" :propNewList="data_source_content_list" :propIsUseAuto="false" @goods_buy_event="goods_buy_event"></componentGoodsList>
 </template>
 
 <script>

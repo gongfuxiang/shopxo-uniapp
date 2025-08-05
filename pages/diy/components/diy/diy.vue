@@ -12,6 +12,7 @@
                             <template v-if="item.is_enable == '1'">
                                 <component-diy-tabs v-if="item.key == 'tabs'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model && is_the_safe_distance_enabled && item.com_data.content.tabs_top_up == '1'" :propNavIsTop="is_header_top" :propTabsIsTop="true" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event"></component-diy-tabs>
                                 <component-diy-tabs-carousel v-else-if="item.key == 'tabs-carousel'" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model && is_the_safe_distance_enabled" :propScrollTop="scroll_top" :propTabsIsTop="true" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play"></component-diy-tabs-carousel>
+                                <component-diy-tabs-magic v-else-if="item.key == 'tabs-magic'" ref="diy_goods_buy_tabs" :propIndex="is_immersive_style_and_general_safe_distance_value ? item.index : -1" :propContentPadding="content_padding" :propValue="item.com_data" :propTop="get_tabs_data_prop_top" :propStickyTop="get_tabs_data_prop_sticky_top" :propIsImmersionModel="is_immersion_model && is_the_safe_distance_enabled" :propScrollTop="scroll_top" :propTabsIsTop="true" @onComputerHeight="tabs_height_event" @onTabsTap="tabs_click_event" @onVideoPlay="video_play" @goods_buy_event="goods_buy_event"></component-diy-tabs-magic>
                             </template>
                         </view>
                         <template v-if="is_tabs_type">
@@ -147,6 +148,7 @@
     import componentDiyActivity from '@/pages/diy/components/diy/activity';
     import componentDiySalerecords from '@/pages/diy/components/diy/salerecords'
     import componentDiyTabsCarousel from '@/pages/diy/components/diy/tabs-carousel';
+    import componentDiyTabsMagic from '@/pages/diy/components/diy/tabs-magic';
     import componentDataTabs from '@/pages/diy/components/diy/data-tabs';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
@@ -215,6 +217,7 @@
             componentDiyActivity,
             componentDiySalerecords,
             componentDiyTabsCarousel,
+            componentDiyTabsMagic,
             componentDataTabs,
             componentGoodsList,
             componentNoData,
@@ -309,6 +312,7 @@
                 is_tabs_data_topped: false,
                 scroll_num: 0,
                 scroll_num_top: 0,
+                goods_type: '',
             };
         },
         computed: {
@@ -815,16 +819,26 @@
                 }
             },
             // 商品数量更新回调
-            goods_buy_event(index, goods = {}, params = {}, back_data = null) {
-                if ((this.$refs.goods_buy || null) != null) {
-                    this.goods_index = index;
+            goods_buy_event(index, goods = {}, params = {}, back_data = null, type = '') {
+                if (type == 'tabs') {
+                    this.goods_type = 'tabs'
                     this.$refs.goods_buy.init(goods, params, back_data);
+                } else {
+                    if ((this.$refs.goods_buy || null) != null) {
+                        this.goods_index = index;
+                        this.goods_type = ''
+                        this.$refs.goods_buy.init(goods, params, back_data);
+                    }
                 }
             },
             // 商品加购回调
             goods_cart_back_event(e) {
-                if ((this.$refs[`diy_goods_buy${this.goods_index}`][0] || null) != null) {
-                    this.$refs[`diy_goods_buy${this.goods_index}`][0].goods_cart_back_event(e);
+                if (this.goods_type == 'tabs') {
+                    this.$refs.diy_goods_buy_tabs[0].goods_cart_back_event(e);
+                } else {
+                    if ((this.$refs[`diy_goods_buy${this.goods_index}`][0] || null) != null) {
+                        this.$refs[`diy_goods_buy${this.goods_index}`][0].goods_cart_back_event(e);
+                    }
                 }
             },
             // 视频播放

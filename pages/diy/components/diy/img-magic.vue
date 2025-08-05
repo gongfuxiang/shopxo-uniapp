@@ -80,6 +80,10 @@
                 type: Number,
                 default: 1000000,
             },
+            propIsCommonStyle: {
+                type: Boolean,
+                default: true,
+            },
             propOuterContainerPadding: {
                 type: Number,
                 default: 0,
@@ -153,8 +157,8 @@
                     outer_style: `width:${outer_spacing};height:${outer_spacing};margin:${outer_sx};`,
                     img_spacing: `padding:${spacing};`,
                     content_img_radius: radius_computer(new_style),
-                    style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
-                    style_img_container: common_img_computer(new_style.common_style, this.propIndex) + 'box-sizing: border-box;',
+                    style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) + 'box-sizing: border-box;' : '',
+                    style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) + 'box-sizing: border-box;' : '',
                     img_fit: fit,
                     div_width: sys_width,
                     container_size: container_height * scale + 'px',

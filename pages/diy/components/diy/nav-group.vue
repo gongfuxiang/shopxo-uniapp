@@ -53,6 +53,10 @@ export default {
             type: [String, Number],
             default: '',
         },
+        propIsCommonStyle: {
+            type: Boolean,
+            default: true,
+        },
         // 组件渲染的下标
         propIndex: {
             type: Number,
@@ -143,8 +147,8 @@ export default {
             this.setData({
                 form: new_content,
                 new_style: new_style,
-                style_container: common_styles_computer(new_style.common_style), // 用于样式显示
-                style_img_container: common_img_computer(new_style.common_style, this.propIndex),
+                style_container: this.propIsCommonStyle ? common_styles_computer(new_style.common_style) : '', // 用于样式显示
+                style_img_container: this.propIsCommonStyle ? common_img_computer(new_style.common_style, this.propIndex) : '',
                 img_style: radius_computer(new_style), // 图片的设置
                 text_style: `font-size: ${new_style.title_size * 2 || 24}rpx;line-height:${new_style.title_size * 2 || 24}rpx;height:${new_style.title_size * 2 || 24}rpx;color: ${new_style.title_color || '#000'};`, // 标题的样式
                 indicator_style: get_indicator_style(new_style), // 指示器的样式

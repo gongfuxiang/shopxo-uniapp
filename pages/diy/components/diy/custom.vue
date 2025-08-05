@@ -99,6 +99,10 @@
                 type: String,
                 default: 'custom',
             },
+            propMagicScale: {
+                type: Number,
+                default: 1,
+            },
             // 组件渲染的下标
             propIndex: {
                 type: Number,
@@ -236,13 +240,14 @@
                 // 数据间距
                 const data_spacing = ['vertical', 'horizontal'].includes(new_form.data_source_direction) ? new_style.column_gap * (carousel_col - 1) : 0;
                 // 自定义组件宽度
-                const width = sys_width - outer_spacing - content_spacing - internal_spacing - data_spacing - this.propOuterContainerPadding;
+                const new_width = sys_width * this.propMagicScale;
+                const width = new_width - outer_spacing - content_spacing - internal_spacing - data_spacing - this.propOuterContainerPadding;
                 const new_data_style = !isEmpty(new_style.data_style) ? new_style.data_style : this.old_data_style;
                 const new_data_content_style = !isEmpty(new_style.data_content_style)? new_style.data_content_style : this.old_data_style;
                 // 判断是平移还是整屏滚动
                 const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
-                const scale_number = width / 390;
+                const scale_number = width / new_width;
                 const new_scale = scale_number > 0 ? scale_number : 0;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;

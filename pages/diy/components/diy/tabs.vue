@@ -237,7 +237,7 @@
                 tabs_id = this.get_tabs_id(item, index);
                 // 是否是商品分类页面
                 const is_micro_page = item.data_type == '0';
-                this.$emit('onTabsTap', tabs_id, is_micro_page);
+                this.$emit('onTabsTap', tabs_id, is_micro_page, index);
             },
             // 获取 tabs_id
             get_tabs_id(item, index) {
