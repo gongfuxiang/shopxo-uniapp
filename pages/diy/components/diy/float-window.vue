@@ -112,6 +112,7 @@
                     case 'share' :
                         this.$emit('btn_event', 'share');
                         break;
+                    // 回到顶部
                     case 'gotop' :
                         this.$emit('btn_event', 'gotop');
                         break;

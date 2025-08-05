@@ -892,6 +892,7 @@
                             this.$refs.share.init();
                         }
                         break;
+                    // 回到顶部
                     case 'gotop' :
                         const num = Math.random();
                         this.setData({
