@@ -571,7 +571,7 @@
                     if (new_data.length > 0) {
                         // 先使用缓存数据展示
                         this.setData({
-                            diy_data: new_data,
+                            diy_data: this.set_diy_data_floating_up(new_data),
                         });
                         // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
                         new_params['is_cache'] = 0;
@@ -595,7 +595,7 @@
                                     new_data = data?.config.diy_data || [];
                                     uni.setStorageSync(this.cache_key + tabs_id, new_data);
                                     this.setData({
-                                        diy_data: new_data,
+                                        diy_data: this.set_diy_data_floating_up(new_data),
                                     });
                                     // 是否需要重新加载数据
                                     if (parseInt(data.is_result_data_cache || 0) == 1) {
@@ -625,7 +625,7 @@
                     }
                     // 先使用缓存数据展示
                     this.setData({
-                        diy_data: new_data,
+                        diy_data: this.set_diy_data_floating_up(new_data),
                     });
                 }
             },
