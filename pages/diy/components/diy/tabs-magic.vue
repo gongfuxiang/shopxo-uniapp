@@ -245,10 +245,10 @@
                 if (!isEmpty(this.tabs_magic_value)) {
                     // 获取公共样式的数据
                     const common_data = this.propValue.style.common_style;
-                    const common_width = common_data.margin_left + common_data.margin_right + common_data.padding_left + common_data.padding_right + border_width(common_data);
+                    const common_width = this.rpx_to_px_config(common_data.margin_left) + this.rpx_to_px_config(common_data.margin_right) + this.rpx_to_px_config(common_data.padding_left) + this.rpx_to_px_config(common_data.padding_right) + this.rpx_to_px_config(border_width(common_data));
 
                     const { margin_left, margin_right, padding_left, padding_right } = this.tabs_magic_value.style.magic_content;
-                    const content_width = margin_left + margin_right + padding_left + padding_right + border_width(this.tabs_magic_value.style.magic_content);
+                    const content_width = this.rpx_to_px_config(margin_left) + this.rpx_to_px_config(margin_right) + this.rpx_to_px_config(padding_left) + this.rpx_to_px_config(padding_right) + this.rpx_to_px_config(border_width(this.tabs_magic_value.style.magic_content));
                     // 根据容器宽度来计算内部大小
                     const typewidth = sys_width - content_width - common_width;
                     // 获得对应宽度的比例
@@ -418,6 +418,12 @@
                 if ((this.$refs.diy_goods_list || null) != null) {
                     this.$refs.diy_goods_list.goods_cart_back_event(e);
                 }
+            },
+            rpx_to_px_config(val) {
+                if (val == 0) {
+                    return 0;
+                }
+                return app.globalData.rpx_to_px(val);
             },
         },
     };

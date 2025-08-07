@@ -247,7 +247,7 @@
                 // 判断是平移还是整屏滚动
                 const { padding_top = 0, padding_bottom = 0, margin_bottom = 0, margin_top = 0 } = new_data_style;
                 let swiper_height = 0;
-                const scale_number = width / 390;
+                const scale_number = width / (this.propMagicScale === 1 ? 390 : sys_width);
                 const new_scale = scale_number > 0 ? scale_number : 0;
                 // 间距
                 const space_between = new_form.data_source_direction == 'horizontal' ? new_style.column_gap : new_style.row_gap;
