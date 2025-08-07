@@ -62,7 +62,7 @@
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">
                             <view v-for="(item, index) in tabs_list" :key="index" class="item tc cr-base cp text-size-xs" :data-index="index" @tap="handle_event">
-                                <view class="dis-inline-block padding-vertical-xs padding-horizontal round" :class="active_index == index ? 'bg-main border-color-main cr-white' : ''">
+                                <view class="dis-inline-block padding-vertical-xs padding-horizontal round" :style="active_index == index ? more_text_selectd_style : more_text_color">
                                     {{ item.title }}
                                 </view>
                             </view>
@@ -217,6 +217,8 @@
                 tabs_list_is_sliding_fixed: true,
                 scroll_left: 0,
                 tabs_adorn_icon_size: '0rpx',
+                more_text_selectd_style: '',
+                more_text_color: '',
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
                 old_padding: { padding: 0, padding_top: 0, padding_bottom: 0, padding_left: 0, padding_right: 0 },
@@ -317,6 +319,11 @@
                     roll = 'tabs_pc';
                 }
                 // #endif
+                const more_style = {
+                    color_list: new_style?.more_button_color_list || [{ color: '#eee', color_percentage: undefined }],
+                    direction: new_style?.more_button_direction || '90deg',
+                }
+                const more_button_selectd = gradient_computer(more_style) + `color: ${new_style?.more_button_text_selected_color || '#666'};`;
                 // 参数设置
                 this.setData({
                     tabs_roll: roll,
@@ -346,6 +353,8 @@
                     tabs_height: ['2', '4'].includes(new_content.tabs_theme) ? height * 2 + 'rpx' : '100%;',
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                     tabs_adorn_icon_size: (new_style?.tabs_adorn_icon_size || 0) * 2 + 'rpx',
+                    more_text_selectd_style: more_button_selectd,
+                    more_text_color: new_style?.more_button_text_color || '#666',
                 });
                 // 只有居中居右的才重新获取dom判断
                 // if (['center', 'right'].includes(this.form.justification)) {
