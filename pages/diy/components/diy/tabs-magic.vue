@@ -321,7 +321,7 @@
                         swiper_bg_img_style: this.get_swiper_bg_img_style(0),
                         sliding_fixed_style: this.get_sliding_fixed_style(0),
                     })
-                }, 100);
+                }, 0);
             },
             // tab点击
             tabs_click_event(tabs_id, is_micro_page, index) {
@@ -335,7 +335,7 @@
                         swiper_bg_img_style: this.get_swiper_bg_img_style(0),
                         sliding_fixed_style: this.get_sliding_fixed_style(0),
                     })
-                }, 100);
+                }, 0);
                 this.$emit('onTabsTap', tabs_id, is_micro_page);
             },
             // tab高度
