@@ -177,8 +177,8 @@
                 });
             },
             // tab点击
-            tabs_click_event(tabs_id, is_micro_page) {
-                this.$emit('onTabsTap', tabs_id, is_micro_page);
+            tabs_click_event(tabs_id, is_micro_page, index) {
+                this.$emit('onTabsTap', tabs_id, is_micro_page, index);
             },
             // tab高度
             tabs_height_event(height) {

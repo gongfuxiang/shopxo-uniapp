@@ -336,7 +336,7 @@
                         sliding_fixed_style: this.get_sliding_fixed_style(0),
                     })
                 }, 0);
-                this.$emit('onTabsTap', tabs_id, is_micro_page);
+                this.$emit('onTabsTap', tabs_id, is_micro_page, index);
             },
             // tab高度
             tabs_height_event(height) {

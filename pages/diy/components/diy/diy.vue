@@ -313,6 +313,8 @@
                 scroll_num: 0,
                 scroll_num_top: 0,
                 goods_type: '',
+                // 选项卡点击索引
+                tabs_click_index: 0,
             };
         },
         computed: {
@@ -409,9 +411,11 @@
         watch: {
             propKey(val) {
                 // 如果当前存在别的diy或者商品分类tabs则不更新数据
-                if ((this.tabs_id || null) == null) {
+                if ((this.tabs_id || null) == null && this.tabs_click_index == 0) {
                     // 初始化
                     this.init();
+                } else {
+                    this.tabs_click_event(this.tabs_id, this.is_tabs_type, this.tabs_click_index, { is_cache: 0 });
                 }
             },
         },
@@ -556,11 +560,12 @@
                 return diy_data_list;
             },
             // 选项卡回调更新数据
-            tabs_click_event(tabs_id, bool, params = {}) {
+            tabs_click_event(tabs_id, bool, index, params = {}) {
                 let new_data = [];
                 this.setData({
                     is_tabs_type: bool,
                     tabs_id: tabs_id,
+                    tabs_click_index: index,
                 });
                 let new_params = {
                     ...params,
@@ -578,17 +583,22 @@
                     }
                     // diy数据
                     if (bool) {
-                        uni.showLoading({
-                            title: this.$t('common.loading_in_text'),
-                            mask: true,
-                        });
+                        const is_lodaing = isEmpty(params);
+                        if (is_lodaing) {
+                            uni.showLoading({
+                                title: this.$t('common.loading_in_text'),
+                                mask: true,
+                            });
+                        }
                         uni.request({
                             url: app.globalData.get_request_url('index', 'diy'),
                             method: 'POST',
                             data: new_params,
                             dataType: 'json',
                             success: (res) => {
-                                uni.hideLoading();
+                                if (is_lodaing) { 
+                                    uni.hideLoading();
+                                }
                                 // 数据处理
                                 let data = res.data.data.data;
                                 if (res.data.code == 0) {
@@ -599,14 +609,16 @@
                                     });
                                     // 是否需要重新加载数据
                                     if (parseInt(data.is_result_data_cache || 0) == 1) {
-                                        this.tabs_click_event(tabs_id, bool, { is_cache: 0 });
+                                        this.tabs_click_event(tabs_id, bool, index, { is_cache: 0 });
                                     }
                                 } else {
                                     app.globalData.showToast(res.data.msg);
                                 }
                             },
                             fail: () => {
-                                uni.hideLoading();
+                                if (is_lodaing) { 
+                                    uni.hideLoading();
+                                }
                                 app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
@@ -864,11 +876,11 @@
             },
             // 位置回调
             choice_location_back(e) {
-                // 如果存在tabs_id则表示当前有选择tab数据则仅当前模块更新，无需给上级回调位置
-                if ((this.tabs_id || null) == null) {
+                // 如果是首页则回调父级，
+                if (this.tabs_click_index == 0) {
                     this.$emit('onLocationBack', e);
                 } else {
-                    this.tabs_click_event(this.tabs_id, this.is_tabs_type);
+                    this.tabs_click_event(this.tabs_id, this.is_tabs_type, this.tabs_click_index);
                 }
             },
             // 悬浮按钮事件
