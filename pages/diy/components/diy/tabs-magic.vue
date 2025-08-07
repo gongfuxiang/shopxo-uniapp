@@ -327,7 +327,7 @@
             tabs_click_event(tabs_id, is_micro_page, index) {
                 this.setData({
                     tabs_active_index: index,
-                    data_key: Math.random(),
+                    diy_key: Math.random().toString(36).substring(2),
                 })
                 setTimeout(() => {
                     this.setData({
