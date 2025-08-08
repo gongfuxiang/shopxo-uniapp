@@ -62,7 +62,7 @@
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">
                             <view v-for="(item, index) in tabs_list" :key="index" class="item tc cr-base cp text-size-xs" :data-index="index" @tap="handle_event">
-                                <view class="dis-inline-block padding-vertical-xs padding-horizontal round" :style="active_index == index ? more_text_selectd_style : more_text_color">
+                                <view class="dis-inline-block padding-vertical-xs padding-horizontal" :style="more_button_radius + (active_index == index ? more_text_selectd_style : more_text_color)">
                                     {{ item.title }}
                                 </view>
                             </view>
@@ -80,7 +80,7 @@
 
 <script>
     const app = getApp();
-    import { gradient_computer, isEmpty, radius_computer } from '@/common/js/common/common.js';
+    import { gradient_computer, isEmpty, radius_computer, old_radius } from '@/common/js/common/common.js';
     import componentPopup from '@/components/popup/popup';
     import imageEmpty from '@/pages/diy/components/diy/modules/image-empty.vue';
     // 状态栏高度
@@ -218,6 +218,7 @@
                 scroll_left: 0,
                 tabs_adorn_icon_size: '0rpx',
                 more_text_selectd_style: '',
+                more_button_radius: '',
                 more_text_color: '',
                 // 默认数据
                 old_radius: { radius: 0, radius_top_left: 0, radius_top_right: 0, radius_bottom_left: 0, radius_bottom_right: 0 },
@@ -355,6 +356,7 @@
                     tabs_adorn_icon_size: (new_style?.tabs_adorn_icon_size || 0) * 2 + 'rpx',
                     more_text_selectd_style: more_button_selectd,
                     more_text_color: `color: ${new_style?.more_button_text_color || '#666'};`,
+                    more_button_radius: radius_computer(new_style?.more_button_radius || { radius: 57, radius_top_left: 57, radius_top_right: 57, radius_bottom_left: 57,radius_bottom_right: 57 }),
                 });
                 // 只有居中居右的才重新获取dom判断
                 // if (['center', 'right'].includes(this.form.justification)) {
