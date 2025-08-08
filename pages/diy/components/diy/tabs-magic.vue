@@ -195,8 +195,8 @@
             },
             // 当前选中的公共样式
             tabs_magic_value_common_style() {
-                if (!isEmpty(this.tabs_magic_value)) {
-                    return this.tabs_magic_value.style.magic_common;
+                if (!isEmpty(this.active_tabs_value)) {
+                    return this.active_tabs_value.magic_common;
                 } else {
                     return {};
                 }
