@@ -354,7 +354,7 @@
                     tabs_adorn_img_style: this.get_tabs_adorn_img_style(new_style),
                     tabs_adorn_icon_size: (new_style?.tabs_adorn_icon_size || 0) * 2 + 'rpx',
                     more_text_selectd_style: more_button_selectd,
-                    more_text_color: new_style?.more_button_text_color || '#666',
+                    more_text_color: `color: ${new_style?.more_button_text_color || '#666'};`,
                 });
                 // 只有居中居右的才重新获取dom判断
                 // if (['center', 'right'].includes(this.form.justification)) {
