@@ -1271,6 +1271,26 @@
                     }
                 },
                 {
+                    "path": "diy/diy",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "always",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-diy": "/pages/diy/components/diy/diy"
+                        },
+                        "componentPlaceholder": {
+                            "component-diy": "view"
+                        }
+                    }
+                },
+                {
                     "path": "design/design",
                     "style": {
                         "enablePullDownRefresh": true,

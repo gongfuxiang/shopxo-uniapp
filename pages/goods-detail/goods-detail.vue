@@ -244,10 +244,10 @@
                     </view>
                 </view>
                 
-                <view class="bg-white padding-sm border-radius-main spacing-mb">
+                <!-- <view class="bg-white padding-sm border-radius-main spacing-mb">
                     <view>form - input -data</view>
                     <component-form-input-base ref="form_input_base" :propConfig="order_goods_form_data_config" @onItemEvent="order_goods_form_back_item_event" @onSubmitEvent="order_goods_form_back_data_event"></component-form-input-base>
-                </view>
+                </view> -->
                 
             </view>
 
