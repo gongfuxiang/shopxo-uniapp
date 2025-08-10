@@ -8,8 +8,8 @@
                     </view>
                 </view>
                 <!-- 规格基础信息 -->
-                <view class="goods-spec-base oh br-b pr">
-                    <image :src="goods_spec_base_images" mode="scaleToFill" class="spec-images radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
+                <view class="goods-spec-base oh br-b pr" :class="goods_cover_class">
+                    <image :src="goods_spec_base_images" mode="aspectFill" class="spec-images radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
                     <view class="goods-spec-base-content">
                         <view class="goods-price">
                             <view v-if="(goods.show_field_price_status || 0) == 1">
@@ -94,6 +94,7 @@
                 opt_button: [],
                 is_direct_cart: 0,
                 is_success_tips: 1,
+                goods_cover_class: '',
                 // 选中规格临时定时变量
                 spec_selected_timer: null,
                 spec_selected_timerout: null,
@@ -163,6 +164,9 @@
                         }
                     }
                 }
+                
+                // 商品封面尺寸类型
+                var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
 
                 // 设置数据
                 this.setData({
@@ -180,6 +184,7 @@
                     opt_button: opt_button,
                     is_direct_cart: is_direct_cart,
                     is_success_tips: is_success_tips,
+                    goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
                 });
 
                 // 初始化不能选择规格处理
@@ -859,6 +864,12 @@
         position: absolute;
         left: 0;
         top: 0;
+    }
+    .goods-spec-base.cover-tall {
+        height: 280rpx;
+    }
+    .goods-spec-base.cover-tall .spec-images {
+        height: 244rpx;
     }
     .goods-spec-base-content {
         position: absolute;

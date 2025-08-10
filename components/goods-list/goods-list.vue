@@ -283,6 +283,7 @@
                 this.setData({
                     data: value,
                 });
+                this.goods_cover_size_type_handle();
             },
             propIsOpenGridBtnSet(newVal, oldVal) {
                 if (newVal !== oldVal) {
@@ -296,15 +297,22 @@
         created: function () {
             var is_app_mourning = app.globalData.is_app_mourning();
             var is_show_cart = app.globalData.data.is_goods_list_show_cart_opt == 1 ? (is_app_mourning && this.propSource == 'index' ? false : true) : false;
-            var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
             this.setData({
                 data: this.propData,
                 is_show_cart: is_show_cart,
                 grid_btn_config: Object.assign({}, this.grid_btn_config, this.propGridBtnConfig),
-                goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
             });
+            this.goods_cover_size_type_handle();
         },
         methods: {
+            // 商品封面尺寸
+            goods_cover_size_type_handle() {
+                var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
+                this.setData({
+                    goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
+                });
+            },
+
             // 加入购物车
             goods_cart_event(e) {
                 if ((this.$refs.goods_buy || null) != null) {

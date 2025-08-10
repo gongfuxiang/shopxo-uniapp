@@ -704,7 +704,13 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-diy": "/pages/diy/components/diy/diy"
+                        },
+                        "componentPlaceholder": {
+                            "component-diy": "view"
+                        }
                     }
                 },
                 {

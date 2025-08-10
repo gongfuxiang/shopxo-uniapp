@@ -29,7 +29,7 @@
     import componentLayout from "@/pages/design/components/layout/layout";
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-    import componentShopHeader from '../components/shop-header/shop-header';
+    import componentShopHeader from '@/pages/plugins/shop/components/shop-header/shop-header';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
