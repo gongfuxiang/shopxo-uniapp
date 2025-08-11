@@ -37,7 +37,7 @@
                 </view>
                 <view class="base-bottom oh margin-top-sm text-size-xs">
                     <!-- 在线客服 -->
-                    <view v-if="(propBase.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="popup_service_open_event">
+                    <view v-if="(propBase.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="popup_service_event">
                         <image class="va-m margin-right-sm" :src="common_static_url + 'customer-service-icon.png'" mode="scaleToFill"></image>
                         <text class="va-m cr-base">{{$t('design.design.21kak7')}}</text>
                     </view>
@@ -59,51 +59,81 @@
         
         <!-- 导航 -->
         <view v-if="((propShopGoodsCategory || null) != null && propShopGoodsCategory.length > 0) || ((shop_navigation || null) != null && shop_navigation.length > 0)" class="nav bg-white padding-sm flex-row">
-            <view v-if="propShopGoodsCategory.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block cp" @tap="nav_shop_category_event">{{$t('recommend-form.recommend-form.203itn')}}</view>
+            <view v-if="propShopGoodsCategory.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block cp" @tap="popup_all_goods_category_event">{{$t('recommend-form.recommend-form.203itn')}}</view>
             <scroll-view scroll-x class="nav-scroll" :class="propShopGoodsCategory.length > 0 ? 'category-all' : ''">
                 <view class="pr flex-row">
                     <block v-if="(shop_navigation || null) != null && shop_navigation.length > 0">
                         <block v-for="(item, index) in shop_navigation" :key="index">
-                            <block v-if="(item.items || null) == null || item.items.length == 0">
-                                <view class="item par dis-inline-block cp" @tap="nav_event" :data-value="item.url" :data-index="index">{{ item.name }}</view>
-                            </block>
-                            <block v-else>
-                                <view class="item par dis-inline-block cp" @tap="nav_event" :data-index="index">{{ item.name }}</view>
-                                <view v-if="(item.items_status || 0) == 1" class="nav-items pf oh bg-white cr-base">
-                                    <block v-for="(items, index2) in item.items" :key="index2">
-                                        <view class="item cp" @tap="nav_event" :data-value="items.url" :data-index="index" :data-indexs="index2">{{ items.name }}</view>
-                                    </block>
-                                </view>
-                            </block>
+                            <view class="item par dis-inline-block cp" @tap="nav_event" :data-value="((item.items || null) == null || item.items.length == 0) ? item.url : ''" :data-index="index">{{ item.name }}</view>
                         </block>
                     </block>
                 </view>
             </scroll-view>
-            <view v-if="nav_category_status" class="nav-category bg-white pa">
-                <scroll-view scroll-y class="category-scroll">
-                    <block v-if="(propShopGoodsCategory || null) != null && propShopGoodsCategory.length > 0">
-                        <block v-for="(item, index) in propShopGoodsCategory" :key="index">
-                            <view class="item dis-block cr-base single-text cp" @tap="shop_category_event" :data-value="item.id">{{ item.name }}</view>
-                            <block v-if="(item.items || null) != null && item.items.length > 0">
-                                <view v-for="(item2, index2) in item.items" :key="index2" class="padding-left-xl">
-                                    <view class="item dis-block cr-base single-text cp" @tap="shop_category_event" :data-value="item2.id">{{ item2.name }}</view>
-                                </view>
-                            </block>
-                        </block>
-                    </block>
-                    <block v-else>
-                        <view class="padding-top-xxl padding-bottom-xxl cr-grey">{{$t('design.design.83occ4')}}</view>
-                    </block>
-                </scroll-view>
-            </view>
         </view>
 
+        <!-- 导航二级分类弹窗 -->
+        <component-popup :propShow="popup_nav_two_category_status" propPosition="bottom" @onclose="popup_nav_two_category_event">
+            <view class="padding-top-main bg-white">
+                <view class="padding-horizontal-main padding-bottom-main">
+                    <view class="close oh">
+                        <text class="fw-b">{{$t('common.two_nav_text')}}</text>
+                        <view class="fr" @tap.stop="popup_nav_two_category_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                </view>
+                <view class="popup-nav-category-container">
+                    <scroll-view scroll-y class="nav-two-scroll">
+                        <view v-if="shop_navigation_two_data.length > 0" class="cr-base padding">
+                            <block v-for="(item, index) in shop_navigation_two_data" :key="index">
+                                <view class="single-text cp padding-sm" @tap="nav_event" :data-value="item.url" :data-index="index">{{ item.name }}</view>
+                            </block>
+                        </view>
+                        <block v-else>
+                            <component-no-data propStatus="0" :propMsg="$t('common.no_data')"></component-no-data>
+                        </block>
+                    </scroll-view>
+                </view>
+            </view>
+        </component-popup>
+
+        <!-- 店铺全部商品分类弹窗 -->
+        <component-popup :propShow="popup_all_goods_category_status" propPosition="bottom" @onclose="popup_all_goods_category_event">
+            <view class="padding-top-main bg-white">
+                <view class="padding-horizontal-main padding-bottom-main">
+                    <view class="close oh">
+                        <text class="fw-b">{{$t('recommend-form.recommend-form.203itn')}}</text>
+                        <view class="fr" @tap.stop="popup_all_goods_category_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                </view>
+                <view class="popup-nav-category-container">
+                    <scroll-view scroll-y class="category-scroll">
+                        <view v-if="(propShopGoodsCategory || null) != null && propShopGoodsCategory.length > 0" class="cr-base padding">
+                            <block v-for="(item, index) in propShopGoodsCategory" :key="index">
+                                <view class="single-text cp padding-sm" @tap="shop_goods_category_event" :data-value="item.id">{{ item.name }}</view>
+                                <block v-if="(item.items || null) != null && item.items.length > 0">
+                                    <view v-for="(item2, index2) in item.items" :key="index2" class="padding-left-xl">
+                                        <view class="single-text cp padding-sm" @tap="shop_goods_category_event" :data-value="item2.id">{{ item2.name }}</view>
+                                    </view>
+                                </block>
+                            </block>
+                        </view>
+                        <block v-else>
+                            <component-no-data propStatus="0" :propMsg="$t('common.no_data')"></component-no-data>
+                        </block>
+                    </scroll-view>
+                </view>
+            </view>
+        </component-popup>
+
         <!-- 客服弹窗 -->
-        <component-popup :propShow="popup_service_status" propPosition="bottom" @onclose="popup_service_close_event">
+        <component-popup :propShow="popup_service_status" propPosition="bottom" @onclose="popup_service_event">
             <view class="padding-top-main bg-white">
                 <view class="padding-horizontal-main">
                     <view class="close oh">
-                        <view class="fr" @tap.stop="popup_service_close_event">
+                        <view class="fr" @tap.stop="popup_service_event">
                             <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
@@ -148,6 +178,7 @@
 <script>
     const app = getApp();
     import componentPopup from '@/components/popup/popup';
+    import componentNoData from '@/components/no-data/no-data';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         props: {
@@ -179,9 +210,10 @@
                 is_shop_search_all_search_button: 0,
                 search_keywords_value: '',
                 popup_service_status: false,
-                nav_category_status: false,
-                shop_category_tab_value: 0,
+                popup_all_goods_category_status: false,
                 shop_navigation: [],
+                shop_navigation_two_data: [],
+                popup_nav_two_category_status: false,
                 shop_favor_info: {
                     "text": this.$t('goods-detail.goods-detail.dco1sc'),
                     "status": 0,
@@ -198,7 +230,8 @@
         },
 
         components: {
-            componentPopup
+            componentPopup,
+            componentNoData
         },
         created() {
             this.init();
@@ -271,50 +304,46 @@
                 app.globalData.url_open(value + 'keywords=' + this.search_keywords_value || '');
             },
 
-            // 导航分类事件
-            nav_shop_category_event(e) {
+            // 店铺全部商品分类事件
+            popup_all_goods_category_event(e) {
                 this.setData({
-                    nav_category_status: !this.nav_category_status
+                    popup_all_goods_category_status: !this.popup_all_goods_category_status
                 });
             },
 
             // 分类事件
-            shop_category_event(e) {
+            shop_goods_category_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 app.globalData.url_open('/pages/plugins/shop/search/search?shop_id=' + this.propShop.id + '&category_id=' + value);
+                this.popup_all_goods_category_event();
             },
 
             // 导航事件
             nav_event(e) {
-                // 存在子级则做子级显示隐藏处理
                 var value = e.currentTarget.dataset.value || null;
                 if(value == null) {
                     var index = e.currentTarget.dataset.index;
-                    var temp_nav = this.propShopNavigation;
-                    for(var i in temp_nav) {
-                        if(i == index) {
-                            temp_nav[i]['items_status'] = ((temp_nav[i]['items_status'] || 0) == 0) ? 1 : 0;
-                        } else {
-                            temp_nav[i]['items_status'] = 0;
-                        }
-                    }
-                    this.setData({shop_navigation: temp_nav});
+                    this.setData({
+                        shop_navigation_two_data: this.propShopNavigation[index]['items'] || [],
+                        popup_nav_two_category_status: true
+                    });
                 } else {
                     app.globalData.url_event(e);
+                    this.popup_nav_two_category_event();
                 }
             },
-
-            // 开启客服弹层
-            popup_service_open_event(e) {
+            
+            // 店铺导航二级事件弹窗
+            popup_nav_two_category_event(e) {
                 this.setData({
-                    popup_service_status: true,
+                    popup_nav_two_category_status: !this.popup_nav_two_category_status
                 });
             },
 
-            // 关闭客服弹层
-            popup_service_close_event(e) {
+            // 客服弹层事件
+            popup_service_event(e) {
                 this.setData({
-                    popup_service_status: false,
+                    popup_service_status: !this.popup_service_status
                 });
             },
 
@@ -458,34 +487,18 @@
         line-height: 56rpx;
     }
     
-    .nav .nav-items {
-        left: calc(50% - 212rpx);
-        top: 322rpx;
-        z-index: 1;
-        border-radius: 0 0 8rpx 8rpx;
-        box-shadow: 0 12rpx 12rpx rgb(0 0 0 / 10%);
-    }
-    
-    .nav .nav-items .item {
-        padding: 20rpx;
+    /**
+    * 导航二级分类弹窗
+    */
+    .popup-nav-category-container .nav-two-scroll {
+        max-height: 600rpx;
     }
     
     /**
     * 导航商品分类
     */
-    .nav-category {
-        z-index: 1;
-        box-shadow: 0 12rpx 12rpx rgb(0 0 0 / 10%);
-        border-bottom-right-radius: 8rpx;
-        margin-top: 70rpx;
-    }
-    
-    .nav-category .category-scroll {
+    .popup-nav-category-container .category-scroll {
         max-height: 600rpx;
-    }
-    
-    .nav-category .item {
-        padding: 20rpx 30rpx;
     }
     
     /**

@@ -94,7 +94,9 @@
         "again_pay_text" : "Restart payment",
         "back_app_text" : "Return to APP",
         "base_info_text": "Basic info",
-        "form_input_data_text": "Form input Data"
+        "form_input_data_text": "Form input Data",
+        "two_nav_text" : "Secondary Navigation",
+        "no_data": "No data available at the moment"
 	},
     "client": {
         "weixin": "WeChat",
@@ -1298,7 +1300,6 @@
 			"21kak7": "Online Service",
 			"745kx2": "branch",
 			"wtx1l8": "View product categories",
-			"83occ4": "There is currently no data available",
 			"ses9m2": "Please enter the keywords of the product you are searching for",
 			"i7725u": "Search",
 			"gv16tj": "to"

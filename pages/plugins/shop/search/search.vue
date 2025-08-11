@@ -205,6 +205,7 @@
                                     if((category[i]['items'] || null) != null && category[i]['items'].length > 0) {
                                         for(var x in category[i]['items']) {
                                             category[i]['items'][x]['active'] = (category[i]['items'][x]['id'] == this.params.category_id) ? 1 : 0;
+                                            category[i]['active'] = 1;
                                         }
                                     }
                                 }
