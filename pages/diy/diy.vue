@@ -3,10 +3,6 @@
         <block v-if="(data || null) != null && (data.config || null) != null">
             <!-- diy模块 -->
             <component-diy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
-                <!-- 头部卡槽 -->
-                <slot name="diy-header-common">
-                    <template slot="header"></template>
-                </slot>
                 <!-- 底部内容 -->
                 <template slot="diy-bottom-content">
                     <!-- 结尾 -->
