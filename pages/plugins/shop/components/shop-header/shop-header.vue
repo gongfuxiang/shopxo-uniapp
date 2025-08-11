@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 搜索 -->
         <view class="flex-row jc-sb align-c padding-main bg-white oh bs-bb z-i search-content" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0)+'px;'">
-            <view @tap="top_nav_left_back_event" class="dis-inline-block padding-right-sm">
+            <view v-if="top_nav_left_back_status == 1" @tap="top_nav_left_back_event" class="dis-inline-block padding-right-sm">
                 <iconfont name="icon-arrow-left" size="40rpx" propClass="pr top-xs z-i"></iconfont>
             </view>
             <view class="flex-1 wh-auto">
@@ -219,6 +219,12 @@
                     "status": 0,
                     "count": 0
                 },
+                // 左侧返回按钮
+                top_nav_left_back_status: app.globalData.data.is_shop_top_nav_back || 0,
+                // #ifdef MP-TOUTIAO
+                top_nav_left_back_status : 0,
+                // #endif
+                // 状态栏高度
                 status_bar_height: 0,
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || APP
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0, true)),
