@@ -704,13 +704,7 @@
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "",
-                        "usingComponents": {
-                            "component-diy": "/pages/diy/components/diy/diy"
-                        },
-                        "componentPlaceholder": {
-                            "component-diy": "view"
-                        }
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1262,10 +1256,12 @@
                     "style": {
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-layout": "/pages/design/components/layout/layout"
+                            "component-layout": "/pages/design/components/layout/layout",
+                            "component-diy": "/pages/diy/components/diy/diy"
                         },
                         "componentPlaceholder": {
-                            "component-layout": "view"
+                            "component-layout": "view",
+                            "component-diy": "view"
                         }
                     }
                 },

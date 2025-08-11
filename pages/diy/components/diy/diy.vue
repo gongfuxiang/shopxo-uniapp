@@ -2,6 +2,8 @@
     <view :style="page_style">
         <view :style="page_img_style">
             <scroll-view :scroll-top="scroll_num_top" :scroll-y="true" class="ht" @scroll="on_scroll_event" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
+                <!-- 头部卡槽 -->
+                <slot name="header"></slot>
                 <!-- 头部小程序兼容 -->
                 <view class="pr header">
                     <component-diy-header :propKey="header_data.id" :propValue="header_data.com_data" :propScrollTop="head_scroll_top" @onLocationBack="choice_location_back"></component-diy-header>

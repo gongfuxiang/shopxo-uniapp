@@ -3,8 +3,15 @@
         <view v-if="(shop || null) != null" class="pr" :class="is_single_page == 1 ? 'single-page-top' : ''">
             <!-- diy模式 -->
             <block v-if="shop.data_model == 3">
-                <block v-if="(data || null) != null && (data.config || null) != null">
-                    <component-diy :propValue="data.config" :propDataId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+                <block v-if="(data || null) != null && (data.diy_data || null) != null && (data.diy_data.config || null) != null">
+                    <!-- 头部 -->
+                    <block v-if="(data.is_header || 0) == 1">
+                        <template slot="diy-header-common">
+                            <component-shop-header :propBase="data_base" :propShop="shop" :propShopGoodsCategory="shop_goods_category" :propShopNavigation="shop_navigation" :propShopFavorUser="shop_favor_user"></component-shop-header>
+                        </template>
+                    </block>
+                    <!-- diy组件 -->
+                    <component-diy :propValue="data.diy_data.config" :propDataId="data.diy_data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
                         <!-- 由于diy组件异步加载、默认先加载骨架屏展示 -->
                         <component-no-data propStatus="1" :propLoadingUseSkeleton="true" propPage="home"></component-no-data>
                         <!-- 底部内容 -->
