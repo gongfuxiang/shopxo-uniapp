@@ -1254,6 +1254,13 @@
                 {
                     "path": "detail/detail",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "navigationBarTitleText": "",
                         "usingComponents": {
                             "component-layout": "/pages/design/components/layout/layout",
@@ -1295,6 +1302,13 @@
                 {
                     "path": "design/design",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "usingComponents": {
                             "component-layout": "/pages/design/components/layout/layout"

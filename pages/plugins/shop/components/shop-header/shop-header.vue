@@ -1,22 +1,26 @@
 <template>
     <view :class="theme_view">
         <!-- 搜索 -->
-        <view class="flex-row jc-sb align-c padding-main bg-white pr oh">
+        <view class="flex-row jc-sb align-c padding-main bg-white oh bs-bb z-i search-content" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0)+'px;'">
+            <view @tap="top_nav_left_back_event" class="dis-inline-block padding-right-sm">
+                <iconfont name="icon-arrow-left" size="40rpx" propClass="pr top-xs z-i"></iconfont>
+            </view>
             <view class="flex-1 wh-auto">
                 <view class="search flex-row jc-sb align-c round border-color-main bg-white">
                     <view class="flex-row align-c flex-1 wh-auto padding-left-main">
                         <iconfont name="icon-search-max" size="28rpx" color="#ccc"></iconfont>
-                        <input class="text-size-md flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.detail.8q6345')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
+                        <input class="text-size-xs flex-1 wh-auto padding-left-sm" type="done" :placeholder="$t('detail.detail.8q6345')" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
                     </view>
                     <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + propShop.id + '&'">
                         {{ is_shop_search_all_search_button == 1 ? $t('design.design.i7725u') : $t('common.search') }}
                     </button>
                 </view>
             </view>
-            <view v-if="is_shop_search_all_search_button == 1" class="search-btn padding-left-main flex-row align-c">
+            <view v-if="is_shop_search_all_search_button == 1" class="search-btn padding-left-sm flex-row align-c">
                 <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.design.ay7m42')}}</button>
             </view>
         </view>
+        <view class="search-content-seat" :style="'margin-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0)+'px;'"></view>
         <!-- 顶部 -->
         <view class="header plugins-shop-data-list bg-white oh">
             <image :src="propShop.logo" mode="widthFix" class="shop-logo fl border-radius-main cp" @tap="image_show_event" :data-value="propShop.logo"></image>
@@ -56,7 +60,7 @@
         <!-- 导航 -->
         <view v-if="((propShopGoodsCategory || null) != null && propShopGoodsCategory.length > 0) || ((shop_navigation || null) != null && shop_navigation.length > 0)" class="nav bg-white padding-sm flex-row">
             <view v-if="propShopGoodsCategory.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block cp" @tap="nav_shop_category_event">{{$t('recommend-form.recommend-form.203itn')}}</view>
-            <scroll-view scroll-x class="nav-scroll">
+            <scroll-view scroll-x class="nav-scroll" :class="propShopGoodsCategory.length > 0 ? 'category-all' : ''">
                 <view class="pr flex-row">
                     <block v-if="(shop_navigation || null) != null && shop_navigation.length > 0">
                         <block v-for="(item, index) in shop_navigation" :key="index">
@@ -183,6 +187,13 @@
                     "status": 0,
                     "count": 0
                 },
+                status_bar_height: 0,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || APP
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0, true)),
+                // #endif
+                // #ifdef H5
+                status_bar_height: 5,
+                // #endif
             };
         },
 
@@ -330,6 +341,11 @@
             // 进入客服系统
             chat_event() {
                 app.globalData.chat_entry_handle(this.propShop.chat_info.chat_url);
+            },
+
+            // 返回事件
+            top_nav_left_back_event() {
+                app.globalData.page_back_prev_event();
             }
         },
     };
@@ -344,27 +360,51 @@
     }
     
     .search button {
-        width: 140rpx;
-        height: 56rpx;
-        line-height: 56rpx;
+        width: 124rpx;
+        height: 52rpx;
+        line-height: 52rpx;
         padding: 0;
     }
     
     .search input {
-        height: 56rpx;
-        line-height: 56rpx;
+        height: 50rpx;
+        line-height: 50rpx;
     }
     
     .search-btn {
-        width: 148rpx;
+        width: 124rpx;
     }
     
     .search-btn button {
         width: 100%;
         padding: 0;
-        height: 64rpx;
-        line-height: 64rpx;
+        height: 60rpx;
+        line-height: 60rpx;
     }
+    .search-content {
+        position: fixed;
+        left: auto;
+        top: 0;
+        width: 100%;
+        /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
+        padding-right: 200rpx;
+        /* #endif */
+    }
+    .search-content-seat {
+        height: 74rpx;
+    }
+    /* #ifdef H5 */
+    @media only screen and (min-width: 1600rpx) {
+        .search-content {
+            width: 1560rpx;
+        }
+    }
+    @media only screen and (min-width: 961px) {
+        .search-content {
+            width: 800px;
+        }
+    }
+    /* #endif */
     
     /**
     * 头部
@@ -396,9 +436,11 @@
     */
     .nav .nav-scroll {
         float: right;
+        width: 100%;
+    }
+    .nav .nav-scroll.category-all {
         width: calc(100% - 172rpx);
     }
-    
     .nav .nav-scroll .item.par {
         height: 56rpx;
         line-height: 56rpx;

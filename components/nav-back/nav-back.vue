@@ -92,6 +92,7 @@
             });
         },
         methods: {
+            // 返回事件
             top_nav_left_back_event() {
                 app.globalData.page_back_prev_event();
             },
