@@ -135,7 +135,7 @@
                                                                     <view v-if="common_site_type != 4" class="buy-opt flex-row align-c tc">
                                                                         <block v-if="(item.is_error || 0) == 0">
                                                                             <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                                                <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
+                                                                                <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
                                                                             </view>
                                                                             <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
                                                                                 {{ item.buy_number }}
@@ -304,7 +304,7 @@
                                                             <view class="tc fr flex-row align-c">
                                                                 <block v-if="goods.is_error == 0">
                                                                     <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-                                                                        <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
+                                                                        <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
                                                                     </view>
                                                                     <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">
                                                                         {{ goods.stock }}
@@ -332,7 +332,7 @@
                             <view class="botton-nav bg-white round pa oh padding-sm flex-row jc-sb align-c" :style="botton_nav_style+(cart_status ? 'z-index:5;' : '')">
                                 <view class="flex-row align-c flex-1 flex-width">
                                     <view class="cart pr cp top-sm padding-left-sm" @tap="cart_event">
-                                        <iconfont name="icon-menu-cart" size="36rpx" color="#666"></iconfont>
+                                        <iconfont name="icon-cart" size="36rpx" color="#666"></iconfont>
                                         <view v-if="(cart || null) != null && (cart.buy_number || 0) != 0" class="badge-icon pa">
                                             <component-badge :propNumber="cart.buy_number"></component-badge>
                                         </view>

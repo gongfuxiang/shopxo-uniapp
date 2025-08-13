@@ -18,7 +18,7 @@
                             <block v-for="(item, index) in data_list" :key="index">
                                 <view class="goods-item flex-row align-c bs-bb padding-main pr wh-auto cp">
                                     <view @tap="selected_event" :data-index="index" class="selected pr z-i">
-                                        <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
+                                        <iconfont :name="'icon-' + ((item.selected || false) ? 'selected-solid' : 'not-selected')" size="40rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                     </view>
                                     <view class="item oh padding-left-main flex-1 flex-row">
                                         <image class="goods-image fl radius br" :src="item.images" :data-value="item.goods_url" @tap="url_event" mode="aspectFill"></image>

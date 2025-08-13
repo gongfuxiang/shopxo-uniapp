@@ -31,7 +31,7 @@
                                 <view>{{ item.name }}</view>
                                 <view v-if="(item.tips || null) !== null" class="va-m cr-red text-size-xs">（{{ item.tips }}</view>
                             </div>
-                            <iconfont :name="checked === index ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="40rpx" :color="checked === index ? '#E83B11' : '#ddd'"></iconfont>
+                            <iconfont :name="checked === index ? 'icon-selected-solid' : 'icon-not-selected'" size="40rpx" :color="checked === index ? '#E83B11' : '#ddd'"></iconfont>
                         </view>
                     </view>
                     <view v-if="data.payment_list.length > 2" class="br-t margin-top-sm padding-top-main tc cr-grey-9" @tap="more_event">

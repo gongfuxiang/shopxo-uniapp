@@ -45,7 +45,7 @@
                                                     <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
                                                     <view class="tc fr flex-row align-c">
                                                         <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
-                                                            <iconfont name="icon-cart-dec" size="48rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                         <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
                                                         <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
@@ -78,7 +78,7 @@
                         <view class="wh-auto flex-row jc-sb align-c">
                             <view class="flex-row align-c flex-1 flex-width padding-bottom-xs">
                                 <view class="cart-icon-total pr cp top-sm padding-left-main" @tap="cart_switch_event">
-                                    <iconfont name="icon-menu-cart" size="36rpx" color="#666"></iconfont>
+                                    <iconfont name="icon-cart" size="36rpx" color="#666"></iconfont>
                                     <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
                                         <component-badge :propNumber="cart.buy_number"></component-badge>
                                     </view>
