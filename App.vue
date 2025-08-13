@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'http://shopxo.com/',
+                request_url:'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'http://shopxo.com/',
+                static_url:'https://new.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -121,13 +121,16 @@
                 // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
                 is_home_location_choice: 0,
 
-                // 门店详情顶部导航返回按钮（0否, 1是）
+                // 多商户 - 店铺详情顶部导航返回按钮（0否, 1是）
+                is_shop_top_nav_back: 1,
+
+                // 多门店 - 门店详情顶部导航返回按钮（0否, 1是）
                 is_realstore_top_nav_back: 1,
 
-                // 门店详情搜索框内扫码加购（0否, 1是）
+                // 多门店 - 门店详情搜索框内扫码加购（0否, 1是）
                 is_realstore_top_search_scan: 1,
 
-                // 门店详情阻止跳转到商品详情页面去（0否, 1是）
+                // 多门店 - 门店详情阻止跳转到商品详情页面去（0否, 1是）
                 is_realstore_forbid_to_goods_detail: 0,
 
                 // 钱包插件货币符号使用当前 currency_symbol 数据的固定值（0否, 1是）

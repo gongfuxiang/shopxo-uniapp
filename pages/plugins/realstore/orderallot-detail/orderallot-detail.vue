@@ -2,6 +2,18 @@
     <view :class="theme_view">
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
+                <!-- 自提信息 -->
+                <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.o38952')}}</view>
+                    <view class="panel-content oh tc padding-top-main">
+                        <view :data-value="detail.extraction_data.code" @tap="text_copy_event">
+                            <text class="fw-b cr-black text-size-xl va-m">{{ detail.extraction_data.code || $t("user-order-detail.user-order-detail.hpq62x") }}</text>
+                            <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left">{{$t('common.copy')}}</text>
+                        </view>
+                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-xs" :src="detail.extraction_data.images" mode="aspectFill"></image>
+                    </view>
+                </view>
+
                 <!-- 地址 -->
                 <view v-if="(detail.order_type == 0 || detail.order_type == 1 || detail.order_type == 2) && (detail.address_data || null) != null" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
                     <view class="address-base oh">
@@ -60,18 +72,6 @@
                                 <text v-else class="cr-grey">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
                             </view>
                         </view>
-                    </view>
-                </view>
-
-                <!-- 自提信息 -->
-                <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7dikfm')}}</view>
-                    <view class="panel-content oh padding-top-main">
-                        <view>
-                            <text>{{$t('user-order-detail.user-order-detail.o38952')}}</text>
-                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || $t("user-order-detail.user-order-detail.hpq62x") }}</text>
-                        </view>
-                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
                     </view>
                 </view>
 

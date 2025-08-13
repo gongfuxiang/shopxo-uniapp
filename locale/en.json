@@ -94,7 +94,9 @@
         "again_pay_text" : "Restart payment",
         "back_app_text" : "Return to APP",
         "base_info_text": "Basic info",
-        "form_input_data_text": "Form input Data"
+        "form_input_data_text": "Form input Data",
+        "two_nav_text" : "Secondary Navigation",
+        "no_data": "No data available at the moment"
 	},
     "client": {
         "weixin": "WeChat",
@@ -391,9 +393,8 @@
 			"41ty94": "Total pieces",
 			"xcj552": "element",
 			"7xtnjt": "Unconfigured data",
-			"7dikfm": "Pickup info",
             "0876xf": "Express delivery info",
-			"o38952": "Pickup code:",
+			"o38952": "Pickup code",
 			"0f26j2": "Order Information",
 			"ct34n5": "Extended Data",
 			"y9woor": "Key Information",
@@ -729,7 +730,7 @@
 			"54k10s": "Long press WeChat for consultation",
 			"vj4nom": "Long press line to consult",
 			"q42ger": "Product search",
-			"8q6345": "Please enter product keywords",
+			"8q6345": "Product keywords",
 			"rdxjvh": "Person sign in, total",
 			"15i191": "Integral, total",
 			"8ua11k": "organize a team",
@@ -1298,7 +1299,6 @@
 			"21kak7": "Online Service",
 			"745kx2": "branch",
 			"wtx1l8": "View product categories",
-			"83occ4": "There is currently no data available",
 			"ses9m2": "Please enter the keywords of the product you are searching for",
 			"i7725u": "Search",
 			"gv16tj": "to"

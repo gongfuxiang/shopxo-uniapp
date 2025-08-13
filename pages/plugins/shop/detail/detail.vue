@@ -5,7 +5,7 @@
             <block v-if="shop.data_model == 3">
                 <block v-if="(data || null) != null && (data.diy_data || null) != null && (data.diy_data.config || null) != null">
                     <!-- diy组件 -->
-                    <component-diy :propValue="data.diy_data.config" :propDataId="data.diy_data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+                    <component-diy :propValue="data.diy_data.config" :propDataId="data.diy_data.id" :propKey="random_value" :propIsHeader="(data.is_header || 0) != 1" @onLocationBack="user_back_choice_location">
                         <!-- 头部 -->
                         <block v-if="(data.is_header || 0) == 1">
                             <template slot="header">
@@ -31,8 +31,15 @@
             </block>
             <!-- 自动和手动模式 -->
             <block v-else>
+                <!-- <component-nav-back :persopName="shop.name || $t('index.index.p4872s')" :propIsShowBack="false" :propIsRightSlot="false" :propFixed="false" propClass="bg-white" propNameClass="cr-black">
+                    <template slot="content">
+                        
+                    </template>
+                </component-nav-back> -->
+                
                 <!-- 头部 -->
                 <component-shop-header :propBase="data_base" :propShop="shop" :propShopGoodsCategory="shop_goods_category" :propShopNavigation="shop_navigation" :propShopFavorUser="shop_favor_user"></component-shop-header>
+                
 
                 <!-- 数据模式 -->
                 <!-- 自动模式 -->
@@ -103,6 +110,7 @@
     import componentBanner from '@/components/slider/slider';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentShopHeader from '@/pages/plugins/shop/components/shop-header/shop-header';
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentDiy from '@/pages/diy/components/diy/diy';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -141,6 +149,7 @@
             componentBanner,
             componentGoodsList,
             componentShopHeader,
+            componentNavBack,
             componentDiy
         },
         onLoad(params) {
@@ -275,6 +284,6 @@
         }
     };
 </script>
-<style>
+<style scoped>
     @import './detail.css';
 </style>
