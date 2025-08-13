@@ -141,7 +141,7 @@
                                                                                 {{ item.buy_number }}
                                                                             </view>
                                                                             <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                                <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
+                                                                                <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
                                                                             </view>
                                                                         </block>
                                                                         <block v-else>
@@ -310,7 +310,7 @@
                                                                         {{ goods.stock }}
                                                                     </view>
                                                                     <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-                                                                        <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
+                                                                        <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
                                                                     </view>
                                                                 </block>
                                                                 <block v-else>

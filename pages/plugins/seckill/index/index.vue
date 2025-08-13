@@ -33,7 +33,7 @@
                                 </view>
                             </view>
                         </view>
-                        <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">{{$t('index.index.516559')}}<iconfont name="icon-miaosha-hdgz" size="26rpx" propClass="margin-left-xs pr top-xs" color="#999"></iconfont>
+                        <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">{{$t('index.index.516559')}}<iconfont name="icon-help" size="26rpx" propClass="margin-left-xs pr top-xs" color="#999"></iconfont>
                         </view>
                     </view>
 

@@ -55,7 +55,7 @@
                     </template>
                 </view>
                 <view v-if="com_data.is_add_option == '1'" class="add-option flex-row gap-10 align-c" @tap="add_option">
-                    <iconfont name="icon-xzdz-tianjiabiaoq" size="14" color="#2a94ff"/>
+                    <iconfont name="icon-add-wide" size="14" color="#2a94ff"/>
                     <view class="size-14 cr-blue">添加选项</view>
                 </view>
             </view>

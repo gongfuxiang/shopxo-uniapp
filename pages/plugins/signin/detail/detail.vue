@@ -13,7 +13,7 @@
                     </view>
                     <view v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team oh flex-row" @tap="team_event">
                         <view class="content">
-                            <iconfont name="icon-qiandao-zudui" propClass="pr top-xs" size="34rpx"></iconfont>
+                            <iconfont name="icon-team-up" propClass="pr top-xs" size="34rpx"></iconfont>
                             <text>{{$t('detail.detail.8ua11k')}}</text>
                         </view>
                     </view>
@@ -21,7 +21,7 @@
                 <view class="signin-btn pa left-0 right-0 tc">
                     <view class="content cr-white" @tap="coming_event">
                         <block v-if="is_already_coming == 1">{{$t('detail.detail.25x8ij')}}</block>
-                        <block v-else>{{$t('detail.detail.mvj266')}}<iconfont name="icon-arrow-right-round" color="#fff" size="32rpx" propClass="margin-left-sm"></iconfont>
+                        <block v-else>{{$t('detail.detail.mvj266')}}<iconfont name="icon-arrow-right-long" color="#fff" size="32rpx" propClass="margin-left-sm"></iconfont>
                         </block>
                     </view>
                 </view>
@@ -34,7 +34,7 @@
                             </view>
                             <view class="title-right text-size-md">
                                 <text v-if="(data_base.is_user_menu || 0) == 1" data-value="/pages/plugins/signin/user/user" @tap="url_event" class="cp">
-                                    <iconfont name="icon-qiandao-wdqd" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.detail.31lky7')}}</text>
+                                    <iconfont name="icon-sign-in" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.detail.31lky7')}}</text>
                             </view>
                         </view>
                         <view class="calendar-week flex-row align-c jc-sa padding-horizontal-main">
@@ -47,7 +47,7 @@
                                 <view v-for="(col, colIndex) in row" class="list tc" :class="col.class" :key="colIndex">
                                     <block v-if="col.today">
                                         <block v-if="user_signin_data && user_signin_data.current_day === 1">
-                                            <iconfont name="icon-qiandao-yixuan" color="#E22C08" size="48rpx"></iconfont>
+                                            <iconfont name="icon-select" color="#E22C08" size="48rpx"></iconfont>
                                         </block>
                                         <block v-else>
                                             <text class="fw-b">{{$t('detail.detail.p07k62')}}</text>
@@ -56,7 +56,7 @@
                                     <block v-else>
                                         <!-- 判断bool是否存在数组signinHistory中    【 true则表示存在于数组中】 -->
                                         <block v-if="user_signin_data && user_signin_data.history_day.some((item) => Number(item) === col.num) && col.current_month">
-                                            <iconfont name="icon-qiandao-yixuan" size="48rpx" color="#ccc"></iconfont>
+                                            <iconfont name="icon-select" size="48rpx" color="#ccc"></iconfont>
                                         </block>
                                         <block v-else>
                                             {{ col.num }}
@@ -112,7 +112,7 @@
                             <view class="desc">{{$t('detail.detail.ndp2k3')}}<text>{{ coming_integral }}</text>{{$t('index.index.t26j9z')}}</view>
                             <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">{{$t('detail.detail.7itw5w')}}</view>
                             <view class="close-sub pa cr-white" @tap="coming_success_close_event">
-                                <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
+                                <iconfont name="icon-close-round" size="60rpx"></iconfont>
                             </view>
                         </view>
                     </view>

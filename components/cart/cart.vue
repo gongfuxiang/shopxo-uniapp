@@ -291,7 +291,7 @@
                                     <text class="cr-base">{{ item.name }}</text>
                                     <text v-if="(item.distance || null) != null" class="cr-grey margin-left-xs">({{ item.distance }})</text>
                                     <view v-if="(plugins_realstore_info || null) != null && plugins_realstore_info.id == item.id" class="fr">
-                                        <iconfont name="icon-zhifu-yixuan" size="30rpx" propClass="lh-il cr-main"></iconfont>
+                                        <iconfont name="icon-selected-solid" size="30rpx" propClass="lh-il cr-main"></iconfont>
                                     </view>
                                 </view>
                             </view>

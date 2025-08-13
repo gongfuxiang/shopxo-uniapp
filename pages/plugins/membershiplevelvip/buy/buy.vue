@@ -50,7 +50,7 @@
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
-                    <view> <iconfont name="icon-kaitonghuiy-dingdan" propClass="margin-right-sm" color="#666"></iconfont>{{$t('buy.buy.ntm2z5')}}</view>
+                    <view> <iconfont name="icon-order-round" propClass="margin-right-sm" color="#666"></iconfont>{{$t('buy.buy.ntm2z5')}}</view>
                     <iconfont name="icon-arrow-right" size="24rpx" color="#666"></iconfont>
                 </view>
             </view>

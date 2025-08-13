@@ -94,7 +94,7 @@
                             <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
                                 <view class="flex-col align-c jc-c gap-10">
                                     <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" show-fullscreen-btn class="radius-md" :style="{ width: popup_width, height: popup_height }"></video>
-                                    <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#ccc" propContainerDisplay="flex" @tap="video_close"></iconfont>
+                                    <iconfont name="icon-close-round" size="56rpx" color="#ccc" propContainerDisplay="flex" @tap="video_close"></iconfont>
                                 </view>
                             </uni-popup>
                             <!-- 快捷导航 -->

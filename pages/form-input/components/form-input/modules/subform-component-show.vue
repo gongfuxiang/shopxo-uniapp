@@ -5,7 +5,7 @@
                 <view v-if="!['auxiliary-line', 'upload-attachments', 'subform'].includes(item.key)" class="field-label flex-row align-c gap-10" :style="propFieldLabelStyle + (propDirection == 'row' && ['upload-img', 'upload-video'].includes(item.key) ? 'padding-top: 12rpx;line-height: 120rpx;' : '') + (propDirection == 'row' && ['multi-text'].includes(item.key) ? 'padding-top: 18rpx;' : '')">
                     <view class="flex-row align-c" :style="propTitleStyle">{{ item.com_data.title }}<view v-if="item.com_data.is_required && item.com_data.is_required == '1'" class="required">*</view></view>
                     <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+                        <iconfont name="icon-help" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
                 <view :class="'flex-1 wh-auto ht-auto flex-col gap-5 ' + (['date', 'date-group', 'upload-img', 'upload-video'].includes(item.key) ? '' : 'oh')">

@@ -18,7 +18,7 @@
                         </view>
                     </view>
                     <view class="padding-vertical-main padding-left-main padding-right-xl" @tap="address_edit_event" :data-index="index">
-                        <iconfont name="icon-wddz-bianji" size="24rpx"></iconfont>
+                        <iconfont name="icon-edit" size="24rpx"></iconfont>
                     </view>
                 </view>
             </view>

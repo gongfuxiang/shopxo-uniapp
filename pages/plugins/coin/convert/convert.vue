@@ -44,7 +44,7 @@
                             </view>
                         </view>
                         <view class="flex-row align-c">
-                            <iconfont name="icon-recharge" color="#333" size="32rpx"></iconfont>
+                            <iconfont name="icon-wallet-recharge" color="#333" size="32rpx"></iconfont>
                             <view class="margin-left-sm">{{ default_value || 0 }} * {{ accounts_list[send_accounts_id_index]['platform_rate'] }} = {{ Math.round(default_value * accounts_list[receive_accounts_id_index]['platform_rate'] * 100) / 100 }}</view>
                         </view>
                     </view>

@@ -16,7 +16,7 @@
                     <view class="flex-row jc-sb padding-bottom-main">
                         <view v-if="data_base.is_enable_recharge == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/recharge/recharge" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
-                                <iconfont name="icon-recharge" size="44rpx" color="#635BFF"></iconfont>
+                                <iconfont name="icon-wallet-recharge" size="44rpx" color="#635BFF"></iconfont>
                             </view>
                             <view>{{$t('recharge.recharge.otwkjn')}}</view>
                         </view>

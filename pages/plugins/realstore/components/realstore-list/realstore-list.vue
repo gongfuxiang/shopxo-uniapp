@@ -26,7 +26,7 @@
                         <!-- 地址 -->
                         <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp tl" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
                             <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
-                                <iconfont name="icon-map-address"></iconfont>
+                                <iconfont name="icon-location"></iconfont>
                             </view>
                             <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                         </view>
@@ -39,7 +39,7 @@
                         </view>
                         <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="item.lat != 0 && item.lng != 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-                            <iconfont name="icon-send" size="30rpx"></iconfont>
+                            <iconfont name="icon-send-linear" size="30rpx"></iconfont>
                         </view>
                         <!-- #endif -->
                     </view>

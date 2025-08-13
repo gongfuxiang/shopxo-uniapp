@@ -68,7 +68,7 @@
                                     <view class="flex-row jc-sb align-c">
                                         <!-- 地址 -->
                                         <view class="flex-row align-c flex-1 flex-width">
-                                            <iconfont name="icon-map-address" size="28rpx" propClass="pr top-xs"></iconfont>
+                                            <iconfont name="icon-location" size="28rpx" propClass="pr top-xs"></iconfont>
                                             <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
                                                 {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                             </view>
@@ -79,10 +79,10 @@
                                         <!-- 右侧操作 -->
                                         <view class="icon-list margin-left-main">
                                             <view v-if="(data_base || null) != null && is_service_info == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
-                                                <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
+                                                <iconfont name="icon-chat-message-solid" size="26rpx"></iconfont>
                                             </view>
                                             <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
-                                                <iconfont name="icon-mendian-sc" size="26rpx"></iconfont>
+                                                <iconfont name="icon-heart" size="26rpx"></iconfont>
                                                 <view class="badge-icon pa">
                                                     <component-badge :propNumber="favor_info.count"></component-badge>
                                                 </view>
@@ -182,7 +182,7 @@
                                                                             {{ item.buy_number }}
                                                                         </view>
                                                                         <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                            <iconfont name="icon-cart-inc" size="48rpx" :color="theme_color"></iconfont>
+                                                                            <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
                                                                         </view>
                                                                     </block>
                                                                     <block v-else>

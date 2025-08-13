@@ -6,7 +6,7 @@
                 <view class="flex-1 flex-row align-c gap-10">
                     <view class="flex-row align-c" :style="propTitleStyle">{{ com_data.title }}<view v-if="com_data.is_required == '1'" class="required">*</view></view>
                     <view v-if="com_data.common_config && com_data.common_config.help_is_show == '1' && !isEmpty(com_data.common_config.help_explain)" :data-value="com_data.common_config.help_explain" @tap="help_icon_event">
-                        <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+                        <iconfont name="icon-help" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="flex-row align-c gap-10">
@@ -80,7 +80,7 @@
                                         <span v-if="item.com_data.is_required == '1'" class="required">*</span>
                                         {{ item.com_data.title }}
                                         <view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_icon)"></view><view v-if="item.com_data.common_config.help_is_show == '1' && !isEmpty(item.com_data.common_config.help_explain)" :data-value="item.com_data.common_config.help_explain" @tap="help_icon_event">
-                                            <iconfont name="icon-miaosha-hdgz" :size="propHelpIconStyle" color="#999"></iconfont>
+                                            <iconfont name="icon-help" :size="propHelpIconStyle" color="#999"></iconfont>
                                         </view>
                                     </view>
                                 </view>

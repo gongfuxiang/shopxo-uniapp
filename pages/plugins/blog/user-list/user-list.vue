@@ -40,7 +40,7 @@
             <view class="bottom-line-exclude">
                 <button class="item cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
                     <view class="add-icon">
-                        <iconfont name="icon-xzdz-tianjiabiaoq" size="32rpx"></iconfont>
+                        <iconfont name="icon-add-wide" size="32rpx"></iconfont>
                     </view>
                     <text>{{$t('common.add')}}</text>
                 </button>

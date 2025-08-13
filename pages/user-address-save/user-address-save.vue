@@ -26,7 +26,7 @@
                                 <view class="flex-1 flex-width flex-col">
                                     <view v-if="home_user_address_map_status == 1" @tap="choose_user_location_event" class="flex-row jc-sb align-c">
                                         <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_user_location_event">{{$t('user-address-save.user-address-save.13rpdw')}}</view>
-                                        <iconfont name="icon-xzdz-dingwei" size="28rpx"></iconfont>
+                                        <iconfont name="icon-location" size="28rpx"></iconfont>
                                     </view>
                                     <block v-if="is_user_address_forbid_choice_region == 0">
                                         <view class="flex-row align-c" :class="home_user_address_map_status == 1 ? 'br-t-dashed padding-top-sm margin-top-sm' : ''">
@@ -96,7 +96,7 @@
                                                 </view>
                                             </view>
                                             <view v-else class="alias-btn bg-white cr-black br-grey-d" @tap="alias_add">
-                                                <iconfont name="icon-xzdz-tianjiabiaoq" size="28rpx"></iconfont>
+                                                <iconfont name="icon-add-wide" size="28rpx"></iconfont>
                                             </view>
                                         </view>
                                         <input type="hidden" name="alias" :value="address_data.alias" class="dis-none"  />

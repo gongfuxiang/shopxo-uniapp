@@ -12,7 +12,7 @@
                     </view>
                     <view class="divider"></view>
                     <view class="icon" :data-name="file[0].original" :data-url="file[0].url" @tap="download">
-                        <iconfont name="icon-download-btn" size="20rpx" />
+                        <iconfont name="icon-download-b-line" size="20rpx" />
                     </view>
                 </view>
             </view>

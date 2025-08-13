@@ -32,7 +32,7 @@
                                     </view>
                                     <!-- 地址 -->
                                     <view class="flex-row align-s align-c margin-top-sm">
-                                        <iconfont name="icon-map-address" size="28rpx" propClass="pr top-xs"></iconfont>
+                                        <iconfont name="icon-location" size="28rpx" propClass="pr top-xs"></iconfont>
                                         <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="user_choice_realstore.province_name + user_choice_realstore.city_name + user_choice_realstore.county_name + user_choice_realstore.address" @tap="text_copy_event">
                                             {{ user_choice_realstore.province_name }}{{ user_choice_realstore.city_name }}{{ user_choice_realstore.county_name }}{{ user_choice_realstore.address }}
                                         </view>
