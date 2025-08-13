@@ -65,19 +65,25 @@
                             <slot name="diy-bottom-common"></slot>
                         </template>
                         <template v-else>
-                            <!-- 商品九宫格列表 -->
-                            <view v-if="goods_list.length > 0" class="padding-top-main oh" :style="good_padding">
-                                <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
-                            </view>
-                            <view v-else class="pr">
-                                <!-- 提示信息 -->
-                                <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg" propLoadingLogoTop="30%"></component-no-data>
-                            </view>
+                            <template v-if="!isEmpty(tabs_id)">
+                                <!-- 商品九宫格列表 -->
+                                <view v-if="goods_list.length > 0" class="padding-top-main oh" :style="good_padding">
+                                    <component-goods-list :propData="{ style_type: goods_show_type_value, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                                </view>
+                                <view v-else class="pr">
+                                    <!-- 提示信息 -->
+                                    <component-no-data :propStatus="goods_list_loding_status" :propMsg="goods_list_loding_msg" propLoadingLogoTop="30%"></component-no-data>
+                                </view>
 
-                            <!-- diy底部卡槽 -->
-                            <template v-if="goods_bottom_line_status">
+                                <!-- diy底部卡槽 -->
+                                <template v-if="goods_bottom_line_status">
+                                    <slot name="diy-bottom-content"></slot>
+                                </template>
+                            </template>
+                            <template v-else>
                                 <slot name="diy-bottom-content"></slot>
                             </template>
+                            
                             <slot name="diy-bottom-common"></slot>
                         </template>
 
@@ -666,7 +672,7 @@
 
             // 滚动加载
             on_scroll_lower_event(e) {
-                if (!this.is_tabs_type) {
+                if (!this.is_tabs_type && !isEmpty(this.tabs_id)) {
                     this.get_goods_list();
                 }
             },
