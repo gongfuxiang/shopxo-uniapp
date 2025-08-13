@@ -173,6 +173,7 @@
                                     list.push({
                                         url: data.data.url,
                                         name: data.data.original,
+                                        size: data.data.size,
                                     });
                                     self.setData({
                                         form_images_list: list,
@@ -262,8 +263,6 @@
 
             // 图片删除
             upload_delete_event(e) {
-                console.log('删除');
-                
                 var self = this;
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
