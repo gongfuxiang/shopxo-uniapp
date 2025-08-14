@@ -2,7 +2,7 @@
     <view>
         <view :class="'flex-col' + (propDirection == 'row' ? '' : ' gap-10')">
             <view class="flex-row align-c gap-5" :style="com_data.common_style + propStyle">
-                <iconfont name="icon-phone" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
+                <iconfont :name="'icon-' + com_data.icon_name" size="24rpx" color="#666" propContainerDisplay="flex" ></iconfont>
                 <input :value="form_value" class="uni-input flex-1" :style="propStyle" type="text" :placeholder="placeholder" placeholder-style="color: gray;" @blur="data_check" @input="input_value_event" />
             </view>
             <view v-if="propDirection == 'row' && com_data.is_sms_verification == '1'" class="verify-submi-border"></view>

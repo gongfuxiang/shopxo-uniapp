@@ -5,12 +5,12 @@
                 <template v-if="com_data.score_type !== '2'">
                     <template v-if="index < new_selected">
                         <view :data-index="index + 1" @mousemove="mousemove" @mouseleave="mouseleave" @tap="icon_click">
-                            <iconfont :name="'icon-' + (com_data.score_type == '0' ? 'pointed' : 'heart')" size="32rpx" :color="com_data.select_color" propContainerDisplay="flex"></iconfont>
+                            <iconfont :name="'icon-' + (com_data.score_type == '0' ? 'pointed' : 'the-heart')" size="32rpx" :color="com_data.select_color" propContainerDisplay="flex"></iconfont>
                         </view>
                     </template>
                     <template v-else>
                         <view :data-index="index + 1" @mousemove="mousemove" @mouseleave="mouseleave" @tap="icon_click">
-                            <iconfont :name="'icon-' + (com_data.score_type == '0' ? 'five-pointed' : 'the-heart')" size="32rpx" :color="com_data.select_color" propContainerDisplay="flex"></iconfont>
+                            <iconfont :name="'icon-' + (com_data.score_type == '0' ? 'pointed-o' : 'the-heart-0')" size="32rpx" :color="com_data.select_color" propContainerDisplay="flex"></iconfont>
                         </view>
                     </template>
                 </template>
