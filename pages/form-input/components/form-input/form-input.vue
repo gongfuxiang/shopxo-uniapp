@@ -1,5 +1,6 @@
 <template>
     <view class="pr oh wh-auto ht-auto">
+        <!-- #ifdef MP-ALIPAY -->
         <view :class="(overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto') + ' scroll-y ' + (overall_config.type_value == 'default' || z_index_id !== '' ? ' scroll-x-hidden' : ' scroll-x ')">
             <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
                 <template v-if="!isEmpty(img_url)">
@@ -12,9 +13,22 @@
                 <form-input-base ref="componentForm" :propConfig="propValue.config" :propDataFormId="propDataFormId" @onSubmitEvent="submit_event" />
             </view>
         </view>
+        <!-- #endif -->
+        <!-- #ifndef MP-ALIPAY -->
         <!-- 支付宝小程序 不支持同时上下左右滑动-->
-        <!-- <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto'"  enable-flex lower-threshold="60" scroll-with-animation>  -->
-        <!-- </scroll-view> -->
+        <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto'"  enable-flex lower-threshold="60" scroll-with-animation>
+            <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
+                <template v-if="!isEmpty(img_url)">
+                    <image :src="img_url" mode="aspectFit" />
+                </template>
+            </view>
+            <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
+            <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
+                <!-- form表单子组件显示 -->
+                <form-input-base ref="componentForm" :propConfig="propValue.config" :propDataFormId="propDataFormId" @onSubmitEvent="submit_event" />
+            </view>
+        </scroll-view>
+        <!-- #endif -->
         <view v-if="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1'"  class="bottom-fixed" :style="is_custom ? 'z-index: 99999;' : ''">
             <view class="bottom-line-exclude">
                 <view class="form-footer flex-row align-c">
@@ -203,11 +217,13 @@ export default {
 }
 .scroll-y {
     overflow-y: auto;
+    scroll-behavior: smooth; /* 使滚动更加平滑 */
 }
 .scroll-x-hidden {
     overflow-x: hidden;
 }
 .scroll-x {
     overflow-x: auto;
+    scroll-behavior: smooth; /* 使滚动更加平滑 */
 }
 </style>
