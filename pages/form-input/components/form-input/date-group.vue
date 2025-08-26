@@ -3,8 +3,12 @@
         <view class="bg-white wh-auto ht-auto flex-row align-c gap-5 oh">
             <template v-if="isEmpty(form_value)">
                 <view class="flex-1 flex-row align-c ht-auto gap-5 oh cr-gray">
-                    <view class="flex-1 flex-row align-c jc-c text-line-1" :data-index="0" @tap="data_time_change">{{ com_data.start_placeholder }}</view>-
-                    <view class="flex-1 flex-row align-c jc-c text-line-1" :data-index="1" @tap="data_time_change">{{ com_data.end_placeholder }}</view>
+                    <view class="flex-1 flex-row align-c jc-c" :data-index="0" @tap="data_time_change">
+                        <view class="text-line-1">{{ com_data.start_placeholder }}</view>
+                    </view>-
+                    <view class="flex-1 flex-row align-c jc-c" :data-index="1" @tap="data_time_change">
+                        <view class="text-line-1">{{ com_data.end_placeholder }}</view>
+                    </view>
                 </view>
             </template>
             <template v-else>
