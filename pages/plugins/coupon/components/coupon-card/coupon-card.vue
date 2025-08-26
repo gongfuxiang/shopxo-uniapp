@@ -27,7 +27,7 @@
                     </view>
                     <view class="card-type">
                         <!-- 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期 -->
-                        <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
+                        <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive_event">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
                         <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
                         <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
                         <view v-else-if="propStatusType == 3" :data-value="home_page_url" @tap="url_event" class="cp">
@@ -41,7 +41,7 @@
                         <view v-else-if="propStatusType == 5" class="card-image pa top-0 right-0">
                             <image class="image" :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
                         </view>
-                        <view v-else @tap="receive">{{$t('coupon-card.coupon-card.j318xx')}}</view>
+                        <view v-else @tap="receive_event">{{$t('coupon-card.coupon-card.j318xx')}}</view>
                     </view>
                 </view>
                 <view class="card-circle-top" :style="{ background: `${propBg}` }"></view>
@@ -137,12 +137,18 @@
                 currency_symbol: app.globalData.currency_symbol(),
                 // 首页地址
                 home_page_url: tabbar_pages[0],
+                // 缓存key
+                cache_key: 'cache_plugins_coupon_receive_key',
             };
         },
         methods: {
             // 领取
-            receive(e) {
-                this.$emit('call-back', this.propIndex, this.propData.id);
+            receive_event(e) {
+                uni.setStorageSync(this.cache_key, {
+                    index: this.propIndex,
+                    value: this.propData.id
+                });
+                this.$emit('call-back');
             },
 
             // url事件
