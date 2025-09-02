@@ -126,6 +126,23 @@
                     "usingComponents": {
                         "baidu-editor": "dynamicLib://editorLib/editor"
                     }
+                },
+                {
+                    "path": "form-preview",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "always",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    },
+                    "usingComponents": {
+                        "baidu-editor": "dynamicLib://editorLib/editor"
+                    }
                 }
             ]
         },
