@@ -1333,6 +1333,13 @@
                     }
                 },
                 {
+                    "path": "license/cert",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "check/check",
                     "style": {
                         "enablePullDownRefresh": false,

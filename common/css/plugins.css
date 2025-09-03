@@ -255,9 +255,9 @@
     margin-right: 50rpx;
 }
 .plugins-shop-data-list .item .auth-icon .icon {
-    width: 28rpx;
-    height: 28rpx !important;
-    margin-right: 10rpx;
+    width: 36rpx;
+    height: 36rpx !important;
+    margin-right: 14rpx;
 }
 .plugins-shop-data-list .item .desc {
     min-height: 72rpx;

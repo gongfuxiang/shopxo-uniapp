@@ -109,7 +109,7 @@
                     images: config.images || null,
                     title: config.title || null,
                     summary: config.summary || null,
-                    share_info: config.share_info || {},
+                    share_info: config.share_info || {}
                 });
 
                 // 用户头像和昵称设置提示
@@ -212,11 +212,11 @@
                 // 分享基础数据
                 var share = app.globalData.share_content_handle(this.share_info || {});
                 var img = this.images || share.img;
-                var url = this.url || share.url;
+                var url = app.globalData.share_query_handle(this.url) || share.url;
                 var title = this.title || share.title;
                 var summary = this.summary || share.desc;
                 var type = this.type === null ? ((img || null) == null ? 1 : 0) : this.type;
-                var miniProgram = {};
+                var mini_program = {};
 
                 // #ifdef APP
                 // 分享到好友，是否走微信小程序，则获取微信小程序原始id
@@ -224,7 +224,7 @@
                     var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id') || null;
                     if (weixin_original_id != null) {
                         type = 5;
-                        miniProgram = {
+                        mini_program = {
                             id: weixin_original_id,
                             path: url.split('#')[1],
                             type: 0,
@@ -247,7 +247,7 @@
                     title: title,
                     summary: summary,
                     imageUrl: img,
-                    miniProgram: miniProgram,
+                    miniProgram: mini_program,
                     success: function (res) {},
                     fail: function (err) {},
                 });

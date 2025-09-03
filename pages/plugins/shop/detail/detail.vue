@@ -31,15 +31,8 @@
             </block>
             <!-- 自动和手动模式 -->
             <block v-else>
-                <!-- <component-nav-back :persopName="shop.name || $t('index.index.p4872s')" :propIsShowBack="false" :propIsRightSlot="false" :propFixed="false" propClass="bg-white" propNameClass="cr-black">
-                    <template slot="content">
-                        
-                    </template>
-                </component-nav-back> -->
-                
                 <!-- 头部 -->
                 <component-shop-header :propBase="data_base" :propShop="shop" :propShopGoodsCategory="shop_goods_category" :propShopNavigation="shop_navigation" :propShopFavorUser="shop_favor_user"></component-shop-header>
-                
 
                 <!-- 数据模式 -->
                 <!-- 自动模式 -->
