@@ -38,7 +38,7 @@
                                         </view>
                                     </view>
                                     <view class="flex-row align-c jc-e">
-                                        <imgOrIconOrText :value="propValue" type="details" />
+                                        <imgOrIconOrText :propValue="propValue" propType="details" />
                                     </view>
                                 </view>
                             </view>
@@ -61,7 +61,7 @@
                                             </view>
                                         </view>
                                         <view class="flex-row align-c jc-e">
-                                            <imgOrIconOrText :value="propValue" type="details" />
+                                            <imgOrIconOrText :propValue="propValue" propType="details" />
                                         </view>
                                     </view>
                                 </view>

@@ -41,6 +41,8 @@
                 new_type_size: 0,
                 new_type_color: '',
                 img_style: '',
+                corner_marker: '',
+                corner_img_marker: '',
             };
         },
         watch: {
@@ -54,25 +56,27 @@
         methods: {
             isEmpty,
             init() {
-                const content = this.propValue.content || {};
-                const new_style = this.propValue.style || {};
-                // 取出某一个对应的数据信息
-                const new_type_style = new_style[`${ this.propType }_style`] || {};
-                this.setData({
-                    is_show: content[`is_${ this.propType }_show`] == '1',
-                    type_boolean: content[`${ this.propType }_type`] == 'img-icon',
-                    type_img: content[`${ this.propType }_img`] || [],
-                    type_icon: content[`${ this.propType }_icon`] || '',
-                    type_text: content[`${ this.propType }_text`] || '',
-                    // 取出对应的大小显示
-                    new_type_size: new_type_style?.size || 0,
-                    new_type_color: new_type_style?.color || '',
-                    // 大小设置
-                    corner_marker: common_styles_computer(new_type_style),
-                    corner_img_marker: padding_computer(new_type_style),
-                    // 图片设置
-                    img_style: `height: ${ new_type_style.img_height }px; width: ${ new_type_style.img_width }px`,
-                })
+                if (!isEmpty(this.propType)) {
+                    const content = this.propValue.content || {};
+                    const new_style = this.propValue.style || {};
+                    // 取出某一个对应的数据信息
+                    const new_type_style = new_style[`${ this.propType }_style`] || {};
+                    this.setData({
+                        is_show: content[`is_${ this.propType }_show`] == '1',
+                        type_boolean: content[`${ this.propType }_type`] == 'img-icon',
+                        type_img: content[`${ this.propType }_img`] || [],
+                        type_icon: content[`${ this.propType }_icon`] || '',
+                        type_text: content[`${ this.propType }_text`] || '',
+                        // 取出对应的大小显示
+                        new_type_size: new_type_style?.size || 0,
+                        new_type_color: new_type_style?.color || '',
+                        // 大小设置
+                        corner_marker: common_styles_computer(new_type_style),
+                        corner_img_marker: padding_computer(new_type_style),
+                        // 图片设置
+                        img_style: `height: ${ new_type_style.img_height }px; width: ${ new_type_style.img_width }px`,
+                    })
+                }
             },
         },
     };
