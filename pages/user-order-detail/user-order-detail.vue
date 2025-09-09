@@ -161,6 +161,11 @@
                         </view>
                     </view>
                 </view>
+
+                <!-- 处方问诊 - 插件 -->
+                <block v-if="(detail.plugins_hospital_prescription_data || null) != null">
+                    <component-hospital-order-detail :propData="detail.plugins_hospital_prescription_data"></component-hospital-order-detail>
+                </block>
             </view>
 
             <!-- 结尾 -->
@@ -180,6 +185,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentHospitalOrderDetail from '@/pages/plugins/hospital/components/order-detail/order-detail';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
@@ -201,6 +207,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentHospitalOrderDetail,
         },
 
         onLoad(params) {
