@@ -50,7 +50,7 @@
                 <view class="content">
                     <!-- 数据列表 -->
                     <view v-if="data_list.length > 0" class="padding-horizontal-main padding-bottom-xsss">
-                        <uni-swipe-action>
+                        <uni-swipe-action ref="swipe_action">
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
                                     <view class="cart-goods-item flex-row align-c bs-bb padding-main pr wh-auto" :class="(common_site_type == 4 ? 'cart-exhibition-mode-data' : '')">
@@ -920,6 +920,11 @@
 
                             // 选择处理
                             this.cart_selected_calculate();
+
+                            // 关闭所有滑动
+                            if ((this.$refs.swipe_action || null) != null) {
+                                this.$refs.swipe_action.closeAll();
+                            }
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(type == 'delete' ? this.$t('common.del_fail') : this.$t('cart.cart.21051p'));

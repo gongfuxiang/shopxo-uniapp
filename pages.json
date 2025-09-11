@@ -1350,6 +1350,13 @@
                     }
                 },
                 {
+                    "path": "license/cert",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "check/check",
                     "style": {
                         "enablePullDownRefresh": false,
@@ -2015,16 +2022,20 @@
         "backgroundColor": "transparent",
         "list": [
             {
-                "pagePath": "pages/index/index"
+                "pagePath": "pages/index/index",
+                "text": ""
             },
             {
-                "pagePath": "pages/goods-category/goods-category"
+                "pagePath": "pages/goods-category/goods-category",
+                "text": ""
             },
             {
-                "pagePath": "pages/cart/cart"
+                "pagePath": "pages/cart/cart",
+                "text": ""
             },
             {
-                "pagePath": "pages/user/user"
+                "pagePath": "pages/user/user",
+                "text": ""
             }
         ]
     },

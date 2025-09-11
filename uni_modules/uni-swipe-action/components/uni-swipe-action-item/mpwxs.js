@@ -1,8 +1,13 @@
 let mpMixins = {}
-// #ifdef APP-VUE|| MP-WEIXIN || H5
+let is_pc = null
+// #ifdef H5
 import {
 	isPC
 } from "./isPC"
+is_pc = isPC()
+// #endif
+// #ifdef APP-VUE || APP-HARMONY || MP-WEIXIN || H5
+
 mpMixins = {
 	data() {
 		return {
@@ -16,7 +21,7 @@ mpMixins = {
 	},
 	created() {
 		this.swipeaction = this.getSwipeAction()
-		if (this.swipeaction.children !== undefined) {
+		if (this.swipeaction && Array.isArray(this.swipeaction.children)) {
 			this.swipeaction.children.push(this)
 		}
 	},
@@ -26,8 +31,9 @@ mpMixins = {
 	methods: {
 		// wxs 中调用
 		closeSwipe(e) {
-			if (!this.autoClose) return
-			this.swipeaction.closeOther(this)
+			if (this.autoClose && this.swipeaction) {
+				this.swipeaction.closeOther(this)
+			}
 		},
 
 		change(e) {
@@ -38,9 +44,7 @@ mpMixins = {
 		},
 
 		appTouchStart(e) {
-			// #ifdef H5
-			if (isPC()) return
-			// #endif
+			if (is_pc) return
 			const {
 				clientX
 			} = e.changedTouches[0]
@@ -48,9 +52,7 @@ mpMixins = {
 			this.timestamp = new Date().getTime()
 		},
 		appTouchEnd(e, index, item, position) {
-			// #ifdef H5
-			if (isPC()) return
-			// #endif
+			if (is_pc) return
 			const {
 				clientX
 			} = e.changedTouches[0]
@@ -66,8 +68,8 @@ mpMixins = {
 			}
 		},
 		onClickForPC(index, item, position) {
+			if (!is_pc) return
 			// #ifdef H5
-			if (!isPC()) return
 			this.$emit('click', {
 				content: item,
 				index,

@@ -6,7 +6,10 @@
                 <view class="fw-b text-size margin-top-xxl">{{ data.title }}</view>
                 <view class="text-size-xs cr-grey margin-top-sm">{{ data.sub_title }}</view>
                 <view class="br padding-main margin-top-lg bg-white border-radius-main">
-                    <image :src="data.images" class="wh-auto radius dis-block" mode="widthFix" :data-value="data.images" @tap="image_show_event"></image>
+                    <block v-for="(item, index) in data.data">
+                        <view class="fw-b tc padding-vertical-sm margin-top">{{item.name}}</view>
+                        <image :src="item.url" class="wh-auto radius dis-block" mode="widthFix" :data-value="item.url" @tap="image_show_event"></image>
+                    </block>
                 </view>
                 <view v-if="(data.tips || null) != null && data.tips.length > 0" class="cr-grey margin-top-lg text-size-xs">
                     <block v-for="(item, index) in data.tips" :key="index">
@@ -82,7 +85,7 @@
             // 获取数据
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url("index", "license", "shop"),
+                    url: app.globalData.get_request_url("cert", "license", "shop"),
                     method: "POST",
                     data: {
                         id: this.params.id || 0,
