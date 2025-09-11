@@ -15,7 +15,8 @@
                                 <view class="flex-row jc-c">
                                     <view :class="'multi-text flex-1 flex-width ' + (data.type == 1 ? 'padding-right' : '')">{{ item.title }}</view>
                                     <label v-if="data.type == 1 && item.is_error == 0" class="tr binding-check pr bottom-sm" :data-index="index" @tap="goods_choice_event">
-                                        <radio :checked="item.checked == undefined || item.checked == true" :color="theme_color" style="transform: scale(0.7)" />
+                                        <radio v-if="(item.is_required || 0) == 1" :checked="true" color="#ccc" style="transform: scale(0.7)" />
+                                        <radio v-else :checked="item.checked == undefined || item.checked == true" :color="theme_color" style="transform: scale(0.7)" />
                                     </label>
                                 </view>
                                 <view class="single-text margin-top-sm flex-row align-c">
@@ -33,12 +34,6 @@
                                 <view class="margin-top-xs">
                                     <view v-if="item.is_error == 0" class="flex-row jc-sb align-c">
                                         <view class="flex-row align-c">
-                                            <view class="margin-right-sm pr" :data-index="index" @tap="goods_cart_event">
-                                                <iconfont name="icon-add-solid" size="42rpx" color="#E22C08"></iconfont>
-                                                <view class="cart-badge-icon pa">
-                                                    <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
-                                                </view>
-                                            </view>
                                             <text class="cr-grey-9 text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
                                         </view>
                                         <view v-if="(item.is_exist_many_spec || 0) == 1" class="bg-grey-e cr-grey round single-text text-size-xss spec-choice" :data-index="index" @tap="spec_choice_event">
@@ -103,9 +98,6 @@
         <!-- 规格选择 -->
         <component-goods-spec-choice ref="goods_spec_choice" v-on:specConfirmEvent="spec_confirm_event"></component-goods-spec-choice>
 
-        <!-- 商品购买 -->
-        <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
-
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -117,8 +109,6 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
-    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
-    import componentBadge from '@/components/badge/badge';
     let binding_static_url = app.globalData.get_static_url('binding', true);
 
     export default {
@@ -145,9 +135,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
-            componentGoodsSpecChoice,
-            componentGoodsBuy,
-            componentBadge
+            componentGoodsSpecChoice
         },
 
         onLoad(params) {
@@ -269,51 +257,53 @@
                 var index = e.currentTarget.dataset.index || 0;
                 var temp_data = this.data;
                 var goods = temp_data.goods;
-                goods[index]['checked'] = goods[index]['checked'] == undefined || goods[index]['checked'] == true ? false : true;
-                temp_data['goods'] = goods;
+                if(parseInt(goods[index]['is_required'] || 0) == 0) {
+                    goods[index]['checked'] = goods[index]['checked'] == undefined || goods[index]['checked'] == true ? false : true;
+                    temp_data['goods'] = goods;
 
-                // 已选商品
-                var min_price = 0;
-                var max_price = 0;
-                var min_discount_price = 0;
-                var max_discount_price = 0;
-                for (var i in goods) {
-                    if ((goods[i]['checked'] == undefined || goods[i]['checked'] == true) && goods[i]['is_error'] == 0) {
-                        min_price += parseFloat(goods[i]['min_price'] || 0);
-                        max_price += parseFloat(goods[i]['max_price'] || 0);
-                        var discount_price = goods[i]['discount_price'] || null;
-                        if (discount_price != null) {
-                            if (discount_price.indexOf('-') == -1) {
-                                min_discount_price += parseFloat(discount_price);
-                                max_discount_price += parseFloat(discount_price);
-                            } else {
-                                var temp = discount_price.split('-');
-                                min_discount_price += parseFloat(temp[0]);
-                                max_discount_price += parseFloat(temp[1]);
+                    // 已选商品
+                    var min_price = 0;
+                    var max_price = 0;
+                    var min_discount_price = 0;
+                    var max_discount_price = 0;
+                    for (var i in goods) {
+                        if ((goods[i]['checked'] == undefined || goods[i]['checked'] == true) && goods[i]['is_error'] == 0) {
+                            min_price += parseFloat(goods[i]['min_price'] || 0);
+                            max_price += parseFloat(goods[i]['max_price'] || 0);
+                            var discount_price = goods[i]['discount_price'] || null;
+                            if (discount_price != null) {
+                                if (discount_price.indexOf('-') == -1) {
+                                    min_discount_price += parseFloat(discount_price);
+                                    max_discount_price += parseFloat(discount_price);
+                                } else {
+                                    var temp = discount_price.split('-');
+                                    min_discount_price += parseFloat(temp[0]);
+                                    max_discount_price += parseFloat(temp[1]);
+                                }
                             }
                         }
                     }
-                }
 
-                // 价格
-                if (min_price == max_price) {
-                    var price = app.globalData.price_two_decimal(min_price);
-                } else {
-                    var price = app.globalData.price_two_decimal(min_price) + '-' + app.globalData.price_two_decimal(max_price);
-                }
+                    // 价格
+                    if (min_price == max_price) {
+                        var price = app.globalData.price_two_decimal(min_price);
+                    } else {
+                        var price = app.globalData.price_two_decimal(min_price) + '-' + app.globalData.price_two_decimal(max_price);
+                    }
 
-                // 节省
-                if (min_discount_price == max_discount_price) {
-                    var discount_price = app.globalData.price_two_decimal(min_discount_price);
-                } else {
-                    var discount_price = app.globalData.price_two_decimal(min_discount_price) + '-' + app.globalData.price_two_decimal(max_discount_price);
-                }
+                    // 节省
+                    if (min_discount_price == max_discount_price) {
+                        var discount_price = app.globalData.price_two_decimal(min_discount_price);
+                    } else {
+                        var discount_price = app.globalData.price_two_decimal(min_discount_price) + '-' + app.globalData.price_two_decimal(max_discount_price);
+                    }
 
-                // 购买价格
-                temp_data['estimate_price'] = price;
-                // 节省价格
-                temp_data['estimate_discount_price'] = discount_price;
-                this.setData({ data: temp_data });
+                    // 购买价格
+                    temp_data['estimate_price'] = price;
+                    // 节省价格
+                    temp_data['estimate_discount_price'] = discount_price;
+                    this.setData({ data: temp_data });
+                }
             },
 
             // 规格选择
@@ -386,31 +376,8 @@
                     goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
                 };
                 app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
-            },
-
-            // 加入购物车
-            goods_cart_event(e) {
-                if ((this.$refs.goods_buy || null) != null) {
-                    var index = e.currentTarget.dataset.index || 0;
-                    var goods = this.data['goods'][index];
-                    this.$refs.goods_buy.init(goods, { buy_event_type: 'cart', is_direct_cart: 1 }, { index: index });
-                }
-            },
-
-            // 加入购物车成功回调
-            goods_cart_back_event(e) {
-                // 增加数量
-                var back = e.back_data;
-                var temp = this.data;
-                var goods = temp['goods'][back.index];
-                goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0) + parseInt(e.stock);
-                if (goods['user_cart_count'] > 99) {
-                    goods['user_cart_count'] = '99+';
-                }
-                temp['goods'][back.index] = goods;
-                this.setData({ data: temp });
-            },
-        },
+            }
+        }
     };
 </script>
 <style scoped>
