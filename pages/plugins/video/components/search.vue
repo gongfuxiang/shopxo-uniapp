@@ -1,0 +1,80 @@
+<template> 
+    <view class="search-bar">
+        <iconfont name="icon-search-fine"></iconfont>
+        <input type="text" v-model="search_query" placeholder="请输入您的搜索内容" @input="handle_search" />
+        <view class="search-line"></view>
+        <view class="search-button" @tap="perform_search">搜索</view>
+    </view>
+</template>
+
+<script>
+export default {
+    props: {
+        propsSearchQuery: {
+            type: String,
+            default: ''
+        }
+    },
+    data() {
+        return {
+            search_query: ''
+        }
+    },
+    created() {
+        this.init();
+    },
+    methods: {
+        init() {
+            this.setData({
+                search_query: this.search_query
+            })
+        },
+        handle_search(event) {
+            this.setData({
+                search_query: event.target.value,
+            });
+        },
+        perform_search() {
+            // 这里可以添加搜索逻辑
+            this.$emit('search', this.search_query);
+        }
+    }
+}
+</script>
+
+<style scoped lang="scss">
+/* 搜索框 */
+.search-bar {
+	display: flex;
+	align-items: center;
+	background: rgba(255,255,255,0.5);
+	border-radius: 38rpx;
+	border: 2rpx solid #313131;
+    height: 100%;
+	margin: 0 24rpx;
+	.iconfont-container {
+		padding: 16rpx 30rpx;
+		padding-right: 20rpx;
+	}
+	input {
+		flex: 1;
+		height: 100%;
+		padding: 16rpx 0;
+		box-sizing: border-box;
+	}
+	.search-line {
+		width: 2rpx;
+		height: 100%;
+		padding: 16rpx 0;
+		margin-left: 20rpx;
+		background-color: #eee;
+	}
+	.search-button { 
+		font-weight: 500;
+		font-size: 28rpx;
+		color: #333333;
+		line-height: 20px;
+		padding: 16rpx 30rpx 16rpx 20rpx;
+	}
+}
+</style>
