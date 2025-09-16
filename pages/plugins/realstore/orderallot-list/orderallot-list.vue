@@ -1,5 +1,13 @@
 <template>
     <view :class="theme_view">
+        <!-- 搜索 -->
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
+            <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
+                <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
+                    <component-search @onsearch="search_button_event" :propDefaultValue="search_keywords" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                </view>
+            </template>
+        </component-nav-back>
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
@@ -7,9 +15,8 @@
                 <view v-else class="item fl tc" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
-
         <!-- 数据列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
                     <view class="item-base oh br-b padding-bottom-main">
@@ -95,14 +102,28 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentSearch from '@/components/search/search';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
     import componentPayment from '@/components/payment/payment';
 
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 0;
+    // #endif
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                client_type: app.globalData.application_client_type(),
+                status_bar_height: bar_height,
+                is_mp_env: false,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
+                is_mp_env: true,
+                // #endif
+                params: {},
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -110,7 +131,8 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                params: null,
+                search_keywords: '',
+                content_style: '',
                 nav_status_list: [
                     { name: this.$t('common.all'), value: "-1" },
                     { name: this.$t('extraction.extraction.53h4fj'), value: "0,1" },
@@ -139,6 +161,8 @@
 
         components: {
             componentCommon,
+            componentNavBack,
+            componentSearch,
             componentNoData,
             componentBottomLine,
             componentPayment
@@ -147,6 +171,9 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 参数处理
+            params = app.globalData.launch_params_handle(params);
 
             // 是否指定状态
             var nav_status_index = 0;
@@ -161,6 +188,8 @@
             this.setData({
                 params: params,
                 nav_status_index: nav_status_index,
+                search_keywords: params.keywords || '',
+                content_style: 'height: calc(100vh - 80rpx - '+(this.status_bar_height+(this.client_type == 'h5' ? 55 : 50))+'px);',
             });
 
             // 初始化配置
@@ -257,6 +286,7 @@
                     method: "POST",
                     data: {
                         page: this.data_page,
+                        keywords: this.search_keywords,
                         status: status,
                         oid: this.params.oid || 0,
                     },
@@ -376,7 +406,6 @@
                     temp_pay_index: index,
                     payment_id: payment_id,
                     pay_price: e.currentTarget.dataset.price,
-                    order_select_ids: [],
                 });
             },
 
@@ -522,6 +551,20 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 关键字搜索
+            search_button_event(e) {
+                this.setData({
+                    search_keywords: e,
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
+                });
+                
+                // 重新拉取数据
+                this.get_data_list(1);
             },
         },
     };

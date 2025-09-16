@@ -1,5 +1,13 @@
 <template>
     <view :class="theme_view">
+        <!-- 搜索 -->
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
+            <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
+                <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
+                    <component-search @onsearch="search_button_event" :propDefaultValue="search_keywords" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                </view>
+            </template>
+        </component-nav-back>
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
@@ -7,9 +15,8 @@
                 <view v-else class="item fl tc" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
-
         <!-- 订单列表 -->
-        <scroll-view :scroll-y="true" class="order-scroll" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="order-scroll" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view :class="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
@@ -128,12 +135,19 @@
     const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentSearch from '@/components/search/search';
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPayment from '@/components/payment/payment';
 
     var common_static_url = app.globalData.get_static_url('common');
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 0;
+    // #endif
     export default {
         data() {
             return {
@@ -141,6 +155,13 @@
                 theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
                 bottom_fixed_style: '',
+                client_type: app.globalData.application_client_type(),
+                status_bar_height: bar_height,
+                is_mp_env: false,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
+                is_mp_env: true,
+                // #endif
+                params: {},
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -148,7 +169,8 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                input_keyword_value: '',
+                search_keywords: '',
+                content_style: '',
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
                     { name: this.$t('user.user.9u8e61'), value: '1' },
@@ -163,8 +185,6 @@
                 nav_status_index: 0,
                 // 基础配置
                 home_is_enable_order_bulk_pay: 0,
-                // 页面从其他页面跳转过来携带的参数
-                params: {},
                 // 前往页面携带的参数
                 payment_currency_symbol: app.globalData.currency_symbol(),
                 pay_price: 0,
@@ -184,6 +204,8 @@
 
         components: {
             componentCommon,
+            componentNavBack,
+            componentSearch,
             componentPopup,
             componentNoData,
             componentBottomLine,
@@ -193,6 +215,9 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 参数处理
+            params = app.globalData.launch_params_handle(params);
 
             // 是否指定状态
             var nav_status_index = 0;
@@ -205,8 +230,10 @@
                 }
             }
             this.setData({
+                params: params,
                 nav_status_index: nav_status_index,
-                params: params || {},
+                search_keywords: params.keywords || '',
+                content_style: 'height: calc(100vh - 80rpx - '+(this.status_bar_height+(this.client_type == 'h5' ? 55 : 50))+'px);',
             });
 
             // 初始化配置
@@ -269,13 +296,6 @@
                 }
             },
 
-            // 输入框事件
-            input_event(e) {
-                this.setData({
-                    input_keyword_value: e.detail.value,
-                });
-            },
-
             // 获取数据
             get_data_list(is_mandatory) {
                 // 分页是否还有数据
@@ -311,7 +331,7 @@
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        keywords: this.input_keyword_value || '',
+                        keywords: this.search_keywords,
                         status: order_status,
                         is_more: 1,
                     },
@@ -818,6 +838,19 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+
+            // 关键字搜索
+            search_button_event(e) {
+                this.setData({
+                    search_keywords: e,
+                    order_select_ids: [],
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
+                });
+                this.get_data_list(1);
             },
         },
     };

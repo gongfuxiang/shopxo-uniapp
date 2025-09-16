@@ -316,7 +316,7 @@
             // 关键字搜索
             search_button_event(e) {
                 this.setData({
-                    search_keywords: e || '',
+                    search_keywords: e,
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
