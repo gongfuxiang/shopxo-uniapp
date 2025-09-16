@@ -42,7 +42,6 @@
 <script>
 import SearchComponent from '@/pages/plugins/video/components/search.vue';
 const app = getApp();
-var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
 // #ifdef MP-TOUTIAO
@@ -119,8 +118,13 @@ export default {
 				// #endif
 			// #endif
 		},
-		handle_search(event) {
-			this.search_query = event.target.value;
+		handle_search(e) {
+			this.search_query = e;
+			if (this.search_query.trim() == '') {
+				app.globalData.url_open(`/pages/plugins/video/search/search-record`, false);
+			} else {
+				app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
+			}
 		},
 		switch_tab(e) {
 			const index = e.currentTarget.dataset.index;
@@ -135,9 +139,7 @@ export default {
 		},
 		navigate_to_detail(e) {
 			const item = e.currentTarget.dataset.value;
-			uni.navigateTo({
-				url: `/pages/plugins/video/detail/detail?videoId=${item.detailId}`
-			});
+			app.globalData.url_open(`/pages/plugins/video/detail/detail?videoId=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
 			this.loadMore();

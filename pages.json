@@ -2019,6 +2019,13 @@
                     }
                 },
                 {
+                    "path": "search/search-record",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "search/search",
                     "style": {
                         "enablePullDownRefresh": true,

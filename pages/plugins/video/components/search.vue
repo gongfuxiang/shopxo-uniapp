@@ -20,6 +20,14 @@ export default {
             search_query: ''
         }
     },
+    watch: {
+        propsSearchQuery: {
+            handler(newVal, oldVal) {
+                this.search_query = newVal;
+            },
+            immediate: true
+        }
+    },
     created() {
         this.init();
     },
