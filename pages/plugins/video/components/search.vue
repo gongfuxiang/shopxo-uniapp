@@ -1,5 +1,6 @@
 <template> 
-    <view class="search-bar">
+    <view class="search-bar pr">
+        <view v-if="propsIsDisabled" class="search-mask" @tap="disabled_search"></view>
         <iconfont name="icon-search-fine"></iconfont>
         <input type="text" v-model="search_query" placeholder="请输入您的搜索内容" @input="handle_search" />
         <view class="search-line"></view>
@@ -13,6 +14,10 @@ export default {
         propsSearchQuery: {
             type: String,
             default: ''
+        },
+        propsIsDisabled: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -45,6 +50,9 @@ export default {
         perform_search() {
             // 这里可以添加搜索逻辑
             this.$emit('search', this.search_query);
+        },
+        disabled_search() {
+            this.$emit('disabledSearch');
         }
     }
 }
@@ -84,5 +92,13 @@ export default {
 		line-height: 20px;
 		padding: 16rpx 30rpx 16rpx 20rpx;
 	}
+    .search-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
 }
 </style>

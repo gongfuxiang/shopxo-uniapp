@@ -1,6 +1,6 @@
 <template>
 	<view class="wh-auto ht-auto pr video-container">
-		<scroll-view  scroll-y :show-scrollbar="false" class="ht" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
+		<scroll-view scroll-y :show-scrollbar="false" class="ht" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
 			<view class="wh-auto ht-auto pr">
 				<!-- 搜索框 -->
 				<view class="header-top">
@@ -8,12 +8,13 @@
 						<search-component :propsSearchQuery="search_query" @search="handle_search" />
 					</view>
 					<!-- 导航栏 -->
-					<view class="nav-tabs">
-						<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
-							<view class="tabs-scroll-content">
-								<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }" :data-index="index" @click="switch_tab">{{ tab }}</view>
-							</view>
-						</scroll-view>
+					<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
+						<view class="tabs-scroll-content">
+							<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }" :data-index="index" @click="switch_tab">{{ tab }}</view>
+						</view>
+						<view class="nav-tabs-filter" @click="toggleFilterPopup">
+							<iconfont name="icon-filter" size="32rpx"></iconfont>
+						</view>
 					</view>
 				</view>
 				<!-- 推荐视频卡片区域 -->
@@ -36,11 +37,55 @@
 				</view>
 			</view>
 		</scroll-view>
+		<!-- 选项卡更多弹窗 -->
+        <componentPopup :propShow="filterPopupStatus" propPosition="top" :propMask="true" @onclose="closeFilterPopup">
+            <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')" :style="{ 'padding-top': popup_top }">
+                <view class="divider-b">
+                    <view class="nav-list-more">
+                        <view class="flex-row flex-wrap align-c">
+                            <!-- 排序依据 -->
+                            <view class="filter-group">
+                                <view class="filter-title">排序依据</view>
+                                <view class="filter-options">
+                                    <view v-for="(option, index) in sort_options" :key="index" class="filter-option" @click="selectSortOption(option)">{{ option }}</view>
+                                </view>
+                            </view>
+                            <!-- 发布时间 -->
+                            <view class="filter-group">
+                                <view class="filter-title">发布时间</view>
+                                <view class="filter-options">
+                                    <view v-for="(option, index) in publish_time_options" :key="index" class="filter-option" @click="selectPublishTimeOption(option)">{{ option }}</view>
+                                </view>
+                            </view>
+                            <!-- 视频时长 -->
+                            <view class="filter-group">
+                                <view class="filter-title">视频时长</view>
+                                <view class="filter-options">
+                                    <view v-for="(option, index) in video_duration_options" :key="index" class="filter-option" @click="selectVideoDurationOption(option)">{{ option }}</view>
+                                </view>
+                            </view>
+                            <!-- 搜索范围 -->
+                            <view class="filter-group">
+                                <view class="filter-title">搜索范围</view>
+                                <view class="filter-options">
+                                    <view v-for="(option, index) in search_range_options" :key="index" class="filter-option" @click="selectSearchRangeOption(option)">{{ option }}</view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="tc padding-top-lg flex-row jc-c align-c" @tap="closeFilterPopup">
+                    <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                    <iconfont name="icon-arrow-top" color="#ccc" propContainerDisplay="flex"></iconfont>
+                </view>
+            </view>
+        </componentPopup>
 	</view>
 </template>
 
 <script>
-import SearchComponent from '@/pages/plugins/video/components/search.vue';
+import searchComponent from '@/pages/plugins/video/components/search.vue';
+import componentPopup from '@/components/popup/popup';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -49,7 +94,8 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		SearchComponent
+		searchComponent,
+		componentPopup	
 	},
 	data() {
 		return {
@@ -96,8 +142,23 @@ export default {
 					detailId: '4'
 				},
 			],
-			isLoadingMore: false
+			isLoadingMore: false,
+			params: null,
+			filterPopupStatus: false,
+			popup_top: '0rpx',
+			platform: app.globalData.application_client_type(),
+			sort_options: ['综合排序', '最新发布', '最多点赞'],
+			publish_time_options: ['不限', '一天内', '一周内', '半年内'],
+			video_duration_options: ['不限', '1分钟以下', '1-5分钟', '5分钟以上'],
+			search_range_options: ['不限', '最近看过', '还未看过']
 		};
+	},
+	onLoad(params) {
+		// 设置参数
+		this.setData({
+			search_query: params.search_query || '',
+			params: app.globalData.launch_params_handle(params),
+		});
 	},
 	created() {
 		this.init();
@@ -117,6 +178,21 @@ export default {
 				}
 				// #endif
 			// #endif
+			setTimeout(() => {
+                const query = uni.createSelectorQuery().in(this);
+                // 选择我们想要的元素
+                query
+                    .select('.header-top')
+                    .boundingClientRect((res) => {
+                        if ((res || null) != null) {
+                            // data包含元素的宽度、高度等信息
+                            this.setData({
+                                popup_top: res.height * 2 + 'rpx',
+                            });
+                        }
+                    })
+                    .exec(); // 执行查询
+            }, 500);
 		},
 		handle_search(e) {
 			this.search_query = e;
@@ -166,6 +242,32 @@ export default {
 					recommend_videos: data
 				});
 			}, 200);
+		},
+		toggleFilterPopup() {
+			this.filterPopupStatus = !this.filterPopupStatus;
+		},
+		closeFilterPopup() {
+			this.filterPopupStatus = false;
+		},
+		selectSortOption(option) {
+			// 处理排序选项选择
+			console.log('Selected sort option:', option);
+			this.closeFilterPopup();
+		},
+		selectPublishTimeOption(option) {
+			// 处理发布时间选项选择
+			console.log('Selected publish time option:', option);
+			this.closeFilterPopup();
+		},
+		selectVideoDurationOption(option) {
+			// 处理视频时长选项选择
+			console.log('Selected video duration option:', option);
+			this.closeFilterPopup();
+		},
+		selectSearchRangeOption(option) {
+			// 处理搜索范围选项选择
+			console.log('Selected search range option:', option);
+			this.closeFilterPopup();
 		}
 	}
 };
@@ -183,15 +285,23 @@ export default {
 	position: relative;
 	width: 100%;
 	padding: 0 16rpx 20rpx 16rpx;
+	box-sizing: border-box;
 	.tabs-scroll-content {
 		display: flex;
 		align-items: center;
+		overflow: hidden;
+		overflow-x: auto;
 		gap: 48rpx;
+	}
+	.nav-tabs-filter {
+		padding-top: 8rpx;
+		box-sizing: border-box;
 	}
 	.tab-item {
 		position: relative;
 		white-space: nowrap;
 		padding-bottom: 8rpx;
+		box-sizing: border-box;
 		font-weight: 500;
 		font-size: 28rpx;
 		color: #666666;
@@ -220,6 +330,15 @@ export default {
 
 	.tab-item.active {
 		color: #333;
+	}
+}
+
+@media (max-width: 500px) { 
+	.nav-tabs {
+		align-items: center;
+		.nav-tabs-filter {
+			padding-top: 0;
+		}
 	}
 }
 
@@ -275,6 +394,55 @@ export default {
 		font-size: 24rpx;
 		color: #999999;
 		line-height: 34rpx;
+	}
+}
+
+/* 筛选条件弹窗样式 */
+.filter-group {
+	margin-bottom: 40rpx;
+}
+
+.filter-title {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	margin-bottom: 24rpx;
+}
+
+.filter-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20rpx;
+}
+
+.filter-option {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	padding: 10rpx 32rpx;
+	background-color: #e8e8e8;
+	border-radius: 4rpx;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.filter-option:hover {
+	background-color: #e0e0e0;
+}
+.filter-option.active {
+	color: #333;
+}
+.nav-list-more {
+	padding: 20rpx 40rpx;
+}
+::v-deep .popup {
+	.popup-mask { 
+		z-index: 8 !important;
+	}
+	.popup-content {
+		z-index: 8 !important;
 	}
 }
 </style>

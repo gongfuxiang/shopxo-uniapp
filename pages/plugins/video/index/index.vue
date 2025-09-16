@@ -5,7 +5,7 @@
 				<!-- 搜索框 -->
 				<view class="header-top">
 					<view class="wh-auto ht-auto" :style="top_content_style">
-						<search-component :propsSearchQuery="search_query" @search="handle_search" />
+						<search-component :propsSearchQuery="search_query" :propsIsDisabled="true" @disabledSearch="handle_search"/>
 					</view>
 					<!-- 导航栏 -->
 					<view class="nav-tabs">
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import SearchComponent from '@/pages/plugins/video/components/search.vue';
+import searchComponent from '@/pages/plugins/video/components/search.vue';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -49,7 +49,7 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		SearchComponent
+		searchComponent
 	},
 	data() {
 		return {
@@ -118,13 +118,9 @@ export default {
 				// #endif
 			// #endif
 		},
-		handle_search(e) {
-			this.search_query = e;
-			if (this.search_query.trim() == '') {
-				app.globalData.url_open(`/pages/plugins/video/search/search-record`, false);
-			} else {
-				app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
-			}
+		handle_search() {
+			// 跳转到搜索记录页面
+			app.globalData.url_open(`/pages/plugins/video/search/search-record`, false);
 		},
 		switch_tab(e) {
 			const index = e.currentTarget.dataset.index;
