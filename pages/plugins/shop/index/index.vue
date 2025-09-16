@@ -1,5 +1,13 @@
 <template>
     <view :class="theme_view">
+        <!-- 搜索 -->
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
+            <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
+                <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
+                    <component-search @onsearch="search_button_event" :propDefaultValue="search_keywords" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                </view>
+            </template>
+        </component-nav-back>
         <!-- 分类 -->
         <scroll-view v-if="(shop_category || null) != null && shop_category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
             <block v-for="(item, index) in shop_category" :key="index">
@@ -8,9 +16,8 @@
                 </view>
             </block>
         </scroll-view>
-
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-shop-data-list" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box plugins-shop-data-list" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in data_list" :key="index">
                     <view :data-value="item.url" @tap="url_event" class="item border-radius-main bg-white oh cp spacing-mb">
@@ -57,8 +64,15 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentSearch from '@/components/search/search';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 0;
+    // #endif
     export default {
         data() {
             return {
@@ -66,6 +80,12 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
+                client_type: app.globalData.application_client_type(),
+                status_bar_height: bar_height,
+                is_mp_env: false,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
+                is_mp_env: true,
+                // #endif
                 data_is_loading: 0,
                 data_list: [],
                 data_total: 0,
@@ -75,12 +95,16 @@
                 data_base: null,
                 shop_category: [],
                 nav_active_value: 0,
+                search_keywords: '',
+                content_style: '',
                 // 自定义分享信息
                 share_info: {},
             };
         },
         components: {
             componentCommon,
+            componentNavBack,
+            componentSearch,
             componentNoData,
             componentBottomLine,
         },
@@ -96,7 +120,10 @@
             this.setData({
                 params: params,
                 nav_active_value: params.category_id || 0,
+                search_keywords: params.keywords || '',
+                content_style: 'height: calc(100vh - 80rpx - '+(this.status_bar_height+(this.client_type == 'h5' ? 55 : 50))+'px);',
             });
+
             // 数据加载
             this.get_data();
         },
@@ -214,6 +241,7 @@
                     data: {
                         page: this.data_page,
                         category_id: this.nav_active_value || 0,
+                        keywords: this.search_keywords,
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -283,6 +311,18 @@
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
+            },
+
+            // 关键字搜索
+            search_button_event(e) {
+                this.setData({
+                    search_keywords: e || '',
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
+                });
+                this.get_data_list(1);
             },
 
             // 导航事件
