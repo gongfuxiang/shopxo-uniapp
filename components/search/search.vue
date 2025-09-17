@@ -1,13 +1,16 @@
 <template>
     <view :class="theme_view">
         <view :class="'search-content pr round '+propSize" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')">
-            <view class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
+            <slot name="left"></slot>
+            <view v-if="propIsIcon" class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
+            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')">{{propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5')}}</view>
             <input
+                v-else
                 type="text"
                 confirm-type="search"
-                :class="'input round dis-block '+propClass+' '+(propIsBtn ? ' input-search-btn' : '')"
+                :class="'input round dis-block '+propClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')"
                 :placeholder="(propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5'))"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
@@ -19,6 +22,7 @@
                 :style="'color:' + propTextColor + ';'"
             />
             <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_submit_confirm_event">{{$t('common.search')}}</button>
+            <slot name="right"></slot>
         </view>
     </view>
 </template>
@@ -101,6 +105,10 @@
                 type: String,
                 default: '#ccc',
             },
+            propIsIcon: {
+                type: Boolean,
+                default: true,
+            },
             propIsIconOnEvent: {
                 type: Boolean,
                 default: false,
@@ -120,6 +128,10 @@
             propPadding: {
                 type: String,
                 default: '16rpx 20rpx 0 20rpx;',
+            },
+            propIsEnterSearchStart: {
+                type: Boolean,
+                default: false,
             },
         },
         // 属性值改变监听
@@ -173,19 +185,23 @@
 
             // 搜索确认事件
             search_submit_confirm_event() {
-                // 是否验证必须要传值
-                var value = this.input_value || this.propPlaceholderValue;
-                if (this.propIsRequired && value === '') {
-                    app.globalData.showToast(this.$t('search.search.ic9b89'));
-                    return false;
-                }
-
-                // 是否回调事件
-                if (this.propIsOnEvent) {
-                    this.$emit('onsearch', value);
+                if(this.propIsEnterSearchStart) {
+                    this.seat_input_event();
                 } else {
-                    // 进入搜索页面
-                    app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + value);
+                    // 是否验证必须要传值
+                    var value = this.input_value || this.propPlaceholderValue;
+                    if (this.propIsRequired && value === '') {
+                        app.globalData.showToast(this.$t('search.search.ic9b89'));
+                        return false;
+                    }
+
+                    // 是否回调事件
+                    if (this.propIsOnEvent) {
+                        this.$emit('onsearch', value);
+                    } else {
+                        // 进入搜索页面
+                        app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + value);
+                    }
                 }
             },
 
@@ -199,8 +215,18 @@
                 // 是否回调事件
                 if (this.propIsIconOnEvent) {
                     this.$emit('onicon', {});
+                } else {
+                    // 图标没有事件，开启了进入占位搜索页面则直接进去
+                    if(this.propIsEnterSearchStart) {
+                        this.seat_input_event();
+                    }
                 }
             },
+
+            // 占位搜索事件
+            seat_input_event(e) {
+                app.globalData.url_open('/pages/goods-search-start/goods-search-start');
+            }
         },
     };
 </script>
@@ -219,11 +245,22 @@
         height: 56rpx;
         line-height: 56rpx;
         background: transparent;
-        margin-left: 64rpx;
-        width: calc(100% - 96rpx);
     }
-    .search-content .input.input-search-btn {
+    .search-content .input.input-left-icon.input-search-btn {
         width: calc(100% - 184rpx);
+        margin-left: 64rpx;
+    }
+    .search-content .input:not(.input-left-icon) {
+        margin-left: 20rpx;
+        width: calc(100% - 136rpx);
+    }
+    .search-content .input:not(.input-search-btn) {
+        margin-left: 64rpx;
+        width: calc(100% - 84rpx);
+    }
+    .search-content .input:not(.input-left-icon):not(.input-search-btn) {
+        width: calc(100% - 40rpx);
+        margin-left: 20rpx;
     }
     .search-content .search-btn {
         width: 106rpx;

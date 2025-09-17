@@ -96,7 +96,9 @@
         "base_info_text": "Basic info",
         "form_input_data_text": "Form input Data",
         "two_nav_text" : "Secondary Navigation",
-        "no_data": "No data available at the moment"
+        "no_data": "No data available at the moment",
+        "goods": "Goods",
+        "shop": "Shop"
 	},
     "client": {
         "weixin": "WeChat",
@@ -121,7 +123,7 @@
         "paylog-list": "Payment Order list",
         "paylog-detail": "Payment Order Details",
 		"goods-search": "Product search",
-        "goods-search-start": "Product search",
+        "goods-search-start": "Data search",
 		"goods-detail": "Product details",
 		"goods-comment": "Product evaluation",
 		"user-address": "My address",

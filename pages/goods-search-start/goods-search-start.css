@@ -14,3 +14,6 @@
 .ranking-list .goods-list .icon {
     width: 38rpx;
 }
+.search-container.switch-shop {
+    width: calc(100% - 124rpx);
+}

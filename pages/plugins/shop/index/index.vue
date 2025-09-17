@@ -38,7 +38,7 @@
                             </view>
                             <view class="oh br-t-dashed padding-main">
                                 <view class="fl cr-grey-9 single-text"
-                                    >{{$t('recommend-list.recommend-list.x74z3o')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
+                                    >{{$t('common.goods')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
                                 >
                                 <view class="fr cr-grey-9 single-text"
                                     >{{$t('goods-category.goods-category.at5p35')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
