@@ -4,10 +4,12 @@
 			<view class="wh-auto ht-auto pr">
 				<!-- 搜索框 -->
 				<view class="header-top">
-					<view class="wh-auto ht-auto" :style="top_content_style">
-						<search-component :propsSearchQuery="search_query" :propsIsDisabled="true" @disabledSearch="handle_search"/>
+					<view class="ht-auto" :style="top_content_style + menu_button_info">
+						<view class="search-height">
+							<search-component :propsSearchQuery="search_query" :propsIsDisabled="true" @disabledSearch="handle_search"/>
+						</view>
 					</view>
-					
+
 					<template v-if="recommend_videos.length > 0">
 						<!-- 导航栏 -->
 						<view class="nav-tabs">
@@ -80,6 +82,7 @@ export default {
 			isLoadingMore: false,
 			data_list_loding_status: 1,
 			data_list_loding_msg: '',
+			menu_button_info: '',
 		};
 	},
 	mounted() {
@@ -97,11 +100,13 @@ export default {
 				if (is_current_single_page == 0) {
 					const custom = uni.getMenuButtonBoundingClientRect();
 					menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
+					this.get_top_content_style(custom.height);
 				}
 				// #endif
 			// #endif
 			setTimeout(() => {
 				this.setData({
+					menu_button_info: menu_button_info,
 					data_list_loding_status: 0,
 					recommend_videos: [
 						{
@@ -135,6 +140,32 @@ export default {
 					]
 				});
 			}, 10000);
+		},
+		get_top_content_style(custom_height) {
+			// 获取搜索区域的高度
+			setTimeout(() => {
+				const query = uni.createSelectorQuery().in(this);
+					// 选择我们想要的元素
+				query.select('.search-height').boundingClientRect((res) => {
+					if ((res || null) != null) {
+						// 判断搜索跟胶囊的大小间隔
+						const top_height = custom_height == 0 ? 0 : (res.height - custom_height) / 2;
+						let top_content_style = '';
+						// #ifdef MP
+						top_content_style = 'padding-top:' + (bar_height + 5 - top_height) + 'px;padding-bottom:10px;';
+						// #endif
+						// #ifdef H5 || MP-TOUTIAO
+						top_content_style = 'padding-top:' + (bar_height + 7 - top_height) + 'px;padding-bottom:10px;';
+						// #endif
+						// #ifdef APP
+						top_content_style = 'padding-top:' + bar_height - top_height + 'px;padding-bottom:10px;';
+						// #endif
+						this.setData({
+							top_content_style: top_content_style
+						});
+					}
+				}).exec(); // 执行查询
+			}, 500);
 		},
 		handle_search() {
 			// 跳转到搜索记录页面
@@ -185,7 +216,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .header-top {
 	position: sticky;
 	top: 0;
@@ -239,8 +270,7 @@ export default {
 
 /* #ifdef MP-WEIXIN | APP-PLUS */
 .tabs-scroll {
-	::v-deep ::-webkit-scrollbar
-	{
+	::v-deep ::-webkit-scrollbar {
 		width: 0rpx!important;
 		height: 0rpx!important;
 		background-color: transparent;

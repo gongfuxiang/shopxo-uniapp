@@ -1,7 +1,9 @@
 <template> 
     <view class="search-bar pr">
         <view v-if="propsIsDisabled" class="search-mask" @tap="disabled_search"></view>
-        <iconfont name="icon-search-fine"></iconfont>
+        <view class="search-iconfont-container">
+            <iconfont name="icon-search-fine"></iconfont>
+        </view>
         <input type="text" v-model="search_query" placeholder="请输入您的搜索内容" @input="handle_search" />
         <view class="search-line"></view>
         <view class="search-button" @tap="perform_search">搜索</view>
@@ -58,7 +60,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* 搜索框 */
 .search-bar {
 	display: flex;
@@ -68,7 +70,7 @@ export default {
 	border: 2rpx solid #313131;
     height: 100%;
 	margin: 0 24rpx;
-	.iconfont-container {
+	.search-iconfont-container {
 		padding: 16rpx 30rpx;
 		padding-right: 20rpx;
 	}

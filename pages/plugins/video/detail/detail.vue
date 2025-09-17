@@ -258,7 +258,7 @@
 	};
 </script>
 
-<style>
+<style lang="scss" scoped>
 	.content,
 	.swiper-container,
 	swiper-item,

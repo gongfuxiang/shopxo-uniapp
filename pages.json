@@ -2035,28 +2035,40 @@
                 {
                     "path": "index/index",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "detail/detail",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "search/search-record",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "search/search",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 }

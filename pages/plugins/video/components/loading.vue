@@ -12,7 +12,7 @@
 <script>
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .more-history-btn {
     font-weight: 400;
     font-size: 28rpx;
