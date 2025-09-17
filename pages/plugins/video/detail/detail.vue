@@ -1,30 +1,25 @@
 <template>
 	<view class="content">
-		<swiper class="swiper-container" :vertical="true" @change="handleSwiperChange" :current="currentIndex">
+		<swiper class="swiper-container" :style="swiperStyle" :vertical="true" @change="handleSwiperChange" :current="current_index">
 			<swiper-item v-for="(video, index) in videoData" :key="video.id">
-				<view class="video-container" @click="togglePlayPause">
-					<video class="video" :src="video.videoUrl" :poster="video.posterUrl" :id="`video_${index}`" :loop="true"
-						:controls="false" :show-center-play-btn="false" :show-play-btn="false"
-						object-fit="contain" @timeupdate="handleTimeUpdate"></video>
-
-					<text v-if="paused && currentIndex === index" class="play-icon">▶</text>
+				<view class="video-container" @tap="toggle_play_pause">
+					
+					<video class="video" :src="video.videoUrl" :poster="video.posterUrl" :id="`video_${index}`" :loop="true" :controls="false" :show-center-play-btn="false" :show-play-btn="false" object-fit="contain" @timeupdate="handleTimeUpdate"></video>
+					
+					<text v-if="paused && current_index === index" class="play-icon">▶</text>
 
 					<!-- Right Action Bar -->
 					<view class="right-actions">
-						<view class="action-item">
-							<image class="user-avatar" :src="video.userHead"></image>
+						<view class="action-item" @tap.stop="handle_like(video)">
+							<iconfont name="icon-givealike" :color="video.isLike ? '#fff' : ''" size="60rpx"></iconfont>
+							<text class="action-text">{{ video.fabulous_count }}</text>
 						</view>
-						<view class="action-item" @click.stop="handleLike(video)">
-							<image class="icon" :src="video.isFabulous ? filledHeartIcon : outlineHeartIcon"></image>
-							<text class="action-text">{{ video.fabulousCount }}</text>
+						<view class="action-item" @tap.stop="handle_comment(video)">
+                            <iconfont name="icon-comment" color="#fff" size="60rpx"></iconfont>
+							<text class="action-text">{{ video.comment_obj.count }}</text>
 						</view>
-						<view class="action-item" @click.stop="handleComment(video)">
-							<image class="icon" :src="commentIcon"></image>
-                            
-							<text class="action-text">{{ video.commentObj.count }}</text>
-						</view>
-						<view class="action-item" @click.stop="handleShare(video)">
-							<image class="icon" :src="shareIcon"></image>
+						<view class="action-item" @tap.stop="handleShare(video)">
+							<iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
 							<text class="action-text">分享</text>
 						</view>
 					</view>
@@ -36,18 +31,40 @@
 					</view>
 
 					<!-- Progress Bar -->
-					<view class="progress-bar-container" v-if="currentIndex === index">
-						<slider class="progress-slider" :value="currentVideoProgress" :max="currentVideoDuration"
+					<view class="progress-bar-container" v-if="current_index === index">
+						<slider class="progress-slider" :value="current_video_progress" :max="current_video_duration"
 							@change="handleSliderChange" @changing="handleSliderChanging" block-size="14"
 							activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
 						<text
-							class="time-display">{{ formatTime(currentVideoProgress) }} / {{ formatTime(currentVideoDuration) }}</text>
+							class="time-display">{{ formatTime(current_video_progress) }} / {{ formatTime(current_video_duration) }}</text>
 					</view>
 				</view>
 			</swiper-item>
 		</swiper>
-		<!-- <comment-modal :visible="showCommentModal" :comments="activeComments" @close="showCommentModal = false"
-			@send="handleSendComment" /> -->
+		
+		<!-- 评论弹窗 -->
+		<view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
+			<view class="comment-content" :style="commentContentStyle" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+				<view class="comment-header">
+					<text class="comment-count">{{ active_comments.count }}条评论</text>
+					<view class="close-btn" @tap="close_comment_modal">✕</view>
+				</view>
+				<scroll-view class="comment-list" scroll-y>
+					<view v-for="(comment, index) in active_comments.list" :key="index" class="comment-item">
+						<image class="comment-avatar" :src="comment.userHead"></image>
+						<view class="comment-info">
+							<view class="comment-user">{{ comment.userNick }}</view>
+							<view class="comment-text">{{ comment.content }}</view>
+							<view class="comment-time">{{ comment.time }}</view>
+						</view>
+					</view>
+				</scroll-view>
+				<view class="comment-input-container">
+					<input class="comment-input" type="text" placeholder="说点什么..." @confirm="send_comment" />
+					<button class="send-btn" @tap="send_comment">发送</button>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -71,14 +88,14 @@
 			return {
 				videoData: [{
 					id: '1',
-					isFabulous: 1,
+					is_fabulous: 1,
 					userNick: 'WX: MAMBA_4EVER24',
 					videoContent: '新视频来啦！',
-					fabulousCount: 1,
+					fabulous_count: 1,
 					videoUrl: 'http://8.146.211.120:8080/upload/douyin/e6fddef474951cc15f5aeb99219b4a91.mp4',
 					posterUrl: 'http://8.146.211.120:8080/upload/notes/ce5082f76cc9bd82a2bd97ce8b45ea32.jpg',
 					userHead: 'http://8.146.211.120:8080/upload/notes/8f5ebdab07f9fb592895bd3f0f230ea9.jpg',
-					commentObj: {
+					comment_obj: {
 						count: 2,
 						list: [{
 							id: 'c1',
@@ -96,27 +113,27 @@
 					}
 				}, {
 					id: '2',
-					isFabulous: 0,
+					is_fabulous: 0,
 					userNick: 'WX: MAMBA_4EVER24',
 					videoContent: '第二条视频',
-					fabulousCount: 1,
+					fabulous_count: 1,
 					videoUrl: 'http://8.146.211.120:8080/upload/douyin/0985b0f3879c7dca9f6c1c6fb59d4a79.mp4',
 					posterUrl: 'http://8.146.211.120:8080/upload/background/dab42015a50709f68a75306a572aaaca.jpg',
 					userHead: 'http://8.146.211.120:8080/upload/background/735feb718119ea7e5f206be7b4410dd6.jpg',
-					commentObj: {
+					comment_obj: {
 						count: 0,
 						list: []
 					}
 				}, {
 					id: '3',
-					isFabulous: 1,
+					is_fabulous: 1,
 					userNick: 'WX: MAMBA_4EVER24',
 					videoContent: '第三条视频内容',
-					fabulousCount: 1,
+					fabulous_count: 1,
 					videoUrl: 'http://8.146.211.120:8080/upload/douyin/a4832a9a37b44196b49c646db148ec65.mp4',
 					posterUrl: 'http://8.146.211.120:8080/upload/background/8049cff58c46adf4164907fb3abe63a8.jpg',
 					userHead: 'http://8.146.211.120:8080/upload/notes/b11b2d741a5132b0d733a9861c9f6c7c.jpg',
-					commentObj: {
+					comment_obj: {
 						count: 1,
 						list: [{
 							id: 'c3',
@@ -127,28 +144,39 @@
 						}]
 					}
 				}],
-				currentIndex: 0,
-				videoContexts: [],
+				current_index: 0,
+				video_contexts: [],
 				paused: false,
-				currentVideoProgress: 0,
-				currentVideoDuration: 0,
-				isSeeking: false,
-				showCommentModal: false,
-				activeComments: {},
+				current_video_progress: 0,
+				current_video_duration: 0,
+				is_seeking: false,
+				show_comment_modal: false,
+				active_comments: {},
 				filledHeartIcon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(filledHeartSvg),
 				outlineHeartIcon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(outlineHeartSvg),
 				commentIcon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(commentSvg),
-				shareIcon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(shareSvg)
+				shareIcon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(shareSvg),
+				comment_start_y: 0, // 评论开始拖拽位置
+				comment_current_y: 0, // 评论当前拖拽位置
+				move_distance: 0,
 			};
+		},
+		computed: {
+			swiperStyle() {
+				return this.show_comment_modal ? `height: calc(30% + ${this.move_distance}px);` : 'height: 100%;';
+			},
+			commentContentStyle() {
+				return this.show_comment_modal ? `transform: translateY(10px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`
+			},
 		},
 		onReady() {
 			this.videoData.forEach((item, index) => {
-				this.videoContexts[index] = uni.createVideoContext(`video_${index}`, this);
+				this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
 			});
 			// Start playing the first video
 			setTimeout(() => {
-				if (this.videoContexts[0]) {
-					this.videoContexts[0].play();
+				if (this.video_contexts[0]) {
+					this.video_contexts[0].play();
 				}
 			}, 200);
 		},
@@ -158,60 +186,107 @@
 					current
 				} = event.detail;
 
-				const previousIndex = this.currentIndex;
-				if (this.videoContexts[previousIndex]) {
-					this.videoContexts[previousIndex].pause();
+				const previousIndex = this.current_index;
+				if (this.video_contexts[previousIndex]) {
+					this.video_contexts[previousIndex].pause();
 				}
 
-				this.currentIndex = current;
+				this.current_index = current;
 				this.paused = false;
-				this.currentVideoProgress = 0;
-				this.currentVideoDuration = 0;
-				this.isSeeking = false;
+				this.current_video_progress = 0;
+				this.current_video_duration = 0;
+				this.is_seeking = false;
 
 				setTimeout(() => {
-					if (this.videoContexts[this.currentIndex]) {
-						this.videoContexts[this.currentIndex].play();
+					if (this.video_contexts[this.current_index]) {
+						this.video_contexts[this.current_index].play();
 					}
-					
 				}, 250);
 			},
 
-			togglePlayPause() {
-				if (!this.videoContexts[this.currentIndex]) return;
+			toggle_play_pause() {
+				if (!this.video_contexts[this.current_index]) return;
 
 				this.paused = !this.paused;
 				if (this.paused) {
-					this.videoContexts[this.currentIndex].pause();
+					this.video_contexts[this.current_index].pause();
 				} else {
-					this.videoContexts[this.currentIndex].play();
+					this.video_contexts[this.current_index].play();
 				}
 			},
 
-			handleLike(video) {
-				video.isFabulous = !video.isFabulous;
-				if (video.isFabulous) {
-					video.fabulousCount++;
+			handle_like(video) {
+				video.is_fabulous = !video.is_fabulous;
+				if (video.is_fabulous) {
+					video.fabulous_count++;
 				} else {
-					video.fabulousCount--;
+					video.fabulous_count--;
+				}
+			},
+			// 打开评论区
+			handle_comment(video) {
+				this.active_comments = video.comment_obj;
+				this.show_comment_modal = true;
+				this.move_distance = 0;
+			},
+			// 关闭评论区
+			close_comment_modal() {
+				this.show_comment_modal = false;
+				this.move_distance = 0;
+			},
+
+			// 评论拖拽开始
+			handle_comment_touch_start(e) {
+				this.comment_start_y = e.touches[0].pageY;
+				this.comment_current_y = this.comment_start_y;
+				this.move_distance = 0;
+			},
+
+			// 评论拖拽中
+			handle_comment_touch_move(e) {
+				this.comment_current_y = e.touches[0].pageY;
+				this.move_distance = this.comment_current_y - this.comment_start_y;
+			},
+
+			// 评论拖拽结束
+			handle_comment_touch_end(e) {
+				const move_distance = this.comment_current_y - this.comment_start_y;
+				
+				// 如果拖拽距离足够大，关闭评论弹窗
+				if (move_distance > 150) {
+					this.close_comment_modal();
+				} else {
+					this.move_distance = 0;
 				}
 			},
 
-			handleComment(video) {
-				this.activeComments = video.commentObj;
-				this.showCommentModal = true;
-			},
-
-			handleSendComment(commentText) {
+			send_comment(e) {
+				let comment_text = '';
+				if (e.type === 'confirm') {
+					comment_text = e.detail.value;
+				} else {
+					// 获取输入框的值
+					const input_element = this.$el.querySelector('.comment-input');
+					comment_text = input_element.value;
+				}
+				
+				if (!comment_text.trim()) return;
+				
 				const newComment = {
 					id: `c${Date.now()}`,
 					userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
 					userNick: '我',
-					content: commentText,
+					content: comment_text,
 					time: new Date().toLocaleString()
 				};
-				this.activeComments.list.unshift(newComment);
-				this.activeComments.count++;
+				this.active_comments.list.unshift(newComment);
+				this.active_comments.count++;
+				
+				// 清空输入框
+				const input_element = this.$el.querySelector('.comment-input');
+				if (input_element) {
+					input_element.value = '';
+				}
 			},
 
 			handleShare(video) {
@@ -222,27 +297,25 @@
 			},
 
 			handleTimeUpdate(e) {
-				if (this.isSeeking) return;
-				if (e.detail.duration > 0 && this.currentVideoDuration === 0) {
-					this.currentVideoDuration = e.detail.duration;
+				if (this.is_seeking) return;
+				if (e.detail.duration > 0 && this.current_video_duration === 0) {
+					this.current_video_duration = e.detail.duration;
 				}
-				this.currentVideoProgress = e.detail.currentTime;
+				this.current_video_progress = e.detail.currentTime;
 			},
 
 			handleSliderChanging() {
-				this.isSeeking = true;
+				this.is_seeking = true;
 			},
 
 			handleSliderChange(e) {
-				const seekTime = e.detail.value;
-				if (this.videoContexts[this.currentIndex]) {
-					this.videoContexts[this.currentIndex].seek(seekTime);
-					this.currentVideoProgress = seekTime;
+				const seek_time = e.detail.value;
+				if (this.video_contexts[this.current_index]) {
+					this.video_contexts[this.current_index].seek(seek_time);
+					this.current_video_progress = seek_time;
 				}
-				// It's important to set isSeeking to false after a short delay
-				// to prevent the timeupdate event from immediately overriding the slider value.
 				setTimeout(() => {
-					this.isSeeking = false;
+					this.is_seeking = false;
 				}, 100);
 			},
 
@@ -340,7 +413,7 @@
 		display: block;
 		font-size: 15px;
 		margin-top: 8px;
-		max-width: 80%;
+		max-width: 70%;
 	}
 
 	.progress-bar-container {
@@ -364,5 +437,109 @@
 		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
 		width: 90px;
 		text-align: right;
+	}
+	
+	/* 评论弹窗样式 */
+	.comment-modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 999;
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+	}
+	
+	.comment-content {
+		width: 100%;
+		height: 70%;
+		background-color: #fff;
+		border-top-left-radius: 15px;
+		border-top-right-radius: 15px;
+		display: flex;
+		flex-direction: column;
+		transition: transform 0.3s ease;
+	}
+	
+	.comment-header {
+		padding: 15px;
+		border-bottom: 1px solid #eee;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	.comment-count {
+		font-weight: bold;
+		font-size: 16px;
+	}
+	
+	.close-btn {
+		font-size: 20px;
+		color: #999;
+	}
+	
+	.comment-list {
+		flex: 1;
+		padding: 15px;
+	}
+	
+	.comment-item {
+		display: flex;
+		margin-bottom: 15px;
+	}
+	
+	.comment-avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
+	
+	.comment-info {
+		flex: 1;
+	}
+	
+	.comment-user {
+		font-weight: bold;
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
+	
+	.comment-text {
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
+	
+	.comment-time {
+		font-size: 12px;
+		color: #999;
+	}
+	
+	.comment-input-container {
+		display: flex;
+		padding: 10px;
+		border-top: 1px solid #eee;
+	}
+	
+	.comment-input {
+		flex: 1;
+		border: 1px solid #eee;
+		border-radius: 4px;
+		padding: 8px;
+		font-size: 14px;
+	}
+	
+	.send-btn {
+		margin-left: 10px;
+		padding: 8px 15px;
+		background-color: #ff4757;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		font-size: 14px;
 	}
 </style>
