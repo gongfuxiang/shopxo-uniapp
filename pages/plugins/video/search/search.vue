@@ -4,15 +4,20 @@
 			<view class="wh-auto ht-auto pr">
 				<!-- 搜索框 -->
 				<view class="header-top">
-					<view class="wh-auto ht-auto" :style="top_content_style">
-						<search-component :propsSearchQuery="search_query" @search="handle_search" />
+					<view class="header-search flex-row align-c">
+						<view class="cp" @tap="handle_back">
+							<iconfont name="icon-arrow-left " size="32rpx" color="#333" class="mr-10"></iconfont>
+						</view>
+						<view class="wh-auto ht-auto" :style="top_content_style">
+							<search-component :propsSearchQuery="search_query" @search="handle_search" />
+						</view>
 					</view>
 					<!-- 导航栏 -->
 					<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
 						<view class="tabs-scroll-content">
-							<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }" :data-index="index" @click="switch_tab">{{ tab }}</view>
+							<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="(currentTab === index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab }}</view>
 						</view>
-						<view class="nav-tabs-filter" @click="toggleFilterPopup">
+						<view class="nav-tabs-filter" @click="toggle_filter_popup">
 							<iconfont name="icon-filter" size="32rpx"></iconfont>
 						</view>
 					</view>
@@ -34,47 +39,28 @@
 							</view>
 						</view>
 					</view>
+					<!-- 加载更多 -->
+					<loadingComponent v-if="is_more_loading"></loadingComponent>
 				</view>
 			</view>
 		</scroll-view>
 		<!-- 选项卡更多弹窗 -->
-        <componentPopup :propShow="filterPopupStatus" propPosition="top" :propMask="true" @onclose="closeFilterPopup">
+        <componentPopup :propShow="filter_popup_status" propPosition="top" :propMask="true" @onclose="close_filter_popup">
             <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')" :style="{ 'padding-top': popup_top }">
                 <view class="divider-b">
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">
-                            <!-- 排序依据 -->
-                            <view class="filter-group">
-                                <view class="filter-title">排序依据</view>
+                            <!-- 筛选列表 -->
+                            <view v-for="(item, index) in popup_list" :key="index" class="filter-group">
+                                <view class="filter-title">{{ item.title }}</view>
                                 <view class="filter-options">
-                                    <view v-for="(option, index) in sort_options" :key="index" class="filter-option" @click="selectSortOption(option)">{{ option }}</view>
-                                </view>
-                            </view>
-                            <!-- 发布时间 -->
-                            <view class="filter-group">
-                                <view class="filter-title">发布时间</view>
-                                <view class="filter-options">
-                                    <view v-for="(option, index) in publish_time_options" :key="index" class="filter-option" @click="selectPublishTimeOption(option)">{{ option }}</view>
-                                </view>
-                            </view>
-                            <!-- 视频时长 -->
-                            <view class="filter-group">
-                                <view class="filter-title">视频时长</view>
-                                <view class="filter-options">
-                                    <view v-for="(option, index) in video_duration_options" :key="index" class="filter-option" @click="selectVideoDurationOption(option)">{{ option }}</view>
-                                </view>
-                            </view>
-                            <!-- 搜索范围 -->
-                            <view class="filter-group">
-                                <view class="filter-title">搜索范围</view>
-                                <view class="filter-options">
-                                    <view v-for="(option, index) in search_range_options" :key="index" class="filter-option" @click="selectSearchRangeOption(option)">{{ option }}</view>
+                                    <view v-for="(option, index) in item.list" :key="index" :class="'filter-option ' + (option.id == filter_params[item.id] ? 'active' : '')" :data-id="item.id" :data-option-id="option.id" @tap="select_filter">{{ option.name }}</view>
                                 </view>
                             </view>
                         </view>
                     </view>
                 </view>
-                <view class="tc padding-top-lg flex-row jc-c align-c" @tap="closeFilterPopup">
+                <view class="tc padding-top-lg flex-row jc-c align-c" @tap="close_filter_popup">
                     <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc" propContainerDisplay="flex"></iconfont>
                 </view>
@@ -86,6 +72,8 @@
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentPopup from '@/components/popup/popup';
+import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+import componentNoData from '@/components/no-data/no-data';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -95,7 +83,9 @@ bar_height = 0;
 export default {
 	components: {
 		searchComponent,
-		componentPopup	
+		componentPopup,
+		loadingComponent,
+		componentNoData
 	},
 	data() {
 		return {
@@ -144,13 +134,22 @@ export default {
 			],
 			isLoadingMore: false,
 			params: null,
-			filterPopupStatus: false,
+			filter_popup_status: false,
 			popup_top: '0rpx',
 			platform: app.globalData.application_client_type(),
-			sort_options: ['综合排序', '最新发布', '最多点赞'],
-			publish_time_options: ['不限', '一天内', '一周内', '半年内'],
-			video_duration_options: ['不限', '1分钟以下', '1-5分钟', '5分钟以上'],
-			search_range_options: ['不限', '最近看过', '还未看过']
+			popup_list: [
+				{ title: '排序依据', id: 'sort', list: [{ id: '1', name: '综合排序'}, { id: '2', name: '最新发布'}, { id: '3', name: '最多点赞'}]},
+				{ title: '发布时间', id: 'time', list: [{ id: '1', name: '不限'}, { id: '2', name: '一天内'}, { id: '3', name: '一周内'}, { id: '4', name: '半年内'}] },
+				{ title: '视频时长', id: 'duration', list: [{ id: '1', name: '不限'}, { id: '2', name: '1分钟以下'}, { id: '3', name: '1-5分钟'}, { id: '4', name: '5分钟以上'}] },
+				{ title: '搜索范围', id: 'scope', list: [{ id: '1', name: '不限'}, { id: '2', name: '最近看过'}, { id: '3', name: '还未看过'}]}
+			],
+			filter_params: {
+				sort: '1',
+				time: '1',
+				duration: '1',
+				scope: '1',
+			},
+			is_more_loading: false,
 		};
 	},
 	onLoad(params) {
@@ -178,6 +177,8 @@ export default {
 				}
 				// #endif
 			// #endif
+
+			// 获取头部的高度
 			setTimeout(() => {
                 const query = uni.createSelectorQuery().in(this);
                 // 选择我们想要的元素
@@ -218,13 +219,17 @@ export default {
 			app.globalData.url_open(`/pages/plugins/video/detail/detail?videoId=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
-			this.loadMore();
+			this.load_more();
 		},
 		on_scroll_upper_event() {
-			this.loadMore();
+			this.load_more();
 		},
-		loadMore() {
+		load_more() {
 			// 加载更多数据的逻辑
+			if (this.is_more_loading) {
+				return;
+			}
+			this.is_more_loading = true;
 			setTimeout(() => {
 				// 假设这里加载了更多的视频数据
 				const data = this.recommend_videos;
@@ -239,35 +244,26 @@ export default {
 				];
 				data.push(...newVideos);
 				this.setData({
-					recommend_videos: data
+					recommend_videos: data,
+					is_more_loading: false,
 				});
-			}, 200);
+			}, 20000);
 		},
-		toggleFilterPopup() {
-			this.filterPopupStatus = !this.filterPopupStatus;
+		toggle_filter_popup() {
+			this.filter_popup_status = !this.filter_popup_status;
 		},
-		closeFilterPopup() {
-			this.filterPopupStatus = false;
+		close_filter_popup() {
+			this.filter_popup_status = false;
 		},
-		selectSortOption(option) {
-			// 处理排序选项选择
-			console.log('Selected sort option:', option);
-			this.closeFilterPopup();
-		},
-		selectPublishTimeOption(option) {
-			// 处理发布时间选项选择
-			console.log('Selected publish time option:', option);
-			this.closeFilterPopup();
-		},
-		selectVideoDurationOption(option) {
-			// 处理视频时长选项选择
-			console.log('Selected video duration option:', option);
-			this.closeFilterPopup();
-		},
-		selectSearchRangeOption(option) {
-			// 处理搜索范围选项选择
-			console.log('Selected search range option:', option);
-			this.closeFilterPopup();
+		// 更新筛选条件的值
+		select_filter(e) {
+			const id = e.currentTarget.dataset.id;
+			const option_id = e.currentTarget.dataset.optionId;
+			this.filter_params[id] = option_id;
+			this.setData({
+				filter_params: this.filter_params,
+			});
+			this.close_filter_popup();
 		}
 	}
 };
@@ -279,6 +275,9 @@ export default {
 	top: 0;
 	background: #fff;
 	z-index: 9;
+}
+.header-search {
+	margin-left: 24rpx;
 }
 /* 导航栏 */
 .nav-tabs {

@@ -7,33 +7,41 @@
 					<view class="wh-auto ht-auto" :style="top_content_style">
 						<search-component :propsSearchQuery="search_query" :propsIsDisabled="true" @disabledSearch="handle_search"/>
 					</view>
-					<!-- 导航栏 -->
-					<view class="nav-tabs">
-						<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
-							<view class="tabs-scroll-content">
-								<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }" :data-index="index" @click="switch_tab">{{ tab }}</view>
-							</view>
-						</scroll-view>
-					</view>
+					
+					<template v-if="recommend_videos.length > 0">
+						<!-- 导航栏 -->
+						<view class="nav-tabs">
+							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
+								<view class="tabs-scroll-content">
+									<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }" :data-index="index" @click="switch_tab">{{ tab }}</view>
+								</view>
+							</scroll-view>
+						</view>
+					</template>
 				</view>
-				<!-- 推荐视频卡片区域 -->
-				<view class="recommend-videos">
-					<view class="video-grid">
-						<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
-							<image class="video-thumbnail" :src="item.thumbnail_url" mode="widthFix"></image>
-							<view class="video-info flex-col jc-c"> 
-								<view class="video-title text-line-2">{{ item.title }}</view>
-								<view class="flex-row align-c jc-sb">
-									<view class="video-date">{{ item.date }}</view>
-									<view class="video-likes flex-row align-c gap-4">
-										<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-										<text>{{ item.likes }}</text>
+				<template v-if="recommend_videos.length > 0">
+					<!-- 推荐视频卡片区域 -->
+					<view class="recommend-videos">
+						<view class="video-grid">
+							<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
+								<image class="video-thumbnail" :src="item.thumbnail_url" mode="widthFix"></image>
+								<view class="video-info flex-col jc-c"> 
+									<view class="video-title text-line-2">{{ item.title }}</view>
+									<view class="flex-row align-c jc-sb">
+										<view class="video-date">{{ item.date }}</view>
+										<view class="video-likes flex-row align-c gap-4">
+											<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
+											<text>{{ item.likes }}</text>
+										</view>
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
+				</template>
+				<template v-else>
+					<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+				</template>
 			</view>
 		</scroll-view>
 	</view>
@@ -41,6 +49,7 @@
 
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
+import componentNoData from '@/components/no-data/no-data';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -49,7 +58,8 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		searchComponent
+		searchComponent,
+		componentNoData
 	},
 	data() {
 		return {
@@ -66,40 +76,13 @@ export default {
 			search_query: '',
 			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
-			recommend_videos: [
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_homemiddleadv/2019/04/22/1555929400479636.jpg',
-					title: '进销存软件究竟要怎么选？',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '1'
-				},
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_expressforkdn/2019/03/11/1552286675575734.png',
-					title: '一分钟告诉你，进销存是什么，进销存对企业有什么用...',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '2'
-				},
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/goods_category/2023/08/12/1691819651259940.png',
-					title: '全自动Excel进销存管理系统',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '3'
-				},
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/common/2019/05/17/1558073623641199.jpg',
-					title: '管家婆进销存到底有多简单',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '4'
-				},
-			],
-			isLoadingMore: false
+			recommend_videos: [],
+			isLoadingMore: false,
+			data_list_loding_status: 1,
+			data_list_loding_msg: '',
 		};
 	},
-	created() {
+	mounted() {
 		this.init();
 	},
 	methods: {
@@ -117,6 +100,41 @@ export default {
 				}
 				// #endif
 			// #endif
+			setTimeout(() => {
+				this.setData({
+					data_list_loding_status: 0,
+					recommend_videos: [
+						{
+							thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_homemiddleadv/2019/04/22/1555929400479636.jpg',
+							title: '进销存软件究竟要怎么选？',
+							date: '2025-06-12',
+							likes: 2189,
+							detailId: '1'
+						},
+						{
+							thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_expressforkdn/2019/03/11/1552286675575734.png',
+							title: '一分钟告诉你，进销存是什么，进销存对企业有什么用...',
+							date: '2025-06-12',
+							likes: 2189,
+							detailId: '2'
+						},
+						{
+							thumbnail_url: 'http://shopxo.com/static/upload/images/goods_category/2023/08/12/1691819651259940.png',
+							title: '全自动Excel进销存管理系统',
+							date: '2025-06-12',
+							likes: 2189,
+							detailId: '3'
+						},
+						{
+							thumbnail_url: 'http://shopxo.com/static/upload/images/common/2019/05/17/1558073623641199.jpg',
+							title: '管家婆进销存到底有多简单',
+							date: '2025-06-12',
+							likes: 2189,
+							detailId: '4'
+						},
+					]
+				});
+			}, 10000);
 		},
 		handle_search() {
 			// 跳转到搜索记录页面

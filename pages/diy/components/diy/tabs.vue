@@ -116,7 +116,7 @@
             },
             propsTabsMagicStyle: {
                 type: Object,
-                default: {}
+                default: () => {}
             }
         },
         components: {

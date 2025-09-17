@@ -20,12 +20,7 @@
 			</view>
 			<!-- 查看更多 -->
 			<template v-if="is_view_more">
-				<view class="more-history-btn cp flex-row align-c">
-					<view class="more-history-btn-icon margin-right-xs">
-						<iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
-					</view>
-					<text>加载中</text>
-				</view>
+				<loadingComponent></loadingComponent>
 			</template>
 			<template v-else>
 				<view class="more-history-btn cp" @tap="view_more_history">查看更多历史</view>
@@ -36,12 +31,12 @@
 			<view class="hot-tabs">
 				<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
 					<view class="tabs-scroll-content">
-						<view v-for="(tab, index) in hot_tabs" :key="index" class="hot-tab-item cp" :class="{ active: hot_current_tab === index }" :data-index="index" @tap="switch_hot_tab">{{ tab }}</view>
+						<view v-for="(tab, index) in hot_tabs" :key="index" class="hot-tab-item cp" :class="(hot_current_tab === index) ? 'active' : ''" :data-index="index" @tap="switch_hot_tab">{{ tab }}</view>
 					</view>
 				</scroll-view>
 			</view>
 			<view class="hot-list flex-col align-c gap-10">
-				<view v-for="(item, index) in hot_list" :key="index" :class="`cp wh-auto flex-row align-c jc-sb hot-item ${index < 3 ? `hot-item-top` : ''}`" :data-value="item.title" @tap.stop="perform_search">
+				<view v-for="(item, index) in hot_list" :key="index" :class="'cp wh-auto flex-row align-c jc-sb hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.title" @tap.stop="perform_search">
 					<view class="flex-row align-c gap-10">
 						<view class="hot-num flex-row align-c jc-c">
 							<view :class="index < 3 ? `hexagon-top hexagon-top-${index + 1}` : 'hexagon-no-top'"><span>{{ index + 1 }}</span></view>
@@ -57,6 +52,7 @@
 
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
+import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 const app = getApp();
 var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
@@ -66,7 +62,8 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		searchComponent
+		searchComponent,
+		loadingComponent
 	},
 	data() {
 		return {
@@ -243,20 +240,8 @@ export default {
         line-height: 40rpx;
 		margin-top: 40rpx;
     }
-	.more-history-btn-icon {
-		animation: rotate 1s linear infinite;
-	}
 }
 
-/* 旋转动画 */
-@keyframes rotate {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
 /* 热门搜索 */
 .hot-search {
 	padding: 40rpx;
