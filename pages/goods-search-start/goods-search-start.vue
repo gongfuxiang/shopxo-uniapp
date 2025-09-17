@@ -4,7 +4,15 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 搜索 -->
                 <view class="margin-bottom-xxxl">
-                    <component-search ref="search" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                    <view class="flex-row jc-sb">
+                        <view v-if="is_search_shop == 1" class="search-switch lh-xxl" @tap="search_switch_type_event">
+                            <text class="margin-right-xs">{{search_switch_type_value == 'shop' ? $t('common.shop') : $t('common.goods')}}</text>
+                            <iconfont name="icon-arrow-down" color="#666" size="24rpx" class="lh-sm"></iconfont>
+                        </view>
+                        <view :class="'search-container '+(is_search_shop == 1 ? 'switch-shop' : 'wh-auto')">
+                            <component-search ref="search" :propIsIcon="is_search_shop != 1" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                        </view>
+                    </view>
                 </view>
                 <!-- 历史搜索关键字 -->
                 <view v-if="history_keywords.length > 0" class="history-keywords margin-bottom-xxxl">
@@ -86,6 +94,8 @@
                 ranking_list: [],
                 search_placeholder_keywords_value: '',
                 search_keywords_value: '',
+                search_switch_type_value: 'goods',
+                is_search_shop: 0,
             };
         },
 
@@ -111,6 +121,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 初始化配置
+            this.init_config();
+
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -131,6 +144,17 @@
         },
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        is_search_shop: parseInt(app.globalData.get_config('plugins_base.shop.data.is_main_search_shop', 0))
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 获取数据
             get_data(params = {}) {
                 uni.request({
@@ -191,9 +215,26 @@
 
             // 搜索事件
             search_submit_confirm_event() {
-                if ((this.$refs.search || null) != null) {
-                    this.$refs.search.search_submit_confirm(this.search_keywords_value);
+                if(this.search_switch_type_value == 'shop') {
+                    app.globalData.url_open('/pages/plugins/shop/index/index?keywords='+this.search_keywords_value);
+                } else {
+                    if ((this.$refs.search || null) != null) {
+                        this.$refs.search.search_submit_confirm(this.search_keywords_value);
+                    }
                 }
+            },
+
+            // 搜索切换类型
+            search_switch_type_event(e) {
+                var self = this;
+                uni.showActionSheet({
+                    itemList: [self.$t('common.goods'), self.$t('common.shop')],
+                    success: function (res) {
+                        self.setData({
+                            search_switch_type_value: (res.tapIndex == 1) ? 'shop' : 'goods',
+                        });
+                    }
+                });
             },
 
             // 打开url

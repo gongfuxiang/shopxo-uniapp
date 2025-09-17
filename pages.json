@@ -336,6 +336,13 @@
                 {
                     "path": "user-order",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
@@ -444,6 +451,13 @@
                 {
                     "path": "user-orderaftersale",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
@@ -1264,6 +1278,13 @@
                 {
                     "path": "index/index",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
@@ -1496,6 +1517,13 @@
                 {
                     "path": "orderallot-list/orderallot-list",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }

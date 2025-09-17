@@ -42,7 +42,7 @@
                     </view>
                     <view class="bg-white padding-top-main wh-auto bs-bb bottom-elastic" :class="(item.is_home_show_goods || 0) != 1 ? 'br-t-dashed' : ''" :data-index="index" @tap="item_more_goods_event">
                         <view class="flex-row jc-sb align-c">
-                            <view class="cr-grey-9 text-size-xs">{{ (item.is_home_show_goods || 0) == 1 ? $t('binding-list.binding-list.2u4v35') : $t('binding-list.binding-list.91d60h') }}{{ item.type_name }}{{$t('recommend-list.recommend-list.x74z3o')}}</view>
+                            <view class="cr-grey-9 text-size-xs">{{ (item.is_home_show_goods || 0) == 1 ? $t('binding-list.binding-list.2u4v35') : $t('binding-list.binding-list.91d60h') }}{{ item.type_name }}{{$t('common.goods')}}</view>
                             <iconfont :name="(item.is_home_show_goods || 0) == 1 ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#666"></iconfont>
                         </view>
                     </view>

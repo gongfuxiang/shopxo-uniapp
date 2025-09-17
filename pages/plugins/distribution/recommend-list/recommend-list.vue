@@ -64,7 +64,7 @@
                 content_list: [
                     { name: this.$t('user-detail.user-detail.uy6lrz'), field: "title" },
                     { name: this.$t('form.form.xy87t8'), field: "describe" },
-                    { name: this.$t('recommend-list.recommend-list.x74z3o'), field: "goods_count" },
+                    { name: this.$t('common.goods'), field: "goods_count" },
                     { name: this.$t('recommend-list.recommend-list.78n1ly'), field: "access_count" },
                 ],
                 // 自定义分享信息

@@ -1,13 +1,13 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + (status_bar_height + 5) + 'px;'">
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
             </template>
         </component-nav-back>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - '+(40+status_bar_height)+'px)'">
+        <scroll-view :scroll-y="true" class="scroll-box" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="wh-auto">
                 <!-- 轮播 -->
                 <view v-if="slider_list.length > 0" class="padding-horizontal-main spacing-mb padding-top-main">
@@ -77,14 +77,15 @@
     import componentBanner from '@/components/slider/slider';
 
     // 状态栏高度
-    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-    // #ifdef MP-TOUTIAO
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO || H5
     bar_height = 0;
     // #endif
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                client_type: app.globalData.application_client_type(),
                 status_bar_height: bar_height,
                 is_mp_env: false,
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
@@ -100,6 +101,7 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                content_style: '',
                 // 轮播
                 slider_list: [],
                 // 导航分类
@@ -125,6 +127,15 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 参数处理
+            params = app.globalData.launch_params_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
+                content_style: 'height: calc(100vh - 80rpx - '+(this.status_bar_height+(this.client_type == 'h5' ? 55 : 50))+'px);',
+            });
         },
 
         onShow() {

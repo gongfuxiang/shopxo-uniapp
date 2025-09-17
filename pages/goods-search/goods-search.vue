@@ -124,15 +124,15 @@
                     </view>
 
                     <!-- 商品产地 -->
-                    <view v-if="(search_map_list.goods_place_origin_list || null) != null && search_map_list.goods_place_origin_list.length > 0"
+                    <view v-if="(search_map_list.goods_produce_region_list || null) != null && search_map_list.goods_produce_region_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>{{$t('goods-search.goods-search.4eerty')}}</text>
-                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_place_origin_list.length > 3" @tap="more_event" data-value="goods_place_origin_list">{{$t('common.more')}}</text>
+                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_produce_region_list.length > 3" @tap="more_event" data-value="goods_produce_region_list">{{$t('common.more')}}</text>
                         </view>
-                        <view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_place_origin_list.height + ';'">
-                            <block v-for="(item, index) in search_map_list.goods_place_origin_list" :key="index">
-                                <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_place_origin_list">
+                        <view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_produce_region_list.height + ';'">
+                            <block v-for="(item, index) in search_map_list.goods_produce_region_list" :key="index">
+                                <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_produce_region_list">
                                     {{item.name}}</view>
                             </block>
                         </view>
@@ -261,7 +261,7 @@
                     brand_list: [],
                     category_list: [],
                     screening_price_list: [],
-                    goods_place_origin_list: [],
+                    goods_produce_region_list: [],
                     goods_params_list: [],
                     goods_spec_list: []
                 },
@@ -282,10 +282,10 @@
                         default: "82rpx",
                         form_key: "screening_price_values"
                     },
-                    goods_place_origin_list: {
+                    goods_produce_region_list: {
                         height: "82rpx",
                         default: "82rpx",
-                        form_key: "place_origin_ids"
+                        form_key: "produce_region_ids"
                     },
                     goods_params_list: {
                         height: "82rpx",
@@ -392,7 +392,7 @@
                                     brand_list: data.brand_list || [],
                                     category_list: data.category_list || [],
                                     screening_price_list: data.screening_price_list || [],
-                                    goods_place_origin_list: data.goods_place_origin_list || [],
+                                    goods_produce_region_list: data.goods_produce_region_list || [],
                                     goods_params_list: data.goods_params_list || [],
                                     goods_spec_list: data.goods_spec_list || []
                                 },

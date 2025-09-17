@@ -96,7 +96,9 @@
         "base_info_text": "基础信息",
         "form_input_data_text": "表单数据",
         "two_nav_text" : "二级导航",
-        "no_data": "暂无数据"
+        "no_data": "暂无数据",
+        "goods": "商品",
+        "shop": "店铺"
 	},
     "client": {
         "weixin": "微信",
@@ -121,7 +123,7 @@
         "paylog-list": "支付订单列表",
         "paylog-detail": "支付订单详情",
 		"goods-search": "商品搜索",
-        "goods-search-start": "商品搜索",
+        "goods-search-start": "数据搜索",
 		"goods-detail": "商品详情",
 		"goods-comment": "商品评价",
 		"user-address": "我的地址",
@@ -1121,7 +1123,6 @@
 	},
 	"recommend-list": {
 		"recommend-list": {
-			"x74z3o": "商品",
 			"78n1ly": "访问",
 			"54d418": "删除后不可恢复，确定继续吗?",
 			"w9460o": "不了"
