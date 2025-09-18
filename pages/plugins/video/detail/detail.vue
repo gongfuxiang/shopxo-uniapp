@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <swiper class="swiper-container" :style="swiperStyle" :vertical="true" @change="handleSwiperChange" :current="current_index">
+        <swiper class="swiper-container" :style="swiperStyle" :vertical="true" @change="handleSwiperChange" :current="current_index" :circular="close_circular ? false : true">
             <swiper-item v-for="(video, index) in display_video_list" :key="video.id">
                 <view class="video-container" @tap="toggle_play_pause">
                     
@@ -120,6 +120,8 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0,
+                current_video_id: '1', // 当前播放视频的ID
+                is_slide_start: false,
             };
         },
         computed: {
@@ -129,18 +131,79 @@
             commentContentStyle() {
                 return this.show_comment_modal ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`
             },
+            current_video_index() { 
+                return this.videoData.findIndex(item => item.id === this.current_video_id);
+            },
+            // 如果是第一个或者最后一个的情况下，取消无限轮播
+            close_circular() {
+                return this.videoData[0].id == this.current_video_id  || this.videoData[this.videoData.length - 1].id == this.current_video_id;
+            }
+        },
+        onLoad() {
+            // 初始化显示数据
+            this.init_display_data();
         },
         onReady() {
             this.videoData.forEach((item, index) => {
                 this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
             });
             setTimeout(() => {
-                if (this.video_contexts[0]) {
+                if (this.video_contexts[0]) { // 当前播放的视频索引为0
                     this.video_contexts[0].play();
                 }
             }, 200);
         },
         methods: {
+            // 初始化显示数据
+            init_display_data() {
+                this.current_video_id = this.videoData[0].id;
+                this.display_video_list = [
+                    this.videoData[0],       // 当前元素
+                    this.videoData[this.current_video_index + 1 ],  // 下一个元素
+                    this.videoData[this.current_video_index + 2 ]  // 下两个元素
+                ];
+            },
+            
+            // 更新显示数据
+            update_display_data() {
+                console.log(this.current_index);
+                
+                console.log('更新显示数据', this.current_video_index);
+                
+                let list = [];
+                // 如果当前索引为0，只显示当前元素和下一个元素
+                if (this.current_index == 0) {
+                    list = [
+                        this.videoData[this.current_video_index],
+                        this.videoData[this.current_video_index + 1],
+                        this.videoData[this.current_video_index + 2]
+                    ];
+                } else if (this.current_index == 1) { // 索引为1时，为确保无限轮播正常，需要改变数据插入顺序
+                    list = [
+                        this.videoData[this.current_video_index - 1],
+                        this.videoData[this.current_video_index],
+                        this.videoData[this.current_video_index + 1]
+                    ];
+                } else {
+                    list = [
+                        this.videoData[this.current_video_index + 1],
+                        this.videoData[this.current_video_index - 1],
+                        this.videoData[this.current_video_index],
+                    ];
+                }
+                console.log('更新显示数据', list);
+                
+                this.setData({
+                    display_video_list: list
+                })
+            },
+            
+            // 预加载相邻数据
+            preload_adjacent_data() {
+                // 这里可以添加预加载逻辑，比如提前加载视频封面等
+                console.log('预加载数据，当前视频ID:', this.current_video_id);
+            },
+
             handleSwiperChange(event) {
                 const { current } = event.detail;
 
@@ -154,22 +217,56 @@
                 this.current_video_progress = 0;
                 this.current_video_duration = 0;
                 this.is_seeking = false;
+                // 更新当前播放视频的ID
+                this.current_video_id = this.display_video_list[current].id;
+                // 当滑动到边界时更新显示数据
+                if (this.current_video_index == 0 && this.is_slide_start) {
+                    this.$nextTick(() => {
+                        const list = [
+                            this.videoData[this.current_video_index],
+                            this.videoData[this.current_video_index + 1],
+                            this.videoData[this.current_video_index + 2]
+                        ];
+                        this.setData({
+                            is_slide_start: false,
+                            current_index: 0,
+                            display_video_list: list
+                        })
+                    })
+                } else if (this.current_video_index == this.videoData.length - 1) {
+                    this.$nextTick(() => {
+                        const list = [
+                            this.videoData[this.current_video_index - 2],
+                            this.videoData[this.current_video_index - 1],
+                            this.videoData[this.current_video_index],
+                        ];
+                        this.setData({
+                            current_index: this.current_video_index,
+                            display_video_list: list
+                        })
+                    })
+                } else {
+                    // 预加载当前index之后的视频
+                    this.update_display_data();
+                }
 
                 setTimeout(() => {
-                    if (this.video_contexts[this.current_index]) {
-                        this.video_contexts[this.current_index].play();
+                    this.is_slide_start = true;
+                    // 播放当前视频
+                    if (this.video_contexts[current]) {
+                        this.video_contexts[current].play();
                     }
-                }, 250);
+                }, 100);
             },
 
             toggle_play_pause() {
-                if (!this.video_contexts[this.current_index]) return;
+                if (!this.video_contexts[this.current_index]) return; // 当前播放的视频索引为1
 
                 this.paused = !this.paused;
                 if (this.paused) {
-                    this.video_contexts[this.current_index].pause();
+                    this.video_contexts[this.current_index].pause(); // 暂停中间的视频
                 } else {
-                    this.video_contexts[this.current_index].play();
+                    this.video_contexts[this.current_index].play();  // 播放中间的视频
                 }
             },
 
@@ -268,8 +365,8 @@
 
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
-                if (this.video_contexts[this.current_index]) {
-                    this.video_contexts[this.current_index].seek(seek_time);
+                if (this.video_contexts[1]) { // 控制中间的视频
+                    this.video_contexts[1].seek(seek_time);
                     this.current_video_progress = seek_time;
                 }
                 setTimeout(() => {
