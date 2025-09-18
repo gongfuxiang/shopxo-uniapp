@@ -1,5 +1,7 @@
 <template>
     <view class="content">
+        {{ current_index }}
+        {{ close_circular }}
         <swiper class="swiper-container" :style="swiperStyle" :vertical="true" @change="handleSwiperChange" :current="current_index" :circular="close_circular ? false : true">
             <swiper-item v-for="(video, index) in display_video_list" :key="video.id">
                 <view class="video-container" @tap="toggle_play_pause">
@@ -158,10 +160,30 @@
             init_display_data() {
                 this.current_video_id = this.videoData[0].id;
                 this.display_video_list = [
-                    this.videoData[0],       // 当前元素
-                    this.videoData[this.current_video_index + 1 ],  // 下一个元素
-                    this.videoData[this.current_video_index + 2 ]  // 下两个元素
+                    this.getVideoByIndex(0),       // 当前元素
+                    this.getVideoByIndex(1),       // 下一个元素
+                    this.getVideoByIndex(2)        // 下两个元素
                 ];
+            },
+            
+            // 安全获取视频数据的方法，处理索引超限情况
+            getVideoByIndex(index) {
+                // 处理负数索引
+                if (index < 0) {
+                    // 循环到数组末尾
+                    const actualIndex = this.videoData.length + (index % this.videoData.length);
+                    return this.videoData[actualIndex];
+                }
+                
+                // 处理超出数组长度的索引
+                if (index >= this.videoData.length) {
+                    // 循环到数组开头
+                    const actualIndex = index % this.videoData.length;
+                    return this.videoData[actualIndex];
+                }
+                
+                // 正常情况直接返回
+                return this.videoData[index];
             },
             
             // 更新显示数据
@@ -174,21 +196,21 @@
                 // 如果当前索引为0，只显示当前元素和下一个元素
                 if (this.current_index == 0) {
                     list = [
-                        this.videoData[this.current_video_index],
-                        this.videoData[this.current_video_index + 1],
-                        this.videoData[this.current_video_index + 2]
+                        this.getVideoByIndex(this.current_video_index),
+                        this.getVideoByIndex(this.current_video_index + 1),
+                        this.getVideoByIndex(this.current_video_index + 2)
                     ];
                 } else if (this.current_index == 1) { // 索引为1时，为确保无限轮播正常，需要改变数据插入顺序
                     list = [
-                        this.videoData[this.current_video_index - 1],
-                        this.videoData[this.current_video_index],
-                        this.videoData[this.current_video_index + 1]
+                        this.getVideoByIndex(this.current_video_index - 1),
+                        this.getVideoByIndex(this.current_video_index),
+                        this.getVideoByIndex(this.current_video_index + 1)
                     ];
                 } else {
                     list = [
-                        this.videoData[this.current_video_index + 1],
-                        this.videoData[this.current_video_index - 1],
-                        this.videoData[this.current_video_index],
+                        this.getVideoByIndex(this.current_video_index + 1),
+                        this.getVideoByIndex(this.current_video_index - 1),
+                        this.getVideoByIndex(this.current_video_index),
                     ];
                 }
                 console.log('更新显示数据', list);
@@ -223,9 +245,9 @@
                 if (this.current_video_index == 0 && this.is_slide_start) {
                     this.$nextTick(() => {
                         const list = [
-                            this.videoData[this.current_video_index],
-                            this.videoData[this.current_video_index + 1],
-                            this.videoData[this.current_video_index + 2]
+                            this.getVideoByIndex(this.current_video_index),
+                            this.getVideoByIndex(this.current_video_index + 1),
+                            this.getVideoByIndex(this.current_video_index + 2)
                         ];
                         this.setData({
                             is_slide_start: false,
@@ -234,17 +256,21 @@
                         })
                     })
                 } else if (this.current_video_index == this.videoData.length - 1) {
-                    this.$nextTick(() => {
+                    // this.$nextTick(() => {
                         const list = [
-                            this.videoData[this.current_video_index - 2],
-                            this.videoData[this.current_video_index - 1],
-                            this.videoData[this.current_video_index],
+                            this.getVideoByIndex(this.current_video_index - 2),
+                            this.getVideoByIndex(this.current_video_index - 1),
+                            this.getVideoByIndex(this.current_video_index),
                         ];
+                        console.log('更新显示数据', current);
+                        
+                        console.log(list);
                         this.setData({
-                            current_index: this.current_video_index,
+                            current_index: 2,
                             display_video_list: list
                         })
-                    })
+                        this.$forceUpdate();
+                    // })
                 } else {
                     // 预加载当前index之后的视频
                     this.update_display_data();
@@ -365,8 +391,8 @@
 
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
-                if (this.video_contexts[1]) { // 控制中间的视频
-                    this.video_contexts[1].seek(seek_time);
+                if (this.video_contexts[this.current_index]) {
+                    this.video_contexts[this.current_index].seek(seek_time);
                     this.current_video_progress = seek_time;
                 }
                 setTimeout(() => {
