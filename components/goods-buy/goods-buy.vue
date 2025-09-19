@@ -14,14 +14,14 @@
                         <view class="goods-price">
                             <view v-if="(goods.show_field_price_status || 0) == 1">
                                 <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
-                                <text class="cr-grey text-size-xs va-m">{{ goods.show_price_unit }}</text>
+                                <text class="cr-grey text-size-xs va-m">{{ goods_show_price_unit }}</text>
                             </view>
-                            <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
+                            <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
                         </view>
                         <view v-if="(goods.show_inventory_status || 0) == 1" class="inventory text-size-xs margin-top">
                             <text class="cr-grey">{{ $t('goods-detail.goods-detail.1s79t4') }}</text>
                             <text class="cr-base">{{ goods_spec_base_inventory }}</text>
-                            <text class="cr-grey">{{ goods.inventory_unit }}</text>
+                            <text class="cr-grey">{{ goods_spec_base_inventory_unit }}</text>
                         </view>
                     </view>
                 </view>
@@ -87,6 +87,9 @@
                 goods_spec_base_buy_min_number: 0,
                 goods_spec_base_buy_max_number: 0,
                 goods_spec_base_images: '',
+                goods_spec_base_inventory_unit: '',
+                goods_show_price_unit: '',
+                goods_show_original_price_unit: '',
                 goods: {},
                 goods_spec_choose: [],
                 buy_number: 1,
@@ -179,6 +182,9 @@
                     goods_spec_base_original_price: goods.original_price || 0,
                     goods_spec_base_inventory: goods.inventory,
                     goods_spec_base_images: goods.images,
+                    goods_spec_base_inventory_unit: goods.inventory_unit,
+                    goods_show_price_unit: goods.show_price_unit,
+                    goods_show_original_price_unit: goods.show_original_price_unit,
                     buy_number: buy_number,
                     buy_event_type: params.buy_event_type || 'cart',
                     opt_button: opt_button,
@@ -188,7 +194,8 @@
                 });
 
                 // 初始化不能选择规格处理
-                this.spec_handle_dont(0, 1);
+                var is_init = (params.is_init === undefined) ? 1 : params.is_init;
+                this.spec_handle_dont(0, is_init);
 
                 // 获取规格详情
                 this.get_spec_detail();
@@ -518,10 +525,15 @@
                         goods_spec_base_price: this.goods.price,
                         goods_spec_base_original_price: this.goods.original_price || 0,
                         goods_spec_base_inventory: this.goods.inventory,
+                        goods_spec_base_inventory_unit: this.goods.inventory_unit,
+                        goods_show_price_unit: this.goods.show_price_unit,
+                        goods_show_original_price_unit: this.goods.show_original_price_unit,
                         goods_spec_base_buy_min_number: 0,
                         goods_spec_base_buy_max_number: 0,
                         buy_number: buy_number,
                     });
+                    // 释放-调用父级
+                    this.$emit("BackReleaseEvent");
                     return false;
                 }
 
@@ -560,16 +572,22 @@
                 if (spec_buy_max_number > 0 && buy_number > spec_buy_max_number) {
                     buy_number = spec_buy_max_number;
                 }
-                this.setData({
+                var upd_data = {
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price || 0,
                     goods_spec_base_inventory: parseInt(spec_base.inventory || 0),
                     goods_spec_base_buy_min_number: spec_buy_min_number,
                     goods_spec_base_buy_max_number: spec_buy_max_number,
                     buy_number: buy_number,
-                });
+                };
+                if((spec_base.inventory_unit || null) != null) {
+                    upd_data['goods_spec_base_inventory_unit'] = spec_base.inventory_unit;
+                    upd_data['goods_show_price_unit'] = ' / '+spec_base.inventory_unit;
+                    upd_data['goods_show_original_price_unit'] = ' / '+spec_base.inventory_unit;
+                }
+                this.setData(upd_data);
 
-                // 调用父级
+                // 成功-调用父级
                 this.$emit("BackSuccessEvent", {
                     buy_number: this.buy_number,
                     base_price: this.goods_spec_base_price,
@@ -656,7 +674,7 @@
                 var spec_buy_min_number = parseInt(this.goods_spec_base_buy_min_number || 0);
                 var spec_buy_max_number = parseInt(this.goods_spec_base_buy_max_number || 0);
                 var inventory = parseInt(this.goods_spec_base_inventory || 0);
-                var inventory_unit = this.goods.inventory_unit;
+                var inventory_unit = this.goods_spec_base_inventory_unit;
 
                 // 最小起购数量
                 var min = spec_buy_min_number > 0 ? spec_buy_min_number : buy_min_number;

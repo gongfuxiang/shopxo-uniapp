@@ -88,10 +88,10 @@
                             <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+((plugins_seckill_is_valid) ? 'seckill' : '')">{{ show_field_price_text }}</text>
                             <!-- 售价 -->
                             <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
-                            <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
+                            <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods_show_price_unit }}</text>
                         </view>
                         <!-- 原价 -->
-                        <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
+                        <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
                         <!-- 积分兑换 -->
                         <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
                             <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
@@ -610,7 +610,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 商品购买 -->
-        <component-goods-buy ref="goods_buy" :propParams="params" :propCurrencySymbol="currency_symbol" v-on:BackSuccessEvent="goods_buy_back_success_event" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
+        <component-goods-buy ref="goods_buy" :propParams="params" :propCurrencySymbol="currency_symbol" v-on:BackReleaseEvent="goods_buy_back_release_event" v-on:BackSuccessEvent="goods_buy_back_success_event" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
 
         <!-- 商品批量下单 -->
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
@@ -696,6 +696,8 @@
                 goods_spec_base_original_price: 0,
                 goods_spec_selected_text: this.$t('goods-detail.goods-detail.6brk57'),
                 show_field_price_text: null,
+                goods_show_price_unit: '',
+                goods_show_original_price_unit: '',
                 goods_video_is_autoplay: false,
                 // 增加随机数，避免无法监听数据列表内部数据更新
                 random_value: 0,
@@ -1081,6 +1083,8 @@
                     goods_spec_base_price: goods.price,
                     goods_spec_base_original_price: goods.original_price || 0,
                     show_field_price_text: price_text_arr.indexOf(goods.show_field_price_text) != -1 ? null : goods.show_field_price_text.replace(/<[^>]+>/g, '') || null,
+                    goods_show_price_unit: goods.show_price_unit,
+                    goods_show_original_price_unit: goods.show_original_price_unit,
                 });
             },
 
@@ -1225,13 +1229,35 @@
                 }
             },
 
-            // 数量和规格详情回调成功
+            // 数量和规格回调-释放
+            goods_buy_back_release_event(e) {
+                this.setData({
+                    goods_spec_base_price: this.goods.price,
+                    goods_spec_base_original_price: this.goods.original_price || 0,
+                    goods_show_price_unit: this.goods.show_price_unit,
+                    goods_show_original_price_unit: this.goods.show_original_price_unit,
+                });
+            },
+
+            // 数量和规格详情回调-成功
             goods_buy_back_success_event(e) {
-                if((e.back_data.plugins_wholesale_data || null) != null) {
-                    this.setData({
-                        plugins_wholesale_data: e.back_data.plugins_wholesale_data
-                    });
+                // 更新的数据
+                var upd_data = {
+                    goods_spec_base_price: e.back_data.spec_base.price,
+                    goods_spec_base_original_price: e.back_data.spec_base.original_price || 0,
+                    goods_show_price_unit: this.goods.show_price_unit,
+                    goods_show_original_price_unit: this.goods.show_original_price_unit,
                 }
+                // 规格单位
+                if((e.back_data.spec_base.inventory_unit || null) != null) {
+                    upd_data['goods_show_price_unit'] = ' / '+e.back_data.spec_base.inventory_unit;
+                    upd_data['goods_show_original_price_unit'] = ' / '+e.back_data.spec_base.inventory_unit;
+                }
+                // 批发数据
+                if((e.back_data.plugins_wholesale_data || null) != null) {
+                    upd_data['plugins_wholesale_data'] = e.back_data.plugins_wholesale_data;
+                }
+                this.setData(upd_data);
             },
 
             // 加入购物车成功回调
