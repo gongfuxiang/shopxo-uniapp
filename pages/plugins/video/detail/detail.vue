@@ -7,34 +7,35 @@
                     <video class="video" :src="video_item.videoUrl" :poster="video_item.posterUrl" :id="`video_${index}`" :loop="true" :controls="false" :show-center-play-btn="false" :show-play-btn="false" object-fit="contain" @timeupdate="handle_time_update"></video>
                     
                     <text v-if="paused && current_index === index" class="play-icon">▶</text>
-
-                    <!-- Right Action Bar -->
-                    <view class="right-actions">
-                        <view class="action-item" :data-value="video_item" @tap.stop="handle_like">
-                            <iconfont name="icon-givealike" :color="video_item.isLike ? '#fff' : ''" size="60rpx" />
-                            <text class="action-text">{{ video_item.fabulous_count }}</text>
+                    <template v-if="!show_comment_modal">
+                        <!-- Right Action Bar -->
+                        <view class="right-actions">
+                            <view class="action-item" :data-value="video_item" @tap.stop="handle_like">
+                                <iconfont name="icon-givealike" :color="video_item.isLike ? '#fff' : ''" size="60rpx" />
+                                <text class="action-text">{{ video_item.fabulous_count }}</text>
+                            </view>
+                            <view class="action-item" :data-value="video_item" @tap.stop="handle_comment">
+                                <iconfont name="icon-comment" color="#fff" size="60rpx" />
+                                <text class="action-text">{{ video_item.comment_obj.count }}</text>
+                            </view>
+                            <view class="action-item" :data-value="video_item" @tap.stop="handle_share">
+                                <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
+                                <text class="action-text">分享</text>
+                            </view>
                         </view>
-                        <view class="action-item" :data-value="video_item" @tap.stop="handle_comment">
-                            <iconfont name="icon-comment" color="#fff" size="60rpx" />
-                            <text class="action-text">{{ video_item.comment_obj.count }}</text>
-                        </view>
-                        <view class="action-item" :data-value="video_item" @tap.stop="handle_share">
-                            <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
-                            <text class="action-text">分享</text>
-                        </view>
-                    </view>
 
-                    <!-- Bottom Info -->
-                    <view class="bottom-info">
-                        <text class="author">@{{ video_item.userNick }}</text>
-                        <text class="video-content">{{ video_item.videoContent }}</text>
-                    </view>
+                        <!-- Bottom Info -->
+                        <view class="bottom-info">
+                            <text class="author">@{{ video_item.userNick }}</text>
+                            <text class="video-content">{{ video_item.videoContent }}</text>
+                        </view>
 
-                    <!-- Progress Bar -->
-                    <view class="progress-bar-container" v-if="current_index === index">
-                        <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change="handle_slider_change" @changing="handle_slider_changing" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
-                        <text class="time-display">{{ formatTime(current_video_progress) }} / {{ formatTime(current_video_duration) }}</text>
-                    </view>
+                        <!-- Progress Bar -->
+                        <view class="progress-bar-container" v-if="current_index === index">
+                            <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change="handle_slider_change" @changing="handle_slider_changing" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
+                            <text class="time-display">{{ formatTime(current_video_progress) }} / {{ formatTime(current_video_duration) }}</text>
+                        </view>
+                    </template>
                 </view>
             </swiper-item>
         </swiper>
@@ -46,28 +47,35 @@
                     <text class="comment-count">评论</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
-                <scroll-view class="comment-list" scroll-y>
-                    <view class="comment-item flex-row align-s gap-10" v-for="(comment_item, index) in active_comments" :key="index">
-                        <commentInfoComponent :propsComment="comment_item" :propsId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like">
-                            <!-- 子评论 -->
-                            <view class="sub-comment flex-col jc-c" slot="sub-comment">
-                                <view v-if="!comment_item.show_sub_comment" class="sub-comment-title" :data-id="comment_item.id" @tap="open_sub_comment">—— 展开{{ comment_item.subComments ? comment_item.subComments.length || 0 : 0 }}条回复 <iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                <template v-else>
-                                    <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
-                                        <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
-                                            <commentInfoComponent :propsComment="sub_comment_item" :propsId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                <!-- 评论内容区域 -->
+                <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scroll="handle_comment_scroll">
+                    <view class="comment-scroll">
+                        <view class="comment-item flex-row align-s gap-10" v-for="(comment_item, index) in active_comments" :key="index">
+                            <commentInfoComponent :propsComment="comment_item" :propsId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like">
+                                <!-- 子评论 -->
+                                <view class="sub-comment flex-col jc-c" slot="sub-comment">
+                                    <view v-if="!comment_item.show_sub_comment">
+                                        <commentMoreComponent :propsId="comment_item.id" :propsText="'—— 展开' + (comment_item.subComments ? comment_item.subComments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                    </view>
+                                    <template v-else>
+                                        <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
+                                            <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
+                                                <commentInfoComponent :propsComment="sub_comment_item" :propsId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                                            </view>
                                         </view>
-                                    </view>
-                                    <template v-if="comment_item.show_sub_comment_loading">
-                                        <loading-component></loading-component>
+                                        <template v-if="comment_item.show_sub_comment_loading">
+                                            <loading-component></loading-component>
+                                        </template>
+                                        <view v-else class="sub-comment-more mt-10 flex-row align-c gap-10">
+                                            <view v-if="!comment_item.is_exactly">
+                                                <commentMoreComponent :propsId="comment_item.id" propsText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                            </view>
+                                            <commentMoreComponent :propsId="comment_item.id" propsText="收起" propsIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                        </view>
                                     </template>
-                                    <view v-else class="sub-comment-more flex-row align-c mt-10">
-                                        <view v-if="!comment_item.is_exactly" class="sub-comment-more-btn" :data-id="comment_item.id" @tap="open_sub_comment">展开<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                        <view class="sub-comment-more-btn" :data-id="comment_item.id" @tap="close_sub_comment">收起<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                    </view>
-                                </template>
-                            </view>
-                        </commentInfoComponent>
+                                </view>
+                            </commentInfoComponent>
+                        </view>
                     </view>
                 </scroll-view>
                 <view class="comment-input-container">
@@ -80,16 +88,16 @@
 </template>
 
 <script>
-    // import CommentModal from '@/components/CommentModal.vue';
     import videoList from '@/pages/plugins/video/detail/video_list.json';
     import { get_math } from '@/common/js/common/common.js';
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
+    import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     export default {
         components: {
-            // CommentModal,
             loadingComponent,
-            commentInfoComponent
+            commentInfoComponent,
+            commentMoreComponent
         },
         data() {
             return {
@@ -109,14 +117,15 @@
                 current_video_id: '1', // 当前播放视频的ID
                 is_slide_start: false,
                 swiper_key: get_math(),
+                comment_scroll_top: 0,
             };
         },
         computed: {
             swiperStyle() {
-                return this.show_comment_modal ? `height: calc(30% + ${this.move_distance}px);` : 'height: 100%;';
+                return this.show_comment_modal ? (this.move_distance > 0 ? `height: calc(30% + ${this.move_distance}px);` : 'height: 30%;') : 'height: 100%;';
             },
             commentContentStyle() {
-                return this.show_comment_modal ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`
+                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`;
             },
             current_video_index() { 
                 return this.videoData.findIndex(item => item.id === this.current_video_id);
@@ -308,28 +317,40 @@
                     move_distance: 0,
                 })
             },
-
+            // 评论滚动事件, 记录滚动位置
+            handle_comment_scroll(e) {
+                this.comment_scroll_top = e.detail.scrollTop;
+            }, 
             // 评论拖拽开始
             handle_comment_touch_start(e) {
-                this.comment_start_y = e.touches[0].pageY;
-                this.comment_current_y = this.comment_start_y;
-                this.move_distance = 0;
+                // 只有滚动到顶部时才允许拖拽
+                if (this.comment_scroll_top === 0) {
+                    this.comment_start_y = e.touches[0].pageY;
+                    this.comment_current_y = this.comment_start_y;
+                    this.move_distance = 0;   
+                }
             },
 
             // 评论拖拽中
             handle_comment_touch_move(e) {
-                this.comment_current_y = e.touches[0].pageY;
-                this.move_distance = this.comment_current_y - this.comment_start_y;
+                // 只有滚动到顶部时才允许拖拽
+                if (this.comment_scroll_top === 0) {
+                    this.comment_current_y = e.touches[0].pageY;
+                    this.move_distance = this.comment_current_y - this.comment_start_y;
+                }
             },
 
             // 评论拖拽结束
             handle_comment_touch_end(e) {
-                const move_distance = this.comment_current_y - this.comment_start_y;
-                // 如果拖拽距离足够大，关闭评论弹窗
-                if (move_distance > 150) {
-                    this.close_comment_modal();
-                } else {
-                    this.move_distance = 0;
+                // 只有滚动到顶部时才允许拖拽
+                if (this.comment_scroll_top === 0) {
+                    const move_distance = this.comment_current_y - this.comment_start_y;
+                    // 如果拖拽距离足够大，关闭评论弹窗
+                    if (move_distance > 150) {
+                        this.close_comment_modal();
+                    } else {
+                        this.move_distance = 0;
+                    }
                 }
             },
 
@@ -362,8 +383,7 @@
                 }
             },
             // 展开子评论
-            open_sub_comment(e) {
-                const id = e.currentTarget.dataset.id
+            open_sub_comment(id) {
                 const comment = this.active_comments.find(item => item.id === id);
                 if (comment) {
                     comment.show_sub_comment = true;
@@ -381,8 +401,11 @@
                 }
             },
             // 收起子评论
-            close_sub_comment(comment) {
-                comment.show_sub_comment = false;
+            close_sub_comment(id) {
+                const comment = this.active_comments.find(item => item.id === id);
+                if (comment) {
+                    comment.show_sub_comment = false;
+                }
             },
             handle_share(video) {
                 uni.showToast({
@@ -427,6 +450,13 @@
 </script>
 
 <style lang="scss" scoped>
+    .mt-10 {
+        margin-top: 20rpx;
+    }
+    .ml-10 {
+        margin-left: 20rpx;
+    }
+
     .content,
     .swiper-container {
         width: 100%;
@@ -579,8 +609,13 @@
     
     .comment-list {
         flex: 1;
-        padding: 30rpx;
-        box-sizing: border-box;
+        overflow: hidden;
+        .comment-scroll {
+            width: 100%;
+            height: 100%;
+            padding: 30rpx;
+            box-sizing: border-box;
+        }
     }
     
     .comment-item {
@@ -588,7 +623,7 @@
     }
     
     .sub-comment {
-        margin-top: 30rpx;
+        margin-top: 22rpx;
     }
     
     .sub-comment-list {

@@ -1,13 +1,13 @@
 <template> 
     <view class="flex-row align-s gap-10 wh-auto ht-auto"> 
-        <image class="comment-avatar" :src="propsComment.userHead"></image>
+        <image class="comment-avatar" :src="propsComment.userHead" mode="aspectFill"></image>
         <view class="comment-info">
             <view class="comment-user">{{ propsComment.userNick }}</view>
             <view class="comment-text">{{ propsComment.content }}</view>
             <view class="comment-operation flex-row align-c jc-sb">
                 <view class="comment-operation-left flex-row align-c gap-10">
                     <view class="comment-time">{{ propsComment.time }}</view>
-                    <view class="comment-like" @click="comment_reply">{{ propsReplyContent }}</view>
+                    <view class="comment-reply" @click="comment_reply">{{ propsReplyContent }}</view>
                 </view>
                 <view class="comment-operation-right flex-row align-c gap-5" @click="comment_like">
                     <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
@@ -56,6 +56,7 @@
 }
 .comment-info {
     flex: 1;
+    gap: 8rpx;
 }
 .comment-user {
     font-size: 24rpx;
@@ -71,6 +72,17 @@
 
 .comment-time {
     font-size: 28rpx;
+    color: #999999;
+    line-height: 34rpx;
+}
+.comment-reply {
+    font-weight: blod;
+    font-size: 24rpx;
+    color: #666666;
+    line-height: 34rpx;
+}
+.comment-like-num {
+    font-size: 24rpx;
     color: #999999;
     line-height: 34rpx;
 }
