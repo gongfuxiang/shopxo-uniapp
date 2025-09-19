@@ -79,8 +79,11 @@
                     </view>
                 </scroll-view>
                 <view class="comment-input-container">
-                    <input class="comment-input" type="text" placeholder="说点什么..." @confirm="send_comment" />
-                    <button class="send-btn" @tap="send_comment">发送</button>
+                    <view class="flex-col jc-c">
+                        <view class="flex-row align-c gap-10 wh-auto ht-auto">
+                            <input class="comment-input" type="text" placeholder="说点什么..." @confirm="send_comment" />
+                        </view>
+                    </view>
                 </view>
             </view>
         </view>
@@ -368,7 +371,7 @@
                 
                 const newComment = {
                     id: `c${Date.now()}`,
-                    userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
+                    userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg',
                     userNick: '我',
                     content: comment_text,
                     time: new Date().toLocaleString()
