@@ -50,31 +50,30 @@
                 <!-- 评论内容区域 -->
                 <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scroll="handle_comment_scroll">
                     <view class="comment-scroll">
-                        <view class="comment-item flex-row align-s gap-10" v-for="(comment_item, index) in active_comments" :key="index">
-                            <commentInfoComponent :propsComment="comment_item" :propsId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like">
-                                <!-- 子评论 -->
-                                <view class="sub-comment flex-col jc-c" slot="sub-comment">
-                                    <view v-if="!comment_item.show_sub_comment">
-                                        <commentMoreComponent :propsId="comment_item.id" :propsText="'—— 展开' + (comment_item.subComments ? comment_item.subComments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                    </view>
-                                    <template v-else>
-                                        <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
-                                            <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
-                                                <commentInfoComponent :propsComment="sub_comment_item" :propsId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
-                                            </view>
-                                        </view>
-                                        <template v-if="comment_item.show_sub_comment_loading">
-                                            <loading-component></loading-component>
-                                        </template>
-                                        <view v-else class="sub-comment-more mt-10 flex-row align-c gap-10">
-                                            <view v-if="!comment_item.is_exactly">
-                                                <commentMoreComponent :propsId="comment_item.id" propsText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                            </view>
-                                            <commentMoreComponent :propsId="comment_item.id" propsText="收起" propsIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
-                                        </view>
-                                    </template>
+                        <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
+                            <commentInfoComponent class="wh-auto ht-auto" :propsComment="comment_item" :propsId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
+                            <!-- 子评论 -->
+                            <view class="sub-comment flex-col jc-c">
+                                <view v-if="!comment_item.show_sub_comment">
+                                    <commentMoreComponent :propsId="comment_item.id" :propsText="'—— 展开' + (comment_item.subComments ? comment_item.subComments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                 </view>
-                            </commentInfoComponent>
+                                <template v-else>
+                                    <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
+                                        <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
+                                            <commentInfoComponent class="wh-auto ht-auto" :propsComment="sub_comment_item" :propsId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                                        </view>
+                                    </view>
+                                    <template v-if="comment_item.show_sub_comment_loading">
+                                        <loading-component></loading-component>
+                                    </template>
+                                    <view v-else class="sub-comment-more mt-10 flex-row align-c gap-10">
+                                        <view v-if="!comment_item.is_exactly">
+                                            <commentMoreComponent :propsId="comment_item.id" propsText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                        </view>
+                                        <commentMoreComponent :propsId="comment_item.id" propsText="收起" propsIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                    </view>
+                                </template>
+                            </view>
                         </view>
                     </view>
                 </scroll-view>
@@ -631,6 +630,7 @@
     
     .sub-comment {
         margin-top: 22rpx;
+        margin-left: 100rpx;
     }
     
     .sub-comment-list {
@@ -645,13 +645,16 @@
     .comment-input {
         flex: 1;
         font-size: 28rpx;
+        height: 50rpx;
+        padding: 16rpx;
+        box-sizing: content-box;
     }
     
     .comment-input-content {
         flex: 1;
         border: 2rpx solid #eee;
         border-radius: 8rpx;
-        padding: 16rpx;
+        padding-right: 16rpx;
         font-size: 28rpx;
     }
 </style>
