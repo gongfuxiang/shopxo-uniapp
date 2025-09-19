@@ -79,9 +79,13 @@
                     </view>
                 </scroll-view>
                 <view class="comment-input-container">
-                    <view class="flex-col jc-c">
+                    <view class="comment-input-content flex-col jc-c">
                         <view class="flex-row align-c gap-10 wh-auto ht-auto">
-                            <input class="comment-input" type="text" placeholder="说点什么..." @confirm="send_comment" />
+                            <input class="comment-input" type="text" placeholder="请输入您的精彩评论" @confirm="send_comment" />
+                            <view style="font-size:32rpx">@</view>
+                            <view>
+                                <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -640,19 +644,14 @@
     
     .comment-input {
         flex: 1;
-        border: 2rpx solid #eee;
-        border-radius: 8rpx;
-        padding: 16rpx;
         font-size: 28rpx;
     }
     
-    .send-btn {
-        margin-left: 20rpx;
-        padding: 16rpx 30rpx;
-        background-color: #ff4757;
-        color: white;
-        border: none;
+    .comment-input-content {
+        flex: 1;
+        border: 2rpx solid #eee;
         border-radius: 8rpx;
+        padding: 16rpx;
         font-size: 28rpx;
     }
 </style>
