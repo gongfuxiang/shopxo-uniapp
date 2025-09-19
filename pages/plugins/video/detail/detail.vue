@@ -1,8 +1,6 @@
 <template>
     <view class="content">
-        {{ current_index }}
-        {{ close_circular }}
-        <swiper class="swiper-container" :style="swiperStyle" :vertical="true" @change="handleSwiperChange" :current="current_index" :circular="close_circular ? false : true">
+        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :current="current_index" easing-function="easeInOutCubic" @change="handleSwiperChange">
             <swiper-item v-for="(video, index) in display_video_list" :key="video.id">
                 <view class="video-container" @tap="toggle_play_pause">
                     
@@ -102,6 +100,7 @@
 
 <script>
     // import CommentModal from '@/components/CommentModal.vue';
+    import { get_math } from '@/common/js/common/common.js'
     import video_list from './video_list.json'
     export default {
         components: {
@@ -124,6 +123,7 @@
                 move_distance: 0,
                 current_video_id: '1', // 当前播放视频的ID
                 is_slide_start: false,
+                swiper_key: get_math(),
             };
         },
         computed: {
@@ -188,17 +188,13 @@
             
             // 更新显示数据
             update_display_data() {
-                console.log(this.current_index);
-                
-                console.log('更新显示数据', this.current_video_index);
-                
                 let list = [];
                 // 如果当前索引为0，只显示当前元素和下一个元素
                 if (this.current_index == 0) {
                     list = [
                         this.getVideoByIndex(this.current_video_index),
-                        this.getVideoByIndex(this.current_video_index + 1),
-                        this.getVideoByIndex(this.current_video_index + 2)
+                        this.getVideoByIndex(this.current_video_index + 1), // 下一个元素
+                        this.getVideoByIndex(this.current_video_index - 1) // 上一个元素，
                     ];
                 } else if (this.current_index == 1) { // 索引为1时，为确保无限轮播正常，需要改变数据插入顺序
                     list = [
@@ -213,8 +209,7 @@
                         this.getVideoByIndex(this.current_video_index),
                     ];
                 }
-                console.log('更新显示数据', list);
-                
+
                 this.setData({
                     display_video_list: list
                 })
@@ -243,18 +238,21 @@
                 this.current_video_id = this.display_video_list[current].id;
                 // 当滑动到边界时更新显示数据
                 if (this.current_video_index == 0 && this.is_slide_start) {
-                    this.$nextTick(() => {
+                    // this.$nextTick(() => {
                         const list = [
-                            this.getVideoByIndex(this.current_video_index),
-                            this.getVideoByIndex(this.current_video_index + 1),
-                            this.getVideoByIndex(this.current_video_index + 2)
+                            this.getVideoByIndex(0),
+                            this.getVideoByIndex(1),
+                            this.getVideoByIndex(2)
                         ];
+                        console.log('更新显示数据', list);
+                        
                         this.setData({
                             is_slide_start: false,
                             current_index: 0,
-                            display_video_list: list
+                            display_video_list: list,
+                            swiper_key: get_math()
                         })
-                    })
+                    // })
                 } else if (this.current_video_index == this.videoData.length - 1) {
                     // this.$nextTick(() => {
                         const list = [
@@ -262,22 +260,18 @@
                             this.getVideoByIndex(this.current_video_index - 1),
                             this.getVideoByIndex(this.current_video_index),
                         ];
-                        console.log('更新显示数据', current);
-                        
-                        console.log(list);
                         this.setData({
                             current_index: 2,
-                            display_video_list: list
+                            display_video_list: list,
+                            swiper_key: get_math()
                         })
-                        this.$forceUpdate();
-                    // })
                 } else {
+                    this.is_slide_start = true;
                     // 预加载当前index之后的视频
                     this.update_display_data();
                 }
 
                 setTimeout(() => {
-                    this.is_slide_start = true;
                     // 播放当前视频
                     if (this.video_contexts[current]) {
                         this.video_contexts[current].play();
