@@ -1,24 +1,24 @@
 <template>
     <view class="content">
         <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :current="current_index" easing-function="easeInOutCubic" @change="handleSwiperChange">
-            <swiper-item v-for="(video, index) in display_video_list" :key="video.id">
+            <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                 <view class="video-container" @tap="toggle_play_pause">
                     
-                    <video class="video" :src="video.videoUrl" :poster="video.posterUrl" :id="`video_${index}`" :loop="true" :controls="false" :show-center-play-btn="false" :show-play-btn="false" object-fit="contain" @timeupdate="handle_time_update"></video>
+                    <video class="video" :src="video_item.videoUrl" :poster="video_item.posterUrl" :id="`video_${index}`" :loop="true" :controls="false" :show-center-play-btn="false" :show-play-btn="false" object-fit="contain" @timeupdate="handle_time_update"></video>
                     
                     <text v-if="paused && current_index === index" class="play-icon">▶</text>
 
                     <!-- Right Action Bar -->
                     <view class="right-actions">
-                        <view class="action-item" @tap.stop="handle_like(video)">
-                            <iconfont name="icon-givealike" :color="video.isLike ? '#fff' : ''" size="60rpx" />
-                            <text class="action-text">{{ video.fabulous_count }}</text>
+                        <view class="action-item" :data-value="video_item" @tap.stop="handle_like">
+                            <iconfont name="icon-givealike" :color="video_item.isLike ? '#fff' : ''" size="60rpx" />
+                            <text class="action-text">{{ video_item.fabulous_count }}</text>
                         </view>
-                        <view class="action-item" @tap.stop="handle_comment(video)">
+                        <view class="action-item" :data-value="video_item" @tap.stop="handle_comment">
                             <iconfont name="icon-comment" color="#fff" size="60rpx" />
-                            <text class="action-text">{{ video.comment_obj.count }}</text>
+                            <text class="action-text">{{ video_item.comment_obj.count }}</text>
                         </view>
-                        <view class="action-item" @tap.stop="handle_share(video)">
+                        <view class="action-item" :data-value="video_item" @tap.stop="handle_share">
                             <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
                             <text class="action-text">分享</text>
                         </view>
@@ -26,8 +26,8 @@
 
                     <!-- Bottom Info -->
                     <view class="bottom-info">
-                        <text class="author">@{{ video.userNick }}</text>
-                        <text class="video-content">{{ video.videoContent }}</text>
+                        <text class="author">@{{ video_item.userNick }}</text>
+                        <text class="video-content">{{ video_item.videoContent }}</text>
                     </view>
 
                     <!-- Progress Bar -->
@@ -43,48 +43,55 @@
         <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
             <view class="comment-content" :style="commentContentStyle" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                 <view class="comment-header">
-                    <text class="comment-count">{{ active_comments.count }}条评论</text>
+                    <text class="comment-count">评论</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
                 <scroll-view class="comment-list" scroll-y>
-                    <view v-for="(comment, index) in active_comments.list" :key="index" class="comment-item">
-                        <image class="comment-avatar" :src="comment.userHead"></image>
+                    <view v-for="(comment_item, index) in active_comments" :key="index" class="comment-item">
+                        <image class="comment-avatar" :src="comment_item.userHead"></image>
                         <view class="comment-info">
-                            <view class="comment-user">{{ comment.userNick }}</view>
-                            <view class="comment-text">{{ comment.content }}</view>
+                            <view class="comment-user">{{ comment_item.userNick }}</view>
+                            <view class="comment-text">{{ comment_item.content }}</view>
                             <view class="comment-operation flex-row align-c jc-sb">
                                 <view class="comment-operation-left flex-row align-c gap-10">
-                                    <view class="comment-time">{{ comment.time }}</view>
-                                    <view class="comment-like" :data-comment-id="comment.id" @click="comment_reply">回复</view>
+                                    <view class="comment-time">{{ comment_item.time }}</view>
+                                    <view class="comment-like" :data-comment-id="comment_item.id" @click="comment_reply">回复</view>
                                 </view>
                                 <view class="comment-operation-right flex-row align-c gap-5">
                                     <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
-                                    <view class="comment-like-num">{{ comment.likeNum || 0 }}</view>
+                                    <view class="comment-like-num">{{ comment_item.likeNum || 0 }}</view>
                                 </view>
                             </view>
                             <!-- 子评论 -->
                             <view class="sub-comment flex-col jc-c">
-                                <view class="sub-comment-title" @tap="toggle_sub_comment">—— 展开{{ comment.subComments ? comment.subComments.length || 0 : 0 }}条回复 <iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                <view v-if="comment.subComments && comment.subComments.length > 0" class="sub-comment-list">
-                                    <view class="sub-comment-item" v-for="(sub_comment, sub_comment_index) in comment.subComments" :key="sub_comment_index">
-                                        <view class="comment-user">{{ comment.userNick }}</view>
-                                        <view class="comment-text">{{ comment.content }}</view>
-                                        <view class="comment-operation flex-row align-c jc-sb">
-                                            <view class="comment-operation-left flex-row align-c gap-10">
-                                                <view class="comment-time">{{ comment.time }}</view>
-                                                <view class="comment-like" :data-comment-id="comment.id" @click="comment_reply">回复</view>
-                                            </view>
-                                            <view class="comment-operation-right flex-row align-c gap-5">
-                                                <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
-                                                <view class="comment-like-num">{{ comment.likeNum || 0 }}</view>
+                                <view v-if="!comment_item.show_sub_comment" class="sub-comment-title" :data-id="comment_item.id" @tap="open_sub_comment">—— 展开{{ comment_item.subComments ? comment_item.subComments.length || 0 : 0 }}条回复 <iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
+                                <template v-else>
+                                    <template v-if="comment_item.show_sub_comment_loading">
+                                        <loading-component></loading-component>
+                                    </template>
+                                    <template v-else>
+                                        <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list">
+                                            <view class="sub-comment-item" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
+                                                <view class="comment-user">{{ sub_comment_item.userNick }}</view>
+                                                <view class="comment-text">{{ sub_comment_item.content }}</view>
+                                                <view class="comment-operation flex-row align-c jc-sb">
+                                                    <view class="comment-operation-left flex-row align-c gap-10">
+                                                        <view class="comment-time">{{ sub_comment_item.time }}</view>
+                                                        <view class="comment-like" :data-comment-id="sub_comment_item.id" @click="comment_reply">回复</view>
+                                                    </view>
+                                                    <view class="comment-operation-right flex-row align-c gap-5">
+                                                        <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
+                                                        <view class="comment-like-num">{{ sub_comment_item.likeNum || 0 }}</view>
+                                                    </view>
+                                                </view>
                                             </view>
                                         </view>
-                                    </view>
-                                </view>
-                                <view class="sub-comment-more flex-row align-c">
-                                    <view class="sub-comment-more-btn" @tap="toggle_sub_comment">展开<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                    <view class="sub-comment-more-btn" @tap="toggle_sub_comment">收起<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                </view>
+                                        <view class="sub-comment-more flex-row align-c">
+                                            <view v-if="!comment_item.is_exactly" class="sub-comment-more-btn" :data-id="comment_item.id" @tap="open_sub_comment">展开<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
+                                            <view class="sub-comment-more-btn" :data-id="comment_item.id" @tap="close_sub_comment">收起<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
+                                        </view>
+                                    </template>
+                                </template>
                             </view>
                         </view>
                     </view>
@@ -100,15 +107,17 @@
 
 <script>
     // import CommentModal from '@/components/CommentModal.vue';
-    import { get_math } from '@/common/js/common/common.js'
-    import video_list from './video_list.json'
+    import videoList from '@/pages/plugins/video/detail/video_list.json';
+    import { get_math } from '@/common/js/common/common.js';
+    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     export default {
         components: {
-            // CommentModal
+            // CommentModal,
+            loadingComponent
         },
         data() {
             return {
-                videoData: video_list,
+                videoData: videoList,
                 display_video_list: [],
                 current_index: 0,
                 video_contexts: [],
@@ -290,7 +299,8 @@
                 }
             },
 
-            handle_like(video) {
+            handle_like(e) {
+                const video = e.currentTarget.dataset.value;
                 video.is_fabulous = !video.is_fabulous;
                 if (video.is_fabulous) {
                     video.fabulous_count++;
@@ -299,15 +309,29 @@
                 }
             },
             // 打开评论区
-            handle_comment(video) {
-                this.active_comments = video.comment_obj;
-                this.show_comment_modal = true;
-                this.move_distance = 0;
+            handle_comment(e) {
+                const old_data = e.currentTarget.dataset.value;
+                // 初始化评论数据
+                const new_data = old_data.comment_obj.list.map(item1 => ({
+                    ...item1,
+                    show_sub_comment: false,
+                    show_sub_comment_loading: false,
+                    is_exactly: false,
+                    subComments: item1,
+                }));
+                this.setData({
+                    active_comments: new_data,
+                    show_comment_modal: true,
+                    move_distance: 0,
+                })
             },
             // 关闭评论区
             close_comment_modal() {
-                this.show_comment_modal = false;
-                this.move_distance = 0;
+                this.setData({
+                    active_comments: data,
+                    show_comment_modal: false,
+                    move_distance: 0,
+                })
             },
 
             // 评论拖拽开始
@@ -363,7 +387,22 @@
                     input_element.value = '';
                 }
             },
+            // 展开子评论
+            open_sub_comment(e) {
+                console.log(e);
+                const id = e.currentTarget.dataset.id
+                console.log(id);
+                
+                // comment.show_sub_comment = true;
 
+                // this.setData({
+                //     active_comments: this.active_comments
+                // })
+            },
+            // 收起子评论
+            close_sub_comment(comment) {
+                comment.show_sub_comment = false;
+            },
             handle_share(video) {
                 uni.showToast({
                     title: '分享',

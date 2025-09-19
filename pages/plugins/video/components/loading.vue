@@ -4,12 +4,20 @@
             <view class="more-history-btn-icon margin-right-xs">
                 <iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
             </view>
-            <text>加载中</text>
+            <text>{{ content }}</text>
         </view>
     </view>
 </template>
 
 <script>
+    export default {
+        props: {
+            propsContent: {
+                type: String,
+                default: '加载中'
+            }
+        }
+    }   
 </script>
 
 <style lang="scss" scoped>
