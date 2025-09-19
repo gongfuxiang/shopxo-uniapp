@@ -4,7 +4,7 @@
             <view class="more-history-btn-icon margin-right-xs">
                 <iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
             </view>
-            <text>{{ content }}</text>
+            <text>{{ propsContent }}</text>
         </view>
     </view>
 </template>

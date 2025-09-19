@@ -47,53 +47,27 @@
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
                 <scroll-view class="comment-list" scroll-y>
-                    <view v-for="(comment_item, index) in active_comments" :key="index" class="comment-item">
-                        <image class="comment-avatar" :src="comment_item.userHead"></image>
-                        <view class="comment-info">
-                            <view class="comment-user">{{ comment_item.userNick }}</view>
-                            <view class="comment-text">{{ comment_item.content }}</view>
-                            <view class="comment-operation flex-row align-c jc-sb">
-                                <view class="comment-operation-left flex-row align-c gap-10">
-                                    <view class="comment-time">{{ comment_item.time }}</view>
-                                    <view class="comment-like" :data-comment-id="comment_item.id" @click="comment_reply">回复</view>
-                                </view>
-                                <view class="comment-operation-right flex-row align-c gap-5">
-                                    <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
-                                    <view class="comment-like-num">{{ comment_item.likeNum || 0 }}</view>
-                                </view>
-                            </view>
+                    <view class="comment-item flex-row align-s gap-10" v-for="(comment_item, index) in active_comments" :key="index">
+                        <commentInfoComponent :propsComment="comment_item" :propsId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like">
                             <!-- 子评论 -->
-                            <view class="sub-comment flex-col jc-c">
+                            <view class="sub-comment flex-col jc-c" slot="sub-comment">
                                 <view v-if="!comment_item.show_sub_comment" class="sub-comment-title" :data-id="comment_item.id" @tap="open_sub_comment">—— 展开{{ comment_item.subComments ? comment_item.subComments.length || 0 : 0 }}条回复 <iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
                                 <template v-else>
+                                    <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
+                                        <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
+                                            <commentInfoComponent :propsComment="sub_comment_item" :propsId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                                        </view>
+                                    </view>
                                     <template v-if="comment_item.show_sub_comment_loading">
                                         <loading-component></loading-component>
                                     </template>
-                                    <template v-else>
-                                        <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list">
-                                            <view class="sub-comment-item" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
-                                                <view class="comment-user">{{ sub_comment_item.userNick }}</view>
-                                                <view class="comment-text">{{ sub_comment_item.content }}</view>
-                                                <view class="comment-operation flex-row align-c jc-sb">
-                                                    <view class="comment-operation-left flex-row align-c gap-10">
-                                                        <view class="comment-time">{{ sub_comment_item.time }}</view>
-                                                        <view class="comment-like" :data-comment-id="sub_comment_item.id" @click="comment_reply">回复</view>
-                                                    </view>
-                                                    <view class="comment-operation-right flex-row align-c gap-5">
-                                                        <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
-                                                        <view class="comment-like-num">{{ sub_comment_item.likeNum || 0 }}</view>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                        </view>
-                                        <view class="sub-comment-more flex-row align-c">
-                                            <view v-if="!comment_item.is_exactly" class="sub-comment-more-btn" :data-id="comment_item.id" @tap="open_sub_comment">展开<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                            <view class="sub-comment-more-btn" :data-id="comment_item.id" @tap="close_sub_comment">收起<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
-                                        </view>
-                                    </template>
+                                    <view v-else class="sub-comment-more flex-row align-c mt-10">
+                                        <view v-if="!comment_item.is_exactly" class="sub-comment-more-btn" :data-id="comment_item.id" @tap="open_sub_comment">展开<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
+                                        <view class="sub-comment-more-btn" :data-id="comment_item.id" @tap="close_sub_comment">收起<iconfont name="icon-arrow-down" color="#000" size="28rpx" /></view>
+                                    </view>
                                 </template>
                             </view>
-                        </view>
+                        </commentInfoComponent>
                     </view>
                 </scroll-view>
                 <view class="comment-input-container">
@@ -110,10 +84,12 @@
     import videoList from '@/pages/plugins/video/detail/video_list.json';
     import { get_math } from '@/common/js/common/common.js';
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+    import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
     export default {
         components: {
             // CommentModal,
-            loadingComponent
+            loadingComponent,
+            commentInfoComponent
         },
         data() {
             return {
@@ -317,7 +293,7 @@
                     show_sub_comment: false,
                     show_sub_comment_loading: false,
                     is_exactly: false,
-                    subComments: item1,
+                    subComments: [],
                 }));
                 this.setData({
                     active_comments: new_data,
@@ -328,7 +304,6 @@
             // 关闭评论区
             close_comment_modal() {
                 this.setData({
-                    active_comments: data,
                     show_comment_modal: false,
                     move_distance: 0,
                 })
@@ -350,7 +325,6 @@
             // 评论拖拽结束
             handle_comment_touch_end(e) {
                 const move_distance = this.comment_current_y - this.comment_start_y;
-                
                 // 如果拖拽距离足够大，关闭评论弹窗
                 if (move_distance > 150) {
                     this.close_comment_modal();
@@ -389,15 +363,22 @@
             },
             // 展开子评论
             open_sub_comment(e) {
-                console.log(e);
                 const id = e.currentTarget.dataset.id
-                console.log(id);
-                
-                // comment.show_sub_comment = true;
-
-                // this.setData({
-                //     active_comments: this.active_comments
-                // })
+                const comment = this.active_comments.find(item => item.id === id);
+                if (comment) {
+                    comment.show_sub_comment = true;
+                    comment.show_sub_comment_loading = true;
+                    setTimeout(() => {
+                        comment.subComments.push({
+                            id: `c${Date.now()}`,
+                            userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
+                            userNick: '我',
+                            content: '子评论内容',
+                            time: new Date().toLocaleString()
+                        });
+                        comment.show_sub_comment_loading = false;
+                    }, 500);
+                }
             },
             // 收起子评论
             close_sub_comment(comment) {
@@ -447,8 +428,7 @@
 
 <style lang="scss" scoped>
     .content,
-    .swiper-container,
-    .video-container {
+    .swiper-container {
         width: 100%;
         height: 100vh;
         background-color: #000;
@@ -461,6 +441,8 @@
 
     .video-container {
         position: relative;
+        width: 100%;
+        height: 100%;
     }
 
     .play-icon {
@@ -602,39 +584,16 @@
     }
     
     .comment-item {
-        display: flex;
         margin-bottom: 30rpx;
     }
     
-    .comment-avatar {
-        width: 80rpx;
-        height: 80rpx;
-        border-radius: 50%;
-        margin-right: 20rpx;
+    .sub-comment {
+        margin-top: 30rpx;
     }
     
-    .comment-info {
-        flex: 1;
+    .sub-comment-list {
+        gap: 40rpx;
     }
-    
-    .comment-user {
-        font-size: 24rpx;
-        color: #999999;
-        line-height: 34rpx;
-    }
-    
-    .comment-text {
-        font-size: 28rpx;
-        color: #333333;
-        line-height: 40rpx;
-    }
-    
-    .comment-time {
-        font-size: 28rpx;
-        color: #999999;
-        line-height: 34rpx;
-    }
-    
     .comment-input-container {
         display: flex;
         padding: 20rpx;
