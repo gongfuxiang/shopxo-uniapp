@@ -89,7 +89,7 @@
                     <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="notice-content border-radius-main text-size-md">
                         <view class="title fw-b">{{$t('detail.detail.sx6u43')}}</view>
                         <view class="content">
-                            <block v-for="(item, index) in data_base.signin_desc" :key="index">{{ item }}</block>
+                            <view v-for="(item, index) in data_base.signin_desc" :key="index">{{ item }}</view>
                         </view>
                     </view>
 
