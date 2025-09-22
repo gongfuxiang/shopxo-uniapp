@@ -922,7 +922,7 @@ export default {
 
 <style lang="scss" scoped>
 .row-item {
-    padding: 10rpx 15rpx;
+    padding: 10rpx 20rpx;
     border-bottom: 2rpx solid #eee;
     overflow: hidden;
 }
@@ -930,8 +930,7 @@ export default {
     border-bottom: none;
 }
 .column-item {
-    padding: 20rpx 15rpx;
-    padding-bottom: 20rpx;
+    padding: 20rpx;
 }
 .item_error {
     background: #fef6e6;
