@@ -34,7 +34,10 @@
             </view>
         </scroll-view>
         <!-- #endif -->
-        <view v-if="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1'"  class="bottom-fixed" :style="is_custom ? 'z-index: 99999;' : ''">
+        <view v-if="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1'"  class="bottom-fixed pr" :style="is_custom ? 'z-index: 99999;' : ''">
+            <template v-if="propIsMask">
+                <view class="scoll-mask"></view>
+            </template>
             <view class="bottom-line-exclude">
                 <view class="form-footer flex-row align-c">
                     <view v-if="overall_config.is_show_save_draft == '1'" class="save_draft_title flex-col jc-c align-c">
@@ -144,9 +147,7 @@ export default {
         * 点击提交按钮触发方法
         */
         on_submit_event() { 
-            if (!this.propIsMask) {
-                this.$refs.componentForm.on_submit_event();
-            }
+            this.$refs.componentForm.on_submit_event();
         },
         /*
         * 表单校验完成之后返回的数据内容
