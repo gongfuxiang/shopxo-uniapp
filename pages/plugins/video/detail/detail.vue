@@ -60,7 +60,7 @@
                                 <template v-else>
                                     <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
                                         <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
-                                            <commentInfoComponent class="wh-auto ht-auto" :propsComment="sub_comment_item" :propsId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                                            <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="comment_item.id" :propSubId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
                                         </view>
                                     </view>
                                     <template v-if="comment_item.show_sub_comment_loading">
@@ -433,7 +433,12 @@
             },
             // 主评论回复
             comment_reply(id) {
-            
+                const index = this.active_comments.findIndex(item => item.id === id);
+                if (index >= 0) {
+                    const data = this.active_comments[index];
+                    this.input_placeholder = `回复 ${data.userNick};`;
+
+                }
             },
             // 主评论点赞
             comment_like(id) {

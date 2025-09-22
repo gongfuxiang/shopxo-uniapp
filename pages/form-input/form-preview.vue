@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(data || null) != null && (data.config || null) != null">
             <!-- diy模块 -->
-            <component-form-input :propValue="data" :propDataFormId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location">
+            <component-form-input :propValue="data" :propDataFormId="data.id" :propKey="random_value" propIsMask @onLocationBack="user_back_choice_location">
                 <!-- 底部内容 -->
                 <template slot="diy-bottom-content">
                     <!-- 结尾 -->

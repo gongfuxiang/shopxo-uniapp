@@ -33,10 +33,8 @@
                 default: '',
             },
             propSubId: {
-                type: Object,
-                default: () => {
-                    return {};
-                },
+                type: [String, Number],
+                default: '',
             },
             propReplyContent: {
                 type: String,

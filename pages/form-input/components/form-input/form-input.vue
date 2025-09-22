@@ -17,15 +17,20 @@
         <!-- #ifndef MP-ALIPAY -->
         <!-- 支付宝小程序 不支持同时上下左右滑动-->
         <scroll-view :scroll-top="scrollTop" :scroll-y="true" :scroll-x="overall_config.type_value == 'default' || z_index_id !== '' ? false : true" :class="overall_config.is_show_save_draft == '1' || overall_config.is_show_submit == '1' ? 'scroll-box wh-auto' : 'ht wh-auto'" enable-flex lower-threshold="60" scroll-with-animation>
-            <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
-                <template v-if="!isEmpty(img_url)">
-                    <image :src="img_url" mode="aspectFit" />
+            <view class="pr wh-auto ht-auto">
+                <template v-if="propIsMask">
+                    <view class="scoll-mask"></view>
                 </template>
-            </view>
-            <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
-            <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
-                <!-- form表单子组件显示 -->
-                <form-input-base ref="componentForm" :propKey="propKey" :propConfig="propValue.config" :propDataFormId="propDataFormId" @onSubmitEvent="submit_event" />
+                <view :style="content_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">
+                    <template v-if="!isEmpty(img_url)">
+                        <image :src="img_url" mode="aspectFit" />
+                    </template>
+                </view>
+                <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
+                <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
+                    <!-- form表单子组件显示 -->
+                    <form-input-base ref="componentForm" :propKey="propKey" :propConfig="propValue.config" :propDataFormId="propDataFormId" @onSubmitEvent="submit_event" />
+                </view>
             </view>
         </scroll-view>
         <!-- #endif -->
@@ -69,6 +74,10 @@ export default {
         propKey: {
             type: [String, Number],
             default: 0,
+        },
+        propIsMask: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -135,7 +144,9 @@ export default {
         * 点击提交按钮触发方法
         */
         on_submit_event() { 
-            this.$refs.componentForm.on_submit_event();
+            if (!this.propIsMask) {
+                this.$refs.componentForm.on_submit_event();
+            }
         },
         /*
         * 表单校验完成之后返回的数据内容
@@ -197,6 +208,7 @@ export default {
     .save_draft_title {
         min-width: 180rpx;
         font-size: 24rpx;
+        margin: 0 20rpx 0 0;
     }
     .submit_title {
         text-align: center;
@@ -204,7 +216,6 @@ export default {
         color: #fff;
         border-radius: 40rpx;
         font-size: 32rpx;
-        margin: 0 0 0 20rpx;
     }
 }
 .data-list {
@@ -225,5 +236,14 @@ export default {
 .scroll-x {
     overflow-x: auto;
     scroll-behavior: smooth; /* 使滚动更加平滑 */
+}
+.scoll-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 999;
 }
 </style>
