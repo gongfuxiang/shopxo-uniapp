@@ -56,6 +56,7 @@
             this.setData({
                 params: app.globalData.launch_params_handle(params),
             });
+            this.init();
         },
 
         onShow() {
@@ -68,21 +69,20 @@
             // 设置顶部导航的默认颜色
             this.set_navigation_bar_color();        
         },
-        created() { 
-            window.addEventListener('message', function(event) {
-                console.log(event.data); // 处理接收到的数据
-                var upd_data = {
-                    data: event.data || null,
-                    data_list_loding_msg: '',
-                    data_list_loding_status: 0,
-                    data_bottom_line_status: true,
-                    random_value: Math.random(),
-                };
-                this.setData(upd_data);
-            });
-        },
-
         methods: {
+            // 初始化
+            init() {
+                const this_ = this;
+                window.addEventListener('message', function(event) {
+                    this_.setData({
+                        data: event.data || null,
+                        data_list_loding_msg: '',
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: true,
+                        random_value: Math.random(),
+                    });
+                });
+            },
             // 初始化公共
             init_common() {
                 // 公共onshow事件
