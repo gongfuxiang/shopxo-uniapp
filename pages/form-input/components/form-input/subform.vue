@@ -9,7 +9,7 @@
                         <iconfont name="icon-help" :size="propHelpIconStyle" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="flex-row align-c gap-10">
+                <view v-if="data_list.length > 0" class="flex-row align-c gap-10">
                     <button class="title_btn" @tap="add_item">
                         <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                     </button>    
