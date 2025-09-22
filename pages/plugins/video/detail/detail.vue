@@ -51,11 +51,11 @@
                 <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scroll="handle_comment_scroll">
                     <view class="comment-scroll">
                         <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
-                            <commentInfoComponent class="wh-auto ht-auto" :propsComment="comment_item" :propsId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
+                            <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
                             <!-- 子评论 -->
                             <view class="sub-comment flex-col jc-c">
                                 <view v-if="!comment_item.show_sub_comment">
-                                    <commentMoreComponent :propsId="comment_item.id" :propsText="'—— 展开' + (comment_item.subComments ? comment_item.subComments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                    <commentMoreComponent :propId="comment_item.id" :propText="'—— 展开' + (comment_item.subComments ? comment_item.subComments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                 </view>
                                 <template v-else>
                                     <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
@@ -68,9 +68,9 @@
                                     </template>
                                     <view v-else class="sub-comment-more mt-10 flex-row align-c gap-10">
                                         <view v-if="!comment_item.is_exactly">
-                                            <commentMoreComponent :propsId="comment_item.id" propsText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                            <commentMoreComponent :propId="comment_item.id" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                         </view>
-                                        <commentMoreComponent :propsId="comment_item.id" propsText="收起" propsIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                        <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                     </view>
                                 </template>
                             </view>
@@ -431,7 +431,22 @@
             handle_slider_changing() {
                 this.is_seeking = true;
             },
+            // 主评论回复
+            comment_reply(id) {
+            
+            },
+            // 主评论点赞
+            comment_like(id) {
 
+            },
+            // 子评论回复
+            sub_comment_reply(id) {
+
+            },
+            // 子评论点赞
+            sub_comment_like(id) {
+
+            },
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
                 if (this.video_contexts[this.current_index]) {

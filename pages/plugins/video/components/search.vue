@@ -1,6 +1,6 @@
 <template> 
     <view class="search-bar pr">
-        <view v-if="propsIsDisabled" class="search-mask" @tap="disabled_search"></view>
+        <view v-if="propIsDisabled" class="search-mask" @tap="disabled_search"></view>
         <view class="search-iconfont-container">
             <iconfont name="icon-search-fine"></iconfont>
         </view>
@@ -13,11 +13,11 @@
 <script>
 export default {
     props: {
-        propsSearchQuery: {
+        propSearchQuery: {
             type: String,
             default: ''
         },
-        propsIsDisabled: {
+        propIsDisabled: {
             type: Boolean,
             default: false
         }
@@ -28,7 +28,7 @@ export default {
         }
     },
     watch: {
-        propsSearchQuery: {
+        propSearchQuery: {
             handler(newVal, oldVal) {
                 this.search_query = newVal;
             },

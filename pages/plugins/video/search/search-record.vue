@@ -7,7 +7,7 @@
 					<iconfont name="icon-arrow-left " size="32rpx" color="#333" class="mr-10"></iconfont>
 				</view>
 				<view class="wh-auto ht-auto">
-					<search-component :propsSearchQuery="search_query" @search="handle_search" />
+					<search-component :propSearchQuery="search_query" @search="handle_search" />
 				</view>
 			</view>
 		</view>

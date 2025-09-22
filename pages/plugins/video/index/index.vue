@@ -6,7 +6,7 @@
 				<view class="header-top">
 					<view class="ht-auto" :style="top_content_style + menu_button_info">
 						<view class="search-height">
-							<search-component :propsSearchQuery="search_query" :propsIsDisabled="true" @disabledSearch="handle_search"/>
+							<search-component :propSearchQuery="search_query" :propIsDisabled="true" @disabledSearch="handle_search"/>
 						</view>
 					</view>
 

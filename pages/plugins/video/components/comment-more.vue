@@ -1,8 +1,8 @@
 <template>
     <view class="more-title flex-row align-c" @tap="comment_more_event">
-        {{ propsText }}
+        {{ propText }}
         <view class="ml-3">
-            <iconfont :name="propsIconName" color="#999" size="20rpx" />
+            <iconfont :name="propIconName" color="#999" size="20rpx" />
         </view>
     </view>
 </template>
@@ -10,22 +10,22 @@
 <script> 
 export default {
     props: {
-        propsId: {
+        propId: {
             type: [String, Number],
             default: '',
         },
-        propsText: {
+        propText: {
             type: String,
             default: '展开'
         },
-        propsIconName: {
+        propIconName: {
             type: String,
             default: 'icon-arrow-down'
         },
     },
     methods: {
         comment_more_event() {
-            this.$emit('comment_more_event', this.propsId);
+            this.$emit('comment_more_event', this.propId);
         }
     }
 }   

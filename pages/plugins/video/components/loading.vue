@@ -4,7 +4,7 @@
             <view class="more-history-btn-icon margin-right-xs">
                 <iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
             </view>
-            <text>{{ propsContent }}</text>
+            <text>{{ propContent }}</text>
         </view>
     </view>
 </template>
@@ -12,7 +12,7 @@
 <script>
     export default {
         props: {
-            propsContent: {
+            propContent: {
                 type: String,
                 default: '加载中'
             }
