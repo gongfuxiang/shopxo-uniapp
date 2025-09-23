@@ -5,7 +5,7 @@
 				<!-- 搜索框 -->
 				<view class="header-top">
 					<view class="header-search" :style="top_content_style + menu_button_info">
-						<view class="search-height flex-row align-c">
+						<view id="search-height" class="flex-row align-c">
 							<view class="cp" @tap="handle_back">
 								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 							</view>
@@ -91,16 +91,7 @@ export default {
 	},
 	data() {
 		return {
-			// 5,7,0 是误差，10 是下边距,bar_height是不同小程序下的导航栏距离顶部的高度
-			// #ifdef MP
-			top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifdef H5 || MP-TOUTIAO
-			top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-			// #endif
 			search_query: '',
 			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
@@ -176,7 +167,6 @@ export default {
 				if (is_current_single_page == 0) {
 					const custom = uni.getMenuButtonBoundingClientRect();
 					menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
-					this.get_top_content_style(custom.height);
 				}
 				// #endif
 			// #endif
@@ -199,32 +189,6 @@ export default {
                     })
                     .exec(); // 执行查询
             }, 500);
-		},
-		get_top_content_style(custom_height) {
-			// 获取搜索区域的高度
-			setTimeout(() => {
-				const query = uni.createSelectorQuery().in(this);
-					// 选择我们想要的元素
-				query.select('.search-height').boundingClientRect((res) => {
-					if ((res || null) != null) {
-						// 判断搜索跟胶囊的大小间隔
-						const top_height = custom_height == 0 ? 0 : (res.height - custom_height) / 2;
-						let top_content_style = '';
-						// #ifdef MP
-						top_content_style = 'padding-top:' + (bar_height + 5 - top_height) + 'px;padding-bottom:10px;';
-						// #endif
-						// #ifdef H5 || MP-TOUTIAO
-						top_content_style = 'padding-top:' + (bar_height + 7 - top_height) + 'px;padding-bottom:10px;';
-						// #endif
-						// #ifdef APP
-						top_content_style = 'padding-top:' + bar_height - top_height + 'px;padding-bottom:10px;';
-						// #endif
-						this.setData({
-							top_content_style: top_content_style
-						});
-					}
-				}).exec(); // 执行查询
-			}, 500);
 		},
 		handle_back() {
 			app.globalData.page_back_prev_event();

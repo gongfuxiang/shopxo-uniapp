@@ -5,7 +5,7 @@
 				<!-- 搜索框 -->
 				<view class="header-top">
 					<view class="ht-auto" :style="top_content_style + menu_button_info">
-						<view class="search-height">
+						<view id="search-height" class="wh-auto ht-auto">
 							<search-component :propSearchQuery="search_query" :propIsDisabled="true" @disabledSearch="handle_search"/>
 						</view>
 					</view>
@@ -65,16 +65,7 @@ export default {
 	},
 	data() {
 		return {
-			// 5,7,0 是误差，10 是下边距,bar_height是不同小程序下的导航栏距离顶部的高度
-			// #ifdef MP
-			top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifdef H5 || MP-TOUTIAO
-			top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-			// #endif
 			search_query: '',
 			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
@@ -100,7 +91,6 @@ export default {
 				if (is_current_single_page == 0) {
 					const custom = uni.getMenuButtonBoundingClientRect();
 					menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
-					this.get_top_content_style(custom.height);
 				}
 				// #endif
 			// #endif
@@ -139,14 +129,16 @@ export default {
 						},
 					]
 				});
-			}, 10000);
+			}, 100);
 		},
 		get_top_content_style(custom_height) {
+			const this_ = this;
 			// 获取搜索区域的高度
-			setTimeout(() => {
-				const query = uni.createSelectorQuery().in(this);
-					// 选择我们想要的元素
-				query.select('.search-height').boundingClientRect((res) => {
+			this.$nextTick(() => {
+				const query = uni.createSelectorQuery().in(this_);
+				// 选择我们想要的元素
+				query.select('#search-height').boundingClientRect((res) => {
+					console.log(res, '1144');
 					if ((res || null) != null) {
 						// 判断搜索跟胶囊的大小间隔
 						const top_height = custom_height == 0 ? 0 : (res.height - custom_height) / 2;
@@ -160,12 +152,12 @@ export default {
 						// #ifdef APP
 						top_content_style = 'padding-top:' + bar_height - top_height + 'px;padding-bottom:10px;';
 						// #endif
-						this.setData({
+						this_.setData({
 							top_content_style: top_content_style
 						});
 					}
 				}).exec(); // 执行查询
-			}, 500);
+			});
 		},
 		handle_search() {
 			// 跳转到搜索记录页面
