@@ -4,7 +4,7 @@
 		<view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
 			<view class="search-height flex-row align-c">
 				<view class="cp" @tap="handle_back">
-					<iconfont name="icon-arrow-left " size="32rpx" color="#333" class="mr-10"></iconfont>
+					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 				</view>
 				<view class="wh-auto ht-auto">
 					<search-component :propIsDisabled="true" @disabled_search="handle_search" />
