@@ -4,7 +4,7 @@
 		<view class="header-top" :style="top_content_style + menu_button_info">
 			<view class="search-height flex-row align-c">
 				<view class="cp" @tap="handle_back">
-					<iconfont name="icon-arrow-left " size="32rpx" color="#333" class="mr-10"></iconfont>
+					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 				</view>
 				<view class="wh-auto ht-auto">
 					<search-component :propSearchQuery="search_query" @search="handle_search" />
@@ -153,7 +153,7 @@ export default {
 		},
 		// 返回
 		handle_back() {
-			uni.navigateBack();
+			app.globalData.page_back_prev_event();
 		},
 		handle_search(e) {
 			this.search_query = e;

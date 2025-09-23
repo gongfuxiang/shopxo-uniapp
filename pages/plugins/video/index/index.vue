@@ -184,7 +184,7 @@ export default {
 		},
 		navigate_to_detail(e) {
 			const item = e.currentTarget.dataset.value;
-			app.globalData.url_open(`/pages/plugins/video/detail/detail?videoId=${item.detailId}`, false);
+			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
 			this.loadMore();
@@ -279,7 +279,7 @@ export default {
 /* #endif */
 /* 推荐视频列表 */
 .recommend-videos {
-	padding: 0 16rpx 20rpx 16rpx;
+	padding: 20rpx 16rpx;
 	.video-grid {
 		column-count: 2;
 		column-gap: 10px;
