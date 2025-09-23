@@ -178,7 +178,7 @@
             <view class="delivery-popup bg-base padding-horizontal-main padding-top-main">
                 <view class="fr oh">
                     <view class="fr" @tap.stop="popup_delivery_close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="margin-top-xxxl padding-top-xxl">
@@ -205,7 +205,7 @@
                 <view class="padding-horizontal-main">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_intellectstools_service_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                 </view>

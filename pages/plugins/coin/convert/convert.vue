@@ -62,7 +62,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="oh">
                         <view class="fr" @tap.stop="popup_coin_status_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="popup_coin_status_container padding-vertical-main flex-col text-size">

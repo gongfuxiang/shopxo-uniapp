@@ -69,7 +69,7 @@
                     <view class="oh">
                         <text class="text-size">{{$t('pages.plugins-coin-detail')}}</text>
                         <view class="fr" @tap.stop="popup_user_detail_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="popup_user_detail_container padding-vertical-main flex-row flex-wrap align-c tc text-size">

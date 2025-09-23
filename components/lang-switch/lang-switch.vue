@@ -6,7 +6,7 @@
                 <!--弹出框关闭按钮 -->
                 <view class="close oh pa top-0 right-0 z-i-deep">
                     <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap="lang_close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <!--弹出框标题 -->

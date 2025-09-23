@@ -27,7 +27,7 @@
             </view>
             <view class="padding-sm margin-top-xl">
                 <view class="dis-inline-block" @tap="close_star_event">
-                    <iconfont name="icon-close-o" size="30rpx" color="#ccc"></iconfont>
+                    <iconfont name="icon-close-line" size="30rpx" color="#ccc"></iconfont>
                 </view>
             </view>
         </view>

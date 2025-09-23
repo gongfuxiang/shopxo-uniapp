@@ -282,7 +282,7 @@
                 <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
@@ -316,7 +316,7 @@
                 <view class="bg-base padding-top-lg">
                     <view class="close oh margin-right-lg padding-bottom-sm">
                         <view class="fr" @tap.stop="plugins_realstore_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">

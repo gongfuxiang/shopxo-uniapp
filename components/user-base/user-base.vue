@@ -4,7 +4,7 @@
             <view :class="'user-base-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
                 <view class="close oh pa top-0 right-0 z-i-deep">
                     <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
-                        <iconfont name="icon-close-o" size="24rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="24rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <form @submit="form_submit" class="form-container">

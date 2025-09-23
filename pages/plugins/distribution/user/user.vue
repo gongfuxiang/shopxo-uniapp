@@ -170,7 +170,7 @@
                             <view class="padding-horizontal-main padding-top-main bg-white">
                                 <view class="close oh">
                                     <view class="tr" @tap.stop="popup_time_close_event">
-                                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                                     </view>
                                 </view>
                                 <view class="popup-time-container page-bottom-fixed">
@@ -212,7 +212,7 @@
                             <view class="padding-horizontal-main padding-top-main bg-white">
                                 <view class="close oh">
                                     <view class="tr" @tap.stop="modify_superior_close_event">
-                                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                                     </view>
                                 </view>
                                 <view class="popup-time-container page-bottom-fixed">

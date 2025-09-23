@@ -346,7 +346,7 @@
                     <view class="bg-white padding-horizontal-main padding-top-main">
                         <view class="fr oh">
                             <view class="fr" @tap.stop="popup_image_verify_close_event">
-                                <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                                <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                         <view class="form-content margin-top-xxxl padding-top-xxl">

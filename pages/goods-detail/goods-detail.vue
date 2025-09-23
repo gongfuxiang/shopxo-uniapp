@@ -505,7 +505,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_params_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="popup-params-container">
@@ -529,7 +529,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_coupon_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-coupon-container padding-bottom-main">
@@ -550,7 +550,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-grey-f5">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_realstore_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-realstore-popup">
@@ -572,7 +572,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh pa top-0 right-0 z-i-deep">
                         <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_goodsservice_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-goodsservice-container">

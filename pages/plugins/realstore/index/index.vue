@@ -104,7 +104,7 @@
                 <view class="content bg-white auto padding-xxxl pr radius">
                     <view v-if="(data_base.is_home_choice_location_force || 0) == 0" class="close oh pa">
                         <view @tap="location_tips_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="padding-lg">

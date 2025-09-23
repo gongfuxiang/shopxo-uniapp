@@ -4,7 +4,7 @@
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close oh pa top-0 right-0 z-i-deep">
                     <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <!-- 规格基础信息 -->

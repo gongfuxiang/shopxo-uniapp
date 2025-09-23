@@ -106,7 +106,7 @@
                     <view class="tc margin-top-xs margin-bottom-xl">
                         <text class="cr-grey text-size">{{$t('realstore-cart.realstore-cart.d1kk7x')}}</text>
                         <view v-if="(base.is_tips_user_choice_buy_use_type_mandatory || 0) == 0" class="fr" @tap="buy_use_type_choice_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <block v-for="(item, index) in buy_use_type_choice_list" :key="index">
