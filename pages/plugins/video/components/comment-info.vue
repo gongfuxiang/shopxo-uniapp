@@ -1,9 +1,14 @@
 <template> 
     <view class="flex-row align-s gap-10 wh-auto ht-auto"> 
         <image class="comment-avatar" :src="propComment.userHead" mode="aspectFill"></image>
-        <view class="comment-info" @tap="comment_reply">
+        <view class="comment-info flex-col jc-c" @tap="comment_reply">
             <view class="comment-user">{{ propComment.userNick }}</view>
             <view class="comment-text">{{ propComment.content }}</view>
+            <view class="comment-images flex-row align-c gap-5">
+                <view v-for="(item, index) in propComment.images" class="comment-image">
+                    <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                </view>
+            </view>
             <view class="comment-operation flex-row align-c jc-sb">
                 <view class="comment-operation-left flex-row align-c gap-10">
                     <view class="comment-time">{{ propComment.time }}</view>
@@ -49,7 +54,14 @@
             // 点赞
             comment_like() {
                 this.$emit('comment_like', this.propId, this.propSubId);
-            }
+            },
+            // 上传图片预览
+            upload_show_event(e) {
+                uni.previewImage({
+                    current: this.propComment.images[e.currentTarget.dataset.index].url,
+                    urls: this.propComment.images.map(item => item.url),
+                });
+            },
         }
     }   
 </script>
@@ -62,7 +74,7 @@
 }
 .comment-info {
     flex: 1;
-    gap: 8rpx;
+    gap: 6rpx;
 }
 .comment-user {
     font-size: 24rpx;
@@ -91,5 +103,9 @@
     font-size: 24rpx;
     color: #999999;
     line-height: 34rpx;
+}
+.comment-image {
+    width: 50rpx;
+    height: 50rpx;
 }
 </style>

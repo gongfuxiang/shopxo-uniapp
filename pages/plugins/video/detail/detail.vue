@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :current="current_index" easing-function="easeInOutCubic" @change="handleSwiperChange">
+        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :current="current_index" easing-function="easeInOutCubic" @change="handle_swiper_change">
             <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                 <view class="video-container" @tap="toggle_play_pause">
                     
@@ -53,20 +53,20 @@
                         <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
                             <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
                             <!-- 子评论 -->
-                            <view class="sub-comment flex-col jc-c">
-                                <view v-if="!comment_item.show_sub_comment">
-                                    <commentMoreComponent :propId="comment_item.id" :propText="'—— 展开' + (comment_item.subComments ? comment_item.subComments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                </view>
-                                <template v-else>
-                                    <view v-if="comment_item.subComments && comment_item.subComments.length > 0" class="sub-comment-list flex-col jc-c">
-                                        <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.subComments" :key="sub_comment_index">
-                                            <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="comment_item.id" :propSubId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
-                                        </view>
+                            <view class="sub-comment flex-col jc-c gap-10 mt-10">
+                                <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0" class="sub-comment-list flex-col jc-c">
+                                    <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
+                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="comment_item.id" :propSubId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
                                     </view>
+                                </view>
+                                <template v-if="!comment_item.show_sub_comment">
+                                    <commentMoreComponent :propId="comment_item.id" :propText="'—— 展开' + (comment_item.sub_comments ? comment_item.sub_comments.length || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                </template>
+                                <template v-else>
                                     <template v-if="comment_item.show_sub_comment_loading">
                                         <loading-component></loading-component>
                                     </template>
-                                    <view v-else class="sub-comment-more mt-10 flex-row align-c gap-10">
+                                    <view v-else class="sub-comment-more flex-row align-c gap-10">
                                         <view v-if="!comment_item.is_exactly">
                                             <commentMoreComponent :propId="comment_item.id" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                         </view>
@@ -80,10 +80,16 @@
                 <view class="comment-input-container">
                     <view class="comment-input-content flex-col jc-c">
                         <view class="flex-row align-c gap-10 wh-auto ht-auto">
-                            <input class="comment-input" type="text" placeholder="请输入您的精彩评论" @confirm="send_comment" />
-                            <view style="font-size:32rpx">@</view>
-                            <view>
+                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :placeholder="input_placeholder" @input="comment_input_event" @confirm="send_comment" />
+                            <view style="font-size:32rpx;color: #999;" data-type="@" @tap="comment_input_change">@</view>
+                            <view data-type="image" @tap="comment_input_change">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
+                            </view>
+                        </view>
+                        <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
+                            <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
+                                <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
+                                <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
                             </view>
                         </view>
                     </view>
@@ -94,8 +100,9 @@
 </template>
 
 <script>
+    const app = getApp();
     import videoList from '@/pages/plugins/video/detail/video_list.json';
-    import { get_math } from '@/common/js/common/common.js';
+    import { get_math, isEmpty } from '@/common/js/common/common.js';
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
@@ -124,6 +131,10 @@
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0,
+                input_placeholder: '请输入您的精彩评论',
+                comment_input_value: '',
+                propMaxNum: 1,
+                form_images_list: [],
             };
         },
         computed: {
@@ -156,6 +167,7 @@
             }, 200);
         },
         methods: {
+            isEmpty,
             // 初始化显示数据
             init_display_data() {
                 this.current_video_id = this.videoData[0].id;
@@ -214,14 +226,97 @@
                     display_video_list: list
                 })
             },
-            
-            // 预加载相邻数据
-            preload_adjacent_data() {
-                // 这里可以添加预加载逻辑，比如提前加载视频封面等
-                console.log('预加载数据，当前视频ID:', this.current_video_id);
+            // 评论输入框事件
+            comment_input_event(e) {
+                this.comment_input_value = e.detail.value;
             },
+            comment_input_change(e) {
+                const { type } = e.currentTarget.dataset;
+                if (type == '@') {
+                    this.comment_input_value = '@';
+                } else if (type == 'image') {
+                    var self = this;
+                    uni.chooseImage({
+                        count: self.propMaxNum,
+                        success(res) {
+                            var success = 0;
+                            var fail = 0;
+                            var length = res.tempFilePaths.length;
+                            var count = 0;
+                            self.upload_one_by_one(res.tempFilePaths, success, fail, count, length, 'uploadimage');
+                        },
+                    });
+                }
+            },
+            // 采用递归的方式上传多张
+            upload_one_by_one(img_paths, success, fail, count, length, action) {
+                var self = this;
+                if (self.form_images_list.length <= this.propMaxNum) {
+                    uni.uploadFile({
+                        url: app.globalData.get_request_url('index', 'ueditor'),
+                        filePath: img_paths[count],
+                        name: 'upfile',
+                        formData: {
+                            action: action,
+                            path_type: self.propPathType,
+                        },
+                        success: function (res) {
+                            success++;
+                            if (res.statusCode == 200) {
+                                var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
+                                if (data.code == 0 && (data.data.url || null) != null) {
+                                    var list = self.form_images_list;
+                                    list.push({
+                                        url: data.data.url,
+                                        name: data.data.original,
+                                        size: data.data.size,
+                                    });
+                                    self.setData({
+                                        form_images_list: list,
+                                    });
+                                    self.$emit('call-back', self.form_images_list, self.propCallData);
+                                } else {
+                                    app.globalData.showToast(data.msg);
+                                }
+                            }
+                        },
+                        fail: function (e) {
+                            console.log(e);
+                            fail++;
+                        },
+                        complete: function (e) {
+                            count++;
 
-            handleSwiperChange(event) {
+                            // 下一张
+                            if (count >= length) {
+                                // 上传完毕，作一下提示
+                                //app.showToast('上传成功' + success +'张', 'success');
+                            } else {
+                                // 递归调用，上传下一张
+                                self.upload_one_by_one(img_paths, success, fail, count, length, action);
+                            }
+                        },
+                    });
+                }
+            },
+            // 上传图片预览
+            upload_show_event(e) {
+                uni.previewImage({
+                    current: this.form_images_list[e.currentTarget.dataset.index].url,
+                    urls: this.form_images_list.map(item => item.url),
+                });
+            },
+            // 评论输入图片删除
+            comment_input_img_close(e) {
+                const { index } = e.currentTarget.dataset;
+                var list = this.form_images_list;
+                list.splice(index, 1);
+                this.setData({
+                    form_images_list: list,
+                });
+            },
+            // 视频滚动处理逻辑
+            handle_swiper_change(event) {
                 const { current } = event.detail;
 
                 const previousIndex = this.current_index;
@@ -244,7 +339,6 @@
                             this.getVideoByIndex(1),
                             this.getVideoByIndex(2)
                         ];
-                        console.log('更新显示数据', list);
                         
                         this.setData({
                             is_slide_start: false,
@@ -278,7 +372,7 @@
                     }
                 }, 100);
             },
-
+            // 切换播放暂停
             toggle_play_pause() {
                 if (!this.video_contexts[this.current_index]) return; // 当前播放的视频索引为1
 
@@ -289,7 +383,7 @@
                     this.video_contexts[this.current_index].play();  // 播放中间的视频
                 }
             },
-
+            // 收藏
             handle_like(e) {
                 const video = e.currentTarget.dataset.value;
                 video.is_fabulous = !video.is_fabulous;
@@ -308,7 +402,7 @@
                     show_sub_comment: false,
                     show_sub_comment_loading: false,
                     is_exactly: false,
-                    subComments: [],
+                    sub_comments: [],
                 }));
                 this.setData({
                     active_comments: new_data,
@@ -336,7 +430,6 @@
                     this.move_distance = 0;   
                 }
             },
-
             // 评论拖拽中
             handle_comment_touch_move(e) {
                 // 只有滚动到顶部时才允许拖拽
@@ -364,29 +457,49 @@
                 let comment_text = '';
                 if (e.type === 'confirm') {
                     comment_text = e.detail.value;
-                } else {
-                    // 获取输入框的值
-                    const input_element = this.$el.querySelector('.comment-input');
-                    comment_text = input_element.value;
                 }
                 
                 if (!comment_text.trim()) return;
-                
+                // 创建新的评论对象
                 const newComment = {
                     id: `c${Date.now()}`,
                     userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg',
                     userNick: '我',
+                    reply: '',
+                    images: this.form_images_list,
                     content: comment_text,
                     time: new Date().toLocaleString()
                 };
-                this.active_comments.list.unshift(newComment);
-                this.active_comments.count++;
-                
-                // 清空输入框
-                const input_element = this.$el.querySelector('.comment-input');
-                if (input_element) {
-                    input_element.value = '';
+                const new_comments = JSON.parse(JSON.stringify(this.active_comments));
+                if (!isEmpty(this.comment_id)) {
+                    new_comments.forEach(item => {
+                        if (item.id === this.comment_id) {
+                            // 如果回复的是子评论
+                            if (!isEmpty(this.sub_comment_id)) {
+                                const new_data = item.sub_comments.find(item => item.id === this.sub_comment_id);
+                                if (new_data) {
+                                    newComment.reply = new_data.userNick;
+                                }
+                            }
+                            item.sub_comments.unshift(newComment);
+                        }
+                    });
+                } else {
+                    // 如果是新评论的话，需要有子评论的数组
+                    newComment.sub_comments = [];
+                    // 添加数据
+                    new_comments.unshift(newComment);
+                    new_comments.count++;
                 }
+                // 清空输入框, 更新数据内容
+                this.setData({
+                    form_images_list: [],
+                    comment_input_value: '',
+                    active_comments: new_comments,
+                    comment_id: '',
+                    sub_comment_id: '',
+                    input_placeholder: '请输入您的精彩评论',
+                });
             },
             // 展开子评论
             open_sub_comment(id) {
@@ -395,7 +508,7 @@
                     comment.show_sub_comment = true;
                     comment.show_sub_comment_loading = true;
                     setTimeout(() => {
-                        comment.subComments.push({
+                        comment.sub_comments.push({
                             id: `c${Date.now()}`,
                             userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
                             userNick: '我',
@@ -433,24 +546,46 @@
             },
             // 主评论回复
             comment_reply(id) {
-                const index = this.active_comments.findIndex(item => item.id === id);
-                if (index >= 0) {
-                    const data = this.active_comments[index];
-                    this.input_placeholder = `回复 ${data.userNick};`;
-
+                const data = this.active_comments.find(item => item.id === id);
+                if (!isEmpty(data)) {
+                    this.setData({ 
+                        input_placeholder: `@${data.userNick}`,
+                        comment_id: id,
+                        sub_comment_id: '',
+                    });
                 }
             },
             // 主评论点赞
             comment_like(id) {
-
+                const data = this.active_comments.find(item => item.id === id);
+                if (!isEmpty(data)) {
+                    this.setData({ 
+                        comment_id: id,
+                        sub_comment_id: '',
+                    });
+                }
             },
             // 子评论回复
-            sub_comment_reply(id) {
-
+            sub_comment_reply(id, sub_id) {
+                const data = this.active_comments.find(item => item.id === id);
+                if (!isEmpty(data)) {
+                    const sub_data = data.sub_comments.find(item => item.id === sub_id);
+                    this.setData({ 
+                        input_placeholder: `@${sub_data.userNick}`,
+                        comment_id: id,
+                        sub_comment_id: sub_id,
+                    });
+                }
             },
             // 子评论点赞
             sub_comment_like(id) {
-
+                const data = this.active_comments.find(item => item.id === id);
+                if (!isEmpty(data)) {
+                    this.setData({ 
+                        comment_id: id,
+                        sub_comment_id: '',
+                    });
+                }
             },
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
@@ -649,7 +784,6 @@
     }
     
     .sub-comment {
-        margin-top: 22rpx;
         margin-left: 100rpx;
     }
     
@@ -676,6 +810,19 @@
         border-radius: 8rpx;
         padding-right: 16rpx;
         font-size: 28rpx;
+    }
+    .comment-input-img-container {
+        padding: 10rpx 16rpx 16rpx 16rpx;
+    }
+    .comment-input-img-close {
+        position: absolute;
+        right: -10rpx;
+        top: -10rpx;
+        z-index: 2;
+    }
+    .comment-input-img {
+        width: 50rpx;
+        height: 50rpx;
     }
 </style>
 
