@@ -226,6 +226,9 @@ export default {
 				}).exec(); // 执行查询
 			}, 500);
 		},
+		handle_back() {
+			app.globalData.page_back_prev_event();
+		},
 		handle_search(e) {
 			this.search_query = e;
 			if (this.search_query.trim() == '') {
@@ -247,7 +250,7 @@ export default {
 		},
 		navigate_to_detail(e) {
 			const item = e.currentTarget.dataset.value;
-			app.globalData.url_open(`/pages/plugins/video/detail/detail?videoId=${item.detailId}`, false);
+			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
 			this.load_more();
@@ -385,7 +388,7 @@ export default {
 /* #endif */
 /* 推荐视频列表 */
 .recommend-videos {
-	padding: 0 16rpx 20rpx 16rpx;
+	padding: 20rpx 16rpx;
 	.video-grid {
 		column-count: 2;
 		column-gap: 10px;

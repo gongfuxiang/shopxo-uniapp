@@ -153,7 +153,7 @@ export default {
 		},
 		// 返回
 		handle_back() {
-			uni.navigateBack();
+			app.globalData.page_back_prev_event();
 		},
 		handle_search(e) {
 			this.search_query = e;
