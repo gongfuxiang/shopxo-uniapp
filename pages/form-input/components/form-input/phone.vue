@@ -150,7 +150,7 @@
                 var type = typeof e == 'string' ? e : e.currentTarget.dataset.type || null;
                 if (type !== null) {
                     var tv = app.globalData.get_timestamp();
-                    var url = app.globalData.get_request_url('userverifyentry', 'user', '', 'type=' + type + '&t=' + tv);
+                    var url = app.globalData.get_request_url('verifyentry', 'forminput', '', 'type=' + type + '&t=' + tv);
                     this.setData({
                         verify_image_url: url,
                     });
@@ -183,13 +183,14 @@
             },
             verify_send_handle() {
                 const post_data = {
+                    forminput_id: 1000000,
                     accounts: this.form_value, 
                     type: 'sms', 
                     verify:this.com_data.is_img_sms_verification == '1' ? this.form_input_image_verify_value : ''
                 }
                 let self = this;
                 uni.request({
-                    url: app.globalData.get_request_url('regverifysend', 'user'),
+                    url: app.globalData.get_request_url('verifysend', 'user'),
                     method: 'POST',
                     data: post_data,
                     dataType: 'json',
