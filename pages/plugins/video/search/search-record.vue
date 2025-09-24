@@ -69,7 +69,12 @@ export default {
 	},
 	data() {
 		return {
+			// #ifdef H5 || MP-TOUTIAO
+			top_content_style: 'padding-top:' + bar_height + 7 + 'px;padding-bottom:10px;',
+			// #endif
+			// #ifndef H5 || MP-TOUTIAO
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
+			// #endif
 			search_query: '',
 			search_history: [
 				{ text: '软件升级规则' },

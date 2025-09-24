@@ -144,7 +144,12 @@
         },
         data() {
             return {
+                // #ifdef H5 || MP-TOUTIAO
+                top_content_style: 'padding-top:' + bar_height + 7 + 'px;padding-bottom:10px;',
+                // #endif
+                // #ifndef H5 || MP-TOUTIAO
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
+                // #endif
                 videoData: videoList,
                 display_video_list: [],
                 current_index: 0,
