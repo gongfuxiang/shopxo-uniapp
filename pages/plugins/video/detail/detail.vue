@@ -9,7 +9,6 @@
 					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 				</view>
                 <!-- #endif -->
-                 {{ header_padding_left }}
 				<view class="wh-auto ht-auto" :style="header_padding_left">
 					<search-component :propIsDisabled="true" @disabled_search="handle_search" />
 				</view>
