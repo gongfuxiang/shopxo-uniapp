@@ -86,12 +86,12 @@
             };
         },
         watch: {
-            // propValue: {
-            //     handler(newVal) {
-            //         this.init();
-            //     },
-            //     deep: true
-            // },
+            propValue: {
+                handler(newVal) {
+                    this.init();
+                },
+                deep: true
+            },
             propKey(val) {
                 // 初始化
                 this.init();
@@ -105,9 +105,6 @@
             isEmpty,
             init() {
                 const com_data = this.propValue;
-                if (com_data.is_img_sms_verification == '1') {
-                    this.image_verify_event('sms');
-                }
                 this.setData({
                     com_data: com_data,
                     placeholder: com_data.placeholder,
@@ -151,6 +148,8 @@
                         popup_image_verify_status: true,
                         verify_disabled: true,
                     });
+                    // 获取图片验证码
+                    this.image_verify_event('sms');
                     // 进行操作时，将当前组件的层级调到最高，避免弹出框被其他的盖住
                     this.z_index_change(this.propDataId);
                 } else {
