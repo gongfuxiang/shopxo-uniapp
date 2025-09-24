@@ -22,10 +22,10 @@
                 <view class="form-content margin-top-xxxl padding-top-xxl">
                     <view class="verify pr margin-vertical-main">
                         <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
-                        <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="sms" @tap="image_verify_event"></image>
+                        <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="sms" @tap.stop="image_verify_event"></image>
                     </view>
                     <view class="margin-top-xxxl margin-bottom-xxxl">
-                        <button :class="'bg-main br-main cr-white round text-size' + ( verify_disabled ? ' verify_disabled' : '')" type="default" @tap="popup_image_verify_submit_event" hover-class="none" :disabled="verify_disabled">{{ $t('common.confirm') }}</button>
+                        <button :class="'bg-main br-main cr-white round text-size' + ( verify_disabled ? ' verify_disabled' : '')" type="default" @tap.stop="popup_image_verify_submit_event" hover-class="none" :disabled="verify_disabled">{{ $t('common.confirm') }}</button>
                     </view>
                 </view>
             </view>
@@ -86,12 +86,12 @@
             };
         },
         watch: {
-            propValue: {
-                handler(newVal) {
-                    this.init();
-                },
-                deep: true
-            },
+            // propValue: {
+            //     handler(newVal) {
+            //         this.init();
+            //     },
+            //     deep: true
+            // },
             propKey(val) {
                 // 初始化
                 this.init();
@@ -199,7 +199,7 @@
                     forminput_item_id: this.propDataId,
                     accounts: this.form_value, 
                     type: 'sms', 
-                    verify:this.com_data.is_img_sms_verification == '1' ? this.form_input_image_verify_value : ''
+                    verify: this.com_data.is_img_sms_verification == '1' ? this.form_input_image_verify_value : ''
                 }
                 let self = this;
                 uni.request({
@@ -211,11 +211,11 @@
                         uni.hideLoading();
                         if (res.data.code == 0) {
                             // 是否开启图片验证码
-                            if (this.com_data.is_img_sms_verification == '1') {
-                                this.setData({
+                            if (self.com_data.is_img_sms_verification == '1') {
+                                self.setData({
                                     popup_image_verify_status: false,
                                 });
-                                this.z_index_change('');
+                                self.z_index_change('');
                             }
                             // 倒计时处理
                             var temp_time = this.verify_time_total;
@@ -234,24 +234,30 @@
                                 }
                             }, 1000);
                         } else {
-                            this.setData({
-                                verify_submit_text: this.$t('login.login.s665h5'),
+                            self.setData({
+                                verify_submit_text: self.$t('login.login.s665h5'),
                                 verify_disabled: false,
                                 form_input_image_verify_value: '',
                             });
-                            this.image_verify_event('sms');
+                            // 是否开启图片验证码
+                            if (self.com_data.is_img_sms_verification == '1') {
+                                self.image_verify_event('sms');
+                            }
                             app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
                         uni.hideLoading();
-                        this.setData({
-                            verify_submit_text: this.$t('login.login.s665h5'),
+                        self.setData({
+                            verify_submit_text: self.$t('login.login.s665h5'),
                             verify_disabled: false,
                             form_input_image_verify_value: '',
                         });
-                        this.image_verify_event('sms');
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        // 是否开启图片验证码
+                        if (self.com_data.is_img_sms_verification == '1') {
+                            self.image_verify_event('sms');
+                        }
+                        app.globalData.showToast(self.$t('common.internet_error_tips'));
                     },
                 });
             },

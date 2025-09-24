@@ -3,10 +3,14 @@
         <!-- 搜索框 -->
 		<view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
 			<view id="search-height" class="flex-row align-c">
+                <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                <!-- #ifndef MP-ALIPAY -->
 				<view class="cp" @tap="handle_back">
 					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 				</view>
-				<view class="wh-auto ht-auto">
+                <!-- #endif -->
+                 {{ header_padding_left }}
+				<view class="wh-auto ht-auto" :style="header_padding_left">
 					<search-component :propIsDisabled="true" @disabled_search="handle_search" />
 				</view>
 			</view>
@@ -123,7 +127,7 @@
 <script>
     const app = getApp();
     import videoList from '@/pages/plugins/video/detail/video_list.json';
-    import { get_math, isEmpty } from '@/common/js/common/common.js';
+    import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
@@ -131,8 +135,8 @@
     import componentSharePopup from '@/components/share-popup/share-popup';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-    // #ifdef MP-TOUTIAO
-    bar_height = 0;
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 7;
     // #endif
     export default {
         components: {
@@ -144,12 +148,7 @@
         },
         data() {
             return {
-                // #ifdef H5 || MP-TOUTIAO
-                top_content_style: 'padding-top:' + bar_height + 7 + 'px;padding-bottom:10px;',
-                // #endif
-                // #ifndef H5 || MP-TOUTIAO
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-                // #endif
                 videoData: videoList,
                 display_video_list: [],
                 current_index: 0,
@@ -174,6 +173,7 @@
                 menu_button_info: '',
                 share_info: {},
                 params: {},
+                header_padding_left: '',
             };
         },
         computed: {
@@ -232,7 +232,13 @@
                     }
                     // #endif
                 // #endif
+                // 视频详情页，需要添加padding-left
+                let padding_left = '';
+                // #ifdef MP-ALIPAY
+                    padding_left = video_get_top_left_padding();
+                // #endif
                 this.setData({
+                    header_padding_left: padding_left,
                     menu_button_info: menu_button_info,
                 });
             },

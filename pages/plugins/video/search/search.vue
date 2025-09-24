@@ -6,10 +6,13 @@
 				<view class="header-top">
 					<view class="header-search" :style="top_content_style + menu_button_info">
 						<view id="search-height" class="flex-row align-c">
+							<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                			<!-- #ifndef MP-ALIPAY -->
 							<view class="cp" @tap="handle_back">
 								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 							</view>
-							<view class="wh-auto ht-auto">
+							<!-- #endif -->
+							<view class="wh-auto ht-auto" :style="header_padding_left">
 								<search-component :propSearchQuery="search_query" @search="handle_search" />
 							</view>
 						</view>
@@ -76,11 +79,12 @@ import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentPopup from '@/components/popup/popup';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
+import { video_get_top_left_padding } from '@/common/js/common/common.js';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-// #ifdef MP-TOUTIAO
-bar_height = 0;
+// #ifdef MP-TOUTIAO || H5
+bar_height = 7;
 // #endif
 export default {
 	components: {
@@ -91,12 +95,7 @@ export default {
 	},
 	data() {
 		return {
-			// #ifdef H5 || MP-TOUTIAO
-			top_content_style: 'padding-top:' + bar_height + 7 + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifndef H5 || MP-TOUTIAO
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-			// #endif
 			search_query: '',
 			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
@@ -148,6 +147,7 @@ export default {
 				scope: '1',
 			},
 			is_more_loading: false,
+			header_padding_left: '',
 		};
 	},
 	onLoad(params) {
@@ -175,7 +175,13 @@ export default {
 				}
 				// #endif
 			// #endif
+
+			let padding_left = '';
+			// #ifdef MP-ALIPAY
+				padding_left = video_get_top_left_padding();
+			// #endif
 			this.setData({
+				header_padding_left: padding_left,
 				menu_button_info: menu_button_info,
 			});
 			// 获取头部的高度

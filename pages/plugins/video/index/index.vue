@@ -5,11 +5,10 @@
 				<!-- 搜索框 -->
 				<view class="header-top">
 					<view class="ht-auto" :style="top_content_style + menu_button_info">
-						<view id="search-height" class="wh-auto ht-auto">
+						<view id="search-height" class="wh-auto ht-auto" :style="header_padding_left">
 							<search-component :propSearchQuery="search_query" :propIsDisabled="true" @disabledSearch="handle_search"/>
 						</view>
 					</view>
-
 					<template v-if="recommend_videos.length > 0">
 						<!-- 导航栏 -->
 						<view class="nav-tabs">
@@ -52,11 +51,12 @@
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentNoData from '@/components/no-data/no-data';
+import { video_get_top_left_padding } from '@/common/js/common/common.js';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-// #ifdef MP-TOUTIAO
-bar_height = 0;
+// #ifdef MP-TOUTIAO || H5
+bar_height = 7;
 // #endif
 export default {
 	components: {
@@ -65,12 +65,7 @@ export default {
 	},
 	data() {
 		return {
-			// #ifdef H5 || MP-TOUTIAO
-			top_content_style: 'padding-top:' + bar_height + 7 + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifndef H5 || MP-TOUTIAO
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-			// #endif
 			search_query: '',
 			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
@@ -79,6 +74,7 @@ export default {
 			data_list_loding_status: 1,
 			data_list_loding_msg: '',
 			menu_button_info: '',
+			header_padding_left: '',
 		};
 	},
 	mounted() {
@@ -99,8 +95,13 @@ export default {
 				}
 				// #endif
 			// #endif
+			let padding_left = '';
+			// #ifdef MP-ALIPAY
+				padding_left = video_get_top_left_padding();
+			// #endif
 			setTimeout(() => {
 				this.setData({
+					header_padding_left: padding_left,
 					menu_button_info: menu_button_info,
 					data_list_loding_status: 0,
 					recommend_videos: [
@@ -135,34 +136,6 @@ export default {
 					]
 				});
 			}, 100);
-		},
-		get_top_content_style(custom_height) {
-			const this_ = this;
-			// 获取搜索区域的高度
-			this.$nextTick(() => {
-				const query = uni.createSelectorQuery().in(this_);
-				// 选择我们想要的元素
-				query.select('#search-height').boundingClientRect((res) => {
-					console.log(res, '1144');
-					if ((res || null) != null) {
-						// 判断搜索跟胶囊的大小间隔
-						const top_height = custom_height == 0 ? 0 : (res.height - custom_height) / 2;
-						let top_content_style = '';
-						// #ifdef MP
-						top_content_style = 'padding-top:' + (bar_height + 5 - top_height) + 'px;padding-bottom:10px;';
-						// #endif
-						// #ifdef H5 || MP-TOUTIAO
-						top_content_style = 'padding-top:' + (bar_height + 7 - top_height) + 'px;padding-bottom:10px;';
-						// #endif
-						// #ifdef APP
-						top_content_style = 'padding-top:' + bar_height - top_height + 'px;padding-bottom:10px;';
-						// #endif
-						this_.setData({
-							top_content_style: top_content_style
-						});
-					}
-				}).exec(); // 执行查询
-			});
 		},
 		handle_search() {
 			// 跳转到搜索记录页面

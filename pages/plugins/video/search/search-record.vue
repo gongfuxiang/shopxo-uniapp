@@ -3,10 +3,13 @@
 		<!-- 搜索框 -->
 		<view class="header-top" :style="top_content_style + menu_button_info">
 			<view id="search-height" class="flex-row align-c">
+				<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                <!-- #ifndef MP-ALIPAY -->
 				<view class="cp" @tap="handle_back">
 					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 				</view>
-				<view class="wh-auto ht-auto">
+				<!-- #endif -->
+				<view class="wh-auto ht-auto" :style="header_padding_left">
 					<search-component :propSearchQuery="search_query" @search="handle_search" />
 				</view>
 			</view>
@@ -55,12 +58,13 @@
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+import { video_get_top_left_padding } from '@/common/js/common/common.js';
 const app = getApp();
 var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-// #ifdef MP-TOUTIAO
-bar_height = 0;
+// #ifdef MP-TOUTIAO || H5
+bar_height = 7;
 // #endif
 export default {
 	components: {
@@ -69,12 +73,7 @@ export default {
 	},
 	data() {
 		return {
-			// #ifdef H5 || MP-TOUTIAO
-			top_content_style: 'padding-top:' + bar_height + 7 + 'px;padding-bottom:10px;',
-			// #endif
-			// #ifndef H5 || MP-TOUTIAO
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-			// #endif
 			search_query: '',
 			search_history: [
 				{ text: '软件升级规则' },
@@ -95,7 +94,8 @@ export default {
 				{ title: '今天最好的表现是明天最低的要求', hotness: '311' },
 				{ title: '今天最好的表现是明天最低的要求', hotness: '311' }
 			],
-			is_view_more: false
+			is_view_more: false,
+			header_padding_left: '',
 		};
 	},
 	created() {
@@ -116,7 +116,13 @@ export default {
 				}
 				// #endif
 			// #endif
+
+			let padding_left = '';
+			// #ifdef MP-ALIPAY
+				padding_left = video_get_top_left_padding();
+			// #endif
 			this.setData({
+				header_padding_left: padding_left,
 				menu_button_info: menu_button_info
 			});
 		},

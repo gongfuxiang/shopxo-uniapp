@@ -1008,3 +1008,13 @@ export const time_stamp = (time, date_style = 'horizontal', date_type) => {
         return `${year}${style.year}${month}${style.month}${day}${style.day}${hours}${style.hour}${minutes}${style.minute}${seconds}${date_style == 'chinese' ? style.second : ''}`;
     }
 }
+
+
+export const video_get_top_left_padding = () => {
+    var pages = getCurrentPages();
+    if (pages.length > 1) {
+        return 'padding-left: 30rpx;box-sizing: border-box;';
+    } else {
+        return 'padding-left: 140rpx;box-sizing: border-box;';
+    }
+}
