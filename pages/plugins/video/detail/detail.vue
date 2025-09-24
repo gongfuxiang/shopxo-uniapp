@@ -14,11 +14,12 @@
 				</view>
 			</view>
 		</view>
-        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @change="handle_swiper_change">
+        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="300" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @change="handle_swiper_change">
             <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                 <view class="video-container pr" @tap.stop="toggle_play_pause">
                     <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
-                    <video class="video" :src="video_item.videoUrl" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :controls="false" :show-center-play-btn="false" :show-play-btn="false" object-fit="contain" @timeupdate="handle_time_update"></video>
+                    
+                    <video class="video" :src="video_item.videoUrl" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :enable-progress-gesture="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" object-fit="contain" @timeupdate="handle_time_update"></video>
                     
                     <text v-if="paused && current_index === index" class="play-icon">▶</text>
                     <template v-if="!show_comment_modal">
@@ -636,9 +637,16 @@
             handle_time_update(e) {
                 if (this.is_seeking) return;
                 let duration = this.current_video_duration;
-                if (e.detail.duration > 0 && this.current_video_duration === 0) {
+                // #ifdef MP-ALIPAY
+                if (e.detail.videoDuration > 0) {
+                    duration = e.detail.videoDuration;
+                }
+                // #endif
+                // #ifndef MP-ALIPAY
+                if (e.detail.duration > 0) {
                     duration = e.detail.duration;
                 }
+                // #endif
                 this.setData({
                     current_video_duration: duration,
                     current_video_progress: e.detail.currentTime,
@@ -849,6 +857,16 @@
         transform: scale(3);
         filter: blur(100rpx);
         opacity: 0.7;
+    }
+
+    .video-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background: transparent;
     }
 
     .video-content {
