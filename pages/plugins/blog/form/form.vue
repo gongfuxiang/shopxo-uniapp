@@ -102,7 +102,7 @@
                     <view class="p-title flex-row jc-sb align-c padding-main br-b-e">
                         <view class="text-size-lg fw-b">{{$t('form.form.4vku7u')}}</view>
                         <view class="popup-colse" @tap="popup_close_event">
-                            <iconfont name="icon-close-o" color="#333" size="28rpx"></iconfont>
+                            <iconfont name="icon-close-line" color="#333" size="28rpx"></iconfont>
                         </view>
                     </view>
                     <view class="p-content padding-main">

@@ -4,7 +4,7 @@
             <view :class="'certificate-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
                 <view v-if="(config.is_user_force_select || 0) == 0" class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <iconfont name="icon-close-o" size="24rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="24rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="certificate-content">

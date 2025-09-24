@@ -119,7 +119,7 @@
                         <text>{{$t('ask-comments.ask-comments.8sjar6')}}{{ input_comments_modal_username }}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
-                                <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                                <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                     </view>

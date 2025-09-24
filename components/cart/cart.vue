@@ -196,7 +196,7 @@
                             <view class="oh tc discount_detail-popup-title">
                                 <text class="text-size">{{ $t('cart.cart.t41i4x') }}</text>
                                 <view class="fr" @tap.stop="discount_detail_close_event">
-                                    <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                                    <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                                 </view>
                             </view>
                             <view class="oh border-radius-main bg-white padding-sm discount_detail-popup-goods-list">
@@ -280,7 +280,7 @@
                 <view class="oh tc">
                     <text class="text-size">{{ $t('cart.cart.7gdej1') }}</text>
                     <view class="fr" @tap.stop="realstore_choice_close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="plugins-realstore-choice-container">
@@ -318,7 +318,7 @@
                 <view class="oh tc">
                     <text class="text-size">{{ (plugins_hospital_prescription_data || null) != null ? (plugins_hospital_prescription_data.title || '') : '' }}</text>
                     <view class="fr" @tap.stop="hospital_prescription_close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="padding-vertical-main">

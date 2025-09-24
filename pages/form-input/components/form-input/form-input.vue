@@ -44,7 +44,7 @@
                         <iconfont name="icon-detail" size="30rpx" color="#666" propContainerDisplay="flex" ></iconfont>
                         {{ overall_config.save_draft_title }}
                     </view>
-                    <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default" :disable="is_submit_disable" @tap="on_submit_event">{{ overall_config.submit_title }}</button>
+                    <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default" :disabled="is_submit_disable" @tap="on_submit_event">{{ overall_config.submit_title }}</button>
                 </view>
             </view>
         </view>
@@ -79,6 +79,14 @@ export default {
             default: 0,
         },
         propIsMask: {
+            type: Boolean,
+            default: false,
+        },
+        propSuccessJumpUrl: {
+            type: String,
+            default: '',
+        },
+        propIsDebug: {
             type: Boolean,
             default: false,
         },
@@ -161,22 +169,43 @@ export default {
                     forminput_id: this.propDataFormId,
                     ...submit_data
                 }
-                this.is_submit_disable = true;
+                this.setData({
+                    is_submit_disable: true
+                });
                 uni.request({
                     url: app.globalData.get_request_url('save', 'forminputdata'),
                     method: 'POST',
                     data: params,
                     dataType: 'json',
                     success: (res) => {
-                        this.is_submit_disable = false;
+                        this.setData({
+                            is_submit_disable: false
+                        });
                         if (res.data.code == 0) {
                             app.globalData.showToast('提交成功', 'success');
+                            if(!this.propIsDebug) {
+                                var pages = app.globalData.prev_page();
+                                if (pages) {
+                                    setTimeout(function () {
+                                        uni.navigateBack();
+                                    }, 1000);
+                                } else {
+                                    if((this.propSuccessJumpUrl || null) != null) {
+                                        var url = this.propSuccessJumpUrl;
+                                        setTimeout(function () {
+                                            app.globalData.url_open(url);
+                                        }, 1000);
+                                    }
+                                }
+                            }
                         } else {
                             app.globalData.showToast('提交失败');
                         }
                     },
                     fail: (res) => {
-                        this.is_submit_disable = false;
+                        this.setData({
+                            is_submit_disable: false
+                        });
                         app.globalData.showToast('提交失败');
                     }
                 });

@@ -5,7 +5,7 @@
                 <image class="dis-block auto" :src="data.images" mode="widthFix" :data-value="data.images_url || ''" @tap="url_event"></image>
                 <view class="tc margin-top-xl">
                     <view class="close cp round padding-sm auto" @tap.stop="close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#cacaca"></iconfont>
+                        <iconfont name="icon-close-line" size="28rpx" color="#cacaca"></iconfont>
                     </view>
                 </view>
             </view>

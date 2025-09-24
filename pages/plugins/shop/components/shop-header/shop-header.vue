@@ -78,7 +78,7 @@
                     <view class="close oh">
                         <text class="fw-b">{{$t('common.two_nav_text')}}</text>
                         <view class="fr" @tap.stop="popup_nav_two_category_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -104,7 +104,7 @@
                     <view class="close oh">
                         <text class="fw-b">{{$t('recommend-form.recommend-form.203itn')}}</text>
                         <view class="fr" @tap.stop="popup_all_goods_category_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -134,7 +134,7 @@
                 <view class="padding-horizontal-main">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_service_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                 </view>

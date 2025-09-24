@@ -73,7 +73,7 @@
                 <view class="close tc oh padding-main">
                     <text>{{$t('common.warm_tips')}}</text>
                     <view class="fr" @tap.stop="popup_close_event">
-                        <iconfont name="icon-close-o" size="24rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-line" size="24rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="content padding-main">
