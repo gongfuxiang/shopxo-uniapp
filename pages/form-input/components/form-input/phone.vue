@@ -22,7 +22,7 @@
                 <view class="form-content margin-top-xxxl padding-top-xxl">
                     <view class="verify pr margin-vertical-main">
                         <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event" />
-                        <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="sms" @tap.stop="image_verify_event"></image>
+                        <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" @tap.stop="image_verify_event"></image>
                     </view>
                     <view class="margin-top-xxxl margin-bottom-xxxl">
                         <button :class="'bg-main br-main cr-white round text-size' + ( verify_disabled ? ' verify_disabled' : '')" type="default" @tap.stop="popup_image_verify_submit_event" hover-class="none" :disabled="verify_disabled">{{ $t('common.confirm') }}</button>
@@ -159,14 +159,11 @@
             },
             // 图片验证码事件
             image_verify_event(e) {
-                var type = typeof e == 'string' ? e : e.currentTarget.dataset.type || null;
-                if (type !== null) {
-                    var tv = app.globalData.get_timestamp();
-                    var url = app.globalData.get_request_url('verifyentry', 'forminput', '', 'type=' + type + '&t=' + tv);
-                    this.setData({
-                        verify_image_url: url,
-                    });
-                }
+                var tv = app.globalData.get_timestamp();
+                var url = app.globalData.get_request_url('verifyentry', 'forminput', '', 't=' + tv);
+                this.setData({
+                    verify_image_url: url,
+                });
             },
             // 输入图片验证码事件
             form_input_image_verify_event(e) {
