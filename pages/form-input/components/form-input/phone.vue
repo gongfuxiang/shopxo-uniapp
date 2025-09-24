@@ -119,7 +119,7 @@
                 });
             },
             get_data_check(val) {
-                const data = this.com_data;
+                const data = this.propValue;
                 if (data) {
                     data.common_config.format = data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
                 }
