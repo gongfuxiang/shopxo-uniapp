@@ -64,7 +64,7 @@ var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
 // #ifdef MP-TOUTIAO || H5
-bar_height = 7;
+bar_height = 0;
 // #endif
 export default {
 	components: {
@@ -73,7 +73,16 @@ export default {
 	},
 	data() {
 		return {
+			// 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+			// #ifdef MP
+			top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
+			// #endif
+			// #ifdef H5 || MP-TOUTIAO
+			top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
+			// #endif
+			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
+			// #endif
 			search_query: '',
 			search_history: [
 				{ text: '软件升级规则' },

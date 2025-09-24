@@ -10,11 +10,11 @@
 				</view>
                 <!-- #endif -->
 				<view class="wh-auto ht-auto" :style="header_padding_left">
-					<search-component :propIsDisabled="true" @disabled_search="handle_search" />
+					<search-component :propIsDisabled="true" @disabledSearch="handle_search" />
 				</view>
 			</view>
 		</view>
-        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :current="current_index" easing-function="easeInOutCubic" @change="handle_swiper_change">
+        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @change="handle_swiper_change">
             <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                 <view class="video-container pr" @tap.stop="toggle_play_pause">
                     <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
@@ -135,7 +135,7 @@
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
-    bar_height = 7;
+    bar_height = 0;
     // #endif
     export default {
         components: {
@@ -147,7 +147,16 @@
         },
         data() {
             return {
+                // 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
+                // #endif
+                // #ifdef APP
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
+                // #endif
                 videoData: videoList,
                 display_video_list: [],
                 current_index: 0,

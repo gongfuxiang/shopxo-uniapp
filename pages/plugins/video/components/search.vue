@@ -79,6 +79,7 @@ export default {
 		height: 100%;
 		padding: 16rpx 0;
 		box-sizing: border-box;
+        background: transparent;
 	}
 	.search-line {
 		width: 2rpx;
