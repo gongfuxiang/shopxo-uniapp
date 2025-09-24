@@ -804,8 +804,8 @@ export const number_range_handle = (data, form_value) => {
 };
 
 const type_config = [
-    { name: '手机号码', value: 'phone-number', check: /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/ },
-    { name: '电话号码', value: 'telephone-number', check: [/^0\d{0,3}-?\d{7,8}$/, /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/] },
+    { name: '手机号码', value: 'phone-number', check: /^1((3|4|5|6|7|8|9){1}\d{1})\d{8}$/ },
+    { name: '电话号码', value: 'telephone-number', check: [/^0\d{0,3}-?\d{7,8}$/, /^1((3|4|5|6|7|8|9){1}\d{1})\d{8}$/] },
     { name: '邮政编码', value: 'postal-code', check: /^[1-9]\d{5}$/ },
     { name: '身份证号码', value: 'id-no', check: /^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|X|x)$/ },
     { name: '邮箱', value: 'email', check: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },

@@ -8,7 +8,7 @@
             <view v-if="propDirection == 'row' && com_data.is_sms_verification == '1'" class="verify-submi-border"></view>
             <view v-if="com_data.is_sms_verification == '1'" class="flex-row gap-10">
                 <input :value="form_value_code" class="uni-input flex-1" :style="com_data.common_style + propStyle" type="text" placeholder="请输入验证码" placeholder-style="color: gray;" @blur="data_code_check" @input="input_code_value_event" />
-                <button :class="'uni-button flex-row align-c' + ( verify_submit_disabled ? 'verify_disabled' : '')" :style="propStyle + 'height:auto;'" type="default" :disabled="verify_submit_disabled" @click="verify_send_event">{{ verify_submit_text }}</button>
+                <button :class="'uni-button flex-row align-c' + (verify_submit_disabled ? 'verify_disabled' : '')" :style="propStyle + 'height:auto;'" type="default" :disabled="verify_submit_disabled" @click="verify_send_event">{{ verify_submit_text }}</button>
             </view>
         </view>
         <!-- 图片验证码弹层 -->
@@ -115,8 +115,16 @@
                     form_value_code: com_data?.form_value_code || '',
                     format: com_data.format,
                     verify_submit_text: this.$t('login.login.s665h5'),
-                    verify_submit_disabled: true,
+                    verify_submit_disabled: this.get_data_check(com_data?.form_value || '') ? false : true,
                 });
+            },
+            get_data_check(val) {
+                const data = this.com_data;
+                if (data) {
+                    data.common_config.format = data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
+                }
+                const { is_error = '0' } = get_format_checks(data, val, true);
+                return !isEmpty(val) && is_error === '0';
             },
             data_check() {
                 const data = this.com_data;
@@ -195,7 +203,7 @@
                 }
                 let self = this;
                 uni.request({
-                    url: app.globalData.get_request_url('verifysend', 'user'),
+                    url: app.globalData.get_request_url('verifysend', 'forminput'),
                     method: 'POST',
                     data: post_data,
                     dataType: 'json',
@@ -251,7 +259,7 @@
                 // 重新编辑一下历史数据
                 this.setData({
                     form_value: e.detail.value,
-                    verify_submit_disabled: !isEmpty(e.detail.value) ? false : true,
+                    verify_submit_disabled: this.get_data_check(e.detail.value) ? false : true,
                 });
                 this.$emit('dataChange', { value: e.detail.value, id: this.propDataId });
             },
