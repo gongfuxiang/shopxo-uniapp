@@ -26,7 +26,7 @@
                 version: 'v6.7',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.7 20250923',
+                app_version_info: 'v6.7 20250926',
 
                 // 货币价格符号
                 currency_symbol: '￥',
@@ -385,7 +385,7 @@
                 // 用户位置
                 let user_location = this.choice_user_location_init() || null;
                 if(user_location != null && (user_location.status || 0) == 1) {
-                    query_str += '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat;
+                    query_str += '&user_lng=' + (user_location.lng || '') + '&user_lat=' + (user_location.lat || '');
                 }
 
                 // 当前语言

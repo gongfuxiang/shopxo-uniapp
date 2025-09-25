@@ -356,7 +356,13 @@
                     "path": "user-order-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-hospital-order-detail": "/pages/plugins/hospital/components/order-detail/order-detail"
+                        },
+                        "componentPlaceholder": {
+                            "component-hospital-order-detail": "view"
+                        }
                     }
                 }
             ]

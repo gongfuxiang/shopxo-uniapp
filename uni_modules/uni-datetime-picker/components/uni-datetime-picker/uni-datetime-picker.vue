@@ -1,34 +1,38 @@
 <template>
 	<view class="uni-date">
-		<view class="uni-date-editor" @tap="show">
+		<view class="uni-date-editor" @click="show">
 			<slot>
-				<view class="uni-date-editor--x" :class="{'uni-date-editor--x__disabled': disabled,'uni-date-x--border': border}">
+				<view class="uni-date-editor--x"
+					:class="{'uni-date-editor--x__disabled': disabled,'uni-date-x--border': border}">
 					<view v-if="!isRange" class="uni-date-x uni-date-single">
-						<uni-icons v-if="showFirstIcon" class="icon-calendar" type="calendar" color="#c0c4cc" size="32rpx"></uni-icons>
-						<view :class="'uni-date__x-input '+((displayValue || null) == null ? placeholderClass : '')">{{ displayValue || singlePlaceholderText }}</view>
+						<uni-icons class="icon-calendar" type="calendar" color="#c0c4cc" size="22"></uni-icons>
+						<view class="uni-date__x-input">{{ displayValue || singlePlaceholderText }}</view>
 					</view>
+
 					<view v-else class="uni-date-x uni-date-range">
-                        <uni-icons v-if="showFirstIcon" class="icon-calendar" type="calendar" color="#c0c4cc" size="32rpx"></uni-icons>
-                        <view :class="'uni-date__x-input text-center '+((displayRangeValue.startDate || null) == null ? placeholderClass : '')">{{ displayRangeValue.startDate || startPlaceholderText }}</view>
-                        <view class="range-separator">{{rangeSeparator}}</view>
-                        <view :class="'uni-date__x-input text-center '+((displayRangeValue.endDate || null) == null ? placeholderClass : '')">{{ displayRangeValue.endDate || endPlaceholderText }}</view>
+						<uni-icons class="icon-calendar" type="calendar" color="#c0c4cc" size="22"></uni-icons>
+						<view class="uni-date__x-input text-center">{{ displayRangeValue.startDate || startPlaceholderText }}</view>
+
+						<view class="range-separator">{{rangeSeparator}}</view>
+
+						<view class="uni-date__x-input text-center">{{ displayRangeValue.endDate || endPlaceholderText }}</view>
 					</view>
+
 					<view v-if="showClearIcon" class="uni-date__icon-clear" @click.stop="clear">
-						<uni-icons type="clear" color="#c0c4cc" size="32rpx"></uni-icons>
+						<uni-icons type="clear" color="#c0c4cc" size="22"></uni-icons>
 					</view>
 				</view>
 			</slot>
 		</view>
 
-		<view v-show="pickerVisible" class="uni-date-mask--pc" @tap="close"></view>
+		<view v-show="pickerVisible" class="uni-date-mask--pc" @click="close"></view>
 
 		<view v-if="!isPhone" v-show="pickerVisible" ref="datePicker" class="uni-date-picker__container">
 			<view v-if="!isRange" class="uni-date-single--x" :style="pickerPositionStyle">
 				<view class="uni-popper__arrow"></view>
 
 				<view v-if="hasTime" class="uni-date-changed popup-x-header">
-					<input class="uni-date__input text-center" type="text" v-model="inputDate"
-						:placeholder="selectDateText" />
+					<input class="uni-date__input text-center" type="text" v-model="inputDate" :placeholder="selectDateText" />
 
 					<time-picker type="time" v-model="pickerTime" :border="false" :disabled="!inputDate"
 						:start="timepickerStartTime" :end="timepickerEndTime" :hideSecond="hideSecond" style="width: 100%;">
@@ -38,12 +42,11 @@
 				</view>
 
 				<Calendar ref="pcSingle" :showMonth="false" :start-date="calendarRange.startDate"
-					:end-date="calendarRange.endDate" :date="calendarDate" @change="singleChange"
-          :default-value="defaultValue"
+					:end-date="calendarRange.endDate" :date="calendarDate" @change="singleChange" :default-value="defaultValue"
 					style="padding: 0 8px;" />
 
 				<view v-if="hasTime" class="popup-x-footer">
-					<text class="confirm-text" @tap="confirmSingleChange">{{okText}}</text>
+					<text class="confirm-text" @click="confirmSingleChange">{{okText}}</text>
 				</view>
 			</view>
 
@@ -51,18 +54,17 @@
 				<view class="uni-popper__arrow"></view>
 				<view v-if="hasTime" class="popup-x-header uni-date-changed">
 					<view class="popup-x-header--datetime">
-            <input class="uni-date__input uni-date-range__input" type="text" v-model="tempRange.startDate"
-            :placeholder="startDateText" />
+						<input class="uni-date__input uni-date-range__input" type="text" v-model="tempRange.startDate"
+							:placeholder="startDateText" />
 
 						<time-picker type="time" v-model="tempRange.startTime" :start="timepickerStartTime" :border="false"
-            :disabled="!tempRange.startDate" :hideSecond="hideSecond">
-            <input class="uni-date__input uni-date-range__input" type="text"
-            v-model="tempRange.startTime" :placeholder="startTimeText"
-            :disabled="!tempRange.startDate" />
-          </time-picker>
-        </view>
+							:disabled="!tempRange.startDate" :hideSecond="hideSecond">
+							<input class="uni-date__input uni-date-range__input" type="text" v-model="tempRange.startTime"
+								:placeholder="startTimeText" :disabled="!tempRange.startDate" />
+						</time-picker>
+					</view>
 
-        <uni-icons type="arrowthinright" color="#999" style="line-height: 40px;"></uni-icons>
+					<uni-icons type="arrowthinright" color="#999" style="line-height: 40px;"></uni-icons>
 
 					<view class="popup-x-header--datetime">
 						<input class="uni-date__input uni-date-range__input" type="text" v-model="tempRange.endDate"
@@ -78,27 +80,25 @@
 
 				<view class="popup-x-body">
 					<Calendar ref="left" :showMonth="false" :start-date="calendarRange.startDate"
-            :end-date="calendarRange.endDate" :range="true" :pleStatus="endMultipleStatus"
-            @change="leftChange" @firstEnterCale="updateRightCale" style="padding: 0 8px;" />
+						:end-date="calendarRange.endDate" :range="true" :pleStatus="endMultipleStatus" @change="leftChange"
+						@firstEnterCale="updateRightCale" style="padding: 0 8px;"/>
 					<Calendar ref="right" :showMonth="false" :start-date="calendarRange.startDate"
-						:end-date="calendarRange.endDate" :range="true" @change="rightChange"
-						:pleStatus="startMultipleStatus" @firstEnterCale="updateLeftCale"
-						style="padding: 0 8px;border-left: 1px solid #F1F1F1;" />
+						:end-date="calendarRange.endDate" :range="true" @change="rightChange" :pleStatus="startMultipleStatus"
+						@firstEnterCale="updateLeftCale" style="padding: 0 8px;border-left: 1px solid #F1F1F1;" />
 				</view>
 
 				<view v-if="hasTime" class="popup-x-footer">
-					<text @tap="clear">{{clearText}}</text>
-					<text class="confirm-text" @tap="confirmRangeChange">{{okText}}</text>
+					<text @click="clear">{{clearText}}</text>
+					<text class="confirm-text" @click="confirmRangeChange">{{okText}}</text>
 				</view>
 			</view>
 		</view>
 
 		<Calendar v-if="isPhone" ref="mobile" :clearDate="false" :date="calendarDate" :defTime="mobileCalendarTime"
 			:start-date="calendarRange.startDate" :end-date="calendarRange.endDate" :selectableTimes="mobSelectableTime"
-      :startPlaceholder="startPlaceholder" :endPlaceholder="endPlaceholder"
-      :default-value="defaultValue"
+			:startPlaceholder="startPlaceholder" :endPlaceholder="endPlaceholder" :default-value="defaultValue"
 			:pleStatus="endMultipleStatus" :showMonth="false" :range="isRange" :hasTime="hasTime" :insert="false"
-			:hideSecond="hideSecond" @confirm="mobileChange" @maskClose="close" />
+			:hideSecond="hideSecond" @confirm="mobileChange" @maskClose="close" @change="calendarClick"/>
 	</view>
 </template>
 <script>
@@ -126,14 +126,30 @@
 	 **/
 	import Calendar from './calendar.vue'
 	import TimePicker from './time-picker.vue'
-	import { initVueI18n } from '@dcloudio/uni-i18n'
+	import {
+		initVueI18n
+	} from '@dcloudio/uni-i18n'
 	import i18nMessages from './i18n/index.js'
-  import { getDateTime, getDate, getTime, getDefaultSecond, dateCompare, checkDate, fixIosDateFormat } from './util'
+	import {
+		getDateTime,
+		getDate,
+		getTime,
+		getDefaultSecond,
+		dateCompare,
+		checkDate,
+		fixIosDateFormat
+	} from './util'
 
 	export default {
 		name: 'UniDatetimePicker',
+
 		options: {
+			// #ifdef MP-TOUTIAO
+			virtualHost: false,
+			// #endif
+			// #ifndef MP-TOUTIAO
 			virtualHost: true
+			// #endif
 		},
 		components: {
 			Calendar,
@@ -181,7 +197,7 @@
 				isEmitValue: false,
 				isPhone: false,
 				isFirstShow: true,
-        i18nT: () => {}
+				i18nT: () => {}
 			}
 		},
 		props: {
@@ -214,7 +230,7 @@
 				default: ''
 			},
 			startPlaceholder: {
-        type: String,
+				type: String,
 				default: ''
 			},
 			endPlaceholder: {
@@ -241,24 +257,16 @@
 				type: [Boolean],
 				default: false
 			},
-            showFirstIcon: {
-            	type: [Boolean],
-            	default: true
-            },
-            placeholderClass: {
-            	type: String,
-            	default: ''
-            },
-      defaultValue: {
-        type: [String, Object, Array],
-        default: ''
-      }
+			defaultValue: {
+				type: [String, Object, Array],
+				default: ''
+			}
 		},
 		watch: {
 			type: {
 				immediate: true,
 				handler(newVal) {
-          this.hasTime = newVal.indexOf('time') !== -1
+					this.hasTime = newVal.indexOf('time') !== -1
 					this.isRange = newVal.indexOf('range') !== -1
 				}
 			},
@@ -349,9 +357,9 @@
 			selectDateText() {
 				return this.i18nT("uni-datetime-picker.selectDate")
 			},
-      selectDateTimeText() {
-        return this.i18nT("uni-datetime-picker.selectDateTime")
-      },
+			selectDateTimeText() {
+				return this.i18nT("uni-datetime-picker.selectDateTime")
+			},
 			selectTimeText() {
 				return this.i18nT("uni-datetime-picker.selectTime")
 			},
@@ -374,18 +382,19 @@
 				return this.i18nT("uni-datetime-picker.clear")
 			},
 			showClearIcon() {
-				return this.clearIcon && !this.disabled && (this.displayValue || (this.displayRangeValue.startDate && this.displayRangeValue.endDate))
+				return this.clearIcon && !this.disabled && (this.displayValue || (this.displayRangeValue.startDate && this
+					.displayRangeValue.endDate))
 			}
 		},
 		created() {
 			this.initI18nT()
-      this.platform()
+			this.platform()
 		},
 		methods: {
-      initI18nT() {
-        const vueI18n = initVueI18n(i18nMessages)
-        this.i18nT = vueI18n.t
-      },
+			initI18nT() {
+				const vueI18n = initVueI18n(i18nMessages)
+				this.i18nT = vueI18n.t
+			},
 			initPicker(newVal) {
 				if ((!newVal && !this.defaultValue) || Array.isArray(newVal) && !newVal.length) {
 					this.$nextTick(() => {
@@ -395,26 +404,26 @@
 				}
 
 				if (!Array.isArray(newVal) && !this.isRange) {
-          if(newVal){
-            this.displayValue = this.inputDate = this.calendarDate = getDate(newVal)
-            if (this.hasTime) {
-              this.pickerTime = getTime(newVal, this.hideSecond)
-              this.displayValue = `${this.displayValue} ${this.pickerTime}`
-            }
-          }else if(this.defaultValue){
-            this.inputDate = this.calendarDate = getDate(this.defaultValue)
-            if(this.hasTime){
-              this.pickerTime = getTime(this.defaultValue, this.hideSecond)
-            }
-          }
+					if (newVal) {
+						this.displayValue = this.inputDate = this.calendarDate = getDate(newVal)
+						if (this.hasTime) {
+							this.pickerTime = getTime(newVal, this.hideSecond)
+							this.displayValue = `${this.displayValue} ${this.pickerTime}`
+						}
+					} else if (this.defaultValue) {
+						this.inputDate = this.calendarDate = getDate(this.defaultValue)
+						if (this.hasTime) {
+							this.pickerTime = getTime(this.defaultValue, this.hideSecond)
+						}
+					}
 				} else {
 					const [before, after] = newVal
 					if (!before && !after) return
-          const beforeDate = getDate(before)
-          const beforeTime = getTime(before, this.hideSecond)
+					const beforeDate = getDate(before)
+					const beforeTime = getTime(before, this.hideSecond)
 
-          const afterDate = getDate(after)
-          const afterTime = getTime(after, this.hideSecond)
+					const afterDate = getDate(after)
+					const afterTime = getTime(after, this.hideSecond)
 					const startDate = beforeDate
 					const endDate = afterDate
 					this.displayRangeValue.startDate = this.tempRange.startDate = startDate
@@ -451,23 +460,33 @@
 				right.setDate(this.$refs.right.nowDate.fullDate)
 			},
 			platform() {
-        if(typeof navigator !== "undefined"){
-          this.isPhone = navigator.userAgent.toLowerCase().indexOf('mobile') !== -1
-          return
-        }
-				const { windowWidth } = uni.getSystemInfoSync()
+				if (typeof navigator !== "undefined") {
+					this.isPhone = navigator.userAgent.toLowerCase().indexOf('mobile') !== -1
+					return
+				}
+				// #ifdef MP-WEIXIN
+				const {
+					windowWidth
+				} = uni.getWindowInfo()
+				// #endif
+				// #ifndef MP-WEIXIN
+				const {
+					windowWidth
+				} = uni.getSystemInfoSync()
+				// #endif
 				this.isPhone = windowWidth <= 500
 				this.windowWidth = windowWidth
 			},
 			show() {
+				this.$emit("show")
 				if (this.disabled) {
 					return
 				}
 				this.platform()
 				if (this.isPhone) {
 					setTimeout(() => {
-            this.$refs.mobile.open()
-          }, 0);
+						this.$refs.mobile.open()
+					}, 0);
 					return
 				}
 				this.pickerPositionStyle = {
@@ -492,8 +511,10 @@
 								this.$refs.right.changeMonth('pre')
 							}
 						} else {
-							this.$refs.right.changeMonth('next')
-							this.$refs.right.cale.lastHover = false
+							// this.$refs.right.changeMonth('next')
+							if (this.isPhone) {
+								this.$refs.right.cale.lastHover = false;
+							}
 						}
 					}
 
@@ -545,52 +566,52 @@
 				this.confirmSingleChange()
 			},
 			confirmSingleChange() {
-        if(!checkDate(this.inputDate)){
+				if (!checkDate(this.inputDate)) {
 					const now = new Date()
-          this.calendarDate = this.inputDate = getDate(now)
+					this.calendarDate = this.inputDate = getDate(now)
 					this.pickerTime = getTime(now, this.hideSecond)
-        }
+				}
 
-        let startLaterInputDate = false
-        let startDate, startTime
-        if(this.start) {
-          let startString = this.start
-          if(typeof this.start === 'number'){
-            startString = getDateTime(this.start, this.hideSecond)
-          }
-          [startDate, startTime] = startString.split(' ')
-          if(this.start && !dateCompare(startDate, this.inputDate)) {
-            startLaterInputDate = true
-            this.inputDate = startDate
-          }
-        }
+				let startLaterInputDate = false
+				let startDate, startTime
+				if (this.start) {
+					let startString = this.start
+					if (typeof this.start === 'number') {
+						startString = getDateTime(this.start, this.hideSecond)
+					}
+					[startDate, startTime] = startString.split(' ')
+					if (this.start && !dateCompare(startDate, this.inputDate)) {
+						startLaterInputDate = true
+						this.inputDate = startDate
+					}
+				}
 
-        let endEarlierInputDate = false
-        let endDate, endTime
-        if(this.end) {
-          let endString = this.end
-          if(typeof this.end === 'number'){
-            endString = getDateTime(this.end, this.hideSecond)
-          }
-          [endDate, endTime] = endString.split(' ')
-          if(this.end && !dateCompare(this.inputDate, endDate)) {
-            endEarlierInputDate = true
-            this.inputDate = endDate
-          }
-        }
+				let endEarlierInputDate = false
+				let endDate, endTime
+				if (this.end) {
+					let endString = this.end
+					if (typeof this.end === 'number') {
+						endString = getDateTime(this.end, this.hideSecond)
+					}
+					[endDate, endTime] = endString.split(' ')
+					if (this.end && !dateCompare(this.inputDate, endDate)) {
+						endEarlierInputDate = true
+						this.inputDate = endDate
+					}
+				}
 				if (this.hasTime) {
-          if(startLaterInputDate){
-            this.pickerTime = startTime || getDefaultSecond(this.hideSecond)
-          }
-          if(endEarlierInputDate){
-            this.pickerTime = endTime || getDefaultSecond(this.hideSecond)
-          }
-          if(!this.pickerTime){
-            this.pickerTime = getTime(Date.now(), this.hideSecond)
-          }
+					if (startLaterInputDate) {
+						this.pickerTime = startTime || getDefaultSecond(this.hideSecond)
+					}
+					if (endEarlierInputDate) {
+						this.pickerTime = endTime || getDefaultSecond(this.hideSecond)
+					}
+					if (!this.pickerTime) {
+						this.pickerTime = getTime(Date.now(), this.hideSecond)
+					}
 					this.displayValue = `${this.inputDate} ${this.pickerTime}`
 				} else {
-          this.displayValue = this.inputDate
+					this.displayValue = this.inputDate
 				}
 				this.setEmit(this.displayValue)
 				this.pickerVisible = false
@@ -608,6 +629,7 @@
 					fulldate: e.fulldate
 				}
 				this.startMultipleStatus = Object.assign({}, this.startMultipleStatus, obj)
+				this.$emit('calendarClick', e)
 			},
 			rightChange(e) {
 				const {
@@ -622,14 +644,17 @@
 					fulldate: e.fulldate
 				}
 				this.endMultipleStatus = Object.assign({}, this.endMultipleStatus, obj)
+				this.$emit('calendarClick', e)
 			},
 			mobileChange(e) {
 				if (this.isRange) {
-					const {before, after} = e.range
-
-          if(!before || !after){
-            return
-          }
+					const {
+						before,
+						after
+					} = e.range
+					if (!before) {
+						return;
+					}
 
 					this.handleStartAndEnd(before, after, true)
 					if (this.hasTime) {
@@ -648,6 +673,7 @@
 						this.displayValue = e.fulldate
 					}
 					this.setEmit(this.displayValue)
+					this.calendarDate = this.displayValue;
 				}
 				this.$refs.mobile.close()
 			},
@@ -662,79 +688,87 @@
 					this.pickerVisible = false
 					return
 				}
-        if(!checkDate(this.tempRange.startDate)){
-          this.tempRange.startDate = getDate(Date.now())
-        }
-        if(!checkDate(this.tempRange.endDate)){
-          this.tempRange.endDate = getDate(Date.now())
-        }
+				if (!checkDate(this.tempRange.startDate)) {
+					this.tempRange.startDate = getDate(Date.now())
+				}
+				if (!checkDate(this.tempRange.endDate)) {
+					this.tempRange.endDate = getDate(Date.now())
+				}
 
 				let start, end
 
-        let startDateLaterRangeStartDate = false
-        let startDateLaterRangeEndDate = false
-        let startDate, startTime
-        if(this.start) {
-          let startString = this.start
-          if(typeof this.start === 'number'){
-            startString = getDateTime(this.start, this.hideSecond)
-          }
-          [startDate,startTime] = startString.split(' ')
-          if(this.start && !dateCompare(this.start, this.tempRange.startDate)) {
-            startDateLaterRangeStartDate = true
-            this.tempRange.startDate = startDate
-          }
-          if(this.start && !dateCompare(this.start, this.tempRange.endDate)) {
-            startDateLaterRangeEndDate = true
-            this.tempRange.endDate = startDate
-          }
-        }
-        let endDateEarlierRangeStartDate = false
-        let endDateEarlierRangeEndDate = false
-        let endDate, endTime
-        if(this.end) {
-          let endString = this.end
-          if(typeof this.end === 'number'){
-            endString = getDateTime(this.end, this.hideSecond)
-          }
-          [endDate,endTime] = endString.split(' ')
+				let startDateLaterRangeStartDate = false
+				let startDateLaterRangeEndDate = false
+				let startDate, startTime
 
-          if(this.end && !dateCompare(this.tempRange.startDate, this.end)) {
-            endDateEarlierRangeStartDate = true
-            this.tempRange.startDate = endDate
-          }
-          if(this.end && !dateCompare(this.tempRange.endDate, this.end)) {
-            endDateEarlierRangeEndDate = true
-            this.tempRange.endDate = endDate
-          }
-        }
+				let compareStartDateString = this.tempRange.startDate
+				let compareEndDateString = this.tempRange.endDate
+				if (this.hasTime) {
+					compareStartDateString = `${this.tempRange.startDate} ${this.tempRange.startTime}`
+					compareEndDateString = `${this.tempRange.endDate} ${this.tempRange.endTime}`
+				}
+
+				if (this.start) {
+					let startString = this.start
+					if (typeof this.start === 'number') {
+						startString = getDateTime(this.start, this.hideSecond)
+					}
+					[startDate, startTime] = startString.split(' ')
+					if (this.start && !dateCompare(this.start, compareStartDateString)) {
+						startDateLaterRangeStartDate = true
+						this.tempRange.startDate = startDate
+					}
+					if (this.start && !dateCompare(this.start, compareEndDateString)) {
+						startDateLaterRangeEndDate = true
+						this.tempRange.endDate = startDate
+					}
+				}
+				let endDateEarlierRangeStartDate = false
+				let endDateEarlierRangeEndDate = false
+				let endDate, endTime
+				if (this.end) {
+					let endString = this.end
+					if (typeof this.end === 'number') {
+						endString = getDateTime(this.end, this.hideSecond)
+					}
+					[endDate, endTime] = endString.split(' ')
+
+					if (this.end && !dateCompare(compareStartDateString, this.end)) {
+						endDateEarlierRangeStartDate = true
+						this.tempRange.startDate = endDate
+					}
+					if (this.end && !dateCompare(compareEndDateString, this.end)) {
+						endDateEarlierRangeEndDate = true
+						this.tempRange.endDate = endDate
+					}
+				}
 				if (!this.hasTime) {
-          start = this.displayRangeValue.startDate = this.tempRange.startDate
+					start = this.displayRangeValue.startDate = this.tempRange.startDate
 					end = this.displayRangeValue.endDate = this.tempRange.endDate
 				} else {
-          if(startDateLaterRangeStartDate){
-            this.tempRange.startTime = startTime || getDefaultSecond(this.hideSecond)
-          }else if(endDateEarlierRangeStartDate){
-            this.tempRange.startTime = endTime || getDefaultSecond(this.hideSecond)
-          }
-          if(!this.tempRange.startTime){
-            this.tempRange.startTime = getTime(Date.now(), this.hideSecond)
-          }
+					if (startDateLaterRangeStartDate) {
+						this.tempRange.startTime = startTime || getDefaultSecond(this.hideSecond)
+					} else if (endDateEarlierRangeStartDate) {
+						this.tempRange.startTime = endTime || getDefaultSecond(this.hideSecond)
+					}
+					if (!this.tempRange.startTime) {
+						this.tempRange.startTime = getTime(Date.now(), this.hideSecond)
+					}
 
-          if(startDateLaterRangeEndDate){
-            this.tempRange.endTime = startTime || getDefaultSecond(this.hideSecond)
-          }else if(endDateEarlierRangeEndDate){
-            this.tempRange.endTime = endTime || getDefaultSecond(this.hideSecond)
-          }
-          if(!this.tempRange.endTime){
-            this.tempRange.endTime = getTime(Date.now(), this.hideSecond)
-          }
+					if (startDateLaterRangeEndDate) {
+						this.tempRange.endTime = startTime || getDefaultSecond(this.hideSecond)
+					} else if (endDateEarlierRangeEndDate) {
+						this.tempRange.endTime = endTime || getDefaultSecond(this.hideSecond)
+					}
+					if (!this.tempRange.endTime) {
+						this.tempRange.endTime = getTime(Date.now(), this.hideSecond)
+					}
 					start = this.displayRangeValue.startDate = `${this.tempRange.startDate} ${this.tempRange.startTime}`
 					end = this.displayRangeValue.endDate = `${this.tempRange.endDate} ${this.tempRange.endTime}`
 				}
-        if(!dateCompare(start,end)){
-          [start, end] = [end, start]
-        }
+				if (!dateCompare(start, end)) {
+					[start, end] = [end, start]
+				}
 				this.displayRangeValue.startDate = start
 				this.displayRangeValue.endDate = end
 				const displayRange = [start, end]
@@ -742,13 +776,13 @@
 				this.pickerVisible = false
 			},
 			handleStartAndEnd(before, after, temp = false) {
-				if (!(before && after)) return
-
+				if (!before) return
+				if (!after) after = before;
 				const type = temp ? 'tempRange' : 'range'
-        const isStartEarlierEnd = dateCompare(before, after)
-        this[type].startDate = isStartEarlierEnd ? before : after
-        this[type].endDate = isStartEarlierEnd ? after : before
-    },
+				const isStartEarlierEnd = dateCompare(before, after)
+				this[type].startDate = isStartEarlierEnd ? before : after
+				this[type].endDate = isStartEarlierEnd ? after : before
+			},
 			/**
 			 * 比较时间大小
 			 */
@@ -807,6 +841,10 @@
 						this.$emit('update:modelValue', [])
 					}
 				}
+			},
+
+			calendarClick(e) {
+				this.$emit('calendarClick', e)
 			}
 		}
 	}
@@ -819,6 +857,7 @@
 		width: 100%;
 		flex: 1;
 	}
+
 	.uni-date-x {
 		display: flex;
 		flex-direction: row;
@@ -830,16 +869,17 @@
 		font-size: 14px;
 		flex: 1;
 
-    .icon-calendar{
-      padding-left: 3px;
-    }
-    .range-separator{
-      height: 35px;
-      /* #ifndef MP */
-      padding: 0 2px;
-      /* #endif */
+		.icon-calendar {
+			padding-left: 3px;
+		}
+
+		.range-separator {
+			height: 35px;
+			/* #ifndef MP */
+			padding: 0 2px;
+			/* #endif */
 			line-height: 35px;
-    }
+		}
 	}
 
 	.uni-date-x--border {
@@ -866,10 +906,9 @@
 	.uni-date__x-input {
 		width: auto;
 		height: 35px;
-        padding: 0 5px;
-        /* #ifndef MP */
-        padding-left: 5px;
-        /* #endif */
+		/* #ifndef MP */
+		padding-left: 5px;
+		/* #endif */
 		position: relative;
 		flex: 1;
 		line-height: 35px;
@@ -986,11 +1025,6 @@
 		border-bottom-color: #F1F1F1;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
-	}
-
-	.uni-date-changed--time text {
-		height: 50px;
-		line-height: 50px;
 	}
 
 	.uni-date-changed .uni-date-changed--time {

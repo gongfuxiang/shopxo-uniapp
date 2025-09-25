@@ -13,7 +13,7 @@ class Calendar {
 		this.startDate = startDate
 		// 终止时间
 		this.endDate = endDate
-    // 是否范围选择
+		// 是否范围选择
 		this.range = range
 		// 多选状态
 		this.cleanMultipleStatus()
@@ -49,44 +49,44 @@ class Calendar {
 		this.endDate = endDate
 	}
 
-  getPreMonthObj(date){
-    date = fixIosDateFormat(date)
-    date = new Date(date)
+	getPreMonthObj(date) {
+		date = fixIosDateFormat(date)
+		date = new Date(date)
 
-    const oldMonth = date.getMonth()
-    date.setMonth(oldMonth - 1)
-    const newMonth = date.getMonth()
-    if(oldMonth !== 0 && newMonth - oldMonth === 0){
-      date.setMonth(newMonth - 1)
-    }
-    return this.getDateObj(date)
-  }
-  getNextMonthObj(date){
-    date = fixIosDateFormat(date)
-    date = new Date(date)
+		const oldMonth = date.getMonth()
+		date.setMonth(oldMonth - 1)
+		const newMonth = date.getMonth()
+		if (oldMonth !== 0 && newMonth - oldMonth === 0) {
+			date.setMonth(newMonth - 1)
+		}
+		return this.getDateObj(date)
+	}
+	getNextMonthObj(date) {
+		date = fixIosDateFormat(date)
+		date = new Date(date)
 
-    const oldMonth = date.getMonth()
-    date.setMonth(oldMonth + 1)
-    const newMonth = date.getMonth()
-    if(newMonth - oldMonth > 1){
-      date.setMonth(newMonth - 1)
-    }
-    return this.getDateObj(date)
-  }
+		const oldMonth = date.getMonth()
+		date.setMonth(oldMonth + 1)
+		const newMonth = date.getMonth()
+		if (newMonth - oldMonth > 1) {
+			date.setMonth(newMonth - 1)
+		}
+		return this.getDateObj(date)
+	}
 
 	/**
 	 * 获取指定格式Date对象
 	 */
 	getDateObj(date) {
-    date = fixIosDateFormat(date)
-    date = new Date(date)
+		date = fixIosDateFormat(date)
+		date = new Date(date)
 
 		return {
 			fullDate: getDate(date),
-      year: date.getFullYear(),
-      month: addZero(date.getMonth() + 1),
-      date: addZero(date.getDate()),
-      day: date.getDay()
+			year: date.getFullYear(),
+			month: addZero(date.getMonth() + 1),
+			date: addZero(date.getDate()),
+			day: date.getDay()
 		}
 	}
 
@@ -96,36 +96,11 @@ class Calendar {
 	getPreMonthDays(amount, dateObj) {
 		const result = []
 		for (let i = amount - 1; i >= 0; i--) {
-      const month = dateObj.month > 1 ? dateObj.month -1 : 12
-			const year = month === 12 ? dateObj.year - 1 : dateObj.year
-			const date = new Date(year,month,-i).getDate()
-			const fullDate = `${year}-${addZero(month)}-${addZero(date)}`
-			let multiples = this.multipleStatus.data
-			let multiplesStatus = -1
-			if (this.range && multiples) {
-			  multiplesStatus = multiples.findIndex((item) => {
-			    return this.dateEqual(item, fullDate)
-			  })
-			}
-			const checked = multiplesStatus !== -1
-			// 获取打点信息
-			const extraInfo = this.selected && this.selected.find((item) => {
-				if (this.dateEqual(fullDate, item.date)) {
-					return item
-				}
-			})
+			const month = dateObj.month - 1
 			result.push({
-				fullDate,
-				year,
+				date: new Date(dateObj.year, month, -i).getDate(),
 				month,
-				date,
-				multiple: this.range ? checked : false,
-				beforeMultiple: this.isLogicBefore(fullDate, this.multipleStatus.before, this.multipleStatus.after),
-				afterMultiple: this.isLogicAfter(fullDate, this.multipleStatus.before, this.multipleStatus.after),
-				disable: (this.startDate && !dateCompare(this.startDate, fullDate)) || (this.endDate && !dateCompare(fullDate,this.endDate)),
-				isToday: fullDate === this.date.fullDate,
-				userChecked: false,
-				extraInfo
+				disable: true
 			})
 		}
 		return result
@@ -140,7 +115,7 @@ class Calendar {
 			const currentDate = `${dateObj.year}-${dateObj.month}-${addZero(i)}`
 			const isToday = fullDate === currentDate
 			// 获取打点信息
-			const extraInfo = this.selected && this.selected.find((item) => {
+			const info = this.selected && this.selected.find((item) => {
 				if (this.dateEqual(currentDate, item.date)) {
 					return item
 				}
@@ -160,24 +135,25 @@ class Calendar {
 			let multiples = this.multipleStatus.data
 			let multiplesStatus = -1
 			if (this.range && multiples) {
-        multiplesStatus = multiples.findIndex((item) => {
-          return this.dateEqual(item, currentDate)
-        })
+				multiplesStatus = multiples.findIndex((item) => {
+					return this.dateEqual(item, currentDate)
+				})
 			}
-      const checked = multiplesStatus !== -1
+			const checked = multiplesStatus !== -1
 
 			result.push({
 				fullDate: currentDate,
 				year: dateObj.year,
-				month: dateObj.month,
 				date: i,
 				multiple: this.range ? checked : false,
 				beforeMultiple: this.isLogicBefore(currentDate, this.multipleStatus.before, this.multipleStatus.after),
 				afterMultiple: this.isLogicAfter(currentDate, this.multipleStatus.before, this.multipleStatus.after),
-				disable: (this.startDate && !dateCompare(this.startDate, currentDate)) || (this.endDate && !dateCompare(currentDate,this.endDate)),
+				month: dateObj.month,
+				disable: (this.startDate && !dateCompare(this.startDate, currentDate)) || (this.endDate && !dateCompare(
+					currentDate, this.endDate)),
 				isToday,
 				userChecked: false,
-        extraInfo
+				extraInfo: info
 			})
 		}
 		return result
@@ -187,37 +163,12 @@ class Calendar {
 	 */
 	_getNextMonthDays(amount, dateObj) {
 		const result = []
-    const month = dateObj.month + 1
+		const month = dateObj.month + 1
 		for (let i = 1; i <= amount; i++) {
-			const month = dateObj.month === 12 ? 1 : dateObj.month*1 + 1
-			const year = month === 1 ? dateObj.year + 1 : dateObj.year
-			const fullDate = `${year}-${addZero(month)}-${addZero(i)}`
-			let multiples = this.multipleStatus.data
-			let multiplesStatus = -1
-			if (this.range && multiples) {
-			  multiplesStatus = multiples.findIndex((item) => {
-			    return this.dateEqual(item, fullDate)
-			  })
-			}
-			const checked = multiplesStatus !== -1
-			// 获取打点信息
-			const extraInfo = this.selected && this.selected.find((item) => {
-				if (this.dateEqual(fullDate, item.date)) {
-					return item
-				}
-			})
 			result.push({
-				fullDate,
-				year,
 				date: i,
 				month,
-				multiple: this.range ? checked : false,
-				beforeMultiple: this.isLogicBefore(fullDate, this.multipleStatus.before, this.multipleStatus.after),
-				afterMultiple: this.isLogicAfter(fullDate, this.multipleStatus.before, this.multipleStatus.after),
-				disable: (this.startDate && !dateCompare(this.startDate, fullDate)) || (this.endDate && !dateCompare(fullDate,this.endDate)),
-				isToday: fullDate === this.date.fullDate,
-				userChecked: false,
-				extraInfo
+				disable: true
 			})
 		}
 		return result
@@ -231,8 +182,8 @@ class Calendar {
 		if (!date) {
 			date = new Date()
 		}
-
-		return this.calendar.find(item => item.fullDate === this.getDateObj(date).fullDate)
+		const res = this.calendar.find(item => item.fullDate === this.getDateObj(date).fullDate)
+		return res ? res : this.getDateObj(date)
 	}
 
 	/**
@@ -290,7 +241,7 @@ class Calendar {
 	 *  获取多选状态
 	 */
 	setMultiple(fullDate) {
-    if (!this.range) return
+		if (!this.range) return
 
 		let {
 			before,
@@ -309,6 +260,7 @@ class Calendar {
 		} else {
 			if (!before) {
 				this.multipleStatus.before = fullDate
+				this.multipleStatus.after = undefined;
 				this.lastHover = false
 			} else {
 				this.multipleStatus.after = fullDate
@@ -329,9 +281,12 @@ class Calendar {
 	 *  鼠标 hover 更新多选状态
 	 */
 	setHoverMultiple(fullDate) {
-    if (!this.range || this.lastHover) return
-
-		const { before } = this.multipleStatus
+		//抖音小程序点击会触发hover事件，需要避免一下
+		// #ifndef MP-TOUTIAO
+		if (!this.range || this.lastHover) return
+		const {
+			before
+		} = this.multipleStatus
 
 		if (!before) {
 			this.multipleStatus.before = fullDate
@@ -344,6 +299,8 @@ class Calendar {
 			}
 		}
 		this.getWeeks(fullDate)
+		// #endif
+
 	}
 
 	/**
@@ -374,22 +331,22 @@ class Calendar {
 		} = this.getDateObj(dateData)
 
 		const preMonthDayAmount = new Date(year, month - 1, 1).getDay()
-    const preMonthDays = this.getPreMonthDays(preMonthDayAmount, this.getDateObj(dateData))
+		const preMonthDays = this.getPreMonthDays(preMonthDayAmount, this.getDateObj(dateData))
 
 		const currentMonthDayAmount = new Date(year, month, 0).getDate()
-    const currentMonthDays = this.getCurrentMonthDays(currentMonthDayAmount, this.getDateObj(dateData))
+		const currentMonthDays = this.getCurrentMonthDays(currentMonthDayAmount, this.getDateObj(dateData))
 
-    const nextMonthDayAmount = 42 - preMonthDayAmount - currentMonthDayAmount
-    const nextMonthDays = this._getNextMonthDays(nextMonthDayAmount, this.getDateObj(dateData))
+		const nextMonthDayAmount = 42 - preMonthDayAmount - currentMonthDayAmount
+		const nextMonthDays = this._getNextMonthDays(nextMonthDayAmount, this.getDateObj(dateData))
 
 		const calendarDays = [...preMonthDays, ...currentMonthDays, ...nextMonthDays]
 
 		const weeks = new Array(6)
 		for (let i = 0; i < calendarDays.length; i++) {
-      const index = Math.floor(i / 7)
-      if(!weeks[index]){
-        weeks[index] = new Array(7)
-      }
+			const index = Math.floor(i / 7)
+			if (!weeks[index]) {
+				weeks[index] = new Array(7)
+			}
 			weeks[index][i % 7] = calendarDays[i]
 		}
 
@@ -398,60 +355,67 @@ class Calendar {
 	}
 }
 
-function getDateTime(date, hideSecond){
-  return `${getDate(date)} ${getTime(date, hideSecond)}`
+function getDateTime(date, hideSecond) {
+	return `${getDate(date)} ${getTime(date, hideSecond)}`
 }
 
 function getDate(date) {
-  date = fixIosDateFormat(date)
-  date = new Date(date)
-  const year = date.getFullYear()
-  const month = date.getMonth()+1
-  const day = date.getDate()
-  return `${year}-${addZero(month)}-${addZero(day)}`
+	date = fixIosDateFormat(date)
+	date = new Date(date)
+	const year = date.getFullYear()
+	const month = date.getMonth() + 1
+	const day = date.getDate()
+	return `${year}-${addZero(month)}-${addZero(day)}`
 }
 
-function getTime(date, hideSecond){
-  date = fixIosDateFormat(date)
-  date = new Date(date)
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
-  return hideSecond ? `${addZero(hour)}:${addZero(minute)}` : `${addZero(hour)}:${addZero(minute)}:${addZero(second)}`
+function getTime(date, hideSecond) {
+	date = fixIosDateFormat(date)
+	date = new Date(date)
+	const hour = date.getHours()
+	const minute = date.getMinutes()
+	const second = date.getSeconds()
+	return hideSecond ? `${addZero(hour)}:${addZero(minute)}` : `${addZero(hour)}:${addZero(minute)}:${addZero(second)}`
 }
 
 function addZero(num) {
-  if(num < 10){
-    num = `0${num}`
-  }
-  return num
+	if (num < 10) {
+		num = `0${num}`
+	}
+	return num
 }
 
 function getDefaultSecond(hideSecond) {
-  return hideSecond ? '00:00' : '00:00:00'
+	return hideSecond ? '00:00' : '00:00:00'
 }
 
 function dateCompare(startDate, endDate) {
-  startDate = new Date(fixIosDateFormat(startDate))
-  endDate = new Date(fixIosDateFormat(endDate))
-  return startDate <= endDate
+	startDate = new Date(fixIosDateFormat(typeof startDate === 'string' ? startDate.trim() : startDate))
+	endDate = new Date(fixIosDateFormat(typeof endDate === 'string' ? endDate.trim() : endDate))
+	return startDate <= endDate
 }
 
-function checkDate(date){
-  const dateReg = /((19|20)\d{2})(-|\/)\d{1,2}(-|\/)\d{1,2}/g
-  return date.match(dateReg)
+function checkDate(date) {
+	const dateReg = /((19|20)\d{2})(-|\/)\d{1,2}(-|\/)\d{1,2}/g
+	return date.match(dateReg)
 }
+//ios低版本15及以下，无法匹配 没有 ’秒‘ 时的情况，所以需要在末尾 秒 加上 问号
+const dateTimeReg = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])( [0-5]?[0-9]:[0-5]?[0-9](:[0-5]?[0-9])?)?$/;
 
-const dateTimeReg = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])( [0-5]?[0-9]:[0-5]?[0-9]:[0-5]?[0-9])?$/
 function fixIosDateFormat(value) {
-	// 将年月日时分秒转换为对应的时间
-	if (value != '' && typeof value === 'string') {
-		value = value.replace(/年/g, '/').replace(/月/g, '/').replace(/日/g, '').replace(/时/g, ' :').replace(/分/g, ':').replace(/秒/g, '');
+	if (typeof value === 'string' && dateTimeReg.test(value)) {
+		value = value.replace(/-/g, '/')
 	}
-  if (typeof value === 'string' && dateTimeReg.test(value)) {
-    value = value.replace(/-/g, '/')
-  }
-  return value
+	return value
 }
 
-export {Calendar, getDateTime, getDate, getTime, addZero, getDefaultSecond, dateCompare, checkDate, fixIosDateFormat}
+export {
+	Calendar,
+	getDateTime,
+	getDate,
+	getTime,
+	addZero,
+	getDefaultSecond,
+	dateCompare,
+	checkDate,
+	fixIosDateFormat
+}

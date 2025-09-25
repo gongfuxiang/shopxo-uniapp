@@ -1,6 +1,6 @@
 <template>
 	<view class="uni-datetime-picker">
-		<view @tap="initTimePicker">
+		<view @click="initTimePicker">
 			<slot>
 				<view class="uni-datetime-picker-timebox-pointer"
 					:class="{'uni-datetime-picker-disabled': disabled, 'uni-datetime-picker-timebox': border}">
@@ -11,7 +11,7 @@
 				</view>
 			</slot>
 		</view>
-		<view v-if="visible" id="mask" class="uni-datetime-picker-mask" @tap="tiggerTimePicker"></view>
+		<view v-if="visible" id="mask" class="uni-datetime-picker-mask" @click="tiggerTimePicker"></view>
 		<view v-if="visible" class="uni-datetime-picker-popup" :class="[dateShow && timeShow ? '' : 'fix-nvue-height']"
 			:style="fixNvueBug">
 			<view class="uni-title">
@@ -64,14 +64,14 @@
 				<text v-if="!hideSecond" class="uni-datetime-picker-sign sign-right">:</text>
 			</view>
 			<view class="uni-datetime-picker-btn">
-				<view @tap="clearTime">
+				<view @click="clearTime">
 					<text class="uni-datetime-picker-btn-text">{{clearText}}</text>
 				</view>
 				<view class="uni-datetime-picker-btn-group">
-					<view class="uni-datetime-picker-cancel" @tap="tiggerTimePicker">
+					<view class="uni-datetime-picker-cancel" @click="tiggerTimePicker">
 						<text class="uni-datetime-picker-btn-text">{{cancelText}}</text>
 					</view>
-					<view @tap="setTime">
+					<view @click="setTime">
 						<text class="uni-datetime-picker-btn-text">{{okText}}</text>
 					</view>
 				</view>
@@ -81,10 +81,16 @@
 </template>
 
 <script>
-	import { initVueI18n } from '@dcloudio/uni-i18n'
+	import {
+		initVueI18n
+	} from '@dcloudio/uni-i18n'
 	import i18nMessages from './i18n/index.js'
-	const {	t	} = initVueI18n(i18nMessages)
-  import { fixIosDateFormat } from './util'
+	const {
+		t
+	} = initVueI18n(i18nMessages)
+	import {
+		fixIosDateFormat
+	} from './util'
 
 	/**
 	 * DatetimePicker 时间选择器
@@ -134,6 +140,14 @@
 				endSecond: 59,
 			}
 		},
+		options: {
+			// #ifdef MP-TOUTIAO
+			virtualHost: false,
+			// #endif
+			// #ifndef MP-TOUTIAO
+			virtualHost: true
+			// #endif
+		},
 		props: {
 			type: {
 				type: String,
@@ -176,11 +190,11 @@
 			// #ifndef VUE3
 			value: {
 				handler(newVal) {
-          if (newVal) {
-            this.parseValue(fixIosDateFormat(newVal))
+					if (newVal) {
+						this.parseValue(fixIosDateFormat(newVal))
 						this.initTime(false)
 					} else {
-            this.time = ''
+						this.time = ''
 						this.parseValue(Date.now())
 					}
 				},
@@ -189,8 +203,8 @@
 			// #endif
 			// #ifdef VUE3
 			modelValue: {
-        handler(newVal) {
-          if (newVal) {
+				handler(newVal) {
+					if (newVal) {
 						this.parseValue(fixIosDateFormat(newVal))
 						this.initTime(false)
 					} else {
@@ -647,14 +661,6 @@
 			// 每个月的实际天数
 			daysInMonth(year, month) { // Use 1 for January, 2 for February, etc.
 				return new Date(year, month, 0).getDate();
-			},
-
-			//兼容 iOS、safari 日期格式
-			fixIosDateFormat(value) {
-				if (typeof value === 'string') {
-					value = value.replace(/-/g, '/')
-				}
-				return value
 			},
 
 			/**

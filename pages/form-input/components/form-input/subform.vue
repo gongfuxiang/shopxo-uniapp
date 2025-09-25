@@ -64,7 +64,7 @@
                             </template>
                         </view>
                     </view>
-                    <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
+                    <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue radius" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
                         <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                         添加记录
                     </view>
@@ -127,7 +127,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue" style="border: 2rpx solid #ccc;" @tap="add_item">
+                    <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue radius" style="border: 2rpx solid #ccc;" @tap="add_item">
                         <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                         添加记录
                     </view>

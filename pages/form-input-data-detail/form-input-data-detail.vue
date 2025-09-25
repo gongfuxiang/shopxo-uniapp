@@ -35,6 +35,50 @@
                                 <block v-else-if="item.key == 'rich-text'">
                                     <mp-html :content="item.value" />
                                 </block>
+                                <block v-else-if="item.key == 'subform'">
+                                    <block v-if="(item.value || null) != null">
+                                        <uni-table border stripe :emptyText="$t('no_data')" >
+                                            <uni-tr>
+                                                <block v-for="(items, indexs) in item.value[0]" :key="indexs">
+                                                    <uni-th align="left">{{items.name}}</uni-th>
+                                                </block>
+                                            </uni-tr>
+                                            <block v-for="(items, index) in item.value">
+                                                <uni-tr v-if="(items || null) != null">
+                                                    <block v-for="(itemss, indexss) in items" :key="indexss">
+                                                        <uni-th align="left">
+                                                            <block v-if="itemss.key == 'upload-img'">
+                                                                <block v-if="itemss.value.length > 0">
+                                                                    <block v-for="(itemsss, indexsss) in itemss.value" :key="indexsss">
+                                                                        <image :src="itemsss.url" :data-value="itemsss.url" :data-index="indexsss" @tap="images_show_event" mode="aspectFit" class="fl margin-right-sm margin-bottom-sm br-f5 radius upload-img"></image>
+                                                                    </block>
+                                                                </block>
+                                                            </block>
+                                                            <block v-else-if="itemss.key == 'upload-video'">
+                                                                <block v-if="itemss.value.length > 0">
+                                                                    <block v-for="(itemsss, indexsss) in itemss.value" :key="indexsss">
+                                                                        <video :src="itemsss.url" :controls="true" :show-play-btn="true" :show-center-play-btn="true" class="fl margin-right-sm margin-bottom-sm br-f5 radius wh-auto upload-video"></video>
+                                                                    </block>
+                                                                </block>
+                                                            </block>
+                                                            <block v-else-if="itemss.key == 'upload-attachments'">
+                                                                <block v-if="itemss.value.length > 0">
+                                                                    <block v-for="(itemsss, indexsss) in itemss.value" :key="indexsss">
+                                                                        <view :src="itemsss.url" :data-value="itemsss.url" @tap="file_copy_event" class="fl margin-right-sm margin-bottom-sm br-dashed-grey radius padding-sm upload-file">{{itemsss.name || itemsss.url}}</view>
+                                                                    </block>
+                                                                </block>
+                                                            </block>
+                                                            <block v-else-if="itemss.key == 'rich-text'">
+                                                                <mp-html :content="itemss.value" />
+                                                            </block>
+                                                            <text v-else>{{ itemss.value_text || itemss.value }}</text>
+                                                        </uni-th>
+                                                    </block>
+                                                </uni-tr>
+                                            </block>
+                                        </uni-table>
+                                    </block>
+                                </block>
                                 <text v-else>{{ item.value_text || item.value }}</text>
                             </view>
                         </view>

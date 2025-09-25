@@ -1,20 +1,53 @@
+## 2.2.42（2025-08-20）
+- 修复 datetime-picker 小程序样式警告
+## 2.2.41（2025-08-20）
+- 修复 uni-datetime-picker组件时间对比报错问题
+## 2.2.40（2025-04-14）
+- 修复 绑定字符串值的时，日历面板选中状态未重置到默认值的问题
+## 2.2.39（2025-04-14）
+- 修复 在 iOS 微信小程序上type='daterange'时，传入'YYYY-MM-DD'格式不生效的问题
+
+## 2.2.38（2024-10-15）
+- 修复 微信小程序中的getSystemInfo警告
+## 2.2.35（2024-09-21）
+- 修复 没有选中日期时点击确定直接报错的Bug [详情](https://ask.dcloud.net.cn/question/198168)
+## 2.2.34（2024-04-24）
+- 新增 日期点击事件，在点击日期时会触发该事件。
+## 2.2.33（2024-04-15）
+- 修复 抖音小程序事件传递失效bug
+## 2.2.32（2024-02-20）
+- 修复 日历的close事件触发异常的bug [详情](https://github.com/dcloudio/uni-ui/issues/844)
+## 2.2.31（2024-02-20）
+- 修复 h5平台 右边日历的月份默认+1的bug [详情](https://github.com/dcloudio/uni-ui/issues/841)
+## 2.2.30（2024-01-31）
+- 修复 隐藏“秒”时，在IOS15及以下版本时出现 结束时间在开始时间之前 的bug [详情](https://github.com/dcloudio/uni-ui/issues/788)
+## 2.2.29（2024-01-20）
+- 新增 show事件，弹窗弹出时触发该事件 [详情](https://github.com/dcloudio/uni-app/issues/4694)
+## 2.2.28（2024-01-18）
+- 去除 noChange事件，当进行日期范围选择时，若只选了一天，则开始结束日期都为同一天 [详情](https://github.com/dcloudio/uni-ui/issues/815)
+## 2.2.27（2024-01-10）
+- 优化 增加noChange事件，当进行日期范围选择时，若有空值，则触发该事件 [详情](https://github.com/dcloudio/uni-ui/issues/815)
+## 2.2.26（2024-01-08）
+- 修复 字节小程序时间选择范围器失效问题 [详情](https://github.com/dcloudio/uni-ui/issues/834)
+## 2.2.25（2023-10-18）
+- 修复 PC端初次修改时间，开始时间未更新的Bug [详情](https://github.com/dcloudio/uni-ui/issues/737)
 ## 2.2.24（2023-06-02）
 - 修复 部分情况修改时间，开始、结束时间显示异常的Bug [详情](https://ask.dcloud.net.cn/question/171146)
-- 优化 当前月可以选择上月、下月的日期
+- 优化 当前月可以选择上月、下月的日期的Bug
 ## 2.2.23（2023-05-02）
-- 修复 部分情况修改时间，开始时间未更新 [详情](https://github.com/dcloudio/uni-ui/issues/737)
-- 修复 部分平台及设备第一次点击无法显示弹框
-- 修复 ios 日期格式未补零显示及使用异常 [详情](https://ask.dcloud.net.cn/question/162979)
+- 修复 部分情况修改时间，开始时间未更新的Bug [详情](https://github.com/dcloudio/uni-ui/issues/737)
+- 修复 部分平台及设备第一次点击无法显示弹框的Bug
+- 修复 ios 日期格式未补零显示及使用异常的Bug [详情](https://ask.dcloud.net.cn/question/162979)
 ## 2.2.22（2023-03-30）
-- 修复 日历 picker 修改年月后，自动选中当月1日 [详情](https://ask.dcloud.net.cn/question/165937)
-- 修复 小程序端 低版本 ios NaN [详情](https://ask.dcloud.net.cn/question/162979)
+- 修复 日历 picker 修改年月后，自动选中当月1日的Bug [详情](https://ask.dcloud.net.cn/question/165937)
+- 修复 小程序端 低版本 ios NaN的Bug [详情](https://ask.dcloud.net.cn/question/162979)
 ## 2.2.21（2023-02-20）
 - 修复 firefox 浏览器显示区域点击无法拉起日历弹框的Bug [详情](https://ask.dcloud.net.cn/question/163362)
 ## 2.2.20（2023-02-17）
 - 优化 值为空依然选中当天问题
 - 优化 提供 default-value 属性支持配置选择器打开时默认显示的时间
 - 优化 非范围选择未选择日期时间，点击确认按钮选中当前日期时间
-- 优化 字节小程序日期时间范围选择，底部日期换行问题
+- 优化 字节小程序日期时间范围选择，底部日期换行的Bug
 ## 2.2.19（2023-02-09）
 - 修复 2.2.18 引起范围选择配置 end 选择无效的Bug [详情](https://github.com/dcloudio/uni-ui/issues/686)
 ## 2.2.18（2023-02-08）
