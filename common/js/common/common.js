@@ -675,6 +675,9 @@ export const location_compute = (size, location, container_size) => {
  * @returns {Array} - 返回一个处理后的列表，每个元素包含一个split_list属性，该属性是一个数组，包含当前页的轮播项
  */
 export const get_swiper_list = (list, num, rolling_fashion, judgment = true) => {
+    if (list.length <= 0) {
+        return list;
+    }
     // 深拷贝一下，确保不会出现问题
     const cloneList = JSON.parse(JSON.stringify(list));
     // 判断滑动方式如果不是翻译滑动并且judgment为true时，按照分页滑动处理
