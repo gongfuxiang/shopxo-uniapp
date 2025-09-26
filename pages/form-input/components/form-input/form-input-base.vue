@@ -51,7 +51,7 @@
                     </view>
                     <!-- 手机 -->
                     <view v-else-if="item.key == 'phone'">
-                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_change" @zIndexChange="z_index_change"></component-phone>
+                        <component-phone :propValue="item.com_data" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_change" @zIndexChange="z_index_change"></component-phone>
                     </view>
                     <!-- 密码 -->
                     <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
@@ -83,7 +83,7 @@
                     </view>
                     <!-- 上传视频或图片 -->
                     <view v-else-if="['upload-img', 'upload-video'].includes(item.key)" :class="flex_direction == 'row' ? 'padding-vertical-sm' : ''">
-                        <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
+                        <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
                     </view>
                     <!-- 定位 -->
                     <view v-else-if="item.key == 'position'">
@@ -106,7 +106,7 @@
                             :propTitleStyle="title_style" 
                             :propHelpIconStyle="help_icon_style"
                             :propFieldLabelStyle="field_label_style"
-                            :propDataFormId="propDataFormId"
+                            :propFormInputId="propFormInputId"
                             @helpIconEvent="subform_help_icon_event"
                             @subformDataChange="subform_data_change"
                             @zIndexChange="z_index_change"
@@ -115,7 +115,7 @@
                     <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                     <!-- 上传文件 -->
                     <view v-else-if="item.key == 'upload-attachments'">
-                        <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
+                        <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataChange="data_change"></component-upload>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef APP-PLUS || H5 || MP-WEIXIN -->
@@ -197,7 +197,8 @@ export default {
             type: Object,
             default: () => {},
         },
-        propDataFormId: {
+        // 表单id
+        propFormInputId: {
             type: [String, Number],
             default: '',
         },

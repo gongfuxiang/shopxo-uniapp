@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(data || null) != null && (data.config || null) != null">
             <!-- diy模块 -->
-            <component-form-input :propValue="data" :propDataFormId="data.id" :propKey="random_value" @onLocationBack="user_back_choice_location" propSuccessJumpUrl="/pages/form-input-data/form-input-data" :propIsDebug="(params.is_debug || 0) == 1">
+            <component-form-input :propValue="data" :propFormInputId="data.id" :propFormInputDataId="data.forminput_data_id || ''" :propKey="random_value" @onLocationBack="user_back_choice_location" propSuccessJumpUrl="/pages/form-input-data/form-input-data" :propIsDebug="(params.is_debug || 0) == 1">
                 <!-- 底部内容 -->
                 <template slot="diy-bottom-content">
                     <!-- 结尾 -->

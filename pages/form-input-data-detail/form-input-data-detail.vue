@@ -43,7 +43,7 @@
                                                     <uni-th align="left">{{items.name}}</uni-th>
                                                 </block>
                                             </uni-tr>
-                                            <block v-for="(items, index) in item.value">
+                                            <block v-for="(items, indexs) in item.value" :key="indexs">
                                                 <uni-tr v-if="(items || null) != null">
                                                     <block v-for="(itemss, indexss) in items" :key="indexss">
                                                         <uni-th align="left">
