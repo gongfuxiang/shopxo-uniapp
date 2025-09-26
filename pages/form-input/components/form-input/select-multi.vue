@@ -43,7 +43,12 @@
                                     <view>
                                         <checkbox :value="item.value" :checked="!isEmpty(popup_list) && popup_list.includes(item.value)" class="flex-row align-c" style="transform:scale(0.8)"/>
                                     </view>
-                                    <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
+                                    <view class="flex-row align-c gap-5" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">
+                                        {{ item.name }}
+                                        <view v-if="item.type == 'add'" :data-value="item.value" @tap.stop="option_close_event">
+                                           <iconfont name="icon-close" :color="is_multicolour == '1' ? '#fff' : '#999'" size="32rpx"></iconfont>
+                                        </view>
+                                    </view>
                                 </label>
                             </checkbox-group>
                         </view>
@@ -117,12 +122,12 @@
             };
         },
         watch: {
-            propValue: {
-                handler(newVal) {
-                    this.init();
-                },
-                deep: true
-            },
+            // propValue: {
+            //     handler(newVal) {
+            //         this.init();
+            //     },
+            //     deep: true
+            // },
             propKey(val) {
                 // 初始化
                 this.init();
@@ -145,8 +150,10 @@
             isEmpty,
             init() {
                 const com_data = this.propValue;
+                // 合并数组
+                const new_option_list = com_data?.option_list.concat(com_data?.custom_option_list || []) || [];
                 // 取出选择的中文名称和内容
-                const data = com_data?.option_list.filter(item => com_data?.form_value.includes(item.value));
+                const data = new_option_list.filter(item => com_data?.form_value.includes(item.value));
                 let form_value_data = [];
                 if (!isEmpty(data)) {
                     form_value_data = data;
@@ -155,7 +162,7 @@
                     com_data: com_data,
                     is_multicolour: com_data.is_multicolour,
                     placeholder: com_data?.placeholder,
-                    option_list: com_data?.option_list.concat(com_data?.custom_option_list || []) || [],
+                    option_list: new_option_list,
                     custom_option_list: com_data?.custom_option_list || [],
                     color_style: get_color_style(this.propMobile),
                     form_value: com_data?.form_value || '',
@@ -186,6 +193,7 @@
                 if (!isEmpty(val)) {
                     const value = 'option' + get_math();
                     const data = {
+                        type: 'add',
                         name: val,
                         value: value,
                         color: color_change(this.option_list.length),
@@ -205,6 +213,22 @@
             },
             dialog_input_close() {
                 this.$refs.inputDialog.close();
+            },
+            /**
+             * 选项删除事件
+             */
+            option_close_event(e) {
+                const value = e.currentTarget.dataset.value;
+                const custom_option_list = this.custom_option_list.filter((item) => item.value !== value);
+                this.setData({
+                    option_list: this.option_list.filter((item) => item.value !== value),
+                    popup_list: this.popup_list.filter((item) => item !== value),
+                    custom_option_list: custom_option_list,
+                    form_value_data: this.form_value_data.filter((item) => item.value !== value),
+                });
+                // 默认值更新
+                const form_value_data = this.form_value.filter((item) => item !== value);
+                this.$emit('dataOptionChange', { list: custom_option_list, value: form_value_data, id: this.propDataId });
             },
             /**
              * 快速关闭事件

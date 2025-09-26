@@ -5,7 +5,12 @@
                 <view>
                     <checkbox :value="item.value" :checked="!isEmpty(form_value) && form_value.includes(item.value)" class="flex-row align-c" style="transform:scale(0.7)" />
                 </view>
-                <view :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ item.name }}</view>
+                <view class="flex-row align-c gap-5" :style="is_multicolour == '1' ? 'background:' + item.color + ';color:' + (item.is_other == '1' ? '#141E31' : '#fff') + ';border-radius:8rpx;' + color_style : color_style + 'padding-left:0rpx;padding-right:0rpx;'">
+                    {{ item.name }}
+                    <view v-if="item.type == 'add'" :data-value="item.value" @tap.stop="option_close_event">
+                        <iconfont name="icon-close" :color="is_multicolour == '1' ? '#fff' : '#999'" size="32rpx"></iconfont>
+                    </view>
+                </view>
             </label>
         </checkbox-group>
         <view v-if="com_data.is_add_option == '1'" class="add-option flex-row gap-10 align-c" @tap="add_option">
@@ -57,12 +62,6 @@
             };
         },
         watch: {
-            propValue: {
-                handler(newVal) {
-                    this.init();
-                },
-                deep: true
-            },
             propKey(val) {
                 // 初始化
                 this.init();
@@ -90,10 +89,22 @@
                 })
                 this.$refs.inputDialog.open();
             },
+            option_close_event(e) {
+                const value = e.currentTarget.dataset.value;
+                const new_custom_option_list = this.custom_option_list.filter(item => item.value != value);
+                const new_value = this.form_value.filter(item => item != value);
+                this.setData({
+                    option_list: this.option_list.filter(item => item.value != value),
+                    form_value: new_value,
+                    custom_option_list: new_custom_option_list,
+                });
+                this.$emit('dataOptionChange', { list: new_custom_option_list, value: new_value, id: this.propDataId });
+            },
             dialog_input_confirm(val) {
                 if (!isEmpty(val)) {
                     const value = 'option' + get_math();
                     const data = {
+                        type: 'add',
                         name: val,
                         value: value,
                         color: color_change(this.option_list.length),
