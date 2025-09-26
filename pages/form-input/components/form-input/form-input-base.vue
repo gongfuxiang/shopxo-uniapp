@@ -218,6 +218,7 @@ export default {
             mobile: {},
             popup_help_content: '',
             is_custom: false,
+            filter_data: ['video', 'img', 'auxiliary-line', 'position', 'rect', 'round', 'text', 'attachments'],
             // 定义字段类型与检查参数的映射
             fieldCheckMap: {
                 'address': { is_format: false, type: 'address' },
@@ -629,10 +630,10 @@ export default {
         submit_data_parameter_handle() {
             try { 
                 const submit_data = {};
-                const filter_data = ['video', 'img', 'auxiliary-line', 'position', 'rect', 'round', 'text', 'attachments'];
+                // const filter_data = ['video', 'img', 'auxiliary-line', 'position', 'rect', 'round', 'text', 'attachments'];
                 // 规整字段信息
                 this.filteredDiyData.forEach((item) => {
-                    if (!filter_data.includes(item.key)) {
+                    if (!this.filter_data.includes(item.key)) {
                         const name = isEmpty(item.form_name) ? item.id : item.form_name;
                         const value = isEmpty(item.com_data.form_value) ? '' : item.com_data.form_value;
                         const com_data = item.com_data;
@@ -782,7 +783,7 @@ export default {
                     const subform_com_data = item1.com_data;
                     // 对应的value
                     const subform_value = isEmpty(subform_com_data.form_value) ? '' : subform_com_data.form_value;
-                    if (!filter_data.includes(item1.key)) {
+                    if (!this.filter_data.includes(item1.key)) {
                         if (item1.key == 'address') {
                             data[`${ subform_name }_province_id`] = subform_value[0] || '';
                             data[`${ subform_name }_city_id`] = subform_value[1] || '';
@@ -791,10 +792,10 @@ export default {
                             submit_data[`${ subform_name }_province_name`] = subform_com_data.province_name || '';
                             submit_data[`${ subform_name }_city_name`] = subform_com_data.city_name || ''
                             submit_data[`${ subform_name }_county_name`] = subform_com_data.county_name || ''
-                        } else if (item.key ==='date-group') {
+                        } else if (item1.key ==='date-group') {
                             submit_data[`${ subform_name }_start`] = subform_value[0] || '';
                             submit_data[`${ subform_name }_end`] = subform_value[1] || '';
-                        } else if (['checkbox', 'select-multi'].includes(item.key)) {
+                        } else if (['checkbox', 'select-multi'].includes(item1.key)) {
                             submit_data[subform_name] = subform_value;
                             if (subform_com_data.is_add_option == '1') {
                                 submit_data[`${ subform_name }_custom_option_list`] = subform_com_data?.custom_option_list || [];
