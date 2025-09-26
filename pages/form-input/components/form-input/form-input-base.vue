@@ -860,6 +860,7 @@ export default {
             if (filter_data_list.length > 0) {
                 filter_data_list?.forEach((item) => {
                     let com_data = item.com_data;
+                    let message = '';
                     if (item.key === 'subform') {
                         com_data = this.subform_data_check(com_data);
                         // 子表单中每一行的数据显示
