@@ -64,7 +64,7 @@
                 <view class="pr flex-row">
                     <block v-if="(shop_navigation || null) != null && shop_navigation.length > 0">
                         <block v-for="(item, index) in shop_navigation" :key="index">
-                            <view class="item par dis-inline-block cp" @tap="nav_event" :data-value="((item.items || null) == null || item.items.length == 0) ? item.url : ''" :data-index="index">{{ item.name }}</view>
+                            <view class="item par dis-inline-block cp" @tap="nav_event" :data-sub="((item.items || null) == null || item.items.length == 0) ? 0 : 1" :data-value="((item.items || null) == null || item.items.length == 0) ? item.url : ''" :data-index="index">{{ item.name }}</view>
                         </block>
                     </block>
                 </view>
@@ -319,15 +319,14 @@
 
             // 分类事件
             shop_goods_category_event(e) {
-                var value = e.currentTarget.dataset.value || null;
+                var value = e.currentTarget.dataset.value || '';
                 app.globalData.url_open('/pages/plugins/shop/search/search?shop_id=' + this.propShop.id + '&category_id=' + value);
                 this.popup_all_goods_category_event();
             },
 
             // 导航事件
             nav_event(e) {
-                var value = e.currentTarget.dataset.value || null;
-                if(value == null) {
+                if(parseInt(e.currentTarget.dataset.sub || 0) == 1) {
                     var index = e.currentTarget.dataset.index;
                     this.setData({
                         shop_navigation_two_data: this.propShopNavigation[index]['items'] || [],
@@ -335,10 +334,12 @@
                     });
                 } else {
                     app.globalData.url_event(e);
-                    this.popup_nav_two_category_event();
+                    this.setData({
+                        popup_nav_two_category_status: false
+                    });
                 }
             },
-            
+
             // 店铺导航二级事件弹窗
             popup_nav_two_category_event(e) {
                 this.setData({
