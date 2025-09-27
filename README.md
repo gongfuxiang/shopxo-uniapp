@@ -41,19 +41,19 @@
 * Gitee：[https://gitee.com/zongzhige/shopxo-uniapp](https://gitee.com/zongzhige/shopxo-uniapp)
 * GitHub：[https://github.com/gongfuxiang/shopxo-uniapp](https://github.com/gongfuxiang/shopxo-uniapp)
 * Coding：[https://zongzhige.coding.net/public/shopxo/uniapp/git](https://zongzhige.coding.net/public/shopxo/uniapp/git)
-* GitCode：[https://gitcode.net/zongzhige/shopxo-uniapp](https://gitcode.net/zongzhige/shopxo-uniapp)
+* GitCode：[https://gitcode.com/zongzhige/shopxo-uniapp](https://gitcode.com/zongzhige/shopxo-uniapp)
 * uni-app：[https://ext.dcloud.net.cn/plugin?id=6380](https://ext.dcloud.net.cn/plugin?id=6380)
 
 #### ShopXO后端源代码平台
 * Gitee：[https://gitee.com/zongzhige/shopxo](https://gitee.com/zongzhige/shopxo)
 * GitHub：[https://github.com/gongfuxiang/shopxo](https://github.com/gongfuxiang/shopxo)
 * Coding：[https://zongzhige.coding.net/public/shopxo/shopxo/git](https://zongzhige.coding.net/public/shopxo/shopxo/git)
-* GitCode：[https://gitcode.net/zongzhige/shopxo](https://gitcode.net/zongzhige/shopxo)
+* GitCode：[https://gitcode.com/zongzhige/shopxo](https://gitcode.com/zongzhige/shopxo)
 
 #### DIY装修源代码平台
 * Gitee：[https://gitee.com/zongzhige/shopxo-diy](https://gitee.com/zongzhige/shopxo-diy)
 * GitHub：[https://github.com/gongfuxiang/shopxo-diy](https://github.com/gongfuxiang/shopxo-diy)
-* GitCode：[https://gitcode.net/zongzhige/shopxo-diy](https://gitcode.net/zongzhige/shopxo-diy)
+* GitCode：[https://gitcode.com/zongzhige/shopxo-diy](https://gitcode.com/zongzhige/shopxo-diy)
 
 #### API接口文档
 * [https://doc.shopxo.net/article/2.html](https://doc.shopxo.net/article/2.html)
