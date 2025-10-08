@@ -7,7 +7,7 @@
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
                 <!-- 小导航 -->
                 <view class="top-nav-left-icon pf" :style="'top:' + top_nav_icon_top_value + 'px;'">
-                    <uni-icons type="arrowleft" size="22" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
+                    <uni-icons type="back" size="22" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
                     <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round cp margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
                 </view>
                 <!-- #endif -->
