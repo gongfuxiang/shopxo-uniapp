@@ -7,6 +7,7 @@
                         <component-panel-content :propData="item" :propDataField="field_list" :propIsTerse="true"></component-panel-content>
                     </view>
                     <view class="item-operation tr margin-top-main">
+                        <button class="btn round cr-green br-green bg-white text-size-md" type="default" size="mini" :data-value="'/pages/form-input/form-input?id='+item.forminput_id+'&did='+item.id" @tap="url_event" hover-class="none">{{$t('common.edit')}}</button>
                         <button class="btn round cr-red br-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                         <button class="btn round cr-base br-grey-9 bg-white text-size-md" type="default" size="mini" :data-value="'/pages/form-input-data-detail/form-input-data-detail?id='+item.id" @tap="url_event" hover-class="none">{{$t('common.detail_text')}}</button>
                     </view>
