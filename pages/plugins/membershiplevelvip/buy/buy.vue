@@ -23,11 +23,11 @@
                                     <block v-for="(rules, ri) in item.pay_period_rules" :key="ri">
                                         <view class="list padding-sm oh" @tap="content_event" :data-index="ri" :data-value="currency_symbol + rules.price + '/' + ((rules.number || null) == null ? $t('buy.buy.b3dyo7') : rules.value + rules.unit)">
                                             <view class="item flex-col" :class="selected_content_index === ri ? 'active' : ''">
-                                                <view class="number single-text text-size-lg">
+                                                <view class="number single-text text-size-lg padding-horizontal-sm">
                                                     <text class="fw-b">{{ (rules.number || null) == null ? $t('buy.buy.b3dyo7') : rules.value }}</text>
                                                     <text v-if="(rules.unit || null) != null" class="margin-left-sm">{{ rules.unit }}</text>
                                                 </view>
-                                                <view v-if="(rules.desc || null) != null" class="desc margin-top-sm">{{ rules.desc }}</view>
+                                                <view v-if="(rules.desc || null) != null" class="desc multi-text padding-horizontal-sm margin-top-sm">{{ rules.desc }}</view>
                                                 <view class="price flex-row align-s">
                                                     <text class="cr-red text-size-md pr top-lg margin-right-xs">{{ currency_symbol }}</text>
                                                     <text class="fw-b cr-red text-size-xl single-text">{{ rules.price }}</text>
