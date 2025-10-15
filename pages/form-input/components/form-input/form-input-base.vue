@@ -325,6 +325,9 @@ export default {
                                 child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.arrang == 'direction' ? (emobile.flex_direction || 'row') : 'column', overall_config.type_value);
                                 if (!isEmpty(item1[child.id])) {
                                     child.com_data.form_value = item1[child.id];
+                                    if (!isEmpty(item1[child.id + '_custom_option_list'])) {
+                                        child.com_data.custom_option_list = item1[child.id + '_custom_option_list'];
+                                    }
                                 }
                             });
                             data_list.push({

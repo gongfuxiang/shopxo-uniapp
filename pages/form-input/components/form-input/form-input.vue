@@ -40,10 +40,13 @@
             </template>
             <view class="bottom-line-exclude">
                 <view class="form-footer flex-row align-c">
-                    <view v-if="overall_config.is_show_save_draft == '1'" class="save_draft_title flex-col jc-c align-c">
-                        <iconfont name="icon-detail" size="30rpx" color="#666" propContainerDisplay="flex" ></iconfont>
-                        {{ overall_config.save_draft_title }}
+                    <view class="save_draft_title flex-col jc-c align-c" @tap="top_nav_left_back_event">
+                        <iconfont :name="'icon-' + back_icon" size="30rpx" color="#666" propContainerDisplay="flex" ></iconfont>
+                        {{ back_icon == 'back' ? $t('common.return') : $t('common.home') }}
                     </view>
+                    <!-- <view class="bottom-line-back" @tap.stop="bottom_line_back">
+                        <iconfont :name="'icon-' + back_icon" size="46rpx" color="#666" propContainerDisplay="flex" ></iconfont>
+                    </view> -->
                     <button v-if="overall_config.is_show_submit == '1'" class="flex-1 submit_title flex-row align-c jc-c" :style="'background:' + submit_bg_color" type="default" :disabled="is_submit_disable" @tap="on_submit_event">{{ overall_config.submit_title }}</button>
                 </view>
             </view>
@@ -99,6 +102,7 @@ export default {
     },
     data() {
         return {
+            back_icon: 'home',
             data_list: [],
             form_name: '',
             img_url: '',
@@ -135,6 +139,14 @@ export default {
     methods: {
         isEmpty,
         init() {
+            // 判断应该显示什么icon
+            const pages = getCurrentPages();
+            const length = pages.length;
+            if (length > 1) {
+                this.back_icon = 'back';
+            } else {
+                this.back_icon = 'home';
+            }
             const data = this.propValue;
             // 公共配置信息
             const overall_config = data.config?.overall_config || {};
@@ -156,6 +168,10 @@ export default {
                     scrollTop: 0.01
                 })
             }, 500);
+        },
+        // 返回事件
+        top_nav_left_back_event(e) {
+            app.globalData.page_back_prev_event();
         },
         /*
         * 点击提交按钮触发方法
@@ -243,9 +259,9 @@ export default {
     width: 100%;
     border-top: 2rpx solid #eee;
     .save_draft_title {
-        min-width: 180rpx;
+        min-width: 120rpx;
         font-size: 24rpx;
-        margin: 0 20rpx 0 0;
+        // margin: 0 20rpx 0 0;
     }
     .submit_title {
         text-align: center;
@@ -282,5 +298,9 @@ export default {
     height: 100%;
     background: transparent;
     z-index: 999;
+}
+// 返回按钮的显示逻辑
+.bottom-line-back {
+    margin-right: 20rpx;
 }
 </style>
