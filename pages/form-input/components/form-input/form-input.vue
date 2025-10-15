@@ -134,12 +134,12 @@ export default {
         isEmpty,
         init() {
             // 判断应该显示什么icon
-            let pages = getCurrentPages();
-            let length = pages.length;
+            const pages = getCurrentPages();
+            const length = pages.length;
             if (length > 1) {
                 this.back_icon = 'back';
             } else {
-                this.back_icon = 'back';
+                this.back_icon = 'home';
             }
             const data = this.propValue;
             // 公共配置信息
