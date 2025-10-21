@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'https://d1.shopxo.vip/',
+                request_url:'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'https://d1.shopxo.vip/',
+                static_url:'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -2470,6 +2470,39 @@
             // 价格符号
             currency_symbol() {
                 return this.get_config('currency_symbol') || this.data.currency_symbol;
+            },
+
+            // 购物车结算数据参数
+            // appoint_goods_ids  指定结算商品id，多个id逗号分割）
+            buy_cart_data_params(data, appoint_goods_ids = null) {
+                // 解析当前选择的数据商品id
+                var temp_appoint_goods_ids = [];
+                if((appoint_goods_ids || null) != null) {
+                    temp_appoint_goods_ids = appoint_goods_ids.split(',').map(function(v){return parseInt(v);});
+                }
+                // 匹配商品
+                var ids = [];
+                if ((data || null) != null) {
+                    for (var i in data) {
+                        if (data[i]['is_error'] == 0 && (temp_appoint_goods_ids.length == 0 || temp_appoint_goods_ids.indexOf(parseInt(data[i]['goods_id'])) != -1)) {
+                            ids.push(data[i]['id']);
+                        }
+                    }
+                }
+                if(ids.length <= 0) {
+                    return false;
+                }
+            
+                // 结算参数
+                return {
+                    buy_type: 'cart',
+                    ids: ids.join(','),
+                };
+            },
+
+            // 进入购买
+            to_buy_handle(buy_data, pages = '/pages/buy/buy') {
+                this.url_open(pages+'?data=' + encodeURIComponent(base64.encode(JSON.stringify(buy_data))));
             },
 
             // 位置权限校验

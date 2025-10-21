@@ -1027,7 +1027,7 @@
 
             // 预下单处理
             pre_order_handle() {
-                var data = this.buy_data_params();
+                var data = this.buy_cart_data_params();
                 if (data !== false) {
                     uni.request({
                         url: app.globalData.get_request_url('index', 'buy'),
@@ -1063,23 +1063,16 @@
 
             // 结算数据参数
             // appoint_goods_ids  指定结算商品id，多个id逗号分割）
-            buy_data_params(appoint_goods_ids = null) {
-                // 解析当前选择的数据商品id
-                var temp_appoint_goods_ids = [];
-                if((appoint_goods_ids || null) != null) {
-                    temp_appoint_goods_ids = appoint_goods_ids.split(',').map(function(v){return parseInt(v);});
-                }
-                // 匹配商品
-                var selected_count = 0;
-                var ids = [];
+            buy_cart_data_params(appoint_goods_ids = null) {
+                var data_list = [];
                 var temp_data_list = this.data_list || [];
                 for (var i in temp_data_list) {
-                    if ((temp_data_list[i]['is_error'] || 0) == 0 && (temp_data_list[i]['selected'] || false) == true && (temp_appoint_goods_ids.length == 0 || temp_appoint_goods_ids.indexOf(parseInt(temp_data_list[i]['goods_id'])) != -1)) {
-                        ids.push(temp_data_list[i]['id']);
-                        selected_count++;
+                    if ((temp_data_list[i]['selected'] || false) == true) {
+                        data_list.push(temp_data_list[i]);
                     }
                 }
-                if (selected_count <= 0) {
+                var data = app.globalData.buy_cart_data_params(data_list, appoint_goods_ids);
+                if(data === false) {
                     this.setData({
                         preferential_price: 0,
                         increase_price: 0,
@@ -1088,19 +1081,13 @@
                         total_num: 0,
                         discount_detail_list: [],
                     });
-                    return false;
-                }
-
-                // 结算参数
-                var data = {
-                    buy_type: 'cart',
-                    ids: ids.join(','),
-                };
-                // 是否门店模式
-                if (this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
-                    var type_data = this.$refs.realstore_cart.buy_use_type_data();
-                    data['buy_use_type_data_index'] = type_data.data_index;
-                    data['realstore_id'] = this.plugins_realstore_info.id;
+                } else {
+                    // 是否门店模式
+                    if (this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
+                        var type_data = this.$refs.realstore_cart.buy_use_type_data();
+                        data['buy_use_type_data_index'] = type_data.data_index;
+                        data['realstore_id'] = this.plugins_realstore_info.id;
+                    }
                 }
                 return data;
             },
@@ -1108,7 +1095,7 @@
             // 结算
             buy_submit_event(e) {
                 // 结算参数
-                var buy_data = this.buy_data_params();
+                var buy_data = this.buy_cart_data_params();
                 if (buy_data === false) {
                     app.globalData.showToast(this.$t('cart.cart.3sy0mp'));
                     return false;
@@ -1122,7 +1109,7 @@
                 }
 
                 // 进入结算页面
-                this.to_buy_handle(buy_data);
+                app.globalData.to_buy_handle(buy_data);
             },
 
             // 互联网医院处方问诊
@@ -1145,11 +1132,11 @@
                                     plugins_hospital_prescription_status: true
                                 });
                             } else {
-                                this.to_buy_handle(buy_data);
+                                app.globalData.to_buy_handle(buy_data);
                             }
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
-                                this.to_buy_handle(buy_data);
+                                app.globalData.to_buy_handle(buy_data);
                             } else {
                                 app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
@@ -1166,13 +1153,13 @@
             hospital_prescription_confirm_event(e) {
                 var index = e.currentTarget.dataset.index || 0;
                 var data = this.plugins_hospital_prescription_data.choice_data[index];
-                var buy_data = this.buy_data_params(data.goods_ids);
+                var buy_data = this.buy_cart_data_params(data.goods_ids);
                 // 问诊开方
                 if(data.type == 'prescription') {
-                    this.to_buy_handle(buy_data, '/pages/plugins/hospital/prescription/prescription');
+                    app.globalData.to_buy_handle(buy_data, '/pages/plugins/hospital/prescription/prescription');
                 } else {
                     // 普通结算
-                    this.to_buy_handle(buy_data);
+                    app.globalData.to_buy_handle(buy_data);
                 }
             },
 
@@ -1181,11 +1168,6 @@
                 this.setData({
                     plugins_hospital_prescription_status: false
                 });
-            },
-
-            // 进入购买
-            to_buy_handle(buy_data, pages = '/pages/buy/buy') {
-                app.globalData.url_open(pages+'?data=' + encodeURIComponent(base64.encode(JSON.stringify(buy_data))));
             },
 
             // 展示型事件
