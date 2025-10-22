@@ -634,12 +634,12 @@ export default {
                         return { ...item, ...match };
                     });
                     this.setData({ data_list: data_list });
-                    return { forminput_id: this.propFormInputId, type: 'error', submit_data: {}, message: message };
+                    return { forminput_id: this.propFormInputId, status: 'error', submit_data: {}, message: message };
                 } else {
                     return this.submit_data_parameter_handle();
                 }
             } catch (error) {
-                return { forminput_id: this.propFormInputId, type: 'error', submit_data: {}, message: '数据错误'};
+                return { forminput_id: this.propFormInputId, status: 'error', submit_data: {}, message: '数据错误'};
             }
         },
         /*
@@ -696,9 +696,9 @@ export default {
                         }
                     }
                 });
-                return { forminput_id: forminput_id, type: 'success', submit_data: submit_data, message: ''};
+                return { forminput_id: forminput_id, status: 'success', submit_data: submit_data, message: ''};
             } catch (error) {
-                return { forminput_id: forminput_id, type: 'error', submit_data: {}, message: '数据错误'};
+                return { forminput_id: forminput_id, status: 'error', submit_data: {}, message: '数据错误'};
             }
         },
         /*

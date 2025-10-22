@@ -178,8 +178,8 @@ export default {
         */
         on_submit_event() { 
             const e = this.$refs.component_form.on_submit_event();
-            const { type = 'success', message = '', submit_data = {}} = e;
-            if (type == 'error') {
+            const { status = 'success', message = '', submit_data = {}} = e;
+            if (status == 'error') {
                 app.globalData.showToast(message);
             } else {
                 const params = {
