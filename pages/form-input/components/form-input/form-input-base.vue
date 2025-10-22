@@ -47,7 +47,7 @@
                     </view>
                     <!-- 地址 -->
                     <view v-else-if="item.key == 'address'">
-                        <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @regionEvent="region_event" @dataAddressChange="data_address_change" @zIndexChange="z_index_change"></component-address>
+                        <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @regionEvent="region_event" @dataAddressChange="data_address_change" @dataAddressBlur="data_address_blur" @zIndexChange="z_index_change"></component-address>
                     </view>
                     <!-- 手机 -->
                     <view v-else-if="item.key == 'phone'">
@@ -444,7 +444,7 @@ export default {
             });
             this.setData({ data_list: data });
             // 触发数据修改的事件
-            this.verify_when_data_changes(id);
+            // this.verify_when_data_changes(id);
         },
         /*
         * 其他的备注信息修改
@@ -460,7 +460,7 @@ export default {
             });
             this.setData({ data_list: data });
             // 触发数据修改的事件
-            this.verify_when_data_changes(id);
+            // this.verify_when_data_changes(id);
         },
         /*
         * 表单内数据的校验完成后的数据更新
@@ -496,7 +496,7 @@ export default {
             });
             this.setData({ data_list: data });
             // 触发数据修改的事件
-            this.on_item_event(e);
+            this.on_item_event(e, 'other');
         },
         /*
         * 添加新选项时的处理
@@ -512,6 +512,8 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+            // 触发数据修改的事件
+            this.on_item_event(e, 'custom_option_list');
         },
         /*
         * 手机号验证码的值的修改
@@ -543,7 +545,7 @@ export default {
             });
             this.setData({ data_list: data });
             // 触发数据修改的事件
-            this.on_item_event(e);
+            this.on_item_event(e, 'phone_code');
         },
         /*
         * 子表单数据更新
@@ -590,6 +592,18 @@ export default {
                 }
             });
             this.setData({ data_list: data });
+        },
+        data_address_blur(e) {
+            const { value, id } = e;
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.detailed_value = value;
+                }
+            });
+            this.setData({ data_list: data });
+            this.on_item_event(e, 'detailed')
         },
         /*
         * 表单提交
@@ -817,9 +831,7 @@ export default {
         */
         handle_phone_validation(com_data) {
             if (com_data.is_sms_verification === '1' && com_data.is_required === '1' && isEmpty(com_data.form_value_code)) {
-                com_data.common_config.is_error = '1';
-                com_data.common_config.error_text = '短信验证码不能为空';
-                return;
+                return { is_error: '1', error_text: '短信验证码不能为空' };
             }
             com_data.common_config.format = com_data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
             return get_format_checks(com_data, com_data.form_value, true);
@@ -858,11 +870,11 @@ export default {
         /*
         * 没有办法监听用户离开时进行校验逻辑的组件，直接使用数据更新时的执行校验逻辑，并抛给父级
         */
-        verify_when_data_changes (id) { 
+        verify_when_data_changes(id) { 
             const data = JSON.parse(JSON.stringify(this.filteredDiyData));
             const filter_data_list = data.filter((item) => ['subform', 'position', 'rich-text', 'upload-attachments', 'upload-img', 'upload-video'].includes(item.key) && item.id === id);
             if (filter_data_list.length > 0) {
-                filter_data_list?.forEach((item) => {
+                filter_data_list?.forEach((item, index) => {
                     let com_data = item.com_data;
                     let message = '';
                     if (item.key === 'subform') {
@@ -876,14 +888,22 @@ export default {
                             message = `${com_data.title}「${com_data.common_config.error_text}」`;
                         } else {
                             // 判断子表单每一行是否有报错提示
-                            const is_list_error = com_data.data_list.some((item1) => item1.data_list.some(list_item => list_item.com_data.common_config.is_error === '1'));
-                            if (is_list_error) {
-                                is_error = '1';
-                                // 如果是内部问题，让用户自己检查子表单内的填写
-                                message = `请检查${com_data.title}内的填写`;
+                            const line_error = com_data.data_list.filter((item) => item.com_data.common_config.is_error === '1')
+                            if (line_error.length > 0) {
+                                const err_list = line_error[0].com_data;
+                                // 如果当前行有错误
+                                if (err_list && err_list.common_config && err_list.common_config.is_error == '1') {
+                                    if (err_list.common_config.error_text == '此项为必填项') {
+                                        message = `请填写「${err_list.title}」`;
+                                    } else {
+                                        message = `请正确填写「${err_list.title}」`;
+                                    }
+                                }
+                            } else {
+                                message = '';
                             }
                         }
-                        this.on_item_event({ id: item.id, key: item.key, value: subform_data, is_error: is_error, error_text: message });
+                        this.on_item_event({ id: item.id, key: item.key, value: subform_data, is_error: is_error, error_text: message }, 'subform', index);
                     } else {
                         // 跳过非必填项
                         if (com_data.is_required === '1') {
@@ -905,12 +925,56 @@ export default {
         /*
         * 单个文件更新触发的事件
         */
-        on_item_event(e) {
+        on_item_event(e, type = '', index = '') {
             // 取出对应id的数据
             const data = this.data_list.find((item) => item.id == e.id);
             // 判断是否为空，为空则不进行处理
             if (data) {
-               this.$emit('onItemEvent', { forminput_id: this.propFormInputId, type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: e.value, form_name: data.form_name, form_title: data.com_data.title });
+                const form_value = {};
+                const com_data = data.com_data;
+                const value = com_data.form_value;
+                const form_name = data.form_name;
+                if (data.key == 'address') {
+                    // 判断输入的是否是详细地址，如果不是详细地址就返回地址信息，否则的话就返回详细地址信息
+                    if (type != 'detailed') {
+                        form_value[`${ form_name }_province_id`] = value[0] || '';
+                        form_value[`${ form_name }_city_id`] = value[1] || '';
+                        form_value[`${ form_name }_county_id`] = value[2] || '';
+                        // 省市区中文名称
+                        form_value[`${ form_name }_province_name`] = com_data.province_name || '';
+                        form_value[`${ form_name }_city_name`] = com_data.city_name || ''
+                        form_value[`${ form_name }_county_name`] = com_data.county_name || ''
+                    } else {
+                        form_value[`${ form_name }_address`] = com_data?.detailed_value || '';
+                    }
+                } else if (item.key == 'phone') {
+                    // 判断是否是短信验证码输入，否则的话，传递手机号显示
+                    if (type != 'phone_code') {
+                        form_value[`${ form_name }`] = com_data?.form_value || '';
+                    } else {
+                        form_value[`${ form_name }_verify`] = com_data?.form_value_code || '';
+                    }
+                } else if (item.key ==='date-group') {
+                    form_value[`${ form_name }_start`] = com_data?.form_value[0] || '';
+                    form_value[`${ form_name }_end`] = com_data?.form_value[1] || '';
+                } else if (['checkbox', 'select-multi'].includes(item.key)) {
+                    if (type != 'custom_option_list') {
+                        form_value[`${ form_name }`] = com_data?.form_value || '';
+                    } else {
+                        form_value[`${ form_name }_custom_option_list`] = com_data?.custom_option_list || '';
+                    }
+                } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
+                    if (type != 'other') {
+                        form_value[`${ form_name }`] = com_data?.form_value || '';
+                    } else {
+                        form_value[`${ form_name }_other_value`] = com_data?.other_value || '';
+                    }
+                } else if (type == 'subform') {
+                    form_value[`${ form_name }`] = e.value;
+                } else {
+                    form_value[`${ form_name }`] = com_data?.form_value || '';
+                }
+                this.$emit('onItemEvent', { forminput_id: this.propFormInputId, type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: form_value, form_name: data.form_name, subform_index: index, form_title: data.com_data.title });
             }
         },
         /*

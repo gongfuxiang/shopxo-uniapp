@@ -13,7 +13,7 @@
             </view>
             <view v-if="propDirection == 'row' && address_type == 'detailed'" class="border-line"></view>
             <view v-if="address_type == 'detailed'" class="flex-row">
-                <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" />
+                <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" @blur="input_value_blur" />
             </view>
         </view>
         <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
@@ -155,6 +155,13 @@
                     detailed_value: e.detail.value,
                 });
                 this.$emit('dataAddressChange', { value: e.detail.value, id: this.propDataId });
+            },
+            input_value_blur(e) {
+                 // 重新编辑一下历史数据
+                this.setData({
+                    detailed_value: e.detail.value,
+                });
+                this.$emit('dataAddressBlur', { value: e.detail.value, id: this.propDataId });
             },
             /**
              * 有值的时候就是将当前组件的层级调到最高，没有值的时候就是将当前组件的层级调回原样，避免弹出框出来的时候被其他组件盖住或悬浮在弹出框外部
