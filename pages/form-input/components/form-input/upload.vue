@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import { isEmpty, common_form_styles_computer } from '@/common/js/common/common.js';
+    import { isEmpty, common_form_styles_computer, get_format_checks } from '@/common/js/common/common.js';
     import uploads from '@/pages/form-input/components/form-input/modules/uploads.vue';
     export default {
         components: {
