@@ -620,21 +620,21 @@ export default {
                         return { ...item, ...match };
                     });
                     this.setData({ data_list: data_list });
-                    this.$emit('onSubmitEvent', { type: 'error', submit_data: {}, message: message });
+                    return { forminput_id: this.propFormInputId, type: 'error', submit_data: {}, message: message };
                 } else {
-                    this.submit_data_parameter_handle();
+                    return this.submit_data_parameter_handle();
                 }
             } catch (error) {
-                this.$emit('onSubmitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
+                return { forminput_id: this.propFormInputId, type: 'error', submit_data: {}, message: '数据错误'};
             }
         },
         /*
         * 表单提交参数处理
         */
         submit_data_parameter_handle() {
-            try { 
+            let forminput_id = this.propFormInputId;
+            try {
                 const submit_data = {};
-                // const filter_data = ['video', 'img', 'auxiliary-line', 'position', 'rect', 'round', 'text', 'attachments'];
                 // 规整字段信息
                 this.filteredDiyData.forEach((item) => {
                     if (!this.filter_data.includes(item.key)) {
@@ -682,9 +682,9 @@ export default {
                         }
                     }
                 });
-                this.$emit('onSubmitEvent', { type: 'success', submit_data: submit_data, message: ''});
+                return { forminput_id: forminput_id, type: 'success', submit_data: submit_data, message: ''};
             } catch (error) {
-                this.$emit('onSubmitEvent', { type: 'error', submit_data: {}, message: '数据错误'});
+                return { forminput_id: forminput_id, type: 'error', submit_data: {}, message: '数据错误'};
             }
         },
         /*
@@ -744,7 +744,7 @@ export default {
                 // 验证子表单内各字段
                 com_data.data_list.forEach((form_item, index) => {
                     // 取出对应列的数据信息
-                    const form_data = this.filtered_Data(form_item.data_list);
+                    const form_data = this.filtered_data(form_item.data_list);
                     form_data.forEach((data_item) => {
                         // 跳过非必填项
                         if (data_item.com_data.is_required !== '1') return;
@@ -827,7 +827,7 @@ export default {
         /*
         * 子表单显隐规则数据处理
         */
-        filtered_Data(children) { 
+        filtered_data(children) { 
             const componentMap = new Map(children.map((item) => [item.id, item]));
 
             // 取出所有设置显隐规则的组件
@@ -910,7 +910,7 @@ export default {
             const data = this.data_list.find((item) => item.id == e.id);
             // 判断是否为空，为空则不进行处理
             if (data) {
-               this.$emit('onItemEvent', { type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: e.value, form_name: data.form_name });
+               this.$emit('onItemEvent', { forminput_id: this.propFormInputId, type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: e.value, form_name: data.form_name, form_title: data.com_data.title });
             }
         },
         /*

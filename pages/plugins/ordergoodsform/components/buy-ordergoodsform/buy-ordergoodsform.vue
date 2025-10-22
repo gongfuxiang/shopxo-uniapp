@@ -1,26 +1,15 @@
 <template>
     <view :class="theme_view">
         <view v-if="data.length > 0" class="plugins-ordergoodsform-buy oh margin-top-sm">
-            <view v-for="(item, index) in data" :key="index" class="item pr oh">
-                <view class="title dis-block single-text text-size-sm pa">{{item.title}}</view>
-                <view class="value dis-block pa">
-                    <view v-if="propIsRead">{{item.content}}</view>
-                    <input v-else :type="((item.element_arr || null) == null || (item.element_arr[1] || null) == null) ? 'text' : item.element_arr[1]" 
-                        :placeholder="(item.placeholder || null) == null ? item.title : item.placeholder" 
-                        :data-index="index"
-                        :value="item.default_value || ''"
-                        @blur="input_value_event"
-                        @confirm="input_value_event"
-                        placeholder-class="cr-grey"
-                        :class="'radius text-size-sm padding-horizontal-sm '+((item.check_status === undefined || item.check_status === true) ? 'br' : 'br-red')"
-                    />
-                </view>
-            </view>
+            <block v-for="(item, index) in data" :key="index">
+                <form-input-base ref="component_form" :propKey="index" :propConfig="item.config" :propFormInputId="item.id" @onItemEvent="item_change_event"/>
+            </block>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
+    import formInputBase from '@/pages/form-input/components/form-input/form-input-base.vue';
     export default {
         data() {
             return {
@@ -28,7 +17,9 @@
                 data: [],
             };
         },
-        components: {},
+        components: {
+            formInputBase
+        },
         props: {
             propData: {
             	type: [Array],
@@ -50,6 +41,32 @@
             });
         },
         methods: {
+            // 表单改变事件
+            item_change_event(e) {
+                console.log(e);
+                
+                // var res = this.$refs.component_form[0].on_submit_event();
+                // console.log(res);
+            
+                if(e.type == 'success') {
+                    // 保存数据
+                    uni.request({
+                        url: app.globalData.get_request_url('save', 'goods', 'ordergoodsform'),
+                        method: 'POST',
+                        data: {
+                            goods_id: this.propGoodsID,
+                            form_id: e.forminput_id,
+                            content: e.value
+                        },
+                        dataType: 'json'
+                    });
+                } else {
+                    app.globalData.showToast(e.message);
+                }
+            },
+            
+
+
             // 数据值事件
             input_value_event(e) {
                 // 当前表单数据
@@ -153,6 +170,10 @@
 
             // 数据验证
             data_check() {
+                var res = this.$refs.component_form[0].on_submit_event();
+                console.log(res)
+                
+                return false;
                 var status = true;
                 for(var i in this.data) {
                     var res = this.input_value_check(this.data[i], i);

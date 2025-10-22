@@ -10,7 +10,7 @@
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
             <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                 <!-- form表单子组件显示 -->
-                <form-input-base ref="componentForm" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" @onSubmitEvent="submit_event" />
+                <form-input-base ref="component_form" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" />
             </view>
         </view>
         <!-- #endif -->
@@ -29,7 +29,7 @@
                 <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
                 <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                     <!-- form表单子组件显示 -->
-                    <form-input-base ref="componentForm" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" @onSubmitEvent="submit_event" />
+                    <form-input-base ref="component_form" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" />
                 </view>
             </view>
         </scroll-view>
@@ -177,12 +177,7 @@ export default {
         * 点击提交按钮触发方法
         */
         on_submit_event() { 
-            this.$refs.componentForm.on_submit_event();
-        },
-        /*
-        * 表单校验完成之后返回的数据内容
-        */
-        submit_event(e) {
+            const e = this.$refs.component_form.on_submit_event();
             const { type = 'success', message = '', submit_data = {}} = e;
             if (type == 'error') {
                 app.globalData.showToast(message);
