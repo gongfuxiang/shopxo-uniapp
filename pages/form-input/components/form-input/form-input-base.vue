@@ -947,14 +947,14 @@ export default {
                     } else {
                         form_value[`${ form_name }_address`] = com_data?.detailed_value || '';
                     }
-                } else if (item.key == 'phone') {
+                } else if (data.key == 'phone') {
                     // 判断是否是短信验证码输入，否则的话，传递手机号显示
                     if (type != 'phone_code') {
                         form_value[`${ form_name }`] = com_data?.form_value || '';
                     } else {
                         form_value[`${ form_name }_verify`] = com_data?.form_value_code || '';
                     }
-                } else if (item.key ==='date-group') {
+                } else if (data.key ==='date-group') {
                     // 如果是时间选择器，需要规整一下数据
                     form_value[`${ form_name }_start`] = com_data?.form_value[0] || '';
                     form_value[`${ form_name }_end`] = com_data?.form_value[1] || '';
