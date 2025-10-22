@@ -8,20 +8,12 @@
         <view v-else-if="data_item.key == 'multi-text'" :style="data_item.com_data.common_style + 'padding: 18rpx 22rpx;'">
             <component-textarea :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-textarea>
         </view>
-        <!-- 复选按钮组 -->
-        <view v-else-if="['select-multi', 'checkbox'].includes(data_item.key) && data_item.com_data.type == 'checkbox' && propDirection !== 'row'">
-            <component-checkbox :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change"></component-checkbox>
-        </view>
-        <!-- 单选按钮组 -->
-        <view v-else-if="['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'radio-btns' && propDirection !== 'row'">
-            <component-radio :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change"></component-radio>
-        </view>
         <!-- 下拉框 -->
-        <view v-else-if="(['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'select') || (['single-text', 'radio-btns', 'select'].includes(data_item.key) && data_item.com_data.type == 'radio-btns' && propDirection == 'row')" :style="data_item.com_data.common_style">
+        <view v-else-if="['single-text', 'radio-btns', 'select'].includes(data_item.key) && ['radio-btns', 'select'].includes(data_item.com_data.type)" :style="data_item.com_data.common_style">
             <component-select :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-select>
         </view>
         <!-- 下拉复选框 -->
-        <view v-else-if="(['select-multi', 'checkbox'].includes(data_item.key) && data_item.com_data.type == 'select-multi') || (['select-multi', 'checkbox'].includes(data_item.key) && data_item.com_data.type == 'checkbox' && propDirection == 'row')" :style="data_item.com_data.common_style">
+        <view v-else-if="['select-multi', 'checkbox'].includes(data_item.key) && ['select-multi', 'checkbox'].includes(data_item.com_data.type)" :style="data_item.com_data.common_style">
             <component-select-multi :propValue="data_item.com_data" :propKey="propKey" :propDataId="data_item.id" :propMobile="propMobile" :propDirection="propDirection" :propStyle="propComponentStyle" @dataCheck="data_check" @dataChange="data_change" @dataOptionChange="data_option_change" @zIndexChange="z_index_change"></component-select-multi>
         </view>
         <!-- 数字 -->

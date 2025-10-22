@@ -874,7 +874,7 @@ export default {
             const data = JSON.parse(JSON.stringify(this.filteredDiyData));
             const filter_data_list = data.filter((item) => ['subform', 'position', 'rich-text', 'upload-attachments', 'upload-img', 'upload-video'].includes(item.key) && item.id === id);
             if (filter_data_list.length > 0) {
-                filter_data_list?.forEach((item, index) => {
+                filter_data_list?.forEach((item) => {
                     let com_data = item.com_data;
                     let message = '';
                     if (item.key === 'subform') {
@@ -888,22 +888,15 @@ export default {
                             message = `${com_data.title}「${com_data.common_config.error_text}」`;
                         } else {
                             // 判断子表单每一行是否有报错提示
-                            const line_error = com_data.data_list.filter((item) => item.com_data.common_config.is_error === '1')
-                            if (line_error.length > 0) {
-                                const err_list = line_error[0].com_data;
-                                // 如果当前行有错误
-                                if (err_list && err_list.common_config && err_list.common_config.is_error == '1') {
-                                    if (err_list.common_config.error_text == '此项为必填项') {
-                                        message = `请填写「${err_list.title}」`;
-                                    } else {
-                                        message = `请正确填写「${err_list.title}」`;
-                                    }
-                                }
+                            const error_data = com_data.data_list.some((item) => item.data_list.some((list_item) => list_item.com_data.common_config.is_error === '1'))
+                            if (error_data) {
+                                // 如果是内部问题，让用户自己检查子表单内的填写
+                                message = `请检查${com_data.title}内的填写`;
                             } else {
                                 message = '';
                             }
                         }
-                        this.on_item_event({ id: item.id, key: item.key, value: subform_data, is_error: is_error, error_text: message }, 'subform', index);
+                        this.on_item_event({ id: item.id, key: item.key, value: subform_data, is_error: is_error, error_text: message }, 'subform');
                     } else {
                         // 跳过非必填项
                         if (com_data.is_required === '1') {
@@ -925,12 +918,12 @@ export default {
         /*
         * 单个文件更新触发的事件
         */
-        on_item_event(e, type = '', index = '') {
+        on_item_event(e, type = '') {
             // 取出对应id的数据
             const data = this.data_list.find((item) => item.id == e.id);
             // 判断是否为空，为空则不进行处理
             if (data) {
-                const form_value = {};
+                let form_value = {};
                 const com_data = data.com_data;
                 const value = com_data.form_value;
                 const form_name = data.form_name;
@@ -973,11 +966,11 @@ export default {
                         form_value[`${ form_name }_other_value`] = com_data?.other_value || '';
                     }
                 } else if (type == 'subform') {
-                    form_value[`${ form_name }`] = e.value;
+                    form_value = e.value;
                 } else {
                     form_value[`${ form_name }`] = com_data?.form_value || '';
                 }
-                this.$emit('onItemEvent', { forminput_id: this.propFormInputId, type: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: form_value, form_name: data.form_name, subform_index: index, form_title: data.com_data.title });
+                this.$emit('onItemEvent', { forminput_id: this.propFormInputId, status: e.is_error == '1' ? 'error' : 'success', message: e.error_text, value: form_value, form_name: data.form_name, form_title: data.com_data.title, key: data.key, type: data.com_data?.type || '' });
             }
         },
         /*
