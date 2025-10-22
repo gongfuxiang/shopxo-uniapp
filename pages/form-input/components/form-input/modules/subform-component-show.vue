@@ -83,7 +83,7 @@
                     </view>
                     <!-- 上传视频或图片 -->
                     <view v-else-if="['upload-img', 'upload-video'].includes(item.key)" :class="propDirection == 'row' ? 'padding-vertical-sm' : ''">
-                        <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
+                        <component-upload :propValue="item.com_data" :propType="item.key == 'upload-img' ? 'img' : ( item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check"></component-upload>
                     </view>
                     <!-- 定位 -->
                     <view v-else-if="item.key == 'position'">
@@ -92,7 +92,7 @@
                     <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
                     <!-- 上传文件 -->
                     <view v-else-if="item.key == 'upload-attachments'">
-                        <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataChange="data_change"></component-upload>
+                        <component-upload :propValue="item.com_data" propType="file" :propKey="propKey" :propDataFormId="propDataFormId" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check"></component-upload>
                     </view>
                     <!-- #endif -->
                     <view v-if="!isEmpty(item.com_data.common_config.error_text)" class="field-invalid-info">{{ item.com_data.common_config.error_text }}</view>
