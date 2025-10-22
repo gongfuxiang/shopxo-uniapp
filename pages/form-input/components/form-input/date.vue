@@ -111,7 +111,7 @@
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: date, id: this.propDataId });
                 
-                this.$emit('dataChange', { value: date, id: this.propDataId });
+                // this.$emit('dataChange', { value: date, id: this.propDataId });
             },
             mask_click() {
                 this.z_index_change('');

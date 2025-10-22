@@ -298,10 +298,12 @@
                             const err_list = line_error[0].com_data;
                             // 如果当前行有错误
                             if (err_list && err_list.common_config && err_list.common_config.is_error == '1') {
+                                const key_type = ['select-multi', 'checkbox', 'radio-btns', 'select', 'address', 'date', 'upload-img', 'upload-video', 'upload-attachments', 'date-group'];
+                                const name = key_type.includes(line_error[0].key) || ['select-multi', 'checkbox', 'radio-btns', 'select'].includes(err_list.type) ? '选择' : '填写';
                                 if (err_list.common_config.error_text == '此项为必填项') {
-                                    return `请填写「${err_list.title}」`;
+                                    return `请${name}「${err_list.title}」`;
                                 } else {
-                                    return `请正确填写「${err_list.title}」`;
+                                    return `请正确${name}「${err_list.title}」`;
                                 }
                             }
                         } else {

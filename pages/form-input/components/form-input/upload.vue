@@ -80,7 +80,8 @@
                 this.setData({
                     form_value: list,
                 });
-                this.$emit('dataChange', { value: list, id: this.propDataId });
+                const { is_error = '0', error_text = '' } = get_format_checks(com_data, list);
+                this.$emit('dataCheck', { is_error, error_text, value: list, id: this.propDataId });
             }
         },
     };

@@ -775,6 +775,7 @@ export const get_format_checks = (data, form_value, is_format = false, type = ''
     }
     return { is_error, error_text }
 };
+
 // 复选框和复选下拉框的校验逻辑
 export const checkbox_range_handle = (data, form_value) => {
     const { min_num = '', max_num = '' } = data;

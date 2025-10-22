@@ -137,7 +137,7 @@
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: new_time_data, id: this.propDataId });
                 // 发送数据
-                this.$emit('dataChange', { value: new_time_data, id: this.propDataId });
+                // this.$emit('dataChange', { value: new_time_data, id: this.propDataId });
             },
             date_handle(time0, time1) {
                 if (isEmpty(time0) || isEmpty(time1)) {
@@ -185,7 +185,7 @@
                 // 校验数据
                 this.$emit('dataCheck', { is_error, error_text, value: date, id: this.propDataId });
 
-                this.$emit('dataChange', { value: date, id: this.propDataId });
+                // this.$emit('dataChange', { value: date, id: this.propDataId });
             },
             mask_click() {
                this.z_index_change('');

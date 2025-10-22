@@ -157,7 +157,7 @@
                 this.$emit('dataAddressChange', { value: e.detail.value, id: this.propDataId });
             },
             input_value_blur(e) {
-                 // 重新编辑一下历史数据
+                // 重新编辑一下历史数据
                 this.setData({
                     detailed_value: e.detail.value,
                 });
