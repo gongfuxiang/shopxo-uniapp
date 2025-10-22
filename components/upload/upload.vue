@@ -4,7 +4,7 @@
             <block v-if="propData.length > 0">
                 <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
                     <view v-if="propDelete" class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
-                        <iconfont name="icon-bjdz-guanbi" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
+                        <iconfont name="icon-close-fillup" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
                     </view>
                     <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
                 </view>

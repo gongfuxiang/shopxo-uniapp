@@ -128,13 +128,13 @@
                             <view class="flex-row align-c">
                                 <view class="flex-width-half oh padding-right-main pr">
                                     <view v-if="(idcard_images_data.idcard_front || null) != null" class="pa top-0 right-0 z-i padding-right-main" @tap="upload_delete_event" data-value="idcard_front">
-                                        <iconfont name="icon-bjdz-guanbi" size="28rpx" color="cr-grey-d"></iconfont>
+                                        <iconfont name="icon-close-fillup" size="28rpx" color="cr-grey-d"></iconfont>
                                     </view>
                                     <image class="image wh-auto" :src="(idcard_images_data.idcard_front || null) != null ? idcard_images_data.idcard_front : common_static_url + 'idcard-front.jpg'" data-value="idcard_front" mode="widthFix" @tap="file_upload_event"></image>
                                 </view>
                                 <view class="flex-width-half oh padding-left-main pr">
                                     <view v-if="(idcard_images_data.idcard_back || null) != null" class="pa top-0 right-0 z-i" @tap="upload_delete_event" data-value="idcard_back">
-                                        <iconfont name="icon-bjdz-guanbi" size="28rpx" color="cr-grey-d"></iconfont>
+                                        <iconfont name="icon-close-fillup" size="28rpx" color="cr-grey-d"></iconfont>
                                     </view>
                                     <image class="image wh-auto" :src="(idcard_images_data.idcard_back || null) != null ? idcard_images_data.idcard_back : common_static_url + 'idcard-back.jpg'" data-value="idcard_back" mode="widthFix" @tap="file_upload_event"></image>
                                 </view>
