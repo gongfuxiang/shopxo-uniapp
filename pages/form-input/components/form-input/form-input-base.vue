@@ -965,7 +965,7 @@ export default {
                     } else {
                         form_value[`${ form_name }_custom_option_list`] = com_data?.custom_option_list || '';
                     }
-                } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
+                } else if (['select', 'radio-btns', 'single-text'].includes(data.key) && ['select', 'radio-btns'].includes(data.com_data.type)) {
                     // 判断是否是输入的其他的内容
                     if (type != 'other') {
                         form_value[`${ form_name }`] = com_data?.form_value || '';
