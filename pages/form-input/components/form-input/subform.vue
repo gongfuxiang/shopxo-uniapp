@@ -559,7 +559,7 @@
                 const { value, id, province_name, city_name, county_name } = e;
                 // 改变对应id的数据
                 const data = [...this.data_list];
-                data.forEach((item, index) => {
+                data.forEach((item, index1) => {
                     if (index1 == index) {
                         item.data_list.forEach(item1 => {
                             if (item1.id == id && item1.com_data) {
