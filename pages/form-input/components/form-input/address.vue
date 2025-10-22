@@ -145,9 +145,9 @@
                 });
                 // 地址信息校验
                 const { is_error = '0', error_text = '' } = get_format_checks(this.com_data, data.province.id, false, 'address');
-                this.$emit('dataCheck', { is_error, error_text, value: [ data.province.id, data.city.id, data.areal.id ], id: this.propDataId });
+                this.$emit('dataCheck', { is_error, error_text, value: [ data.province.id, data.city.id, data.areal.id ], id: this.propDataId, province_name: data.province.name, city_name: data.city.name, county_name: data.areal.name });
                 // 改变对应id的数据
-                this.$emit('regionEvent', { value: [ data.province.id, data.city.id, data.areal.id ], province_name: data.province.name, city_name: data.city.name, county_name: data.areal.name, id: this.propDataId });
+                // this.$emit('regionEvent', { value: [ data.province.id, data.city.id, data.areal.id ], province_name: data.province.name, city_name: data.city.name, county_name: data.areal.name, id: this.propDataId });
             },
             input_value_event(e) {
                 // 重新编辑一下历史数据

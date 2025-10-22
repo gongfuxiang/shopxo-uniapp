@@ -47,7 +47,7 @@
                     </view>
                     <!-- 地址 -->
                     <view v-else-if="item.key == 'address'">
-                        <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @regionEvent="region_event" @dataAddressChange="data_address_change" @dataAddressBlur="data_address_blur" @zIndexChange="z_index_change"></component-address>
+                        <component-address :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataAddressChange="data_address_change" @dataAddressBlur="data_address_blur" @zIndexChange="z_index_change"></component-address>
                     </view>
                     <!-- 手机 -->
                     <view v-else-if="item.key == 'phone'">
@@ -109,6 +109,7 @@
                             :propFormInputId="propFormInputId"
                             @helpIconEvent="subform_help_icon_event"
                             @subformDataChange="subform_data_change"
+                            @subformDataCheck="subform_data_check"
                             @zIndexChange="z_index_change"
                         />
                     </view>
@@ -533,7 +534,7 @@ export default {
         * 手机号验证码的校验
         */
         data_code_check(e) {
-            const { is_error, error_text, value, id } = e;
+            const { is_error, error_text, value, id, province_name = '', city_name = '', county_name = '' } = e;
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {
@@ -541,6 +542,11 @@ export default {
                     item.com_data.form_value_code = value;
                     item.com_data.common_config.is_error = is_error;
                     item.com_data.common_config.error_text = error_text;
+                    if (item.key == 'address') {
+                        item.com_data.province_name = province_name;
+                        item.com_data.city_name = city_name;
+                        item.com_data.county_name = county_name;
+                    }
                 }
             });
             this.setData({ data_list: data });
@@ -551,6 +557,16 @@ export default {
         * 子表单数据更新
         */
         subform_data_change(e, id) {
+            // 改变对应id的数据
+            const data = [...this.data_list];
+            data.forEach(item => {
+                if (item.id == id && item.com_data) {
+                    item.com_data.data_list = e
+                }
+            });
+            this.setData({ data_list: data });
+        },
+        subform_data_check(e, id) {
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {

@@ -58,7 +58,6 @@
                                     @dataOptionChange="data_option_change"
                                     @openRegion="open_region"
                                     @helpIconEvent="subform_help_icon_event"
-                                    @regionEvent="region_event"
                                     @zIndexChange="z_index_change"
                                 />
                             </template>
@@ -112,7 +111,6 @@
                                                         @dataCheck="data_check"
                                                         @dataOptionChange="data_option_change"
                                                         @openRegion="open_region"
-                                                        @regionEvent="region_event"
                                                         @zIndexChange="table_z_index_change"
                                                     />
                                                 </view>
@@ -160,7 +158,6 @@
                         @dataOptionChange="data_option_change"
                         @openRegion="open_region"
                         @helpIconEvent="subform_help_icon_event"
-                        @regionEvent="region_event"
                         @zIndexChange="z_index_change"
                     />
                 </view>
@@ -498,7 +495,7 @@
             },
             // 子表单校验逻辑
             data_check(e, index) {
-                const { is_error, error_text, value, id } = e;
+                const { is_error, error_text, value, id, province_name = '',  city_name = '', county_name = '' } = e;
                 // 改变对应id的数据
                 const data = [...this.data_list];
                 data.forEach((item, index1) => {
@@ -508,6 +505,11 @@
                                 item1.com_data.form_value = value;
                                 item1.com_data.common_config.is_error = is_error;
                                 item1.com_data.common_config.error_text = error_text;
+                                if (item1.key == 'address') {
+                                    item1.com_data.province_name = province_name;
+                                    item1.com_data.city_name = city_name;
+                                    item1.com_data.county_name = county_name;
+                                }
                             }
                         });
                     }
@@ -515,7 +517,7 @@
                 this.setData({
                     data_list: data
                 })
-                this.$emit('subformDataChange', data, this.propDataId);
+                this.$emit('subformDataCheck', data, this.propDataId);
             },
             // 子表单内容参数修改
             data_change(e, index) {
