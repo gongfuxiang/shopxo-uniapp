@@ -955,15 +955,18 @@ export default {
                         form_value[`${ form_name }_verify`] = com_data?.form_value_code || '';
                     }
                 } else if (item.key ==='date-group') {
+                    // 如果是时间选择器，需要规整一下数据
                     form_value[`${ form_name }_start`] = com_data?.form_value[0] || '';
                     form_value[`${ form_name }_end`] = com_data?.form_value[1] || '';
                 } else if (['checkbox', 'select-multi'].includes(item.key)) {
+                    // 如果是复选框和下拉复选框，判断一下是否是添加的新选项
                     if (type != 'custom_option_list') {
                         form_value[`${ form_name }`] = com_data?.form_value || '';
                     } else {
                         form_value[`${ form_name }_custom_option_list`] = com_data?.custom_option_list || '';
                     }
                 } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
+                    // 判断是否是输入的其他的内容
                     if (type != 'other') {
                         form_value[`${ form_name }`] = com_data?.form_value || '';
                     } else {
