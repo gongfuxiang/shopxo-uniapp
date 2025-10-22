@@ -948,7 +948,7 @@
         }
         .table-row:hover {
             .cell {
-                background: #f0f1f4 !important;
+                background: #f9f9f9 !important;
             }
             .item-row-error {
                 background: #fdeeee !important;
