@@ -467,7 +467,7 @@ export default {
         * 表单内数据的校验完成后的数据更新
         */
         data_check(e) {
-            const { is_error, error_text, value, id } = e;
+            const { is_error, error_text, value, id, province_name = '', city_name = '', county_name = '' } = e;
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {
@@ -475,6 +475,11 @@ export default {
                     item.com_data.form_value = value;
                     item.com_data.common_config.is_error = is_error;
                     item.com_data.common_config.error_text = error_text;
+                    if (item.key == 'address') {
+                        item.com_data.province_name = province_name;
+                        item.com_data.city_name = city_name;
+                        item.com_data.county_name = county_name;
+                    }
                 }
             });
             this.setData({ data_list: data });
@@ -534,7 +539,7 @@ export default {
         * 手机号验证码的校验
         */
         data_code_check(e) {
-            const { is_error, error_text, value, id, province_name = '', city_name = '', county_name = '' } = e;
+            const { is_error, error_text, value, id } = e;
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {
@@ -542,11 +547,6 @@ export default {
                     item.com_data.form_value_code = value;
                     item.com_data.common_config.is_error = is_error;
                     item.com_data.common_config.error_text = error_text;
-                    if (item.key == 'address') {
-                        item.com_data.province_name = province_name;
-                        item.com_data.city_name = city_name;
-                        item.com_data.county_name = county_name;
-                    }
                 }
             });
             this.setData({ data_list: data });
