@@ -109,7 +109,7 @@
                             :propFormInputId="propFormInputId"
                             @helpIconEvent="subform_help_icon_event"
                             @subformDataChange="subform_data_change"
-                            @subformDataCheck="subform_data_check"
+                            @subformDataCheck="component_subform_data_check"
                             @zIndexChange="z_index_change"
                         />
                     </view>
@@ -566,7 +566,7 @@ export default {
             });
             this.setData({ data_list: data });
         },
-        subform_data_check(e, id) {
+        component_subform_data_check(e, id) {
             // 改变对应id的数据
             const data = [...this.data_list];
             data.forEach(item => {
