@@ -617,7 +617,7 @@ export default {
             const data = [...this.data_list];
             data.forEach(item => {
                 if (item.id == id && item.com_data) {
-                    item.com_data.detailed_value = value;
+                    item.com_data.address = value;
                 }
             });
             this.setData({ data_list: data });
@@ -628,7 +628,7 @@ export default {
             const data = [...this.data_list];
             data.forEach(item => {
                 if (item.id == id && item.com_data) {
-                    item.com_data.detailed_value = value;
+                    item.com_data.address = value;
                 }
             });
             this.setData({ data_list: data });
@@ -707,7 +707,7 @@ export default {
                             submit_data[`${ name }_county_name`] = com_data.county_name || ''
                             // 判断类型是否包含详细地址
                             if (com_data.address_type == 'detailed') {
-                                submit_data[`${ name }_detailed_value`] = com_data?.detailed_value || '';
+                                submit_data[`${ name }_address`] = com_data?.address || '';
                             }
                         } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
                             submit_data[name] = value;
@@ -967,7 +967,7 @@ export default {
                         form_value[`${ form_name }_city_name`] = com_data.city_name || ''
                         form_value[`${ form_name }_county_name`] = com_data.county_name || ''
                     } else {
-                        form_value[`${ form_name }_detailed_value`] = com_data?.detailed_value || '';
+                        form_value[`${ form_name }_address`] = com_data?.address || '';
                     }
                 } else if (data.key == 'phone') {
                     // 判断是否是短信验证码输入，否则的话，传递手机号显示
