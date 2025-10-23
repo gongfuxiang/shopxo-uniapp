@@ -359,13 +359,11 @@ export default {
                                 const subform_com_data = item2.com_data;
                                 const subform_name = subform_com_data.form_name;
                                 if (item2.key == 'address') {
-                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_province_id`] || '', new_prop_data[`${ subform_name }_city_id`] || '', new_prop_data[`${ subform_name }_county_id`] || '' ];
+                                    subform_com_data.form_value = new_prop_data[subform_name] || [];
                                     // 省市区中文名称
                                     subform_com_data.province_name = new_prop_data[`${ subform_name }_province_name`] || '';
                                     subform_com_data.city_name = new_prop_data[`${ subform_name }_city_name`] || '';
                                     subform_com_data.county_name = new_prop_data[`${ subform_name }_county_name`] || '';
-                                } else if (item2.key ==='date-group') {
-                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_start`] || '' , new_prop_data[`${ subform_name }_end`] || ''] || [];
                                 } else if (['checkbox', 'select-multi'].includes(item2.key)) {
                                     subform_com_data.form_value = new_prop_data[subform_name] || [];
                                     if (subform_com_data.is_add_option == '1') {
@@ -399,7 +397,7 @@ export default {
                             com_data.county_name = this.propData[`${ name }_county_name`] || ''
                             // 判断类型是否包含详细地址
                             if (com_data.address_type == 'detailed') {
-                                com_data.detailed_value = this.propData[`${ name }_address`] || '';
+                                com_data.detailed_value = this.propData[`${ name }_detailed_value`] || '';
                             }
                         } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
                             com_data.form_value = this.propData[name] || '';
@@ -708,7 +706,7 @@ export default {
                             submit_data[`${ name }_county_name`] = com_data.county_name || ''
                             // 判断类型是否包含详细地址
                             if (com_data.address_type == 'detailed') {
-                                submit_data[`${ name }_address`] = com_data?.detailed_value || '';
+                                submit_data[`${ name }_detailed_value`] = com_data?.detailed_value || '';
                             }
                         } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
                             submit_data[name] = value;
@@ -968,7 +966,7 @@ export default {
                         form_value[`${ form_name }_city_name`] = com_data.city_name || ''
                         form_value[`${ form_name }_county_name`] = com_data.county_name || ''
                     } else {
-                        form_value[`${ form_name }_address`] = com_data?.detailed_value || '';
+                        form_value[`${ form_name }_detailed_value`] = com_data?.detailed_value || '';
                     }
                 } else if (data.key == 'phone') {
                     // 判断是否是短信验证码输入，否则的话，传递手机号显示
