@@ -738,16 +738,14 @@ export default {
             // 遍历所有过滤后的自定义数据项
             data?.forEach((item) => {
                 let com_data = item.com_data;
-                // 跳过非必填项
-                if (com_data.is_required === '1') {
-                    // 特殊字段验证：手机号
-                    if (item.key === 'phone') {
-                        const { is_error = '0', error_text = '' } = this.handle_phone_validation(com_data);
-                        com_data.common_config.is_error = is_error;
-                        com_data.common_config.error_text = error_text;
-                    } 
+                // 特殊字段验证：手机号
+                if (item.key === 'phone') {
+                    const { is_error = '0', error_text = '' } = this.handle_phone_validation(com_data);
+                    com_data.common_config.is_error = is_error;
+                    com_data.common_config.error_text = error_text;
+                } else if (com_data.is_required === '1') { // 跳过非必填项
                     // 其他字段的格式验证
-                    else if (this.fieldCheckMap[item.key]) {
+                    if (this.fieldCheckMap[item.key]) {
                         let field_data = this.fieldCheckMap[item.key];
                         if (['single-text', 'select', 'radio-btns'].includes(item.com_data.type)) {
                             field_data = this.fieldCheckMap[item.com_data.type];
