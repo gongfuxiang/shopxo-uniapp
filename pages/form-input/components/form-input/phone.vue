@@ -50,7 +50,7 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataFormId: {
+            propFormInputId: {
                 type: [String, Number],
                 default: '',
             },
@@ -191,7 +191,7 @@
             },
             verify_send_handle() {
                 const post_data = {
-                    forminput_id: this.propDataFormId,
+                    forminput_id: this.propFormInputId,
                     forminput_item_id: this.propDataId,
                     accounts: this.form_value, 
                     type: 'sms', 

@@ -47,7 +47,7 @@
                                     :propFieldLabelStyle="propFieldLabelStyle"
                                     :propTitleStyle="propTitleStyle"
                                     :propHelpIconStyle="propHelpIconStyle"
-                                    :propDataFormId="propDataFormId"
+                                    :propFormInputId="propFormInputId"
                                     :propKey="propKey"
                                     :propIndex="index"
                                     :propDirection="propDirection" 
@@ -101,7 +101,7 @@
                                                 <view class="flex-1 wh-auto">
                                                     <components-combination
                                                         :propData="children_item"
-                                                        :propDataFormId="propDataFormId"
+                                                        :propFormInputId="propFormInputId"
                                                         :propKey="propKey"
                                                         :propIndex="index"
                                                         :propDirection="propDirection" 
@@ -147,7 +147,7 @@
                         :propFieldLabelStyle="propFieldLabelStyle"
                         :propTitleStyle="propTitleStyle"
                         :propHelpIconStyle="propHelpIconStyle"
-                        :propDataFormId="propDataFormId"
+                        :propFormInputId="propFormInputId"
                         :propKey="propKey"
                         :propIndex="table_more_index"
                         :propDirection="propDirection" 
@@ -240,7 +240,7 @@
                 type: String,
                 default: '20rpx',
             },
-            propDataFormId: {
+            propFormInputId: {
                 type: [String, Number],
                 default: '',
             },
@@ -661,7 +661,8 @@
                     data_list: JSON.parse(JSON.stringify(this.children_list))
                 });
                 this.setData({ data_list: data });
-                this.$emit('subformDataChange', data, this.propDataId);
+                // 数据发生变化时通知父级
+                this.$emit('subformDataCheck', data, this.propDataId);
             },
             expand_all(e) {
                 const { value } = e.currentTarget.dataset;
@@ -700,7 +701,8 @@
                 this.setData({
                     data_list: data
                 })
-                this.$emit('subformDataChange', data, this.propDataId);
+                // 执行一下校验事件
+                this.$emit('subformDataCheck', data, this.propDataId);
             },
             // 获取选择的中文名称 empty_conversion 是用来区分有没有值,有值和没有值的颜色不一致
             data_conversion(item) {

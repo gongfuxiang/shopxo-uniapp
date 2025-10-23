@@ -22,7 +22,7 @@
                 type: [String, Number],
                 default: 0,
             },
-            propDataFormId: {
+            propFormInputId: {
                 type: [String, Number],
                 default: '',
             },
@@ -71,7 +71,7 @@
                 this.setData({
                     com_data: com_data,
                     max_num: com_data.is_limit_num == '1' ? com_data.limit : 1000,
-                    pathType: `forminputdata-${this.propDataFormId}`,
+                    pathType: `forminputdata-${this.propFormInputId}`,
                     form_value: com_data.form_value || [],
                     border_style: common_form_styles_computer(com_data.common_config)
                 });
