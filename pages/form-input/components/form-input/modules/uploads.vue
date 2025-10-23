@@ -135,13 +135,15 @@
         watch: {
             propKey(val) {
                 this.init();
-            }
+            },
+            propData(val) {
+                this.init();
+            },
         },
         mounted() {
             this.init();
         },
         created: function () {},
-
         methods: {
             init() {
                 // 将80%的宽度分成16份
