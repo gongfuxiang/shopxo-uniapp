@@ -194,6 +194,7 @@ export default {
             type: Object,
             default: () => {},
         },
+        // 传递默认数据内容，修改表单内的默认值
         propData: {
             type: Object,
             default: () => {},
@@ -349,72 +350,72 @@ export default {
                             });
                         }
                     });
-                    if (!isEmpty(this.propData)) {
-                        // 子表单数据重组
-                        data_list.forEach((item1, index) => {
-                            item1.data_list.forEach(item2 => {
-                                const new_prop_data = this.propData[index];
-                                const subform_com_data = item2.com_data;
-                                const subform_name = subform_com_data.form_name;
-                                if (item2.key == 'address') {
-                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_province_id`] || '', new_prop_data[`${ subform_name }_city_id`] || '', new_prop_data[`${ subform_name }_county_id`] || '' ];
-                                    // 省市区中文名称
-                                    subform_com_data.province_name = new_prop_data[`${ subform_name }_province_name`] || '';
-                                    subform_com_data.city_name = new_prop_data[`${ subform_name }_city_name`] || '';
-                                    subform_com_data.county_name = new_prop_data[`${ subform_name }_county_name`] || '';
-                                } else if (item2.key ==='date-group') {
-                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_start`] || '' , new_prop_data[`${ subform_name }_end`] || ''] || [];
-                                } else if (['checkbox', 'select-multi'].includes(item2.key)) {
-                                    subform_com_data.form_value = new_prop_data[subform_name] || [];
-                                    if (subform_com_data.is_add_option == '1') {
-                                        subform_com_data.custom_option_list = new_prop_data[`${ subform_name }_custom_option_list`] || [];
-                                    }
-                                } else {
-                                    subform_com_data.form_value = new_prop_data[subform_name] || '';
-                                }
-                            });
-                        });
-                    }
+                    // if (!isEmpty(this.propData)) {
+                    //     // 子表单数据重组
+                    //     data_list.forEach((item1, index) => {
+                    //         item1.data_list.forEach(item2 => {
+                    //             const new_prop_data = this.propData[index];
+                    //             const subform_com_data = item2.com_data;
+                    //             const subform_name = subform_com_data.form_name;
+                    //             if (item2.key == 'address') {
+                    //                 subform_com_data.form_value = [ new_prop_data[`${ subform_name }_province_id`] || '', new_prop_data[`${ subform_name }_city_id`] || '', new_prop_data[`${ subform_name }_county_id`] || '' ];
+                    //                 // 省市区中文名称
+                    //                 subform_com_data.province_name = new_prop_data[`${ subform_name }_province_name`] || '';
+                    //                 subform_com_data.city_name = new_prop_data[`${ subform_name }_city_name`] || '';
+                    //                 subform_com_data.county_name = new_prop_data[`${ subform_name }_county_name`] || '';
+                    //             } else if (item2.key ==='date-group') {
+                    //                 subform_com_data.form_value = [ new_prop_data[`${ subform_name }_start`] || '' , new_prop_data[`${ subform_name }_end`] || ''] || [];
+                    //             } else if (['checkbox', 'select-multi'].includes(item2.key)) {
+                    //                 subform_com_data.form_value = new_prop_data[subform_name] || [];
+                    //                 if (subform_com_data.is_add_option == '1') {
+                    //                     subform_com_data.custom_option_list = new_prop_data[`${ subform_name }_custom_option_list`] || [];
+                    //                 }
+                    //             } else {
+                    //                 subform_com_data.form_value = new_prop_data[subform_name] || '';
+                    //             }
+                    //         });
+                    //     });
+                    // }
                     com_data.data_list = data_list;
                 } else {
                     // 边框样式处理
                     com_data.common_style = this.get_form_border_style(com_data.common_config, mobile.flex_direction || 'row', overall_config.type_value);
-                    if (!isEmpty(this.propData)) {
-                        const name = item.form_name;
-                        item.com_data.form_value = this.propData[item.form_name];
-                        if (item.key ==='phone') {
-                            com_data.form_value = this.propData[name] || '';
-                            com_data.form_value_code = this.propData[`${ name }_verify`] || '';
-                        } else if (item.key ==='date-group') {
-                            com_data.form_value = [ this.propData[`${ name }_start`] || '' , this.propData[`${ name }_end`] || ''] || [];
-                        } else if (item.key == 'address') {
-                            com_data.province_id = this.propData[`${ name }_province_id`] || '';
-                            com_data.city_id = this.propData[`${ name }_city_id`] || '';
-                            com_data.county_id = this.propData[`${ name }_county_id`] || '';
-                            // 省市区中文名称
-                            com_data.province_name = this.propData[`${ name }_province_name`] || '';
-                            com_data.city_name = this.propData[`${ name }_city_name`] || ''
-                            com_data.county_name = this.propData[`${ name }_county_name`] || ''
-                            // 判断类型是否包含详细地址
-                            if (com_data.address_type == 'detailed') {
-                                com_data.detailed_value = this.propData[`${ name }_detailed_value`] || '';
-                            }
-                        } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
-                            com_data.form_value = this.propData[name] || '';
-                            // 判断是否显示其他
-                            const value_list = com_data.option_list.filter((item) => item.is_other == '1');
-                            if (value_list.length > 0) {
-                                com_data.other_value = this.propData[`${ name }_other_value`] || '';
-                            }
-                        } else if (['checkbox', 'select-multi'].includes(item.key)) {
-                            com_data.form_value = this.propData[name] || '';
-                            if (com_data.is_add_option == '1') {
-                                com_data.custom_option_list = this.propData[`${ name }_custom_option_list`] || [];
-                            }
-                        } else {
-                           com_data.form_value = this.propData[name] || '';
-                        }
-                    }
+                    // if (!isEmpty(this.propData)) {
+                    //     const name = item.form_name;
+                    //     item.com_data.form_value = this.propData[item.form_name];
+                    //     if (item.key ==='phone') {
+                    //         com_data.form_value = this.propData[name] || '';
+                    //         com_data.form_value_code = this.propData[`${ name }_verify`] || '';
+                    //     } else if (item.key ==='date-group') {
+                    //         com_data.form_value = [ this.propData[`${ name }_start`] || '' , this.propData[`${ name }_end`] || ''] || [];
+                    //     } else if (item.key == 'address') {
+                    //         com_data.province_id = this.propData[`${ name }_province_id`] || '';
+                    //         com_data.city_id = this.propData[`${ name }_city_id`] || '';
+                    //         com_data.county_id = this.propData[`${ name }_county_id`] || '';
+                    //         // 省市区中文名称
+                    //         com_data.province_name = this.propData[`${ name }_province_name`] || '';
+                    //         com_data.city_name = this.propData[`${ name }_city_name`] || ''
+                    //         com_data.county_name = this.propData[`${ name }_county_name`] || ''
+                    //         // 判断类型是否包含详细地址
+                    //         if (com_data.address_type == 'detailed') {
+                    //             com_data.detailed_value = this.propData[`${ name }_detailed_value`] || '';
+                    //         }
+                    //     } else if (['select', 'radio-btns', 'single-text'].includes(item.key) && ['select', 'radio-btns'].includes(item.com_data.type)) {
+                    //         com_data.form_value = this.propData[name] || '';
+                    //         // 判断是否显示其他
+                    //         const value_list = com_data.option_list.filter((item) => item.is_other == '1');
+                    //         if (value_list.length > 0) {
+                    //             com_data.other_value = this.propData[`${ name }_other_value`] || '';
+                    //         }
+                    //     } else if (['checkbox', 'select-multi'].includes(item.key)) {
+                    //         com_data.form_value = this.propData[name] || '';
+                    //         if (com_data.is_add_option == '1') {
+                    //             com_data.custom_option_list = this.propData[`${ name }_custom_option_list`] || [];
+                    //         }
+                    //     } else {
+                    //        com_data.form_value = this.propData[name] || '';
+                    //     }
+                    // }
                 } 
             });
             return diy_data;
