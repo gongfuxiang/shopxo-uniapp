@@ -324,10 +324,17 @@ export default {
                         if (data.length > 0) {
                             data.forEach(child => {
                                 child.com_data.common_style = this.get_form_border_style(child.com_data.common_config, mobile.arrang == 'direction' ? (emobile.flex_direction || 'row') : 'column', overall_config.type_value);
-                                if (!isEmpty(item1[child.id])) {
-                                    child.com_data.form_value = item1[child.id];
-                                    if (!isEmpty(item1[child.id + '_custom_option_list'])) {
-                                        child.com_data.custom_option_list = item1[child.id + '_custom_option_list'];
+                                if (!isEmpty(item1[child.form_name])) {
+                                    child.com_data.form_value = item1[child.form_name];
+                                    if (child.key == 'address') {
+                                        subform_com_data.form_value = [ item1[`${ child.form_name }_province_id`] || '', item1[`${ child.form_name }_city_id`] || '', item1[`${ child.form_name }_county_id`] || '' ];
+                                        // 省市区中文名称
+                                        subform_com_data.province_name = item1[`${ child.form_name }_province_name`] || '';
+                                        subform_com_data.city_name = item1[`${ child.form_name }_city_name`] || '';
+                                        subform_com_data.county_name = item1[`${ child.form_name }_county_name`] || '';
+                                    }
+                                    if (!isEmpty(item1[child.form_name + '_custom_option_list'])) {
+                                        child.com_data.custom_option_list = item1[child.form_name + '_custom_option_list'];
                                     }
                                 }
                             });
