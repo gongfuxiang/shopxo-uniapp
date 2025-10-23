@@ -51,7 +51,7 @@
                     </view>
                     <!-- 手机 -->
                     <view v-else-if="item.key == 'phone'">
-                        <component-phone :propValue="item.com_data" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_change" @zIndexChange="z_index_change"></component-phone>
+                        <component-phone :propValue="item.com_data" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="item.id" :propMobile="mobile" :propStyle="component_style" :propDirection="flex_direction" :propBusiness="propBusiness" @dataCheck="data_check" @dataChange="data_change" @dataCodeCheck="data_code_check" @dataCodeChage="data_code_change" @zIndexChange="z_index_change"></component-phone>
                     </view>
                     <!-- 密码 -->
                     <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
@@ -107,6 +107,7 @@
                             :propHelpIconStyle="help_icon_style"
                             :propFieldLabelStyle="field_label_style"
                             :propFormInputId="propFormInputId"
+                            :propBusiness="propBusiness"
                             @helpIconEvent="subform_help_icon_event"
                             @subformDataChange="subform_data_change"
                             @subformDataCheck="component_subform_data_check"
@@ -208,6 +209,10 @@ export default {
             type: [String, Number],
             default: 0,
         },
+        propBusiness: {
+            type: [String, Number],
+            default: '',
+        }
     },
     data() {
         return {

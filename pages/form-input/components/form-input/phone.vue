@@ -66,6 +66,10 @@
                 type: String,
                 default: 'row',
             },
+            propBusiness: {
+                type: [String, Number],
+                default: '',
+            }
         },
         data() {
             return {
@@ -191,6 +195,7 @@
             },
             verify_send_handle() {
                 const post_data = {
+                    business: this.propBusiness,
                     forminput_id: this.propFormInputId,
                     forminput_item_id: this.propDataId,
                     accounts: this.form_value, 

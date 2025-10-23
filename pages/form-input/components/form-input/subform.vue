@@ -53,6 +53,7 @@
                                     :propDirection="propDirection" 
                                     :propMobile="propMobile" 
                                     :propComponentStyle="propStyle"
+                                    :propBusiness="propBusiness"
                                     @dataChange="data_change"
                                     @dataCheck="data_check"
                                     @dataOptionChange="data_option_change"
@@ -107,6 +108,7 @@
                                                         :propDirection="propDirection" 
                                                         :propMobile="propMobile" 
                                                         :propComponentStyle="propStyle"
+                                                        :propBusiness="propBusiness"
                                                         @dataChange="data_change"
                                                         @dataCheck="data_check"
                                                         @dataOptionChange="data_option_change"
@@ -153,6 +155,7 @@
                         :propDirection="propDirection" 
                         :propMobile="propMobile" 
                         :propComponentStyle="propStyle"
+                        :propBusiness="propBusiness"
                         @dataChange="data_change"
                         @dataCheck="data_check"
                         @dataOptionChange="data_option_change"
@@ -251,6 +254,10 @@
             propIsCustom: {
                 type: Boolean,
                 default: false
+            },
+            propBusiness: {
+                type: [String, Number],
+                default: '',
             }
         },
         data() {

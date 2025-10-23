@@ -51,7 +51,7 @@
                     </view>
                     <!-- 手机 -->
                     <view v-else-if="item.key == 'phone'">
-                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-phone>
+                        <component-phone :propValue="item.com_data" :propKey="propKey" :propDataId="item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" :propBusiness="propBusiness" @dataCheck="data_check" @dataChange="data_change" @zIndexChange="z_index_change"></component-phone>
                     </view>
                     <!-- 密码 -->
                     <view v-else-if="item.key == 'pwd'" :style="item.com_data.common_style">
@@ -194,6 +194,10 @@ export default {
         propIndex: {
             type: Number,
             default: 0,
+        },
+        propBusiness: {
+            type: [String, Number],
+            default: '',
         }
     },
     data() {
