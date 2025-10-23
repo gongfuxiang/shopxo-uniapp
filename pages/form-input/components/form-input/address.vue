@@ -13,7 +13,7 @@
             </view>
             <view v-if="propDirection == 'row' && address_type == 'detailed'" class="border-line"></view>
             <view v-if="address_type == 'detailed'" class="flex-row">
-                <textarea :value="detailed_value" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" @blur="input_value_blur" />
+                <textarea :value="address" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" @blur="input_value_blur" />
             </view>
         </view>
         <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
@@ -55,7 +55,7 @@
                 placeholder: '请选择内容...',
                 address_type: '',
                 form_value: '',
-                detailed_value: '',
+                address: '',
                 com_data: {},
                 region_picker_show: false,
                 province_id: '',
@@ -90,7 +90,7 @@
                     address_type: com_data.address_type || 'noDetailed',
                     placeholder: com_data.placeholder,
                     form_value: com_data.form_value , 
-                    detailed_value: com_data?.detailed_value || '',
+                    address: com_data?.address || '',
                     province_id: com_data?.form_value[0] || '',
                     city_id: com_data?.form_value[1] || '',
                     county_id: com_data?.form_value[2] || '',
@@ -152,14 +152,14 @@
             input_value_event(e) {
                 // 重新编辑一下历史数据
                 this.setData({
-                    detailed_value: e.detail.value,
+                    address: e.detail.value,
                 });
                 this.$emit('dataAddressChange', { value: e.detail.value, id: this.propDataId });
             },
             input_value_blur(e) {
                 // 重新编辑一下历史数据
                 this.setData({
-                    detailed_value: e.detail.value,
+                    address: e.detail.value,
                 });
                 this.$emit('dataAddressBlur', { value: e.detail.value, id: this.propDataId });
             },
