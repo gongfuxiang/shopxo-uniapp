@@ -195,10 +195,10 @@ export default {
             default: () => {},
         },
         // 传递默认数据内容，修改表单内的默认值
-        propData: {
-            type: Object,
-            default: () => {},
-        },
+        // propData: {
+        //     type: Object,
+        //     default: () => {},
+        // },
         // 表单id
         propFormInputId: {
             type: [String, Number],
