@@ -32,7 +32,7 @@
                         <span class="text-line-1">{{ new_name(item.name)[0] || '' }}</span><span>.{{ new_name(item.name)[1] || '' }}</span>
                     </view>
                     <view :data-index="index" @tap="upload_delete_event">
-                        <iconfont name="icon-close" size="20rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close" size="52rpx" color="#999"></iconfont>
                     </view>
                 </view>
             </view>
