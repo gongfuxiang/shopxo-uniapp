@@ -106,6 +106,10 @@
                 type: [String, Number],
                 default: 0,
             },
+            propBusiness: {
+                type: [String, Number],
+                default: '',
+            }
         },
         data() {
             return {
@@ -165,6 +169,7 @@
                         formData: {
                             action: action,
                             path_type: self.propPathType,
+                            business: this.propBusiness
                         },
                         success: function (res) {
                             success++;

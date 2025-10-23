@@ -66,7 +66,7 @@
         </view>
         <!-- 上传视频或图片 -->
         <view v-else-if="['upload-img', 'upload-video'].includes(data_item.key)" :class="propDirection == 'row' ? 'padding-vertical-sm' : ''">
-            <component-upload :propValue="data_item.com_data" :propType="data_item.key == 'upload-img' ? 'img' : ( data_item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check"></component-upload>
+            <component-upload :propValue="data_item.com_data" :propType="data_item.key == 'upload-img' ? 'img' : ( data_item.key == 'upload-video' ? 'video' : 'file')" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" :propBusiness="propBusiness" @dataCheck="data_check"></component-upload>
         </view>
         <!-- 定位 -->
         <view v-else-if="data_item.key == 'position'">
@@ -75,7 +75,7 @@
         <!-- #ifdef H5 || MP-WEIXIN || MP-QQ -->
         <!-- 上传文件 -->
         <view v-else-if="data_item.key == 'upload-attachments'">
-            <component-upload :propValue="data_item.com_data" propType="file" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" @dataCheck="data_check"></component-upload>
+            <component-upload :propValue="data_item.com_data" propType="file" :propKey="propKey" :propFormInputId="propFormInputId" :propDataId="data_item.id" :propMobile="propMobile" :propStyle="propComponentStyle" :propDirection="propDirection" :propBusiness="propBusiness" @dataCheck="data_check"></component-upload>
         </view>
         <!-- #endif -->
     </view>
