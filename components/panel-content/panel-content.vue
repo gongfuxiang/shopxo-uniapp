@@ -24,7 +24,7 @@
         </view>
         <!-- 详情面板数据 -->
         <view v-else class="padding-horizontal-main padding-top-main">
-            <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
+            <view class="panel-item padding-main border-radius-main bg-white">
                 <view v-if="(propTitle || null) != null" class="br-b padding-bottom-main fw-b text-size">{{ propTitle }}</view>
                 <view class="panel-content oh">
                     <block v-if="data != null && data_field.length > 0">

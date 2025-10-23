@@ -1,12 +1,12 @@
 <template>
     <view :class="theme_view">
         <block v-if="data != null && data.length > 0">
-            <view class="padding-horizontal-main padding-top-main">
+            <view class="padding-main">
                 <!-- 商品列表 -->
-                <view class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view v-for="(item, index) in data" :key="index" :class="'goods-item oh padding-main '+(index > 0 ? 'br-t-dashed' : '')">
+                <view class="goods bg-white border-radius-main">
+                    <view v-for="(item, index) in data" :key="index" :class="(index > 0 ? 'br-t-dashed spacing-mt' : '')">
                         <!-- 订单主体内容 -->
-                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
+                        <view :data-value="item.goods_url" @tap="url_event" class="goods-item cp padding-horizontal-main padding-top-main">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{ item.title }}</view>
@@ -18,9 +18,9 @@
                             </view>
                         </view>
                         <!-- 订单商品表单 -->
-                        <view v-if="(item.form_data || null) != null && item.form_data.length > 0" class="goods-item-ordergoodsform">
-                            <component-buy-ordergoodsform ref="buy_ordergoodsform" :propData="item.form_data" :propIsRead="true"></component-buy-ordergoodsform>
-                        </view>
+                        <block v-if="(item.form_data || null) != null">
+                            <component-form-input-detail :propData="item.form_data"></component-form-input-detail>
+                        </block>
                         <view v-else class="text-size-xs cr-grey">{{$t('order.order.93j3zq')}}</view>
                     </view>
                 </view>
@@ -43,7 +43,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
-    import componentBuyOrdergoodsform from '@/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform';
+    import componentFormInputDetail from '@/pages/form-input/components/form-input-detail/form-input-detail';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
@@ -63,7 +63,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
-            componentBuyOrdergoodsform
+            componentFormInputDetail
         },
 
         onLoad(params) {

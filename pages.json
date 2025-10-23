@@ -165,7 +165,13 @@
                     "path": "form-input-data-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                        },
+                        "componentPlaceholder": {
+                            "component-form-input-detail": "view"
+                        }
                     }
                 }
             ]
@@ -249,10 +255,10 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-buy-ordergoodsform": "/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform"
+                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base"
                         },
                         "componentPlaceholder": {
-                            "component-buy-ordergoodsform": "view"
+                            "component-form-input-base": "view"
                         }
                     }
                 }
@@ -1740,7 +1746,13 @@
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                        },
+                        "componentPlaceholder": {
+                            "component-form-input-detail": "view"
+                        }
                     }
                 }
             ]

@@ -106,8 +106,8 @@
                                     </view>
                                 </view>
                                 <!-- 订单商品表单 -->
-                                <view v-if="(item.plugins_ordergoodsform_data || null) != null && item.plugins_ordergoodsform_data.length > 0" class="goods-item-ordergoodsform">
-                                    <component-buy-ordergoodsform ref="buy_ordergoodsform" :propData="item.plugins_ordergoodsform_data" :propGoodsID="item.goods_id"></component-buy-ordergoodsform>
+                                <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
+                                    <component-form-input-base ref="component_form_input" :propBackData="item.goods_id" :propConfig="item.plugins_ordergoodsform_data.config" :propFormInputId="item.plugins_ordergoodsform_data.id" ></component-form-input-base>
                                 </view>
                             </view>
                         </view>
@@ -362,7 +362,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentTimeSelect from '@/pages/common/components/time-select/time-select';
     import componentPayment from '@/components/payment/payment';
-    import componentBuyOrdergoodsform from '@/pages/plugins/ordergoodsform/components/buy-ordergoodsform/buy-ordergoodsform';
+    import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -450,7 +450,7 @@
             componentNoData,
             componentTimeSelect,
             componentPayment,
-            componentBuyOrdergoodsform,
+            componentFormInputBase
         },
 
         onLoad(params) {
@@ -481,6 +481,12 @@
         },
 
         onShow() {
+            // 监听数据
+            var self = this;
+            uni.$on('onDataEvent', function(e) {
+                self.form_input_data_change_event(e);
+            });
+
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
@@ -497,6 +503,10 @@
 
             // 分享菜单处理
             app.globalData.page_share_handle();
+        },
+
+        onUnload() {
+            uni.$off('onDataEvent');
         },
 
         // 下拉刷新
@@ -863,6 +873,20 @@
                 }
             },
 
+            // 表单改变事件
+            form_input_data_change_event(e) {
+                uni.request({
+                    url: app.globalData.get_request_url('save', 'goods', 'ordergoodsform'),
+                    method: 'POST',
+                    data: {
+                        goods_id: e.back_data,
+                        form_id: e.forminput_id,
+                        data: e.submit_data
+                    },
+                    dataType: 'json'
+                });
+            },
+
             // 提交订单
             buy_submit_event(e) {
                 // 表单数据
@@ -887,12 +911,14 @@
                 }
 
                 // 订单商品表单插件数据验证处理
-                var buy_ordergoodsform = this.$refs.buy_ordergoodsform || [];
-                if (buy_ordergoodsform.length > 0) {
-                    for (var i in buy_ordergoodsform) {
-                        if (!buy_ordergoodsform[i].data_check()) {
+                var component_form_input = this.$refs.component_form_input || [];
+                if (component_form_input.length > 0) {
+                    for (var i in component_form_input) {
+                        var res = component_form_input[i].on_submit_event();
+                        if(res.status == 'error') {
+                            app.globalData.showToast(res.message);
                             return false;
-                        }
+                        }                        
                     }
                 }
 

@@ -10,7 +10,7 @@
             <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
             <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                 <!-- form表单子组件显示 -->
-                <form-input-base ref="component_form" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" :propBusiness="propBusiness" />
+                <form-input-base ref="component_form" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" :propBusiness="propBusiness" @onDataEvent="form_input_data_change_event" />
             </view>
         </view>
         <!-- #endif -->
@@ -29,7 +29,7 @@
                 <view v-if="is_show_heading_title == '1'" class="head-title flex-row bg-white" :style="heading_title_style + (overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;'))">{{ form_name }}</view>
                 <view class="data-list bg-white" :style="overall_config.type_value == 'default' ? '' : ('width:' + overall_config.custom_width * 2 + 'rpx;height:' + overall_config.custom_height * 2 + 'rpx')">
                     <!-- form表单子组件显示 -->
-                    <form-input-base ref="component_form" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" />
+                    <form-input-base ref="component_form" :propKey="propKey" :propConfig="propValue.config" :propFormInputId="propFormInputId" @onDataEvent="form_input_data_change_event" />
                 </view>
             </view>
         </scroll-view>
@@ -172,6 +172,9 @@ export default {
                     scrollTop: 0.01
                 })
             }, 500);
+        },
+        form_input_data_change_event(e) {
+            console.log(e)
         },
         // 返回事件
         top_nav_left_back_event(e) {
