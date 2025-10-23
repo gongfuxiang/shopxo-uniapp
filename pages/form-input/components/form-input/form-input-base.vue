@@ -328,13 +328,11 @@ export default {
                                     const subform_name = child.form_name;
                                     const subform_com_data = child.com_data;
                                     if (child.key == 'address') {
-                                        subform_com_data.form_value = [ item1[`${ subform_name }_province_id`] || '', item1[`${ subform_name }_city_id`] || '', item1[`${ subform_name }_county_id`] || '' ];
+                                        subform_com_data.form_value = item1[subform_name] || [];
                                         // 省市区中文名称
                                         subform_com_data.province_name = item1[`${ subform_name }_province_name`] || '';
                                         subform_com_data.city_name = item1[`${ subform_name }_city_name`] || '';
                                         subform_com_data.county_name = item1[`${ subform_name }_county_name`] || '';
-                                    } else if (child.key ==='date-group') {
-                                        subform_com_data.form_value = [ item1[`${ subform_name }_start`] || '' , item1[`${ subform_name }_end`] || ''] || [];
                                     } else if (['checkbox', 'select-multi'].includes(child.key)) {
                                         subform_com_data.form_value = item1[subform_name] || [];
                                         if (subform_com_data.is_add_option == '1') {
@@ -359,11 +357,13 @@ export default {
                                 const subform_com_data = item2.com_data;
                                 const subform_name = subform_com_data.form_name;
                                 if (item2.key == 'address') {
-                                    subform_com_data.form_value = new_prop_data[subform_name] || [];
+                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_province_id`] || '', new_prop_data[`${ subform_name }_city_id`] || '', new_prop_data[`${ subform_name }_county_id`] || '' ];
                                     // 省市区中文名称
                                     subform_com_data.province_name = new_prop_data[`${ subform_name }_province_name`] || '';
                                     subform_com_data.city_name = new_prop_data[`${ subform_name }_city_name`] || '';
                                     subform_com_data.county_name = new_prop_data[`${ subform_name }_county_name`] || '';
+                                } else if (item2.key ==='date-group') {
+                                    subform_com_data.form_value = [ new_prop_data[`${ subform_name }_start`] || '' , new_prop_data[`${ subform_name }_end`] || ''] || [];
                                 } else if (['checkbox', 'select-multi'].includes(item2.key)) {
                                     subform_com_data.form_value = new_prop_data[subform_name] || [];
                                     if (subform_com_data.is_add_option == '1') {
