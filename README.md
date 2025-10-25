@@ -55,6 +55,11 @@
 * GitHub：[https://github.com/gongfuxiang/shopxo-diy](https://github.com/gongfuxiang/shopxo-diy)
 * GitCode：[https://gitcode.com/zongzhige/shopxo-diy](https://gitcode.com/zongzhige/shopxo-diy)
 
+#### Form表单源代码平台
+* Gitee：[https://gitee.com/zongzhige/shopxo-form](https://gitee.com/zongzhige/shopxo-form)
+* GitHub：[https://github.com/gongfuxiang/shopxo-form](https://github.com/gongfuxiang/shopxo-form)
+* GitCode：[https://gitcode.com/zongzhige/shopxo-form](https://gitcode.com/zongzhige/shopxo-form)
+
 #### API接口文档
 * [https://doc.shopxo.net/article/2.html](https://doc.shopxo.net/article/2.html)
 
