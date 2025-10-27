@@ -2729,7 +2729,7 @@
                     if ((theme || null) == null) {
                         theme = this.get_theme_value();
                     }
-
+                
                     // 整体样式
                     uni.setTabBarStyle({
                         selectedColor: this.get_theme_color(theme),
@@ -2739,30 +2739,45 @@
                     });
 
                     // 菜单
-                    uni.setTabBarItem({
-                        index: 0,
-                        iconPath: 'static/images/common/tabbar/home.png',
-                        selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
-                        text: i18n.t('common.home'),
-                    });
-                    uni.setTabBarItem({
-                        index: 1,
-                        iconPath: 'static/images/common/tabbar/category.png',
-                        selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
-                        text: i18n.t('common.category'),
-                    });
-                    uni.setTabBarItem({
-                        index: 2,
-                        iconPath: 'static/images/common/tabbar/cart.png',
-                        selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
-                        text: i18n.t('common.cart'),
-                    });
-                    uni.setTabBarItem({
-                        index: 3,
-                        iconPath: 'static/images/common/tabbar/user.png',
-                        selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
-                        text: i18n.t('common.my'),
-                    });
+                    var temp_system_tabbar = this.data.system_tabbar;
+                    if(temp_system_tabbar.length > 0) {
+                        // 首页
+                        uni.setTabBarItem({
+                            index: 0,
+                            iconPath: 'static/images/common/tabbar/home.png',
+                            selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
+                            text: i18n.t('common.home'),
+                        });
+                    }
+                    // 后面三个菜单存在则设置
+                    for(var i in temp_system_tabbar) {
+                        switch(temp_system_tabbar[i]) {
+                            case '/pages/goods-category/goods-category' :
+                                uni.setTabBarItem({
+                                    index: parseInt(i),
+                                    iconPath: 'static/images/common/tabbar/category.png',
+                                    selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
+                                    text: i18n.t('common.category'),
+                                });
+                                break;
+                            case '/pages/cart/cart' :
+                                uni.setTabBarItem({
+                                    index: parseInt(i),
+                                    iconPath: 'static/images/common/tabbar/cart.png',
+                                    selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
+                                    text: i18n.t('common.cart'),
+                                });
+                                break;
+                            case '/pages/user/user' :
+                                uni.setTabBarItem({
+                                    index: parseInt(i),
+                                    iconPath: 'static/images/common/tabbar/user.png',
+                                    selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
+                                    text: i18n.t('common.my'),
+                                });
+                                break;
+                        }
+                    }
                 }
             },
 
