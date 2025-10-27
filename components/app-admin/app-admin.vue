@@ -153,7 +153,7 @@
                     fail: () => {
                         // 失败则再重试一次
                         if(is_init == 0) {
-                            this.get_data(1);
+                            this.init(1);
                         }
                     }
                 });
