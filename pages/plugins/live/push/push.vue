@@ -1,37 +1,51 @@
 <template>
     <view>
-        <live-pusher id='livePusher' ref="livePusher" class="livePusher" url="rtmp://live-push.shopxo.vip/68f764013572f9240ca7ce6c/shopxo"
-        mode="SD" :muted="true" :enable-camera="true" :auto-focus="true" :beauty="1" whiteness="2"
-        aspect="9:16" @statechange="statechange" @netstatus="netstatus" @error = "error"
+        <live-pusher
+        	id='livePusher'
+        	ref="livePusher"
+        	class="livePusher"
+        	:url="url"
+        	mode="SD"
+        	:muted="false"
+        	:enable-camera="true"
+        	:auto-focus="true"
+        	:beauty="1"
+        	whiteness="2"
+        	aspect="9:16"
+        	@statechange="statechange"
+        	@netstatus="netstatus"
+        	@error = "error"
+            style="width: 100%;height: 500px;"
         ></live-pusher>
-        <view class="margin-top-xxxxl padding-top-xxxxl">
-            <button class="btn" @click="start">开始推流</button>
-            <button class="btn" @click="pause">暂停推流</button>
-            <button class="btn" @click="resume">resume</button>
-            <button class="btn" @click="stop">停止推流</button>
-            <button class="btn" @click="snapshot">快照</button>
-            <button class="btn" @click="startPreview">开启摄像头预览</button>
-            <button class="btn" @click="stopPreview">关闭摄像头预览</button>
-            <button class="btn" @click="switchCamera">切换摄像头</button>
-        </view>
+
+        <button class="btn" @click="start">开始推流</button>
+        <button class="btn" @click="pause">暂停推流</button>
+        <button class="btn" @click="resume">resume</button>
+        <button class="btn" @click="stop">停止推流</button>
+        <button class="btn" @click="snapshot">快照</button>
+        <button class="btn" @click="startPreview">开启摄像头预览</button>
+        <button class="btn" @click="stopPreview">关闭摄像头预览</button>
+        <button class="btn" @click="switchCamera">切换摄像头</button>
     </view>
 </template>
+
 <script>
-    export default {
-        data() {
+	export default {
+		data() {
 			return {
-                context: null
-            }
-        },
-        onReady() {
-            // 注意：需要在onReady中 或 onLoad 延时
+                context: null,
+				url: "rtmp://live-push.shopxo.vip/68f764013572f9240ca7ce6c/shopxo"
+			}
+		},
+		onReady() {
+			// 注意：需要在onReady中 或 onLoad 延时
             var self = this;
             setTimeout(function() {
                 self.context = uni.createLivePusherContext("livePusher", self);
             }, 2000);
-        },
-        methods: {
-            statechange(e) {
+		},
+		methods: {
+			statechange(e) {
                 console.log("statechange:" + JSON.stringify(e));
             },
             netstatus(e) {
@@ -41,7 +55,6 @@
                 console.log("error:" + JSON.stringify(e));
             },
             start: function() {
-                console.log(this.context)
                 this.context.start({
                     success: (a) => {
                         console.log("livePusher.start:" + JSON.stringify(a));
@@ -104,9 +117,6 @@
                     }
                 });
             }
-        }
-    }
+		}
+	}
 </script>
-
-<style>
-</style>

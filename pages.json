@@ -2121,8 +2121,15 @@
                         "transparentTitle": "auto",
                         "titlePenetrate": "YES",
                         // #endif
+                        "disableScroll": true,
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "app-plus": {
+                            "bounce": {
+                                "top": "none",
+                                "bottom": "none"
+                            }
+                        }
                     }
                 },
                 {
@@ -2135,8 +2142,15 @@
                         "transparentTitle": "auto",
                         "titlePenetrate": "YES",
                         // #endif
+                        "disableScroll": true,
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "app-plus": {
+                            "bounce": {
+                                "top": "none",
+                                "bottom": "none"
+                            }
+                        }
                     }
                 }
             ]
