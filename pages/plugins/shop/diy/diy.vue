@@ -147,11 +147,6 @@
                                     },
                                 });
 
-                                // 标题名称
-                                uni.setNavigationBarTitle({
-                                    title: this.data.name,
-                                });
-
                                 // 设置顶部导航的默认颜色
                                 this.set_navigation_bar_color();
 

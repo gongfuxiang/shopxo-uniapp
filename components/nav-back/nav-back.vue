@@ -69,6 +69,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 client_value: app.globalData.application_client_type(),
                 status_bar_height: 0,
+                is_show_back: true,
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || H5 || APP
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0, true)),
                 // #endif
@@ -94,7 +95,10 @@
         methods: {
             // 返回事件
             top_nav_left_back_event() {
-                app.globalData.page_back_prev_event();
+                var arr = ['alipay', 'baidu'];
+                if(arr.indexOf(this.client_value) == -1) {
+                    app.globalData.page_back_prev_event();
+                }
             },
         },
     };

@@ -3,7 +3,7 @@
         <!-- 搜索 -->
         <view class="flex-row jc-sb align-c padding-main bg-white oh bs-bb z-i search-content" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0)+'px;'">
             <view v-if="top_nav_left_back_status == 1" @tap="top_nav_left_back_event" class="dis-inline-block padding-right-sm">
-                <iconfont name="icon-arrow-left" size="40rpx" propClass="pr top-xs z-i"></iconfont>
+                <iconfont name="icon-arrow-left" size="40rpx" propClass="pr top-xs z-i" :color="(client_value == 'alipay' || client_value == 'baidu') ? 'transparent' : propColor"></iconfont>
             </view>
             <view class="flex-1 wh-auto">
                 <view class="search flex-row jc-sb align-c round border-color-main bg-white">
@@ -182,6 +182,11 @@
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         props: {
+            // 箭头颜色
+            propColor: {
+                type: String,
+                default: '',
+            },
             propBase: {
                 type: [Object,String],
                 default: '',
@@ -222,7 +227,7 @@
                 // 左侧返回按钮
                 top_nav_left_back_status: app.globalData.data.is_shop_top_nav_back || 0,
                 // #ifdef MP-TOUTIAO
-                top_nav_left_back_status : 0,
+                top_nav_left_back_status: 0,
                 // #endif
                 // 状态栏高度
                 status_bar_height: 0,
@@ -247,6 +252,7 @@
             // 初始化
             init() {
                 var upd_data = {
+                    client_value: app.globalData.application_client_type(),
                     is_shop_search_all_search_button: (this.propBase == null || parseInt(this.propBase.is_shop_search_all_search_button || 0) != 1) ? 0 : 1,
                     shop_navigation: this.propShopNavigation,
                 }
@@ -381,7 +387,10 @@
 
             // 返回事件
             top_nav_left_back_event() {
-                app.globalData.page_back_prev_event();
+                var arr = ['alipay', 'baidu'];
+                if(arr.indexOf(this.client_value) == -1) {
+                    app.globalData.page_back_prev_event();
+                }
             }
         },
     };
@@ -422,7 +431,7 @@
         left: auto;
         top: 0;
         width: 100%;
-        /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
+        /* #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU */
         padding-right: 200rpx;
         /* #endif */
     }

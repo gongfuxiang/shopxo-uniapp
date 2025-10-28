@@ -203,9 +203,6 @@
                                         query: 'id=' + info.id,
                                     },
                                 });
-
-                                // 标题
-                                uni.setNavigationBarTitle({ title: info.title || info.content });
                             }
                         } else {
                             this.setData({

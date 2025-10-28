@@ -3167,6 +3167,8 @@
                 if(client_value == 'alipay') {
                     // 自定义头页面
                     var pages_always = [
+                        'pages/plugins/shop/index/index',
+                        'pages/plugins/shop/detail/detail',
                         'pages/plugins/realstore/detail/detail',
                         'pages/plugins/seckill/index/index',
                         'pages/plugins/points/index/index',

@@ -184,12 +184,6 @@
                                         path: '/pages/plugins/shop/index/index',
                                     },
                                 });
-                                // 导航名称
-                                if ((this.data_base.application_name || null) != null) {
-                                    uni.setNavigationBarTitle({
-                                        title: this.data_base.application_name,
-                                    });
-                                }
                             }
                             // 获取列表数据
                             this.get_data_list(1);

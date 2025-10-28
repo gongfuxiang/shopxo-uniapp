@@ -289,14 +289,6 @@
             <!-- 公共 -->
             <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
         </block>
-        
-        
-        <!-- <view class="margin-top-xxxxl padding-top-xxxxl padding-bottom-xxxxl tc">
-            <navigator data-value="/pages/plugins/live/push/push" @tap="url_event">推流</navigator>
-            <view class="margin-top-lg">
-                <navigator data-value="/pages/plugins/live/pull/pull" @tap="url_event">拉流</navigator>
-            </view>
-        </view> -->
     </view>
 </template>
 <script>

@@ -211,9 +211,6 @@
                                         img: info.share_images || info.cover,
                                     },
                                 });
-
-                                // 标题
-                                uni.setNavigationBarTitle({ title: info.title });
                             }
                         } else {
                             this.setData({

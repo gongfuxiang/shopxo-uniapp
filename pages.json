@@ -1294,7 +1294,7 @@
                         "navigationStyle": "custom",
                         // #endif
                         // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
+                        "transparentTitle": "always",
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -1308,7 +1308,7 @@
                         "navigationStyle": "custom",
                         // #endif
                         // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
+                        "transparentTitle": "always",
                         "titlePenetrate": "YES",
                         // #endif
                         "navigationBarTitleText": "",

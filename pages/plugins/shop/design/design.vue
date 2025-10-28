@@ -125,11 +125,6 @@
                                         img: this.data.logo
                                     }
                                 });
-
-                                // 标题名称
-                                uni.setNavigationBarTitle({
-                                    title: this.data.name
-                                });
                             }
                         } else {
                             this.setData({
