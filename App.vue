@@ -1011,13 +1011,15 @@
              */
             app_tabbar_pages() {
                 var temp_tabbar = this.data.system_tabbar;
-                var app_tabbar = this.get_config('app_tabbar') || null;
-                if(app_tabbar != null && (app_tabbar.content || null) != null && (app_tabbar.content.nav_content || null) != null) {
-                    temp_tabbar = app_tabbar.content.nav_content.map(function(v) {
-                        if((v.link || null) != null && (v.link.page || null) != null) {
-                            return v.link.page;
-                        }
-                    });
+                if(this.data.is_use_native_tabbar == 0) {
+                    var app_tabbar = this.get_config('app_tabbar') || null;
+                    if(app_tabbar != null && (app_tabbar.content || null) != null && (app_tabbar.content.nav_content || null) != null) {
+                        temp_tabbar = app_tabbar.content.nav_content.map(function(v) {
+                            if((v.link || null) != null && (v.link.page || null) != null) {
+                                return v.link.page;
+                            }
+                        });
+                    }
                 }
                 return temp_tabbar;
             },
