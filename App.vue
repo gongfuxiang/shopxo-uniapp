@@ -2052,7 +2052,7 @@
             },
 
             // app客户端品牌
-            application_client_brand(e) {
+            application_client_brand() {
                 var value = this.get_system_info('brand', null, true);
                 return (value === null) ? '' : value.toLowerCase();
             },
