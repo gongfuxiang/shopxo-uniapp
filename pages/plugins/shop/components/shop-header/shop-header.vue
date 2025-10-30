@@ -431,8 +431,11 @@
         left: auto;
         top: 0;
         width: 100%;
-        /* #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU */
+        /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
         padding-right: 200rpx;
+        /* #endif */
+        /* #ifdef MP-ALIPAY */
+        padding-right: 250rpx;
         /* #endif */
     }
     .search-content-seat {
