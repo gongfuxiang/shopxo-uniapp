@@ -2735,8 +2735,8 @@
                     // 整体样式
                     uni.setTabBarStyle({
                         selectedColor: this.get_theme_color(theme),
-                        color: '#333',
-                        backgroundColor: '#fff',
+                        color: '#333333',
+                        backgroundColor: '#ffffff',
                         borderStyle: 'black'
                     });
 
