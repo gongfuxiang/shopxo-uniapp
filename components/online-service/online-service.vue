@@ -402,7 +402,7 @@
     }
     /* #ifdef MP-ALIPAY */
     .goods-chat-container .alipay-contact {
-        margin-top: 10rpx;
+        margin-top: 26rpx;
     }
     .goods-chat-container .alipay-contact .text {
         margin-top: -5rpx;
