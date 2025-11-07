@@ -9,7 +9,7 @@
                 </view>
                 <view class="plugins-batchbuy-container">
                     <!-- 批发规则 -->
-                    <view v-if="(plugins_wholesale_data || null) != null" class="padding-main br-b-f5">
+                    <view v-if="(plugins_wholesale_data || null) != null" class="padding-horizontal-main padding-bottom-main padding-top-xxxxl br-b-f5">
                         <component-wholesale-rules :propCurrencySymbol="propCurrencySymbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
                     </view>
                     <!-- 下单规格选择 -->
@@ -39,7 +39,10 @@
                                         <view class="padding-main oh">
                                             <view class="fl item-left">
                                                 <view class="text-size-xs">{{ item.name }}</view>
-                                                <view class="sales-price text-size-xs">{{ propCurrencySymbol }}{{ item.base.price }}</view>
+                                                <view>
+                                                    <text class="sales-price text-size-xs">{{ propCurrencySymbol }}{{ item.base.price }}</text>
+                                                    <text class="cr-grey text-size-xss margin-left-xs">{{item.base.inventory_unit || goods.inventory_unit}}</text>
+                                                </view>
                                             </view>
                                             <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
                                             <view v-else class="tc oh round fr item-right text-size-xs">
@@ -67,12 +70,15 @@
                                                     </block>
                                                     <text class="text-size-xs va-m">{{ item.name }}</text>
                                                 </view>
-                                                <view class="sales-price text-size-xs margin-top-xs">{{ propCurrencySymbol }}{{ item.base.price }}</view>
+                                                <view class="margin-top-xs">
+                                                    <text class="sales-price text-size-xs">{{ propCurrencySymbol }}{{ item.base.price }}</text>
+                                                    <text class="cr-grey text-size-xss margin-left-xs">{{item.base.inventory_unit || goods.inventory_unit}}</text>
+                                                </view>
                                             </view>
                                             <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
                                             <view v-else :class="'tc oh round fr item-right text-size-xs margin-top'+((item.images || null) == null ? 'xs' : '')">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index">-</view>
-                                                <input @blur="batchbuy_goods_buy_number_blur" class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
+                                                <input @blur="batchbuy_goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1" :data-index="index">+</view>
                                             </view>
                                         </view>
@@ -236,7 +242,7 @@ export default {
             var min = parseInt(temp_spec_data.base.buy_min_number || 0);
             var max = parseInt(temp_spec_data.base.buy_max_number || 0);
             var inventory = parseInt(temp_spec_data.base.inventory || 0);
-            var inventory_unit = this.goods.inventory_unit;
+            var inventory_unit = temp_spec_data.base.inventory_unit || this.goods.inventory_unit;
 
             // 是否负数
             if (number < 0) {
@@ -504,7 +510,7 @@ export default {
         height: calc(100% - 15rpx);
     }
     .plugins-batchbuy-container .spec-data-content.wholesale {
-        height: calc(100% - 160rpx);
+        height: calc(100% - 240rpx);
     }
     .plugins-batchbuy-container .left-nav {
         width: 200rpx;
@@ -524,6 +530,10 @@ export default {
     }
     .plugins-batchbuy-container .right-conent {
         width: calc(100% - 210rpx);
+        padding-top: 60rpx;
+    }
+    .plugins-batchbuy-container .spec-data-content.wholesale .right-conent {
+        padding-top: 0;
     }
     .plugins-batchbuy-container .right-conent .item-left {
         width: calc(100% - 290rpx);
