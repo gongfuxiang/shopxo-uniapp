@@ -1,12 +1,22 @@
 <template>
     <view :class="theme_view">
-        <video class="wh-auto ht dis-block" :is-live="true" src="rtmp://live-pull.shopxo.vip/68f764013572f9240ca7ce6c/shopxo" 
-            @error="video_error_callback" 
-            :autoplay="autoplay" 
-            :controls="controls" 
-            :show-fullscreen-btn="show_fullscreen_btn" 
-            :enable-play-gesture="false"
-        ></video>
+        <!-- #ifdef H5 -->
+        <h5-hls-video ref="h5_hls_video" src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"></h5-hls-video>
+        <!-- <flv-video
+            ref="flv_player"
+            src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"
+            mode="live"
+            autoplay
+            style="width: 300px; height: 225px;"
+        ></flv-video> -->
+        <!-- #endif -->
+        <!-- <live-player
+            src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"
+            mode="live"
+            autoplay
+            style="width: 300px; height: 225px;"
+        ></live-player> -->
+        <button type="primary" @click="play_pause_event">播放/暂停</button>
         <view class="page-width-max pf z-i-deep bottom-0-lg wh-auto bg-white">
             <view v-if="message_list.length > 0" class="radius padding-main">
                 <block v-for="(item, index) in message_list">
@@ -28,8 +38,12 @@
     </view>
 </template>
 <script>
+    import flvVideo from './flv-video.vue'
     const app = getApp();
     export default {
+        components: {
+            flvVideo
+        },
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -260,6 +274,12 @@
                     return false;
                 }
                 this.socket_send('message', value);
+            },
+            // 播放/暂停事件
+            play_pause_event() {
+                if (this.$refs.h5_hls_video) {
+                    this.$refs.h5_hls_video.play();
+                }
             }
         }
     }
