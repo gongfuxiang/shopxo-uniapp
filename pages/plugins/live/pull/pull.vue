@@ -1,23 +1,10 @@
 <template>
     <view :class="theme_view">
-        <!-- #ifdef H5 -->
-        <h5-hls-video ref="h5_hls_video" src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"></h5-hls-video>
-        <!-- <flv-video
-            ref="flv_player"
-            src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"
-            mode="live"
-            autoplay
-            style="width: 300px; height: 225px;"
-        ></flv-video> -->
-        <!-- #endif -->
-        <!-- <live-player
-            src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"
-            mode="live"
-            autoplay
-            style="width: 300px; height: 225px;"
-        ></live-player> -->
+        <view class="w h">
+            <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"></live-video>
+        </view>
         <button type="primary" @click="play_pause_event">播放/暂停</button>
-        <view class="page-width-max pf z-i-deep bottom-0-lg wh-auto bg-white">
+        <!-- <view class="page-width-max pf z-i-deep bottom-0-lg wh-auto bg-white">
             <view v-if="message_list.length > 0" class="radius padding-main">
                 <block v-for="(item, index) in message_list">
                     <view class="padding-vertical-xs">{{item.content}}</view>
@@ -34,15 +21,15 @@
             <view class="radius padding-main br-t">
                 <input type="text" placeholder="请输入消息内容" confirm-type="send" @confirm="input_confirm_event" />
             </view>
-        </view>
+        </view> -->
     </view>
 </template>
 <script>
-    import flvVideo from './flv-video.vue'
+    import liveVideo from './video.vue';
     const app = getApp();
     export default {
         components: {
-            flvVideo
+            liveVideo
         },
         data() {
             return {
