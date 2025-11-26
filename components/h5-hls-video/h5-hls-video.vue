@@ -1,143 +1,147 @@
 <!-- eslint-disable -->
 <template>
-    <view class="player-wrapper" :id="videoWrapperId" :randomNum="randomNum" :change:randomNum="hlsVideoPlayer.randomNumChange" :viewportProps="viewportProps" :change:viewportProps="hlsVideoPlayer.viewportChange" :videoSrc="videoSrc" :change:videoSrc="hlsVideoPlayer.initVideoPlayer" :command="eventCommand" :change:command="hlsVideoPlayer.triggerCommand" :func="renderFunc" :change:func="hlsVideoPlayer.triggerFunc" />
+  <view class="player-wrapper" :id="videoWrapperId" :randomNum="randomNum"
+    :change:randomNum="hlsVideoPlayer.randomNumChange" :viewportProps="viewportProps"
+    :change:viewportProps="hlsVideoPlayer.viewportChange" :videoSrc="videoSrc"
+    :change:videoSrc="hlsVideoPlayer.initVideoPlayer" :command="eventCommand"
+    :change:command="hlsVideoPlayer.triggerCommand" :func="renderFunc" :change:func="hlsVideoPlayer.triggerFunc" />
 </template>
 
 <script>
-    export default {
-        props: {
-            src: {
-                type: String,
-                default: ''
-            },
-            autoplay: {
-                type: Boolean,
-                default: false
-            },
-            controls: {
-                type: Boolean,
-                default: true
-            },
-            objectFit: {
-                type: String,
-                default: 'cover'
-            },
-            muted: {
-                type: Boolean,
-                default: false
-            },
-            playbackRate: {
-                type: Number,
-                default: 1
-            },
-            poster: {
-                type: String,
-                default: ''
-            }
-        },
-        data() {
-            return {
-                randomNum: Math.floor(Math.random() * 100000000),
-                videoSrc: '',
-                // 父组件向子组件传递的事件指令（video的原生事件）
-                eventCommand: null,
-                // 父组件传递过来的，对 renderjs 层的函数执行（对视频控制的自定义事件）
-                renderFunc: {
-                    name: null,
-                    params: null
-                },
-                // 提供给父组件进行获取的视频属性
-                currentTime: 0,
-                duration: 0,
-                playing: false
-            }
-        },
-        watch: {
-            // 监听视频资源地址更新
-            src: {
-                handler(val) {
-                    if (!val) return
-                    setTimeout(() => {
-                        this.videoSrc = val
-                    }, 0)
-                },
-                immediate: true
-            }
-        },
-        computed: {
-            videoWrapperId() {
-                return `video-wrapper-${this.randomNum}`
-            },
-            // 聚合视图层的所有数据变化，传给renderjs的渲染层
-            viewportProps() {
-                return {
-                    autoplay: this.autoplay,
-                    muted: this.muted,
-                    controls: this.controls,
-                    objectFit: this.objectFit,
-                    poster: this.poster,
-                    playbackRate: this.playbackRate
-                }
-            }
-        },
-        // 方法
-        methods: {
-            // 传递事件指令给父组件
-            eventEmit({
-                event,
-                data
-            }) {
-                this.$emit(event, data)
-            },
-            // 修改view视图层的data数据
-            setViewData({
-                key,
-                value
-            }) {
-                key && this.$set(this, key, value)
-            },
-            // 重置事件指令
-            resetEventCommand() {
-                this.eventCommand = null
-            },
-            // 播放指令
-            play() {
-                this.eventCommand = 'play'
-            },
-            // 暂停指令
-            pause() {
-                this.eventCommand = 'pause'
-            },
-            // 重置自定义函数指令
-            resetFunc() {
-                this.renderFunc = {
-                    name: null,
-                    params: null
-                }
-            },
-            // 自定义事件 - 移除视频
-            remove(params) {
-                this.renderFunc = {
-                    name: 'removeHandler',
-                    params
-                }
-            },
-            // 自定义事件 - 全屏
-            fullScreen(params) {
-                this.renderFunc = {
-                    name: 'fullScreenHandler',
-                    params
-                }
-            },
-            // 跳转到指定时间点
-            toSeek(time) {
-                this.renderFunc = {
-                    name: 'toSeekHandler',
-                    params: time
-                }
-            }
-        }
+export default {
+  props: {
+    src: {
+      type: String,
+      default: ''
+    },
+    autoplay: {
+      type: Boolean,
+      default: false
+    },
+    controls: {
+      type: Boolean,
+      default: false
+    },
+    objectFit: {
+      type: String,
+      default: 'cover'
+    },
+    muted: {
+      type: Boolean,
+      default: false
+    },
+    playbackRate: {
+      type: Number,
+      default: 1
+    },
+    poster: {
+      type: String,
+      default: ''
     }
+  },
+  data() {
+    return {
+      randomNum: Math.floor(Math.random() * 100000000),
+      videoSrc: '',
+      // 父组件向子组件传递的事件指令（video的原生事件）
+      eventCommand: null,
+      // 父组件传递过来的，对 renderjs 层的函数执行（对视频控制的自定义事件）
+      renderFunc: {
+        name: null,
+        params: null
+      },
+      // 提供给父组件进行获取的视频属性
+      currentTime: 0,
+      duration: 0,
+      playing: false
+    }
+  },
+  watch: {
+    // 监听视频资源地址更新
+    src: {
+      handler(val) {
+        if (!val) return
+        setTimeout(() => {
+          this.videoSrc = val
+        }, 0)
+      },
+      immediate: true
+    }
+  },
+  computed: {
+    videoWrapperId() {
+      return `video-wrapper-${this.randomNum}`
+    },
+    // 聚合视图层的所有数据变化，传给renderjs的渲染层
+    viewportProps() {
+      return {
+        autoplay: this.autoplay,
+        muted: this.muted,
+        controls: this.controls,
+        objectFit: this.objectFit,
+        poster: this.poster,
+        playbackRate: this.playbackRate
+      }
+    }
+  },
+  // 方法
+  methods: {
+    // 传递事件指令给父组件
+    eventEmit({
+      event,
+      data
+    }) {
+      this.$emit(event, data)
+    },
+    // 修改view视图层的data数据
+    setViewData({
+      key,
+      value
+    }) {
+      key && this.$set(this, key, value)
+    },
+    // 重置事件指令
+    resetEventCommand() {
+      this.eventCommand = null
+    },
+    // 播放指令
+    play() {
+      this.eventCommand = 'play'
+    },
+    // 暂停指令
+    pause() {
+      this.eventCommand = 'pause'
+    },
+    // 重置自定义函数指令
+    resetFunc() {
+      this.renderFunc = {
+        name: null,
+        params: null
+      }
+    },
+    // 自定义事件 - 移除视频
+    remove(params) {
+      this.renderFunc = {
+        name: 'removeHandler',
+        params
+      }
+    },
+    // 自定义事件 - 全屏
+    fullScreen(params) {
+      this.renderFunc = {
+        name: 'fullScreenHandler',
+        params
+      }
+    },
+    // 跳转到指定时间点
+    toSeek(time) {
+      this.renderFunc = {
+        name: 'toSeekHandler',
+        params: time
+      }
+    }
+  }
+}
 </script>
 
 <script module="hlsVideoPlayer" lang="renderjs">
@@ -473,9 +477,9 @@
 </script>
 
 <style scoped>
-    .player-wrapper {
-        overflow: hidden;
-        height: 100%;
-        padding: 0;
-    }
+.player-wrapper {
+  overflow: hidden;
+  height: 100%;
+  padding: 0;
+}
 </style>

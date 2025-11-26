@@ -21,7 +21,7 @@
                     </view>
                 </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c" @tap="live_back">
-                    <u-icon name="logout-round" class="viewer-back-icon" size="40rpx" color="#fff"></u-icon>
+                    <u-icon name="close-fillup" class="viewer-back-icon" size="50rpx" color="#fff"></u-icon>
                 </view>
             </view>
         </view>
@@ -30,12 +30,12 @@
                 <view class="bulletin-area re" :style="'width:' + (windowWidth - 100) + 'px;'">
                     <!-- #ifdef APP-NVUE -->
                     <!-- nvue 使用 list进行列表渲染 -->
-                    <list class="bulletin-area" :style="'width:' + (windowWidth - 100) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scrolltolower">
+                    <list class="bulletin-area" :style="'width:' + (windowWidth - 100) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
                         <cell v-for="(item, index) in bulletins" :key="item.id" ref="bulletin_index">
                     <!-- #endif -->
                     <!-- #ifndef APP-NVUE -->
                     <!-- scroll-view 只有非nvue的页面使用 -->
-                    <scroll-view scroll-y class="bulletin-area" :style="'width:' + (windowWidth - 100) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scrolltolower">
+                    <scroll-view scroll-y class="bulletin-area" :style="'width:' + (windowWidth - 100) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
                         <view v-for="(item, index) in bulletins" :key="item.id">
                     <!-- #endif -->
                     <!-- 中间弹幕区域 -->
@@ -131,499 +131,425 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <u-popup ref="popupGoodsRef" mode="bottom" title="添加商品" :closeable="true">
-           <s-goods isGoodsPopup></s-goods>
-        </u-popup>
-        <!-- #ifndef APP-NVUE -->
-        <view v-if="is_countdown_visible" class="abs top-0 left-0 z-deep" style="width: 100vw;height: 100vh;">
-            <view class="countdown-display flex-row align-c jc-c re" :style="'left:'+ (windowWidth / 2 - 50) + 'px;top:' + (windowHeight / 2 - 50) + 'px;'">
-                <text v-if="is_countdown_num_visible" class="countdown-text countdown-animation">{{ countdown_num }}</text>
-            </view>
-        </view>
-        <!-- #endif -->
-        <!-- #ifdef APP-NVUE -->
-        <view v-if="is_countdown_visible" class="abs top-0 left-0 z-deep" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-            <view class="countdown-display flex-row align-c jc-c re" :style="'left:'+ (windowWidth / 2 - 50) + 'px;top:' + (windowHeight / 2 - 50) + 'px;'">
-                <text v-if="is_countdown_num_visible"  ref="countdown" class="countdown-text">{{ countdown_num }}</text>
-            </view>
-        </view>
-        <!-- #endif -->
+        <component-popup v-if="goods_popup_status" :propShow="goods_popup_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="goods_popup_close_event">
+            <view class="discount_detail-popup" :style="'width:' + windowWidth + 'px;'">
+                <view class="oh tc discount_detail-popup-title padding-main">
+                    <text class="text-size">添加商品</text>
+                    <view class="fr" @tap.stop="goods_popup_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <s-goods isGoodsPopup></s-goods>
+           </view>
+        </component-popup>
     </view>
 </template>
 
-<script setup>
-    import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
-    import $common from '@/common/js/common.js';
-    const props = defineProps({
-        liveConfig: {
-            type: Object,
-            default: () => {}
-        }
-    })
-
-    //#region 直播间设置
-    const live_data = ref({});
-    watch(()=> props.liveConfig, (mew_value) => {
-        if (mew_value.data != null) {
-            // 获取配置信息
-            live_data.value = mew_value.data;
-        }
-    }, { immediate:true, deep: true })
-    //#endregion
-    const userAvatar = ref('/static/images/common/user.png');
-    // 模拟观看者数据
-    const viewers = ref([
-        { avatar: '/static/images/common/user.png' },
-        { avatar: '/static/images/common/user.png' },
-        { avatar: '/static/images/common/user.png' }
-    ]);
-    
-    //#region 头部样式和页面宽度处理
-    const windowWidth = ref(0);
-    const windowHeight = ref(0);
-    const header_style = ref('');
-    onMounted(() => {
-        const data = uni.getWindowInfo();
-        windowWidth.value = data.windowWidth;
-        windowHeight.value = data.windowHeight;
-
-        // 菜单按钮位置信息, uniappx中没有这个方法，但是能使用
-        header_style.value = 'padding-top: 20rpx;';
-        // 设置有胶囊的时候头部显示的位置
-        // #ifdef MP
-        // 判断是否有胶囊
-        const is_page = $common.is_current_single_page();
-        // 如果有胶囊的时候，做处理
-        if (is_page == 0) {
-            const custom = uni.getMenuButtonBoundingClientRect();
-            header_style.value = `padding-top: ${custom.top + custom.height}px;`;
-        }
-        //#endif
-        //#ifdef APP
-        header_style.value = 'padding-top: 88rpx;'
-        //#endif
-    });
-    //#endregion
-
-    // 退出直播
-    const emit = defineEmits(['liveBack'])
-    const live_back = () => {
-        $common.showModal('温馨提示', '观众正在赶来的路上，确认关闭直播吗？').then(() => {
-            emit('liveBack');
-        });
-    }
-
-    //#region 评论区
-    const bulletins = ref([
-        {
-            id: '1',
-            type: 'message',
-            text: 'xxx提倡绿色直播，严禁未成年人直播或打赏，严禁涉政、涉恐、涉黄、聚集闹事、返现等内容，平台将会24小时巡查。请勿参与直播间非官方奖励活动/游戏，切勿私下交易，以防受骗。'
-        }, 
-        {
-            id: '2',
-            type: 'user',
-            user_avatar: '/static/images/common/user.png',
-            user_name: '陌生网友',
-            text: '你好'
+<script>
+    import componentPopup from "@/components/popup/popup";
+    import SGoods from "@/pages/plugins/live/pull/components/goods";
+    const app = getApp();
+    export default {
+        name: 'LiveContent',
+        components: {
+            componentPopup,
+            SGoods
         },
-        {
-            id: '3',
-            type: 'user',
-            user_avatar: '/static/images/common/user.png',
-            user_name: '陌生网友',
-            text: '21245445454545454545545445452124544545454545454554544545'
-        },
-        {
-            id: '9',
-            type: 'go',
-            user_avatar: '/static/images/common/user.png',
-            user_name: '陌生网友',
-            text: '228'
-        }
-    ])
-    const scroll_top = ref(0);
-    // 滚动条的高度
-    const scoll_height = ref(600);
-    //#ifdef APP-NVUE
-    scoll_height.value = uni.upx2px(600);
-    const domModule = uni.requireNativePlugin('dom');
-    //#endif
-    //#ifndef APP-NVUE
-    scoll_height.value = uni.rpx2px(600);
-    //#endif
-    const bulletin_index = ref(null);
-    // 滚动到最底部
-    const scroll_to_lower = () => {
-        nextTick(() => {
-            //#ifndef APP-NVUE
-            const num = Math.random();
-            scroll_top.value = scoll_height.value + num;
-            //#endif
-            //#ifdef APP-NVUE
-            domModule.scrollToElement((bulletin_index.value[bulletins.value.length - 1]), {
-                offset: scoll_height.value,  // 偏移量，可根据需要调整
-                animated: true  // 是否带动画
-            });
-            //#endif
-        })
-    }
-    onMounted(() => {
-        scroll_to_lower();
-    })
-    // nvue只能使用flex布局，无法实现文字主动换行的情况，将文字切割成数组，一个一个渲染
-    const split_text = (val) => {
-        return val.split('');
-    }
-    // 列表滚动事件
-    // 判断列表是否滚动了，如果滚动了，就认为他不是在底部，就要显示有多少条信息
-    const is_scroll_to_lower = ref(false);
-    const message_num = ref(0);
-    const scroll_event = (e) => {
-        is_scroll_to_lower.value = false;
-    }
-    // 滚动到底部
-    const scrolltolower = (e) => {
-        // 滚动到底部触发的事件，将显示的多少条信息给隐藏起来
-        setTimeout(() => {
-            // 滑动到底部的时候，清除历史存储的消息数据
-            message_num.value = 0;
-            is_scroll_to_lower.value = true;
-        }, 0);
-    }
-    // 点击新消息时，自动跳转到底部
-    const message_num_event = () => {
-        scroll_to_lower();
-    }
-    //#endregion
-
-     //#region 获取用户头像信息和socket连接信息
-    const avatar = ref('/static/images/common/user.png');
-    onMounted(() => {
-        const new_user = uni.getStorageSync(uni.$store?.state?.cache_user_info_key ?? '') || null;
-        if (new_user != null) {
-            avatar.value = new_user.avatar;
-        }
-        // 连接socket
-        socket_connect();
-    })
-
-    // 连接socket
-    const task = ref(null);
-    const socket_connect = () => {
-        task.value = uni.connectSocket({
-            url: "wss://new.shopxo.vip:9502",
-            header: {
-                "content-type": "application/json",
-            },
-            complete: () => {}
-        });
-
-        // task.value.onOpen(function(res) {
-        //     task.value = task.value;
-        // });
-        task.value.onMessage(function(res) {
-            socket_message_back_handle(res);
-        });
-        task.value.onClose(function(res) {
-            task.value = null;
-            console.log('close', res);
-        });
-        task.value.onError(function(res) {
-            task.value = null;
-            console.log('error', res);
-        });
-    }
-
-    // socket消息id
-    const socket_id = ref(0);
-    // 心跳定时任务
-    const ping_timer = ref(null);
-    // 心跳间隔时间
-    const ping_interval = ref(30);
-    // 当前观看直播用户id
-    const live_user_id = ref([]);
-    // 观看用户名称
-    const commons_name = ref('陌生网友'); // 用户名称
-    const is_user_comes = ref(false);
-    const is_user_comes_timer = ref(null);
-    // 消息回调处理
-    const socket_message_back_handle = (e) => {
-        let res = JSON.parse(e.data);
-        if(res.code !== 0) {
-            $common.showToast(res.msg);
-            return false;
-        }
-        let data = res.data;
-        switch(data.type) {
-            // 初始化
-            case 'init' :
-                socket_id.value = data.data.fd;
-                ping_interval.value = parseInt(data.data.ping_interval || 30);
-                // 初始化消息
-                socket_send('init');
-                break;
-
-            // 初始化成功
-            case 'init-success' :
-                live_user_id.value = data.data.live_user_id;
-                // 启动心跳
-                socket_ping_handle();
-                break;
-
-            // 初始化失败
-            case 'init-fail' :
-                console.log('connect fail');
-                break;
-
-            // 加入直播间提示
-            case 'join' :
-                commons_name.value = data.content;
-                is_user_comes.value = true;
-                // 设置定时任务，如果在固定时间内有其他人进入,就清除之前的定时任务，并重新设置一个定时任务，确保关闭时间
-                if (is_user_comes_timer.value != null) {
-                    clearTimeout(is_user_comes_timer.value)
-                }
-                is_user_comes_timer.value = setTimeout(() => {
-                    is_user_comes.value = false
-                }, 1000);
-                break;
-            // 消息
-            case 'message':
-                bulletins.value.push({
-                    id: Math.random(),
-                    type: 'user',
-                    user_avatar: data.data.user.avatar,
-                    user_name: data.data.user.nickname,
-                    text: data.content,
-                });
-                // 添加内容之后，需要滚动到最后
-                scroll_to_lower();
-                break;
-        }
-    }
-
-    // 心跳
-    const socket_ping_handle = () => {
-        // 清除定时任务
-        clear_interval_task();
-
-        // 启动定时任务
-        ping_timer.value = setInterval(function() {
-            socket_send('ping', $common.get_timestamp());
-        }, ping_interval.value * 1000);
-    }
-    const clear_interval_task = () => {
-        if (ping_timer.value != null) {
-            clearInterval(ping_timer.value);
-            ping_timer.value = null;
-        }
-    }
-
-    // 消息发送
-    // 获取配置信息
-    const application_client_type = $common.application_client_type();
-    const application_client_brand = $common.application_client_brand();
-    const uuid = $common.request_uuid();
-    const user = $common.get_user_cache_info();
-    // type init初始化, ping心跳, message消息
-    const socket_send = (type = 'message', content = '') => {
-        if(task.value === null) {
-            $common.showToast('socket连接失败！');
-            return false;
-        }
-        // 发送消息
-        let token = user == null ? '' : user.token || '';
-        task.value.send({data: JSON.stringify({
-            application_client_type: application_client_type.value,
-            application_client_brand: application_client_brand.value,
-            system_type: uni.$store.state.system_type || 'default',
-            uuid: uuid,
-            token: token,
-            live_room_id: live_data.value.id, // 直播间id
-            live_user_id: live_user_id.value, // 直播用户id
-            fd: socket_id.value,
-            type: type,
-            content: content
-        })});
-    }
-
-    onUnmounted(() => {
-        clear_interval_task();
-    })
-    //#endregion
-
-    //#region 监听键盘弹出事件
-    const comment_value = ref('');
-    const is_add_comment = ref(false);
-    const add_comment = () => {
-        is_add_comment.value = true
-    }
-    // 监听键盘高度变化事件
-    const listener_height = ref(0);
-    const listener = (res) => {
-        // 减1是为了兼容，避免跟键盘之间会不连贯
-        if (res.height > 0) {
-            listener_height.value = res.height - 1;
-        } else {
-            listener_height.value = 0;
-        }
-    }
-    onMounted(() => {
-        uni.onKeyboardHeightChange(listener);
-    })
-    onUnmounted(() => {
-        uni.offKeyboardHeightChange(listener);
-    })
-    
-    const comment_input_confirm = (e) => {
-        const value = e.detail.value;
-        if (value != '') {
-            socket_send('message', e.detail.value);
-        }
-        comment_value.value = '';
-    }
-    //#endregion
-
-    //#region 商品弹出框
-    const popupGoodsRef = ref(null);
-    const add_goods = () => {
-        popupGoodsRef.value.open();
-    }
-    //#endregion
-
-    //#region 点赞相关
-    
-    //#endregion
-
-    //#region 3 2 1倒计时相关
-    const countdown_num = ref(3);
-    const countdownTimer = ref(null);
-    const is_countdown_visible = ref(true);
-    const is_countdown_num_visible = ref(true);
-    //#ifdef APP-NVUE
-    const countdown = ref(null);
-    const nvueAnimation = uni.requireNativePlugin('animation');
-    //#endif
-    
-    // 执行单次倒计时动画
-    const executeCountdownAnimation = () => {
-        // 使用nvue的transition方法执行流畅动画
-        if (countdown.value) {
-            nvueAnimation.transition(countdown.value, {
-                styles: {
-                    transform: 'scale(2)',
-                    opacity: 0
-                },
-                duration: 1000,
-                timingFunction: 'ease-in-out', // 使用缓动函数使动画更自然
-                delay: 0
-            }, () => {
-                // 动画完成后更新数字并重置动画状态
-                countdown_num.value--;
-                
-                // 重置动画状态
-                if (countdown.value) {
-                    nvueAnimation.transition(countdown.value, {
-                        styles: {
-                            transform: 'scale(1)',
-                            opacity: 1
-                        },
-                        duration: 0 // 瞬间重置
-                    }, () => {
-                        // 当倒计时到0时结束（显示完1之后减到0再隐藏）
-                        if (countdown_num.value <= 1) {
-                            clearInterval(countdownTimer.value);
-                            countdownTimer.value = null;
-                            //  延时900毫秒之后立即隐藏倒计时组件
-                            setTimeout(() => {
-                                is_countdown_visible.value = false;
-                                is_countdown_num_visible.value = false;
-                            }, 900)
-                        }
-                    });
-                }
-            });
-        } else {
-            // 如果无法获取到元素，直接更新数字
-            countdown_num.value--;
-            // 当倒计时到0时结束（显示完1之后减到0再隐藏）
-            if (countdown_num.value <= 1) {
-                clearInterval(countdownTimer.value);
-                countdownTimer.value = null;
-                // 延时900毫秒之后立即隐藏倒计时组件
-                setTimeout(() => {
-                    is_countdown_visible.value = false;
-                    is_countdown_num_visible.value = false;
-                }, 900)
+        props: {
+            liveConfig: {
+                type: Object,
+                default: () => {}
             }
-        }
-    };
-    
-    // 启动倒计时
-    const startCountdown = () => {
-        //#ifndef APP-NVUE
-        countdown_num.value = 3;
-        is_countdown_visible.value = true;
-        is_countdown_num_visible.value = true;
-        
-        countdownTimer.value = setInterval(() => {
-            // 每次数字变化时触发动画
-            is_countdown_num_visible.value = false;
-            
-            setTimeout(() => {
-                countdown_num.value--;
-                is_countdown_num_visible.value = true;
+        },
+        data() {
+            return {
+                application_client_type: app.globalData.application_client_type(),
+                application_client_brand: app.globalData.application_client_brand(),
+                goods_popup_status: false,
+                // 直播间配置信息
+                live_data: {},
+                userAvatar: '/static/images/common/user.png',
+                // 模拟观看者数据
+                viewers: [
+                    { avatar: '/static/images/common/user.png' },
+                    { avatar: '/static/images/common/user.png' },
+                    { avatar: '/static/images/common/user.png' }
+                ],
                 
-                // 当倒计时到0时结束（显示完1之后减到0再隐藏）
-                if (countdown_num.value <= 0) {
-                    clearInterval(countdownTimer.value);
-                    countdownTimer.value = null;
-                    // 立即隐藏倒计时组件
-                    is_countdown_visible.value = false;
-                    is_countdown_num_visible.value = false;
-                }
-            }, 300);
-        }, 1000);
-        //#endif
-        //#ifdef APP-NVUE
-        countdown_num.value = 3;
-        is_countdown_visible.value = true;
-        is_countdown_num_visible.value = true;
-        
-        // 立即执行第一次动画
-        setTimeout(() => {
-            executeCountdownAnimation();
-        }, 50); // 50毫秒后开始第一次动画
-        
-        // 设置定时器处理后续动画
-        countdownTimer.value = setInterval(() => {
-            // 每次数字变化时触发动画
-            is_countdown_num_visible.value = false;
+                //#region 头部样式和页面宽度处理
+                windowWidth: 0,
+                windowHeight: 0,
+                header_style: '',
+                //#endregion
+                
+                //#region 评论区
+                bulletins: [
+                    {
+                        id: '1',
+                        type: 'message',
+                        text: 'xxx提倡绿色直播，严禁未成年人直播或打赏，严禁涉政、涉恐、涉黄、聚集闹事、返现等内容，平台将会24小时巡查。请勿参与直播间非官方奖励活动/游戏，切勿私下交易，以防受骗。'
+                    }, 
+                    {
+                        id: '2',
+                        type: 'user',
+                        user_avatar: '/static/images/common/user.png',
+                        user_name: '陌生网友',
+                        text: '你好'
+                    },
+                    {
+                        id: '3',
+                        type: 'user',
+                        user_avatar: '/static/images/common/user.png',
+                        user_name: '陌生网友',
+                        text: '21245445454545454545545445452124544545454545454554544545'
+                    },
+                    {
+                        id: '9',
+                        type: 'go',
+                        user_avatar: '/static/images/common/user.png',
+                        user_name: '陌生网友',
+                        text: '228'
+                    }
+                ],
+                scroll_top: 0,
+                // 滚动条的高度
+                scoll_height: 600,
+                //#ifdef APP-NVUE
+                domModule: null,
+                //#endif
+                bulletin_index: null,
+                // 列表滚动事件
+                // 判断列表是否滚动了，如果滚动了，就认为他不是在底部，就要显示有多少条信息
+                is_scroll_to_lower: false,
+                message_num: 0,
+                //#endregion
+                
+                //#region 获取用户头像信息和socket连接信息
+                avatar: '/static/images/common/user.png',
+                // 连接socket
+                task: null,
+                // socket消息id
+                socket_id: 0,
+                // 心跳定时任务
+                ping_timer: null,
+                // 心跳间隔时间
+                ping_interval: 30,
+                // 当前观看直播用户id
+                live_user_id: [],
+                // 观看用户名称
+                commons_name: '陌生网友', // 用户名称
+                is_user_comes: false,
+                is_user_comes_timer: null,
+                //#endregion
+                
+                //#region 监听键盘弹出事件
+                comment_value: '',
+                is_add_comment: false,
+                // 监听键盘高度变化事件
+                listener_height: 0,
+                //#endregion
+                
+                //#region 3 2 1倒计时相关
+                countdown_num: 3,
+                countdownTimer: null,
+                is_countdown_visible: true,
+                is_countdown_num_visible: true,
+                //#ifdef APP-NVUE
+                nvueAnimation: null,
+                //#endif
+                //#endregion
+            }
+        },
+        watch: {
+            liveConfig: {
+                handler(new_value) {
+                    if (new_value.data != null) {
+                        // 获取配置信息
+                        this.live_data = new_value.data;
+                    }
+                },
+                immediate: true,
+                deep: true
+            }
+        },
+        mounted() {
+            // 初始化窗口信息和滚动条高度
+            this.init_window_info();
+            // 滚动到评论区底部
+            this.scroll_to_lower();
+            // 获取用户信息
+            this.init_user_info();
+            // 创建监听事件
+            this.bind_keyboard_listener();
+        },
+        beforeDestroy() {
+            // 清理socket连接
+            this.clear_interval_task();
+            this.unbind_keyboard_listener();
+            // 如果定时器存在，清除它
+            if (this.countdownTimer) {
+                clearInterval(this.countdownTimer);
+            }
+        },
+        methods: {
+            //#region 头部样式和页面宽度处理
+            init_window_info() {
+                const data = uni.getWindowInfo();
+                this.windowWidth = data.windowWidth;
+                this.windowHeight = data.windowHeight;
             
-            setTimeout(() => {
-                is_countdown_num_visible.value = true;
-                // 延迟一点时间再执行动画，确保元素已显示
+                // 菜单按钮位置信息, uniappx中没有这个方法，但是能使用
+                this.header_style = 'padding-top: 20rpx;';
+                // 设置有胶囊的时候头部显示的位置
+                // #ifdef MP
+                // 判断是否有胶囊
+                const is_page = app.globalData.is_current_single_page();
+                // 如果有胶囊的时候，做处理
+                if (is_page == 0) {
+                    const custom = uni.getMenuButtonBoundingClientRect();
+                    this.header_style = `padding-top: ${custom.top + custom.height}px;`;
+                }
+                //#endif
+                //#ifdef APP
+                this.header_style = 'padding-top: 88rpx;'
+                //#endif
+                
+                //#ifdef APP-NVUE
+                this.scoll_height = app.globalData.rpx_to_px(600);
+                this.domModule = uni.requireNativePlugin('dom');
+                //#endif
+                //#ifndef APP-NVUE
+                this.scoll_height = app.globalData.rpx_to_px(600);
+                //#endif
+                
+                //#ifdef APP-NVUE
+                this.nvueAnimation = uni.requireNativePlugin('animation');
+                //#endif
+            },
+            //#endregion
+            
+            // 退出直播, 客户端退出不需要提示
+            live_back() {
+                this.$emit('liveBack');
+            },
+            
+            //#region 评论区
+            // 滚动到最底部
+            scroll_to_lower() {
+                this.$nextTick(() => {
+                    //#ifndef APP-NVUE
+                    const num = Math.random();
+                    this.scroll_top = this.scoll_height + num;
+                    //#endif
+                    //#ifdef APP-NVUE
+                    if (this.bulletin_index && this.bulletin_index.length > 0) {
+                        this.domModule.scrollToElement((this.bulletin_index[this.bulletins.length - 1]), {
+                            offset: this.scoll_height,  // 偏移量，可根据需要调整
+                            animated: true  // 是否带动画
+                        });
+                    }
+                    //#endif
+                })
+            },
+            // nvue只能使用flex布局，无法实现文字主动换行的情况，将文字切割成数组，一个一个渲染
+            split_text(val) {
+                return val.split('');
+            },
+            scroll_event(e) {
+                this.is_scroll_to_lower = false;
+            },
+            // 滚动到底部
+            scroll_to_lower_event(e) {
+                // 滚动到底部触发的事件，将显示的多少条信息给隐藏起来
                 setTimeout(() => {
-                    executeCountdownAnimation();
-                }, 50);
-            }, 50);
-        }, 1000);
-        //#endif  
-    };
-    
-    // 组件挂载时启动倒计时
-    onMounted(() => {
-        startCountdown();
-    });
-    
-    // 组件销毁时清理定时器
-    onUnmounted(() => {
-        if (countdownTimer.value) {
-            clearInterval(countdownTimer.value);
+                    // 滑动到底部的时候，清除历史存储的消息数据
+                    this.message_num = 0;
+                    this.is_scroll_to_lower = true;
+                }, 0);
+            },
+            // 点击新消息时，自动跳转到底部
+            message_num_event() {
+                this.scroll_to_lower();
+            },
+            //#endregion
+            
+            //#region 获取用户头像信息和socket连接信息
+            init_user_info() {
+                const new_user = uni.getStorageSync(uni.$store?.state?.cache_user_info_key ?? '') || null;
+                if (new_user != null) {
+                    this.avatar = new_user.avatar;
+                }
+                // 连接socket
+                this.socket_connect();
+            },
+            
+            // 连接socket
+            socket_connect() {
+                this.task = uni.connectSocket({
+                    url: "wss://new.shopxo.vip:9502",
+                    header: {
+                        "content-type": "application/json",
+                    },
+                    complete: () => {}
+                });
+            
+                // task.value.onOpen(function(res) {
+                //     task.value = task.value;
+                // });
+                this.task.onMessage((res) => {
+                    this.socket_message_back_handle(res);
+                });
+                this.task.onClose((res) => {
+                    this.task = null;
+                    console.log('close', res);
+                });
+                this.task.onError((res) => {
+                    this.task = null;
+                    console.log('error', res);
+                });
+            },
+            
+            // 消息回调处理
+            socket_message_back_handle(e) {
+                let res = JSON.parse(e.data);
+                if(res.code !== 0) {
+                    app.globalData.showToast(res.msg);
+                    return false;
+                }
+                let data = res.data;
+                switch(data.type) {
+                    // 初始化
+                    case 'init' :
+                        this.socket_id = data.data.fd;
+                        this.ping_interval = parseInt(data.data.ping_interval || 30);
+                        // 初始化消息
+                        this.socket_send('init');
+                        break;
+            
+                    // 初始化成功
+                    case 'init-success' :
+                        this.live_user_id = data.data.live_user_id;
+                        // 启动心跳
+                        this.socket_ping_handle();
+                        break;
+            
+                    // 初始化失败
+                    case 'init-fail' :
+                        console.log('connect fail');
+                        break;
+            
+                    // 加入直播间提示
+                    case 'join' :
+                        this.commons_name = data.content;
+                        this.is_user_comes = true;
+                        // 设置定时任务，如果在固定时间内有其他人进入,就清除之前的定时任务，并重新设置一个定时任务，确保关闭时间
+                        if (this.is_user_comes_timer != null) {
+                            clearTimeout(this.is_user_comes_timer)
+                        }
+                        this.is_user_comes_timer = setTimeout(() => {
+                            this.is_user_comes = false
+                        }, 1000);
+                        break;
+                    // 消息
+                    case 'message':
+                        this.bulletins.push({
+                            id: Math.random(),
+                            type: 'user',
+                            user_avatar: data.data.user.avatar,
+                            user_name: data.data.user.nickname,
+                            text: data.content,
+                        });
+                        // 添加内容之后，需要滚动到最后
+                        this.scroll_to_lower();
+                        break;
+                }
+            },
+            
+            // 心跳
+            socket_ping_handle() {
+                // 清除定时任务
+                this.clear_interval_task();
+            
+                // 启动定时任务
+                this.ping_timer = setInterval(() => {
+                    this.socket_send('ping', app.globalData.get_timestamp());
+                }, this.ping_interval * 1000);
+            },
+            clear_interval_task() {
+                if (this.ping_timer != null) {
+                    clearInterval(this.ping_timer);
+                    this.ping_timer = null;
+                }
+            },
+            
+            // 消息发送
+            // type init初始化, ping心跳, message消息
+            socket_send(type = 'message', content = '') {
+                if(this.task === null) {
+                    app.globalData.showToast('socket连接失败！');
+                    return false;
+                }
+                // 发送消息
+                const user = app.globalData.get_user_cache_info();
+                let uuid = app.globalData.request_uuid();
+                let token = user == null ? '' : user.token || '';
+                this.task.send({data: JSON.stringify({
+                    application_client_type: this.application_client_type,
+                    application_client_brand: this.application_client_brand,
+                    system_type: app.globalData.data.system_type,
+                    uuid: uuid,
+                    token: token,
+                    live_room_id: this.live_data.id, // 直播间id
+                    live_user_id: this.live_user_id, // 直播用户id
+                    fd: this.socket_id,
+                    type: type,
+                    content: content
+                })});
+            },
+            //#endregion
+            
+            //#region 监听键盘弹出事件
+            add_comment() {
+                //#ifndef H5
+                this.is_add_comment = true;
+                //#endif
+            },
+            // 监听键盘高度变化事件
+            listener(res) {
+                // 减1是为了兼容，避免跟键盘之间会不连贯
+                if (res.height > 0) {
+                    this.listener_height = res.height - 1;
+                } else {
+                    this.listener_height = 0;
+                }
+            },
+            bind_keyboard_listener() {
+                uni.onKeyboardHeightChange(this.listener);
+            },
+            unbind_keyboard_listener() {
+                uni.offKeyboardHeightChange(this.listener);
+            },
+            
+            comment_input_confirm(e) {
+                const value = e.detail.value;
+                if (value != '') {
+                    this.socket_send('message', e.detail.value);
+                }
+                this.comment_value = '';
+            },
+            //#endregion
+            
+            //#region 商品弹出框
+            add_goods() {
+                this.goods_popup_status = true;
+            },
+            goods_popup_close_event(e) {
+                // nvue 不支持setData所以直接赋值
+                this.goods_popup_status = false;
+            }
+            //#endregion
         }
-    });
-    //#endregion
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -666,8 +592,8 @@
     border: 3rpx solid #ffffff; /* 添加白色边框使其更清晰 */
 }
 .viewer-back {
-    width: 60rpx;
-    height: 60rpx;
+    width: 70rpx;
+    height: 70rpx;
     border-radius: 30rpx;
 }
 
