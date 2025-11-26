@@ -20,7 +20,7 @@
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                     </view>
                 </view>
-                <view class="viewer-back ml-5 flex-row align-c jc-c" @tap="live_back">
+                <view class="viewer-back ml-5 flex-row align-c jc-c bg-white" @tap="live_back">
                     <u-icon name="close-fillup" class="viewer-back-icon" size="50rpx" color="#fff"></u-icon>
                 </view>
             </view>
@@ -108,7 +108,7 @@
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5">
                     <view class="flex-1 bottom-actions-input">
-                        <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" />
+                        <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                     </view>
                     <view class="bottom-actions-icon" @tap="add_goods">
                         <u-icon name="shopping-cart-tall" color="#fff" size="32rpx"></u-icon>
@@ -131,29 +131,19 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <component-popup v-if="goods_popup_status" :propShow="goods_popup_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="goods_popup_close_event">
-            <view class="discount_detail-popup" :style="'width:' + windowWidth + 'px;'">
-                <view class="oh tc discount_detail-popup-title padding-main">
-                    <text class="text-size">添加商品</text>
-                    <view class="fr" @tap.stop="goods_popup_close_event">
-                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
-                    </view>
-                </view>
-                <s-goods isGoodsPopup></s-goods>
-           </view>
-        </component-popup>
+        <u-popup ref="popupGoodsRef" mode="bottom" title="添加商品" :closeable="true">
+           <s-goods isGoodsPopup></s-goods>
+        </u-popup>
     </view>
 </template>
 
 <script>
-    import componentPopup from "@/components/popup/popup";
-    import SGoods from "@/pages/plugins/live/pull/components/goods";
+    import sGoods from "@/pages/plugins/live/pull/components/goods";
     const app = getApp();
     export default {
         name: 'LiveContent',
         components: {
-            componentPopup,
-            SGoods
+            sGoods
         },
         props: {
             liveConfig: {
@@ -541,12 +531,8 @@
             
             //#region 商品弹出框
             add_goods() {
-                this.goods_popup_status = true;
+                this.$refs.popupGoodsRef.open();
             },
-            goods_popup_close_event(e) {
-                // nvue 不支持setData所以直接赋值
-                this.goods_popup_status = false;
-            }
             //#endregion
         }
     }

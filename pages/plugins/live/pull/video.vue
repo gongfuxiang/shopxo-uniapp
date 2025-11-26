@@ -6,7 +6,7 @@
     <live-player :src="src" autoplay class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video :src="src" autoplay :is-video="true" :style="{width: windowWidth + 'px', height: windowHeight + 'px'}"></video>
+    <video :src="src" autoplay :is-video="true" :controls="false" :style="{width: windowWidth + 'px', height: windowHeight + 'px'}"></video>
     <!-- #endif -->
 </template>
 
