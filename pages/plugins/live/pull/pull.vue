@@ -9,8 +9,8 @@
     </view>
 </template>
 <script>
-    import liveVideo from './video.vue';
-    import liveContent from './components/live-content.vue';
+    import liveVideo from './components/video/video.vue';
+    import liveContent from './components/live-content/live-content.vue';
     const app = getApp();
     export default {
         components: {

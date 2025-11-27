@@ -1351,6 +1351,9 @@
 .cr-f {
     color: #fff;
 }
+.cr-d {
+    color: #ddd;
+}
 
 .bg-0 {
     background-color: #000;

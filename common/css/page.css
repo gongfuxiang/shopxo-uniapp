@@ -345,6 +345,12 @@ button:before {
     /* #endif */
 }
 
+.bottom-line-exclude-bottom {
+    /* #ifdef APP | MP */
+    padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx); /* 兼容iOS底部安全区域 */
+    /* #endif */
+}
+
 /**
  * 页面底部浮动、增加底部边距
  */
