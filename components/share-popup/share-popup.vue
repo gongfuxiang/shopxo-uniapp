@@ -212,7 +212,7 @@
                 // 分享基础数据
                 var share = app.globalData.share_content_handle(this.share_info || {});
                 var img = this.images || share.img;
-                var url = app.globalData.share_query_handle(this.url) || share.url;
+                var url = app.globalData.page_url_protocol((this.url || null) == null ? share.url : app.globalData.share_query_handle(this.url))
                 var title = this.title || share.title;
                 var summary = this.summary || share.desc;
                 var type = this.type === null ? ((img || null) == null ? 1 : 0) : this.type;

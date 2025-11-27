@@ -144,7 +144,7 @@
                 post_data: {
                     wd: params.keywords || '',
                     shop_id: params.shop_id || 0,
-                    category_ids: ((params.category_id || 0) == 0) ? '' : JSON.stringify({"0":params.category_id})
+                    category_ids: params.category_id || '',
                 }
             });
 
@@ -199,13 +199,15 @@
                             var data = res.data.data;
                             // 分类选中处理
                             var category = data.shop_goods_category || [];
-                            if((this.params.category_id || 0) != 0 && category.length > 0) {
+                            if((this.params.category_id || null) != null && category.length > 0) {
                                 for(var i in category) {
-                                    category[i]['active'] = (category[i]['id'] == this.params.category_id) ? 1 : 0;
+                                    category[i]['active'] = (parseInt(category[i]['id']) == parseInt(this.params.category_id)) ? 1 : 0;
                                     if((category[i]['items'] || null) != null && category[i]['items'].length > 0) {
                                         for(var x in category[i]['items']) {
-                                            category[i]['items'][x]['active'] = (category[i]['items'][x]['id'] == this.params.category_id) ? 1 : 0;
-                                            category[i]['active'] = 1;
+                                            category[i]['items'][x]['active'] = (parseInt(category[i]['items'][x]['id']) == parseInt(this.params.category_id)) ? 1 : 0;
+                                            if(category[i]['items'][x]['active'] == 1) {
+                                                category[i]['active'] = 1;
+                                            }
                                         }
                                     }
                                 }
