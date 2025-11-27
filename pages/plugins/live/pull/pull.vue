@@ -11,37 +11,20 @@
 <script>
     import liveVideo from './components/video/video.vue';
     import liveContent from './components/live-content/live-content.vue';
+    // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
+    import mixins from './mixins/mixins.js';
     const app = getApp();
     export default {
         components: {
             liveVideo,
             liveContent
         },
+        mixins: [mixins],
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
             }
         },
-        
-        onLoad(params) {
-            // 调用公共事件方法
-            app.globalData.page_event_onload_handle(params);
-        
-            // 设置参数
-            this.setData({
-                params: app.globalData.launch_params_handle(params),
-            });
-        },
-        
-        onShow() {
-            // 调用公共事件方法
-            app.globalData.page_event_onshow_handle();
-
-            // 分享菜单处理
-            app.globalData.page_share_handle();
-        },
-        methods: {
-            
-        }
     }
 </script>
 <style scoped>

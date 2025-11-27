@@ -15,11 +15,11 @@
                 </view>
             </view>
             <view class="flex-row align-c">
-                <!-- <view class="flex-row align-c pr" style="direction: rtl;">
+                <view class="flex-row align-c pr" style="direction: rtl;">
                     <view v-for="(item, index) in viewers" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                     </view>
-                </view> -->
+                </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
                     <component-icon name="close-fillup" class="viewer-back-icon" size="50rpx" color="#fff"></component-icon>
                 </view>
@@ -27,7 +27,7 @@
         </view>
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
-                <view class="flex-row jc-sb">
+                <view class="pr">
                     <view class="bulletin-area pr" :style="'width:' + (windowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
@@ -99,13 +99,11 @@
                             <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
                         </view>
                     </view>
-                    <view class="flex-row align-e mb-10">
-                        <view class="explain-goods">
-                            <image :src="explain_goods.goods_avatar" class="explain-goods-image" mode="aspectFill"></image>
-                            <view class="explain-goods-content mt-10">
-                                <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.goods_name }}</text>
-                                <text class="explain-goods-price cr-red mt-10 size-12">¥{{ explain_goods.goods_price }}</text>
-                            </view>
+                    <view v-if="!isEmpty(explain_goods)" class="explain-goods">
+                        <image :src="explain_goods.goods_avatar" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
+                        <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
+                            <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.goods_name }}</text>
+                            <text class="explain-goods-price cr-red mt-10 size-12">¥{{ explain_goods.goods_price }}</text>
                         </view>
                     </view>
                 </view>
@@ -129,7 +127,7 @@
                             <component-icon name="givealike-o" color="#fff" size="32rpx"></component-icon>
                         </view>
                     </component-like-button>
-                    <view class="bottom-actions-icon">
+                    <view class="bottom-actions-icon" @tap="share_event">
                         <component-icon name="share-solid" color="#fff" size="32rpx"></component-icon>
                     </view>
                 </view>
@@ -153,6 +151,7 @@
     import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
     import componentPopup from "@/pages/plugins/live/pull/components/popup/popup";
     import componentLikeButton from "@/pages/plugins/live/pull/components/like-button/like-button";
+    import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
     export default {
         name: 'LiveContent',
@@ -303,6 +302,7 @@
             }
         },
         methods: {
+            isEmpty,
             //#region 头部样式和页面宽度处理
             init_window_info() {
                 const data = uni.getWindowInfo();
@@ -555,6 +555,10 @@
                 this.$refs.popupGoodsRef.open();
             },
             //#endregion
+            share_event() {
+                // 分享菜单处理
+                app.globalData.page_share_handle();
+            },
         }
     }
 </script>
@@ -776,10 +780,10 @@
     background: #fff;
     padding: 4rpx;
     box-sizing: border-box;
-    .explain-goods-image {
-        width: 100%;
-        height: 180rpx;
-    }
+    position: absolute;
+    right: 0;
+    bottom: 20rpx;
+    border-radius: 20rpx;
 }
 
 /* #ifdef MP-WEIXIN | APP-PLUS */
