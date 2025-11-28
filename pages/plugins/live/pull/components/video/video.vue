@@ -45,7 +45,7 @@
             },
             // video app使用这种方式，判断直播是否结束
             ended() {
-                console.log('ended');
+                this.$emit('ended');
             }
         },
     }
