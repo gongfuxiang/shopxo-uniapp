@@ -88,7 +88,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     /* #ifndef APP-NVUE */
     @import url('@/static/icon/iconfont.css');
         /* #ifndef MP-WEIXIN */

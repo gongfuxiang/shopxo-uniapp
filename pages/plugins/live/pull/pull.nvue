@@ -1,10 +1,12 @@
 <template>
     <view :class="theme_view + ' bg-0 flex-row'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
         <view class="flex-1">
-            <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"></live-video>
+            <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8" @ended="ended"></live-video>
         </view>
         <view class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-            <live-content></live-content>
+            <view class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+                <text class="live-ended-text">直播已结束</text>
+            </view>
         </view>
     </view>
 </template>
@@ -27,7 +29,7 @@
         }
     }
 </script>
-<style scoped>
+<style lang="scss" scoped>
     .live-content {
         position: absolute;
         top: 0;
@@ -35,5 +37,16 @@
         z-index: 9;
         width: 100%;
         height: 100%;
+    }
+    .live-ended {
+        width: 100vw;
+        height: 100vh;
+        // 添加渐变背景色
+        background-image: linear-gradient(to bottom, rgba(18, 12, 39, 0.85), rgba(52, 27, 43, 0.7), rgba(92, 39, 41, 0.6), rgba(132, 51, 39, 0.7), rgba(18, 12, 39, 0.85));
+        .live-ended-text {
+            color: #fff;
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
     }
 </style>

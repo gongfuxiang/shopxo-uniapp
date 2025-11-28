@@ -212,7 +212,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .a-img {
         position: fixed;
     }

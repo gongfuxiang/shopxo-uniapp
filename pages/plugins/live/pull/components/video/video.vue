@@ -1,17 +1,18 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video :src="src" autoplay class="video-size" :muted="true"></h5-hls-video>
+    <h5-hls-video :src="src" autoplay class="video-size" :muted="true" @hlsError="error" @ended="ended"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
     <live-player :src="src" autoplay :muted="true" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video :src="src" autoplay :is-video="true" :controls="false" muted object-fit="fill" :style="{width: windowWidth + 'px', height: windowHeight + 'px'}" @error="error" @ended="ended"></video>
+    <video :src="src" autoplay :is-video="true" :controls="false" muted object-fit="contain" :style="{width: windowWidth + 'px', height: windowHeight + 'px'}" @error="error" @ended="ended"></video>
     <!-- #endif -->
 </template>
 
 <script>
     import H5HlsVideo from '@/pages/plugins/live/pull/components/h5-hls-video/h5-hls-video.vue';
+    import { isEmpty } from '@/common/js/common/common.js';
     export default {
         components: {
             H5HlsVideo
@@ -41,17 +42,24 @@
                 console.log(e.detail.code);
             },
             error(e) {
-                console.log(e.detail.errMsg, 'error');
+                // #ifdef H5
+                // 非初次加载错误的, 直播结束
+                if (e.type != 'otherError' || e.details != 'internalException') {
+                    this.$emit('ended');
+                }
+                // #endif
+                console.log(e, 'error');
             },
             // video app使用这种方式，判断直播是否结束
             ended() {
+                console.log('ended');
                 this.$emit('ended');
             }
         },
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .video-size {
         width: 100vw;
         height: 100vh;

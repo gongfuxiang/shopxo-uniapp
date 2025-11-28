@@ -616,7 +616,7 @@
         },
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .uni-popup {
         position: fixed;
         /* #ifndef APP-NVUE */
