@@ -1,10 +1,17 @@
 <template>
     <view :class="theme_view + ' bg-0'">
         <view class="w h">
-            <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8"></live-video>
+            <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8" @ended="ended"></live-video>
         </view>
         <view class="live-content">
-            <live-content></live-content>
+            <template v-if="!is_live_ended"> 
+                <live-content></live-content>
+            </template>
+            <template v-else> 
+                <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+                    <text>直播已结束</text>
+                </view>
+            </template>
         </view>
     </view>
 </template>
@@ -35,5 +42,8 @@
         z-index: 9;
         width: 100%;
         height: 100%;
+    }
+    .live-ended {
+        
     }
 </style>

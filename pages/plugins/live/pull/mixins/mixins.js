@@ -3,7 +3,8 @@ export default {
     data() {
         return {
             windowWidth: 0,
-            windowHeight: 1000,
+            windowHeight: 0,
+            is_live_ended: false
         }
     },
     onLoad(params) {
@@ -27,6 +28,8 @@ export default {
         // #endif
     },
     methods: {
-        
+        ended() {
+            this.is_live_ended = true;
+        }
     }
 }
