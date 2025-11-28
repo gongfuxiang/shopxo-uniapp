@@ -5,7 +5,7 @@
         </view>
         <view class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
             <view class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-                <text class="live-ended-text">直播已结束</text>
+                <text style="color:#fff;font-size:16px;">直播已结束</text>
             </view>
         </view>
     </view>
@@ -39,14 +39,7 @@
         height: 100%;
     }
     .live-ended {
-        width: 100vw;
-        height: 100vh;
         // 添加渐变背景色
-        background-image: linear-gradient(to bottom, rgba(18, 12, 39, 0.85), rgba(52, 27, 43, 0.7), rgba(92, 39, 41, 0.6), rgba(132, 51, 39, 0.7), rgba(18, 12, 39, 0.85));
-        .live-ended-text {
-            color: #fff;
-            font-size: 16px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
+        background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
     }
 </style>

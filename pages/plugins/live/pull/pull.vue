@@ -8,7 +8,7 @@
                 <live-content></live-content>
             </template>
             <template v-else> 
-                <view class="live-ended flex-row align-c jc-c">
+                <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
                     <text class="live-ended-text">直播已结束</text>
                 </view>
             </template>
@@ -46,12 +46,10 @@
     .live-ended {
         width: 100vw;
         height: 100vh;
-        // 添加渐变背景色
-        background-image: linear-gradient(to bottom, rgba(18, 12, 39, 0.85), rgba(52, 27, 43, 0.7), rgba(92, 39, 41, 0.6), rgba(132, 51, 39, 0.7), rgba(18, 12, 39, 0.85));
+        background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
         .live-ended-text {
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 16px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            color:#fff;
+            font-size:16px;
         }
     }
 </style>
