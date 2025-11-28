@@ -1,12 +1,21 @@
 <template>
-    <view :class="theme_view + ' bg-0 flex-row'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-        <view class="flex-1">
+    <view :class="theme_view + ' flex-row pr'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+        <view class="flex-1 pr">
+            <view class="live-bg" :style="'z-index:11;width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></view>
             <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8" @ended="ended"></live-video>
         </view>
         <view class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-            <view class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-                <text style="color:#fff;font-size:16px;">直播已结束</text>
-            </view>
+            <template v-if="!is_live_ended"> 
+                <live-content @live-back="live_back"></live-content>
+            </template>
+            <template v-else> 
+                <view class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+                    <view class="flex-col align-c">
+                        <text style="color:#fff;font-size:16px;">直播已结束</text>
+                        <button plain size="mini" class="mt-10 live-ended-button" @click="back"><text class="cr-f pa-5" @tap="live_back">退出直播间</text></button>
+                    </view>
+                </view>
+            </template>
         </view>
     </view>
 </template>
@@ -30,6 +39,14 @@
     }
 </script>
 <style lang="scss" scoped>
+    .live-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to bottom,#ba623c,#14766a);
+    }
     .live-content {
         position: absolute;
         top: 0;
@@ -37,9 +54,14 @@
         z-index: 9;
         width: 100%;
         height: 100%;
+        background: transparent;
     }
     .live-ended {
         // 添加渐变背景色
         background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
+    }
+    .live-ended-button {
+        border-radius: 6px;
+        border-color: #fff;
     }
 </style>

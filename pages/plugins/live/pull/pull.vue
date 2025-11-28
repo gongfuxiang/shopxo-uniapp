@@ -1,15 +1,18 @@
 <template>
-    <view :class="theme_view + ' bg-0'">
+    <view :class="theme_view + ' live-bg'">
         <view class="w h">
             <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8" @ended="ended"></live-video>
         </view>
         <view class="live-content">
             <template v-if="!is_live_ended"> 
-                <live-content></live-content>
+                <live-content @live-back="live_back"></live-content>
             </template>
             <template v-else> 
-                <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-                    <text class="live-ended-text">直播已结束</text>
+                <view class="live-ended flex-row align-c jc-c">
+                     <view class="flex-col align-c">
+                        <text class="live-ended-text">直播已结束</text>
+                        <button plain size="mini" class="mt-10 live-ended-button" @click="back"><text class="cr-f pa-5" @tap="live_back">退出直播间</text></button>
+                    </view>
                 </view>
             </template>
         </view>
@@ -35,6 +38,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    .live-bg {
+        background-image: linear-gradient(to bottom,#ba623c,#14766a);
+    }
     .live-content {
         position: absolute;
         top: 0;

@@ -30,6 +30,9 @@ export default {
     methods: {
         ended() {
             this.is_live_ended = true;
+        },
+        live_back() {
+            app.globalData.page_back_prev_event();
         }
     }
 }

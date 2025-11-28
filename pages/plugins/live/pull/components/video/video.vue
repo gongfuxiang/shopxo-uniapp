@@ -6,7 +6,7 @@
     <live-player :src="src" autoplay :muted="true" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video :src="src" autoplay :is-video="true" :controls="false" muted object-fit="contain" :style="{width: windowWidth + 'px', height: windowHeight + 'px'}" @error="error" @ended="ended"></video>
+    <video :src="src" autoplay :is-video="true" :controls="false" muted object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
     <!-- #endif -->
 </template>
 
@@ -48,11 +48,15 @@
                     this.$emit('ended');
                 }
                 // #endif
+                // #ifdef APP-NVUE
+                if (!isEmpty(e.type) && e.type == 'error') {
+                    this.$emit('ended');
+                }
+                // #endif
                 console.log(e, 'error');
             },
             // video app使用这种方式，判断直播是否结束
             ended() {
-                console.log('ended');
                 this.$emit('ended');
             }
         },
@@ -63,5 +67,8 @@
     .video-size {
         width: 100vw;
         height: 100vh;
+    }
+    .video-bg {
+        background-image: linear-gradient(to bottom,#ba623c,#14766a);
     }
 </style>
