@@ -832,7 +832,9 @@ button[disabled].bg-grey {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    /* #ifndef APP-NVUE */
     max-width: 100%;
+    /* #endif */
 }
 .multi-text {
     max-width: 100%;

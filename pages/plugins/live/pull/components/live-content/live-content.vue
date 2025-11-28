@@ -143,6 +143,8 @@
         <component-popup ref="popupGoodsRef" mode="bottom" title="添加商品" :closeable="true">
            <component-goods isGoodsPopup></component-goods>
         </component-popup>
+        <!-- 分享弹窗 -->
+        <component-share-popup ref="share"></component-share-popup>
     </view>
 </template>
 
@@ -151,6 +153,7 @@
     import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
     import componentPopup from "@/pages/plugins/live/pull/components/popup/popup";
     import componentLikeButton from "@/pages/plugins/live/pull/components/like-button/like-button";
+    import componentSharePopup from "@/pages/plugins/live/pull/components/share-popup/share-popup.vue";
     import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
     export default {
@@ -159,7 +162,8 @@
             componentGoods,
             componentIcon,
             componentPopup,
-            componentLikeButton
+            componentLikeButton,
+            componentSharePopup
         },
         props: {
             liveConfig: {
@@ -558,6 +562,19 @@
             share_event() {
                 // 分享菜单处理
                 app.globalData.page_share_handle();
+                const share_info = {
+                    title: this.live_data.title,
+                    desc: this.live_data.describe,
+                    path: "/pages/plugins/live/pull/pull",
+                    query: "id=" + this.live_data.id,
+                    img: this.live_data.icon || "",
+                };
+                // 调取分享弹窗
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init({
+                        share_info: share_info
+                    });
+                }
             },
         }
     }

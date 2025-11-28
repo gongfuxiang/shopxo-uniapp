@@ -11,7 +11,11 @@
 </template>
 
 <script>
+    import H5HlsVideo from '@/pages/plugins/live/pull/components/h5-hls-video/h5-hls-video.vue';
     export default {
+        components: {
+            H5HlsVideo
+        },
         props: {
             src:{
                 type: String,
