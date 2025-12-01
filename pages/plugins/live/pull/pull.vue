@@ -1,11 +1,11 @@
 <template>
     <view :class="theme_view + ' live-bg'">
         <view class="w h">
-            <live-video src="http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8" @ended="ended"></live-video>
+            <live-video :src="live_config?.pull_flv_url || ''" @ended="ended"></live-video>
         </view>
         <view class="live-content">
             <template v-if="!is_live_ended"> 
-                <live-content @live-back="live_back"></live-content>
+                <live-content :live-config="live_config" @live-back="live_back"></live-content>
             </template>
             <template v-else> 
                 <view class="live-ended flex-row align-c jc-c">

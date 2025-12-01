@@ -1,10 +1,12 @@
 const app = getApp();
+import { isEmpty } from '@/common/js/common/common.js';
 export default {
     data() {
         return {
             windowWidth: 0,
             windowHeight: 0,
-            is_live_ended: false
+            is_live_ended: false,
+            live_config: {},
         }
     },
     onLoad(params) {
@@ -33,6 +35,33 @@ export default {
         },
         live_back() {
             app.globalData.page_back_prev_event();
+        },
+        init() {
+            uni.showLoading({
+                title: '加载中...',
+                mask: true
+            });
+            uni.request({
+                url: app.globalData.get_request_url('index,room,live'),
+                method: 'POST',
+                data: {},
+                dataType: 'json',
+                success: (res) => { 
+                    is_loading.value = false;
+                    uni.hideLoading();
+                    const new_data = res.data;
+                    // 获取直播间信息
+                    this.live_config = new_data.data || {};
+                    // 如果不存在拉流地址则认为直播已结束，避免因为报错导致的页面异常
+                    if (isEmpty(new_data.data.pull_flv_url)) {
+                        this.is_live_ended = true;
+                    }
+                },
+                fail: (err) => {
+                    is_loading.value = false;
+                    uni.hideLoading();
+                }
+            });
         }
     }
 }

@@ -279,7 +279,7 @@
                 handler(new_value) {
                     if (new_value.data != null) {
                         // 获取配置信息
-                        this.live_data = new_value.data;
+                        this.live_data = new_value;
                     }
                 },
                 immediate: true,
