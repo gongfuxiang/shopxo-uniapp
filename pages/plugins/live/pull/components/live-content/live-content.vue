@@ -659,7 +659,7 @@
     align-items: flex-start;
     padding: 6rpx 20rpx;
     background-color: rgba(40,40,40,0.45);
-    border-radius: 30rpx;
+    border-radius: 25rpx;
 }
 
 .bulletin-item-avatar {
