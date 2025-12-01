@@ -46,7 +46,7 @@
                                 <template v-if="item.type == 'user'">
                                     <!-- 用户名和文本内容容器 -->
                                     <view class="inline-block">
-                                        <view class="fl flex-row align-c jc-c pt-3">
+                                        <view class="fl flex-row align-c jc-c padding-top-xs">
                                             <!-- 头像 -->
                                             <image :src="item.user_avatar != null ? item.user_avatar : userAvatar" class="bulletin-item-avatar" mode="aspectFill"></image>
                                         </view>
@@ -64,7 +64,7 @@
                             </view>
                             <!-- #endif -->
                             <!-- #ifdef APP-NVUE -->
-                            <view class="flex-1 bulletin-item pt-6">
+                            <view class="flex-1 bulletin-item padding-top-sm">
                                 <template v-if="item.type == 'user'">
                                     <!-- 头像 -->
                                     <view class="flex-1 flex-row align-c flex-wrap">
@@ -657,9 +657,9 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 6rpx 10rpx;
+    padding: 6rpx 20rpx;
     background-color: rgba(40,40,40,0.45);
-    border-radius: 10rpx;
+    border-radius: 30rpx;
 }
 
 .bulletin-item-avatar {
@@ -679,7 +679,6 @@
 .user-name {
     font-size: 28rpx;
     margin-right: 10rpx;
-    line-height: 30rpx;
     display: inline;
 }
 

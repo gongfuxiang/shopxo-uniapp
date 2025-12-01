@@ -1,12 +1,12 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video :src="src" autoplay class="video-size" :muted="true" @hlsError="error" @ended="ended"></h5-hls-video>
+    <h5-hls-video :src="src" autoplay :muted="muted" class="video-size" @hlsError="error" @ended="ended" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
-    <live-player :src="src" autoplay :muted="true" class="video-size" @statechange="statechange" @error="error" />
+    <live-player :src="src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video :src="src" autoplay :is-video="true" :controls="false" muted object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
+    <video :src="src" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
     <!-- #endif -->
 </template>
 
@@ -26,16 +26,14 @@
         data() {
             return {
                 windowWidth: 0,
-                windowHeight: 0
+                windowHeight: 0,
+                muted: false,
             }
         },
         created() {
             const data = uni.getWindowInfo();
             this.windowWidth = data.windowWidth;
             this.windowHeight = data.windowHeight;
-        },
-        mounted() {
-            
         },
         methods: {
             statechange(e) {
@@ -58,6 +56,24 @@
             // video app使用这种方式，判断直播是否结束
             ended() {
                 this.$emit('ended');
+            },
+            // 静音自动播放成功, 触发事件, 添加提示弹出框，用户操作之后改为非静音播放
+            auto_play_success(e) {
+                // 静音播放成功时，触发事件，提示用户需要修改点击修改播放状态
+                if (e) {
+                    this.$emit('mutedAutoPlaySuccess');
+                }
+            },
+            // 自动播放失败, 静音播放
+            auto_play_error(e) {
+                // 播放失败，并且是非静音状态，则静音播放尝试是否成功
+                if (!e) {
+                    this.muted = true;
+                }
+            },
+            // 静音提示点击
+            muted_tap() {
+                this.muted = false;
             }
         },
     }

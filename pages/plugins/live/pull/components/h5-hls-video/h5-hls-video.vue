@@ -143,7 +143,8 @@
                 num: '',
                 videoEl: null,
                 hlsPlayer: null,
-                renderProps: {}
+                renderProps: {},
+                autoplayRejected: false // 标记自动播放是否被拒绝
             }
         },
         computed: {
@@ -210,6 +211,36 @@
                             })
                         })
                     }
+                    
+                    // 如果设置了自动播放，尝试播放视频
+                    if (autoplay) {
+                        this.attemptAutoPlay(videoEl, muted);
+                    }
+                },
+                // 尝试自动播放视频
+                attemptAutoPlay(videoElement, isMuted) {
+                    const playPromise = videoElement.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                                // 自动播放成功
+                                this.autoplayRejected = false;
+                                // 通知父组件静音播放成功
+                                this.$ownerInstance.callMethod('eventEmit', {
+                                    event: 'autoPlaySuccess',
+                                    data: this.renderProps.muted,
+                                });
+                            })
+                            .catch((error) => {
+                                // 自动播放被拒绝
+                                this.autoplayRejected = true;
+                                // 通知父组件静音播放成功
+                                this.$ownerInstance.callMethod('eventEmit', {
+                                    event: 'autoPlayError',
+                                    data: this.renderProps.muted,
+                                });
+                            });
+                    }
                 },
                 // 播放视频流
                 initHlsPlayer(src) {
@@ -222,9 +253,14 @@
                             this.$ownerInstance.callMethod('eventEmit', {
                                 event: 'hlsManifestParsed'
                             })
+                            
+                            // HLS流加载完成后尝试自动播放
+                            if (this.renderProps.autoplay) {
+                                this.attemptAutoPlay(this.videoEl, this.renderProps.muted);
+                            }
                         })
                         this.hlsPlayer.on(hlsjs.Events.ERROR, (event, data) => {
-                            console.error('HLS Error:', data)
+                            console.error('HLS Error:', data, event, '444')
                             // 如果HLS播放失败，尝试直接播放源地址作为降级方案
                             if (this.videoEl && data.fatal) {
                                 this.videoEl.src = src
@@ -383,6 +419,8 @@
                         this.videoEl.load()
                         this.videoEl = null
                     }
+                    // 重置自动播放标记
+                    this.autoplayRejected = false;
                 },
                 triggerCommand(eventType) {
                     if (eventType) {
@@ -438,6 +476,11 @@
                         this.videoEl.controls = controls
                         this.videoEl.muted = muted
                         this.videoEl.playbackRate = playbackRate
+                        
+                        // 如果更改了静音状态且之前自动播放被拒绝，重新尝试播放
+                        if (this.autoplayRejected && autoplay) {
+                            this.attemptAutoPlay(this.videoEl, muted);
+                        }
                     }
                 },
                 randomNumChange(val) {

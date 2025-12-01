@@ -1,10 +1,9 @@
 <template>
     <view :class="theme_view + ' flex-row pr'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
         <view class="flex-1 pr">
-            <view class="live-bg" :style="'z-index:1;width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></view>
-            <live-video :src="live_config?.pull_flv_url || ''" @ended="ended"></live-video>
+            <live-video ref="live-video" :src="live_config.pull_flv_url || ''" @ended="ended"></live-video>
         </view>
-        <view class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+        <view v-if="!is_loading" class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
             <template v-if="!is_live_ended"> 
                 <live-content :live-config="live_config" @live-back="live_back"></live-content>
             </template>

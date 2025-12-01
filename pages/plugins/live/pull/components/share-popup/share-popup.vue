@@ -102,7 +102,6 @@
 
         created: function () {
             const data = uni.getWindowInfo();
-            console.log(data);
             const del_width = app.globalData.rpx_to_px(100);
             this.single_text_width = (data.windowWidth - del_width) + 'px;';
         },
