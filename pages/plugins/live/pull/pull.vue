@@ -5,7 +5,6 @@
         </view>
         <view v-if="!is_loading" class="live-content">
             <template v-if="!is_live_ended"> 
-                {{ !is_live_ended && is_muted_auto_play_success }}
                 <live-content :live-config="live_config" @live-back="live_back"></live-content>
             </template>
             <template v-else> 
@@ -20,7 +19,7 @@
             </template>
         </view>
         <!-- 静音提示 -->
-        <view v-if="is_muted_auto_play_success" class="live-muted flex-row align-c jc-c">
+        <view v-if="!is_loading && !is_live_ended && is_muted_auto_play_success" class="live-muted flex-row align-c jc-c">
             <view class="live-muted-tips">
                 因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
             </view>
