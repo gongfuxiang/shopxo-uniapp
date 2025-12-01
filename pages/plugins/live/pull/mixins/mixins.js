@@ -8,6 +8,16 @@ export default {
             is_live_ended: false,
             live_config: {},
             is_loading: true,
+            like_show_imgs: [
+                'https://new.shopxo.vip/static/plugins/live/images/like/like1.png',
+                'https://new.shopxo.vip/static/plugins/live/images/like/like2.png',
+                'https://new.shopxo.vip/static/plugins/live/images/like/like3.png',
+                'https://new.shopxo.vip/static/plugins/live/images/like/like4.png',
+                'https://new.shopxo.vip/static/plugins/live/images/like/like5.png',
+            ],
+            lastTapTime: 0, // 用于检测双击
+            lastTapPosition: { x: 0, y: 0 }, // 记录上次点击位置
+            lastLikeTime: 0 // 记录上次点赞时间，用于防抖
         }
     },
     onLoad(params) {
@@ -37,28 +47,28 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: '加载中...',
+                title: '直播间数据加载中...',
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url('index,room,live'),
+                url: app.globalData.get_request_url('index', 'room', 'live'),
                 method: 'POST',
                 data: {},
                 dataType: 'json',
                 success: (res) => {
+                    // 隐藏加载提示
+                    uni.hideLoading();
                     const new_data = res.data;
                     // 显示直播内容
                     this.is_loading = false;
-                    // 隐藏加载提示
-                    uni.hideLoading();
                     // 判断是否有数据
                     if(res.data.code == 0) {
                         // 获取直播间信息
                         this.live_config = new_data.data || {};
                         // 如果不存在拉流地址则认为直播已结束，避免因为报错导致的页面异常
-                        if (isEmpty(new_data.data.pull_flv_url)) {
-                            this.is_live_ended = true;
-                        }
+                        // if (isEmpty(new_data.data.pull_flv_url)) {
+                        //     this.is_live_ended = true;
+                        // }
                     } else {
                         uni.showToast({
                             title: new_data.msg || '获取直播间信息失败',
@@ -67,18 +77,72 @@ export default {
                     }
                 },
                 fail: (err) => {
-                    // 显示直播内容
-                    this.is_loading = false;
                     // 隐藏加载提示
                     uni.hideLoading();
+                    // 显示直播内容
+                    this.is_loading = false;
                 }
             });
         },
         ended() {
+            console.log('1111');
             this.is_live_ended = true;
         },
         live_back() {
             app.globalData.page_back_prev_event();
+        },
+        // 处理鼠标双击事件
+        handleDoubleClick(event) {
+            // 防抖处理，100ms内只能触发一次
+            const currentTime = Date.now();
+            if (currentTime - this.lastLikeTime < 100) {
+                return;
+            }
+            
+            this.lastLikeTime = currentTime;
+            
+            if (this.$refs.likeEffect) {
+                this.$refs.likeEffect.addLike(event);
+            }
+        },
+        
+        // 处理触屏双击事件
+        handleTouchEnd(event) {
+            // 获取当前位置
+            let x, y;
+            if (event.changedTouches && event.changedTouches.length > 0) {
+                x = event.changedTouches[0].clientX;
+                y = event.changedTouches[0].clientY;
+            } else {
+                x = event.clientX || 0;
+                y = event.clientY || 0;
+            }
+            
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - this.lastTapTime;
+            const distance = Math.sqrt(
+                Math.pow(x - this.lastTapPosition.x, 2) + 
+                Math.pow(y - this.lastTapPosition.y, 2)
+            );
+            
+            // 判断是否为双击 (300ms内且距离较近)
+            if (tapLength < 300 && tapLength > 0 && distance < 50) {
+                
+                // 防抖处理，100ms内只能触发一次
+                if (currentTime - this.lastLikeTime < 100) {
+                    this.lastTapTime = currentTime;
+                    this.lastTapPosition = { x, y };
+                    return;
+                }
+                
+                this.lastLikeTime = currentTime;
+                
+                if (this.$refs.likeEffect) {
+                    this.$refs.likeEffect.addLike(event);
+                }
+            } 
+            this.lastTapTime = currentTime;
+            this.lastTapPosition = { x, y };
         }
     }
 }

@@ -20,7 +20,7 @@
             },
             objectFit: {
                 type: String,
-                default: 'cover'
+                default: 'contain'
             },
             muted: {
                 type: Boolean,

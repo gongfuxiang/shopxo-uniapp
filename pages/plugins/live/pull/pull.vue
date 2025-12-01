@@ -1,11 +1,13 @@
 <template>
     <view :class="theme_view + ' live-bg'">
-        <view class="w h">
+        <view class="w h" @dblclick="handleDoubleClick" @touchend="handleTouchEnd">
             <live-video ref="liveVideo" :src="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
+            <!-- 简化版点赞效果组件 -->
+            <like-effect ref="likeEffect" :custom-images="like_show_imgs"></like-effect>
         </view>
         <view v-if="!is_loading" class="live-content">
             <template v-if="!is_live_ended"> 
-                <live-content :live-config="live_config" @live-back="live_back"></live-content>
+                <live-content :live-config="live_config" :live-show-imgs="like_show_imgs" @live-back="live_back"></live-content>
             </template>
             <template v-else> 
                 <view class="live-ended flex-row align-c jc-c">
@@ -29,13 +31,16 @@
 <script>
     import liveVideo from './components/video/video.vue';
     import liveContent from './components/live-content/live-content.vue';
+    // 引入点赞效果组件
+    import LikeEffect from './components/like-effect/like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
     const app = getApp();
     export default {
         components: {
             liveVideo,
-            liveContent
+            liveContent,
+            LikeEffect
         },
         mixins: [mixins],
         data() {
@@ -68,6 +73,7 @@
         z-index: 9;
         width: 100%;
         height: 100%;
+        pointer-events: none;
     }
     .live-muted {
         position: absolute;
@@ -102,5 +108,9 @@
             color:#fff;
             font-size:16px;
         }
+    }
+    .live-ended-button {
+        border-radius: 6px;
+        border-color: #fff;
     }
 </style>

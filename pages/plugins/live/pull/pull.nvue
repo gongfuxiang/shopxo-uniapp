@@ -1,7 +1,9 @@
 <template>
     <view :class="theme_view + ' flex-row pr'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-        <view class="flex-1 pr">
-            <live-video ref="live-video" :src="live_config.pull_flv_url || ''" @ended="ended"></live-video>
+        <view class="flex-1 pr" @dblclick="handleDoubleClick" @touchend="handleTouchEnd">
+            <live-video ref="live-video" :src="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended"></live-video>
+            <!-- 简化版点赞效果组件 -->
+            <like-effect ref="likeEffect" :custom-images="like_show_imgs"></like-effect>
         </view>
         <view v-if="!is_loading" class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
             <template v-if="!is_live_ended"> 
@@ -21,13 +23,16 @@
 <script>
     import liveVideo from './components/video/video.vue';
     import liveContent from './components/live-content/live-content.vue';
+    // 引入点赞效果组件
+    import LikeEffect from './components/like-effect/like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
     const app = getApp();
     export default {
         components: {
             liveVideo,
-            liveContent
+            liveContent,
+            LikeEffect
         },
         mixins: [mixins],
         data() {
@@ -38,15 +43,6 @@
     }
 </script>
 <style lang="scss" scoped>
-    .live-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: linear-gradient(to bottom,#ba623c,#14766a);
-        pointer-events: none; // 确保背景不会拦截触摸事件
-    }
     .live-content {
         position: absolute;
         top: 0;
@@ -55,6 +51,7 @@
         width: 100%;
         height: 100%;
         background: transparent;
+        pointer-events: none;
     }
     .live-ended {
         // 添加渐变背景色

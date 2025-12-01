@@ -1362,3 +1362,15 @@
 .bg-0 {
     background-color: #000;
 }
+/**
+ * 指针事件类样式， 穿透
+ */
+.pointer-events-none {
+    pointer-events: none;
+}
+/**
+ * 指针事件类样式， 不穿透
+ */
+.pointer-events-auto {
+    pointer-events: auto;
+}
