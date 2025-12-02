@@ -1362,6 +1362,9 @@
 .bg-0 {
     background-color: #000;
 }
+.bg-f9 {
+    background-color: #f9f9f9;
+}
 /**
  * 指针事件类样式， 穿透
  */
