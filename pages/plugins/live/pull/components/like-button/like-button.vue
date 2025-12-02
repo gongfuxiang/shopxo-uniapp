@@ -15,7 +15,7 @@
         </view>
         <!-- #endif -->
         <view class="on-button">
-            <view ref="likeBtn" id="like-btn" class="el-like-btn" @click="handleClick">
+            <view ref="likeBtn" id="like-btn" class="el-like-btn" @tap="handleClick">
                 <slot></slot>
             </view>
         </view>
@@ -33,13 +33,7 @@
             showImgs: { // 显示图标路径
                 type: Array,
                 default: () => {
-                    return [
-                        'https://new.shopxo.vip/static/plugins/live/images/like/like1.png',
-                        'https://new.shopxo.vip/static/plugins/live/images/like/like2.png',
-                        'https://new.shopxo.vip/static/plugins/live/images/like/like3.png',
-                        'https://new.shopxo.vip/static/plugins/live/images/like/like4.png',
-                        'https://new.shopxo.vip/static/plugins/live/images/like/like5.png',
-                    ]
+                    return []
                 }
             },
             duration: { // 动画效果时间
@@ -52,7 +46,7 @@
             },
             high: {
                 type: Number,
-                default: 360
+                default: 200
             },
             width: { // 图标宽度
                 type: Number || String,
@@ -77,9 +71,9 @@
             site: { // x y 坐标 [x<Number>, y<Number>]
                 type: Array || Object,
                 default: () => {
-                    return [122, 120] || {
+                    return [122, 95] || {
                         x: 122,
-                        y: 100
+                        y: 95
                     }
                 }
             },
@@ -134,7 +128,6 @@
                     timingFunction: 'ease-out',
                 })
                 setTimeout(() => {
-                    console.log('animation finished.')
                     // 完成后事件回调
                     this.$emit('finished')
                     // 逐渐消失

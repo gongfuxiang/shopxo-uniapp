@@ -47,13 +47,15 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: '直播间数据加载中...',
+                title: '直播数据加载中...',
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url('index', 'room', 'live'),
+                url: app.globalData.get_request_url('detail', 'index', 'live'),
                 method: 'POST',
-                data: {},
+                data: {
+                    live_room_id: 1
+                },
                 dataType: 'json',
                 success: (res) => {
                     // 隐藏加载提示
@@ -62,9 +64,10 @@ export default {
                     // 显示直播内容
                     this.is_loading = false;
                     // 判断是否有数据
-                    if(res.data.code == 0) {
+                    if(new_data.code == 0) {
+                        this.like_show_imgs = new_data.data.like_icon_list || [];
                         // 获取直播间信息
-                        this.live_config = new_data.data || {};
+                        this.live_config = new_data.data.room || {};
                         // 如果不存在拉流地址则认为直播已结束，避免因为报错导致的页面异常
                         // if (isEmpty(new_data.data.pull_flv_url)) {
                         //     this.is_live_ended = true;
@@ -74,6 +77,7 @@ export default {
                             title: new_data.msg || '获取直播间信息失败',
                             icon: 'none'
                         });
+                        this.is_live_ended = true;
                     }
                 },
                 fail: (err) => {
@@ -85,14 +89,13 @@ export default {
             });
         },
         ended() {
-            console.log('1111');
             this.is_live_ended = true;
         },
         live_back() {
             app.globalData.page_back_prev_event();
         },
         // 处理鼠标双击事件
-        handleDoubleClick(event) {
+        handle_double_click(event) {
             if (event.target.dataset.ignore) {
                 return;
             }
@@ -105,12 +108,16 @@ export default {
             this.lastLikeTime = currentTime;
             
             if (this.$refs.likeEffect) {
-                this.$refs.likeEffect.addLike(event);
+                this.$refs.likeEffect.add_like(event);
+            }
+
+            if (this.$refs.liveContent) {
+                this.$refs.liveContent.like_click(event);
             }
         },
         
         // 处理触屏双击事件
-        handleTouchEnd(event) {
+        handle_touch_end(event) {
             if (event.target.dataset.ignore) {
                 return;
             }
@@ -143,7 +150,11 @@ export default {
                 this.lastLikeTime = currentTime;
                 
                 if (this.$refs.likeEffect) {
-                    this.$refs.likeEffect.addLike(event);
+                    this.$refs.likeEffect.add_like(event);
+                }
+
+                if (this.$refs.liveContent) {
+                    this.$refs.liveContent.like_click(event);
                 }
             } 
             this.lastTapTime = currentTime;

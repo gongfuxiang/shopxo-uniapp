@@ -7,14 +7,14 @@
     <!-- #endif -->
         <!-- 顶部主播信息 -->
         <view class="flex-row align-c jc-sb" :style="header_style">
-            <view class="top-header flex-row align-c" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+            <view class="top-header flex-row align-c pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
                 <image :src="avatar" class="avatar" mode="aspectFill"></image>
                 <view class="ml-10 flex-col">
                     <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
-                    <text class="level">9999本场点赞</text>
+                    <text class="level">{{ like_count }}本场点赞</text>
                 </view>
             </view>
-            <view class="flex-row align-c" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+            <view class="flex-row align-c pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
                 <view class="flex-row align-c pr" style="direction: rtl;">
                     <view v-for="(item, index) in viewers" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
@@ -28,7 +28,7 @@
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
                 <view class="pr">
-                    <view class="bulletin-area pr" :style="'width:' + (windowWidth - 150) + 'px;'" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (windowWidth - 150) + 'px;'" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
                         <list class="bulletin-area" :style="'width:' + (windowWidth - 150) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
@@ -108,21 +108,21 @@
                     </view>
                 </view>
                 <!-- 底部谁来了的提示-->
-                <view v-if="is_user_comes" class="flex-row mt-3" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :style="'max-width:' + (windowWidth - 100) + 'px;'">
+                <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :style="'max-width:' + (windowWidth - 100) + 'px;'">
                     <view class="user-comes flex-row">
                         <text class="user-name cr-blue">{{ commons_name }}</text>
                         <text class="user-name cr-d">来了</text>
                     </view>
                 </view>
                 <!-- 底部交互区域 -->
-                <view class="flex-row align-c mt-5" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+                <view class="flex-row align-c mt-5 pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
                     <view class="flex-1 bottom-actions-input">
                         <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                     </view>
                     <view class="bottom-actions-icon" @tap="add_goods">
                         <component-icon name="shopping-cart-tall" color="#fff" size="32rpx"></component-icon>
                     </view>
-                    <component-like-button>
+                    <component-like-button ref="likeButton" :show-imgs="liveShowImgs" @handleClick="like_button_click">
                         <view class="bottom-actions-icon">
                             <component-icon name="givealike-o" color="#fff" size="32rpx"></component-icon>
                         </view>
@@ -134,17 +134,17 @@
             </view>
         </view>
         <!-- 添加评论 -->
-        <view v-if="is_add_comment" class="keyboard-input" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :style="'width:' + windowWidth + 'px;bottom:' + listener_height + 'px;'">
+        <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :style="'width:' + windowWidth + 'px;bottom:' + listener_height + 'px;'">
             <view class="input">
                 <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <component-popup ref="popupGoodsRef" mode="bottom" title="添加商品" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :closeable="true">
+        <component-popup ref="popupGoodsRef" mode="bottom" class="pointer-events-auto" title="添加商品" :closeable="true">
            <component-goods isGoodsPopup></component-goods>
         </component-popup>
         <!-- 分享弹窗 -->
-        <component-share-popup ref="share" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true"></component-share-popup>
+        <component-share-popup ref="share" class="pointer-events-auto"></component-share-popup>
     </view>
 </template>
 
@@ -169,6 +169,10 @@
             liveConfig: {
                 type: Object,
                 default: () => {}
+            },
+            liveShowImgs: {
+                type: Array,
+                default: () => []
             }
         },
         data() {
@@ -176,6 +180,8 @@
                 application_client_type: app.globalData.application_client_type(),
                 application_client_brand: app.globalData.application_client_brand(),
                 goods_popup_status: false,
+                // 点赞计数
+                like_count: 0,
                 // 直播间配置信息
                 live_data: {},
                 userAvatar: '/static/images/common/user.png',
@@ -277,7 +283,7 @@
         watch: {
             liveConfig: {
                 handler(new_value) {
-                    if (new_value.data != null) {
+                    if (new_value != null) {
                         // 获取配置信息
                         this.live_data = new_value;
                     }
@@ -576,11 +582,23 @@
                     });
                 }
             },
+            // 点击上边的时候会触发下边的按钮点击事件
+            like_click(e) {
+               this.$refs.likeButton.handleClick(e);
+            },
+            // 点赞计数
+            like_button_click(e) {
+                this.like_count++;
+            },
             handle_touch_end(event) {
+                //#ifdef APP-NVUE
                 this.$emit("handleTouchEnd", event);
+                //#endif
             },
             handle_double_click(event) {
+                //#ifdef APP-NVUE
                 this.$emit("handleDoubleClick", event);
+                //#endif
             }
         }
     }

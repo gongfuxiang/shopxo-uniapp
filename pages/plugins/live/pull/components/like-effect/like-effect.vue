@@ -1,9 +1,9 @@
 <template>
-	<view class="simple-like-container flex-row box-border-box">
+	<view class="simple-like-container flex-row box-sizing-border-box">
         <view class="flex-1 pr">
             <!-- 点赞动画元素 -->
             <view 
-            	v-for="(like, index) in likeList" 
+            	v-for="(like, index) in like_list" 
             	:key="like.id"
             	class="like-item"
             	:ref="'likeItem' + like.id"
@@ -14,11 +14,10 @@
             		opacity: like.opacity
             	}"
             >
-				
             	<!-- 支持图片或自定义图标 -->
             	<image 
-            		v-if="like.imageSrc" 
-            		:src="like.imageSrc" 
+            		v-if="like.image_src" 
+            		:src="like.image_src" 
             		class="like-image"
             		mode="aspectFit"
             	></image>
@@ -27,18 +26,18 @@
             
             <!-- 连续点赞数量提示 -->
             <text 
-            	v-if="showLikeCount && likeCount >= 3" 
+            	v-if="show_like_count && like_count >= 3" 
             	class="like-count"
-            	:ref="'likeCount'"
+            	ref="likeCount"
             	:style="{
-            		left: likeCountPosition.x + 'px',
-            		top: likeCountPosition.y + 'px',
-            		color: likeCountColor,
-            		opacity: likeCountOpacity,
-            		transform: 'scale(' + likeCountScale + ')'
+            		left: like_count_position.x + 'px',
+            		top: like_count_position.y + 'px',
+            		color: like_count_color,
+            		opacity: like_count_opacity,
+            		transform: 'scale(' + like_count_scale + ')'
             	}"
             >
-            	x {{ likeCount }}
+            	x {{ like_count }}
             </text>
         </view>
 	</view>
@@ -68,38 +67,38 @@
 		},
 		data() {
 			return {
-				likeList: [],
+				like_list: [],
 				// 连续点赞相关数据
-				likeCount: 0,
-				showLikeCount: false,
-				likeCountPosition: { x: 0, y: 0 },
-				likeCountColor: '#ff6b6b',
-				likeCountOpacity: 1,
-				likeCountScale: 1,
-				lastLikeTime: 0,
-				likeCountTimer: null,
-				resetTimer: null, // 重置计数的定时器
-				lastClickTime: 0 // 防止双击添加多个图标
+				like_count: 0,
+				show_like_count: false,
+				like_count_position: { x: 0, y: 0 },
+				like_count_color: '#ff6b6b',
+				like_count_opacity: 1,
+				like_count_scale: 1,
+				last_like_time: 0,
+				like_count_timer: null,
+				reset_timer: null, // 重置计数的定时器
+				last_click_time: 0 // 防止双击添加多个图标
 			}
 		},
 		computed: {
 			// 合并默认图标和自定义图标
-			availableIcons() {
+			available_icons() {
 				return [...ICONS, ...this.customIcons];
 			},
 			// 合并默认图片和自定义图片
-			availableImages() {
+			available_images() {
 				return this.customImages;
 			}
 		},
 		methods: {
-			addLike(event, options = {}) {
+			add_like(event, options = {}) {
 				// 防抖处理，防止双击添加多个图标
 				const now = Date.now();
-				if (now - this.lastClickTime < 200) {
+				if (now - this.last_click_time < 200) {
 					return;
 				}
-				this.lastClickTime = now;
+				this.last_click_time = now;
 				
 				// 获取点击坐标
 				let x, y;
@@ -115,40 +114,38 @@
 					y = event.pageY || event.detail?.y || 0;
 				}
 				
-				console.log('Click coordinates:', x, y);
-				
 				// 添加随机偏差 (-10px 到 10px)
-				const offsetX = Math.floor(Math.random() * 41) - 10;
-				const offsetY = Math.floor(Math.random() * 41) - 10;
+				const offset_x = Math.floor(Math.random() * 41) - 10;
+				const offset_y = Math.floor(Math.random() * 41) - 10;
 				
 				// 确保图标位置不超过点击位置20px范围
-				const clampedOffsetX = Math.max(-10, Math.min(10, offsetX));
-				const clampedOffsetY = Math.max(-10, Math.min(10, offsetY));
+				const clamped_offset_x = Math.max(-10, Math.min(10, offset_x));
+				const clamped_offset_y = Math.max(-10, Math.min(10, offset_y));
 				
 				// 调整后的坐标
-				const adjustedX = x + clampedOffsetX - 10;
-				const adjustedY = y + clampedOffsetY - 10;
+				const adjusted_x = x + clamped_offset_x - 10;
+				const adjusted_y = y + clamped_offset_y - 10;
 				
 				// 随机选择图标、图片和颜色
-				let icon, imageSrc, color;
+				let icon, image_src, color;
 				
 				// 检查是否提供了外部图片
-				if (this.availableImages && this.availableImages.length > 0) {
+				if (this.available_images && this.available_images.length > 0) {
 					// 随机选择图片
-					imageSrc = this.availableImages[Math.floor(Math.random() * this.availableImages.length)];
-				} else if (options.imageSrc) {
+					image_src = this.available_images[Math.floor(Math.random() * this.available_images.length)];
+				} else if (options.image_src) {
 					// 使用传入的图片
-					imageSrc = options.imageSrc;
+					image_src = options.image_src;
 				}
 				
 				// 如果没有图片，则使用图标
-				if (!imageSrc) {
+				if (!image_src) {
 					if (options.icon) {
 						// 使用传入的图标
 						icon = options.icon;
 					} else {
 						// 随机选择图标
-						icon = this.availableIcons[Math.floor(Math.random() * this.availableIcons.length)];
+						icon = this.available_icons[Math.floor(Math.random() * this.available_icons.length)];
 					}
 				}
 				
@@ -160,102 +157,103 @@
 				}
 				
 				// 创建点赞元素
-				const newLike = {
+				const new_like = {
 					id: Date.now() + Math.random(), // 使用时间戳+随机数作为ID
-					x: adjustedX,
-					y: adjustedY,
+					x: adjusted_x,
+					y: adjusted_y,
 					color: color,
 					icon: icon,
-					imageSrc: imageSrc
+					image_src: image_src,
+					opacity: 0 // 显式初始化 opacity
 				};
 				// 添加到列表
-				this.likeList.push(newLike);
+				this.like_list.push(new_like);
 				// #ifdef APP-NVUE
 				// 执行点赞动画
                 setTimeout(() => {
-                    this.animateLikeItem(newLike.id);
+                    this.animate_like_item(new_like.id);
                 }, 0);
-				//#endif	
+				// #endif	
 				// 2秒后移除
 				setTimeout(() => {
-					this.removeLike(newLike.id);
+					this.remove_like(new_like.id);
 				}, 2000);
 				
 				// 处理连续点赞数量提示
-				this.handleLikeCount(x, y, color);
+				this.handle_like_count(x, y, color);
 			},
 			
-			removeLike(id) {
-				this.likeList = this.likeList.filter(item => item.id !== id);
+			remove_like(id) {
+				this.like_list = this.like_list.filter(item => item.id !== id);
 			},
 			
 			// 处理连续点赞数量提示
-			handleLikeCount(x, y, color) {
-				const currentTime = Date.now();
+			handle_like_count(x, y, color) {
+				const current_time = Date.now();
 				
 				// 清除之前的重置定时器
-				if (this.resetTimer) {
-					clearTimeout(this.resetTimer);
-					this.resetTimer = null;
+				if (this.reset_timer) {
+					clearTimeout(this.reset_timer);
+					this.reset_timer = null;
 				}
 				
 				// 清除之前的隐藏定时器
-				if (this.likeCountTimer) {
-					clearTimeout(this.likeCountTimer);
-					this.likeCountTimer = null;
+				if (this.like_count_timer) {
+					clearTimeout(this.like_count_timer);
+					this.like_count_timer = null;
 				}
 				
 				// 如果距离上次点赞超过1秒，重置计数
-				if (currentTime - this.lastLikeTime > 1000) {
-					this.likeCount = 1;
-					this.showLikeCount = false; // 重置时隐藏数量显示
+				if (current_time - this.last_like_time > 1000) {
+					this.like_count = 1;
+					this.show_like_count = false; // 重置时隐藏数量显示
 				} else {
 					// 否则增加计数
-					this.likeCount++;
+					this.like_count++;
 				}
 				
 				// 更新最后点赞时间
-				this.lastLikeTime = currentTime;
+				this.last_like_time = current_time;
 				
-				// 固定位置在当前点击位置正上方25px处（避免与图标重叠）
-				this.likeCountPosition = { 
+				// 固定位置在当前点击位置正上方40px处（避免与图标重叠）
+				this.like_count_position = { 
 					x: x,      // 水平位置与点击位置对齐
 					y: y - 40  // 垂直位置在点击位置正上方30px（增加10px避免重叠）
 				};
-				this.likeCountColor = color;
+				this.like_count_color = color;
 				
 				// 显示数量提示（只有当数量大于等于3时才显示）
-				if (this.likeCount >= 3) {
-					this.showLikeCount = true;
-					this.likeCountOpacity = 1;
-					this.likeCountScale = 1;
+				if (this.like_count >= 3) {
+					this.show_like_count = true;
+					this.like_count_opacity = 1;
+					this.like_count_scale = 1;
 					
 					// 执行动画
 					setTimeout(() => {
-						this.animateLikeCount();
+						this.animate_like_count();
 					}, 0)
 				}
 				
 				// 设置隐藏定时器（200ms后隐藏，但不重置计数）
-				if (this.likeCount >= 3) {
-					this.likeCountTimer = setTimeout(() => {
-						this.hideLikeCount();
+				if (this.like_count >= 3) {
+					this.like_count_timer = setTimeout(() => {
+						this.hide_like_count();
 					}, 200);
 				}
 				
 				// 设置重置计数的定时器（在隐藏后1秒重置）
-				this.resetTimer = setTimeout(() => {
-					this.likeCount = 0;
-					this.showLikeCount = false;
+				this.reset_timer = setTimeout(() => {
+					this.like_count = 0;
+					this.show_like_count = false;
 				}, 1200);
 			},
 			
 			// 隐藏数量提示
-			hideLikeCount() {
+			hide_like_count() {
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeCount'];
 				if (ref) {
-					const el = ref instanceof Array ? ref[0] : ref;
+					const el = this.is_array(ref) ? ref[0] : ref;
 					if (el) {
 						animation.transition(el, {
 							styles: {
@@ -265,28 +263,26 @@
 							duration: 500,
 							timingFunction: 'ease-out'
 						}, () => {
-							this.showLikeCount = false;
+							this.show_like_count = false;
 						});
 					}
 				}
 				// #endif
 				
 				// #ifndef APP-NVUE
-				this.showLikeCount = false;
+				this.show_like_count = false;
 				// #endif
 			},
 			
 			// 点赞项动画
-			animateLikeItem(id) {
+			animate_like_item(id) {
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeItem' + id];
 				if (ref) {
-					// 更加健壮的数组检查方法
-					const isArray = Array.isArray(ref) || ref instanceof Array || (ref && typeof ref === 'object' && ref.length !== undefined);
-					const el = isArray ? ref[0] : ref;
+					const el = this.is_array(ref) ? ref[0] : ref;
 					if (el) {
 						// 先设置初始状态
-						this.likeList = this.likeList.map(item => {
+						this.like_list = this.like_list.map(item => {
 							if (item.id === id) {
 								item.opacity = 0;
 							}
@@ -318,7 +314,7 @@
 				
 				// #ifndef APP-NVUE
 				// 在非nvue环境中使用CSS动画
-				this.likeList = this.likeList.map(item => {
+				this.like_list = this.like_list.map(item => {
 					if (item.id === id) {
 						item.opacity = 1;
 					}
@@ -328,15 +324,15 @@
 			},
 			
 			// 数量提示动画
-			animateLikeCount() {
+			animate_like_count() {
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeCount'];
 				if (ref) {
-					const el = ref instanceof Array ? ref[0] : ref;
+					const el = this.is_array(ref) ? ref[0] : ref;
 					if (el) {
 						// 先设置初始状态
-						this.likeCountOpacity = 1;
-						this.likeCountScale = 1;
+						this.like_count_opacity = 1;
+						this.like_count_scale = 1;
 						
 						// 执行隐藏动画
 						animation.transition(el, {
@@ -350,6 +346,10 @@
 					}
 				}
 				// #endif
+			},
+			// 更加健壮的数组检查方法
+			is_array(data) {
+				return Array.isArray(data) || data instanceof Array || (data && typeof data === 'object' && data.length !== undefined);
 			}
 		}
 	}
@@ -383,6 +383,7 @@
 		font-size: 16px;
 		font-weight: bold;
 		z-index: 10000;
+		text-wrap: nowrap;
 	}
 	
 	/* #ifndef APP-NVUE */
