@@ -14,6 +14,7 @@
             		opacity: like.opacity
             	}"
             >
+				
             	<!-- 支持图片或自定义图标 -->
             	<image 
             		v-if="like.imageSrc" 
@@ -104,14 +105,14 @@
 				let x, y;
 				// 尝试多种方式获取坐标
 				if (event.touches && event.touches.length > 0) {
-					x = event.touches[0].clientX;
-					y = event.touches[0].clientY;
+					x = event.touches[0].pageX;
+					y = event.touches[0].pageY;
 				} else if (event.changedTouches && event.changedTouches.length > 0) {
-					x = event.changedTouches[0].clientX;
-					y = event.changedTouches[0].clientY;
+					x = event.changedTouches[0].pageX;
+					y = event.changedTouches[0].pageY;
 				} else {
-					x = event.clientX || event.detail?.x || 0;
-					y = event.clientY || event.detail?.y || 0;
+					x = event.pageX || event.detail?.x || 0;
+					y = event.pageY || event.detail?.y || 0;
 				}
 				
 				console.log('Click coordinates:', x, y);

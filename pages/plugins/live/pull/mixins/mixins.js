@@ -117,11 +117,11 @@ export default {
             // 获取当前位置
             let x, y;
             if (event.changedTouches && event.changedTouches.length > 0) {
-                x = event.changedTouches[0].screenX;
-                y = event.changedTouches[0].screenY;
+                x = event.changedTouches[0].pageX;
+                y = event.changedTouches[0].pageY;
             } else {
-                x = event.screenX || 0;
-                y = event.screenY || 0;
+                x = event.pageX || 0;
+                y = event.pageY || 0;
             }
             
             const currentTime = new Date().getTime();
