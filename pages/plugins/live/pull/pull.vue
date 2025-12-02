@@ -3,7 +3,7 @@
         <view class="w h" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
             <live-video ref="liveVideo" :src="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
             <!-- 简化版点赞效果组件 -->
-            <like-effect ref="likeEffect" :custom-images="like_show_imgs"></like-effect>
+            <full-screen-like-effect ref="fullScreenLikeEffect" :custom-images="like_show_imgs"></full-screen-like-effect>
         </view>
         <view v-if="!is_loading" class="live-content pointer-events-none">
             <template v-if="!is_live_ended"> 
@@ -32,7 +32,7 @@
     import liveVideo from './components/video/video.vue';
     import liveContent from './components/live-content/live-content.vue';
     // 引入点赞效果组件
-    import LikeEffect from './components/like-effect/like-effect.vue';
+    import fullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
     const app = getApp();
@@ -40,7 +40,7 @@
         components: {
             liveVideo,
             liveContent,
-            LikeEffect
+            fullScreenLikeEffect
         },
         mixins: [mixins],
         data() {

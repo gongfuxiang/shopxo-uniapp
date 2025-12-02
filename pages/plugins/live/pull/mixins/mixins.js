@@ -107,8 +107,8 @@ export default {
             
             this.lastLikeTime = currentTime;
             
-            if (this.$refs.likeEffect) {
-                this.$refs.likeEffect.add_like(event);
+            if (this.$refs.fullScreenLikeEffect) {
+                this.$refs.fullScreenLikeEffect.add_like(event);
             }
 
             if (this.$refs.liveContent) {
@@ -153,8 +153,8 @@ export default {
                     this.$refs.likeEffect.add_like(event);
                 }
 
-                if (this.$refs.liveContent) {
-                    this.$refs.liveContent.like_click(event);
+                if (this.$refs.fullScreenLikeEffect) {
+                    this.$refs.fullScreenLikeEffect.like_click(event);
                 }
             } 
             this.lastTapTime = currentTime;

@@ -7,7 +7,7 @@
             <template v-if="!is_live_ended"> 
                 <live-content ref="liveContent" :live-config="live_config" :live-show-imgs="like_show_imgs"  @live-back="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end"></live-content>
                 <!-- 简化版点赞效果组件 -->
-                <like-effect ref="likeEffect" :custom-images="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></like-effect>
+                <full-screen-like-effect ref="fullScreenLikeEffect" :custom-images="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></full-screen-like-effect>
             </template>
             <template v-else> 
                 <view class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
@@ -24,7 +24,7 @@
     import liveVideo from './components/video/video.vue';
     import liveContent from './components/live-content/live-content.vue';
     // 引入点赞效果组件
-    import LikeEffect from './components/like-effect/like-effect.vue';
+    import fullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
     const app = getApp();
@@ -32,7 +32,7 @@
         components: {
             liveVideo,
             liveContent,
-            LikeEffect
+            fullScreenLikeEffect
         },
         mixins: [mixins],
         data() {
