@@ -93,9 +93,12 @@ export default {
         },
         // 处理鼠标双击事件
         handleDoubleClick(event) {
-            // 防抖处理，100ms内只能触发一次
+            if (event.target.dataset.ignore) {
+                return;
+            }
+            // 防抖处理，200ms内只能触发一次
             const currentTime = Date.now();
-            if (currentTime - this.lastLikeTime < 100) {
+            if (currentTime - this.lastLikeTime < 200) {
                 return;
             }
             
@@ -108,14 +111,17 @@ export default {
         
         // 处理触屏双击事件
         handleTouchEnd(event) {
+            if (event.target.dataset.ignore) {
+                return;
+            }
             // 获取当前位置
             let x, y;
             if (event.changedTouches && event.changedTouches.length > 0) {
-                x = event.changedTouches[0].clientX;
-                y = event.changedTouches[0].clientY;
+                x = event.changedTouches[0].screenX;
+                y = event.changedTouches[0].screenY;
             } else {
-                x = event.clientX || 0;
-                y = event.clientY || 0;
+                x = event.screenX || 0;
+                y = event.screenY || 0;
             }
             
             const currentTime = new Date().getTime();
@@ -124,12 +130,11 @@ export default {
                 Math.pow(x - this.lastTapPosition.x, 2) + 
                 Math.pow(y - this.lastTapPosition.y, 2)
             );
-            
             // 判断是否为双击 (300ms内且距离较近)
             if (tapLength < 300 && tapLength > 0 && distance < 50) {
                 
-                // 防抖处理，100ms内只能触发一次
-                if (currentTime - this.lastLikeTime < 100) {
+                // 防抖处理，200ms内只能触发一次
+                if (currentTime - this.lastLikeTime < 200) {
                     this.lastTapTime = currentTime;
                     this.lastTapPosition = { x, y };
                     return;

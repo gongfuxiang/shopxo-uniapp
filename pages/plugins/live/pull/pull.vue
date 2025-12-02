@@ -1,13 +1,13 @@
 <template>
     <view :class="theme_view + ' live-bg'">
-        <view class="w h" @dblclick="handleDoubleClick" @touchend="handleTouchEnd">
+        <view class="w h">
             <live-video ref="liveVideo" :src="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
-            <!-- 简化版点赞效果组件 -->
-            <like-effect ref="likeEffect" :custom-images="like_show_imgs"></like-effect>
         </view>
-        <view v-if="!is_loading" class="live-content">
+        <view v-if="!is_loading" class="live-content" @dblclick="handleDoubleClick" @touchend="handleTouchEnd">
             <template v-if="!is_live_ended"> 
-                <live-content :live-config="live_config" :live-show-imgs="like_show_imgs" @live-back="live_back"></live-content>
+                <live-content :live-config="live_config" :live-show-imgs="like_show_imgs" @live-back="live_back" @handleDoubleClick="handleDoubleClick" @handleTouchEnd="handleTouchEnd"></live-content>
+                <!-- 简化版点赞效果组件 -->
+                <like-effect ref="likeEffect" :custom-images="like_show_imgs"></like-effect>
             </template>
             <template v-else> 
                 <view class="live-ended flex-row align-c jc-c">
@@ -73,7 +73,6 @@
         z-index: 9;
         width: 100%;
         height: 100%;
-        pointer-events: none;
     }
     .live-muted {
         position: absolute;
