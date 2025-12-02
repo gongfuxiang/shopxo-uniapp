@@ -168,11 +168,14 @@
 					icon: icon,
 					imageSrc: imageSrc
 				};
-				console.log(newLike, '111');
 				// 添加到列表
 				this.likeList.push(newLike);
-				console.log('Added like item:', newLike);
-				
+				// #ifdef APP-NVUE
+				// 执行点赞动画
+                setTimeout(() => {
+                    this.animateLikeItem(newLike.id);
+                }, 0);
+				//#endif	
 				// 2秒后移除
 				setTimeout(() => {
 					this.removeLike(newLike.id);
@@ -183,7 +186,6 @@
 			},
 			
 			removeLike(id) {
-				console.log('Removing like item:', id);
 				this.likeList = this.likeList.filter(item => item.id !== id);
 			},
 			
@@ -218,7 +220,7 @@
 				// 固定位置在当前点击位置正上方25px处（避免与图标重叠）
 				this.likeCountPosition = { 
 					x: x,      // 水平位置与点击位置对齐
-					y: y - 25  // 垂直位置在点击位置正上方25px（增加5px避免重叠）
+					y: y - 40  // 垂直位置在点击位置正上方30px（增加10px避免重叠）
 				};
 				this.likeCountColor = color;
 				
@@ -229,9 +231,9 @@
 					this.likeCountScale = 1;
 					
 					// 执行动画
-					this.$nextTick(() => {
+					setTimeout(() => {
 						this.animateLikeCount();
-					});
+					}, 0)
 				}
 				
 				// 设置隐藏定时器（200ms后隐藏，但不重置计数）
@@ -260,7 +262,7 @@
 								opacity: 0,
 								transform: 'scale(0.5) translateY(-10px)'
 							},
-							duration: 1000,
+							duration: 500,
 							timingFunction: 'ease-out'
 						}, () => {
 							this.showLikeCount = false;
@@ -279,7 +281,9 @@
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeItem' + id];
 				if (ref) {
-					const el = ref instanceof Array ? ref[0] : ref;
+					// 更加健壮的数组检查方法
+					const isArray = Array.isArray(ref) || ref instanceof Array || (ref && typeof ref === 'object' && ref.length !== undefined);
+					const el = isArray ? ref[0] : ref;
 					if (el) {
 						// 先设置初始状态
 						this.likeList = this.likeList.map(item => {
@@ -340,7 +344,7 @@
 								opacity: 0,
 								transform: 'scale(0.5) translateY(-10px)'
 							},
-							duration: 200,
+							duration: 500,
 							timingFunction: 'ease-out'
 						});
 					}
