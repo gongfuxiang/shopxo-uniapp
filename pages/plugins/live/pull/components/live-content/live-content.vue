@@ -117,7 +117,7 @@
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5 pointer-events-auto">
                     <view class="flex-1 bottom-actions-input">
-                        <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                        <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                     </view>
                     <view class="bottom-actions-icon" @tap="add_goods">
                         <component-icon name="shopping-cart-tall" color="#fff" size="32rpx"></component-icon>
@@ -135,7 +135,7 @@
         </view>
         <!-- 添加评论 -->
         <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + windowWidth + 'px;bottom:' + listener_height + 'px;'">
-            <view class="input">
+            <view class="keyboard-input-border" style="padding: 16rpx 22rpx;border: 2rpx solid #ddd;border-radius: 50rpx;">
                 <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
             </view>
         </view>
@@ -747,17 +747,16 @@
 .keyboard-input {
     position: fixed;
     left: 0;
-    width: 100%;
     z-index: 99;
     background: #fff;
     padding: 20rpx 16rpx;
     box-sizing: border-box;
+}
 
-    .input {
-        padding: 16rpx 22rpx;
-        border: 1px solid #ddd;
-        border-radius: 50rpx;
-    }
+.keyboard-input-input { 
+    padding: 16rpx 22rpx;
+    border: 2rpx solid #ddd;
+    border-radius: 50rpx;
 }
 
 .bulletin-tips {
