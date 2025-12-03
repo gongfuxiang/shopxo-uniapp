@@ -7,14 +7,14 @@
     <!-- #endif -->
         <!-- 顶部主播信息 -->
         <view class="flex-row align-c jc-sb" :style="header_style">
-            <view class="top-header flex-row align-c pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+            <view class="top-header flex-row align-c pointer-events-auto">
                 <image :src="avatar" class="avatar" mode="aspectFill"></image>
                 <view class="ml-10 flex-col">
                     <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
                     <text class="level">{{ like_count }}本场点赞</text>
                 </view>
             </view>
-            <view class="flex-row align-c pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+            <view class="flex-row align-c pointer-events-auto">
                 <view class="flex-row align-c pr" style="direction: rtl;">
                     <view v-for="(item, index) in viewers" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
@@ -28,7 +28,7 @@
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
                 <view class="pr">
-                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (windowWidth - 150) + 'px;'" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (windowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
                         <list class="bulletin-area" :style="'width:' + (windowWidth - 150) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
@@ -99,7 +99,7 @@
                             <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
                         </view>
                     </view>
-                    <view v-if="!isEmpty(explain_goods)" class="explain-goods" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+                    <view v-if="!isEmpty(explain_goods)" class="explain-goods">
                         <image :src="explain_goods.goods_avatar" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
                         <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
                             <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.goods_name }}</text>
@@ -108,14 +108,14 @@
                     </view>
                 </view>
                 <!-- 底部谁来了的提示-->
-                <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :style="'max-width:' + (windowWidth - 100) + 'px;'">
+                <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" :style="'max-width:' + (windowWidth - 100) + 'px;'">
                     <view class="user-comes flex-row">
                         <text class="user-name cr-blue">{{ commons_name }}</text>
                         <text class="user-name cr-d">来了</text>
                     </view>
                 </view>
                 <!-- 底部交互区域 -->
-                <view class="flex-row align-c mt-5 pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
+                <view class="flex-row align-c mt-5 pointer-events-auto">
                     <view class="flex-1 bottom-actions-input">
                         <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                     </view>
@@ -134,7 +134,7 @@
             </view>
         </view>
         <!-- 添加评论 -->
-        <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true" :style="'width:' + windowWidth + 'px;bottom:' + listener_height + 'px;'">
+        <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + windowWidth + 'px;bottom:' + listener_height + 'px;'">
             <view class="input">
                 <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
             </view>
@@ -589,16 +589,6 @@
             // 点赞计数
             like_button_click(e) {
                 this.like_count++;
-            },
-            handle_touch_end(event) {
-                //#ifdef APP-NVUE
-                this.$emit("handleTouchEnd", event);
-                //#endif
-            },
-            handle_double_click(event) {
-                //#ifdef APP-NVUE
-                this.$emit("handleDoubleClick", event);
-                //#endif
             }
         }
     }
