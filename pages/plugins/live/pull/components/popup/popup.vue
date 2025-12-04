@@ -1,27 +1,27 @@
 <template>
     <view v-if="showPopup" class="uni-popup" :class="popupstyle + (isDesktop ? ' fixforpc-z-index' : '')">
         <view @touchstart="touchstart">
-            <component-transition key="1" v-if="maskShow" name="mask" mode="fade" :customStyle="maskClass" :duration="duration" :show="showTrans" @click="onTap" />
-            <component-transition key="2" :mode="ani" name="content" :customStyle="transClass" :duration="duration" :show="showTrans">
-                <view class="pr" :style="'border-radius:' + round + 'px'">
-                    <view v-if="closeType == 'icon' && closeable" class="popup-close pa-14 box-border-box" :class="closeIconPos" :style="closeIconStyle" @tap="close">
-                        <component-icon :name="closeIcon" :type="closeIconType" :size="closeIconSize + 'rpx'"></component-icon>
+            <component-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
+            <component-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
+                <view class="pr" :style="'border-radius:' + propRound + 'px'">
+                    <view v-if="propCloseType == 'icon' && propCloseable" class="popup-close pa-14 box-border-box" :class="propCloseIconPos" :style="closeIconStyle" @tap="close">
+                        <component-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></component-icon>
                     </view>
-                    <view v-if="closeType == 'text' && closeable" class="flex-row jc-sb align-c w abs top-0 pa-14 z-i">
+                    <view v-if="propCloseType == 'text' && propCloseable" class="flex-row jc-sb align-c w abs top-0 pa-14 z-i">
                         <text class="cr-info" @click="close">取消</text>
                         <view class="pr">
-                            <text v-if="isCustomBtn" class="inline-block" :style="customBtnStyle" @click="custom_change">{{ customBtnText }}</text>
+                            <text v-if="propIsCustomBtn" class="inline-block" :style="propCustomBtnStyle" @click="custom_change">{{ propCustomBtnText }}</text>
                             <text class="cr-primary" @click="comfirm">确定</text>
                         </view>
                     </view>
-                    <view v-if="title != ''" class="pr">
-                        <view class="popup-close pa-14 box-border-box" :class="titleBorder ? 'br-b-e' : ''">
-                            <view v-if="title != ''" class="title ">
-                                <text class="fw tc">{{ title }}</text>
+                    <view v-if="propTitle != ''" class="pr">
+                        <view class="popup-close pa-14 box-border-box" :class="propTitleBorder ? 'br-b-e' : ''">
+                            <view v-if="propTitle != ''" class="title ">
+                                <text class="fw tc">{{ propTitle }}</text>
                             </view>
                         </view>
                     </view>
-                    <view class="uni-popup__wrapper radius-lg" :style="{ backgroundColor: bg, maxHeight: height }" :class="[popupstyle]" @click="clear">
+                    <view class="uni-popup__wrapper radius-lg" :style="{ backgroundColor: bg, maxHeight: propHeight }" :class="[popupstyle]" @click="clear">
                         <slot />
                     </view>
                 </view>
@@ -94,98 +94,98 @@
         emits: ['change', 'maskClick', 'callBack', 'callBackCustom'],
         props: {
             // 开启动画
-            animation: {
+            propAnimation: {
                 type: Boolean,
                 default: true,
             },
             // 弹出层类型，可选值，top: 顶部弹出层；bottom：底部弹出层；center：全屏弹出层
             // message: 消息提示 ; dialog : 对话框
-            type: {
+            propType: {
                 type: String,
                 default: 'bottom',
             },
             // maskClick
-            isMaskClick: {
+            propIsMaskClick: {
                 type: Boolean,
                 default: null,
             },
             // TODO 2 个版本后废弃属性 ，使用 isMaskClick
-            maskClick: {
+            propMaskClick: {
                 type: Boolean,
                 default: null,
             },
-            backgroundColor: {
+            propBackgroundColor: {
                 type: String,
                 default: 'none',
             },
-            safeArea: {
+            propSafeArea: {
                 type: Boolean,
                 default: true,
             },
-            maskBackgroundColor: {
+            propMaskBackgroundColor: {
                 type: String,
                 default: 'rgba(0, 0, 0, 0.4)',
             },
             // 是否显示关闭图标
-            closeable: {
+            propCloseable: {
                 type: Boolean,
                 default: true,
             },
             // icon
-            closeIcon: {
+            propCloseIcon: {
                 type: String,
                 default: 'close-line',
             },
             // icon颜色
-            closeIconType: {
+            propCloseIconType: {
                 type: String,
                 default: '6',
             },
             // 关闭图标大小
-            closeIconSize: {
+            propCloseIconSize: {
                 type: Number,
                 default: 32,
             },
             // 关闭图标位置，top-left为左上角，top-right为右上角，bottom-left为左下角，bottom-right为右下角，top-center为外部上部中间位置， bottom-center为外部底部中间位置，
-            closeIconPos: {
+            propCloseIconPos: {
                 type: String,
                 validator: (value) => ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'top-center', 'bottom-center'].includes(value),
                 default: 'top-right',
             },
-            closeType: {
+            propCloseType: {
                 type: String,
                 default: 'icon',
             },
-            isCustomBtn: {
+            propIsCustomBtn: {
                 type: Boolean,
                 default: false,
             },
-            customBtnText: {
+            propCustomBtnText: {
                 type: String,
                 default: '自定义',
             },
-            customBtnStyle: {
+            propCustomBtnStyle: {
                 type: String,
                 default: '',
             },
             // 标题
-            title: {
+            propTitle: {
                 type: String,
                 default: '',
             },
-            titleBorder: {
+            propTitleBorder: {
                 type: Boolean,
                 default: false,
             },
-            height: {
+            propHeight: {
                 type: String,
                 default: 'auto',
             },
-            round: {
+            propRound: {
                 type: Number,
                 default: 0,
             },
-            isConfirmClose: {
+            propIsConfirmClose: {
                 type: Boolean,
                 default: true,
             },
@@ -195,7 +195,7 @@
             /**
              * 监听type类型
              */
-            type: {
+            propType: {
                 handler: function (type) {
                     if (!this.config[type]) return;
                     this[this.config[type]](true);
@@ -205,7 +205,7 @@
             isDesktop: {
                 handler: function (newVal) {
                     if (!this.config[newVal]) return;
-                    this[this.config[this.type]](true);
+                    this[this.config[this.propType]](true);
                 },
                 immediate: true,
             },
@@ -213,13 +213,13 @@
              * 监听遮罩是否可点击
              * @param {Object} val
              */
-            maskClick: {
+            propMaskClick: {
                 handler: function (val) {
                     this.mkclick = val;
                 },
                 immediate: true,
             },
-            isMaskClick: {
+            propIsMaskClick: {
                 handler: function (val) {
                     this.mkclick = val;
                 },
@@ -274,10 +274,10 @@
                 return this.popupWidth >= 500 && this.popupHeight >= 500;
             },
             bg() {
-                if (this.backgroundColor === '' || this.backgroundColor === 'none') {
+                if (this.propBackgroundColor === '' || this.propBackgroundColor === 'none') {
                     return '#fff';
                 }
-                return this.backgroundColor;
+                return this.propBackgroundColor;
             },
             // transition固定样式
             transitionFixedStyle() {
@@ -287,23 +287,23 @@
                 };
                 switch (this.mode) {
                     case 'top':
-                        style['borderBottomLeftRadius'] = this.round + 'px';
-                        style['borderBottomRightRadius'] = this.round + 'px';
+                        style['borderBottomLeftRadius'] = this.propRound + 'px';
+                        style['borderBottomRightRadius'] = this.propRound + 'px';
                         break;
                     case 'bottom':
-                        style['borderTopLeftRadius'] = this.round + 'px';
-                        style['borderTopRightRadius'] = this.round + 'px';
+                        style['borderTopLeftRadius'] = this.propRound + 'px';
+                        style['borderTopRightRadius'] = this.propRound + 'px';
                         break;
                     case 'left':
-                        style['borderTopRightRadius'] = this.round + 'px';
-                        style['borderBottomRightRadius'] = this.round + 'px';
+                        style['borderTopRightRadius'] = this.propRound + 'px';
+                        style['borderBottomRightRadius'] = this.propRound + 'px';
                         break;
                     case 'right':
-                        style['borderTopLeftRadius'] = this.round + 'px';
-                        style['borderBottomLeftRadius'] = this.round + 'px';
+                        style['borderTopLeftRadius'] = this.propRound + 'px';
+                        style['borderBottomLeftRadius'] = this.propRound + 'px';
                         break;
                     case 'center':
-                        style['borderRadius'] = this.round + 'px';
+                        style['borderRadius'] = this.propRound + 'px';
                         break;
                 }
 
@@ -315,7 +315,7 @@
                     zIndex: 999,
                 };
                 let posSize = 28;
-                switch (this.closeIconPos) {
+                switch (this.propCloseIconPos) {
                     case 'top-left':
                         style['position'] = 'absolute';
                         style['top'] = '0rpx';
@@ -349,7 +349,7 @@
                         style['right'] = '0rpx';
                         break;
                     default:
-                        if (this.title != '') {
+                        if (this.propTitle != '') {
                             style['position'] = 'absolute';
                             style['top'] = '0rpx';
                             style['right'] = '0rpx';
@@ -369,7 +369,7 @@
                 this.popupWidth = windowWidth;
                 this.popupHeight = windowHeight + (windowTop || 0);
                 // TODO fix by mehaotian 是否适配底部安全区 ,目前微信ios 、和 app ios 计算有差异，需要框架修复
-                if (safeArea && this.safeArea) {
+                if (safeArea && this.propSafeArea) {
                     // #ifdef MP-WEIXIN
                     this.safeAreaInsets = screenHeight - safeArea.bottom;
                     // #endif
@@ -406,13 +406,13 @@
         },
         // #endif
         created() {
-            // this.mkclick =  this.isMaskClick || this.maskClick
-            if (this.isMaskClick === null && this.maskClick === null) {
+            // this.mkclick =  this.propIsMaskClick || this.propMaskClick
+            if (this.propIsMaskClick === null && this.propMaskClick === null) {
                 this.mkclick = true;
             } else {
-                this.mkclick = this.isMaskClick != null ? this.isMaskClick : this.maskClick;
+                this.mkclick = this.propIsMaskClick != null ? this.propIsMaskClick : this.propMaskClick;
             }
-            if (this.animation) {
+            if (this.propAnimation) {
                 this.duration = 300;
             } else {
                 this.duration = 0;
@@ -421,7 +421,7 @@
             this.messageChild = null;
             // TODO 解决头条冒泡的问题
             this.clearPropagation = false;
-            this.maskClass.backgroundColor = this.maskBackgroundColor;
+            this.maskClass.backgroundColor = this.propMaskBackgroundColor;
         },
         methods: {
             setH5Visible() {
@@ -458,7 +458,7 @@
                 }
                 let innerType = ['top', 'center', 'bottom', 'left', 'right', 'message', 'dialog', 'share'];
                 if (!(direction && innerType.indexOf(direction) != -1)) {
-                    direction = this.type;
+                    direction = this.propType;
                 }
                 if (!this.config[direction]) {
                     return;
@@ -473,7 +473,7 @@
                 this.showTrans = false;
                 this.$emit('change', {
                     show: false,
-                    type: this.type,
+                    type: this.propType,
                 });
                 clearTimeout(this.timer);
                 // // 自定义关闭事件
@@ -514,7 +514,7 @@
                 this.showPopup = true;
                 this.showTrans = true;
                 this.$nextTick(() => {
-                    if (this.messageChild && this.type === 'message') {
+                    if (this.messageChild && this.propType === 'message') {
                         this.messageChild.timerClose();
                     }
                 });
@@ -601,14 +601,14 @@
                 this.showTrans = true;
             },
             comfirm() {
-                if (this.isConfirmClose) {
+                if (this.propIsConfirmClose) {
                     this.close();
                 }
                 this.$emit('callBack');
             },
             // 自定义按钮点击回调
             custom_change() {
-                if (this.isConfirmClose) {
+                if (this.propIsConfirmClose) {
                     this.close();
                 }
                 this.$emit('callBackCustom');

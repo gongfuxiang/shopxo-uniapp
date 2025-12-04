@@ -20,8 +20,11 @@
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                     </view>
                 </view>
+                <view class="ml-5 people-number">
+                    <text class="cr-f size-10">{{ people_number }}</text>
+                </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
-                    <component-icon name="close-fillup" class="viewer-back-icon" size="50rpx" color="#fff"></component-icon>
+                    <component-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></component-icon>
                 </view>
             </view>
         </view>
@@ -108,27 +111,27 @@
                     </view>
                 </view>
                 <!-- 底部谁来了的提示-->
-                <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" :style="'max-width:' + (windowWidth - 100) + 'px;'">
+                <!-- <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" :style="'max-width:' + (windowWidth - 100) + 'px;'">
                     <view class="user-comes flex-row">
                         <text class="user-name cr-blue">{{ commons_name }}</text>
                         <text class="user-name cr-d">来了</text>
                     </view>
-                </view>
+                </view> -->
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5 pointer-events-auto">
                     <view class="flex-1 bottom-actions-input">
                         <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                     </view>
                     <view class="bottom-actions-icon" @tap="add_goods">
-                        <component-icon name="shopping-cart-tall" color="#fff" size="32rpx"></component-icon>
+                        <component-icon propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></component-icon>
                     </view>
-                    <component-like-button ref="likeButton" :show-imgs="liveShowImgs" @handleClick="like_button_click">
+                    <component-like-button ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
                         <view class="bottom-actions-icon">
-                            <component-icon name="givealike-o" color="#fff" size="32rpx"></component-icon>
+                            <component-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></component-icon>
                         </view>
                     </component-like-button>
                     <view class="bottom-actions-icon" @tap="share_event">
-                        <component-icon name="share-solid" color="#fff" size="32rpx"></component-icon>
+                        <component-icon propName="share-solid" propColor="#fff" propSize="32rpx"></component-icon>
                     </view>
                 </view>
             </view>
@@ -140,8 +143,8 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <component-popup ref="popupGoodsRef" mode="bottom" class="pointer-events-auto" title="添加商品" :closeable="true">
-           <component-goods isGoodsPopup></component-goods>
+        <component-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="添加商品" :propCloseable="true">
+           <component-goods propIsGoodsPopup></component-goods>
         </component-popup>
         <!-- 分享弹窗 -->
         <component-share-popup ref="share" class="pointer-events-auto"></component-share-popup>
@@ -166,11 +169,11 @@
             componentSharePopup
         },
         props: {
-            liveConfig: {
+            propLiveConfig: {
                 type: Object,
                 default: () => {}
             },
-            liveShowImgs: {
+            propLiveShowImgs: {
                 type: Array,
                 default: () => []
             }
@@ -182,6 +185,11 @@
                 goods_popup_status: false,
                 // 点赞计数
                 like_count: 0,
+                // 临时点赞计数
+                casual_like_count: 0,
+                like_timer: null,
+                // 直播间人数
+                people_number: 0,
                 // 直播间配置信息
                 live_data: {},
                 userAvatar: '/static/images/common/user.png',
@@ -257,9 +265,9 @@
                 // 当前观看直播用户id
                 live_user_id: [],
                 // 观看用户名称
-                commons_name: '陌生网友', // 用户名称
-                is_user_comes: false,
-                is_user_comes_timer: null,
+                // commons_name: '陌生网友', // 用户名称
+                // is_user_comes: false,
+                // is_user_comes_timer: null,
                 //#endregion
                 
                 //#region 监听键盘弹出事件
@@ -281,7 +289,7 @@
             }
         },
         watch: {
-            liveConfig: {
+            propLiveConfig: {
                 handler(new_value) {
                     if (new_value != null) {
                         // 获取配置信息
@@ -426,7 +434,6 @@
                 });
                 this.task.onError((res) => {
                     this.task = null;
-                    console.log('error', res);
                 });
             },
             
@@ -461,18 +468,27 @@
             
                     // 加入直播间提示
                     case 'join' :
-                        this.commons_name = data.content;
-                        this.is_user_comes = true;
-                        // 设置定时任务，如果在固定时间内有其他人进入,就清除之前的定时任务，并重新设置一个定时任务，确保关闭时间
-                        if (this.is_user_comes_timer != null) {
-                            clearTimeout(this.is_user_comes_timer)
+                        // 如果最后前一条是进入直播间的提示，则更新用户昵称
+                        if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
+                            this.bulletins[this.bulletins.length - 1].user_name = data.content;
+                        } else {
+                            this.bulletins.push({
+                                id: Math.random(),
+                                type: 'go',
+                                user_avatar: '',
+                                user_name: data.content,
+                                text: '',
+                            });
                         }
-                        this.is_user_comes_timer = setTimeout(() => {
-                            this.is_user_comes = false
-                        }, 1000);
+                        // 添加内容之后，需要滚动到最后
+                        this.scroll_to_lower();
                         break;
                     // 消息
                     case 'message':
+                        // 如果最后前一条是进入直播间的提示，则删除
+                        if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
+                            this.bulletins.splice(this.bulletins.length - 1, 1);
+                        }
                         this.bulletins.push({
                             id: Math.random(),
                             type: 'user',
@@ -588,7 +604,20 @@
             },
             // 点赞计数
             like_button_click(e) {
-                this.like_count++;
+                // 临时存储点赞数量
+                this.casual_like_count++;
+                // 如果有点击，清除历史定时任务
+                if (this.like_timer != null) {
+                    clearTimeout(this.like_timer);
+                }
+                // 两秒没有人点赞，则显示临时点赞数量加上原有数量
+                setTimeout(() => {
+                    // 显示临时点赞数量加上原有数量(临时使用)
+                    this.like_count = this.like_count + this.casual_like_count;
+                    this.socket_send('likeCount', this.casual_like_count);
+                    // 完成之后重置临时点赞数量
+                    this.casual_like_count = 0;
+                }, 2000);
             }
         }
     }
@@ -600,6 +629,11 @@
     border-radius: 100rpx;
     z-index: 3;
     background-color: rgba(40,40,40,0.45);
+}
+.people-number {
+    padding: 10rpx 20rpx;
+    background-color: rgba(40,40,40,0.45);
+    border-radius: 200rpx;
 }
 
 .avatar {

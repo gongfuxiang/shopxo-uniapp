@@ -1,12 +1,12 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video :src="src" autoplay :muted="muted" class="video-size" @hlsError="error" @ended="ended" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video :propSrc="propSrc" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
-    <live-player :src="src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
+    <live-player :src="propSrc" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video :src="src" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
+    <video :src="propSrc" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
     <!-- #endif -->
 </template>
 
@@ -18,7 +18,7 @@
             H5HlsVideo
         },
         props: {
-            src:{
+            propSrc:{
                 type: String,
                 default: 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'
             }

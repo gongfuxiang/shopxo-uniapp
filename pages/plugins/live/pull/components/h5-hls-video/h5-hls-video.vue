@@ -6,31 +6,31 @@
 <script>
     export default {
         props: {
-            src: {
+            propSrc: {
                 type: String,
                 default: ''
             },
-            autoplay: {
+            propAutoplay: {
                 type: Boolean,
                 default: false
             },
-            controls: {
+            propControls: {
                 type: Boolean,
                 default: false
             },
-            objectFit: {
+            propObjectFit: {
                 type: String,
                 default: 'contain'
             },
-            muted: {
+            propMuted: {
                 type: Boolean,
                 default: false
             },
-            playbackRate: {
+            propPlaybackRate: {
                 type: Number,
                 default: 1
             },
-            poster: {
+            propPoster: {
                 type: String,
                 default: ''
             }
@@ -54,7 +54,7 @@
         },
         watch: {
             // 监听视频资源地址更新
-            src: {
+            propSrc: {
                 handler(val) {
                     if (!val) return
                     setTimeout(() => {
@@ -71,12 +71,12 @@
             // 聚合视图层的所有数据变化，传给renderjs的渲染层
             viewportProps() {
                 return {
-                    autoplay: this.autoplay,
-                    muted: this.muted,
-                    controls: this.controls,
-                    objectFit: this.objectFit,
-                    poster: this.poster,
-                    playbackRate: this.playbackRate
+                    autoplay: this.propAutoplay,
+                    muted: this.propMuted,
+                    controls: this.propControls,
+                    objectFit: this.propObjectFit,
+                    poster: this.propCustomImages,
+                    playbackRate: this.propPlaybackRate
                 }
             }
         },

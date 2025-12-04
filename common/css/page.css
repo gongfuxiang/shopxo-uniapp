@@ -860,6 +860,9 @@ button[disabled].bg-grey {
     word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #ifdef APP-NVUE */
+    lines: 1;
+    /* #endif */
 }
 .text-line-2 {
     overflow: hidden;
@@ -872,6 +875,9 @@ button[disabled].bg-grey {
     word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #ifdef APP-NVUE */
+    lines: 2;
+    /* #endif */
 }
 .text-line-3 {
     overflow: hidden;
@@ -884,6 +890,9 @@ button[disabled].bg-grey {
     word-break: break-word;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #ifdef APP-NVUE */
+    lines: 3;
+    /* #endif */
 }
 /**
  * 文字超出部分换行

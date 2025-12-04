@@ -1,9 +1,9 @@
 <template>
     <!-- #ifdef APP-NVUE -->
-	<text :style="[{ color: color, 'font-size': iconSize, 'font-family': 'iconfont' }]" class="icon-font" :class="'cr-' + type" @tap="_onClick">{{ iconfontCode }}</text>
+	<text :style="[{ color: propColor, 'font-size': iconSize, 'font-family': 'iconfont' }]" class="icon-font" :class="'cr-' + propType" @tap="_onClick">{{ iconfontCode }}</text>
 	<!-- #endif -->
     <!-- #ifndef APP-NVUE -->       
-    <text :style="{ color: color, 'font-size': iconSize }" class="icon-font" :class="'icon-' + name + ' cr-' + type" @tap="_onClick"></text>
+    <text :style="{ color: propColor, 'font-size': iconSize }" class="icon-font" :class="'icon-' + propName + ' cr-' + propType" @tap="_onClick"></text>
     <!-- #endif -->
 </template>
 
@@ -15,27 +15,27 @@
     /**
      * Icons 图标
      * @description 用于展示 icons 图标
-     * @property {Number} size 图标大小
-     * @property {String} name 图标图案，参考示例
-     * @property {String} color 图标颜色
-     * @property {String} type 图标常规颜色 info / primary / error/ warning / success
+     * @property {Number} propSize 图标大小
+     * @property {String} propName 图标图案，参考示例
+     * @property {String} propColor 图标颜色
+     * @property {String} propType 图标常规颜色 info / primary / error/ warning / success
      */
     export default {
         name: 'u-icon',
         props: {
-            name: {
+            propName: {
                 type: String,
                 default: '',
             },
-            type: {
+            propType: {
                 type: String,
                 default: 'info',
             },
-            size: {
+            propSize: {
                 type: [Number, String],
                 default: 32,
             },
-            color: {
+            propColor: {
                 type: String,
                 default: '',
             }
@@ -43,12 +43,12 @@
         computed: {
             //#region 获取图标大小
             iconSize() {
-                return this.getVal(this.size);
+                return this.getVal(this.propSize);
             },
             //#ifdef APP-NVUE
             // appnvue页面做的特殊处理
             iconfontCode() {
-                const code = this.dataIconfont.glyphs.find(v => v.font_class === this.name);
+                const code = this.dataIconfont.glyphs.find(v => v.font_class === this.propName);
                 if (code != null) {
                     return unescape(`%u${code.unicode}`);
                 }

@@ -2,15 +2,15 @@
     <view class="like-button">
         <!-- #ifdef APP-NVUE -->
         <list class="animate-wrap">
-            <cell class="a-img" v-for="(item,index) in viewList" :key="item.elId" :ref="item.elId" :style="{ 'right': site.x || site[0] + 'rpx', 'bottom': site.y || site[1] + 'rpx'}">
-                <image :style="{ 'width': imgWidth + 'rpx', 'height': imgHeight + 'rpx'}" mode="widthFix" :src="item.src" :animation="item.animation"></image>
+            <cell class="a-img" v-for="(item,index) in viewList" :key="item.elId" :ref="item.elId" :style="{ 'right': propSite.x || propSite[0] + 'rpx', 'bottom': propSite.y || propSite[1] + 'rpx'}">
+                <image :style="{ 'width': propImgWidth + 'rpx', 'height': propImgHeight + 'rpx'}" mode="widthFix" :src="item.src" :animation="item.animation"></image>
             </cell>
         </list>
         <!-- #endif -->
         <!-- #ifndef APP-NVUE -->
         <view class="animate-wrap">
-            <view class="a-img" v-for="(item,index) in viewList" :key="item.elId" :ref="item.elId" :style="{ 'right': site.x || site[0] + 'rpx', 'bottom': site.y || site[1] + 'rpx'}">
-                <image :style="{'width': imgWidth + 'rpx', 'height': imgHeight + 'rpx'}" mode="widthFix" :src="item.src" :animation="item.animation"></image>
+            <view class="a-img" v-for="(item,index) in viewList" :key="item.elId" :ref="item.elId" :style="{ 'right': propSite.x || propSite[0] + 'rpx', 'bottom': propSite.y || propSite[1] + 'rpx'}">
+                <image :style="{'width': propImgWidth + 'rpx', 'height': propImgHeight + 'rpx'}" mode="widthFix" :src="item.src" :animation="item.animation"></image>
             </view>
         </view>
         <!-- #endif -->
@@ -26,49 +26,45 @@
 <script>
     export default {
         props: {
-            src: {
-                type: String,
-                default: '/static/images/green/tabbar/cart.png'
-            },
-            showImgs: { // 显示图标路径
+            propShowImgs: { // 显示图标路径
                 type: Array,
                 default: () => {
                     return []
                 }
             },
-            duration: { // 动画效果时间
+            propDuration: { // 动画效果时间
                 type: Number,
                 default: 5000
             },
-            range: { // x 间隔幅度
+            propRange: { // x 间隔幅度
                 type: Number,
                 default: 50
             },
-            high: {
+            propHigh: { // 图标高度
                 type: Number,
                 default: 200
             },
-            width: { // 图标宽度
+            propWidth: { // 图标宽度
                 type: Number || String,
                 default: 52
             },
-            height: { // 图标高度
+            propHeight: { // 图标高度
                 type: Number || String,
                 default: 52
             },
-            imgWidth: { // 图标宽度
+            propImgWidth: { // 图标宽度
                 type: Number || String,
                 default: 52
             },
-            imgHeight: { // 图标高度
+            propImgHeight: { // 图标高度
                 type: Number || String,
                 default: 52
             },
-            throttle: { // 点击节流 ms
+            propThrottle: { // 点击节流 ms
                 type: Number,
                 default: 200
             },
-            site: { // x y 坐标 [x<Number>, y<Number>]
+            propSite: { // x y 坐标 [x<Number>, y<Number>]
                 type: Array || Object,
                 default: () => {
                     return [122, 95] || {
@@ -77,11 +73,11 @@
                     }
                 }
             },
-            large: { // 是否缩放冒泡
+            propLarge: { // 是否缩放冒泡
                 type: [Number, Boolean],
                 default: false
             },
-            alone: {
+            propAlone: {
                 type: Boolean,
                 default: true
             }
@@ -100,56 +96,56 @@
             handleClick(e) {
                 // 函数节流
                 let interval = e.timeStamp - this.oldTime
-                if (interval < this.throttle) return null;
+                if (interval < this.propThrottle) return null;
                 this.oldTime = e.timeStamp
                 let animation = {}
                 // 创建animate配置
                 // #ifdef APP-NVUE
                 animation = weex.requireModule('animation')
                 // #endif
-                let randomImg = Math.floor(Math.random() * this.showImgs.length)
+                let randomImg = Math.floor(Math.random() * this.propShowImgs.length)
                 let _item = {
                     elId: 'el_likeicon_' + this.elId, // 生成元素ref
-                    src: this.showImgs[randomImg], // 随机图标
+                    src: this.propShowImgs[randomImg], // 随机图标
                     animation: animation, // 每个盒子动画
-                    x: Math.ceil(Math.random() * this.range), // 方向间距
+                    x: Math.ceil(Math.random() * this.propRange), // 方向间距
                     q: Math.floor(Math.random() * 2), // 随机方向
                 }
                 // 动画
                 let _abs = ['-', '']
                 let _dirX = Number(_abs[_item.q] + _item.x) // 随机的方向和间距
-                let _dirY = this.high - Math.random() * 10
+                let _dirY = this.propHigh - Math.random() * 10
                 // 生成DOM
                 this.elId++
                 this.viewList.push(_item)
                 // #ifndef APP-NVUE
                 _item.animation = uni.createAnimation({
-                    duration: this.duration,
+                    duration: this.propDuration,
                     timingFunction: 'ease-out',
                 })
                 setTimeout(() => {
                     // 完成后事件回调
                     this.$emit('finished')
                     // 逐渐消失
-                    if (this.alone) {
+                    if (this.propAlone) {
                         this.waitDeleteIndex++
-                        this.onThrottle(this.deleteView, this.duration)
+                        this.onThrottle(this.deleteView, this.propDuration)
                         return null;
                     } else {
                         // 完成动画后在n秒后清空
                         clearTimeout(this.timer)
                         this.timer = setTimeout(() => {
                             this.viewList = []
-                        }, this.duration)
+                        }, this.propDuration)
                         return null;
                     }
-                }, this.duration)
+                }, this.propDuration)
                 // #endif
                 // 执行动画
                 setTimeout(() => {
                     this.$nextTick(() => {
                         let _n = 1
-                        if (this.large) _n = typeof(this.large) === 'number' ? this.large : 2;
+                        if (this.propLarge) _n = typeof(this.propLarge) === 'number' ? this.propLarge : 2;
                         // #ifndef APP-NVUE
                         _item.animation.translateY(-_dirY).translateX(_dirX).scale(_n, _n).opacity(0).step()
                         _item.animation = _item.animation.export()
@@ -163,7 +159,7 @@
                                 transformOrigin: 'center center',
                                 opacity: 0
                             },
-                            duration: this.duration, // ms
+                            duration: this.propDuration, // ms
                             timingFunction: 'ease-out',
                             delay: 0 // ms
                         }, () => {
@@ -171,9 +167,9 @@
                             // 完成后事件回调
                             this.$emit('finished')
                             // 逐渐消失
-                            if (this.alone) {
+                            if (this.propAlone) {
                                 this.waitDeleteIndex++
-                                this.onThrottle(this.deleteView, this.duration)
+                                this.onThrottle(this.deleteView, this.propDuration)
                                 return null
                             } else {
                                 // 完成动画后在n秒后清空

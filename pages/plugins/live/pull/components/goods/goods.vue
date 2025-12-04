@@ -1,41 +1,41 @@
 <template>
-    <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh" :style="good_style">
+    <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh bg-f9" :style="good_style">
         <block v-if="good_list.length > 0">
             <view class="goods-header-fixed" :style="'width:' + windowWidth + 'px;'">
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
-                        <component-icon name="list-setup" size="36rpx" color="#999"></component-icon>
+                        <component-icon propName="list-setup" propSize="36rpx" propColor="#999"></component-icon>
                         <text class="mt-5 size-12 cr-9">订单</text>
                     </view>
                     <view class="flex-col ml-10" @tap="goods_cart">
-                        <component-icon name="cart-solid" size="36rpx" color="#999"></component-icon>
+                        <component-icon propName="cart-solid" propSize="36rpx" propColor="#999"></component-icon>
                         <text class="mt-5 size-12 cr-9">购物车</text>
                     </view>
                 </view>
             </view>
             <!-- nvue 使用 list进行列表渲染 -->
             <!-- #ifdef APP-NVUE -->
-            <list class="scroll-type" :style="good_style + (isGoodsPopup ? 'padding-bottom: 20rpx;' : '' )" :show-scrollbar="false">
+            <list class="scroll-type" :style="good_style + (propIsGoodsPopup ? 'padding-bottom: 20rpx;' : '' )" :show-scrollbar="false">
                 <cell v-for="(item, index) in good_list" :key="item.id">
             <!-- #endif -->
             <!-- scroll-view 只有非nvue的页面使用 -->
             <!-- #ifndef APP-NVUE -->
-            <scroll-view scroll-y class="scroll-type" :style="good_style + (isGoodsPopup ? 'padding-bottom: 20rpx;' : '' )" :show-scrollbar="false">
+            <scroll-view scroll-y class="scroll-type" :style="good_style + (propIsGoodsPopup ? 'padding-bottom: 20rpx;' : '' )" :show-scrollbar="false">
                 <view v-for="(item, index) in good_list" :key="item.id">
             <!-- #endif -->
-                    <view :class="'goods-item flex-row align-c box-border-box'  + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (windowWidth - 24) + 'px;'" :data-index="index" :data-value="item.checkbox">
+                    <view :class="'goods-item flex-row align-c box-border-box'  + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (windowWidth - 24) + 'px;'" :data-index="index" :data-value="item.checkbox" :data-url="item.goods_url" @tap="goods_detail">
                         <view class="flex-1">
                             <view class="flex-row align-c">
                                 <view class="pr goods-item-image-container">
                                     <!-- #ifndef APP-NVUE -->
-                                    <image :class="isGoodsPopup ? 'goods-item-popup-image' : 'goods-item-image'" :src="item.images" mode="aspectFit"></image>
+                                    <image :class="propIsGoodsPopup ? 'goods-item-popup-image' : 'goods-item-image'" :src="item.images" mode="aspectFit"></image>
                                     <!-- #endif -->
                                     <!-- #ifdef APP-NVUE -->
-                                    <image :class="isGoodsPopup ? 'goods-item-popup-image' : 'goods-item-image'" :src="item.images" mode="aspectFit"></image>
+                                    <image :class="propIsGoodsPopup ? 'goods-item-popup-image' : 'goods-item-image'" :src="item.images" mode="aspectFit"></image>
                                     <!-- #endif -->
                                     <text class="image-top-index">{{ index + 1 }}</text>
                                     <!-- 音乐进度条 -->
-                                    <view v-if="item.id == explanation_id" class="music-progress-container flex-row align-c jc-c" :style="isGoodsPopup ? 'width: 200rpx;' : 'width: 120rpx;'">
+                                    <view v-if="item.id == explanation_id" class="music-progress-container flex-row align-c jc-c" :style="propIsGoodsPopup ? 'width: 200rpx;' : 'width: 120rpx;'">
                                         <!-- #ifndef APP-NVUE -->
                                         <view class="music-progress-bars mr-5">
                                             <view class="music-bar bar1"></view>
@@ -68,7 +68,7 @@
                                                 <text class="mr-5 size-14 cr-9">库存</text>
                                                 <text class="goods-item-inventory size-14 cr-9">{{ item.inventory }}</text>
                                             </view>
-                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" @tap="goods_buy"><text class="size-14 cr-f">购买</text></button>
+                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" :data-url="item.goods_url" @tap="goods_detail"><text class="size-14 cr-f">购买</text></button>
                                         </view>
                                     </view>
                                 </view>
@@ -109,9 +109,13 @@ export default {
     },
     props: {
         // isGoodsPopup 是否是商品弹出框，弹出框一般是用在直播页显示的商品列表，直播开始前isGoodsPopup是false，显示的是一整个页面
-        isGoodsPopup: {
+        propIsGoodsPopup: {
             type: Boolean,
             default: true
+        },
+        propLiveRoomId: {
+            type: Number,
+            default: 0
         }
     },
     data() {
@@ -151,7 +155,7 @@ export default {
         //#region 设置页面屏幕大小
         good_style() {
             // 判断是否是弹出框形式
-            if (!this.isGoodsPopup) {
+            if (!this.propIsGoodsPopup) {
                 return `width:${ this.windowWidth }px;height: ${ this.windowHeight }px;`;
             } else {
                 // 如果是弹出框模式的就不全屏显示
@@ -213,7 +217,7 @@ export default {
     methods: {
         //#region 初始化
         init() {
-            if (!this.isGoodsPopup) {
+            if (!this.propIsGoodsPopup) {
                 this.is_loading = true;
             } else {
                 this.is_loading = false;
@@ -485,16 +489,19 @@ export default {
         // #endif
         //#endregion
         // 购买商品
-        goods_buy (e) { 
-            console.log('购买商品');
+        goods_detail(e) { 
+            const url = e.currentTarget.dataset.url + '&live_room_id=1';
+            app.globalData.url_open(url);
         },
         // 订单
         goods_order (e) { 
             console.log('查看订单');
+            app.globalData.url_open('/pages/user-order/user-order');
         },
         // 购物车
         goods_cart (e) { 
             console.log('查看购物车');
+            app.globalData.url_open('/pages/cart-page/cart-page');
         },
         back() {
             app.globalData.page_back_prev_event();
@@ -538,14 +545,6 @@ export default {
         border-radius: 10rpx;
 		overflow: hidden;
     }
-    .goods-item-popup-image {
-        width: 200rpx;
-        height: 200rpx;
-    }
-    .goods-item-image {
-        width: 120rpx;
-        height: 120rpx;
-    }
     .goods-item-title {
         font-weight: 500;
         font-size: 28rpx;
@@ -557,6 +556,15 @@ export default {
     .goods-item-popup-content {
         height: 200rpx;
     }
+}
+
+.goods-item-popup-image {
+    width: 200rpx;
+    height: 200rpx;
+}
+.goods-item-image {
+    width: 120rpx;
+    height: 120rpx;
 }
 
 .image-top-index {

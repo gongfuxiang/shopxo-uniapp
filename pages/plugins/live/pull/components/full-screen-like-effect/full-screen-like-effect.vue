@@ -55,12 +55,12 @@
 		name: 'SimpleLikeEffect',
 		props: {
 			// 外部传入的自定义图标数组
-			customIcons: {
+			propCustomIcons: {
 				type: Array,
 				default: () => []
 			},
 			// 外部传入的自定义图片数组
-			customImages: {
+			propCustomImages: {
 				type: Array,
 				default: () => []
 			}
@@ -84,11 +84,11 @@
 		computed: {
 			// 合并默认图标和自定义图标
 			available_icons() {
-				return [...ICONS, ...this.customIcons];
+				return [...ICONS, ...this.propCustomIcons];
 			},
 			// 合并默认图片和自定义图片
 			available_images() {
-				return this.customImages;
+				return this.propCustomImages;
 			}
 		},
 		methods: {
@@ -114,17 +114,17 @@
 					y = event.pageY || event.detail?.y || 0;
 				}
 				
-				// 添加随机偏差 (-10px 到 10px)
-				const offset_x = Math.floor(Math.random() * 41) - 10;
-				const offset_y = Math.floor(Math.random() * 41) - 10;
+				// 添加随机偏差 (-5px 到 5px)
+				const offset_x = Math.floor(Math.random() * 41) - 5;
+				const offset_y = Math.floor(Math.random() * 41) - 5;
 				
-				// 确保图标位置不超过点击位置20px范围
-				const clamped_offset_x = Math.max(-10, Math.min(10, offset_x));
-				const clamped_offset_y = Math.max(-10, Math.min(10, offset_y));
+				// 确保图标位置不超过点击位置10px范围
+				const clamped_offset_x = Math.max(-5, Math.min(5, offset_x));
+				const clamped_offset_y = Math.max(-5, Math.min(5, offset_y));
 				
 				// 调整后的坐标
-				const adjusted_x = x + clamped_offset_x - 10;
-				const adjusted_y = y + clamped_offset_y - 10;
+				const adjusted_x = x + clamped_offset_x - 5;
+				const adjusted_y = y + clamped_offset_y - 30;
 				
 				// 随机选择图标、图片和颜色
 				let icon, image_src, color;
@@ -215,10 +215,10 @@
 				// 更新最后点赞时间
 				this.last_like_time = current_time;
 				
-				// 固定位置在当前点击位置正上方40px处（避免与图标重叠）
+				// 固定位置在当前点击位置正上方60px处（避免与图标重叠）
 				this.like_count_position = { 
-					x: x,      // 水平位置与点击位置对齐
-					y: y - 40  // 垂直位置在点击位置正上方30px（增加10px避免重叠）
+					x: x - 20,      // 水平位置与点击位置对齐
+					y: y - 60  // 垂直位置在点击位置正上方60px
 				};
 				this.like_count_color = color;
 				
@@ -293,7 +293,7 @@
 						animation.transition(el, {
 							styles: {
 								opacity: 1,
-								transform: 'scale(1.5) rotate(10deg)'
+								transform: 'scale(2) rotate(10deg)'
 							},
 							duration: 1000,
 							timingFunction: 'ease-out'
@@ -338,7 +338,7 @@
 						animation.transition(el, {
 							styles: {
 								opacity: 0,
-								transform: 'scale(0.5) translateY(-10px)'
+								transform: 'scale(1) translateY(-10px)'
 							},
 							duration: 500,
 							timingFunction: 'ease-out'
@@ -370,17 +370,17 @@
 	
 	.like-item {
 		position: absolute;
-		font-size: 20px;
+		font-size: 40rpx;
 	}
 	
 	.like-image {
-		width: 20px;
-		height: 20px;
+		width: 40rpx;
+		height: 40rpx;
 	}
 	
 	.like-count {
 		position: absolute;
-		font-size: 16px;
+		font-size: 32rpx;
 		font-weight: bold;
 		z-index: 10000;
 		text-wrap: nowrap;
@@ -404,7 +404,7 @@
 		}
 		50% {
 			opacity: 1;
-			transform: scale(1.5) rotate(10deg);
+			transform: scale(2) rotate(10deg);
 		}
 		100% {
 			opacity: 0;

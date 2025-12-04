@@ -1,11 +1,11 @@
 <template>
     <!-- #ifndef APP-NVUE -->
-    <view v-if="isShow" ref="ani" :animation="animationData" :class="customClass" :style="transformStyles" @click="onClick">
+    <view v-if="isShow" ref="ani" :animation="animationData" :class="propCustomClass" :style="transformStyles" @click="onClick">
         <slot></slot>
     </view>
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
-    <view v-if="isShow" ref="ani" :animation="animationData" :class="customClass" :style="transformStyles" @click="onClick">
+    <view v-if="isShow" ref="ani" :animation="animationData" :class="propCustomClass" :style="transformStyles" @click="onClick">
         <slot></slot>
     </view>
     <!-- #endif -->
@@ -38,39 +38,39 @@
         emits: ['click', 'change'],
         props: {
             // 是否展示组件
-            show: {
+            propShow: {
                 type: Boolean,
                 default: false,
             },
             // 使用的动画模式
-            mode: {
+            propMode: {
                 type: [Array, String, null],
                 default() {
                     return 'fade';
                 },
             },
             // 动画的执行时间，单位ms
-            duration: {
+            propDuration: {
                 type: [String, Number],
                 default: 300,
             },
             // 使用的动画过渡函数
-            timingFunction: {
+            propTimingFunction: {
                 type: String,
                 default: 'ease-out',
             },
-            customStyle: {
+            propCustomStyle: {
                 type: Object,
                 default() {
                     return {};
                 },
             },
-            customClass: {
+            propCustomClass: {
                 type: String,
                 default: '',
             },
             // nvue模式下 是否直接显示，在uv-list等cell下面使用就需要设置
-            cellChild: {
+            propCellChild: {
                 type: Boolean,
                 default: false,
             },
@@ -86,7 +86,7 @@
             };
         },
         watch: {
-            show: {
+            propShow: {
                 handler(newVal) {
                     if (newVal) {
                         this.open();
@@ -106,8 +106,8 @@
                 const style = {
                     transform: this.transform,
                     opacity: this.opacity,
-                    ...this.addStyle(this.customStyle),
-                    'transition-duration': `${this.duration / 1000}s`,
+                    ...this.addStyle(this.propCustomStyle),
+                    'transition-duration': `${this.propDuration / 1000}s`,
                 };
                 return this.addStyle(style, 'string');
             },
@@ -115,12 +115,12 @@
         created() {
             // 动画默认配置
             this.config = {
-                duration: this.duration,
-                timingFunction: this.timingFunction,
+                duration: this.propDuration,
+                timingFunction: this.propTimingFunction,
                 transformOrigin: '50% 50%',
                 delay: 0,
             };
-            this.durationTime = this.duration;
+            this.durationTime = this.propDuration;
         },
         methods: {
             /**
@@ -268,7 +268,7 @@
                         this.animation = createAnimation(this.config, this);
                         this.tranfromInit(false).step();
                         // #ifdef APP-NVUE
-                        if (this.cellChild) {
+                        if (this.propCellChild) {
                             this.opacity = 1;
                         } else {
                             this.animation.run();
@@ -322,10 +322,10 @@
                         styles.transform += this.animationType(type)[mode] + ' ';
                     }
                 };
-                if (typeof this.mode === 'string') {
-                    buildStyle(type, this.mode);
+                if (typeof this.propMode === 'string') {
+                    buildStyle(type, this.propMode);
                 } else {
-                    this.mode.forEach((mode) => {
+                    this.propMode.forEach((mode) => {
                         buildStyle(type, mode);
                     });
                 }
@@ -354,10 +354,10 @@
                     }
                     this.animation[this.animationMode()[mode]](aniNum);
                 };
-                if (typeof this.mode === 'string') {
-                    buildTranfrom(type, this.mode);
+                if (typeof this.propMode === 'string') {
+                    buildTranfrom(type, this.propMode);
                 } else {
-                    this.mode.forEach((mode) => {
+                    this.propMode.forEach((mode) => {
                         buildTranfrom(type, mode);
                     });
                 }
