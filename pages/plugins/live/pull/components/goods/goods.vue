@@ -1,12 +1,15 @@
 <template>
-    <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box bg-f9 oh" :style="good_style">
+    <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh" :style="good_style">
         <block v-if="good_list.length > 0">
             <view class="goods-header-fixed" :style="'width:' + windowWidth + 'px;'">
-                <view class="flex-row align-c jc-sb pa-10">
-                    <text class="flex-1 size-12 cr-b mr-10">{{ isGoodsPopup ? '' : '以下商品开播后自动添加到小黄车' }}</text>
-                    <view class="flex-row align-c">
-                        <button v-if="!isGoodsPopup" type="primary" plain class="btn-block cr-main flex-row align-c jc-c pa-5" style="width: 150rpx;height:68rpx;border-radius: 10rpx;"><text class="size-14 cr-main">取消</text></button>
-                        <button type="primary" class="btn-block cr-main ml-10 flex-row align-c jc-c pa-5" style="width: 130rpx;height:68rpx;border-radius: 10rpx;border: 2rpx solid #0079ff;"><text class="size-14 cr-f">添加</text></button>
+                <view class="flex-row align-c jc-e pa-10">
+                    <view class="flex-col" @tap="goods_order">
+                        <component-icon name="list-setup" size="36rpx" color="#999"></component-icon>
+                        <text class="mt-5 size-12 cr-9">订单</text>
+                    </view>
+                    <view class="flex-col ml-10" @tap="goods_cart">
+                        <component-icon name="cart-solid" size="36rpx" color="#999"></component-icon>
+                        <text class="mt-5 size-12 cr-9">购物车</text>
                     </view>
                 </view>
             </view>
@@ -20,7 +23,7 @@
             <scroll-view scroll-y class="scroll-type" :style="good_style + (isGoodsPopup ? 'padding-bottom: 20rpx;' : '' )" :show-scrollbar="false">
                 <view v-for="(item, index) in good_list" :key="item.id">
             <!-- #endif -->
-                    <view :class="'goods-item flex-row align-c' + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (windowWidth - 20) + 'px;'" :data-index="index" :data-value="item.checkbox">
+                    <view :class="'goods-item flex-row align-c box-border-box'  + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (windowWidth - 24) + 'px;'" :data-index="index" :data-value="item.checkbox">
                         <view class="flex-1">
                             <view class="flex-row align-c">
                                 <view class="pr goods-item-image-container">
@@ -50,61 +53,38 @@
                                         <text class="size-12 cr-f">讲解中</text>
                                     </view>
                                 </view>
-                                <view :class="isGoodsPopup ? 'ml-10 flex-1 flex-col jc-sb goods-item-popup-content' : 'ml-10 flex-1 flex-col jc-sb goods-item-content'" >
-                                    <template v-if="!isGoodsPopup">
-                                        <text class="goods-item-title text-line-2">{{ item.title }}</text>
-                                        <view class="flex-row align-c jc-sb">
+                                <view class="ml-10 flex-1 flex-col jc-sb goods-item-popup-content">
+                                    <text class="goods-item-title text-line-2">{{ item.title }}</text>
+                                    <view class="flex-1 mt-10">
+                                        <view class="flex-1 flex-row align-c jc-sb">
                                             <view class="flex-row align-c">
-                                                <text class="mr-5 size-10 cr-9">{{ item.show_price_symbol}}</text>
-                                                <text class="goods-item-price size-10 cr-price">{{ item.price }}</text>
-                                                <text class="ml-5 size-10 cr-9">{{ item.show_price_unit }}</text>
-                                            </view>
-                                            <view class="flex-row align-c">
-                                                <text class="mr-5 size-10 cr-9">库存</text>
-                                                <text class="goods-item-inventory size-10 cr-9">{{ item.inventory }}</text>
+                                                <text class="mr-5 size-14 cr-9">{{ item.show_price_symbol}}</text>
+                                                <text class="goods-item-price size-14 cr-price">{{ item.price }}</text>
+                                                <text class="ml-5 size-14 cr-9">{{ item.show_price_unit }}</text>
                                             </view>
                                         </view>
-                                    </template>
-                                    <template v-else>
-                                        <text class="flex-1 goods-item-title text-line-2">{{ item.title }}</text>
-                                        <view class="flex-1 mt-10">
-                                            <view class="flex-1 flex-row align-c jc-sb">
-                                                <view class="flex-row align-c">
-                                                    <text class="mr-5 size-10 cr-9">{{ item.show_price_symbol}}</text>
-                                                    <text class="goods-item-price size-10 cr-price">{{ item.price }}</text>
-                                                    <text class="ml-5 size-10 cr-9">{{ item.show_price_unit }}</text>
-                                                </view>
-                                                <view class="flex-row align-c">
-                                                    <text class="mr-5 size-10 cr-9">库存</text>
-                                                    <text class="goods-item-inventory size-10 cr-9">{{ item.inventory }}</text>
-                                                </view>
+                                        <view class="flex-row align-c mt-10 jc-sb">
+                                            <view class="flex-row align-c">
+                                                <text class="mr-5 size-14 cr-9">库存</text>
+                                                <text class="goods-item-inventory size-14 cr-9">{{ item.inventory }}</text>
                                             </view>
-                                            <view class="flex-row align-c mt-10 jc-e">
-                                                <button v-if="index !== 0" type="primary" plain class="btn-block cr-main mr-10 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" @tap="top_good"><text class="size-14 cr-main">置顶</text></button>
-                                                <button type="primary" class="btn-block bg-red mr-10 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx;border: 2rpx solid #e22c08;" :data-id="item.id" @tap="delete_good"><text class="size-14 cr-f">删除</text></button>
-                                                <button v-if="isGoodsPopup" type="primary" class="btn-block cr-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx;border: 2rpx solid #0079ff;" :data-id="item.id" @tap="explanation"><text class="size-14 cr-f">{{ item.id == explanation_id ? '取消' : '讲解' }}</text></button>
-                                            </view>
+                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" @tap="goods_buy"><text class="size-14 cr-f">购买</text></button>
                                         </view>
-                                    </template>
+                                    </view>
                                 </view>
-                            </view>
-                            <view v-if="!isGoodsPopup" class="flex-row align-c jc-e mt-10">
-                                <button v-if="index !== 0" type="primary" plain class="btn-block cr-main mr-10 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" @tap="top_good"><text class="size-14 cr-main">置顶</text></button>
-                                <button type="primary" class="btn-block bg-red mr-10 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx;border: 2rpx solid #e22c08;" :data-id="item.id" @tap="delete_good"><text class="size-14 cr-f">删除</text></button>
-                                <button v-if="isGoodsPopup" type="primary" class="btn-block cr-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx;border: 2rpx solid #0079ff;" :data-id="item.id" @tap="explanation"><text class="size-14 cr-f">{{ item.id == explanation_id ? '取消' : '讲解' }}</text></button>
                             </view>
                         </view>
                     </view>
             <!-- #ifdef APP-NVUE -->
                 </cell>
                 <cell>
-                    <u-bottom-line :status="bottom_line_status" :width="windowWidth"></u-bottom-line>
+                    <component-bottom-line :propStatus="bottom_line_status" :propWidth="windowWidth"></component-bottom-line>
                 </cell>
             </list>
             <!-- #endif -->
             <!-- #ifndef APP-NVUE -->
                 </view>
-                <u-bottom-line :status="bottom_line_status"></u-bottom-line>
+                <component-bottom-line :propStatus="bottom_line_status"></component-bottom-line>
             </scroll-view>
             <!-- #endif -->
         </block>
@@ -117,10 +97,16 @@
 </template>
 
 <script>
+import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
+import componentBottomLine from '@/components/bottom-line/bottom-line.vue';
 const app = getApp();
 
 export default {
     name: 'Goods',
+    components: {
+        componentIcon,
+        componentBottomLine
+    },
     props: {
         // isGoodsPopup 是否是商品弹出框，弹出框一般是用在直播页显示的商品列表，直播开始前isGoodsPopup是false，显示的是一整个页面
         isGoodsPopup: {
@@ -209,6 +195,7 @@ export default {
         const data = uni.getWindowInfo();
         this.windowWidth = data.windowWidth;
         this.windowHeight = data.windowHeight;
+        // 初始化商品列表
         this.init();
         
         // #ifdef APP-NVUE
@@ -236,15 +223,16 @@ export default {
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url('index,roomgoods,live'),
+                url: app.globalData.get_request_url('index','roomgoods','live'),
                 method: 'POST',
                 data: {},
                 dataType: 'json',
                 success: (res) => { 
                     uni.hideLoading();
                     this.is_loading = false;
-                    if (res.code == 0) {
-                        this.good_list = res.data;
+                    const new_data = res.data;
+                    if (new_data.code == 0) {
+                        this.good_list = new_data.data;
                     }
                 },
                 fail: () => {
@@ -496,7 +484,18 @@ export default {
         },
         // #endif
         //#endregion
-        
+        // 购买商品
+        goods_buy (e) { 
+            console.log('购买商品');
+        },
+        // 订单
+        goods_order (e) { 
+            console.log('查看订单');
+        },
+        // 购物车
+        goods_cart (e) { 
+            console.log('查看购物车');
+        },
         back() {
             app.globalData.page_back_prev_event();
         }
@@ -531,9 +530,10 @@ export default {
 }
 .goods-item {
     background: #fff;
-    margin-bottom: 20rpx;
+    margin: 4rpx 2px 16rpx 2px;
     padding: 30rpx 40rpx;
     border-radius: 20rpx;
+    box-shadow: 2px 2px 4px 2px #0000000d;
     .goods-item-image-container {
         border-radius: 10rpx;
 		overflow: hidden;

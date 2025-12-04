@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view v-if="(propStatus || false)" class="data-bottom-line">
             <view class="bottom-exclude">
-                <view class="line-item left"></view>
-                <view class="line-item msg">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</view>
-                <view class="line-item right"></view>
+                <view class="line-item left" :style="'width:' + split_width"></view>
+                <text class="line-item msg" :style="'width:' + split_width">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</text>
+                <view class="line-item right" :style="'width:' + split_width"></view>
             </view>
         </view>
     </view>
@@ -15,12 +15,22 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                split_width: '33%'
             };
         },
         components: {},
         props: {
             propStatus: Boolean,
-            propMsg: String
+            propMsg: String,
+            propWidth: {
+                type: Number,
+                default: 0
+            }
+        },
+        mounted() {
+            if (this.propWidth > 0) {
+                split_width.value = ((this.propWidth - 40) / 3) + 'px';
+            }
         },
         methods: {}
     };
