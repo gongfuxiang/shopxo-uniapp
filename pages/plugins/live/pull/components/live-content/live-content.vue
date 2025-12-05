@@ -20,7 +20,7 @@
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                     </view>
                 </view>
-                <view class="ml-5 people-number">
+                <view class="ml-5 people-number flex-row align-c jc-c">
                     <text class="cr-f size-10">{{ people_number }}</text>
                 </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
@@ -119,9 +119,16 @@
                 </view> -->
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5 pointer-events-auto">
-                    <view class="flex-1 bottom-actions-input">
-                        <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
-                    </view>
+                    <template v-if="is_socket_success">
+                        <view class="flex-1 bottom-actions-input">
+                            <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                        </view>
+                    </template>
+                    <template v-else>
+                        <view class="flex-1">
+                            <button class="bottom-actions-button cr-f size-14" type="primary"  style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
+                        </view>
+                    </template>
                     <view class="bottom-actions-icon" @tap="add_goods">
                         <component-icon propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></component-icon>
                     </view>
@@ -276,16 +283,12 @@
                 // 监听键盘高度变化事件
                 listener_height: 0,
                 //#endregion
-                
-                //#region 3 2 1倒计时相关
-                countdown_num: 3,
-                countdownTimer: null,
-                is_countdown_visible: true,
-                is_countdown_num_visible: true,
-                //#ifdef APP-NVUE
-                nvueAnimation: null,
-                //#endif
-                //#endregion
+                reconnect_count: 0,
+                // socket连接错误
+                is_socket_error: false,
+                socket_error_content: '连接失败点击重试',
+                // socket连接成功
+                is_socket_success: false
             }
         },
         watch: {
@@ -411,9 +414,24 @@
                 // 连接socket
                 this.socket_connect();
             },
-            
+            // 手动连接socket
+            socket_connect_manual() {
+                if (!this.is_socket_error) {
+                    this.socket_connect(true);
+                }
+            },
             // 连接socket
-            socket_connect() {
+            socket_connect(is_manual = false) {
+                // 一开始就设置为false，避免连接失败时，页面显示错误
+                this.is_socket_error = false;
+                this.is_socket_success = false;
+                // 第一次连接时显示连接中...
+                if (this.reconnect_count == 0) {
+                    this.socket_error_content = '连接中...';
+                } else {
+                    this.socket_error_content = `第${this.reconnect_count + 1}次重连中...`;
+                }
+
                 this.task = uni.connectSocket({
                     url: "wss://new.shopxo.vip:9502",
                     header: {
@@ -422,18 +440,48 @@
                     complete: () => {}
                 });
             
-                // task.value.onOpen(function(res) {
-                //     task.value = task.value;
-                // });
+                // 连接打开事件
+                this.task.onOpen((res) => {
+                    // 连接成功后重置重连计数
+                    this.reconnect_count = 0;
+                    this.is_socket_success = true;
+                });
+                
                 this.task.onMessage((res) => {
                     this.socket_message_back_handle(res);
                 });
                 this.task.onClose((res) => {
                     this.task = null;
-                    console.log('close', res);
+                    this.is_socket_error = true;
+                    // 尝试重连，最多30次
+                    if ((this.reconnect_count + 1) < 30) {
+                        setTimeout(() => {
+                            this.is_socket_error = true;
+                            this.socket_error_content = `第${this.reconnect_count + 1}次连接失败`;
+                            setTimeout(() => {
+                                // 增加重连计数
+                                this.reconnect_count++;
+                                this.socket_connect();
+                            }, 1000); // 逐步增加重连间隔，最大10秒
+                        }, 1000); // 逐步增加重连间隔，最大10秒
+                    } else {
+                        this.is_socket_error = false;
+                        this.reconnect_count = 0;
+                        this.socket_error_content = '连接失败点击重试';
+                    }
                 });
                 this.task.onError((res) => {
                     this.task = null;
+                    this.is_socket_error = false;
+                    this.reconnect_count = 0;
+                    this.socket_error_content = `连接失败点击重试`;
+                    if (is_manual) {
+                        uni.showModal({
+                            title: '提示',
+                            content: res.result,
+                            showCancel: false,
+                        });
+                    }
                 });
             },
             
@@ -631,7 +679,7 @@
     background-color: rgba(40,40,40,0.45);
 }
 .people-number {
-    padding: 10rpx 20rpx;
+    padding: 6rpx 20rpx;
     background-color: rgba(40,40,40,0.45);
     border-radius: 200rpx;
 }
@@ -668,8 +716,8 @@
     border: 3rpx solid #ffffff; /* 添加白色边框使其更清晰 */
 }
 .viewer-back {
-    width: 70rpx;
-    height: 70rpx;
+    // width: 70rpx;
+    // height: 70rpx;
     border-radius: 30rpx;
 }
 
@@ -767,6 +815,10 @@
 }
 .bottom-actions-input input::placeholder {
     color: #fff;
+}
+.bottom-actions-button {
+    border-radius: 50rpx;
+    background: rgba(40,40,40,0.45);
 }
 .bottom-actions-icon {
     background: rgba(40,40,40,0.45);
