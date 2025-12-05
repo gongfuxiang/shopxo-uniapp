@@ -180,11 +180,20 @@
             componentLikeButton,
             componentSharePopup
         },
+        /**
+         * 直播内容组件属性
+         */
         props: {
+            /**
+             * 直播配置信息
+             */
             propLiveConfig: {
                 type: Object,
                 default: () => {}
             },
+            /**
+             * 直播展示图片
+             */
             propLiveShowImgs: {
                 type: Array,
                 default: () => []
@@ -297,6 +306,9 @@
             }
         },
         watch: {
+            /**
+             * 监听直播配置信息变更
+             */
             propLiveConfig: {
                 handler(new_value) {
                     if (new_value != null) {
@@ -308,6 +320,9 @@
                 deep: true
             }
         },
+        /**
+         * 组件挂载后执行初始化操作
+         */
         mounted() {
             // 初始化窗口信息和滚动条高度
             this.init_window_info();
@@ -318,6 +333,9 @@
             // 创建监听事件
             this.bind_keyboard_listener();
         },
+        /**
+         * 组件销毁前清理资源
+         */
         beforeDestroy() {
             // 清理socket连接
             this.clear_interval_task();
@@ -330,6 +348,10 @@
         methods: {
             isEmpty,
             //#region 头部样式和页面宽度处理
+            /**
+             * 初始化窗口信息
+             * 获取屏幕宽高，并根据不同平台设置头部样式
+             */
             init_window_info() {
                 const data = uni.getWindowInfo();
                 this.windowWidth = data.windowWidth;
@@ -365,13 +387,18 @@
             },
             //#endregion
             
-            // 退出直播, 客户端退出不需要提示
+            /**
+             * 退出直播
+             * 触发父组件的liveBack事件
+             */
             live_back() {
                 this.$emit('liveBack');
             },
             
             //#region 评论区
-            // 滚动到最底部
+            /**
+             * 滚动到评论区最底部
+             */
             scroll_to_lower() {
                 this.$nextTick(() => {
                     //#ifndef APP-NVUE
@@ -388,14 +415,25 @@
                     //#endif
                 })
             },
-            // nvue只能使用flex布局，无法实现文字主动换行的情况，将文字切割成数组，一个一个渲染
+            /**
+             * 将文本拆分为字符数组（用于NVUE环境）
+             * @param {String} val - 需要拆分的文本
+             * @returns {Array} 拆分后的字符数组
+             */
             split_text(val) {
                 return val.split('');
             },
+            /**
+             * 滚动事件处理
+             * @param {Event} e - 滚动事件对象
+             */
             scroll_event(e) {
                 this.is_scroll_to_lower = false;
             },
-            // 滚动到底部
+            /**
+             * 滚动到底部事件处理
+             * @param {Event} e - 滚动事件对象
+             */
             scroll_to_lower_event(e) {
                 // 滚动到底部触发的事件，将显示的多少条信息给隐藏起来
                 setTimeout(() => {
@@ -404,13 +442,20 @@
                     this.is_scroll_to_lower = true;
                 }, 0);
             },
-            // 点击新消息时，自动跳转到底部
+            /**
+             * 新消息提示点击事件处理
+             * 点击后滚动到评论区底部
+             */
             message_num_event() {
                 this.scroll_to_lower();
             },
             //#endregion
             
             //#region 获取用户头像信息和socket连接信息
+            /**
+             * 初始化用户信息
+             * 从缓存获取用户头像并建立WebSocket连接
+             */
             init_user_info() {
                 const new_user = uni.getStorageSync(uni.$store?.state?.cache_user_info_key ?? '') || null;
                 if (new_user != null) {
@@ -419,13 +464,18 @@
                 // 连接socket
                 this.socket_connect();
             },
-            // 手动连接socket
+            /**
+             * 手动连接WebSocket
+             */
             socket_connect_manual() {
                 if (!this.is_socket_error) {
                     this.socket_connect(true);
                 }
             },
-            // 连接socket
+            /**
+             * 建立WebSocket连接
+             * @param {Boolean} is_manual - 是否手动连接
+             */
             socket_connect(is_manual = false) {
                 // 一开始就设置为false，避免连接失败时，页面显示错误
                 this.is_socket_error = false;
@@ -490,7 +540,10 @@
                 });
             },
             
-            // 消息回调处理
+            /**
+             * WebSocket消息回调处理
+             * @param {Object} e - WebSocket消息事件对象
+             */
             socket_message_back_handle(e) {
                 let res = JSON.parse(e.data);
                 if(res.code !== 0) {
@@ -555,7 +608,9 @@
                 }
             },
             
-            // 心跳
+            /**
+             * WebSocket心跳处理
+             */
             socket_ping_handle() {
                 // 清除定时任务
                 this.clear_interval_task();
@@ -565,6 +620,9 @@
                     this.socket_send('ping', app.globalData.get_timestamp());
                 }, this.ping_interval * 1000);
             },
+            /**
+             * 清除定时任务
+             */
             clear_interval_task() {
                 if (this.ping_timer != null) {
                     clearInterval(this.ping_timer);
@@ -572,8 +630,11 @@
                 }
             },
             
-            // 消息发送
-            // type init初始化, ping心跳, message消息
+            /**
+             * 发送WebSocket消息
+             * @param {String} type - 消息类型(init初始化, ping心跳, message消息)
+             * @param {String} content - 消息内容
+             */
             socket_send(type = 'message', content = '') {
                 if(this.task === null) {
                     app.globalData.showToast('socket连接失败！');
@@ -599,12 +660,18 @@
             //#endregion
             
             //#region 监听键盘弹出事件
+            /**
+             * 添加评论
+             */
             add_comment() {
                 //#ifndef H5
                 this.is_add_comment = true;
                 //#endif
             },
-            // 监听键盘高度变化事件
+            /**
+             * 键盘高度变化监听处理
+             * @param {Object} res - 键盘高度变化事件对象
+             */
             listener(res) {
                 // 减1是为了兼容，避免跟键盘之间会不连贯
                 if (res.height > 0) {
@@ -613,13 +680,23 @@
                     this.listener_height = 0;
                 }
             },
+            /**
+             * 绑定键盘高度变化监听事件
+             */
             bind_keyboard_listener() {
                 uni.onKeyboardHeightChange(this.listener);
             },
+            /**
+             * 解绑键盘高度变化监听事件
+             */
             unbind_keyboard_listener() {
                 uni.offKeyboardHeightChange(this.listener);
             },
             
+            /**
+             * 评论输入确认事件处理
+             * @param {Event} e - 输入确认事件对象
+             */
             comment_input_confirm(e) {
                 const value = e.detail.value;
                 if (value != '') {
@@ -630,10 +707,18 @@
             //#endregion
             
             //#region 商品弹出框
+            /**
+             * 添加商品
+             * 打开商品弹出框
+             */
             add_goods() {
                 this.$refs.popupGoodsRef.open();
             },
             //#endregion
+            
+            /**
+             * 分享事件处理
+             */
             share_event() {
                 // 分享菜单处理
                 app.globalData.page_share_handle();
@@ -651,11 +736,19 @@
                     });
                 }
             },
-            // 点击上边的时候会触发下边的按钮点击事件
+            
+            /**
+             * 点赞点击事件处理
+             * @param {Event} e - 点击事件对象
+             */
             like_click(e) {
                this.$refs.likeButton.handleClick(e);
             },
-            // 点赞计数
+            
+            /**
+             * 点赞按钮点击事件处理
+             * @param {Event} e - 点击事件对象
+             */
             like_button_click(e) {
                 // 临时存储点赞数量
                 this.casual_like_count++;
@@ -924,3 +1017,172 @@
     }
 /* #endif */
 </style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
+</script>
+</style>
+</template>
