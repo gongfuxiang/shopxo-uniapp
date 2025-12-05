@@ -103,7 +103,12 @@
                         </view>
                     </view>
                     <view v-if="!isEmpty(explain_goods)" class="explain-goods">
-                        <image :src="explain_goods.goods_avatar" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
+                        <view class="pr" style="width: 198rpx;height: 198rpx;">
+                            <image :src="explain_goods.goods_avatar" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
+                            <view class="explain-subscript">
+                                <text class="size-12 cr-f">讲解中</text>
+                            </view>
+                        </view>
                         <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
                             <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.goods_name }}</text>
                             <text class="explain-goods-price cr-red mt-10 size-12">¥{{ explain_goods.goods_price }}</text>
@@ -900,7 +905,14 @@
     bottom: 20rpx;
     border-radius: 20rpx;
 }
-
+.explain-subscript {
+    position: absolute;
+    left: 5rpx;
+    top: 5rpx;
+    padding: 0rpx 8rpx;
+    background: rgba(40,40,40,0.45);
+    border-radius: 10rpx;
+}
 /* #ifdef MP-WEIXIN | APP-PLUS */
     .bulletin-area {
         ::v-deep ::-webkit-scrollbar
