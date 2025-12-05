@@ -1,6 +1,13 @@
+/**
+ * 直播间混入组件
+ * 提供直播间相关的基本功能和数据管理
+ */
 const app = getApp();
 import { isEmpty } from '@/common/js/common/common.js';
 export default {
+    /**
+     * 组件内部数据
+     */
     data() {
         return {
             windowWidth: 0,
@@ -20,6 +27,11 @@ export default {
             lastLikeTime: 0 // 记录上次点赞时间，用于防抖
         }
     },
+
+    /**
+     * 页面加载时执行
+     * @param {Object} params 页面参数
+     */
     onLoad(params) {
         // 调用公共事件方法
         app.globalData.page_event_onload_handle(params);
@@ -27,6 +39,9 @@ export default {
         this.params = app.globalData.launch_params_handle(params);
     },
     
+    /**
+     * 页面显示时执行
+     */
     onShow() {
         // 调用公共事件方法
         app.globalData.page_event_onshow_handle();
@@ -41,10 +56,19 @@ export default {
         // #endif
         this.init();
     },
+
+    /**
+     * 组件挂载完成后执行
+     */
     mounted() {
         this.init();
     },
+
     methods: {
+        /**
+         * 初始化直播间数据
+         * 请求服务器获取直播间详情信息
+         */
         init() {
             uni.showLoading({
                 title: '直播数据加载中...',
@@ -88,13 +112,25 @@ export default {
                 }
             });
         },
+
+        /**
+         * 标记直播结束
+         */
         ended() {
             this.is_live_ended = true;
         },
+
+        /**
+         * 返回上一页
+         */
         live_back() {
             app.globalData.page_back_prev_event();
         },
-        // 处理鼠标双击事件
+
+        /**
+         * 处理鼠标双击事件
+         * @param {Event} event 鼠标事件对象
+         */
         handle_double_click(event) {
             if (event.target.dataset.ignore) {
                 return;
@@ -116,7 +152,11 @@ export default {
             }
         },
         
-        // 处理触屏双击事件
+        /**
+         * 处理触屏双击事件
+         * 检测用户在屏幕上的双击操作以触发点赞效果
+         * @param {Event} event 触摸事件对象
+         */
         handle_touch_end(event) {
             if (event.target.dataset.ignore) {
                 return;

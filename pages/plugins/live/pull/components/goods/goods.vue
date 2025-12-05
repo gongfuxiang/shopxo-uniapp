@@ -1,6 +1,7 @@
 <template>
     <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh bg-f9" :style="good_style">
         <block v-if="good_list.length > 0">
+            <!-- 固定在顶部的商品操作栏 -->
             <view class="goods-header-fixed" :style="'width:' + windowWidth + 'px;'">
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
@@ -23,6 +24,7 @@
             <scroll-view scroll-y class="scroll-type" :style="good_style + (propIsGoodsPopup ? 'padding-bottom: 20rpx;' : '' )" :show-scrollbar="false">
                 <view v-for="(item, index) in good_list" :key="item.id">
             <!-- #endif -->
+                    <!-- 商品项 -->
                     <view :class="'goods-item flex-row align-c box-border-box'  + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (windowWidth - 24) + 'px;'" :data-index="index" :data-value="item.checkbox" :data-url="item.goods_url" @tap="goods_detail">
                         <view class="flex-1">
                             <view class="flex-row align-c">
@@ -33,8 +35,9 @@
                                     <!-- #ifdef APP-NVUE -->
                                     <image :class="propIsGoodsPopup ? 'goods-item-popup-image' : 'goods-item-image'" :src="item.images" mode="aspectFit"></image>
                                     <!-- #endif -->
+                                    <!-- 商品序号标识 -->
                                     <text class="image-top-index">{{ index + 1 }}</text>
-                                    <!-- 音乐进度条 -->
+                                    <!-- 正在讲解中的商品音乐进度条 -->
                                     <view v-if="item.id == explanation_id" class="music-progress-container flex-row align-c jc-c" :style="propIsGoodsPopup ? 'width: 200rpx;' : 'width: 120rpx;'">
                                         <!-- #ifndef APP-NVUE -->
                                         <view class="music-progress-bars mr-5">
@@ -53,6 +56,7 @@
                                         <text class="size-12 cr-f">讲解中</text>
                                     </view>
                                 </view>
+                                <!-- 商品信息区域 -->
                                 <view class="ml-10 flex-1 flex-col jc-sb goods-item-popup-content">
                                     <text class="goods-item-title text-line-2">{{ item.title }}</text>
                                     <view class="flex-1 mt-10">
@@ -68,6 +72,7 @@
                                                 <text class="mr-5 size-14 cr-9">库存</text>
                                                 <text class="goods-item-inventory size-14 cr-9">{{ item.inventory }}</text>
                                             </view>
+                                            <!-- 购买按钮 -->
                                             <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" :data-url="item.goods_url" @tap="goods_detail"><text class="size-14 cr-f">购买</text></button>
                                         </view>
                                     </view>
@@ -89,6 +94,7 @@
             <!-- #endif -->
         </block>
         <block v-else>
+            <!-- 无商品时的提示 -->
             <view class="flex-1 flex-col align-c">
                 <text class="tip-title">暂无商品</text>
             </view>
@@ -101,6 +107,10 @@ import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
 import componentBottomLine from '@/components/bottom-line/bottom-line.vue';
 const app = getApp();
 
+/**
+ * 商品展示组件
+ * 用于直播间商品列表展示，支持普通页面和弹窗两种模式
+ */
 export default {
     name: 'Goods',
     components: {
@@ -108,11 +118,17 @@ export default {
         componentBottomLine
     },
     props: {
-        // isGoodsPopup 是否是商品弹出框，弹出框一般是用在直播页显示的商品列表，直播开始前isGoodsPopup是false，显示的是一整个页面
+        /**
+         * 是否是商品弹出框
+         * 弹出框一般是用在直播页显示的商品列表，直播开始前isGoodsPopup是false，显示的是一整个页面
+         */
         propIsGoodsPopup: {
             type: Boolean,
             default: true
         },
+        /**
+         * 直播间ID
+         */
         propLiveRoomId: {
             type: Number,
             default: 0
@@ -153,6 +169,10 @@ export default {
     },
     computed: {
         //#region 设置页面屏幕大小
+        /**
+         * 商品区域样式
+         * 根据是否为弹出框模式计算不同的宽高
+         */
         good_style() {
             // 判断是否是弹出框形式
             if (!this.propIsGoodsPopup) {
@@ -172,7 +192,10 @@ export default {
     watch: {
         //#region 音乐进度条相关逻辑
         // #ifdef APP-NVUE
-        // 监听正在讲解的商品ID变化
+        /**
+         * 监听正在讲解的商品ID变化
+         * 当商品讲解状态发生变化时，控制音频动画的播放和停止
+         */
         explanation_id: {
             handler(newVal, oldVal) {
                 // 先停止所有动画
@@ -216,6 +239,10 @@ export default {
     },
     methods: {
         //#region 初始化
+        /**
+         * 初始化商品列表
+         * 请求服务器获取商品数据并更新界面
+         */
         init() {
             if (!this.propIsGoodsPopup) {
                 this.is_loading = true;
@@ -266,7 +293,11 @@ export default {
         //#endregion
         
         //#region 商品列表处理
-        // 讲解商品
+        /**
+         * 控制商品讲解状态
+         * 点击商品时切换其讲解状态，已讲解则取消讲解，未讲解则设为讲解中
+         * @param {Object} e 事件对象
+         */
         explanation(e) {
             // 讲解商品
             const id = e.currentTarget.dataset.id;
@@ -280,7 +311,12 @@ export default {
         
         //#region 音乐进度条相关逻辑
         // #ifdef APP-NVUE
-        // 高度动态变化的动画（与vue平台CSS动画频率一致）
+        /**
+         * 启动第一个音频条动画
+         * 实现1.1秒周期的高度变化动画效果
+         * @param {Object} barRef 条形元素引用
+         * @param {Number} delay 动画延迟时间(ms)
+         */
         start_nvue_height_animation(barRef, delay) {
             if (!barRef) return;
             
@@ -362,7 +398,12 @@ export default {
             this.animationTimers.push(timer);
         },
         
-        // 为第二个条形定义动画序列（1.4s周期）
+        /**
+         * 启动第二个音频条动画
+         * 实现1.4秒周期的高度变化动画效果
+         * @param {Object} barRef 条形元素引用
+         * @param {Number} delay 动画延迟时间(ms)
+         */
         start_nvue_height_animation2(barRef, delay) {
             if (!barRef) return;
             
@@ -415,7 +456,12 @@ export default {
             this.animationTimers.push(timer);
         },
         
-        // 为第三个条形定义动画序列（0.9s周期）
+        /**
+         * 启动第三个音频条动画
+         * 实现0.9秒周期的高度变化动画效果
+         * @param {Object} barRef 条形元素引用
+         * @param {Number} delay 动画延迟时间(ms)
+         */
         start_nvue_height_animation3(barRef, delay) {
             if (!barRef) return;
             
@@ -462,6 +508,10 @@ export default {
             this.animationTimers.push(timer);
         },
         
+        /**
+         * 停止所有NVUE动画
+         * 清除动画定时器并重置所有音频条到初始状态
+         */
         stop_nvue_animation() {
             // 清除所有定时器
             this.animationTimers.forEach(timer => {
@@ -488,21 +538,40 @@ export default {
         },
         // #endif
         //#endregion
-        // 购买商品
+        
+        /**
+         * 查看商品详情
+         * 点击商品图片或购买按钮时跳转到商品详情页
+         * @param {Object} e 事件对象
+         */
         goods_detail(e) { 
             const url = e.currentTarget.dataset.url + '&live_room_id=1';
             app.globalData.url_open(url);
         },
-        // 订单
+        
+        /**
+         * 查看订单
+         * 点击订单图标时跳转到用户订单页面
+         * @param {Object} e 事件对象
+         */
         goods_order (e) { 
             console.log('查看订单');
             app.globalData.url_open('/pages/user-order/user-order');
         },
-        // 购物车
+        
+        /**
+         * 查看购物车
+         * 点击购物车图标时跳转到购物车页面
+         * @param {Object} e 事件对象
+         */
         goods_cart (e) { 
             console.log('查看购物车');
             app.globalData.url_open('/pages/cart-page/cart-page');
         },
+        
+        /**
+         * 返回上一页
+         */
         back() {
             app.globalData.page_back_prev_event();
         }
@@ -712,4 +781,3 @@ export default {
 }
 // #endif
 </style>
-

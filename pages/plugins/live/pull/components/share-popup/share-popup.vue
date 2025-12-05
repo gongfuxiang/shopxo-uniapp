@@ -107,7 +107,20 @@
         },
 
         methods: {
-            // 初始配置
+            /**
+             * 初始化分享配置
+             * @param {Object} config - 配置参数
+             * @param {String} config.type - 分享类型
+             * @param {Number} config.is_goods_poster - 是否为商品海报分享 (0|1)
+             * @param {Number} config.goods_id - 商品ID
+             * @param {String} config.url - 分享链接
+             * @param {String} config.images - 分享图片
+             * @param {String} config.title - 分享标题
+             * @param {String} config.summary - 分享摘要
+             * @param {Object} config.share_info - 分享信息
+             * @param {Boolean} config.status - 是否显示分享弹窗
+             * @returns {Boolean} 初始化结果
+             */
             init(config = {}) {
                 if (!app.globalData.is_single_page_check()) {
                     return false;
@@ -168,12 +181,16 @@
                 // #endif
             },
 
-            // 弹层关闭
+            /**
+             * 关闭分享弹窗
+             */
             popup_close_event(e) {
                 this.$refs.popupShareRef.close();
             },
 
-            // url链接地址复制分享
+            /**
+             * 复制链接分享
+             */
             share_url_copy_event() {
                 var url = app.globalData.get_page_url();
                 // 增加分享标识
@@ -187,7 +204,9 @@
                 app.globalData.text_copy_event(url);
             },
 
-            // 基础分享事件
+            /**
+             * 基础分享事件（支付宝小程序）
+             */
             share_base_event() {
                 this.$refs.popupShareRef.close();
                 uni.pageScrollTo({
@@ -201,7 +220,9 @@
                 });
             },
 
-            // 商品海报分享
+            /**
+             * 商品海报分享
+             */
             poster_event() {
                 var user = app.globalData.get_user_info(this, 'poster_event');
                 if (user != false) {
@@ -235,7 +256,13 @@
                 }
             },
 
-            // app分享
+            /**
+             * APP端分享事件
+             * @param {Object} e - 事件对象
+             * @param {Object} e.currentTarget.dataset - 事件数据集
+             * @param {String} e.currentTarget.dataset.provider - 分享提供商（如：weixin、qq）
+             * @param {String} e.currentTarget.dataset.scene - 分享场景（如：WXSceneSession、WXSceneTimeline等）
+             */
             share_app_event(e) {
                 // 分享参数
                 var provider = e.currentTarget.dataset.provider;

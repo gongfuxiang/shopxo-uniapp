@@ -1,10 +1,25 @@
 <!-- eslint-disable -->
 <template>
+    <!-- 视频播放器容器 -->
     <view class="player-wrapper" :id="videoWrapperId" :randomNum="randomNum" :change:randomNum="hlsVideoPlayer.randomNumChange" :viewportProps="viewportProps" :change:viewportProps="hlsVideoPlayer.viewportChange" :videoSrc="videoSrc" :change:videoSrc="hlsVideoPlayer.initVideoPlayer" :command="eventCommand" :change:command="hlsVideoPlayer.triggerCommand" :func="renderFunc" :change:func="hlsVideoPlayer.triggerFunc" />
 </template>
 
 <script>
+    /**
+     * H5 HLS视频播放组件
+     * 支持HLS流媒体播放和普通视频格式播放，兼容多种浏览器和移动端设备
+     */
     export default {
+        /**
+         * 组件属性
+         * @property {String} propSrc - 视频源地址
+         * @property {Boolean} propAutoplay - 是否自动播放
+         * @property {Boolean} propControls - 是否显示控件
+         * @property {String} propObjectFit - 视频填充方式
+         * @property {Boolean} propMuted - 是否静音
+         * @property {Number} propPlaybackRate - 播放速率
+         * @property {String} propPoster - 视频封面图
+         */
         props: {
             propSrc: {
                 type: String,
@@ -35,6 +50,16 @@
                 default: ''
             }
         },
+        /**
+         * 组件内部数据
+         * @property {Number} randomNum - 随机数用于生成唯一ID
+         * @property {String} videoSrc - 视频源地址
+         * @property {Object} eventCommand - 视频原生事件指令
+         * @property {Object} renderFunc - renderjs层函数执行指令
+         * @property {Number} currentTime - 当前播放时间
+         * @property {Number} duration - 视频总时长
+         * @property {Boolean} playing - 是否正在播放
+         */
         data() {
             return {
                 randomNum: Math.floor(Math.random() * 100000000),
@@ -52,9 +77,16 @@
                 playing: false
             }
         },
+        /**
+         * 数据监听器
+         */
         watch: {
             // 监听视频资源地址更新
             propSrc: {
+                /**
+                 * 处理视频源地址变更
+                 * @param {String} val - 新的视频源地址
+                 */
                 handler(val) {
                     if (!val) return
                     setTimeout(() => {
@@ -64,11 +96,22 @@
                 immediate: true
             }
         },
+        /**
+         * 计算属性
+         */
         computed: {
+            /**
+             * 视频容器ID
+             * @returns {String} 唯一的视频容器ID
+             */
             videoWrapperId() {
                 return `video-wrapper-${this.randomNum}`
             },
             // 聚合视图层的所有数据变化，传给renderjs的渲染层
+            /**
+             * 视口属性集合
+             * @returns {Object} 包含所有视口相关配置的对象
+             */
             viewportProps() {
                 return {
                     autoplay: this.propAutoplay,
@@ -80,28 +123,54 @@
                 }
             }
         },
-        // 方法
+        /**
+         * 组件方法
+         */
         methods: {
+            /**
+             * 向父组件发送事件
+             * @param {Object} options - 事件选项
+             * @param {String} options.event - 事件名称
+             * @param {*} [options.data] - 事件数据
+             */
             // 传递事件指令给父组件
             eventEmit({ event, data }) {
                 this.$emit(event, data)
             },
+            /**
+             * 更新视图层数据
+             * @param {Object} options - 数据选项
+             * @param {String} options.key - 数据键名
+             * @param {*} options.value - 数据值
+             */
             // 修改view视图层的data数据
             setViewData({ key, value }) {
                 key && this.$set(this, key, value)
             },
+            /**
+             * 重置事件指令
+             */
             // 重置事件指令
             resetEventCommand() {
                 this.eventCommand = null
             },
+            /**
+             * 发送播放指令
+             */
             // 播放指令
             play() {
                 this.eventCommand = 'play'
             },
+            /**
+             * 发送暂停指令
+             */
             // 暂停指令
             pause() {
                 this.eventCommand = 'pause'
             },
+            /**
+             * 重置自定义函数指令
+             */
             // 重置自定义函数指令
             resetFunc() {
                 this.renderFunc = {
@@ -109,6 +178,10 @@
                     params: null
                 }
             },
+            /**
+             * 移除视频
+             * @param {*} params - 参数
+             */
             // 自定义事件 - 移除视频
             remove(params) {
                 this.renderFunc = {
@@ -116,6 +189,10 @@
                     params
                 }
             },
+            /**
+             * 全屏操作
+             * @param {*} params - 参数
+             */
             // 自定义事件 - 全屏
             fullScreen(params) {
                 this.renderFunc = {
@@ -123,6 +200,10 @@
                     params
                 }
             },
+            /**
+             * 跳转到指定时间点
+             * @param {Number} time - 时间点(秒)
+             */
             // 跳转到指定时间点
             toSeek(time) {
                 this.renderFunc = {
@@ -135,9 +216,21 @@
 </script>
 
 <script module="hlsVideoPlayer" lang="renderjs">
+    /**
+     * RenderJS模块 - HLS视频播放器核心逻辑
+     * 在RenderJS环境中运行，负责实际的视频播放控制
+     */
     import hlsjs from '@/node_modules/hls.js/dist/hls.min.js'
     const PLAYER_ID = 'HLS_VIDEO_PLAYER'
     export default {
+        /**
+         * RenderJS数据
+         * @property {String} num - 随机数标识符
+         * @property {HTMLElement} videoEl - 视频元素引用
+         * @property {Object} hlsPlayer - HLS播放器实例
+         * @property {Object} renderProps - 渲染属性
+         * @property {Boolean} autoplayRejected - 自动播放是否被拒绝
+         */
         data() {
             return {
                 num: '',
@@ -147,19 +240,41 @@
                 autoplayRejected: false // 标记自动播放是否被拒绝
             }
         },
+        /**
+         * RenderJS计算属性
+         */
         computed: {
+            /**
+             * 播放器ID
+             * @returns {String} 唯一的播放器ID
+             */
             playerId() {
                 return `${PLAYER_ID}_${this.num}`
             },
+            /**
+             * 容器ID
+             * @returns {String} 视频容器ID
+             */
             wrapperId() {
                 return `video-wrapper-${this.num}`
             }
         },
+        /**
+         * RenderJS方法
+         */
         methods: {
+            /**
+             * 判断是否为苹果设备
+             * @returns {Boolean} 是否为苹果设备(iPhone或iPad)
+             */
             isApple() {
                 const ua = navigator.userAgent.toLowerCase()
                 return ua.indexOf('iphone') !== -1 || ua.indexOf('ipad') !== -1
             },
+            /**
+             * 初始化视频播放器
+             * @param {String} src - 视频源地址
+             */
             async initVideoPlayer(src) {
                 await this.$nextTick()
                 if (!src) return
@@ -217,6 +332,11 @@
                         this.attemptAutoPlay(videoEl, muted);
                     }
                 },
+                /**
+                 * 尝试自动播放视频
+                 * @param {HTMLVideoElement} videoElement - 视频元素
+                 * @param {Boolean} isMuted - 是否静音
+                 */
                 // 尝试自动播放视频
                 attemptAutoPlay(videoElement, isMuted) {
                     const playPromise = videoElement.play();
@@ -242,6 +362,10 @@
                             });
                     }
                 },
+                /**
+                 * 初始化HLS播放器
+                 * @param {String} src - HLS流地址
+                 */
                 // 播放视频流
                 initHlsPlayer(src) {
                     if (hlsjs.isSupported()) {
@@ -277,6 +401,10 @@
                         this.videoEl.src = src
                     }
                 },
+                /**
+                 * 监听视频相关事件
+                 * 注册各种视频事件监听器，包括播放、暂停、结束等
+                 */
                 // 监听视频相关事件
                 listenVideoEvent() {
                     // 播放事件监听
@@ -405,6 +533,10 @@
                         document.addEventListener('fullscreenchange', fullscreenchangeHandler)
                     }
                 },
+                /**
+                 * 销毁播放器实例
+                 * 清理HLS播放器和视频元素，释放资源
+                 */
                 // 销毁播放器实例
                 destroyPlayer() {
                     if (this.hlsPlayer) {
@@ -422,6 +554,10 @@
                     // 重置自动播放标记
                     this.autoplayRejected = false;
                 },
+                /**
+                 * 触发指令事件
+                 * @param {String} eventType - 事件类型(play/pause等)
+                 */
                 triggerCommand(eventType) {
                     if (eventType) {
                         this.$ownerInstance.callMethod('resetEventCommand')
@@ -434,6 +570,12 @@
                         }
                     }
                 },
+                /**
+                 * 触发函数调用
+                 * @param {Object} func - 函数对象
+                 * @param {String} func.name - 函数名
+                 * @param {*} func.params - 函数参数
+                 */
                 triggerFunc(func) {
                     const { name, params } = func || {}
                     if (name) {
@@ -443,6 +585,9 @@
                         this.$ownerInstance.callMethod('resetFunc')
                     }
                 },
+                /**
+                 * 移除视频处理器
+                 */
                 removeHandler() {
                     this.destroyPlayer()
                     this.$ownerInstance.callMethod('setViewData', {
@@ -450,6 +595,10 @@
                         value: ''
                     })
                 },
+                /**
+                 * 全屏处理器
+                 * @param {*} params - 参数
+                 */
                 fullScreenHandler() {
                     if (this.videoEl) {
                         if (this.isApple()) {
@@ -463,11 +612,19 @@
                         }
                     }
                 },
+                /**
+                 * 跳转时间点处理器
+                 * @param {Number} time - 时间点(秒)
+                 */
                 toSeekHandler(time) {
                     if (this.videoEl) {
                         this.videoEl.currentTime = time
                     }
                 },
+                /**
+                 * 视口变更处理
+                 * @param {Object} props - 视口属性
+                 */
                 viewportChange(props) {
                     this.renderProps = props
                     const { autoplay, muted, controls, playbackRate } = props
@@ -483,10 +640,18 @@
                         }
                     }
                 },
+                /**
+                 * 随机数变更处理
+                 * @param {Number} val - 随机数
+                 */
                 randomNumChange(val) {
                     this.num = val
                 }
             },
+            /**
+             * 组件销毁前钩子
+             * 清理播放器资源
+             */
             // 组件销毁时清理资源
             beforeDestroy() {
                 this.destroyPlayer()

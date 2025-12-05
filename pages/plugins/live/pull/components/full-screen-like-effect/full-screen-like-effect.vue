@@ -48,9 +48,20 @@
 	const animation = uni.requireNativePlugin('animation');
 	// #endif
 	
+	/**
+	 * 预定义的颜色数组，用于点赞动画元素的颜色随机选择
+	 */
 	const COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#ff5252', '#66bb6a'];
+	
+	/**
+	 * 预定义的图标数组，用于点赞动画元素的图标随机选择
+	 */
 	const ICONS = [];
 	
+	/**
+	 * 点赞动画效果组件
+	 * 实现类似直播中点赞的效果，包括飘心动画和连击数字提示
+	 */
 	export default {
 		name: 'SimpleLikeEffect',
 		props: {
@@ -67,31 +78,80 @@
 		},
 		data() {
 			return {
+				/**
+				 * 存储所有点赞动画元素的数组
+				 */
 				like_list: [],
 				// 连续点赞相关数据
+				/**
+				 * 连续点赞计数
+				 */
 				like_count: 0,
+				/**
+				 * 是否显示点赞计数
+				 */
 				show_like_count: false,
+				/**
+				 * 点赞计数显示位置
+				 */
 				like_count_position: { x: 0, y: 0 },
+				/**
+				 * 点赞计数文字颜色
+				 */
 				like_count_color: '#ff6b6b',
+				/**
+				 * 点赞计数透明度
+				 */
 				like_count_opacity: 1,
+				/**
+				 * 点赞计数缩放比例
+				 */
 				like_count_scale: 1,
+				/**
+				 * 上次点赞的时间戳
+				 */
 				last_like_time: 0,
+				/**
+				 * 点赞计数隐藏定时器
+				 */
 				like_count_timer: null,
+				/**
+				 * 重置计数的定时器
+				 */
 				reset_timer: null, // 重置计数的定时器
+				/**
+				 * 上次点击时间，用于防抖处理
+				 */
 				last_click_time: 0 // 防止双击添加多个图标
 			}
 		},
 		computed: {
 			// 合并默认图标和自定义图标
+			/**
+			 * 可用的图标集合，合并了默认图标和外部传入的自定义图标
+			 * @returns {Array} 图标数组
+			 */
 			available_icons() {
 				return [...ICONS, ...this.propCustomIcons];
 			},
 			// 合并默认图片和自定义图片
+			/**
+			 * 可用的图片集合，来自外部传入的自定义图片
+			 * @returns {Array} 图片数组
+			 */
 			available_images() {
 				return this.propCustomImages;
 			}
 		},
 		methods: {
+			/**
+			 * 添加点赞动画元素
+			 * @param {Object} event - 点击事件对象，用于获取点击坐标
+			 * @param {Object} options - 可选配置参数
+			 * @param {String} options.image_src - 自定义图片路径
+			 * @param {String} options.icon - 自定义图标字符
+			 * @param {String} options.color - 自定义颜色
+			 */
 			add_like(event, options = {}) {
 				// 防抖处理，防止双击添加多个图标
 				const now = Date.now();
@@ -183,11 +243,21 @@
 				this.handle_like_count(x, y, color);
 			},
 			
+			/**
+			 * 移除指定的点赞元素
+			 * @param {Number|String} id - 要移除的点赞元素ID
+			 */
 			remove_like(id) {
 				this.like_list = this.like_list.filter(item => item.id !== id);
 			},
 			
-			// 处理连续点赞数量提示
+			/**
+			 * 处理连续点赞数量提示
+			 * 当用户连续点赞时显示连击数
+			 * @param {Number} x - 点击位置的x坐标
+			 * @param {Number} y - 点击位置的y坐标
+			 * @param {String} color - 数字提示颜色
+			 */
 			handle_like_count(x, y, color) {
 				const current_time = Date.now();
 				
@@ -248,7 +318,9 @@
 				}, 1200);
 			},
 			
-			// 隐藏数量提示
+			/**
+			 * 隐藏点赞数量提示
+			 */
 			hide_like_count() {
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeCount'];
@@ -274,7 +346,10 @@
 				// #endif
 			},
 			
-			// 点赞项动画
+			/**
+			 * 执行单个点赞元素的动画效果
+			 * @param {Number|String} id - 点赞元素ID
+			 */
 			animate_like_item(id) {
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeItem' + id];
@@ -323,7 +398,9 @@
 				// #endif
 			},
 			
-			// 数量提示动画
+			/**
+			 * 执行点赞数量提示的动画效果
+			 */
 			animate_like_count() {
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeCount'];
@@ -347,6 +424,11 @@
 				}
 				// #endif
 			},
+			/**
+			 * 更加健壮的数组检查方法
+			 * @param {*} data - 待检测的数据
+			 * @returns {Boolean} 是否为数组
+			 */
 			// 更加健壮的数组检查方法
 			is_array(data) {
 				return Array.isArray(data) || data instanceof Array || (data && typeof data === 'object' && data.length !== undefined);
