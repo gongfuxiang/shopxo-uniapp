@@ -55,6 +55,8 @@ export default {
         this.windowHeight = data.windowHeight;
         // #endif
         this.init();
+        // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
+        this.$refs.liveContent.socket_connect();
     },
 
     /**
