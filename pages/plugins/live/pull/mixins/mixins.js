@@ -56,7 +56,9 @@ export default {
         // #endif
         this.init();
         // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
-        this.$refs.liveContent.socket_connect();
+        if (this.$refs.liveContent) {
+            this.$refs.liveContent.socket_connect();
+        }
     },
 
     /**
@@ -116,10 +118,13 @@ export default {
         },
 
         /**
-         * 标记直播结束
+         * 标记直播结束或者直播暂停
          */
         ended() {
-            this.is_live_ended = true;
+            // 如果已经暂停了就不需要处理了
+            if (!this.is_live_ended) {
+                this.is_live_ended = true;
+            }
         },
 
         /**

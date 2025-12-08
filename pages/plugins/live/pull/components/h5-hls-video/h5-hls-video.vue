@@ -1,4 +1,3 @@
-<!-- eslint-disable -->
 <template>
     <!-- 视频播放器容器 -->
     <view class="player-wrapper" :id="videoWrapperId" :randomNum="randomNum" :change:randomNum="hlsVideoPlayer.randomNumChange" :viewportProps="viewportProps" :change:viewportProps="hlsVideoPlayer.viewportChange" :videoSrc="videoSrc" :change:videoSrc="hlsVideoPlayer.initVideoPlayer" :command="eventCommand" :change:command="hlsVideoPlayer.triggerCommand" :func="renderFunc" :change:func="hlsVideoPlayer.triggerFunc" />
