@@ -204,11 +204,16 @@
                 <!-- 智能工具-基础提示信息 -->
                 <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.base_bottom || null) != null && (plugins_intellectstools_data.base_bottom.msg || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
                     <view class="notice-content text-size-xs">
-                        <view class="va-m dis-inline-block margin-right-xs">
+                        <view class="va-m dis-inline-block margin-right-xs va-m">
                             <uni-icons type="notification" size="32rpx" color="#dd514c"></uni-icons>
                         </view>
-                        <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{ plugins_intellectstools_data.base_bottom.title }}</text>
-                        <view>{{ plugins_intellectstools_data.base_bottom.msg }}</view>
+                        <block v-if="(plugins_intellectstools_data.base_bottom.title || null) == null">
+                            <text class="va-m">{{ plugins_intellectstools_data.base_bottom.msg }}</text>
+                        </block>
+                        <block v-else>
+                            <text class="fw-b va-m">{{ plugins_intellectstools_data.base_bottom.title }}</text>
+                            <view>{{ plugins_intellectstools_data.base_bottom.msg }}</view>
+                        </block>
                     </view>
                 </view>
 
