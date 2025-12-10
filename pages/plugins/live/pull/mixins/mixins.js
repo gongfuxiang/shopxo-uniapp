@@ -24,7 +24,9 @@ export default {
             ],
             lastTapTime: 0, // 用于检测双击
             lastTapPosition: { x: 0, y: 0 }, // 记录上次点击位置
-            lastLikeTime: 0 // 记录上次点赞时间，用于防抖
+            lastLikeTime: 0, // 记录上次点赞时间，用于防抖
+            live_status: 'start',
+            live_end_msg: '主播暂时离开，请稍等...',
         }
     },
 
@@ -124,6 +126,16 @@ export default {
             // 如果已经暂停了就不需要处理了
             if (!this.is_live_ended) {
                 this.is_live_ended = true;
+                if (this.live_status == 'stop') {
+                    this.live_end_msg = '直播已结束';
+                } else if (['pause', 'resume'].includes(this.live_status)) {
+                    this.live_end_msg = '主播暂时离开，请稍等...';
+                    // 直播状态为resume时，如果结束了，就需要重新请求直播间状态
+                    console.log(this.live_status);
+                    if (this.live_status == 'resume') {
+                        this.socket_live_status('resume');
+                    }
+                }
             }
         },
 
@@ -206,6 +218,18 @@ export default {
             } 
             this.lastTapTime = currentTime;
             this.lastTapPosition = { x, y };
+        },
+        socket_live_status(status) {
+            console.log(status);
+            this.live_status = status;
+            // 如果是开始直播了或者继续直播了，则取消直播结束标记
+            console.log(this.is_live_ended);
+            if (['start', 'resume'].includes(status) && this.is_live_ended) {
+                setTimeout(() => {
+                    console.log('继续直播标记');
+                    this.is_live_ended = false;
+                }, 5000);
+            }
         }
     }
 }

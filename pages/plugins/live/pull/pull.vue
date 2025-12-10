@@ -1,24 +1,20 @@
 <template>
     <view :class="theme_view + ' live-bg'">
-        <view class="w h pr" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
+        <view v-if="!is_live_ended" class="w h pr" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
             <live-video ref="liveVideo" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
             <!-- 简化版点赞效果组件 -->
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></full-screen-like-effect>
         </view>
         <view v-if="!is_loading" :class="'live-content ' + (!is_live_ended ? 'pointer-events-none' : '')">
-            <template v-if="!is_live_ended"> 
-                <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @live-back="live_back"></live-content>
-            </template>
-            <template v-else> 
-                <view class="live-ended flex-row align-c jc-c">
-                     <view class="flex-col align-c">
-                        <text class="live-ended-text">直播已结束</text>
-                        <button plain size="mini" class="mt-10 live-ended-button" @tap="live_back">
-                            <text class="cr-f pa-5">退出直播间</text>
-                        </button>
-                    </view>
-                </view>
-            </template>
+            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @live-back="live_back" @liveStatus="socket_live_status"></live-content>
+        </view>
+        <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
+            <view class="flex-col align-c">
+                <text class="live-ended-text">{{live_end_msg}}</text>
+                <button plain size="mini" class="mt-10 live-ended-button" @tap="live_back">
+                    <text class="cr-f pa-5">退出直播间</text>
+                </button>
+            </view>
         </view>
         <!-- 静音提示 -->
         <view v-if="!is_loading && !is_live_ended && is_muted_auto_play_success" class="live-muted flex-row align-c jc-c">
@@ -79,7 +75,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 10;
+        z-index: 11;
         width: 100%;
         height: 100%;
         .live-muted-tips {
@@ -103,6 +99,12 @@
         width: 100vw;
         height: 100vh;
         background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
         .live-ended-text {
             color:#fff;
             font-size:16px;

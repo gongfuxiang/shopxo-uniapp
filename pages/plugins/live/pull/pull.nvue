@@ -1,23 +1,21 @@
 <template>
     <view :class="theme_view + ' flex-row pr'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-        <view class="flex-1 pr" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
+        <view v-if="!is_live_ended" class="flex-1 pr" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
             <live-video ref="live-video" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended"></live-video>
 
             <!-- 简化版点赞效果组件 -->
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></full-screen-like-effect>
         </view>
         <view v-if="!is_loading" class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-            <template v-if="!is_live_ended"> 
-                <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs"  @live-back="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end"></live-content>
-            </template>
-            <template v-else> 
-                <view class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="true">
-                    <view class="flex-col align-c">
-                        <text style="color:#fff;font-size:16px;">直播已结束</text>
-                        <button plain size="mini" class="mt-10 live-ended-button" @click="back"><text class="cr-f pa-5" @tap="live_back">退出直播间</text></button>
-                    </view>
-                </view>
-            </template>
+            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs"  @live-back="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end" @liveStatus="socket_live_status"></live-content>
+        </view>
+        <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+            <view class="flex-col align-c">
+                <text class="live-ended-text">{{live_end_msg}}</text>
+                <button plain size="mini" class="mt-10 live-ended-button" @tap="live_back">
+                    <text class="cr-f pa-5">退出直播间</text>
+                </button>
+            </view>
         </view>
     </view>
 </template>
@@ -56,6 +54,12 @@
     .live-ended {
         // 添加渐变背景色
         background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
     }
     .live-ended-button {
         border-radius: 6px;

@@ -383,16 +383,14 @@
                             }
                         })
                         this.hlsPlayer.on(hlsjs.Events.ERROR, (event, data) => {
-                            console.error('HLS Error:', data, event, '444')
+                            // hls 视频加载错误
+                            this.$ownerInstance.callMethod('eventEmit', {
+                                event: 'hlsError',
+                                data
+                            })
                             // 如果HLS播放失败，尝试直接播放源地址作为降级方案
                             if (this.videoEl && data.fatal) {
                                 this.videoEl.src = src
-                            } else {
-                                // hls 视频加载错误
-                                this.$ownerInstance.callMethod('eventEmit', {
-                                    event: 'hlsError',
-                                    data
-                                })
                             }
                         })
                     } else {

@@ -340,6 +340,8 @@
             // 清理socket连接
             this.clear_interval_task();
             this.unbind_keyboard_listener();
+            // 关闭socket连接
+            this.socket_close();
             // 如果定时器存在，清除它
             if (this.countdownTimer) {
                 clearInterval(this.countdownTimer);
@@ -506,7 +508,6 @@
                     this.socket_message_back_handle(res);
                 });
                 this.task.onClose((res) => {
-                    this.task = null;
                     this.is_socket_error = true;
                     // 尝试重连，最多30次
                     if ((this.reconnect_count + 1) < 30) {
@@ -526,7 +527,7 @@
                     }
                 });
                 this.task.onError((res) => {
-                    this.task = null;
+                    this.socket_close();
                     this.is_socket_error = false;
                     this.reconnect_count = 0;
                     this.socket_error_content = `连接失败点击重试`;
@@ -538,6 +539,12 @@
                         });
                     }
                 });
+            },
+            socket_close() { 
+                if (this.task != null) {
+                    this.task.close();
+                    this.task = null;
+                }
             },
             
             /**
@@ -604,6 +611,9 @@
                         });
                         // 添加内容之后，需要滚动到最后
                         this.scroll_to_lower();
+                        break;
+                    case 'live-status':
+                        this.$emit('liveStatus', data.content); 
                         break;
                 }
             },
@@ -1017,172 +1027,3 @@
     }
 /* #endif */
 </style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
-</script>
-</style>
-</template>
