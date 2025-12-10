@@ -6,7 +6,7 @@
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></full-screen-like-effect>
         </view>
         <view v-if="!is_loading" :class="'live-content ' + (!is_live_ended ? 'pointer-events-none' : '')">
-            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @live-back="live_back" @liveStatus="socket_live_status"></live-content>
+            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></live-content>
         </view>
         <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
             <view class="flex-col align-c">

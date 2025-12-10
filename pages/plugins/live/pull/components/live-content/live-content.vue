@@ -598,6 +598,7 @@
                         break;
                     // 消息
                     case 'message':
+                        console.log(data, 'message');
                         // 如果最后前一条是进入直播间的提示，则删除
                         if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
                             this.bulletins.splice(this.bulletins.length - 1, 1);
@@ -613,6 +614,7 @@
                         this.scroll_to_lower();
                         break;
                     case 'live-status':
+                        console.log(data.content, 'live-status');
                         this.$emit('liveStatus', data.content); 
                         break;
                 }

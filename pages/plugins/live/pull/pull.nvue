@@ -7,7 +7,7 @@
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></full-screen-like-effect>
         </view>
         <view v-if="!is_loading" class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs"  @live-back="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end" @liveStatus="socket_live_status"></live-content>
+            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs"  @liveBack="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end" @liveStatus="socket_live_status"></live-content>
         </view>
         <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
             <view class="flex-col align-c">

@@ -26,7 +26,7 @@ export default {
             lastTapPosition: { x: 0, y: 0 }, // 记录上次点击位置
             lastLikeTime: 0, // 记录上次点赞时间，用于防抖
             live_status: 'start',
-            live_end_msg: '主播暂时离开，请稍等...',
+            live_end_msg: '直播已结束',
         }
     },
 
@@ -220,7 +220,7 @@ export default {
             this.lastTapPosition = { x, y };
         },
         socket_live_status(status) {
-            console.log(status);
+            console.log(status, '直播间状态');
             this.live_status = status;
             // 如果是开始直播了或者继续直播了，则取消直播结束标记
             console.log(this.is_live_ended);
