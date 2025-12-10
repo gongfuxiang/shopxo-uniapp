@@ -324,6 +324,8 @@
          * 组件挂载后执行初始化操作
          */
         mounted() {
+            console.log('1111');
+            
             // 初始化窗口信息和滚动条高度
             this.init_window_info();
             // 滚动到评论区底部
@@ -337,6 +339,8 @@
          * 组件销毁前清理资源
          */
         beforeDestroy() {
+            console.log('222');
+            
             // 清理socket连接
             this.clear_interval_task();
             this.unbind_keyboard_listener();
@@ -592,7 +596,7 @@
                                 user_name: data.content,
                                 text: '',
                             });
-                        }
+                        }                    
                         // 添加内容之后，需要滚动到最后
                         this.scroll_to_lower();
                         break;
@@ -603,15 +607,18 @@
                         if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
                             this.bulletins.splice(this.bulletins.length - 1, 1);
                         }
-                        this.bulletins.push({
-                            id: Math.random(),
-                            type: 'user',
-                            user_avatar: data.data.user.avatar,
-                            user_name: data.data.user.nickname,
-                            text: data.content,
+                        this.$nextTick(() => {
+                            this.bulletins.push({
+                                id: Math.random(),
+                                type: 'user',
+                                user_avatar: data.data.user.avatar,
+                                user_name: data.data.user.nickname,
+                                text: data.content,
+                            });
+                            console.log(this.bulletins);
+                            // 添加内容之后，需要滚动到最后
+                            this.scroll_to_lower();
                         });
-                        // 添加内容之后，需要滚动到最后
-                        this.scroll_to_lower();
                         break;
                     case 'live-status':
                         console.log(data.content, 'live-status');

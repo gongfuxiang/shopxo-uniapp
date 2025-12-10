@@ -5,23 +5,25 @@
             <!-- 简化版点赞效果组件 -->
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></full-screen-like-effect>
         </view>
-        <view v-if="!is_loading" :class="'live-content ' + (!is_live_ended ? 'pointer-events-none' : '')">
-            <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></live-content>
-        </view>
-        <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
-            <view class="flex-col align-c">
-                <text class="live-ended-text">{{live_end_msg}}</text>
-                <button plain size="mini" class="mt-10 live-ended-button" @tap="live_back">
-                    <text class="cr-f pa-5">退出直播间</text>
-                </button>
+        <template v-if="!is_loading"> 
+            <view class="live-content pointer-events-none">
+                <live-content ref="liveContent" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></live-content>
             </view>
-        </view>
-        <!-- 静音提示 -->
-        <view v-if="!is_loading && !is_live_ended && is_muted_auto_play_success" class="live-muted flex-row align-c jc-c">
-            <view class="live-muted-tips">
-                因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
+            <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
+                <view class="flex-col align-c">
+                    <text class="live-ended-text">{{live_end_msg}}</text>
+                    <button plain size="mini" class="mt-10 live-ended-button" @tap.stop="live_back">
+                        <text class="cr-f pa-5">退出直播间</text>
+                    </button>
+                </view>
             </view>
-        </view>
+            <!-- 静音提示 -->
+            <view v-if="!is_live_ended && is_muted_auto_play_success" class="live-muted flex-row align-c jc-c">
+                <view class="live-muted-tips">
+                    因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
+                </view>
+            </view>
+        </template>
     </view>
 </template>
 <script>
