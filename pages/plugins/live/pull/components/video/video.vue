@@ -1,6 +1,6 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video :propSrc="propSrc" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video :propSrc="propSrc" propAutoplay :propMuted="muted" poster="https://new.shopxo.vip/static/upload/images/common/2019/01/14/1547448705165706.png" class="video-size"  @hlsError="error" @ended="ended" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
     <live-player :src="propSrc" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />

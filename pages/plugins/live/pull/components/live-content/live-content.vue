@@ -1,6 +1,6 @@
 <template>
     <!-- #ifdef APP-NVUE -->
-    <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
+    <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" :style="'width:' + propWindowWidth + 'px;height:' + propWindowHeight + 'px;'">
     <!-- #endif -->
     <!-- #ifndef APP-NVUE -->
     <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" style="width: 100vw;height: 100vh;">
@@ -31,15 +31,15 @@
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
                 <view class="pr">
-                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (windowWidth - 150) + 'px;'">
+                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
-                        <list class="bulletin-area" :style="'width:' + (windowWidth - 150) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
+                        <list class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
                             <cell v-for="(item, index) in bulletins" :key="item.id" ref="bulletin_index">
                         <!-- #endif -->
                         <!-- #ifndef APP-NVUE -->
                         <!-- scroll-view 只有非nvue的页面使用 -->
-                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (windowWidth - 150) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
+                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
                             <view v-for="(item, index) in bulletins" :key="item.id">
                         <!-- #endif -->
                         <!-- 中间弹幕区域 -->
@@ -116,7 +116,7 @@
                     </view>
                 </view>
                 <!-- 底部谁来了的提示-->
-                <!-- <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" :style="'max-width:' + (windowWidth - 100) + 'px;'">
+                <!-- <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" :style="'max-width:' + (propWindowWidth - 100) + 'px;'">
                     <view class="user-comes flex-row">
                         <text class="user-name cr-blue">{{ commons_name }}</text>
                         <text class="user-name cr-d">来了</text>
@@ -149,7 +149,7 @@
             </view>
         </view>
         <!-- 添加评论 -->
-        <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + windowWidth + 'px;bottom:' + listener_height + 'px;'">
+        <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + propWindowWidth + 'px;bottom:' + listener_height + 'px;'">
             <view class="keyboard-input-border" style="padding: 16rpx 22rpx;border: 2rpx solid #ddd;border-radius: 50rpx;">
                 <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
             </view>
@@ -197,7 +197,15 @@
             propLiveShowImgs: {
                 type: Array,
                 default: () => []
-            }
+            },
+            propWindowWidth: {
+                type: Number,
+                default: 0
+            },
+            propWindowHeight: {
+                type: Number,
+                default: 0
+            },
         },
         data() {
             return {
@@ -226,8 +234,6 @@
                     goods_price: '99.00'
                 },
                 //#region 头部样式和页面宽度处理
-                windowWidth: 0,
-                windowHeight: 0,
                 header_style: '',
                 //#endregion
                 
@@ -324,8 +330,6 @@
          * 组件挂载后执行初始化操作
          */
         mounted() {
-            console.log('1111');
-            
             // 初始化窗口信息和滚动条高度
             this.init_window_info();
             // 滚动到评论区底部
@@ -339,8 +343,6 @@
          * 组件销毁前清理资源
          */
         beforeDestroy() {
-            console.log('222');
-            
             // 清理socket连接
             this.clear_interval_task();
             this.unbind_keyboard_listener();
@@ -359,10 +361,6 @@
              * 获取屏幕宽高，并根据不同平台设置头部样式
              */
             init_window_info() {
-                const data = uni.getWindowInfo();
-                this.windowWidth = data.windowWidth;
-                this.windowHeight = data.windowHeight;
-            
                 // 菜单按钮位置信息, uniappx中没有这个方法，但是能使用
                 this.header_style = 'padding-top: 20rpx;';
                 // 设置有胶囊的时候头部显示的位置
@@ -602,7 +600,6 @@
                         break;
                     // 消息
                     case 'message':
-                        console.log(data, 'message');
                         // 如果最后前一条是进入直播间的提示，则删除
                         if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
                             this.bulletins.splice(this.bulletins.length - 1, 1);
@@ -615,13 +612,11 @@
                                 user_name: data.data.user.nickname,
                                 text: data.content,
                             });
-                            console.log(this.bulletins);
                             // 添加内容之后，需要滚动到最后
                             this.scroll_to_lower();
                         });
                         break;
                     case 'live-status':
-                        console.log(data.content, 'live-status');
                         this.$emit('liveStatus', data.content); 
                         break;
                 }

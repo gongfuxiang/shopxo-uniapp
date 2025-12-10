@@ -26,7 +26,7 @@ export default {
             lastTapPosition: { x: 0, y: 0 }, // 记录上次点击位置
             lastLikeTime: 0, // 记录上次点赞时间，用于防抖
             live_status: 'start',
-            live_end_msg: '直播已结束',
+            live_be_right_back: false,
         }
     },
 
@@ -51,11 +51,10 @@ export default {
         // 分享菜单处理
         app.globalData.page_share_handle();
 
-        // #ifdef APP-NVUE
         const data = uni.getWindowInfo();
         this.windowWidth = data.windowWidth;
         this.windowHeight = data.windowHeight;
-        // #endif
+
         this.init();
         // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
         if (this.$refs.liveContent) {
@@ -122,19 +121,14 @@ export default {
         /**
          * 标记直播结束或者直播暂停
          */
-        ended() {
-            // 如果已经暂停了就不需要处理了
+        ended(flag) {
             if (!this.is_live_ended) {
-                this.is_live_ended = true;
-                if (this.live_status == 'stop') {
-                    this.live_end_msg = '直播已结束';
-                } else if (['pause', 'resume'].includes(this.live_status)) {
-                    this.live_end_msg = '主播暂时离开，请稍等...';
-                    // 直播状态为resume时，如果结束了，就需要重新请求直播间状态
-                    console.log(this.live_status);
-                    if (this.live_status == 'resume') {
-                        this.socket_live_status('resume');
-                    }
+                if (!['pause', 'resume'].includes(this.live_status)) {
+                    this.is_live_ended = true;
+                } else {
+                    // 暂停直播了或者继续直播了，则提示用户当前主播暂时离开
+                    this.live_be_right_back = true;
+                    this.socket_live_status(this.live_status);
                 }
             }
         },
@@ -220,14 +214,11 @@ export default {
             this.lastTapPosition = { x, y };
         },
         socket_live_status(status) {
-            console.log(status, '直播间状态');
             this.live_status = status;
-            // 如果是开始直播了或者继续直播了，则取消直播结束标记
-            console.log(this.is_live_ended);
-            if (['start', 'resume'].includes(status) && this.is_live_ended) {
+            // 如果是暂停直播了或者继续直播了，则提示用户当前主播暂时离开
+            if (['pause', 'resume'].includes(status) && !this.is_live_ended && this.live_be_right_back) {
                 setTimeout(() => {
-                    console.log('继续直播标记');
-                    this.is_live_ended = false;
+                    this.live_be_right_back = false;
                 }, 5000);
             }
         }
