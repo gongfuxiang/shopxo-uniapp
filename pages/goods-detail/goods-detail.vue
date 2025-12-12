@@ -262,7 +262,7 @@
                     <view class="single-text padding-right-main flex-1 flex-width">
                         <block v-for="(item, index) in goods.parameters.base" :key="index">
                             <text v-if="index > 0">，</text>
-                            <text>{{ item.value }}</text>
+                            <text>{{ item.name }}:{{ item.value }}</text>
                         </block>
                     </view>
                     <iconfont name="icon-arrow-right" color="#999"></iconfont>
@@ -354,35 +354,35 @@
                     </view>
                 </view>
 
-                <!-- 商品详情参数 -->
-                <view v-if="(goods.parameters || null) != null && (goods.parameters.detail || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
-                    <view class="spacing-nav-title">
-                        <text class="line"></text>
-                        <text class="text-wrapper">{{$t('goods-detail.goods-detail.l7dzv2')}}</text>
-                    </view>
-                    <view class="goods-parameters border-radius-main padding-main bg-white">
-                        <view class="content-item oh">
-                            <view class="oh">
-                                <block v-for="(item, index) in goods.parameters.detail" :key="index">
-                                    <view v-if="index <= 3" class="item single-text cr-base text-size-xs">
-                                        <text class="name">{{ item.name }}:</text>
-                                        <text class="value">{{ item.value }}</text>
-                                    </view>
-                                </block>
-                            </view>
-                            <view class="tc margin-top-lg">
-                                <text class="cr-grey text-size-xs" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-
                 <!-- 商品详情 -->
                 <view class="goods-detail">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.2j44o2')}}</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
+                        <!-- 商品基础数据 -->
+                        <view v-if="(goods.base_data || null) != null && goods.base_data.length > 0" class="padding-vertical-main margin-horizontal-main br-b-e">
+                            <block v-for="(item, index) in goods.base_data" :key="index">
+                                <view class="cr-base padding-vertical-xs">
+                                    <text class="margin-right-xs">{{ item.name }}:</text>
+                                    <text>{{ item.value }}</text>
+                                </view>
+                            </block>
+                        </view>
+                        <!-- 商品详情参数 -->
+                        <view v-if="(goods.parameters || null) != null && (goods.parameters.detail || null) != null && goods.parameters.detail.length > 0" class="goods-parameters padding-vertical-main margin-horizontal-main br-b-e">
+                            <view class="oh">
+                                <block v-for="(item, index) in goods.parameters.detail" :key="index">
+                                    <view v-if="index <= 3" class="item single-text cr-base">
+                                        <text class="margin-right-xs">{{ item.name }}:</text>
+                                        <text>{{ item.value }}</text>
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="tc margin-top">
+                                <text class="cr-grey" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
+                            </view>
+                        </view>
                         <block v-if="(common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
                             <!-- 是否详情展示相册 -->
                             <block v-if="common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0">

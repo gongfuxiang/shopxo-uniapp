@@ -598,6 +598,7 @@ button:before {
 .bg-grey-e {
     background-color: #eeeeee !important;
 }
+.bg-base,
 .bg-grey-f5 {
     background-color: #f5f5f5 !important;
 }
@@ -609,9 +610,6 @@ button:before {
 }
 .bg-grey-f9 {
     background-color: #f9f9f9 !important;
-}
-.bg-base {
-    background-color: #f5f5f5 !important;
 }
 .bg-blue {
     background-color: #2196F3 !important;
