@@ -235,10 +235,11 @@
 /**
  * app独立内容
  */
-.goods-detail-app .content-items view {
-    padding: 15rpx 10rpx;
-    line-height: 44rpx;
-    font-size: 32rpx;
+.goods-detail-app .content-items .item {
+    padding: 4rpx 10rpx;
+    line-height: 40rpx;
+    font-size: 28rpx;
+    word-wrap: break-word;
 }
 
 /**

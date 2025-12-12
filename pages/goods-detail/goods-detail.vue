@@ -399,7 +399,7 @@
                                 <view v-for="(item, index) in goods_content_app" :key="index" class="goods-detail-app">
                                     <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
                                     <view v-if="(item.content || null) != null" class="content-items">
-                                        <view v-for="(items, index2) in item.content" :key="index2">{{ items }}</view>
+                                        <view v-for="(items, index2) in item.content" :key="index2" class="item">{{ items }}</view>
                                     </view>
                                 </view>
                             </block>
