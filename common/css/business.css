@@ -10,13 +10,13 @@
 }
 .panel-item .panel-content .item .content {
     width: calc(75% - 52rpx);
-    min-height: 46rpx;
+    min-height: 36rpx;
     word-wrap: break-word;
     word-break: normal;
 }
 .panel-item .panel-content .item .title,
 .panel-item .panel-content .item .content {
-    line-height: 46rpx;
+    line-height: 36rpx;
 }
 .panel-item-only .panel-content .item .content {
     width: 100%;

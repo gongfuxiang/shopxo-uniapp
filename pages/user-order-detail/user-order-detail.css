@@ -35,11 +35,6 @@
     width: 160rpx;
     height: 160rpx;
 }
-.orderaftersale-btn-text {
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
 
 /*
 * 虚拟销售信息
@@ -63,4 +58,19 @@
 .site-extraction .panel-content .qrcode {
     width: 340rpx;
     height: 340rpx;
+}
+
+/*
+* 订单商品信息弹层
+*/
+.order-item-goods-info-container .nav-base .item:nth-child(1),
+.order-item-goods-info-container .nav-base .item:nth-child(2) {
+    width: 18%;
+}
+.order-item-goods-info-container .nav-base .item:nth-child(3),
+.order-item-goods-info-container .nav-base .item:nth-child(4) {
+    width: 32%;
+}
+.order-item-goods-info-container .scroll-content {
+    height: 70vh;
 }
