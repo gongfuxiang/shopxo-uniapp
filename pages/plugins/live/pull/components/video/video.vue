@@ -1,6 +1,6 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video ref="videoPlayer" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video ref="videoPlayer" v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
     <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
@@ -49,7 +49,8 @@
                 windowWidth: 0,
                 windowHeight: 0,
                 muted: false,
-                video_src: ''
+                video_src: '',
+                video_player_show: true,
             }
         },
         created() {
@@ -63,10 +64,19 @@
                 // #ifndef MP
                 const video = this.$refs.videoPlayer;
                 // 深拷贝视频源地址，避免直接修改原地址
-                const src = JSON.parse(JSON.stringify(this.video_src));
+                let src = '';
+                if (!isEmpty(this.propSrc)) {
+                    src = this.propSrc;
+                }
                 this.video_src = ''; // 清除原地址
+                //#ifdef H5
+                this.video_player_show = false;
+                //#endif
                 setTimeout(() => {
                     this.video_src = src; // 重新赋值
+                    //#ifdef H5
+                    this.video_player_show = true;
+                    //#endif
                     // #ifdef APP-NVUE
                     video.load(); // 重新加载
                     video.play().catch(() => this.retryLoadVideo());
@@ -76,6 +86,7 @@
             },
             // 视频元数据加载完成处理函数, 不太准确，有的时候是直播的中间区域状态加载完了，但是视频还没有开始播放
             loadedmetadata() {
+                console.log('loadedmetadata');
                 this.$emit('loadedmetadata');
             },
             /**
@@ -92,18 +103,23 @@
              * @param {Object} e - 错误事件对象
              */
             error(e) {
-                // #ifdef H5
-                // 非初次加载错误的, 直播结束
-                if (e.type != 'otherError' || e.details != 'internalException') {
-                    this.$emit('ended');
+                // 只有组件显示时才触发这个事件
+                if (this.video_player_show) {
+                    // #ifdef H5
+                    // 非初次加载错误的, 直播结束
+                    if (e.type != 'otherError' || e.details != 'internalException') {
+                        console.log('ended');
+                        
+                        this.$emit('ended');
+                    }
+                    // #endif
+                    // #ifdef APP-NVUE
+                    if (!isEmpty(e.type) && e.type == 'error') {
+                        this.$emit('ended');
+                    }
+                    // #endif
+                    console.log(e, 'error');
                 }
-                // #endif
-                // #ifdef APP-NVUE
-                if (!isEmpty(e.type) && e.type == 'error') {
-                    this.$emit('ended');
-                }
-                // #endif
-                console.log(e, 'error');
             },
             
             /**

@@ -1,13 +1,13 @@
 <template>
     <view :class="theme_view + ' re'">
         <view class="pr live-bg" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
-            <live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success"></component-live-video>
             <!-- 简化版点赞效果组件 -->
-            <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></full-screen-like-effect>
+            <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
         <template v-if="!is_loading"> 
             <view class="live-content pointer-events-none">
-                <live-content ref="liveContent" :propWindowWidth="windowWidth" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></live-content>
+                <component-live-content ref="liveContent" :propWindowWidth="windowWidth" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></component-live-content>
             </view>
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
                 <view class="flex-col align-c">
@@ -25,24 +25,30 @@
             </view>
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
-                <view class="live-pause-tips pointer-events-auto">主播暂时离开了, 请稍后...</view>
+                <view class="flex-1 flex-col align-c jc-c">
+                    <component-icon propName="smallbell" propSize="100rpx" propColor="#fff"></component-icon>
+                    <text class="pointer-events-auto text-size mt-5 cr-white">主播暂时离开</text>
+                    <text class="pointer-events-auto text-size-sm mt-5 cr-white">休息片刻，更多精彩马上到来</text>
+                </view>
             </view>
         </template>
     </view>
 </template>
 <script>
-    import liveVideo from './components/video/video.vue';
-    import liveContent from './components/live-content/live-content.vue';
+    import componentIcon from './components/icon/icon.vue';
+    import componentLiveVideo from './components/video/video.vue';
+    import componentLiveContent from './components/live-content/live-content.vue';
     // 引入点赞效果组件
-    import fullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
+    import componentFullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
     const app = getApp();
     export default {
         components: {
-            liveVideo,
-            liveContent,
-            fullScreenLikeEffect
+            componentLiveVideo,
+            componentLiveContent,
+            componentIcon,
+            componentFullScreenLikeEffect
         },
         mixins: [mixins],
         data() {
@@ -88,14 +94,7 @@
         z-index: 8;
         width: 100%;
         height: 100%;
-        background: grey;
-        .live-pause-tips {
-            // background: rgba(0, 0, 0, 0.5);
-            border-radius: 20rpx;
-            padding: 15rpx 20rpx;
-            font-size: 28rpx;
-            color: #fff;
-        }
+        background: linear-gradient(to bottom, #330066, #000000);
     }
     .live-muted {
         position: absolute;

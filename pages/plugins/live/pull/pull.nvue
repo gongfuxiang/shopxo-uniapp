@@ -6,9 +6,19 @@
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></full-screen-like-effect>
         </view>
         <template v-if="!is_loading">
+            <!-- 主播暂时离开的提示信息-->
+            <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
+                <view class="flex-1 flex-col align-c jc-c">
+                    <component-icon propName="smallbell" propSize="100rpx" propColor="#fff"></component-icon>
+                    <text class="pointer-events-auto text-size mb-5 cr-white">主播暂时离开</text>
+                    <text class="pointer-events-auto text-size-sm cr-white">休息片刻，更多精彩马上到来</text>
+                </view>
+            </view>
+            <!-- 主体内容显示 -->
             <view class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
                 <live-content ref="liveContent" :propWindowWidth="windowWidth" :propWindowHeight="windowHeight" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end" @liveStatus="socket_live_status"></live-content>
             </view>
+            <!-- 直播间结束的显示 -->
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
                 <view class="flex-col align-c">
                     <text class="live-ended-text">直播已结束</text>
@@ -17,26 +27,24 @@
                     </button>
                 </view>
             </view>
-            <!-- 主播暂时离开的提示信息-->
-            <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none" :style="'width:' + windowWidth + 'px;'">
-                <view class="live-pause-tips pointer-events-auto">直播连接失败，正在尝试重新连接...</view>
-            </view>
         </template>
     </view>
 </template>
 <script>
-    import liveVideo from './components/video/video.vue';
-    import liveContent from './components/live-content/live-content.vue';
+    import componentIcon from './components/icon/icon.vue';
+    import componentLiveVideo from './components/video/video.vue';
+    import componentLiveContent from './components/live-content/live-content.vue';
     // 引入点赞效果组件
-    import fullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
+    import componentFullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
     const app = getApp();
     export default {
         components: {
-            liveVideo,
-            liveContent,
-            fullScreenLikeEffect
+            componentIcon,
+            componentLiveVideo,
+            componentLiveContent,
+            componentFullScreenLikeEffect
         },
         mixins: [mixins],
         data() {
@@ -55,15 +63,7 @@
         top: 0;
         left: 0;
         z-index: 9;
-        height: 600rpx;
-        background: transparent;
-        .live-pause-tips {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20rpx;
-            padding: 15rpx 20rpx;
-            font-size: 32rpx;
-            color: #fff;
-        }
+        background: linear-gradient(to bottom, #330066, #000000);
     }
     .live-content {
         position: absolute;

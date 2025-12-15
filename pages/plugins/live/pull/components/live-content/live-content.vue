@@ -620,7 +620,7 @@
                             this.scroll_to_lower();
                         });
                         break;
-                    case 'live-status':
+                    case 'pull-live-room-info': // 获取直播间数据
                         this.$emit('liveStatus', data.content); 
                         break;
                 }
@@ -646,6 +646,14 @@
                     clearInterval(this.ping_timer);
                     this.ping_timer = null;
                 }
+            },
+
+            /**
+             * WebSocket获取直播间数据
+             */
+            socket_connect() { 
+                // 发送获取直播间数据消息
+                this.socket_send('pull-live-room-info');
             },
             
             /**

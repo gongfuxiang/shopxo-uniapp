@@ -27,7 +27,9 @@ export default {
             lastLikeTime: 0, // 记录上次点赞时间，用于防抖
             live_status: 1,
             live_be_right_back_error: false,
-            load_timer: null, // 加载定时器
+            load_timer: null, // 延时显示视频的定时器
+            retry_count: 0 // 重试计数器
+
         }
     },
 
@@ -128,38 +130,72 @@ export default {
         },
 
         /**
-         * 视频元数据加载完成时触发
+         * 视频数据加载完成时触发
          */
         loadedmetadata() {
-            // 如果加载完成了，延迟一秒确定一下直播状态, 有的时候直播状态是正常的也加载成功了，但是获取不到视频流，需要确定一下没有执行error才算是真正的成功
+            // 如果加载完成了，延迟2秒确定一下直播状态, 有的时候直播状态是正常的也加载成功了，但是获取不到视频流，需要确定一下没有执行error才算是真正的成功
             this.load_timer = setTimeout(() => {
+                this.retry_count = 0;
                 // 隐藏加载提示
                 uni.hideLoading();
+                // 直播状态为正常或者暂停直播了，才认为是正常的加载成功
                 if ([0, 1].includes(this.live_status)) {
+                    // 如果重连的定时器还在运行中，则清除它
+                    if (this.ended_timer) {
+                        // 隐藏加载提示
+                        clearTimeout(this.ended_timer);
+                    }
                     this.live_be_right_back_error = false;
                 }
-            }, 300);
+            }, 2000);
         },
         /**
          * 标记直播结束或者直播暂停
          */
         ended() {
             // 隐藏加载提示
-            uni.hideLoading();
+            uni.hideLoading();            
             // 如果加载定时器存在，则清除
             if (this.load_timer) {
                 // 隐藏加载提示
                 clearTimeout(this.load_timer);
             }
+            // 如果直播已结束，则返回
             if (!this.is_live_ended) {
+
                 if (![1, 2].includes(this.live_status)) {
                     this.is_live_ended = true;
                 } else {
+                    // 初始化重试计数器
+                    if (this.retry_count === undefined) {
+                        this.retry_count = 0;
+                    }
+                    // 如果历史定时器存在，则清除
+                    if (this.ended_timer) {
+                        // 隐藏加载提示
+                        clearTimeout(this.ended_timer);
+                    }
+                    
+                    // 如果重试次数超过指定次数，则标记为真正结束
+                    if (this.retry_count > 50) {
+                        this.is_live_ended = true;
+                        this.live_be_right_back_error = false;
+                        // 重置计数器
+                        this.retry_count = 0;
+                        return;
+                    }
+
+                    // 增加重试计数
+                    this.retry_count++;
                     // 暂停直播了或者继续直播了，则提示用户当前主播暂时离开
                     this.live_be_right_back_error = true;
+                    // 延迟3秒后尝试重新连接
                     this.ended_timer = setTimeout(() => {
-                        this.live_be_right_back_error = false;
-                    }, 3000);
+                        // 在定时结束后尝试重新连接
+                        if (this.$refs.liveVideo) {
+                            this.$refs.liveVideo.reload_video();
+                        }
+                    }, 5000);
                 }
             }
         },
@@ -245,7 +281,7 @@ export default {
             this.lastTapPosition = { x, y };
         },
         socket_live_status(status) {
-            this.live_status = status;
+            // this.live_status = status;
         }
     }
 }
