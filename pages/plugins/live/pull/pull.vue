@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view + ' re'">
         <view class="pr live-bg" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
-            <live-video v-if="!is_live_ended && !live_be_right_back" ref="liveVideo" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
+            <live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success"></live-video>
             <!-- 简化版点赞效果组件 -->
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></full-screen-like-effect>
         </view>
@@ -24,8 +24,8 @@
                 </view>
             </view>
             <!-- 主播暂时离开的提示信息-->
-            <view v-if="live_be_right_back" class="live-pause flex-row align-c jc-c pointer-events-none">
-                <view class="live-pause-tips pointer-events-auto">直播连接失败，正在尝试重新连接中...</view>
+            <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
+                <view class="live-pause-tips pointer-events-auto">主播暂时离开了, 请稍后...</view>
             </view>
         </template>
     </view>
@@ -49,6 +49,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 is_muted_auto_play_success: false,
+                initial_reminder: false
             }
         },
         methods: {
@@ -76,21 +77,20 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 8;
+        z-index: 9;
         width: 100%;
         height: 100%;
     }
     .live-pause {
         position: absolute;
         top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9;
+        left: 0;
+        z-index: 8;
         width: 100%;
-        height: 600rpx;
-        background: transparent;
+        height: 100%;
+        background: grey;
         .live-pause-tips {
-            background: rgba(0, 0, 0, 0.5);
+            // background: rgba(0, 0, 0, 0.5);
             border-radius: 20rpx;
             padding: 15rpx 20rpx;
             font-size: 28rpx;

@@ -1,12 +1,12 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video :propSrc="propSrc" propAutoplay :propMuted="muted" poster="https://new.shopxo.vip/static/upload/images/common/2019/01/14/1547448705165706.png" class="video-size"  @hlsError="error" @ended="ended" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video ref="videoPlayer" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
-    <live-player :src="propSrc" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
+    <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video :src="propSrc" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
+    <video ref="videoPlayer" :src="video_src" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
     <!-- #endif -->
 </template>
 
@@ -34,11 +34,22 @@
                 default: 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'
             }
         },
+        watch: {
+            propSrc: {
+                handler(newVal, oldVal) {
+                    if (newVal != oldVal) {
+                        this.video_src = newVal;
+                    }
+                },
+                immediate: true
+            }
+        },
         data() {
             return {
                 windowWidth: 0,
                 windowHeight: 0,
                 muted: false,
+                video_src: ''
             }
         },
         created() {
@@ -48,6 +59,25 @@
             this.windowHeight = data.windowHeight;
         },
         methods: {
+            reload_video() {
+                // #ifndef MP
+                const video = this.$refs.videoPlayer;
+                // 深拷贝视频源地址，避免直接修改原地址
+                const src = JSON.parse(JSON.stringify(this.video_src));
+                this.video_src = ''; // 清除原地址
+                setTimeout(() => {
+                    this.video_src = src; // 重新赋值
+                    // #ifdef APP-NVUE
+                    video.load(); // 重新加载
+                    video.play().catch(() => this.retryLoadVideo());
+                    // #endif
+                }, 100);
+                // #endif
+            },
+            // 视频元数据加载完成处理函数, 不太准确，有的时候是直播的中间区域状态加载完了，但是视频还没有开始播放
+            loadedmetadata() {
+                this.$emit('loadedmetadata');
+            },
             /**
              * 直播播放器状态变化处理函数（小程序平台）
              * @param {Object} e - 状态变化事件对象

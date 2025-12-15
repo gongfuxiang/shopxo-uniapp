@@ -21,7 +21,7 @@
                     </view>
                 </view>
                 <view class="ml-5 people-number flex-row align-c jc-c">
-                    <text class="cr-f size-10">{{ people_number }}</text>
+                    <text class="cr-f size-10">{{ online_count }}</text>
                 </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
                     <component-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></component-icon>
@@ -218,7 +218,7 @@
                 casual_like_count: 0,
                 like_timer: null,
                 // 直播间人数
-                people_number: 0,
+                online_count: 0,
                 // 直播间配置信息
                 live_data: {},
                 userAvatar: '/static/images/common/user.png',
@@ -320,6 +320,10 @@
                     if (new_value != null) {
                         // 获取配置信息
                         this.live_data = new_value;
+                        // 直播间点赞数
+                        this.like_count = new_value.like_count;
+                        // 直播间人数
+                        this.online_count = new_value.online_count;
                     }
                 },
                 immediate: true,
@@ -772,7 +776,7 @@
                 }
                 // 两秒没有人点赞，则显示临时点赞数量加上原有数量
                 setTimeout(() => {
-                    // 显示临时点赞数量加上原有数量(临时使用)
+                    // 显示临时点赞数量加上原有数量
                     this.like_count = this.like_count + this.casual_like_count;
                     this.socket_send('likeCount', this.casual_like_count);
                     // 完成之后重置临时点赞数量

@@ -25,8 +25,9 @@ export default {
             lastTapTime: 0, // 用于检测双击
             lastTapPosition: { x: 0, y: 0 }, // 记录上次点击位置
             lastLikeTime: 0, // 记录上次点赞时间，用于防抖
-            live_status: 'start',
-            live_be_right_back: false,
+            live_status: 1,
+            live_be_right_back_error: false,
+            load_timer: null, // 加载定时器
         }
     },
 
@@ -76,7 +77,7 @@ export default {
          */
         init() {
             uni.showLoading({
-                title: '直播数据加载中...',
+                title: '数据加载中...',
                 mask: true
             });
             uni.request({
@@ -87,8 +88,6 @@ export default {
                 },
                 dataType: 'json',
                 success: (res) => {
-                    // 隐藏加载提示
-                    uni.hideLoading();
                     const new_data = res.data;
                     // 显示直播内容
                     this.is_loading = false;
@@ -97,16 +96,26 @@ export default {
                         this.like_show_imgs = new_data.data.like_icon_list || [];
                         // 获取直播间信息
                         this.live_config = new_data.data.room || {};
+
+                        // this.live_status = new_data.data.room.status || 0;
                         // 如果不存在拉流地址则认为直播已结束，避免因为报错导致的页面异常
                         // if (isEmpty(new_data.data.pull_flv_url)) {
                         //     this.is_live_ended = true;
                         // }
+                    } else if (new_data.code == -400) { // 没有登陆的跳转到登陆页
+                        if (app.globalData.is_login_check(res.data)) {
+                            app.globalData.showToast(res.data.msg);
+                        } else {
+                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                        }
                     } else {
                         uni.showToast({
                             title: new_data.msg || '获取直播间信息失败',
                             icon: 'none'
                         });
                         this.is_live_ended = true;
+                        // 隐藏加载提示
+                        uni.hideLoading();
                     }
                 },
                 fail: (err) => {
@@ -119,16 +128,38 @@ export default {
         },
 
         /**
+         * 视频元数据加载完成时触发
+         */
+        loadedmetadata() {
+            // 如果加载完成了，延迟一秒确定一下直播状态, 有的时候直播状态是正常的也加载成功了，但是获取不到视频流，需要确定一下没有执行error才算是真正的成功
+            this.load_timer = setTimeout(() => {
+                // 隐藏加载提示
+                uni.hideLoading();
+                if ([0, 1].includes(this.live_status)) {
+                    this.live_be_right_back_error = false;
+                }
+            }, 300);
+        },
+        /**
          * 标记直播结束或者直播暂停
          */
-        ended(flag) {
+        ended() {
+            // 隐藏加载提示
+            uni.hideLoading();
+            // 如果加载定时器存在，则清除
+            if (this.load_timer) {
+                // 隐藏加载提示
+                clearTimeout(this.load_timer);
+            }
             if (!this.is_live_ended) {
-                if (!['pause', 'resume'].includes(this.live_status)) {
+                if (![1, 2].includes(this.live_status)) {
                     this.is_live_ended = true;
                 } else {
                     // 暂停直播了或者继续直播了，则提示用户当前主播暂时离开
-                    this.live_be_right_back = true;
-                    this.socket_live_status(this.live_status);
+                    this.live_be_right_back_error = true;
+                    this.ended_timer = setTimeout(() => {
+                        this.live_be_right_back_error = false;
+                    }, 3000);
                 }
             }
         },
@@ -215,12 +246,6 @@ export default {
         },
         socket_live_status(status) {
             this.live_status = status;
-            // 如果是暂停直播了或者继续直播了，则提示用户当前主播暂时离开
-            if (['pause', 'resume'].includes(status) && !this.is_live_ended && this.live_be_right_back) {
-                setTimeout(() => {
-                    this.live_be_right_back = false;
-                }, 5000);
-            }
         }
     }
 }
