@@ -31,15 +31,15 @@
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
                 <view class="pr">
-                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - 150) + 'px;'">
+                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - (is_show_explain_goods ? 150 : 100)) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
-                        <list class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
+                        <list class="bulletin-area" :style="'width:' + (propWindowWidth - (is_show_explain_goods ? 150 : 100)) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
                             <cell v-for="(item, index) in bulletins" :key="item.id" ref="bulletin_index">
                         <!-- #endif -->
                         <!-- #ifndef APP-NVUE -->
                         <!-- scroll-view 只有非nvue的页面使用 -->
-                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
+                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - (is_show_explain_goods ? 150 : 100)) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
                             <view v-for="(item, index) in bulletins" :key="item.id">
                         <!-- #endif -->
                         <!-- 中间弹幕区域 -->
@@ -102,11 +102,16 @@
                             <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
                         </view>
                     </view>
-                    <view v-if="!isEmpty(explain_goods)" class="explain-goods">
+                    <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods">
                         <view class="pr" style="width: 198rpx;height: 198rpx;">
                             <image :src="explain_goods.goods_avatar" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
-                            <view class="explain-subscript">
-                                <text class="size-12 cr-f">讲解中</text>
+                            <view class="explain-subscript flex-row align-c jc-sb">
+                                <view class="explain-progress">
+                                    <text class="size-12 cr-f">讲解中</text>
+                                </view>
+                                <view class="explain-close flex-row align-c">
+                                    <component-icon propName="close-line" propSize="18rpx" propColor="#fff"></component-icon>
+                                </view>
                             </view>
                         </view>
                         <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
@@ -308,7 +313,9 @@
                 is_socket_error: false,
                 socket_error_content: '连接失败点击重试',
                 // socket连接成功
-                is_socket_success: false
+                is_socket_success: false,
+                // 是否展示讲解商品信息
+                is_show_explain_goods: true,
             }
         },
         watch: {
@@ -1013,7 +1020,7 @@
         opacity: 0;
     }
 }
-
+/* 讲解商品信息 */
 .explain-goods {
     width: 200rpx;
     background: #fff;
@@ -1023,14 +1030,24 @@
     right: 0;
     bottom: 20rpx;
     border-radius: 20rpx;
-}
-.explain-subscript {
-    position: absolute;
-    left: 5rpx;
-    top: 5rpx;
-    padding: 0rpx 8rpx;
-    background: rgba(40,40,40,0.45);
-    border-radius: 10rpx;
+    overflow: hidden;
+    .explain-subscript {
+        position: absolute;
+        left: 5rpx;
+        top: 5rpx;
+        right: 5rpx;
+        .explain-progress {
+            padding: 0rpx 8rpx;
+            background: rgba(40,40,40,0.45);
+            border-radius: 10rpx;
+        }
+        .explain-close {
+            margin-right: 5rpx;
+            padding: 6rpx;
+            background: rgba(40,40,40,0.45);
+            border-radius: 50rpx;
+        }
+    }
 }
 /* #ifdef MP-WEIXIN | APP-PLUS */
     .bulletin-area {
