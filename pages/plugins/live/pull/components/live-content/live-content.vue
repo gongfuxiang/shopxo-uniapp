@@ -21,7 +21,7 @@
                     </view>
                 </view>
                 <view class="ml-5 people-number flex-row align-c jc-c">
-                    <text class="cr-f size-10">{{ online_count }}</text>
+                    <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
                 </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
                     <component-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></component-icon>
@@ -229,8 +229,6 @@
                 // 临时点赞计数
                 casual_like_count: 0,
                 like_timer: null,
-                // 直播间人数
-                online_count: 0,
                 // 直播间配置信息
                 live_data: {},
                 userAvatar: '/static/images/common/user.png',
@@ -667,8 +665,6 @@
                 this.live_data = new_value;
                 // 直播间点赞数
                 this.like_count = new_value.like_count;
-                // 直播间人数
-                this.online_count = new_value.online_count;
                 // 直播间状态更新
                 this.$emit('liveStatus', new_value.status);
             },

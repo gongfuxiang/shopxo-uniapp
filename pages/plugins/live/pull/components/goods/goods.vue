@@ -264,6 +264,11 @@ export default {
                     const new_data = res.data;
                     if (new_data.code == 0) {
                         this.good_list = new_data.data;
+                        // 遍历获取讲解id
+                        const explain_data = new_data.data.filter(item => item.live_room_goods_is_explain == 1);
+                        if (explain_data.length > 0) {
+                            this.explanation_id = explain_data[0].id;
+                        }
                     }
                 },
                 fail: () => {
@@ -289,23 +294,6 @@ export default {
             this.$refs.popupGoodsRef.close();
             // 刷新数据
             this.init();
-        },
-        //#endregion
-        
-        //#region 商品列表处理
-        /**
-         * 控制商品讲解状态
-         * 点击商品时切换其讲解状态，已讲解则取消讲解，未讲解则设为讲解中
-         * @param {Object} e 事件对象
-         */
-        explanation(e) {
-            // 讲解商品
-            const id = e.currentTarget.dataset.id;
-            if (id != null && id != this.explanation_id) {
-                this.explanation_id = id;
-            } else {
-                this.explanation_id = '';
-            }
         },
         //#endregion
         
