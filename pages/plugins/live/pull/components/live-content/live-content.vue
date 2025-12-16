@@ -889,7 +889,7 @@
 }
 
 .nickname {
-    max-width: 300rpx;
+    max-width: 200rpx;
     font-size: 28rpx;
     color: #fff;
     font-weight: bold;
