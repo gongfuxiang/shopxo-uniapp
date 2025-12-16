@@ -650,8 +650,6 @@
             },
             // 初始化直播间数据
             live_init(data) { 
-                console.log(data);
-                
                 // 更新讲解商品信息
                 const goods = data.explain_goods;
                 // 讲解商品信息更新,讲解商品不为空，并且讲解商品id不一致，需要更新讲解商品信息
