@@ -86,7 +86,6 @@
             },
             // 视频元数据加载完成处理函数, 不太准确，有的时候是直播的中间区域状态加载完了，但是视频还没有开始播放
             loadedmetadata() {
-                console.log('loadedmetadata');
                 this.$emit('loadedmetadata');
             },
             /**
@@ -108,8 +107,6 @@
                     // #ifdef H5
                     // 非初次加载错误的, 直播结束
                     if (e.type != 'otherError' || e.details != 'internalException') {
-                        console.log('ended');
-                        
                         this.$emit('ended');
                     }
                     // #endif

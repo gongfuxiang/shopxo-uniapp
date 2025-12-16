@@ -8,7 +8,7 @@
         <!-- 顶部主播信息 -->
         <view class="flex-row align-c jc-sb" :style="header_style">
             <view class="top-header flex-row align-c pointer-events-auto">
-                <image :src="avatar" class="avatar" mode="aspectFill"></image>
+                <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                 <view class="ml-10 flex-col">
                     <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
                     <text class="level">{{ like_count }}本场点赞</text>
@@ -16,7 +16,7 @@
             </view>
             <view class="flex-row align-c pointer-events-auto">
                 <view class="flex-row align-c pr" style="direction: rtl;">
-                    <view v-for="(item, index) in viewers" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                    <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                         <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                     </view>
                 </view>
@@ -104,19 +104,19 @@
                     </view>
                     <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods">
                         <view class="pr" style="width: 198rpx;height: 198rpx;">
-                            <image :src="explain_goods.goods_avatar" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
+                            <image :src="explain_goods.images" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
                             <view class="explain-subscript flex-row align-c jc-sb">
                                 <view class="explain-progress">
                                     <text class="size-12 cr-f">讲解中</text>
                                 </view>
-                                <view class="explain-close flex-row align-c">
+                                <view class="explain-close flex-row align-c" @tap="explain_goods_close">
                                     <component-icon propName="close-line" propSize="18rpx" propColor="#fff"></component-icon>
                                 </view>
                             </view>
                         </view>
                         <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
-                            <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.goods_name }}</text>
-                            <text class="explain-goods-price cr-red mt-10 size-12">¥{{ explain_goods.goods_price }}</text>
+                            <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.title }}</text>
+                            <text class="explain-goods-price cr-red mt-10 size-12">{{this.currency_symbol}}{{ explain_goods.goods_price }}</text>
                         </view>
                     </view>
                 </view>
@@ -197,6 +197,13 @@
                 default: () => {}
             },
             /**
+             * 直播间全部信息
+             */
+            propLiveData: {
+                type: Object,
+                default: () => {}
+            },
+            /**
              * 直播展示图片
              */
             propLiveShowImgs: {
@@ -228,16 +235,11 @@
                 live_data: {},
                 userAvatar: '/static/images/common/user.png',
                 // 模拟观看者数据
-                viewers: [
-                    { avatar: '/static/images/common/user.png' },
-                    { avatar: '/static/images/common/user.png' },
-                    { avatar: '/static/images/common/user.png' }
-                ],
-                explain_goods: {
-                    goods_avatar: '/static/images/common/user.png',
-                    goods_name: '商品名称',
-                    goods_price: '99.00'
-                },
+                online_user: [],
+                // 讲解中商品信息
+                explain_goods: {},
+                // 价格符号
+                currency_symbol: app.globalData.currency_symbol(),
                 //#region 头部样式和页面宽度处理
                 header_style: '',
                 //#endregion
@@ -285,13 +287,15 @@
                 //#endregion
                 
                 //#region 获取用户头像信息和socket连接信息
-                avatar: '/static/images/common/user.png',
+                live_avatar: '/static/images/common/user.png',
                 // 连接socket
                 task: null,
                 // socket消息id
                 socket_id: 0,
                 // 心跳定时任务
                 ping_timer: null,
+                // 获取直播间数据定时任务
+                pull_live_room_info_timer: null,
                 // 心跳间隔时间
                 ping_interval: 30,
                 // 当前观看直播用户id
@@ -316,26 +320,39 @@
                 is_socket_success: false,
                 // 是否展示讲解商品信息
                 is_show_explain_goods: true,
+                goods_hide_timer: null, // 讲解商品信息隐藏定时器
+                live_room_info_timing_interval_time: 30, // 获取直播间数据定时任务时间间隔
+                live_room_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
             }
         },
         watch: {
             /**
-             * 监听直播配置信息变更
+             * 监听直播信息
              */
-            propLiveConfig: {
+            propLiveData: {
                 handler(new_value) {
                     if (new_value != null) {
-                        // 获取配置信息
-                        this.live_data = new_value;
-                        // 直播间点赞数
-                        this.like_count = new_value.like_count;
-                        // 直播间人数
-                        this.online_count = new_value.online_count;
+                        this.live_init(new_value);
                     }
                 },
                 immediate: true,
                 deep: true
-            }
+            },
+            /**
+             * 监听直播展示图片变更
+             */
+            propLiveConfig: {
+                handler(new_value) {
+                    if (new_value != null) {
+                        // 直播间信息定时任务时间间隔
+                        this.live_room_info_timing_interval_time = new_value.live_room_info_timing_interval_time;
+                        // 讲解商品信息自动关闭时间
+                        this.live_room_goods_explain_auto_close_time = new_value.live_room_goods_explain_auto_close_time;
+                    }
+                },
+                immediate: true,
+                deep: true
+            },
         },
         /**
          * 组件挂载后执行初始化操作
@@ -359,10 +376,6 @@
             this.unbind_keyboard_listener();
             // 关闭socket连接
             this.socket_close();
-            // 如果定时器存在，清除它
-            if (this.countdownTimer) {
-                clearInterval(this.countdownTimer);
-            }
         },
         methods: {
             isEmpty,
@@ -585,6 +598,8 @@
                         this.live_user_id = data.data.live_user_id;
                         // 启动心跳
                         this.socket_ping_handle();
+                        // 启动直播间数据定时任务
+                        this.socket_room_info_handle();
                         break;
             
                     // 初始化失败
@@ -627,9 +642,56 @@
                             this.scroll_to_lower();
                         });
                         break;
-                    case 'pull-live-room-info': // 获取直播间数据
-                        this.$emit('liveStatus', data.content); 
+                    case 'live-room-info': // 获取直播间数据
+                        // this.$emit('liveStatus', data.content);
+                        this.live_init(data.data);
                         break;
+                }
+            },
+            // 初始化直播间数据
+            live_init(data) { 
+                console.log(data);
+                
+                // 更新讲解商品信息
+                const goods = data.explain_goods;
+                // 讲解商品信息更新,讲解商品不为空，并且讲解商品id不一致，需要更新讲解商品信息
+                if ((!isEmpty(goods) && !isEmpty(this.explain_goods) && this.explain_goods.id !== goods.id) || isEmpty(this.explain_goods)) {
+                    this.explain_goods = data.explain_goods;
+                    this.is_show_explain_goods = true;
+                    this.explain_goods_close('auto');
+                }
+                // 更新在线用户头像
+                this.online_user = data.online_user;
+                // 更新直播间头像
+                this.live_avatar = data.room_info.cover;
+                // 更新直播间数据
+                const new_value = data.room_info;
+                this.live_data = new_value;
+                // 直播间点赞数
+                this.like_count = new_value.like_count;
+                // 直播间人数
+                this.online_count = new_value.online_count;
+                // 直播间状态更新
+                this.$emit('liveStatus', new_value.status);
+            },
+
+            /**
+             * 手动关闭讲解商品讲解商品关闭处理函数
+             * @param {string} type - 关闭类型，'auto' 表示自动关闭，'manual' 表示立即关闭
+             */
+            explain_goods_close(type) {
+                if (this.explain_goods_timer != null) {
+                    clearTimeout(this.explain_goods_timer);
+                    this.explain_goods_timer = null;
+                }
+                // 如何类型是自动的话，就是自动关闭，否则就立即关闭
+                if (type == 'auto') {
+                    // 定时关闭讲解商品
+                    this.explain_goods_timer = setTimeout(() => {
+                        this.is_show_explain_goods = false;
+                    }, this.live_room_goods_explain_auto_close_time * 1000);
+                } else {
+                    this.is_show_explain_goods = false;
                 }
             },
             
@@ -658,9 +720,20 @@
             /**
              * WebSocket获取直播间数据
              */
-            socket_connect() { 
-                // 发送获取直播间数据消息
-                this.socket_send('pull-live-room-info');
+            socket_room_info_handle() { 
+                // 清除已有的定时任务
+                if (this.pull_live_room_info_timer != null) {
+                    clearInterval(this.pull_live_room_info_timer);
+                    this.pull_live_room_info_timer = null;
+                }
+                
+                // 立即发送获取直播间数据消息
+                this.socket_send('live-room-info');
+                
+                // 每30秒发送一次获取直播间数据消息
+                this.pull_live_room_info_timer = setInterval(() => {
+                    this.socket_send('live-room-info');
+                }, this.live_room_info_timing_interval_time * 1000);
             },
             
             /**
@@ -793,7 +866,7 @@
                 setTimeout(() => {
                     // 显示临时点赞数量加上原有数量
                     this.like_count = this.like_count + this.casual_like_count;
-                    this.socket_send('likeCount', this.casual_like_count);
+                    this.socket_send('live-room-like', this.casual_like_count);
                     // 完成之后重置临时点赞数量
                     this.casual_like_count = 0;
                 }, 2000);

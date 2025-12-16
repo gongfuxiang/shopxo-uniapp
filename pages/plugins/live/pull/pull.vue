@@ -1,13 +1,13 @@
 <template>
     <view :class="theme_view + ' re'">
         <view class="pr live-bg" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
-            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success"></component-live-video>
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success"></component-live-video>
             <!-- 简化版点赞效果组件 -->
             <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
         <template v-if="!is_loading"> 
             <view class="live-content pointer-events-none">
-                <component-live-content ref="liveContent" :propWindowWidth="windowWidth" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></component-live-content>
+                <component-live-content ref="liveContent" :propWindowWidth="windowWidth" :propLiveData="live_data" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></component-live-content>
             </view>
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
                 <view class="flex-col align-c">

@@ -13,7 +13,9 @@ export default {
             windowWidth: 0,
             windowHeight: 0,
             is_live_ended: false,
-            live_config: {},
+            live_config: {}, // 直播间配置
+            live_data: {}, // 直播间数据
+            live_video_src: '',
             is_loading: true,
             like_show_imgs: [
                 'https://new.shopxo.vip/static/plugins/live/images/like/like1.png',
@@ -25,11 +27,12 @@ export default {
             lastTapTime: 0, // 用于检测双击
             lastTapPosition: { x: 0, y: 0 }, // 记录上次点击位置
             lastLikeTime: 0, // 记录上次点赞时间，用于防抖
-            live_status: 1,
+            live_status: 0,
             live_be_right_back_error: false,
             load_timer: null, // 延时显示视频的定时器
-            retry_count: 0 // 重试计数器
-
+            retry_count: 0, // 重试计数器
+            live_room_reconnect_number: 0, // 直播间重连次数
+            live_room_reconnect_interval_time: 1, // 直播间重连间隔时间
         }
     },
 
@@ -95,11 +98,20 @@ export default {
                     this.is_loading = false;
                     // 判断是否有数据
                     if(new_data.code == 0) {
+                        // 更新直播间数据
+                        this.live_data = new_data.data;
+                        // 直播间点赞图标
                         this.like_show_imgs = new_data.data.like_icon_list || [];
-                        // 获取直播间信息
-                        this.live_config = new_data.data.room || {};
-
-                        // this.live_status = new_data.data.room.status || 0;
+                        // 获取直播间视频信息
+                        this.live_video_src = new_data.data.room_info.pull_flv_url || '';
+                        // 直播间状态 (0离线, 1在线, 2离开, 3封禁）
+                        this.live_status = new_data.data.room_info.status || 0;
+                        // 直播间配置
+                        const config = new_data.data.config || {};
+                        this.live_config = config;
+                        // 直播间重连次数
+                        this.live_room_reconnect_number = config.live_room_reconnect_number || 0;
+                        this.live_room_reconnect_interval_time = config.live_room_reconnect_interval_time || 1;
                         // 如果不存在拉流地址则认为直播已结束，避免因为报错导致的页面异常
                         // if (isEmpty(new_data.data.pull_flv_url)) {
                         //     this.is_live_ended = true;
@@ -177,7 +189,7 @@ export default {
                     }
                     
                     // 如果重试次数超过指定次数，则标记为真正结束
-                    if (this.retry_count > 50) {
+                    if (this.retry_count > this.live_room_reconnect_number) {
                         this.is_live_ended = true;
                         this.live_be_right_back_error = false;
                         // 重置计数器
@@ -195,7 +207,7 @@ export default {
                         if (this.$refs.liveVideo) {
                             this.$refs.liveVideo.reload_video();
                         }
-                    }, 5000);
+                    }, this.live_room_reconnect_interval_time * 1000);
                 }
             }
         },
@@ -280,8 +292,12 @@ export default {
             this.lastTapTime = currentTime;
             this.lastTapPosition = { x, y };
         },
+        /**
+         * 接收直播状态
+         * @param {number} status 直播状态
+         */
         socket_live_status(status) {
-            // this.live_status = status;
+            this.live_status = status;
         }
     }
 }

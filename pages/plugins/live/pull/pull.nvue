@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view + ' flex-row pr'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
         <view class="flex-1 pr live-bg" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
-            <live-video v-if="!is_live_ended" ref="live-video" :propSrc="live_config.pull_flv_url || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @loadedmetadata="loadedmetadata" @ended="ended"></live-video>
+            <live-video v-if="!is_live_ended" ref="live-video" :propSrc="live_video_src || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @loadedmetadata="loadedmetadata" @ended="ended"></live-video>
             <!-- 简化版点赞效果组件 -->
             <full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></full-screen-like-effect>
         </view>
@@ -16,7 +16,7 @@
             </view>
             <!-- 主体内容显示 -->
             <view class="live-content" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
-                <live-content ref="liveContent" :propWindowWidth="windowWidth" :propWindowHeight="windowHeight" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end" @liveStatus="socket_live_status"></live-content>
+                <live-content ref="liveContent" :propWindowWidth="windowWidth" :propWindowHeight="windowHeight" :propLiveData="live_data" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @handleDoubleClick="handle_double_click" @handleTouchEnd="handle_touch_end" @liveStatus="socket_live_status"></live-content>
             </view>
             <!-- 直播间结束的显示 -->
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
