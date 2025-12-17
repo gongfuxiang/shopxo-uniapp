@@ -297,16 +297,6 @@ export default {
          * @param {number} status 直播状态
          */
         socket_live_status(status) {
-            // 当前直播状态为1时，说明直播已经开始了，历史状态为2，说明直播刚才暂停了，所以需要重新连接，避免没有连接导致直播中断
-            if (status === 1 && this.live_status == 2) {
-                this.ended_timer = setTimeout(() => {
-                    // 在定时结束后尝试重新连接
-                    if (this.$refs.liveVideo) {
-                        this.$refs.liveVideo.reload_video();
-                    }
-                }, this.live_room_reconnect_interval_time * 1000);
-            }
-            // 定时任务创建后，更新直播状态
             this.live_status = status;
         }
     }
