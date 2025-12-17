@@ -145,11 +145,11 @@ export default {
          * 视频数据加载完成时触发
          */
         loadedmetadata() {
+            // 隐藏加载提示
+            uni.hideLoading();
             // 如果加载完成了，延迟2秒确定一下直播状态, 有的时候直播状态是正常的也加载成功了，但是获取不到视频流，需要确定一下没有执行error才算是真正的成功
             this.load_timer = setTimeout(() => {
                 this.retry_count = 0;
-                // 隐藏加载提示
-                uni.hideLoading();
                 // 直播状态为正常或者暂停直播了，才认为是正常的加载成功
                 if ([0, 1].includes(this.live_status)) {
                     // 如果重连的定时器还在运行中，则清除它

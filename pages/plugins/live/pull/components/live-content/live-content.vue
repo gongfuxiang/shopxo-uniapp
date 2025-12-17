@@ -31,15 +31,15 @@
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
                 <view class="pr">
-                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - (is_show_explain_goods ? 150 : 100)) + 'px;'">
+                    <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
-                        <list class="bulletin-area" :style="'width:' + (propWindowWidth - (is_show_explain_goods ? 150 : 100)) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
+                        <list class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" loadmoreoffset="30" @scroll="scroll_event" @loadmore="scroll_to_lower_event">
                             <cell v-for="(item, index) in bulletins" :key="item.id" ref="bulletin_index">
                         <!-- #endif -->
                         <!-- #ifndef APP-NVUE -->
                         <!-- scroll-view 只有非nvue的页面使用 -->
-                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - (is_show_explain_goods ? 150 : 100)) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
+                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
                             <view v-for="(item, index) in bulletins" :key="item.id">
                         <!-- #endif -->
                         <!-- 中间弹幕区域 -->
@@ -102,31 +102,24 @@
                             <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
                         </view>
                     </view>
-                    <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods">
+                    <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
                         <view class="pr" style="width: 198rpx;height: 198rpx;">
                             <image :src="explain_goods.images" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
                             <view class="explain-subscript flex-row align-c jc-sb">
                                 <view class="explain-progress">
                                     <text class="size-12 cr-f">讲解中</text>
                                 </view>
-                                <view class="explain-close flex-row align-c" @tap="explain_goods_close">
+                                <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
                                     <component-icon propName="close-line" propSize="18rpx" propColor="#fff"></component-icon>
                                 </view>
                             </view>
                         </view>
                         <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
                             <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.title }}</text>
-                            <text class="explain-goods-price cr-red mt-10 size-12">{{this.currency_symbol}}{{ explain_goods.goods_price }}</text>
+                            <text class="explain-goods-price cr-red mt-10 size-12">{{ currency_symbol }}{{ explain_goods.price }}</text>
                         </view>
                     </view>
                 </view>
-                <!-- 底部谁来了的提示-->
-                <!-- <view v-if="is_user_comes" class="flex-row mt-3 pointer-events-auto" :style="'max-width:' + (propWindowWidth - 100) + 'px;'">
-                    <view class="user-comes flex-row">
-                        <text class="user-name cr-blue">{{ commons_name }}</text>
-                        <text class="user-name cr-d">来了</text>
-                    </view>
-                </view> -->
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5 pointer-events-auto">
                     <template v-if="is_socket_success">
@@ -688,6 +681,15 @@
                     this.is_show_explain_goods = false;
                 }
             },
+            /**
+             * 讲解商品点击跳转到具体的商品详情页面
+             */
+            explain_goods_tap() {
+                if (!isEmpty(this.explain_goods.goods_url)) {
+                    const url = this.explain_goods.goods_url + '&live_room_id=1';
+                    app.globalData.url_open(url);
+                }
+            },
             
             /**
              * WebSocket心跳处理
@@ -951,7 +953,7 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 6rpx 20rpx;
+    padding: 6rpx 16rpx;
     background-color: rgba(40,40,40,0.45);
     border-radius: 25rpx;
 }

@@ -18,8 +18,8 @@
                 </view>
             </view>
             <!-- 静音提示 -->
-            <view v-if="!is_live_ended && is_muted_auto_play_success" class="live-muted flex-row align-c jc-c">
-                <view class="live-muted-tips">
+            <view v-if="!is_live_ended && is_muted_auto_play_success" class="live-muted flex-row align-c jc-c pointer-events-none">
+                <view class="live-muted-tips pointer-events-auto">
                     因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
                 </view>
             </view>
@@ -27,8 +27,8 @@
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
                 <view class="flex-1 flex-col align-c jc-c">
                     <component-icon propName="smallbell" propSize="100rpx" propColor="#fff"></component-icon>
-                    <text class="pointer-events-auto text-size mt-5 cr-white">主播暂时离开</text>
-                    <text class="pointer-events-auto text-size-sm mt-5 cr-white">休息片刻，更多精彩马上到来</text>
+                    <text class="text-size mt-5 cr-white">主播暂时离开</text>
+                    <text class="text-size-sm mt-5 cr-white">休息片刻，更多精彩马上到来</text>
                 </view>
             </view>
         </template>
