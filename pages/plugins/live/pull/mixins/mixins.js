@@ -117,6 +117,8 @@ export default {
                         //     this.is_live_ended = true;
                         // }
                     } else if (new_data.code == -400) { // 没有登陆的跳转到登陆页
+                        // 隐藏加载提示
+                        uni.hideLoading();
                         if (app.globalData.is_login_check(res.data)) {
                             app.globalData.showToast(res.data.msg);
                         } else {

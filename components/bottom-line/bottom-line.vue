@@ -50,8 +50,8 @@
     }
     .data-bottom-line .line-item.left,
     .data-bottom-line .line-item.right {
-        margin-top: 8px;
-        border-bottom: 1px solid #e1e1e1;
+        margin-top: 16rpx;
+        border-bottom: 2rpx solid #e1e1e1;
     }
     .data-bottom-line .line-item.msg {
         color: #999;

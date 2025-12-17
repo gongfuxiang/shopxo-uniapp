@@ -1,12 +1,12 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video ref="videoPlayer" v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
     <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video ref="videoPlayer" :src="video_src" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @error="error" @ended="ended"></video>
+    <video v-if="video_player_show" :src="video_src" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @play="loadedmetadata" @error="error" @ended="ended"></video>
     <!-- #endif -->
 </template>
 
@@ -62,25 +62,16 @@
         methods: {
             reload_video() {
                 // #ifndef MP
-                const video = this.$refs.videoPlayer;
                 // 深拷贝视频源地址，避免直接修改原地址
                 let src = '';
                 if (!isEmpty(this.propSrc)) {
                     src = this.propSrc;
                 }
                 this.video_src = ''; // 清除原地址
-                //#ifdef H5
                 this.video_player_show = false;
-                //#endif
                 setTimeout(() => {
                     this.video_src = src; // 重新赋值
-                    //#ifdef H5
                     this.video_player_show = true;
-                    //#endif
-                    // #ifdef APP-NVUE
-                    video.load(); // 重新加载
-                    video.play().catch(() => this.retryLoadVideo());
-                    // #endif
                 }, 100);
                 // #endif
             },

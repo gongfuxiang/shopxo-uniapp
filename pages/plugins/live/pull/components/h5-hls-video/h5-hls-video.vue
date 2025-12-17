@@ -369,8 +369,8 @@
                 initHlsPlayer(src) {
                     if (hlsjs.isSupported()) {
                         this.hlsPlayer = new hlsjs({
-                            manifestLoadingTimeOut: 30000, // 设置播放列表加载超时时间（毫秒）
-                            fragLoadingTimeOut: 3000,    // 设置片段加载超时时间（毫秒）
+                            manifestLoadingTimeOut: 60000, // 设置播放列表加载超时时间（毫秒）
+                            fragLoadingTimeOut: 60000,    // 设置片段加载超时时间（毫秒）
                             maxLiveSyncPlaybackRate: 1, // 最大追赶播放速率（1.05倍速）
                             lowLatencyMode: true, // 启用低延迟模式
                             debug: false // 启用调试日志
