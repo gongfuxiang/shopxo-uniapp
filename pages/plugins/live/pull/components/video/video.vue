@@ -51,6 +51,7 @@
                 muted: false,
                 video_src: '',
                 video_player_show: true,
+                error_msg_count: 0,
             }
         },
         created() {
@@ -72,6 +73,7 @@
                 setTimeout(() => {
                     this.video_src = src; // 重新赋值
                     this.video_player_show = true;
+                    this.error_msg_count = 0;
                 }, 100);
                 // #endif
             },
@@ -98,7 +100,16 @@
                     // #ifdef H5
                     // 非初次加载错误的, 直播结束
                     if (e.type != 'otherError' || e.details != 'internalException') {
-                        this.$emit('ended');
+                        // 3次切片报错之后，认为直播结束
+                        if (e.details == 'levelLoadError') {
+                            this.error_msg_count++;
+                            if (this.error_msg_count > 2) {
+                                this.error_msg_count = 0;
+                                this.$emit('ended');
+                            }
+                        } else {
+                            this.$emit('ended');
+                        }
                     }
                     // #endif
                     // #ifdef APP-NVUE

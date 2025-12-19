@@ -244,7 +244,6 @@
                             timingFunction: 'ease-out',
                             delay: 0 // ms
                         }, () => {
-                            console.log('animation finished.')
                             // 完成后事件回调
                             this.$emit('finished')
                             // 根据propAlone属性决定逐个删除还是一起删除
