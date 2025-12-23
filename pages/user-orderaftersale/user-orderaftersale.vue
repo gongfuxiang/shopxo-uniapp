@@ -23,7 +23,7 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-red">{{ item.status_text }}</text>
                     </view>
-                    <view :data-value="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id" @tap="url_event" class="goods-item oh cp">
+                    <view :data-value="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?id=' + item.id" @tap="url_event" class="goods-item oh cp">
                         <image class="goods-image fl radius" :src="item.order_data.items.images" mode="aspectFill"></image>
                         <view class="goods-base pr">
                             <view class="multi-text">{{ item.order_data.items.title }}</view>
@@ -151,14 +151,14 @@
                 search_keywords: params.keywords || '',
                 content_style: 'height: calc(100vh - 80rpx - '+(this.status_bar_height+(this.client_type == 'h5' ? 55 : 50))+'px);',
             });
+
+            // 数据加载
+            this.init();
         },
 
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
-            // 数据加载
-            this.init();
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {

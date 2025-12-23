@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="order_data != null" class="padding-horizontal-main padding-top">
+        <view v-if="order_data != null && (order_data.items || null) != null" class="padding-horizontal-main padding-top">
             <!-- 商品 -->
             <view class="goods padding-main border-radius-main bg-white spacing-mb">
                 <view class="goods-item oh">
@@ -35,20 +35,12 @@
             </view>
 
             <!-- 基础信息 -->
-            <view v-if="new_aftersale_data != null">
-                <!-- 提示/退货 -->
-                <view v-if="new_aftersale_data.status <= 2" class="msg-tips padding-main border-radius-main spacing-mb">
-                    <text class="msg-text">{{ new_aftersale_data.tips_msg.title }}</text>
-                    <text class="msg-a margin-left-sm" @tap="show_aftersale_event"> {{$t('common.view_text')}} >></text>
-                    <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="margin-top-sm oh">
-                        <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
-                    </view>
-                </view>
-
+            <view v-if="aftersale_data != null && is_create_aftersale == 0">
                 <!-- 退货地址 -->
-                <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="return-address msg-tips msg-tips-warning padding-main border-radius-main spacing-mb">
+                <view v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-white padding-main border-radius-main spacing-mb" @tap="text_event" data-event="copy" :data-value="return_goods_address.name + ' ' + return_goods_address.tel + ' ' + return_goods_address.address">
                     <text class="cr-base fw-b">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.00je4f')}}</text>
-                    <view class="cr-blue" @tap="text_event" data-event="copy" :data-value="return_goods_address.name + ' ' + return_goods_address.tel + ' ' + return_goods_address.address">
+                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                    <view class="cr-blue margin-top-sm">
                         <view>
                             <text class="margin-right-xxxl">{{ return_goods_address.name }}</text>
                             <text>{{ return_goods_address.tel }}</text>
@@ -58,44 +50,48 @@
                 </view>
 
                 <!-- 提示 -->
-                <view v-if="new_aftersale_data.status >= 3" :class="'msg-tips padding-main border-radius-main spacing-mb ' + (new_aftersale_data.status == 3 ? 'msg-tips-success' : new_aftersale_data.status == 4 ? 'msg-tips-danger' : 'msg-tips-warning')">
-                    <text class="msg-text">{{ new_aftersale_data.tips_msg.title }}</text>
-                    <text class="msg-a margin-left-sm" @tap="show_aftersale_event"> {{$t('common.view_text')}} >></text>
+                <view class="bg-white padding-main border-radius-main spacing-mb">
+                    <view class="fw-b text-size" :class="aftersale_data.status == 3 ? 'cr-green' : (aftersale_data.status == 4 ? 'cr-red' : '')">{{ aftersale_data.tips_msg.title }}</view>
+                    <view v-if="(aftersale_data.tips_msg.desc || null) != null" class="cr-grey margin-top-sm">{{ aftersale_data.tips_msg.desc }}</view>
+                    <view v-if="(aftersale_data.status != 3 && aftersale_data.status != 5) || (aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null)" class="margin-top-sm oh">
+                        <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round dis-inline-block margin-right-xl" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
+                        <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round dis-inline-block" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
+                    </view>
                 </view>
 
                 <!-- 详情 -->
-                <view v-if="new_aftersale_data.status != 5">
+                <view v-if="is_create_aftersale == 0">
                     <!-- 申请信息 -->
                     <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
                         <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.s70kj4')}}</view>
                         <view class="panel-content oh">
                             <view v-for="(item, index) in panel_base_data_list" :key="index" class="item br-b oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                                <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="new_aftersale_data[item.field] || ''" data-event="copy" @tap="text_event">
-                                    <text>{{ new_aftersale_data[item.field] || '' }}</text>
+                                <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="aftersale_data[item.field] || ''" data-event="copy" @tap="text_event">
+                                    <text>{{ aftersale_data[item.field] || '' }}</text>
                                     <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
                                 </view>
-                                <view v-else class="content fl br-l padding-left-main">{{ new_aftersale_data[item.field] || '' }}</view>
+                                <view v-else class="content fl br-l padding-left-main">{{ aftersale_data[item.field] || '' }}</view>
                             </view>
                         </view>
                     </view>
 
                     <!-- 快递信息 -->
-                    <view v-if="new_aftersale_data.status > 1 && new_aftersale_data.type == 1" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view v-if="aftersale_data.status > 1 && aftersale_data.type == 1" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                         <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
                         <view class="panel-content oh">
                             <view v-for="(item, index) in panel_express_data_list" :key="index" class="item br-b oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                                <view class="content fl br-l padding-left-main">{{ new_aftersale_data[item.field] || "" }}</view>
+                                <view class="content fl br-l padding-left-main">{{ aftersale_data[item.field] || "" }}</view>
                             </view>
                         </view>
                     </view>
 
                     <!-- 凭证 -->
-                    <view v-if="(new_aftersale_data.images || null) != null && new_aftersale_data.images.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view v-if="(aftersale_data.images || null) != null && aftersale_data.images.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                         <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y2c1l')}}</view>
                         <view class="panel-content-images oh">
-                            <view v-for="(item, index) in new_aftersale_data.images" :key="index" class="fl item padding-sm">
+                            <view v-for="(item, index) in aftersale_data.images" :key="index" class="fl item padding-sm">
                                 <image :src="item" mode="aspectFill" @tap="images_view_event" :data-index="index" class="dis-block radius"></image>
                             </view>
                         </view>
@@ -104,7 +100,7 @@
             </view>
 
             <!-- 没有售后数据/售后数据为已取消则可以重新申请售后 -->
-            <view v-if="new_aftersale_data == null || new_aftersale_data.status == 5">
+            <view v-if="is_create_aftersale == 1">
                 <!-- 类型选择 -->
                 <view v-if="aftersale_type_list.length > 0" class="choose-type padding-main border-radius-main bg-white oh spacing-mb">
                     <block v-for="(item, index) in aftersale_type_list" :key="index">
@@ -116,45 +112,47 @@
                 </view>
 
                 <!-- 表单 -->
-                <view v-if="form_type != null" class="form-container oh spacing-mb">
-                    <view class="form-gorup">
-                        <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.bprwq9')}}<text class="form-group-tips-must">*</text></view>
-                        <picker @change="form_reason_event" :value="form_reason_index" :range="reason_data_list">
-                            <view :class="'picker ' + (form_reason_index == null ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                                {{ form_reason_index == null ? $t("user-orderaftersale-detail.user-orderaftersale-detail.21icul") : reason_data_list[form_reason_index] }}
-                            </view>
-                        </picker>
-                    </view>
-
-                    <view v-if="form_type == 1" class="form-gorup">
-                        <view class="form-gorup-title"
-                            >{{$t('user-orderaftersale-detail.user-orderaftersale-detail.85pnkf')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.84upo4')}}{{ returned_data.returned_quantity }}</text></view
-                        >
-                        <slider @change="form_number_event" min="0" :max="returned_data.returned_quantity" step="1" :value="returned_data.returned_quantity" show-value></slider>
-                    </view>
-
-                    <view class="form-gorup">
-                        <view class="form-gorup-title"
-                            >{{$t('order-detail.order-detail.v52n5r')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1252if')}}{{ returned_data.refund_price }}</text></view
-                        >
-                        <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.9kvu52')" :value="form_price" />
-                    </view>
-
-                    <view class="form-gorup">
-                        <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y')}}</view>
-                        <textarea @input="form_msg_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.4f8u0c')" maxlength="200" :auto-height="true" :value="form_msg"></textarea>
-                    </view>
-
-                    <view class="form-gorup form-container-upload oh">
-                        <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y9355')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1l42ms')}}</text></view>
-                        <view class="form-upload-data oh">
-                            <block v-if="form_images_list.length > 0">
-                                <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
-                                    <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
-                                    <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
+                <view v-if="form_type != null" class="form-container spacing-mb">
+                    <view class="bg-white border-radius-main oh">
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.bprwq9')}}<text class="form-group-tips-must">*</text></view>
+                            <picker @change="form_reason_event" :value="form_reason_index" :range="reason_data_list">
+                                <view :class="'picker ' + (form_reason_index == null ? 'cr-grey' : 'cr-base') + ' arrow-right'">
+                                    {{ form_reason_index == null ? $t("user-orderaftersale-detail.user-orderaftersale-detail.21icul") : reason_data_list[form_reason_index] }}
                                 </view>
-                            </block>
-                            <image v-if="(form_images_list || null) == null || form_images_list.length < 3" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                            </picker>
+                        </view>
+
+                        <view v-if="form_type == 1" class="form-gorup">
+                            <view class="form-gorup-title"
+                                >{{$t('user-orderaftersale-detail.user-orderaftersale-detail.85pnkf')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.84upo4')}}{{ returned_data.returned_quantity }}</text></view
+                            >
+                            <slider @change="form_number_event" min="0" :max="returned_data.returned_quantity" step="1" :value="returned_data.returned_quantity" show-value></slider>
+                        </view>
+
+                        <view class="form-gorup">
+                            <view class="form-gorup-title"
+                                >{{$t('order-detail.order-detail.v52n5r')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1252if')}}{{ returned_data.refund_price }}</text></view
+                            >
+                            <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.9kvu52')" :value="form_price" />
+                        </view>
+
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y')}}</view>
+                            <textarea @input="form_msg_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.4f8u0c')" maxlength="200" :auto-height="true" :value="form_msg"></textarea>
+                        </view>
+
+                        <view class="form-gorup form-container-upload oh">
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y9355')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1l42ms')}}</text></view>
+                            <view class="form-upload-data oh">
+                                <block v-if="form_images_list.length > 0">
+                                    <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
+                                        <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
+                                        <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
+                                    </view>
+                                </block>
+                                <image v-if="(form_images_list || null) == null || form_images_list.length < 3" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                            </view>
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">
@@ -168,28 +166,28 @@
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
 
-        <block v-if="new_aftersale_data != null && new_aftersale_data.status != 5">
+        <block v-if="aftersale_data != null && is_create_aftersale == 0">
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </block>
 
         <!-- 退货弹层 -->
         <component-popup :propShow="popup_delivery_status" propPosition="bottom" @onclose="popup_delivery_close_event">
-            <view class="delivery-popup bg-base padding-horizontal-main padding-top-main">
+            <view class="delivery-popup bg-white padding-horizontal-main padding-top-main">
                 <view class="fr oh">
                     <view class="fr" @tap.stop="popup_delivery_close_event">
                         <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="margin-top-xxxl padding-top-xxl">
+                <view class="margin-top-xxxl">
                     <view class="form-container">
                         <view class="form-gorup">
                             <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.2000a0')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_express_name_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6d14hq')" :value="form_express_name" />
+                            <input type="text" @input="form_express_name_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6d14hq')" :value="form_express_name" />
                         </view>
                         <view class="form-gorup">
                             <view class="form-gorup-title">{{$t('user-order-detail.user-order-detail.2byl8l')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.8tt862')" :value="form_express_number" />
+                            <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.8tt862')" :value="form_express_number" />
                         </view>
                         <view class="form-gorup form-gorup-submit">
                             <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('common.submit')}}</button>
@@ -265,8 +263,9 @@
                 popup_delivery_status: false,
                 // 接口数据
                 editor_path_type: "",
+                is_create_aftersale: 0,
                 order_data: null,
-                new_aftersale_data: null,
+                aftersale_data: null,
                 step_data: null,
                 returned_data: null,
                 return_only_money_reason: [],
@@ -419,12 +418,9 @@
                     data_list_loding_status: 1,
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("aftersale", "orderaftersale"),
+                    url: app.globalData.get_request_url("detail", "orderaftersale"),
                     method: "POST",
-                    data: {
-                        oid: this.params.oid,
-                        did: this.params.did,
-                    },
+                    data: this.params,
                     dataType: "json",
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -435,8 +431,9 @@
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: "",
                                 editor_path_type: data.editor_path_type || "",
+                                is_create_aftersale: parseInt(data.is_create_aftersale || 0),
                                 order_data: data.order_data || null,
-                                new_aftersale_data: (data.new_aftersale_data || null) == null || data.new_aftersale_data.length <= 0 ? null : data.new_aftersale_data,
+                                aftersale_data: (data.aftersale_data || null) == null || data.aftersale_data.length <= 0 ? null : data.aftersale_data,
                                 step_data: data.step_data || null,
                                 returned_data: data.returned_data || null,
                                 return_only_money_reason: data.return_only_money_reason || [],
@@ -714,7 +711,7 @@
             form_delivery_submit_event(e) {
                 // 表单数据
                 var form_data = {
-                    id: this.new_aftersale_data.id,
+                    id: this.aftersale_data.id,
                     express_name: this.form_express_name,
                     express_number: this.form_express_number,
                 };
@@ -776,17 +773,54 @@
                 }
             },
 
-            // 凭证图片预览
-            images_view_event(e) {
-                uni.previewImage({
-                    current: this.new_aftersale_data.images[e.currentTarget.dataset.index],
-                    urls: this.new_aftersale_data.images,
+            // 取消
+            cancel_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.pn78ns'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url("cancel", "orderaftersale"),
+                                method: "POST",
+                                data: {
+                                    id: this.aftersale_data.id,
+                                },
+                                dataType: "json",
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        app.globalData.showToast(res.data.msg, "success");
+                                        this.init();
+                                    } else {
+                                        if (app.globalData.is_login_check(res.data)) {
+                                            app.globalData.showToast(res.data.msg);
+                                        } else {
+                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                        }
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
                 });
             },
 
-            // 查看售后数据
-            show_aftersale_event(e) {
-                app.globalData.url_open('/pages/user-orderaftersale/user-orderaftersale?keywords=' + this.new_aftersale_data.order_no);
+            // 凭证图片预览
+            images_view_event(e) {
+                uni.previewImage({
+                    current: this.aftersale_data.images[e.currentTarget.dataset.index],
+                    urls: this.aftersale_data.images,
+                });
             },
 
             // 开启客服弹层
