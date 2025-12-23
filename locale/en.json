@@ -13,6 +13,7 @@
 		"not_yet": "Not yet",
         "submit": "Submit",
 		"save": "Preserve",
+        "send": "Send",
 		"add": "Add",
         "copy": "Copy",
         "remove": "Remove",
@@ -102,7 +103,13 @@
         "two_nav_text" : "Secondary Navigation",
         "no_data": "No data available at the moment",
         "goods": "Goods",
-        "shop": "Shop"
+        "shop": "Shop",
+        "customer_service": "Customer Service",
+        "tel_service": "Tel Service",
+        "view_history": "View history",
+        "no_chat_record": "No communication records",
+        "dispute_chat": "Dispute communication",
+        "input_enter_chat_tips": "Please enter a message"
 	},
     "client": {
         "weixin": "WeChat",
@@ -875,7 +882,6 @@
 			"29f6n5": "Transfer",
 			"8752a4": "Withdrawal",
 			"91h03v": "Payment code",
-			"ki1nor": "Tel Service",
 			"2k0227": "Exit",
 			"3q4p8k": "Collection",
 			"57xw84": "Tracks",
@@ -1586,7 +1592,9 @@
 			"23v6rp": "Please select the operation type",
 			"dn3423": "Please select the quantity of returns",
 			"c9e2ms": "Please fill in the courier name",
-			"ld10pm": "Please fill in the courier tracking number"
+			"ld10pm": "Please fill in the courier tracking number",
+            "87tuff": "Describe the reason",
+            "6uygft": "Describe the reason in a format of 1-230 characters"
 		}
 	},
 	"ask-comments": {

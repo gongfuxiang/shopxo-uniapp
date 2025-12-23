@@ -23,17 +23,6 @@
                 </view>
             </view>
 
-            <!-- 客服信息 -->
-            <view v-if="(plugins_intellectstools_data || null) != null" class="bg-white padding-main border-radius-main spacing-mb">
-                <view v-if="(plugins_intellectstools_data.service_msg || null) != null" class="cr-red margin-bottom">{{ plugins_intellectstools_data.service_msg }}</view>
-                <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm padding-left-xxxl padding-right-xxxl round" @tap="plugins_intellectstools_service_open_event">
-                    <view class="dis-inline-block va-m margin-right-sm lh-0">
-                        <uni-icons type="chatbubble" size="34rpx" color="#fff"></uni-icons>
-                    </view>
-                    <text>{{$t('user.user.ki1nor')}}</text>
-                </button>
-            </view>
-
             <!-- 基础信息 -->
             <view v-if="aftersale_data != null && is_create_aftersale == 0">
                 <!-- 退货地址 -->
@@ -51,11 +40,96 @@
 
                 <!-- 提示 -->
                 <view class="bg-white padding-main border-radius-main spacing-mb">
+                    <!-- 售后状态，退货，取消，智能工具箱插件（客服信息） -->
                     <view class="fw-b text-size" :class="aftersale_data.status == 3 ? 'cr-green' : (aftersale_data.status == 4 ? 'cr-red' : '')">{{ aftersale_data.tips_msg.title }}</view>
                     <view v-if="(aftersale_data.tips_msg.desc || null) != null" class="cr-grey margin-top-sm">{{ aftersale_data.tips_msg.desc }}</view>
-                    <view v-if="(aftersale_data.status != 3 && aftersale_data.status != 5) || (aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null)" class="margin-top-sm oh">
-                        <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round dis-inline-block margin-right-xl" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
-                        <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round dis-inline-block" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
+                    <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.service_msg || null) != null" class="cr-grey margin-top-sm">{{ plugins_intellectstools_data.service_msg }}</view>
+                    <view v-if="(aftersale_data.status != 3 && aftersale_data.status != 5) || (aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null) || ((plugins_intellectstools_data || null) != null) || ((plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null)" class="margin-top-sm oh">
+                        <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round margin-right" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
+                        <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round margin-right" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="(plugins_intellectstools_data || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" @tap="plugins_intellectstools_service_open_event" hover-class="none">{{$t('common.customer_service')}}</button>
+                        <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">申请平台介入</button>
+                    </view>
+                </view>
+
+                <!-- 售后争议 -->
+                <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.dispute_chat')}}</view>
+                    <view class="panel-content">
+                        <view v-if="chat_user_list.length > 0" class="chat-head oh flex-row gap-10 tc margin-top">
+                            <view v-for="(item, index) in chat_user_list" :key="index">
+                                <view class="chat-user-avatar">
+                                    <image :src="item.chat_avatar" class="image br-grey-f5 circle" mode="aspectFit"></image>
+                                    <view class="chat-user-status auto pr bg-white circle">
+                                        <iconfont name="icon-select" size="28rpx" :class="item.status == 1 ? 'cr-green' : 'cr-grey'"></iconfont>
+                                    </view>
+                                </view>
+                                <view class="text-size-sm">{{item.chat_user}}（{{item.chat_user_type_name}}）</view>
+                            </view>
+                        </view>
+                        <scroll-view scroll-y="true" :scroll-top="chat_content_scroll_top_value" :scroll-with-animation="true" class="chat-content bs-bb bg-grey-f5 oh margin-top padding radius">
+                            <view v-if="chat_more_submit_status" class="padding-top-sm padding-bottom-xl tc">
+                                <view class="dis-inline-block cr-blue" @tap="chat_more_submit_event">
+                                    <text class="dis-inline-block">{{$t('common.view_history')}}</text>
+                                    <view class="dis-inline-block margin-left-xs">
+                                        <iconfont name="icon-angle-double-up" size="24rpx" class="cr-blue"></iconfont>
+                                    </view>
+                                </view>
+                            </view>
+                            <view v-if="chat_loading_status" class="padding-top-sm padding-bottom-xl tc">
+                                <text class="cr-grey">{{$t('common.loading_in_text')}}</text>
+                            </view>
+                            <view v-if="chat_no_data_status" class="padding-top-xxxxl tc">
+                                <text class="cr-grey">{{$t('common.no_chat_record')}}</text>
+                            </view>
+                            <view v-if="(chat_error_msg || null) != null" class="padding-top-xxxxl tc">
+                                <text class="cr-grey">{{chat_error_msg}}！</text>
+                            </view>
+                            <block v-if="chat_data_list.length > 0">
+                                <view v-for="(item, index) in chat_data_list" :key="index" class="chat-item oh padding-bottom-lg">
+                                    <view v-if="item.chat_user_type == chat_user_type" class="flex-row align-s gap-10 fr">
+                                        <view class="content oh">
+                                            <view class="tr">
+                                                <view class="cr-grey text-size-xss">{{item.add_time}}</view>
+                                                <view class="cr-base">{{item.chat_user}}（{{item.chat_user_type_name}}）</view>
+                                            </view>
+                                            <view class="bg-white radius padding-sm margin-top-sm fr">
+                                                <image v-if="item.type == 1" :src="item.content" @tap="image_show_event" :data-value="item.content" class="content-image radius dis-block" mode="aspectFit"></image>
+                                                <video v-else-if="item.type == 2" :src="item.content" class="content-video radius dis-block" controls></video>
+                                                <block v-else>
+                                                    <view v-for="(items, indexs) in item.content" :key="indexs">
+                                                        {{items}}
+                                                    </view>
+                                                </block>
+                                            </view>
+                                        </view>
+                                        <image :src="item.chat_avatar" class="image br-grey-f5 circle" mode="aspectFit"></image>
+                                    </view>
+                                    <view v-else class="flex-row align-s gap-10 fl">
+                                        <image :src="item.chat_avatar" class="image br-grey-f5 circle" mode="aspectFit"></image>
+                                        <view class="content oh">
+                                            <view class="tl">
+                                                <view class="cr-grey text-size-xss">{{item.add_time}}</view>
+                                                <view class="cr-base">{{item.chat_user}}（{{item.chat_user_type_name}}）</view>
+                                            </view>
+                                            <view class="bg-white radius padding-sm margin-top-sm fl">
+                                                <image v-if="item.type == 1" :src="item.content" @tap="image_show_event" :data-value="item.content" class="content-image radius dis-block" mode="aspectFit"></image>
+                                                <video v-else-if="item.type == 2" :src="item.content" class="content-video radius dis-block" controls></video>
+                                                <block v-else>
+                                                    <view v-for="(items, indexs) in item.content" :key="indexs">
+                                                        {{items}}
+                                                    </view>
+                                                </block>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </block>
+                        </scroll-view>
+                        <view v-if="chat_send_submit_status" class="chat-input flex-row align-s margin-top-sm">
+                            <textarea :placeholder="$t('common.input_enter_chat_tips')" class="chat-send-input ht-auto padding-sm br radius" :value="chat_input_value" @input="chat_input_event" placeholder-class="cr-grey"></textarea>
+                            <button type="default" size="mini" class="chat-send-submit bg-main br-main cr-white radius" @tap="chat_send_submit_event" :disabled="chat_send_submit_disabled_status" hover-class="none">{{$t('common.send')}}</button>
+                        </view>
                     </view>
                 </view>
 
@@ -124,16 +198,12 @@
                         </view>
 
                         <view v-if="form_type == 1" class="form-gorup">
-                            <view class="form-gorup-title"
-                                >{{$t('user-orderaftersale-detail.user-orderaftersale-detail.85pnkf')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.84upo4')}}{{ returned_data.returned_quantity }}</text></view
-                            >
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.85pnkf')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.84upo4')}}{{ returned_data.returned_quantity }}</text></view>
                             <slider @change="form_number_event" min="0" :max="returned_data.returned_quantity" step="1" :value="returned_data.returned_quantity" show-value></slider>
                         </view>
 
                         <view class="form-gorup">
-                            <view class="form-gorup-title"
-                                >{{$t('order-detail.order-detail.v52n5r')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1252if')}}{{ returned_data.refund_price }}</text></view
-                            >
+                            <view class="form-gorup-title">{{$t('order-detail.order-detail.v52n5r')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1252if')}}{{ returned_data.refund_price }}</text></view>
                             <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.9kvu52')" :value="form_price" />
                         </view>
 
@@ -173,7 +243,7 @@
 
         <!-- 退货弹层 -->
         <component-popup :propShow="popup_delivery_status" propPosition="bottom" @onclose="popup_delivery_close_event">
-            <view class="delivery-popup bg-white padding-horizontal-main padding-top-main">
+            <view class="bg-white padding-horizontal-main padding-top-main">
                 <view class="fr oh">
                     <view class="fr" @tap.stop="popup_delivery_close_event">
                         <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
@@ -197,7 +267,7 @@
             </view>
         </component-popup>
 
-        <!-- 客服弹窗 -->
+        <!-- 智能工具箱 - 客服弹窗 -->
         <component-popup :propShow="plugins_intellectstools_service_status" propPosition="bottom" @onclose="plugins_intellectstools_service_close_event">
             <view class="padding-top-main bg-white">
                 <view class="padding-horizontal-main">
@@ -221,7 +291,7 @@
                             <text class="cp" @tap="text_event" data-event="copy" :data-value="plugins_intellectstools_data.service_qq">{{ plugins_intellectstools_data.service_qq }}</text>
                         </view>
                         <view v-if="(plugins_intellectstools_data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
-                            <text>{{$t('order.order.7dxbm5')}}</text>
+                            <text>{{$t('order.order.7dxbm5')}}：</text>
                             <text class="cp" @tap="text_event" data-event="tel" :data-value="plugins_intellectstools_data.service_tel">{{ plugins_intellectstools_data.service_tel }}</text>
                         </view>
                         <view v-if="(plugins_intellectstools_data.service_weixin || null) != null || (plugins_intellectstools_data.service_line || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
@@ -235,6 +305,32 @@
                             </view>
                         </view>
                     </view>
+                </view>
+            </view>
+        </component-popup>
+
+        <!-- 多商户订单售后 - 平台介入弹窗 -->
+        <component-popup :propShow="plugins_shop_dispute_interfere_status" propPosition="bottom" @onclose="plugins_shop_dispute_interfere_close_event">
+            <view class="bg-white padding-horizontal-main padding-top-main">
+                <view class="fr oh">
+                    <view class="fr" @tap.stop="plugins_shop_dispute_interfere_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="margin-top-xxxl">
+                    <view v-if="(plugins_shop_data || null) != null" class="form-container">
+                        <view class="cr-red padding-vertical padding-horizontal-lg">{{plugins_shop_data.apply_dispute_tips}}</view>
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.87tuff')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" @input="form_dispute_describe_value_event" placeholder-class="cr-grey" class="cr-base br-b" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft')" :value="form_dispute_describe_value" />
+                        </view>
+                        <view class="form-gorup form-gorup-submit">
+                            <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_dispute_describe_submit_event" hover-class="none" :disabled="form_dispute_describe_button_disabled">{{$t('common.submit')}}</button>
+                        </view>
+                    </view>
+                    <block v-else>
+                        <component-no-data propStatus="0"></component-no-data>
+                    </block>
                 </view>
             </view>
         </component-popup>
@@ -369,6 +465,23 @@
                 // 智能工具插件、客服信息展示
                 plugins_intellectstools_data: null,
                 plugins_intellectstools_service_status: false,
+                // 多商户订单售后争议
+                plugins_shop_data: null,
+                plugins_shop_dispute_interfere_status: false,
+                form_dispute_describe_value: '',
+                form_dispute_describe_button_disabled: false,
+                chat_input_value: '',
+                chat_user_type: 0,
+                chat_send_submit_disabled_status: false,
+                chat_send_submit_status: false,
+                chat_more_submit_status: false,
+                chat_loading_status: false,
+                chat_no_data_status: false,
+                chat_error_msg: '',
+                chat_user_list: [],
+                chat_data_list: [],
+                chat_data_timer: null,
+                chat_content_scroll_top_value: 0,
             };
         },
 
@@ -388,14 +501,14 @@
                 params: params,
                 popup_delivery_status: (params.is_delivery_popup || 0) == 1,
             });
+
+            // 数据加载
+            this.init();
         },
 
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
-            // 数据加载
-            this.init();
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
@@ -404,6 +517,11 @@
 
             // 分享菜单处理
             app.globalData.page_share_handle();
+        },
+
+        // 页面销毁时执行
+        onUnload: function () {
+            clearInterval(this.chat_data_timer);
         },
 
         // 下拉刷新
@@ -442,7 +560,11 @@
                                 return_goods_address: data.return_goods_address || null,
                                 form_price: data.returned_data || null != null ? data.returned_data.refund_price : '',
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
+                                plugins_shop_data: data.plugins_shop_data || null,
                             });
+
+                            // 获取消息数据
+                            this.chat_data('init');
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -796,7 +918,10 @@
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
                                         app.globalData.showToast(res.data.msg, "success");
-                                        this.init();
+                                        var self = this;
+                                        setTimeout(function () {
+                                            self.init();
+                                        }, 1000);
                                     } else {
                                         if (app.globalData.is_login_check(res.data)) {
                                             app.globalData.showToast(res.data.msg);
@@ -836,6 +961,279 @@
                     plugins_intellectstools_service_status: false,
                 });
             },
+            
+            
+            // 开启订单售后平台介入弹层
+            plugins_shop_dispute_interfere_open_event(e) {
+                this.setData({
+                    plugins_shop_dispute_interfere_status: true,
+                });
+            },
+            
+            // 关闭订单售后平台介入弹层
+            plugins_shop_dispute_interfere_close_event(e) {
+                this.setData({
+                    plugins_shop_dispute_interfere_status: false,
+                });
+            },
+
+            // 申请平台介入描述原因事件
+            form_dispute_describe_value_event(e) {
+                this.setData({
+                    form_dispute_describe_value: e.detail.value,
+                });
+            },
+
+            // 申请平台介入提交
+            form_dispute_describe_submit_event(e) {
+                var value = this.form_dispute_describe_value;
+                if(value === '') {
+                    app.globalData.showToast(this.$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft'));
+                    return;
+                }
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                this.setData({
+                    form_dispute_describe_button_disabled: true,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("usercreate", "orderaftersaledispute", "shop"),
+                    method: "POST",
+                    data: {
+                        order_aftersale_id: this.aftersale_data.id,
+                        describe: value
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        this.setData({
+                            form_dispute_describe_button_disabled: false,
+                        });
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, "success");
+                            this.setData({
+                                plugins_shop_dispute_interfere_status: false,
+                            });
+                            var self = this;
+                            setTimeout(function () {
+                                self.init();
+                            }, 1000);
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        this.setData({
+                            form_dispute_describe_button_disabled: false,
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 获取消息数据
+            // type 类型 add | init | history
+            chat_data(type = 'init') {
+                // 获取消息数据
+                if((this.plugins_shop_data || null) != null && parseInt(this.plugins_shop_data.status || 0) == 1 && (this.plugins_shop_data.dispute_data || null) != null) {
+                    // 是否需要显示发送按钮
+                    this.setData({
+                        chat_send_submit_status: this.plugins_shop_data.dispute_data.status <= 2,
+                    });
+
+                    // 获取数据
+                    var order_aftersale_dispute_id = 0;
+                    var temp_chat_data_list = this.chat_data_list;
+                    if(temp_chat_data_list.length > 0) {
+                        var index = (type == 'history') ? 0 : temp_chat_data_list.length-1;
+                        order_aftersale_dispute_id = temp_chat_data_list[index]['id']
+                    }
+                    if(type == 'init' || type == 'history')
+                    {
+                        this.setData({
+                            chat_more_submit_status: false,
+                            chat_loading_status: true,
+                        });
+                    }
+                    uni.request({
+                        url: app.globalData.get_request_url("userchatdata", "orderaftersaledispute", "shop"),
+                        method: "POST",
+                        data: {
+                            type: type,
+                            order_aftersale_id: this.aftersale_data.id,
+                            order_aftersale_dispute_id: order_aftersale_dispute_id,
+                        },
+                        dataType: "json",
+                        success: (res) => {
+                            if (res.data.code == 0) {
+                                // 数据渲染、初始化则反转数据、记录最后的节点id
+                                var data = res.data.data.data;
+                                if(data.length > 0)
+                                {
+                                    if(type == 'init')
+                                    {
+                                        data = data.reverse();
+                                    }
+                                    for(var i in data)
+                                    {
+                                        this.chat_data_merge(data[i], type);
+                                    }
+                                }
+
+                                // 加载和查看更多处理
+                                if(type == 'init' || type == 'history')
+                                {
+                                    this.setData({
+                                        chat_more_submit_status: (res.data.data.count > 0),
+                                        chat_loading_status: false,
+                                    });
+                                }
+
+                                // 是否存在消息用户列表
+                                if(res.data.data.user_list.length > 0)
+                                {
+                                    this.setData({
+                                        chat_user_list: res.data.data.user_list,
+                                    });
+                                }
+
+                                // 初始化完成
+                                if(type == 'init')
+                                {
+                                    // 是否存在数据，仅初始化时候处理
+                                    this.setData({
+                                        chat_no_data_status: res.data.data.data.length == 0
+                                    });
+
+                                    // 启动定时任务、定时获取消息、必须存在发送按钮
+                                    var self = this;
+                                    if(self.chat_send_submit_status)
+                                    {
+                                        var timer = setInterval(function()
+                                        {
+                                            self.chat_data('add');
+                                        }, 6000);
+                                        self.setData({
+                                            chat_data_timer: timer
+                                        });
+                                    }
+                                }
+                            } else {                            
+                                if(type == 'init')
+                                {
+                                    this.setData({
+                                        chat_error_msg: res.data.msg,
+                                        chat_loading_status: false,
+                                    });
+                                } else {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        },
+                        fail: () => {
+                            var msg = this.$t('common.internet_error_tips');
+                            if(type == 'init')
+                            {
+                                this.setData({
+                                    chat_error_msg: msg,
+                                    chat_loading_status: false,
+                                });
+                            } else {
+                                app.globalData.showToast(msg);
+                            }
+                        },
+                    });
+                }
+            },
+
+            // 消息内容合并
+            // item 数据
+            // type 类型 add | init | history
+            chat_data_merge(item, type) {
+                var temp_chat_data_list = this.chat_data_list;
+                if(type == 'history') {
+                    temp_chat_data_list.unshift(item);
+                } else {
+                    temp_chat_data_list.push(item);
+                }
+                this.setData({
+                    chat_data_list: temp_chat_data_list,
+                    chat_no_data_status: temp_chat_data_list.length == 0,
+                });
+
+                // 添加类型滚动到最底部
+                if(type == 'add') {
+                    var self = this;
+                    setTimeout(function() {
+                        const query = uni.createSelectorQuery().in(self);
+                        query.selectAll('.chat-content .chat-item').boundingClientRect();
+                        query.exec(res => {
+                            const scrollContentHeight = res[0].reduce((total, item) => total + item.height, 0);
+                            self.setData({
+                                chat_content_scroll_top_value: scrollContentHeight,
+                            });
+                        });
+                    });
+                }
+            },
+
+            // 客服输入内容事件
+            chat_input_event(e) {
+                this.setData({
+                    chat_input_value: e.detail.value,
+                });
+            },
+
+            // 客服发送按钮事件
+            chat_send_submit_event(e) {
+                if(this.chat_input_value !== '') {
+                    this.setData({
+                        chat_send_submit_disabled_status: true,
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url("userchatsend", "orderaftersaledispute", "shop"),
+                        method: "POST",
+                        data: {
+                            order_aftersale_id: this.aftersale_data.id,
+                            content: this.chat_input_value
+                        },
+                        dataType: "json",
+                        success: (res) => {
+                            this.setData({
+                                chat_send_submit_disabled_status: false,
+                            });
+                            if(res.data.code == 0)
+                            {
+                                this.setData({
+                                    chat_input_value: '',
+                                });
+                                this.chat_data_merge(res.data.data, 'add');
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, "chat_send_submit_event")) {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        },
+                        fail: () => {
+                            this.setData({
+                                chat_send_submit_disabled_status: false,
+                            });
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
+            },
+
+            // 订单售后争议沟通 - 查看更多消息
+            chat_more_submit_event(e) {
+                this.chat_data('history');
+            },
 
             // 图片预览
             image_show_event(e) {
@@ -855,7 +1253,7 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
         },
     };
 </script>
