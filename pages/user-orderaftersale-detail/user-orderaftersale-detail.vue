@@ -1168,7 +1168,7 @@
                 });
 
                 // 添加类型滚动到最底部
-                if(type == 'add') {
+                if(type == 'init' || type == 'add') {
                     var self = this;
                     setTimeout(function() {
                         const query = uni.createSelectorQuery().in(self);
