@@ -51,7 +51,10 @@
                         <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">申请平台介入</button>
                     </view>
                     <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="margin-top-lg">
-                        <view class="cr-red">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.t67iug')}}</view>
+                        <view>
+                            <text class="cr-red">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.t67iug')}}</text>
+                            <text v-if="plugins_shop_data.dispute_data.status <= 1" class="cr-blue cp margin-left-xxl" @tap="dispute_cancel_event">{{$t('common.cancel')}}</text>
+                        </view>
                         <view class="margin-top-xs">
                             <text class="cr-grey">{{$t('common.status')}}：</text>
                             <text>{{plugins_shop_data.dispute_data.status_name}}</text>
@@ -918,9 +921,9 @@
             cancel_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.pn78ns'),
+                    content: this.$t('common.cancel_confirm_tips'),
                     confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: this.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
                             uni.showLoading({
@@ -1056,6 +1059,51 @@
                 });
             },
 
+            // 争议取消
+            dispute_cancel_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.cancel_confirm_tips'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url("cancel", "orderaftersaledispute", "shop"),
+                                method: "POST",
+                                data: {
+                                    id: this.plugins_shop_data.dispute_data.id,
+                                },
+                                dataType: "json",
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        app.globalData.showToast(res.data.msg, "success");
+                                        var self = this;
+                                        setTimeout(function () {
+                                            self.init();
+                                        }, 1000);
+                                    } else {
+                                        if (app.globalData.is_login_check(res.data)) {
+                                            app.globalData.showToast(res.data.msg);
+                                        } else {
+                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                        }
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
+
             // 获取消息数据
             // type 类型 add | init | history
             chat_data(type = 'init') {
@@ -1063,7 +1111,7 @@
                 if((this.plugins_shop_data || null) != null && parseInt(this.plugins_shop_data.status || 0) == 1 && (this.plugins_shop_data.dispute_data || null) != null) {
                     // 是否需要显示发送按钮
                     this.setData({
-                        chat_send_submit_status: this.plugins_shop_data.dispute_data.status <= 2,
+                        chat_send_submit_status: this.plugins_shop_data.dispute_data.status <= 1,
                     });
 
                     // 获取数据

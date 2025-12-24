@@ -191,9 +191,9 @@
             cancel_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.pn78ns'),
+                    content: this.$t('common.cancel_confirm_tips'),
                     confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: this.$t('common.no'),
                     success: result => {
                         if (result.confirm) {
                             // 参数

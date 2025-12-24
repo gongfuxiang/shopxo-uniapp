@@ -114,7 +114,11 @@
         "view_history": "View history",
         "no_chat_record": "No communication records",
         "dispute_chat": "Dispute communication",
-        "input_enter_chat_tips": "Please enter a message"
+        "input_enter_chat_tips": "Please enter a message",
+        "access": "Access",
+        "no": "No",
+        "cancel_confirm_tips": "After cancellation, it cannot be restored. Are you sure to continue?",
+        "delete_confirm_tips": "After deletion, it cannot be restored. Are you sure to continue?"
 	},
     "client": {
         "weixin": "WeChat",
@@ -946,7 +950,6 @@
 			"6390gk": "Closed",
 			"vvxct1": "Opening order number",
 			"vjfki8": "Opening duration",
-			"pn78ns": "After cancellation, it cannot be restored. Are you sure you want to continue?",
 			"93j3zq": "No form data"
 		}
 	},
@@ -1146,14 +1149,6 @@
 			"e5k407": "Searching",
 			"145ci4": "Selection successful",
 			"ocg49p": "Selection list already exists"
-		}
-	},
-	"recommend-list": {
-		"recommend-list": {
-			"x74z3o": "commodity",
-			"78n1ly": "access",
-			"54d418": "After deletion, it cannot be restored. Are you sure to continue?",
-			"w9460o": "No"
 		}
 	},
 	"team": {

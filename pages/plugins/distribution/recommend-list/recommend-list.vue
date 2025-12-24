@@ -65,7 +65,7 @@
                     { name: this.$t('user-detail.user-detail.uy6lrz'), field: "title" },
                     { name: this.$t('form.form.xy87t8'), field: "describe" },
                     { name: this.$t('common.goods'), field: "goods_count" },
-                    { name: this.$t('recommend-list.recommend-list.78n1ly'), field: "access_count" },
+                    { name: this.$t('common.access'), field: "access_count" },
                 ],
                 // 自定义分享信息
                 share_info: {},
@@ -268,9 +268,9 @@
                 }
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    content: this.$t('common.delete_confirm_tips'),
                     confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: this.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
                             uni.showLoading({

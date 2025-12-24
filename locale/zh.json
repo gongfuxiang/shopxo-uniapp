@@ -114,7 +114,11 @@
         "view_history": "查看历史",
         "no_chat_record": "没有沟通记录",
         "dispute_chat": "争议沟通",
-        "input_enter_chat_tips": "请输入消息"
+        "input_enter_chat_tips": "请输入消息",
+        "access": "访问",
+        "no": "不了",
+        "cancel_confirm_tips": "取消后不可恢复，确定继续吗?",
+        "delete_confirm_tips": "删除后不可恢复，确定继续吗?"
 	},
     "client": {
         "weixin": "微信",
@@ -936,7 +940,6 @@
 			"6390gk": "已关闭",
 			"vvxct1": "开通单号",
 			"vjfki8": "开通时长",
-			"pn78ns": "取消后不可恢复，确定继续吗?",
 			"93j3zq": "无表单数据"
 		}
 	},
@@ -1134,13 +1137,6 @@
 			"e5k407": "搜索中...",
 			"145ci4": "选择成功",
 			"ocg49p": "已存在选择列表"
-		}
-	},
-	"recommend-list": {
-		"recommend-list": {
-			"78n1ly": "访问",
-			"54d418": "删除后不可恢复，确定继续吗?",
-			"w9460o": "不了"
 		}
 	},
 	"team": {
