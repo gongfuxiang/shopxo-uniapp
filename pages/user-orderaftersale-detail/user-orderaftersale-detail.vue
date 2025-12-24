@@ -40,7 +40,7 @@
 
                 <!-- 提示 -->
                 <view class="bg-white padding-main border-radius-main spacing-mb">
-                    <!-- 售后状态，退货，取消，智能工具箱插件（客服信息） -->
+                    <!-- 售后状态，退货，取消，智能工具箱插件（客服信息），多商户售后争议数据 -->
                     <view class="fw-b text-size" :class="aftersale_data.status == 3 ? 'cr-green' : (aftersale_data.status == 4 ? 'cr-red' : '')">{{ aftersale_data.tips_msg.title }}</view>
                     <view v-if="(aftersale_data.tips_msg.desc || null) != null" class="cr-grey margin-top-sm">{{ aftersale_data.tips_msg.desc }}</view>
                     <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.service_msg || null) != null" class="cr-grey margin-top-sm">{{ plugins_intellectstools_data.service_msg }}</view>
@@ -49,6 +49,25 @@
                         <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round margin-right" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="(plugins_intellectstools_data || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" @tap="plugins_intellectstools_service_open_event" hover-class="none">{{$t('common.customer_service')}}</button>
                         <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">申请平台介入</button>
+                    </view>
+                    <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="margin-top-lg">
+                        <view class="cr-red">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.t67iug')}}</view>
+                        <view class="margin-top-xs">
+                            <text class="cr-grey">{{$t('common.status')}}：</text>
+                            <text>{{plugins_shop_data.dispute_data.status_name}}</text>
+                        </view>
+                        <view class="margin-top-xs">
+                            <text class="cr-grey">{{$t('common.reason')}}：</text>
+                            <text>{{plugins_shop_data.dispute_data.describe}}</text>
+                        </view>
+                        <view class="margin-top-xs">
+                            <text class="cr-grey">{{$t('common.refuse')}}/{{$t('common.close_reason')}}：</text>
+                            <text>{{plugins_shop_data.dispute_data.reason}}</text>
+                        </view>
+                        <view class="margin-top-xs">
+                            <text class="cr-grey">{{$t('common.apply_time')}}：</text>
+                            <text>{{plugins_shop_data.dispute_data.add_time}}</text>
+                        </view>
                     </view>
                 </view>
 
@@ -127,7 +146,7 @@
                             </block>
                         </scroll-view>
                         <view v-if="chat_send_submit_status" class="chat-input flex-row align-s margin-top-sm">
-                            <textarea :placeholder="$t('common.input_enter_chat_tips')" class="chat-send-input ht-auto padding-sm br radius" :value="chat_input_value" @input="chat_input_event" placeholder-class="cr-grey"></textarea>
+                            <textarea :placeholder="$t('common.input_enter_chat_tips')" class="chat-send-input wh-auto ht-auto padding-sm br radius" :value="chat_input_value" @input="chat_input_event" placeholder-class="cr-grey"></textarea>
                             <button type="default" size="mini" class="chat-send-submit bg-main br-main cr-white radius" @tap="chat_send_submit_event" :disabled="chat_send_submit_disabled_status" hover-class="none">{{$t('common.send')}}</button>
                         </view>
                     </view>

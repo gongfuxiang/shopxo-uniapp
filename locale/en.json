@@ -42,6 +42,11 @@
 		"service": "service",
         "base": "Base",
         "params": "Params",
+        "status": "Status",
+        "reason": "Reason",
+        "close_reason": "Close Reason",
+        "refuse": "Refuse",
+        "buy": "Buy",
         "web_client": "WebClient",
         "app_client": "AppClient",
 		"please_input": "Please enter",
@@ -1205,7 +1210,6 @@
 			"s70kj4": "Application Information",
 			"1s2f0g": "Electronic invoice",
 			"4tu3v3": "You can click on the invoice name and copy it, then go to the browser to open the address and download the invoice.",
-			"rrfex6": "state",
 			"p73963": "Invoice content",
 			"41qbu6": "Name of the bank where the enterprise opens the account",
 			"3a9459": "Enterprise account opening",
@@ -1594,7 +1598,8 @@
 			"c9e2ms": "Please fill in the courier name",
 			"ld10pm": "Please fill in the courier tracking number",
             "87tuff": "Describe the reason",
-            "6uygft": "Describe the reason in a format of 1-230 characters"
+            "6uygft": "Describe the reason in a format of 1-230 characters",
+            "t67iug": "You have applied for platform intervention in mediation!"
 		}
 	},
 	"ask-comments": {
@@ -1620,7 +1625,6 @@
 	},
 	"binding-list": {
 		"binding-list": {
-			"kh7951": "buy",
 			"2u4v35": "Put it away",
 			"91d60h": "launch"
 		}

@@ -42,6 +42,11 @@
 		"service": "服务",
         "base": "基础",
         "params": "参数",
+        "status": "状态",
+        "reason": "原因",
+        "close_reason": "关闭原因",
+        "refuse": "拒绝",
+        "buy": "购买",
         "web_client": "web端",
         "app_client": "手机端",
 		"please_input": "请输入",
@@ -1581,7 +1586,8 @@
 			"c9e2ms": "请填写快递名称",
 			"ld10pm": "请填写快递单号",
             "87tuff": "描述原因",
-            "6uygft": "描述原因格式1~230个字符"
+            "6uygft": "描述原因格式1~230个字符",
+            "t67iug": "您已申请平台介入调解！"
 		}
 	},
 	"ask-comments": {
@@ -1607,7 +1613,6 @@
 	},
 	"binding-list": {
 		"binding-list": {
-			"kh7951": "购买",
 			"2u4v35": "收起",
 			"91d60h": "展开"
 		}

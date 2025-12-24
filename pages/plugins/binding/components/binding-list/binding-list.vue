@@ -20,7 +20,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}{{$t('binding-list.binding-list.kh7951')}}</button>
+                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}{{$t('common.buy')}}</button>
                         </view>
                     </view>
                     <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * ((goods_cover_class || null) == null ? 134 : 158) + 12 : '0') + 'rpx'">
