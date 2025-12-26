@@ -275,7 +275,7 @@
 				
 				// 如果距离上次点赞超过1秒，重置计数
 				if (current_time - this.last_like_time > 1000) {
-					this.like_count = 1;
+					this.like_count = 0;
 					this.show_like_count = false; // 重置时隐藏数量显示
 				} else {
 					// 否则增加计数
