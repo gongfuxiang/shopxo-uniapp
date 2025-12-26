@@ -124,7 +124,7 @@
     .live-ended {
         width: 100vw;
         height: 100vh;
-        background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
+        background: linear-gradient(to bottom,#AD18F9,#05DFC7);
         position: absolute;
         top: 0;
         left: 0;

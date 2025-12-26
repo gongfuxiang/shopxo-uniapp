@@ -63,7 +63,7 @@
         top: 0;
         left: 0;
         z-index: 9;
-        background: linear-gradient(to bottom, #330066, #000000);
+        background-image: linear-gradient(to bottom, #330066, #000000);
     }
     .live-content {
         position: absolute;
