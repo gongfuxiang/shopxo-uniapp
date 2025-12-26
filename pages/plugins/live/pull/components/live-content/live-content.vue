@@ -859,7 +859,7 @@
                     clearTimeout(this.like_timer);
                 }
                 // 两秒没有人点赞，则显示临时点赞数量加上原有数量
-                setTimeout(() => {
+                this.like_timer = setTimeout(() => {
                     // 显示临时点赞数量加上原有数量
                     this.like_count = this.like_count + this.casual_like_count;
                     this.socket_send('live-room-like', this.casual_like_count);
