@@ -126,9 +126,11 @@
                     left = (width - 800) / 2;
                 }
                 // #endif
+                // #ifndef APP-NVUE
                 this.setData({
                     popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;',
                 });
+                // #endif
             },
         },
     };

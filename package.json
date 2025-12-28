@@ -1,5 +1,20 @@
 {
-  "dependencies": {
-    "jweixin-module": "^1.6.0"
-  }
+    "id": "liusheng22-HlsVideoPlayer",
+    "name": "HlsVideoPlayer - APP 的 hls 的视频流播放器",
+    "displayName": "HlsVideoPlayer - APP 的 hls 的视频流播放器",
+    "version": "0.0.1",
+    "description": "APP 的视频流播放器，支持iOS & Android，但是仅支持 hls 视频流，flv 不支持原因见下方文档详细说明",
+    "keywords": [
+        "hls",
+        "flv",
+        "m3u8",
+        "视频流",
+        "视频播放器"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ]
+    }
 }

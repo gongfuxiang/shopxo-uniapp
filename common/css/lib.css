@@ -1343,3 +1343,115 @@
     border-bottom-left-radius: 8rpx;
     border-bottom-right-radius: 8rpx;
 }
+
+/**
+ * 字体类样式
+ */
+.size-10 {
+    font-size: 20rpx;
+}
+.size-12 {
+    font-size: 24rpx;
+}
+.size-14 {
+    font-size: 28rpx;
+}
+.size-16 {
+    font-size: 32rpx;
+}
+.size-20 {
+    font-size: 40rpx;
+}
+
+/**
+ * 间距类样式
+ */
+.mr-10 {
+    margin-right: 20rpx;
+}
+.mr-5 {
+    margin-right: 10rpx;
+}
+.mr-0 {
+    margin-right: 0;
+}
+
+.ml-10 {
+    margin-left: 20rpx;
+}
+.ml-5 {
+    margin-left: 10rpx;
+}
+.ml-0 {
+    margin-left: 0;
+}
+
+.mb-10 {
+    margin-bottom: 20rpx;
+}
+.mb-5 {
+    margin-bottom: 10rpx;
+}
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mt-10 {
+    margin-top: 20rpx;
+}
+.mt-5 {
+    margin-top: 10rpx;
+}
+.mt-0 {
+    margin-top: 0;
+}
+
+.pa-20 {
+    padding: 40rpx;
+}
+.pa-10 {
+    padding: 20rpx;
+}
+.pa-14 {
+    padding: 28rpx;
+}
+.pa-5 {
+    padding: 10rpx;
+}
+
+.pt-3 {
+    padding-top: 6rpx;
+}
+
+/**
+ * 颜色类样式
+ */
+.cr-9 {
+    color: #999;
+}
+
+.cr-f {
+    color: #fff;
+}
+.cr-d {
+    color: #ddd;
+}
+
+.bg-0 {
+    background-color: #000;
+}
+.bg-f9 {
+    background-color: #f9f9f9;
+}
+/**
+ * 指针事件类样式， 穿透
+ */
+.pointer-events-none {
+    pointer-events: none;
+}
+/**
+ * 指针事件类样式， 不穿透
+ */
+.pointer-events-auto {
+    pointer-events: auto;
+}

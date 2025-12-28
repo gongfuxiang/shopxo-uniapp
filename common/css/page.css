@@ -345,6 +345,12 @@ button:before {
     /* #endif */
 }
 
+.bottom-line-exclude-bottom {
+    /* #ifdef APP | MP */
+    padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx); /* 兼容iOS底部安全区域 */
+    /* #endif */
+}
+
 /**
  * 页面底部浮动、增加底部边距
  */
@@ -824,7 +830,9 @@ button[disabled].bg-grey {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    /* #ifndef APP-NVUE */
     max-width: 100%;
+    /* #endif */
 }
 .multi-text {
     max-width: 100%;
@@ -850,6 +858,9 @@ button[disabled].bg-grey {
     word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #ifdef APP-NVUE */
+    lines: 1;
+    /* #endif */
 }
 .text-line-2 {
     overflow: hidden;
@@ -862,6 +873,9 @@ button[disabled].bg-grey {
     word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #ifdef APP-NVUE */
+    lines: 2;
+    /* #endif */
 }
 .text-line-3 {
     overflow: hidden;
@@ -874,6 +888,9 @@ button[disabled].bg-grey {
     word-break: break-word;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #ifdef APP-NVUE */
+    lines: 3;
+    /* #endif */
 }
 /**
  * 文字超出部分换行
@@ -1355,4 +1372,8 @@ button[disabled].bg-grey {
 }
 .indicator_about_location .dot-item {
     margin: 0 6rpx;
+}
+
+.box-border-box {
+    box-sizing: border-box;
 }

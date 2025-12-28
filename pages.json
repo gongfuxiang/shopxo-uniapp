@@ -2154,6 +2154,18 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/complaint",
+            "pages": [
+                {
+                    "path": "form/form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {
