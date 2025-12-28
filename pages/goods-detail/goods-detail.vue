@@ -19,7 +19,7 @@
                         <block v-for="(item, index) in nav_more_list" :key="index">
                             <view class="item padding-main cp" :data-value="item.url" data-type="1" @tap="nav_more_event">
                                 <view class="va-m dis-inline-block">
-                                    <uni-icons :type="item.icon" size="16" color="#fff"></uni-icons>
+                                    <iconfont :name="item.icon" color="#fff"></iconfont>
                                 </view>
                                 <text class="cr-white va-m margin-left-sm">{{ item.name }}</text>
                             </view>
@@ -411,7 +411,7 @@
                 </view>
 
                 <!-- 猜你喜欢 -->
-                <view v-if="guess_you_like.length > 0" class="padding-horizontal-main margin-top-main">
+                <view v-if="guess_you_like.length > 0" class="margin-top-main">
                     <view class="tc spacing-mb">
                         <view class="guess-like fw-b text-size-md">{{$t('goods-detail.goods-detail.v2974w')}}</view>
                     </view>
