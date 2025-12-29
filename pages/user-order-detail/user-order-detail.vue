@@ -58,7 +58,7 @@
                                 </view>
                                 <view class="pa right-0 bottom-0 z-i">
                                     <text v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="cr-blue bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</text>
-                                    <view class="dis-inline-block margin-left-xxxl" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
+                                    <view class="dis-inline-block margin-left-lg" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
                                         <text class="margin-right-xs">商品信息</text>
                                         <iconfont name="icon-arrow-down" color="#999" propClass="va-m"></iconfont>
                                     </view>
