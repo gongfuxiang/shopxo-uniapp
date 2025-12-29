@@ -384,7 +384,7 @@
                             data['invoice_content'] = this.invoice_content_list[this.form_invoice_content_index];
                         }
                         uni.showLoading({
-                            title: this.$t('buy.buy.r79t77'),
+                            title: this.$t('common.submit_in_text'),
                         });
                         this.setData({
                             form_submit_loading: true,

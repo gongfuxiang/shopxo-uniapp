@@ -2164,6 +2164,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "user/user",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         }

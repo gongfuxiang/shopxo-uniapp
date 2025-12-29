@@ -1,0 +1,7 @@
+.business .cover {
+    width: 160rpx;
+    height: 160rpx;
+}
+.business .title {
+    width: calc(100% - 180rpx);
+}

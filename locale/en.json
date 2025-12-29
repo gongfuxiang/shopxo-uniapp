@@ -47,6 +47,8 @@
         "close_reason": "Close Reason",
         "refuse": "Refuse",
         "buy": "Buy",
+        "complaint": "Complaint",
+        "info": "Info",
         "web_client": "WebClient",
         "app_client": "AppClient",
 		"please_input": "Please enter",
@@ -63,21 +65,23 @@
         "refresh_text": "Refresh",
         "yes_text": "Yes",
         "no_text": "NO",
+        "wait": "Wait",
         "place_order_text": "Place Order",
-		"processing_in_text": "Processing",
-		"loading_in_text": "Loading",
-		"upload_in_text": "Uploading",
-		"auth_in_text": "Authorizing",
-        "view_examples": "View examples",
-		"warm_tips": "Kind reminder",
-		"no_relevant_data_tips": "No relevant data available",
-		"internet_error_tips": "The internet has wandered off~",
-		"sub_error_retry_tips": "Submission failed, please try again!",
-		"not_more_list_data_tips": "No more list data available",
+        "processing_in_text": "Processing",
+        "loading_in_text": "Loading",    
+        "upload_in_text": "Uploading",
+        "auth_in_text": "Authorizing",
 		"login_in_text": "Logging in",
 		"sending_in_text": "Sending",
         "payment_in_text": "Payment in progress",
+        "submit_in_text": "Submitting",
 		"sending": "Sending",
+        "view_examples": "View examples",
+        "warm_tips": "Kind reminder",
+        "no_relevant_data_tips": "No relevant data available",
+        "internet_error_tips": "The internet has wandered off~",
+        "sub_error_retry_tips": "Submission failed, please try again!",
+        "not_more_list_data_tips": "No more list data available",
 		"scan_name": "Scan it",
 		"not_have_name": "not have",
         "note": "Remarks",
@@ -312,7 +316,13 @@
         "plugins-certificate-userauth": "Certificate",
         "plugins-certificate-userauth-saveinfo": "Certificate editor",
         "plugins-certificate-userauth-detail": "Certificate detail",
-        "plugins-goodscompare-index": "Goods Compare"
+        "plugins-goodscompare-index": "Goods Compare",
+        "plugins-complaint-user": "Complaint/Report List",
+        "plugins-complaint-form": "Complaint/Report",
+        "plugins-video-index": "Short Video List",
+        "plugins-video-search": "Short video search",
+        "plugins-video-detail": "Short video details",
+        "plugins-live-pull": "Live Details"
 	},
 	"login": {
 		"login": {
@@ -526,7 +536,6 @@
 			"4rb08b": "There are currently no available coupons available",
 			"3740ur": "Please select an address",
 			"71kidy": "Please select payment method",
-			"r79t77": "Submitting",
 			"31616e": "The current mode does not allow the use of addresses",
 			"g7dk3f": "Card type selection",
 			"0s1k23": "Active",
@@ -1977,6 +1986,13 @@
             "678iff": "Certificate Name",
             "tufg33": "ID NO",
             "ftyui3": "Expiration date"
+    	}
+    },
+    "complaint-form": {
+    	"complaint-form": {
+    		"78iudg": "proof image",
+    		"56ys33": "Please upload complete and clear images, up to a maximum of 10",
+    		"ssdff4": "My submission record"
     	}
     }
 }

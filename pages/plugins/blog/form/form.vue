@@ -148,7 +148,7 @@
                 // 封面图片
                 image_list: [],
                 // 路径类型
-                editor_path_type: 'common',
+                editor_path_type: '',
 
                 // 内容
                 input_length_max: 500,
@@ -246,6 +246,7 @@
                                     data: data,
                                     blog_category_list: blog_category_list,
                                     image_list: img_list,
+                                    editor_path_type: res.data.data.editor_path_type,
                                     more_height: data.describe || data.seo_title || data.seo_keywords || data.seo_desc ? '708rpx' : '0',
                                     is_more: data.describe || data.seo_title || data.seo_keywords || data.seo_desc ? 'true' : 'false',
                                     data_list_loding_status: 3,
@@ -253,6 +254,7 @@
                             } else {
                                 this.setData({
                                     blog_category_list: blog_category_list,
+                                    editor_path_type: res.data.data.editor_path_type,
                                     data_list_loding_status: 3,
                                 });
                             }
@@ -352,7 +354,7 @@
                         name: 'upfile',
                         formData: {
                             action: 'uploadimage',
-                            path_type: 'common', // 路径类型，默认common
+                            path_type: this.editor_path_type,
                         },
                         success: function (res) {
                             let data = JSON.parse(res.data);
@@ -398,7 +400,7 @@
                 };
                 if (app.globalData.fields_check(validate, validation)) {
                     uni.showLoading({
-                        title: this.$t('buy.buy.r79t77'),
+                        title: this.$t('common.submit_in_text'),
                     });
                     this.setData({
                         form_submit_loading: true,

@@ -170,7 +170,7 @@
                 }
                 if (app.globalData.fields_check(data, validation)) {
                     uni.showLoading({
-                        title: this.$t('buy.buy.r79t77'),
+                        title: this.$t('common.submit_in_text'),
                     });
                     this.setData({
                         form_submit_loading: true,

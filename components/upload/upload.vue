@@ -1,15 +1,15 @@
 <template>
     <view :class="theme_view">
         <view class="flex-row flex-wrap">
-            <block v-if="propData.length > 0">
-                <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
+            <block v-if="form_images_list.length > 0">
+                <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
                     <view v-if="propDelete" class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
                         <iconfont name="icon-close-fillup" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
                     </view>
                     <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
                 </view>
             </block>
-            <view v-if="(propData || null) == null || propData.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
+            <view v-if="(form_images_list || null) == null || form_images_list.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
                 <iconfont name="icon-camera-solid" size="52rpx" color="#999"></iconfont>
                 <text class="text-size-xs cr-grey-9">{{$t('upload.upload.b33f08')}}</text>
             </view>
@@ -23,10 +23,8 @@
         props: {
             // 初始图片数据
             propData: {
-                type: Array,
-                default: () => {
-                    return [];
-                },
+                type: [Array,String],
+                default: '',
             },
             // 最大上传数量
             propMaxNum: {
@@ -63,7 +61,7 @@
         },
         mounted() {
             this.setData({
-                form_images_list: this.propData,
+                form_images_list: (this.propData || null) == null ? [] : (typeof this.propData == 'string' ? this.propData.split(',') : this.propData),
             });
         },
         created: function () {},
