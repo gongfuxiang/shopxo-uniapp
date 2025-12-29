@@ -85,6 +85,9 @@
                     <text>{{ $t('setup.setup.11k15d') }}</text>
                     <text class="fr cr-grey">{{ $t('setup.setup.48r261') }}</text>
                 </view>
+                <view v-if="plugins_complaint_is_complaint_app && (plugins_complaint_run_name || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/plugins/complaint/form/form" @tap="url_event">
+                    <text>{{plugins_complaint_run_name}}</text>
+                </view>
                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/about/about" @tap="url_event">
                     <text>{{ $t('setup.setup.tghrf2') }}</text>
                 </view>
@@ -112,13 +115,14 @@
                 plugins_invoice: null,
                 home_user_login_type: [],
                 common_user_is_mandatory_bind_mobile: 0,
-
                 home_use_multilingual_status: 0,
                 // 实际提交的语言字段
                 language: '',
-                
                 // 第三方登录插件
                 plugins_thirdpartylogin_data: null,
+                // 投诉举报插件
+                plugins_complaint_is_complaint_app: false,
+                plugins_complaint_run_name: '',
             };
         },
 
@@ -157,7 +161,8 @@
         methods: {
             // 初始化配置
             init_config(status) {
-                if ((status || false) == true) {                    
+                if ((status || false) == true) {
+                    var complaint_config = app.globalData.get_config('plugins_base.complaint.data') || {};
                     this.setData({
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         home_use_multilingual_status: app.globalData.get_config('config.home_use_multilingual_status'),
@@ -165,6 +170,8 @@
                         home_user_login_type: app.globalData.get_config('config.home_user_login_type'),
                         common_user_is_mandatory_bind_mobile: app.globalData.get_config('config.common_user_is_mandatory_bind_mobile'),
                         plugins_thirdpartylogin_data: app.globalData.get_config('plugins_thirdpartylogin_data') || null,
+                        plugins_complaint_is_complaint_app: parseInt(complaint_config.is_complaint_app || 0) == 1,
+                        plugins_complaint_run_name: complaint_config.run_name || this.$t('pages.plugins-complaint-form'),
                     });
                     
                     // 第三方登录

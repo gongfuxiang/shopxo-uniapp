@@ -8,7 +8,7 @@
         </view>
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="page-bottom-fixed padding-horizontal-main padding-top-main">
+            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main" :class="is_complaint_app ? 'page-bottom-fixed' : ''">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
                         <text>{{item.add_time}}</text>
@@ -39,7 +39,7 @@
         </scroll-view>
 
         <!-- 底部操作 -->
-        <view class="bottom-fixed" :style="bottom_fixed_style">
+        <view  v-if="is_complaint_app" class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
                 <button class="item cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/complaint/form/form?is_list=0" @tap="url_event">
                     <view class="add-icon">
@@ -72,8 +72,10 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                bottom_fixed_style: '',
                 params: {},
                 field_list: [],
+                is_complaint_app: false,
             };
         },
         components: {
@@ -109,6 +111,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 初始化配置
+            app.globalData.init_config(0, this, 'init_config');
+
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -125,6 +130,19 @@
             this.get_data_list(1);
         },
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    var complaint_config = app.globalData.get_config('plugins_base.complaint.data') || {};
+                    this.setData({
+                        is_complaint_app: parseInt(complaint_config.is_complaint_app || 0) == 1,
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {

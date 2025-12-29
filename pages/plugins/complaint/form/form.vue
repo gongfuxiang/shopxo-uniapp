@@ -71,6 +71,7 @@
                 business: null,
                 editor_path_type: '',
                 form_submit_loading: false,
+                is_complaint_app_login: false,
             };
         },
         components: {
@@ -97,6 +98,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 初始化配置
+            app.globalData.init_config(0, this, 'init_config');
+
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
@@ -113,6 +117,19 @@
         onUnload: function () {},
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    var complaint_config = app.globalData.get_config('plugins_base.complaint.data') || {};
+                    this.setData({
+                        is_complaint_app_login: parseInt(complaint_config.is_complaint_app_login || 0) == 1,
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 获取数据
             get_data() {
                 this.setData({
                     data_list_loding_status: 1,
@@ -160,6 +177,13 @@
 
             // 表单提交
             form_submit(e) {
+                // 是否需要登录
+                if(this.is_complaint_app_login) {
+                    var user = app.globalData.get_user_info(this, 'form_submit', e);
+                    if (user == false) {
+                        return;
+                    }
+                }
                 // 数据验证
                 var validation = [
                     { fields: 'describe', msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft') },
