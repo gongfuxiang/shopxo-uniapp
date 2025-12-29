@@ -85,7 +85,7 @@
                     <text>{{ $t('setup.setup.11k15d') }}</text>
                     <text class="fr cr-grey">{{ $t('setup.setup.48r261') }}</text>
                 </view>
-                <view v-if="plugins_complaint_is_complaint_app && (plugins_complaint_run_name || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/plugins/complaint/form/form" @tap="url_event">
+                <view v-if="plugins_complaint_is_user_setup_app && (plugins_complaint_run_name || null) != null" class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/plugins/complaint/form/form" @tap="url_event">
                     <text>{{plugins_complaint_run_name}}</text>
                 </view>
                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/about/about" @tap="url_event">
@@ -121,7 +121,7 @@
                 // 第三方登录插件
                 plugins_thirdpartylogin_data: null,
                 // 投诉举报插件
-                plugins_complaint_is_complaint_app: false,
+                plugins_complaint_is_user_setup_app: false,
                 plugins_complaint_run_name: '',
             };
         },
@@ -170,7 +170,7 @@
                         home_user_login_type: app.globalData.get_config('config.home_user_login_type'),
                         common_user_is_mandatory_bind_mobile: app.globalData.get_config('config.common_user_is_mandatory_bind_mobile'),
                         plugins_thirdpartylogin_data: app.globalData.get_config('plugins_thirdpartylogin_data') || null,
-                        plugins_complaint_is_complaint_app: parseInt(complaint_config.is_complaint_app || 0) == 1,
+                        plugins_complaint_is_user_setup_app: parseInt(complaint_config.is_user_setup_app || 0) == 1,
                         plugins_complaint_run_name: complaint_config.run_name || this.$t('pages.plugins-complaint-form'),
                     });
                     
