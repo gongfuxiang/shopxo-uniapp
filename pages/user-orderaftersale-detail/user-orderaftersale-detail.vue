@@ -1191,6 +1191,8 @@
             },
 
             // 消息发送处理
+            // content  消息内容
+            // type     0文本，1图片，2视频
             chat_send_handle(content, type = 0) {
                 this.setData({
                     chat_send_submit_disabled_status: true,
