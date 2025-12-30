@@ -149,7 +149,14 @@
                             </block>
                         </scroll-view>
                         <view v-if="chat_send_submit_status" class="chat-input flex-row align-s margin-top-sm">
-                            <textarea :placeholder="$t('common.input_enter_chat_tips')" class="chat-send-input wh-auto ht-auto padding-sm br radius" :value="chat_input_value" @input="chat_input_event" placeholder-class="cr-grey"></textarea>
+                            <view class="flex-row align-c br radius wh-auto chat-send-input">
+                                <textarea :placeholder="$t('common.input_enter_chat_tips')" class="wh-auto ht-auto padding-sm" :value="chat_input_value" @input="chat_input_event" placeholder-class="cr-grey"></textarea>
+                                <view class="padding-horizontal-sm cp">
+                                    <component-upload :propMaxNum="9" :propPathType="editor_path_type" :propSlot="true" :propSingleCall="true" @call-back="chat_upload_images_event">
+                                        <iconfont name="icon-images" size="48rpx" color="#999"></iconfont>
+                                    </component-upload>
+                                </view>
+                            </view>
                             <button type="default" size="mini" class="chat-send-submit bg-main br-main cr-white radius" @tap="chat_send_submit_event" :disabled="chat_send_submit_disabled_status" hover-class="none">{{$t('common.send')}}</button>
                         </view>
                     </view>
@@ -236,15 +243,7 @@
 
                         <view class="form-gorup form-container-upload oh">
                             <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y9355')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1l42ms')}}</text></view>
-                            <view class="form-upload-data oh">
-                                <block v-if="form_images_list.length > 0">
-                                    <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
-                                        <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
-                                        <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
-                                    </view>
-                                </block>
-                                <image v-if="(form_images_list || null) == null || form_images_list.length < 3" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
-                            </view>
+                            <component-upload :propData="form_images_list" :propMaxNum="3" :propPathType="editor_path_type" @call-back="orderaftersale_image_event"></component-upload>
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">
@@ -367,13 +366,12 @@
     import componentPopup from "@/components/popup/popup";
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentUpload from '@/components/upload/upload';
 
-    var common_static_url = app.globalData.get_static_url("common");
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: "",
@@ -512,6 +510,7 @@
             componentPopup,
             componentNoData,
             componentBottomLine,
+            componentUpload
         },
 
         onLoad(params) {
@@ -663,91 +662,11 @@
                 });
             },
 
-            // 上传图片预览
-            upload_show_event(e) {
-                uni.previewImage({
-                    current: this.form_images_list[e.currentTarget.dataset.index],
-                    urls: this.form_images_list,
+            // 上传回调
+            orderaftersale_image_event(res) {
+                this.setData({
+                    form_images_list: res,
                 });
-            },
-
-            // 图片删除
-            upload_delete_event(e) {
-                var self = this;
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
-                    success(res) {
-                        if (res.confirm) {
-                            var list = self.form_images_list;
-                            list.splice(e.currentTarget.dataset.index, 1);
-                            self.setData({
-                                form_images_list: list,
-                            });
-                        }
-                    },
-                });
-            },
-
-            // 文件上传
-            file_upload_event(e) {
-                var self = this;
-                uni.chooseImage({
-                    count: 3,
-                    success(res) {
-                        var success = 0;
-                        var fail = 0;
-                        var length = res.tempFilePaths.length;
-                        var count = 0;
-                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                    },
-                });
-            },
-
-            // 采用递归的方式上传多张
-            upload_one_by_one(img_paths, success, fail, count, length) {
-                var self = this;
-                if (self.form_images_list.length < 3) {
-                    uni.uploadFile({
-                        url: app.globalData.get_request_url("index", "ueditor"),
-                        filePath: img_paths[count],
-                        name: "upfile",
-                        formData: {
-                            action: "uploadimage",
-                            path_type: self.editor_path_type,
-                        },
-                        success: function (res) {
-                            success++;
-                            if (res.statusCode == 200) {
-                                var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
-                                if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    list.push(data.data.url);
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                } else {
-                                    app.globalData.showToast(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (e) {
-                            fail++;
-                        },
-                        complete: function (e) {
-                            count++;
-
-                            // 下一张
-                            if (count >= length) {
-                                // 上传完毕，作一下提示
-                                //app.showToast('上传成功' + success +'张', 'success');
-                            } else {
-                                // 递归调用，上传下一张
-                                self.upload_one_by_one(img_paths, success, fail, count, length);
-                            }
-                        },
-                    });
-                }
             },
 
             // 售后表单提交
@@ -1260,41 +1179,56 @@
             // 客服发送按钮事件
             chat_send_submit_event(e) {
                 if(this.chat_input_value !== '') {
-                    this.setData({
-                        chat_send_submit_disabled_status: true,
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url("userchatsend", "orderaftersaledispute", "shop"),
-                        method: "POST",
-                        data: {
-                            order_aftersale_id: this.aftersale_data.id,
-                            content: this.chat_input_value
-                        },
-                        dataType: "json",
-                        success: (res) => {
-                            this.setData({
-                                chat_send_submit_disabled_status: false,
-                            });
-                            if(res.data.code == 0)
-                            {
+                    this.chat_send_handle(this.chat_input_value, 0);
+                }
+            },
+
+            // 消息上传图片
+            chat_upload_images_event(res) {
+                if((res || null) != null && typeof res == 'string') {
+                    this.chat_send_handle(res, 1);
+                }
+            },
+
+            // 消息发送处理
+            chat_send_handle(content, type = 0) {
+                this.setData({
+                    chat_send_submit_disabled_status: true,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("userchatsend", "orderaftersaledispute", "shop"),
+                    method: "POST",
+                    data: {
+                        order_aftersale_id: this.aftersale_data.id,
+                        content: content,
+                        type: type
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        this.setData({
+                            chat_send_submit_disabled_status: false,
+                        });
+                        if(res.data.code == 0)
+                        {
+                            if(type == 0) {
                                 this.setData({
                                     chat_input_value: '',
                                 });
-                                this.chat_data_merge(res.data.data, 'add');
-                            } else {
-                                if (app.globalData.is_login_check(res.data, this, "chat_send_submit_event")) {
-                                    app.globalData.showToast(res.data.msg);
-                                }
                             }
-                        },
-                        fail: () => {
-                            this.setData({
-                                chat_send_submit_disabled_status: false,
-                            });
-                            app.globalData.showToast(this.$t('common.internet_error_tips'));
-                        },
-                    });
-                }
+                            this.chat_data_merge(res.data.data, 'add');
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, "chat_send_submit_event")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            chat_send_submit_disabled_status: false,
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
             },
 
             // 订单售后争议沟通 - 查看更多消息

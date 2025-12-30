@@ -60,16 +60,14 @@
     max-width: 450rpx;
     max-height: 450rpx;
 }
-.chat-input,
-.chat-input .chat-send-submit{
-    height: 100rpx;
-}
 .chat-input .chat-send-input {
+    height: 96rpx;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
 .chat-input .chat-send-submit {
     width: 240rpx;
+    height: 100rpx;
     line-height: 100rpx;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;

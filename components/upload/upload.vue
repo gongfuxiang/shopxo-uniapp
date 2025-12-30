@@ -1,6 +1,9 @@
 <template>
     <view :class="theme_view">
-        <view class="flex-row flex-wrap">
+        <view v-if="propSlot" @tap="file_upload_event">
+            <slot></slot>
+        </view>
+        <view v-else class="flex-row flex-wrap">
             <block v-if="form_images_list.length > 0">
                 <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
                     <view v-if="propDelete" class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
@@ -21,6 +24,11 @@
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         props: {
+            // 是否使用卡槽
+            propSlot: {
+                type: Boolean,
+                default: false,
+            },
             // 初始图片数据
             propData: {
                 type: [Array,String],
@@ -40,6 +48,11 @@
             propPreview: {
                 type: Boolean,
                 default: true,
+            },
+            // 是否单个回调
+            propSingleCall: {
+                type: Boolean,
+                default: false,
             },
             // 路径类型 默认common
             propPathType: {
@@ -84,12 +97,16 @@
                             if (res.statusCode == 200) {
                                 var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
                                 if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    list.push(data.data.url);
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                    self.$emit('call-back', self.form_images_list, self.propCallData);
+                                    if(self.propSingleCall) {
+                                        self.$emit('call-back', data.data.url, self.propCallData);
+                                    } else {
+                                        var list = self.form_images_list;
+                                        list.push(data.data.url);
+                                        self.setData({
+                                            form_images_list: list,
+                                        });
+                                        self.$emit('call-back', self.form_images_list, self.propCallData);
+                                    }
                                 } else {
                                     app.globalData.showToast(data.msg);
                                 }
