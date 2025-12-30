@@ -39,7 +39,7 @@
                         <!-- #endif -->
                         <!-- #ifndef APP-NVUE -->
                         <!-- scroll-view 只有非nvue的页面使用 -->
-                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scroll_to_lower_event="scroll_to_lower_event">
+                        <scroll-view scroll-y class="bulletin-area" :style="'width:' + (propWindowWidth - 150) + 'px;'" :show-scrollbar="false" lower-threshold="30" :scroll-with-animation="true" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_to_lower_event">
                             <view v-for="(item, index) in bulletins" :key="item.id">
                         <!-- #endif -->
                         <!-- 中间弹幕区域 -->
@@ -98,8 +98,10 @@
                             </view>
                         </scroll-view>
                         <!-- #endif -->
-                        <view v-if="!is_scroll_to_lower && message_num > 0" class="bulletin-tips flex-row align-c" @tap="message_num_event">
-                            <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
+                        <view v-if="!is_scroll_to_lower && message_num > 0" class="bulletin-tips flex-row align-c jc-c" :style="'width:' + (propWindowWidth - 150) + 'px;'" @tap="message_num_event">
+                            <view class="bulletin-tips-content flex-row align-c">
+                                <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
+                            </view>
                         </view>
                     </view>
                     <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
@@ -273,7 +275,8 @@
                 bulletin_index: null,
                 // 列表滚动事件
                 // 判断列表是否滚动了，如果滚动了，就认为他不是在底部，就要显示有多少条信息
-                is_scroll_to_lower: false,
+                is_first_scroll: true,
+                is_scroll_to_lower: true,
                 message_num: 0,
                 //#endregion
                 
@@ -420,14 +423,14 @@
              */
             scroll_to_lower() {
                 this.$nextTick(() => {
+                    const num = Math.random() + 20;
                     //#ifndef APP-NVUE
-                    const num = Math.random();
                     this.scroll_top = this.scoll_height + num;
                     //#endif
                     //#ifdef APP-NVUE
                     if (this.bulletin_index && this.bulletin_index.length > 0) {
                         this.domModule.scrollToElement((this.bulletin_index[this.bulletins.length - 1]), {
-                            offset: this.scoll_height,  // 偏移量，可根据需要调整
+                            offset: this.scoll_height + num,  // 偏移量，可根据需要调整
                             animated: true  // 是否带动画
                         });
                     }
@@ -448,18 +451,23 @@
              */
             scroll_event(e) {
                 this.is_scroll_to_lower = false;
+                //#ifndef APP-NVUE
+                // 第一次滚动的时候不会触发滚动到底部事件，需要手动触发一下
+                if (e.detail.scrollTop > 0 && this.is_first_scroll) {
+                    this.is_first_scroll = false;
+                    this.scroll_to_lower_event(e);
+                }
+                //#endif
             },
             /**
              * 滚动到底部事件处理
              * @param {Event} e - 滚动事件对象
              */
             scroll_to_lower_event(e) {
-                // 滚动到底部触发的事件，将显示的多少条信息给隐藏起来
-                setTimeout(() => {
-                    // 滑动到底部的时候，清除历史存储的消息数据
-                    this.message_num = 0;
-                    this.is_scroll_to_lower = true;
-                }, 0);
+                console.log(e, '滚动到底部事件');
+                // 滑动到底部的时候，清除历史存储的消息数据
+                this.message_num = 0;
+                this.is_scroll_to_lower = true;
             },
             /**
              * 新消息提示点击事件处理
@@ -611,9 +619,14 @@
                                 user_name: data.content,
                                 text: '',
                             });
-                        }                    
-                        // 添加内容之后，需要滚动到最后
-                        this.scroll_to_lower();
+                        }                
+                        // 加入直播间提示之后，需要等待300毫秒，确保消息添加到数组中
+                        setTimeout(() => {
+                            // 添加内容之后，如果当前是在最后的需要滚动到最后
+                            if (this.is_scroll_to_lower) {
+                                this.scroll_to_lower();
+                            }
+                        }, 300);
                         break;
                     // 消息
                     case 'message':
@@ -621,17 +634,22 @@
                         if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
                             this.bulletins.splice(this.bulletins.length - 1, 1);
                         }
-                        this.$nextTick(() => {
-                            this.bulletins.push({
-                                id: Math.random(),
-                                type: 'user',
-                                user_avatar: data.data.user.avatar,
-                                user_name: data.data.user.nickname,
-                                text: data.content,
-                            });
-                            // 添加内容之后，需要滚动到最后
-                            this.scroll_to_lower();
+                        this.bulletins.push({
+                            id: Math.random(),
+                            type: 'user',
+                            user_avatar: data.data.user.avatar,
+                            user_name: data.data.user.nickname,
+                            text: data.content,
                         });
+                        // 加入直播间提示之后，需要等待300毫秒，确保消息添加到数组中
+                        setTimeout(() => {
+                            // 添加内容之后，如果当前是在最后的需要滚动到最后
+                            if (this.is_scroll_to_lower) {
+                                this.scroll_to_lower();
+                            } else {
+                                this.message_num++;
+                            }
+                        }, 300);
                         break;
                     case 'live-room-info': // 获取直播间数据
                         // this.$emit('liveStatus', data.content);
@@ -1050,9 +1068,12 @@
     left: 0;
     bottom: 8rpx;
     z-index: 3;
+}
+
+.bulletin-tips-content {
     background: #fff;
     border-radius: 200rpx;
-    padding: 6rpx 10rpx;
+    padding: 6rpx 20rpx;
 }
 
 .user-comes {
