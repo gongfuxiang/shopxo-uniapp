@@ -49,7 +49,7 @@
             <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '')" @scrolltolower="scroll_lower" lower-threshold="60" :style="scroll_style">
                 <view class="content">
                     <!-- 数据列表 -->
-                    <view v-if="data_list.length > 0" class="padding-horizontal-main padding-bottom-xsss">
+                    <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main padding-bottom-xsss">
                         <uni-swipe-action ref="swipe_action">
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
@@ -1446,7 +1446,7 @@
         padding-bottom: 60rpx;
     }
     .scroll-box.cart .content {
-        padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
+        padding-bottom: calc(210rpx + env(safe-area-inset-bottom));
     }
     .cart-goods-title {
         line-height: 44rpx;

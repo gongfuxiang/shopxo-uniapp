@@ -63,6 +63,7 @@
 		"view_text": "Check",
         "detail_text": "Detail",
         "refresh_text": "Refresh",
+        "feed_text": "Feed",
         "yes_text": "Yes",
         "no_text": "NO",
         "wait": "Wait",
@@ -317,12 +318,14 @@
         "plugins-certificate-userauth-saveinfo": "Certificate editor",
         "plugins-certificate-userauth-detail": "Certificate detail",
         "plugins-goodscompare-index": "Goods Compare",
-        "plugins-complaint-user": "Complaint/Report List",
-        "plugins-complaint-form": "Complaint/Report",
         "plugins-video-index": "Short Video List",
         "plugins-video-search": "Short video search",
         "plugins-video-detail": "Short video details",
-        "plugins-live-pull": "Live Details"
+        "plugins-live-pull": "Live Details",
+        "plugins-complaint-user": "Complaint/Report List",
+        "plugins-complaint-form": "Complaint/Report",
+        "plugins-orderfeed-user": "Feed List",
+        "plugins-orderfeed-form": "Feed Data"
 	},
 	"login": {
 		"login": {

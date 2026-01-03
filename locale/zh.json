@@ -63,6 +63,7 @@
 		"view_text": "查看",
         "detail_text": "详情",
         "refresh_text": "刷新",
+        "feed_text": "反馈",
         "yes_text": "是",
         "no_text": "否",
         "wait": "待",
@@ -315,12 +316,14 @@
         "plugins-certificate-userauth-saveinfo": "资质认证编辑",
         "plugins-certificate-userauth-detail": "资质认证详情",
         "plugins-goodscompare-index": "商品对比",
-        "plugins-complaint-user": "投诉/举报列表",
-        "plugins-complaint-form": "投诉/举报",
         "plugins-video-index": "短视频列表",
         "plugins-video-search": "短视频搜索",
         "plugins-video-detail": "短视频详情",
-        "plugins-live-pull": "直播详情"
+        "plugins-live-pull": "直播详情",
+        "plugins-complaint-user": "投诉/举报列表",
+        "plugins-complaint-form": "投诉/举报",
+        "plugins-orderfeed-user": "反馈数据列表",
+        "plugins-orderfeed-form": "反馈数据"
         
 	},
 	"login": {

@@ -1,0 +1,10 @@
+.goods-cover {
+    width: 120rpx;
+    height: 120rpx;
+}
+.goods-base {
+    width: calc(100% - 140rpx);
+}
+.goods-base .multi-text {
+    height: 76rpx;
+}
