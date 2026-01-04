@@ -14,17 +14,20 @@
                         <text>{{item.add_time}}</text>
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
-                    <view v-if="(item.goods_title || null) != null" class="oh margin-top flex-row gap-5" :data-value="item.goods_url" @tap="url_event">
-                        <image v-if="(item.goods_images || null) != null" :src="item.goods_images" mode="aspectFill" class="br-f5 radius goods-cover"></image>
-                        <view :class="(item.goods_images || null) != null ? 'goods-base' : ''">
+                    <view class="oh margin-top flex-row gap-10" :data-value="item.goods_url" @tap="url_event">
+                        <image :src="item.goods_images" mode="aspectFill" class="br-f5 radius goods-cover"></image>
+                        <view class="goods-base">
                             <view class="multi-text">{{item.goods_title}}</view>
-                            <view v-if="(item.goods_spec || null) != null" class="cr-grey margin-top-xs">{{item.goods_spec}}</view>
+                            <view class="margin-top-xs">
+                                <text class="cr-price fw-b">{{item.currency_symbol}}{{item.goods_price}}</text>
+                                <text v-if="(item.goods_spec || null) != null" class="cr-grey fr">{{item.goods_spec}}</text>
+                            </view>
                         </view>
                     </view>
                     <view class="content margin-top-main">
                         <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="add_time,status_name" propClass="" :propIsTerse="true"></component-panel-content>
                     </view>
-                    <view v-if="item.status == 0 || item.status != 1" class="item-operation tr br-t padding-top-main margin-top-main">
+                    <view v-if="item.status == 0 || item.status == 2 || item.status != 1" class="item-operation tr br-t padding-top-main margin-top-main">
                         <block v-if="item.status == 0 || item.status == 2">
                             <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderfeed/form/form?oid='+item.order_id+'&odid='+item.order_detail_id+'&is_list=0'" hover-class="none">{{$t('common.edit')}}</button>
                             <button class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
@@ -326,7 +329,7 @@
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
-                                        temp_data_list[index]['status'] = 2;
+                                        temp_data_list[index]['status'] = 3;
                                         temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
                                         this.setData({
                                             data_list: temp_data_list,

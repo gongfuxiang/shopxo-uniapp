@@ -7,8 +7,9 @@
                         <image :src="item.images" mode="aspectFit" class="cover br-f5 radius"></image>
                         <view class="base">
                             <view class="multi-text">{{item.title}}</view>
+                            <view class="cr-price fw-b margin-top-xs">{{order.currency_data.currency_symbol}}{{item.price}}</view>
                             <view v-if="(item.spec_text || null) != null" class="cr-grey margin-top-xs">{{item.spec_text}}</view>
-                            <text v-if="(order || null) != null && (order.items || null) != null && order.items.length > 1" class="cr-blue cp pa right-0 bottom-0 padding" @tap.stop="order_goods_back_event">选择其他商品 >></text>
+                            <button v-if="(order || null) != null && (order.items || null) != null && order.items.length > 1" type="default" size="mini" class="br-base bg-white cr-base pa right-xxxxl bottom-xxxxl" @tap.stop="order_goods_back_event">{{$t('orderfeed-form.orderfeed-form.54rttr')}}</button>
                         </view>
                     </view>
                     <view class="form-gorup border-radius-main spacing-mb">
@@ -38,13 +39,14 @@
             </form>
             <view v-else>
                 <view v-if="(order || null) != null && (order.items || null) != null && order.items.length > 0" class="business padding-main">
-                    <block v-for="(item, index) in order.items" :key="index">
-                        <view class="bg-white padding-main border-radius-main spacing-mb flex-row gap-10 pr" :data-value="item.goods_url" @tap="url_event">
-                            <image :src="item.images" mode="aspectFit" class="cover br-f5 radius"></image>
+                    <block v-for="(itemv, index) in order.items" :key="index">
+                        <view class="bg-white padding-main border-radius-main spacing-mb flex-row gap-10 pr" :data-value="itemv.goods_url" @tap="url_event">
+                            <image :src="itemv.images" mode="aspectFit" class="cover br-f5 radius"></image>
                             <view class="base">
-                                <view class="multi-text">{{item.title}}</view>
-                                <view v-if="(item.spec_text || null) != null" class="cr-grey margin-top-xs">{{item.spec_text}}</view>
-                                <text class="cr-blue cp pa right-0 bottom-0 padding" :data-index="index" @tap.stop="order_goods_use_event">反馈该商品 >></text>
+                                <view class="multi-text">{{itemv.title}}</view>
+                                <view class="cr-price fw-b margin-top-xs">{{order.currency_data.currency_symbol}}{{itemv.price}}</view>
+                                <view v-if="(itemv.spec_text || null) != null" class="cr-grey margin-top-xs">{{itemv.spec_text}}</view>
+                                <button type="default" size="mini" class="br-main bg-white cr-main pa right-xxxxl bottom-xxxxl" :data-index="index" @tap.stop="order_goods_use_event">{{$t('orderfeed-form.orderfeed-form.fsdft3')}}</button>
                             </view>
                         </view>
                     </block>

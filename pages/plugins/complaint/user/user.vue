@@ -14,7 +14,7 @@
                         <text>{{item.add_time}}</text>
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
-                    <view v-if="(item.data_title || null) != null" class="oh margin-top flex-row gap-5" :data-value="item.data_url" @tap="url_event">
+                    <view v-if="(item.data_title || null) != null" class="oh margin-top flex-row gap-10" :data-value="item.data_url" @tap="url_event">
                         <image v-if="(item.data_cover || null) != null" :src="item.data_cover" mode="aspectFill" class="br-f5 radius data-cover"></image>
                         <view :class="(item.data_cover || null) != null ? 'data-title' : ''">{{item.data_title}}</view>
                     </view>
@@ -336,7 +336,7 @@
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
-                                        temp_data_list[index]['status'] = 2;
+                                        temp_data_list[index]['status'] = 3;
                                         temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
                                         this.setData({
                                             data_list: temp_data_list,
