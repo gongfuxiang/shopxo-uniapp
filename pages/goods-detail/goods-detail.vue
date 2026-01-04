@@ -777,8 +777,6 @@
                 plugins_label_data: null,
                 // 智能工具插件
                 plugins_intellectstools_data: null,
-                // 客服插件
-                plugins_chat_data: null,
                 // 门店插件
                 plugins_realstore_data: null,
                 plugins_realstore_cart_nav_status: false,
@@ -983,7 +981,6 @@
                                 plugins_wholesale_data: (data.plugins_wholesale_data || null) == null ? null : data.plugins_wholesale_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                                plugins_chat_data: data.plugins_chat_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_goodsservice_data: data.plugins_goodsservice_data || null,
