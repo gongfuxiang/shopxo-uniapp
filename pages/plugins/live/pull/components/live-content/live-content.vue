@@ -451,6 +451,12 @@
              */
             scroll_event(e) {
                 this.is_scroll_to_lower = false;
+                //#ifdef APP-NVUE
+                if (this.is_first_scroll) {
+                    this.is_first_scroll = false;
+                    this.scroll_to_lower_event(e);
+                }
+                //#endif
                 //#ifndef APP-NVUE
                 // 第一次滚动的时候不会触发滚动到底部事件，需要手动触发一下
                 if (e.detail.scrollTop > 0 && this.is_first_scroll) {
@@ -464,7 +470,6 @@
              * @param {Event} e - 滚动事件对象
              */
             scroll_to_lower_event(e) {
-                console.log(e, '滚动到底部事件');
                 // 滑动到底部的时候，清除历史存储的消息数据
                 this.message_num = 0;
                 this.is_scroll_to_lower = true;
