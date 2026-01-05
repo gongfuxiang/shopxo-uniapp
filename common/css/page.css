@@ -604,6 +604,7 @@ button:before {
 .bg-grey-e {
     background-color: #eeeeee !important;
 }
+.bg-base,
 .bg-grey-f5 {
     background-color: #f5f5f5 !important;
 }
@@ -615,9 +616,6 @@ button:before {
 }
 .bg-grey-f9 {
     background-color: #f9f9f9 !important;
-}
-.bg-base {
-    background-color: #f5f5f5 !important;
 }
 .bg-blue {
     background-color: #2196F3 !important;
@@ -1105,84 +1103,6 @@ button[disabled].bg-grey {
 .header-service .chat-info image {
     width: 40rpx;
     height: 40rpx;
-}
-
-/**
- * flex 布局
- */
-.flex-row {
-    display: flex;
-    flex-direction: row;
-}
-.flex-col {
-    display: flex;
-    flex-direction: column;
-}
-.jc-sb {
-    justify-content: space-between;
-}
-.jc-c {
-    justify-content: center;
-}
-.jc-sa {
-    justify-content: space-around;
-}
-.jc-e {
-    justify-content: flex-end;
-}
-.align-c {
-    align-items: center;
-}
-.align-e {
-    align-items: flex-end;
-}
-.align-s {
-    align-items: flex-start;
-}
-.align-b {
-    align-items: baseline;
-}
-.flex-wrap {
-    flex-wrap: wrap;
-}
-.flex-nowrap {
-    flex-wrap: nowrap;
-}
-.flex-1 {
-    flex: 1;
-}
-.flex-2 {
-    flex: 2;
-}
-.flex-3 {
-    flex: 3;
-}
-.self-c {
-    align-self: center;
-}
-.self-b {
-    align-self: baseline;
-}
-.self-s {
-    align-self: flex-start;
-}
-.self-e {
-    align-self: flex-end;
-}
-.flex-shrink {
-    flex-shrink: 0;
-}
-.flex-shrink-1 {
-    flex-shrink: 0;
-}
-.flex-width {
-    width: 0;
-}
-.flex-width-half {
-    width: 50%;
-}
-.flex-width-half-half {
-    width: 25%;
 }
 
 /**

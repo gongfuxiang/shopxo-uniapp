@@ -7,7 +7,7 @@
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_recharge_status_open_event">
-                    <view>{{ recharge_status_name !== null && recharge_status_name !== $t('common.all') ? recharge_status_name : $t('invoice-detail.invoice-detail.rrfex6') }}</view>
+                    <view>{{ recharge_status_name !== null && recharge_status_name !== $t('common.all') ? recharge_status_name : $t('common.status') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_network_open_event">

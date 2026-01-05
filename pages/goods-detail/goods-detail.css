@@ -235,10 +235,11 @@
 /**
  * app独立内容
  */
-.goods-detail-app .content-items view {
-    padding: 15rpx 10rpx;
-    line-height: 44rpx;
-    font-size: 32rpx;
+.goods-detail-app .content-items .item {
+    padding: 4rpx 10rpx;
+    line-height: 40rpx;
+    font-size: 28rpx;
+    word-wrap: break-word;
 }
 
 /**
@@ -286,20 +287,14 @@
 /*
 * 商品参数
 */
-.parameters-base .content-item .item {
-    color: #666;
-}
-.goods-parameters .content-item .item {
+.goods-parameters .item {
     padding: 8rpx 10rpx;
     width: calc(50% - 20rpx);
 }
-.goods-parameters .content-item .item .name {
-    margin-right: 10rpx;
-}
-.goods-parameters .content-item .item:nth-child(2n-1) {
+.goods-parameters .item:nth-child(2n-1) {
     float: left;
 }
-.goods-parameters .content-item .item:nth-child(2n) {
+.goods-parameters .item:nth-child(2n) {
     float: right;
 }
 

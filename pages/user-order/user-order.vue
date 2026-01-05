@@ -69,7 +69,8 @@
                                     (item.plugins_is_order_frequencycard_button || 0) +
                                     (item.plugins_delivery_data || 0) +
                                     (item.plugins_ordergoodsform_data || 0) +
-                                    (item.plugins_orderresources_data || 0)
+                                    (item.plugins_orderresources_data || 0) +
+                                    (item.plugins_is_orderfeed_button || 0)
                                  > 0 ) ||
                                 (item.status == 2 && item.order_model != 2) ||
                                 ((item.plugins_express_data || 0) == 1 && (item.express_data || null) != null) ||
@@ -89,7 +90,8 @@
                             <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
                             <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">{{$t('user-order.user-order.9l47b6')}}</button>
                             <button v-if="(item.plugins_orderresources_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderresources/orderannex/orderannex?oid=' + item.id" hover-class="none">{{$t('user-order.user-order.fyuikn')}}</button>
-                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
+                            <button v-if="(item.plugins_is_orderfeed_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderfeed/form/form?oid=' + item.id" hover-class="none">{{$t('common.feed_text')}}</button>
+                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -496,9 +498,9 @@
             cancel_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.pn78ns'),
+                    content: this.$t('common.cancel_confirm_tips'),
                     confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: this.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -575,7 +577,7 @@
                     title: this.$t('common.warm_tips'),
                     content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
                     confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: this.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
                             this.collect_handle(e);
@@ -629,9 +631,9 @@
             delete_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    content: this.$t('common.delete_confirm_tips'),
                     confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: this.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数

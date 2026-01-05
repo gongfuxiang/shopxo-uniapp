@@ -13,6 +13,7 @@
 		"not_yet": "暂不",
         "submit": "提交",
 		"save": "保存",
+        "send": "发送",
 		"add": "新增",
         "copy": "复制",
         "remove": "移除",
@@ -39,6 +40,17 @@
 		"num": "数量",
 		"order": "订单",
 		"service": "服务",
+        "base": "基础",
+        "params": "参数",
+        "status": "状态",
+        "reason": "原因",
+        "close_reason": "关闭原因",
+        "refuse": "拒绝",
+        "buy": "购买",
+        "complaint": "举报",
+        "info": "信息",
+        "web_client": "web端",
+        "app_client": "手机端",
 		"please_input": "请输入",
 		"settlement": "结算",
 		"confirm_sub": "确认提交",
@@ -51,8 +63,10 @@
 		"view_text": "查看",
         "detail_text": "详情",
         "refresh_text": "刷新",
+        "feed_text": "反馈",
         "yes_text": "是",
         "no_text": "否",
+        "wait": "待",
         "place_order_text": "下单",
 		"processing_in_text": "处理中...",
 		"loading_in_text": "加载中...",
@@ -61,6 +75,7 @@
 		"login_in_text": "登录中...",
 		"sending_in_text": "发送中...",
         "payment_in_text": "支付中...",
+        "submit_in_text": "提交中...",
 		"sending": "发送中",
         "view_examples": "查看范例",
 		"warm_tips": "温馨提示",
@@ -98,7 +113,17 @@
         "two_nav_text" : "二级导航",
         "no_data": "暂无数据",
         "goods": "商品",
-        "shop": "店铺"
+        "shop": "店铺",
+        "customer_service": "咨询客服",
+        "tel_service": "电话客服",
+        "view_history": "查看历史",
+        "no_chat_record": "没有沟通记录",
+        "dispute_chat": "争议沟通",
+        "input_enter_chat_tips": "请输入消息",
+        "access": "访问",
+        "no": "不了",
+        "cancel_confirm_tips": "取消后不可恢复，确定继续吗?",
+        "delete_confirm_tips": "删除后不可恢复，确定继续吗?"
 	},
     "client": {
         "weixin": "微信",
@@ -290,7 +315,16 @@
         "plugins-certificate-userauth": "资质认证",
         "plugins-certificate-userauth-saveinfo": "资质认证编辑",
         "plugins-certificate-userauth-detail": "资质认证详情",
-        "plugins-goodscompare-index": "商品对比"
+        "plugins-goodscompare-index": "商品对比",
+        "plugins-video-index": "短视频列表",
+        "plugins-video-search": "短视频搜索",
+        "plugins-video-detail": "短视频详情",
+        "plugins-live-pull": "直播详情",
+        "plugins-complaint-user": "投诉/举报列表",
+        "plugins-complaint-form": "投诉/举报",
+        "plugins-orderfeed-user": "反馈数据列表",
+        "plugins-orderfeed-form": "反馈数据"
+        
 	},
 	"login": {
 		"login": {
@@ -496,7 +530,6 @@
 			"4rb08b": "暂无可用优惠劵",
 			"3740ur": "请选择地址",
 			"71kidy": "请选择支付方式",
-			"r79t77": "提交中...",
 			"31616e": "当前模式不允许使用地址",
 			"g7dk3f": "卡种选择",
 			"0s1k23": "立即开通",
@@ -861,7 +894,6 @@
 			"29f6n5": "转账",
 			"8752a4": "提现",
 			"91h03v": "付款码",
-			"ki1nor": "电话客服",
 			"2k0227": "退出账号",
 			"3q4p8k": "商品收藏",
 			"57xw84": "我的足迹",
@@ -921,7 +953,6 @@
 			"6390gk": "已关闭",
 			"vvxct1": "开通单号",
 			"vjfki8": "开通时长",
-			"pn78ns": "取消后不可恢复，确定继续吗?",
 			"93j3zq": "无表单数据"
 		}
 	},
@@ -1119,13 +1150,6 @@
 			"e5k407": "搜索中...",
 			"145ci4": "选择成功",
 			"ocg49p": "已存在选择列表"
-		}
-	},
-	"recommend-list": {
-		"recommend-list": {
-			"78n1ly": "访问",
-			"54d418": "删除后不可恢复，确定继续吗?",
-			"w9460o": "不了"
 		}
 	},
 	"team": {
@@ -1545,7 +1569,7 @@
 	"user-orderaftersale-detail": {
 		"user-orderaftersale-detail": {
 			"uuhf62": "立即退货",
-			"00je4f": "退货地址：",
+			"00je4f": "退货地址",
 			"4y2c1l": "凭证",
 			"bprwq9": "退款原因",
 			"85pnkf": "商品件数",
@@ -1569,7 +1593,10 @@
 			"23v6rp": "请选择操作类型",
 			"dn3423": "请选择退货数量",
 			"c9e2ms": "请填写快递名称",
-			"ld10pm": "请填写快递单号"
+			"ld10pm": "请填写快递单号",
+            "87tuff": "描述原因",
+            "6uygft": "描述原因格式1~230个字符",
+            "t67iug": "您已申请平台介入调解！"
 		}
 	},
 	"ask-comments": {
@@ -1595,7 +1622,6 @@
 	},
 	"binding-list": {
 		"binding-list": {
-			"kh7951": "购买",
 			"2u4v35": "收起",
 			"91d60h": "展开"
 		}
@@ -1947,6 +1973,19 @@
             "678iff": "证件名称",
             "tufg33": "证件号码",
             "ftyui3": "过期时间"
+    	}
+    },
+    "complaint-form": {
+    	"complaint-form": {
+    		"78iudg": "证明图片",
+            "56ys33": "请上传完整清晰的图片，最多10张",
+            "ssdff4": "我的提交记录"
+    	}
+    },
+    "orderfeed-form": {
+    	"orderfeed-form": {
+    		"54rttr": "选择其他商品",
+            "fsdft3": "反馈该商品"
     	}
     }
 }

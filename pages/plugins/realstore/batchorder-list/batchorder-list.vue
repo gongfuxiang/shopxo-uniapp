@@ -78,7 +78,7 @@
                     { name: this.$t('form.form.xy87t8'), field: "describe" },
                     { name: this.$t('common.note'), field: "note" },
                     { name: this.$t('buy.buy.s7rr5s'), field: "upd_time" },
-                    { name: this.$t('invoice-detail.invoice-detail.rrfex6'), field: "status_name" },
+                    { name: this.$t('common.status'), field: "status_name" },
                 ],
             };
         },

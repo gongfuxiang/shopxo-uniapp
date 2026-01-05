@@ -41,7 +41,7 @@
                 <!-- 商品列表 -->
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
-                    <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
+                    <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-vertical-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
@@ -56,7 +56,13 @@
                                     <text class="fw-b">{{ detail.currency_data.currency_symbol }}{{ item.price }}</text>
                                     <text class="margin-left-sm">x{{ item.buy_number }}</text>
                                 </view>
-                                <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</view>
+                                <view class="pa right-0 bottom-0 z-i">
+                                    <text v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="cr-blue bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</text>
+                                    <view class="dis-inline-block margin-left-lg" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
+                                        <text class="margin-right-xs">商品信息</text>
+                                        <iconfont name="icon-arrow-down" color="#999" propClass="va-m"></iconfont>
+                                    </view>
+                                </view>
                             </view>
                         </view>
                     </view>
@@ -176,6 +182,83 @@
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
 
+        <!-- 订单商品信息弹层 -->
+        <component-popup :propShow="popup_order_item_goods_info_status" propPosition="bottom" @onclose="popup_order_item_goods_info_close_event">
+            <view class="padding-main bg-white">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_order_item_goods_info_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="order-item-goods-info-container padding-top-xxl">
+                    <block v-if="(order_item_goods_info_data || null) != null">
+                        <view class="nav-base bg-white tc">
+                            <block v-for="(item, index) in order_item_goods_info_nav_list" :key="index">
+                                <view v-if="order_item_goods_info_nav_index == index" class="item fl cr-main nav-active-line" :data-index="index" @tap="order_item_goods_info_nav_event">{{ item }}</view>
+                                <view v-else class="item fl" :data-index="index" @tap="order_item_goods_info_nav_event">{{ item }}</view>
+                            </block>
+                        </view>
+                        <scroll-view :scroll-y="true" class="scroll-content margin-top-sm">
+                            <!-- 商品基础 -->
+                            <block v-if="order_item_goods_info_nav_index == 'base'">
+                                <view v-if="(order_item_goods_info_data.base_data || null) != null && order_item_goods_info_data.base_data.length > 0" class="panel-item">
+                                    <view class="panel-content oh">
+                                        <view v-for="(item, index) in order_item_goods_info_data.base_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
+                                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
+                                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+                                        </view>
+                                    </view>
+                                </view>
+                                <block v-else>
+                                    <component-no-data propStatus="0"></component-no-data>
+                                </block>
+                            </block>
+                            <!-- 商品参数 -->
+                            <block v-else-if="order_item_goods_info_nav_index == 'params'">
+                                <view v-if="(order_item_goods_info_data.goods_params || null) != null && order_item_goods_info_data.goods_params.length > 0" class="panel-item">
+                                    <view class="panel-content oh">
+                                        <view v-for="(item, index) in order_item_goods_info_data.goods_params" :key="index" class="item br-b-dashed oh padding-vertical-main">
+                                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
+                                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+                                        </view>
+                                    </view>
+                                </view>
+                                <block v-else>
+                                    <component-no-data propStatus="0"></component-no-data>
+                                </block>
+                            </block>
+                            <!-- web端详情 -->
+                            <block v-else-if="order_item_goods_info_nav_index == 'detail-web'">
+                                <view v-if="(order_item_goods_info_data.goods_content_web || null) != null" class="web-html-content">
+                                    <mp-html :content="order_item_goods_info_data.goods_content_web" />
+                                </view>
+                                <block v-else>
+                                    <component-no-data propStatus="0"></component-no-data>
+                                </block>
+                            </block>
+                            <!-- 手机端详情 -->
+                            <block v-else-if="order_item_goods_info_nav_index == 'detail-app'">
+                                <view v-if="(order_item_goods_info_data.goods_content_app || null) != null && order_item_goods_info_data.goods_content_app.length > 0">
+                                    <view v-for="(item, index) in order_item_goods_info_data.goods_content_app" :key="index">
+                                        <image v-if="(item.images || null) != null" @tap="images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
+                                        <view v-if="(item.content || null) != null" class="content-items">
+                                            <view v-for="(items, index2) in item.content" :key="index2">{{ items }}</view>
+                                        </view>
+                                    </view>
+                                </view>
+                                <block v-else>
+                                    <component-no-data propStatus="0"></component-no-data>
+                                </block>
+                            </block>
+                        </scroll-view>
+                    </block>
+                    <block v-else>
+                        <component-no-data propStatus="0"></component-no-data>
+                    </block>
+                </view>
+            </view>
+        </component-popup>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -185,6 +268,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentPopup from '@/components/popup/popup';
     import componentHospitalOrderDetail from '@/pages/plugins/hospital/components/order-detail/order-detail';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -200,6 +284,16 @@
                 detail_list: [],
                 extension_data: [],
                 site_fictitious: null,
+                // 商品服务插件
+                order_item_goods_info_data: null,
+                popup_order_item_goods_info_status: false,
+                order_item_goods_info_nav_index: 'base',
+                order_item_goods_info_nav_list: {
+                    'base': this.$t('common.base'),
+                    'params': this.$t('common.params'),
+                    'detail-web': this.$t('common.detail_text')+'('+this.$t('common.web_client')+')',
+                    'detail-app': this.$t('common.detail_text')+'('+this.$t('common.app_client')+')'
+                },
             };
         },
 
@@ -207,6 +301,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentPopup,
             componentHospitalOrderDetail,
         },
 
@@ -333,6 +428,39 @@
                 var name = data.alias || data.name || '';
                 var address = (data.province_name || '') + (data.city_name || '') + (data.county_name || '') + (data.address || '');
                 app.globalData.open_location(data.lng, data.lat, name, address);
+            },
+
+            // 订单商品信息弹层开启弹层
+            popup_order_item_goods_info_event(e) {
+                this.setData({
+                    order_item_goods_info_data: this.detail.items[e.currentTarget.dataset.index] || null,
+                    popup_order_item_goods_info_status: true,
+                });
+            },
+
+            // 订单商品信息弹层弹层关闭
+            popup_order_item_goods_info_close_event(e) {
+                this.setData({
+                    popup_order_item_goods_info_status: false,
+                });
+            },
+
+            // 订单商品信息弹层弹层导航事件
+            order_item_goods_info_nav_event(e) {
+                this.setData({
+                    order_item_goods_info_nav_index: e.currentTarget.dataset.index || 'base'
+                });
+            },
+
+            // 图片查看
+            images_view_event(e) {
+                var value = e.currentTarget.dataset.value || null;
+                if (value != null) {
+                    uni.previewImage({
+                        current: value,
+                        urls: [value],
+                    });
+                }
             },
 
             // url事件

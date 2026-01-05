@@ -13,6 +13,7 @@
 		"not_yet": "Not yet",
         "submit": "Submit",
 		"save": "Preserve",
+        "send": "Send",
 		"add": "Add",
         "copy": "Copy",
         "remove": "Remove",
@@ -39,6 +40,17 @@
 		"num": "quantity",
 		"order": "order form",
 		"service": "service",
+        "base": "Base",
+        "params": "Params",
+        "status": "Status",
+        "reason": "Reason",
+        "close_reason": "Close Reason",
+        "refuse": "Refuse",
+        "buy": "Buy",
+        "complaint": "Complaint",
+        "info": "Info",
+        "web_client": "WebClient",
+        "app_client": "AppClient",
 		"please_input": "Please enter",
 		"settlement": "balance",
 		"confirm_sub": "Confirm submission",
@@ -51,23 +63,26 @@
 		"view_text": "Check",
         "detail_text": "Detail",
         "refresh_text": "Refresh",
+        "feed_text": "Feed",
         "yes_text": "Yes",
         "no_text": "NO",
+        "wait": "Wait",
         "place_order_text": "Place Order",
-		"processing_in_text": "Processing",
-		"loading_in_text": "Loading",
-		"upload_in_text": "Uploading",
-		"auth_in_text": "Authorizing",
-        "view_examples": "View examples",
-		"warm_tips": "Kind reminder",
-		"no_relevant_data_tips": "No relevant data available",
-		"internet_error_tips": "The internet has wandered off~",
-		"sub_error_retry_tips": "Submission failed, please try again!",
-		"not_more_list_data_tips": "No more list data available",
+        "processing_in_text": "Processing",
+        "loading_in_text": "Loading",    
+        "upload_in_text": "Uploading",
+        "auth_in_text": "Authorizing",
 		"login_in_text": "Logging in",
 		"sending_in_text": "Sending",
         "payment_in_text": "Payment in progress",
+        "submit_in_text": "Submitting",
 		"sending": "Sending",
+        "view_examples": "View examples",
+        "warm_tips": "Kind reminder",
+        "no_relevant_data_tips": "No relevant data available",
+        "internet_error_tips": "The internet has wandered off~",
+        "sub_error_retry_tips": "Submission failed, please try again!",
+        "not_more_list_data_tips": "No more list data available",
 		"scan_name": "Scan it",
 		"not_have_name": "not have",
         "note": "Remarks",
@@ -98,7 +113,17 @@
         "two_nav_text" : "Secondary Navigation",
         "no_data": "No data available at the moment",
         "goods": "Goods",
-        "shop": "Shop"
+        "shop": "Shop",
+        "customer_service": "Customer Service",
+        "tel_service": "Tel Service",
+        "view_history": "View history",
+        "no_chat_record": "No communication records",
+        "dispute_chat": "Dispute communication",
+        "input_enter_chat_tips": "Please enter a message",
+        "access": "Access",
+        "no": "No",
+        "cancel_confirm_tips": "After cancellation, it cannot be restored. Are you sure to continue?",
+        "delete_confirm_tips": "After deletion, it cannot be restored. Are you sure to continue?"
 	},
     "client": {
         "weixin": "WeChat",
@@ -292,7 +317,15 @@
         "plugins-certificate-userauth": "Certificate",
         "plugins-certificate-userauth-saveinfo": "Certificate editor",
         "plugins-certificate-userauth-detail": "Certificate detail",
-        "plugins-goodscompare-index": "Goods Compare"
+        "plugins-goodscompare-index": "Goods Compare",
+        "plugins-video-index": "Short Video List",
+        "plugins-video-search": "Short video search",
+        "plugins-video-detail": "Short video details",
+        "plugins-live-pull": "Live Details",
+        "plugins-complaint-user": "Complaint/Report List",
+        "plugins-complaint-form": "Complaint/Report",
+        "plugins-orderfeed-user": "Feed List",
+        "plugins-orderfeed-form": "Feed Data"
 	},
 	"login": {
 		"login": {
@@ -506,7 +539,6 @@
 			"4rb08b": "There are currently no available coupons available",
 			"3740ur": "Please select an address",
 			"71kidy": "Please select payment method",
-			"r79t77": "Submitting",
 			"31616e": "The current mode does not allow the use of addresses",
 			"g7dk3f": "Card type selection",
 			"0s1k23": "Active",
@@ -871,7 +903,6 @@
 			"29f6n5": "Transfer",
 			"8752a4": "Withdrawal",
 			"91h03v": "Payment code",
-			"ki1nor": "Tel Service",
 			"2k0227": "Exit",
 			"3q4p8k": "Collection",
 			"57xw84": "Tracks",
@@ -931,7 +962,6 @@
 			"6390gk": "Closed",
 			"vvxct1": "Opening order number",
 			"vjfki8": "Opening duration",
-			"pn78ns": "After cancellation, it cannot be restored. Are you sure you want to continue?",
 			"93j3zq": "No form data"
 		}
 	},
@@ -1133,14 +1163,6 @@
 			"ocg49p": "Selection list already exists"
 		}
 	},
-	"recommend-list": {
-		"recommend-list": {
-			"x74z3o": "commodity",
-			"78n1ly": "access",
-			"54d418": "After deletion, it cannot be restored. Are you sure to continue?",
-			"w9460o": "No"
-		}
-	},
 	"team": {
 		"team": {
 			"784249": "Registration time:",
@@ -1195,7 +1217,6 @@
 			"s70kj4": "Application Information",
 			"1s2f0g": "Electronic invoice",
 			"4tu3v3": "You can click on the invoice name and copy it, then go to the browser to open the address and download the invoice.",
-			"rrfex6": "state",
 			"p73963": "Invoice content",
 			"41qbu6": "Name of the bank where the enterprise opens the account",
 			"3a9459": "Enterprise account opening",
@@ -1558,7 +1579,7 @@
 	"user-orderaftersale-detail": {
 		"user-orderaftersale-detail": {
 			"uuhf62": "Immediate return",
-			"00je4f": "Return address:",
+			"00je4f": "Return address",
 			"4y2c1l": "voucher",
 			"bprwq9": "Reason for refund",
 			"85pnkf": "Number of items",
@@ -1582,7 +1603,10 @@
 			"23v6rp": "Please select the operation type",
 			"dn3423": "Please select the quantity of returns",
 			"c9e2ms": "Please fill in the courier name",
-			"ld10pm": "Please fill in the courier tracking number"
+			"ld10pm": "Please fill in the courier tracking number",
+            "87tuff": "Describe the reason",
+            "6uygft": "Describe the reason in a format of 1-230 characters",
+            "t67iug": "You have applied for platform intervention in mediation!"
 		}
 	},
 	"ask-comments": {
@@ -1608,7 +1632,6 @@
 	},
 	"binding-list": {
 		"binding-list": {
-			"kh7951": "buy",
 			"2u4v35": "Put it away",
 			"91d60h": "launch"
 		}
@@ -1966,6 +1989,19 @@
             "678iff": "Certificate Name",
             "tufg33": "ID NO",
             "ftyui3": "Expiration date"
+    	}
+    },
+    "complaint-form": {
+    	"complaint-form": {
+    		"78iudg": "proof image",
+    		"56ys33": "Please upload complete and clear images, up to a maximum of 10",
+    		"ssdff4": "My submission record"
+    	}
+    },
+    "orderfeed-form": {
+    	"orderfeed-form": {
+    		"54rttr": "Choose other products",
+            "fsdft3": "Feedback on this product"
     	}
     }
 }

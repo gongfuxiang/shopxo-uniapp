@@ -1,15 +1,18 @@
 <template>
     <view :class="theme_view">
-        <view class="flex-row flex-wrap">
-            <block v-if="propData.length > 0">
-                <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
+        <view v-if="propSlot" @tap="file_upload_event">
+            <slot></slot>
+        </view>
+        <view v-else class="flex-row flex-wrap">
+            <block v-if="form_images_list.length > 0">
+                <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
                     <view v-if="propDelete" class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
                         <iconfont name="icon-close-fillup" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
                     </view>
                     <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
                 </view>
             </block>
-            <view v-if="(propData || null) == null || propData.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
+            <view v-if="(form_images_list || null) == null || form_images_list.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
                 <iconfont name="icon-camera-solid" size="52rpx" color="#999"></iconfont>
                 <text class="text-size-xs cr-grey-9">{{$t('upload.upload.b33f08')}}</text>
             </view>
@@ -21,12 +24,15 @@
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         props: {
+            // 是否使用卡槽
+            propSlot: {
+                type: Boolean,
+                default: false,
+            },
             // 初始图片数据
             propData: {
-                type: Array,
-                default: () => {
-                    return [];
-                },
+                type: [Array,String],
+                default: '',
             },
             // 最大上传数量
             propMaxNum: {
@@ -42,6 +48,11 @@
             propPreview: {
                 type: Boolean,
                 default: true,
+            },
+            // 是否单个回调
+            propSingleCall: {
+                type: Boolean,
+                default: false,
             },
             // 路径类型 默认common
             propPathType: {
@@ -63,7 +74,7 @@
         },
         mounted() {
             this.setData({
-                form_images_list: this.propData,
+                form_images_list: (this.propData || null) == null ? [] : (typeof this.propData == 'string' ? this.propData.split(',') : this.propData),
             });
         },
         created: function () {},
@@ -86,12 +97,16 @@
                             if (res.statusCode == 200) {
                                 var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
                                 if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    list.push(data.data.url);
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                    self.$emit('call-back', self.form_images_list, self.propCallData);
+                                    if(self.propSingleCall) {
+                                        self.$emit('call-back', data.data.url, self.propCallData);
+                                    } else {
+                                        var list = self.form_images_list;
+                                        list.push(data.data.url);
+                                        self.setData({
+                                            form_images_list: list,
+                                        });
+                                        self.$emit('call-back', self.form_images_list, self.propCallData);
+                                    }
                                 } else {
                                     app.globalData.showToast(data.msg);
                                 }

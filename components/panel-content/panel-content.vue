@@ -4,13 +4,22 @@
         <view v-if="propIsTerse" class="terse-content margin-top cp">
             <block v-if="data != null && data_field.length > 0">
                 <block v-for="(item, index) in data_field" :key="index">
-                    <view v-if="(item.is_hide || 0) == 0" class="single-text margin-top-xs">
+                    <view v-if="(item.is_hide || 0) == 0" class="item margin-top-xs" :class="propClass">
                         <text class="cr-grey margin-right-xl">{{ item.name }}</text>
                         <block v-if="item.type == 'images'">
-                            <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="radius panel-item-images"></image>
+                            <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
+                        </block>
+                        <block v-else-if="item.type == 'many_images'">
+                            <view v-if="(data[item.field] || null) != null && data[item.field].length > 0" class="dis-inline-block va-m">
+                                <view class="flex-row gap-5">
+                                    <block v-for="(items, indexs) in data[item.field]" :key="indexs">
+                                        <image :src="items" :data-value="items" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
+                                    </block>
+                                </view>
+                            </view>
                         </block>
                         <text v-else class="cr-base">{{ data[item.field] }}</text>
-                        <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
+                        <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
                             <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
                         </view>
                     </view>
@@ -35,8 +44,17 @@
                                     <block v-if="item.type == 'images'">
                                         <image v-if="(data[item.field] || null) != null" :src="data[item.field]" :data-value="data[item.field]" @tap.stop="images_show_event" mode="aspectFit" class="panel-item-images"></image>
                                     </block>
+                                    <block v-else-if="item.type == 'many_images'">
+                                        <view v-if="(data[item.field] || null) != null && data[item.field].length > 0" class="dis-inline-block va-m">
+                                            <view class="flex-row gap-5">
+                                                <block v-for="(items, indexs) in data[item.field]" :key="indexs">
+                                                    <image :src="items" :data-value="items" @tap.stop="images_show_event" mode="aspectFit" class="br-f5 radius panel-item-images"></image>
+                                                </block>
+                                            </view>
+                                        </view>
+                                    </block>
                                     <text v-else>{{ data[item.field] }}</text>
-                                    <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
+                                    <view v-if="(item.is_copy || 0) == 1 && data[item.field] !== ''" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
                                         <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
                                     </view>
                                 </view>
@@ -114,6 +132,11 @@
                 type: Boolean,
                 default: false,
             },
+            // class
+            propClass: {
+                type: String,
+                default: 'single-text'
+            }
         },
         // 属性值改变监听
         watch: {
@@ -171,8 +194,8 @@
     };
 </script>
 <style scoped>
-    .terse-content .single-text {
-        max-height: 40rpx;
+    .terse-content .item {
+        min-height: 40rpx;
     }
     .panel-item-images {
         width: 40rpx;

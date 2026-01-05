@@ -19,7 +19,7 @@
                         <block v-for="(item, index) in nav_more_list" :key="index">
                             <view class="item padding-main cp" :data-value="item.url" data-type="1" @tap="nav_more_event">
                                 <view class="va-m dis-inline-block">
-                                    <uni-icons :type="item.icon" size="16" color="#fff"></uni-icons>
+                                    <iconfont :name="item.icon" color="#fff"></iconfont>
                                 </view>
                                 <text class="cr-white va-m margin-left-sm">{{ item.name }}</text>
                             </view>
@@ -204,11 +204,16 @@
                 <!-- 智能工具-基础提示信息 -->
                 <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.base_bottom || null) != null && (plugins_intellectstools_data.base_bottom.msg || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
                     <view class="notice-content text-size-xs">
-                        <view class="va-m dis-inline-block margin-right-xs">
+                        <view class="va-m dis-inline-block margin-right-xs va-m">
                             <uni-icons type="notification" size="32rpx" color="#dd514c"></uni-icons>
                         </view>
-                        <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{ plugins_intellectstools_data.base_bottom.title }}</text>
-                        <view>{{ plugins_intellectstools_data.base_bottom.msg }}</view>
+                        <block v-if="(plugins_intellectstools_data.base_bottom.title || null) == null">
+                            <text class="va-m">{{ plugins_intellectstools_data.base_bottom.msg }}</text>
+                        </block>
+                        <block v-else>
+                            <text class="fw-b va-m">{{ plugins_intellectstools_data.base_bottom.title }}</text>
+                            <view>{{ plugins_intellectstools_data.base_bottom.msg }}</view>
+                        </block>
                     </view>
                 </view>
 
@@ -257,7 +262,7 @@
                     <view class="single-text padding-right-main flex-1 flex-width">
                         <block v-for="(item, index) in goods.parameters.base" :key="index">
                             <text v-if="index > 0">，</text>
-                            <text>{{ item.value }}</text>
+                            <text>{{ item.name }}:{{ item.value }}</text>
                         </block>
                     </view>
                     <iconfont name="icon-arrow-right" color="#999"></iconfont>
@@ -349,35 +354,35 @@
                     </view>
                 </view>
 
-                <!-- 商品详情参数 -->
-                <view v-if="(goods.parameters || null) != null && (goods.parameters.detail || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
-                    <view class="spacing-nav-title">
-                        <text class="line"></text>
-                        <text class="text-wrapper">{{$t('goods-detail.goods-detail.l7dzv2')}}</text>
-                    </view>
-                    <view class="goods-parameters border-radius-main padding-main bg-white">
-                        <view class="content-item oh">
-                            <view class="oh">
-                                <block v-for="(item, index) in goods.parameters.detail" :key="index">
-                                    <view v-if="index <= 3" class="item single-text cr-base text-size-xs">
-                                        <text class="name">{{ item.name }}:</text>
-                                        <text class="value">{{ item.value }}</text>
-                                    </view>
-                                </block>
-                            </view>
-                            <view class="tc margin-top-lg">
-                                <text class="cr-grey text-size-xs" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-
                 <!-- 商品详情 -->
                 <view class="goods-detail">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.2j44o2')}}</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
+                        <!-- 商品基础数据 -->
+                        <view v-if="(goods.base_data || null) != null && goods.base_data.length > 0" class="padding-vertical-main margin-horizontal-main br-b-e">
+                            <block v-for="(item, index) in goods.base_data" :key="index">
+                                <view class="cr-base padding-vertical-xs">
+                                    <text class="margin-right-xs">{{ item.name }}:</text>
+                                    <text>{{ item.value }}</text>
+                                </view>
+                            </block>
+                        </view>
+                        <!-- 商品详情参数 -->
+                        <view v-if="(goods.parameters || null) != null && (goods.parameters.detail || null) != null && goods.parameters.detail.length > 0" class="goods-parameters padding-vertical-main margin-horizontal-main br-b-e">
+                            <view class="oh">
+                                <block v-for="(item, index) in goods.parameters.detail" :key="index">
+                                    <view v-if="index <= 3" class="item single-text cr-base">
+                                        <text class="margin-right-xs">{{ item.name }}:</text>
+                                        <text>{{ item.value }}</text>
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="tc margin-top">
+                                <text class="cr-grey" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
+                            </view>
+                        </view>
                         <block v-if="(common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
                             <!-- 是否详情展示相册 -->
                             <block v-if="common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0">
@@ -394,7 +399,7 @@
                                 <view v-for="(item, index) in goods_content_app" :key="index" class="goods-detail-app">
                                     <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
                                     <view v-if="(item.content || null) != null" class="content-items">
-                                        <view v-for="(items, index2) in item.content" :key="index2">{{ items }}</view>
+                                        <view v-for="(items, index2) in item.content" :key="index2" class="item">{{ items }}</view>
                                     </view>
                                 </view>
                             </block>
@@ -406,7 +411,7 @@
                 </view>
 
                 <!-- 猜你喜欢 -->
-                <view v-if="guess_you_like.length > 0" class="padding-horizontal-main margin-top-main">
+                <view v-if="guess_you_like.length > 0" class="margin-top-main">
                     <view class="tc spacing-mb">
                         <view class="guess-like fw-b text-size-md">{{$t('goods-detail.goods-detail.v2974w')}}</view>
                     </view>
@@ -772,8 +777,6 @@
                 plugins_label_data: null,
                 // 智能工具插件
                 plugins_intellectstools_data: null,
-                // 客服插件
-                plugins_chat_data: null,
                 // 门店插件
                 plugins_realstore_data: null,
                 plugins_realstore_cart_nav_status: false,
@@ -978,7 +981,6 @@
                                 plugins_wholesale_data: (data.plugins_wholesale_data || null) == null ? null : data.plugins_wholesale_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                                plugins_chat_data: data.plugins_chat_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_goodsservice_data: data.plugins_goodsservice_data || null,

@@ -57,7 +57,7 @@
                                             </block>
                                         </scroll-view>
                                         <component-nav-more class="nav-more-top" :propTop="search_height + 'px'" :propStatus="popup_status" @open-popup="open_popup_event">
-                                            <view class="nav-list-more">
+                                            <scroll-view scroll-y="true" class="nav-list-more">
                                                 <view class="flex-row flex-wrap align-c">
                                                     <block v-for="(item, index) in category_list" :key="index">
                                                         <view class="item tc cr-base cp text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
@@ -70,7 +70,7 @@
                                                         </view>
                                                     </block>
                                                 </view>
-                                            </view>
+                                            </scroll-view>
                                         </component-nav-more>
                                     </view>
                                     <!-- 二级导航 -->

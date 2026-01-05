@@ -119,7 +119,7 @@
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item br-t cp padding-main" @tap="call_event">
                                 <view class="arrow-right">
                                     <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon va-m" mode="widthFix"></image>
-                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ $t('user.user.ki1nor') }}</text>
+                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ $t('common.tel_service') }}</text>
                                 </view>
                             </view>
                         </view>
@@ -139,7 +139,7 @@
                             <!-- 联系客服 -->
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="call_event">
                                 <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
-                                <view class="item-name single-text cr-base text-size-sm">{{ $t('user.user.ki1nor') }}</view>
+                                <view class="item-name single-text cr-base text-size-sm">{{ $t('common.tel_service') }}</view>
                             </view>
                         </view>
                     </view>

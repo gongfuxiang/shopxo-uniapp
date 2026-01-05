@@ -6,6 +6,90 @@
   "description": "1. diy, form, 小程序仅base64, TIF，（web端也可以使用这个方式）；2. web端 Base64, WOFF2, WOFF, TEF, SVG, EOT",
   "glyphs": [
     {
+      "icon_id": "42535431",
+      "name": "投诉举报",
+      "font_class": "complaint",
+      "unicode": "101d0",
+      "unicode_decimal": 66000
+    },
+    {
+      "icon_id": "8341756",
+      "name": "双箭头-上",
+      "font_class": "angle-double-up",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "8341757",
+      "name": "双箭头-右",
+      "font_class": "angle-double-right",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "8341759",
+      "name": "双箭头-下",
+      "font_class": "angle-double-down",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "8341760",
+      "name": "双箭头-左",
+      "font_class": "angle-double-left",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "815878",
+      "name": "选择-勾选",
+      "font_class": "select",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "39249070",
+      "name": "line-line",
+      "font_class": "line-line",
+      "unicode": "eab8",
+      "unicode_decimal": 60088
+    },
+    {
+      "icon_id": "3338739",
+      "name": "生活号",
+      "font_class": "life",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "8574987",
+      "name": "支付宝",
+      "font_class": "alipay",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "468194",
+      "name": "qq-空心",
+      "font_class": "qq-o",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "10304546",
+      "name": "qq",
+      "font_class": "qq",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "5085205",
+      "name": "咖啡",
+      "font_class": "coffee",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "45203584",
       "name": "diy装修",
       "font_class": "menu-diy",
@@ -130,13 +214,6 @@
       "font_class": "team-up",
       "unicode": "e801",
       "unicode_decimal": 59393
-    },
-    {
-      "icon_id": "37288622",
-      "name": "选择",
-      "font_class": "select",
-      "unicode": "e803",
-      "unicode_decimal": 59395
     },
     {
       "icon_id": "37288999",
@@ -1855,8 +1932,8 @@
     },
     {
       "icon_id": "39905994",
-      "name": "底部商店简介",
-      "font_class": "footer-describe",
+      "name": "简介",
+      "font_class": "describe",
       "unicode": "e75d",
       "unicode_decimal": 59229
     },
@@ -3101,22 +3178,22 @@
     },
     {
       "icon_id": "37943831",
-      "name": "网站底部邮箱",
-      "font_class": "footer-email",
+      "name": "邮箱-粗",
+      "font_class": "email-wide",
       "unicode": "e6d4",
       "unicode_decimal": 59092
     },
     {
       "icon_id": "37943830",
-      "name": "网站底部地址",
-      "font_class": "footer-address",
+      "name": "网站地址-圆",
+      "font_class": "address-round",
       "unicode": "e6d6",
       "unicode_decimal": 59094
     },
     {
       "icon_id": "37943795",
-      "name": "网站底部电话",
-      "font_class": "footer-tel",
+      "name": "电话-响",
+      "font_class": "tel-sound",
       "unicode": "e6d3",
       "unicode_decimal": 59091
     },

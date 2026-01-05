@@ -26,38 +26,49 @@
     transition: border-color .2s ease-in;
 }
 
-/*
-* 售后信息
-*/
-.msg-tips {
-    background: #caecff;
-    color: #0090dc;
-}
-.msg-tips-warning {
-    background-color: #ffe1ca;
-    color: #f37b1d;
-}
-.msg-tips-success {
-    background-color: #c0efbf;
-    color: #1AAD19;
-}
-.msg-tips-danger {
-    background-color: #ffe0de;
-    color: #dd514c;
-}
-.msg-tips .msg-a {
-    color: #d2354c;
-}
-.msg-tips-danger .msg-a {
-    color: #136ed9;
-}
 
-/*
-* 退货地址
-*/
-.msg-tips button {
-    height: 60rpx;
-    line-height: 60rpx;
-    padding: 0 20rpx;
-    font-size: 24rpx;
+.chat-head .chat-user-avatar {
+    height: 90rpx;
+}
+.chat-head .chat-user-avatar .image {
+    width: 80rpx;
+    height: 80rpx;
+}
+.chat-head .chat-user-status {
+    line-height: 28rpx;
+    width: 28rpx;
+    height: 28rpx;
+    top: -26rpx;
+    -webkit-box-shadow: 0px 0px 5px #9E9E9E;
+    box-shadow: 0px 0px 5px #9E9E9E;
+}
+.chat-content {
+    height: 800rpx;
+}
+.chat-content .chat-item .content {
+    width: calc(100vw - 260rpx);
+}
+.chat-content .chat-item .image {
+    width: 64rpx;
+    height: 64rpx;
+}
+.chat-content .chat-item .content-image {
+    max-width: 300rpx;
+    max-height: 300rpx;
+}
+.chat-content .chat-item .content-video {
+    max-width: 450rpx;
+    max-height: 450rpx;
+}
+.chat-input .chat-send-input {
+    height: 96rpx;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.chat-input .chat-send-submit {
+    width: 240rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
 }

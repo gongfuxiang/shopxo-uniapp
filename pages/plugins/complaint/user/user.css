@@ -1,0 +1,7 @@
+.data-cover {
+    width: 86rpx;
+    height: 86rpx;
+}
+.data-title {
+    width: calc(100% - 110rpx);
+}

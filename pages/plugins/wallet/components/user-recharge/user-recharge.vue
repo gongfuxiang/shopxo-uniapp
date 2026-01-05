@@ -337,9 +337,9 @@
                 var self = this;
                 uni.showModal({
                     title: self.$t('common.warm_tips'),
-                    content: self.$t('recommend-list.recommend-list.54d418'),
+                    content: self.$t('common.delete_confirm_tips'),
                     confirmText: self.$t('common.confirm'),
-                    cancelText: self.$t('recommend-list.recommend-list.w9460o'),
+                    cancelText: self.$t('common.no'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数

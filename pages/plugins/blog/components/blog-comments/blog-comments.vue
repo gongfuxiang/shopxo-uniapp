@@ -383,7 +383,7 @@
                         return false;
                     }
                     uni.showLoading({
-                        title: this.$t('buy.buy.r79t77'),
+                        title: this.$t('common.submit_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('comments', 'index', 'blog'),

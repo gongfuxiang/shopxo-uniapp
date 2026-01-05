@@ -1,0 +1,8 @@
+.business .cover {
+    width: 160rpx;
+    height: 160rpx;
+}
+.business .base {
+    width: calc(100% - 180rpx);
+    height: 76rpx;
+}
