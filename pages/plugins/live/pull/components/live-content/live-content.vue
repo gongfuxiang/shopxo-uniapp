@@ -541,13 +541,16 @@
                     this.is_socket_error = true;
                     // 尝试重连，最多30次
                     if ((this.reconnect_count + 1) < 30) {
+                        const _this = this;
                         setTimeout(() => {
-                            this.is_socket_error = true;
-                            this.socket_error_content = `第${this.reconnect_count + 1}次连接失败`;
+                            _this.is_socket_error = true;
+                            _this.socket_error_content = `第${_this.reconnect_count + 1}次连接失败`;
+                            console.log(`第${_this.reconnect_count + 1}次连接失败`);
                             setTimeout(() => {
                                 // 增加重连计数
-                                this.reconnect_count++;
-                                this.socket_connect();
+                                _this.reconnect_count++;
+                                _this.socket_connect();
+                                console.log(`第${_this.reconnect_count + 1}次连接`);
                             }, 1000); // 逐步增加重连间隔，最大10秒
                         }, 1000); // 逐步增加重连间隔，最大10秒
                     } else {
@@ -745,12 +748,13 @@
                     clearInterval(this.pull_live_room_info_timer);
                     this.pull_live_room_info_timer = null;
                 }
-                
+                console.log('立即获取直播间数据');
                 // 立即发送获取直播间数据消息
                 this.socket_send('live-room-info');
                 
                 // 每30秒发送一次获取直播间数据消息
                 this.pull_live_room_info_timer = setInterval(() => {
+                    console.log('定时获取直播间数据');
                     this.socket_send('live-room-info');
                 }, this.live_room_info_timing_interval_time * 1000);
             },
