@@ -6,6 +6,27 @@
   "description": "1. diy, form, 小程序仅base64, TIF，（web端也可以使用这个方式）；2. web端 Base64, WOFF2, WOFF, TEF, SVG, EOT",
   "glyphs": [
     {
+      "icon_id": "2733963",
+      "name": "播放结束",
+      "font_class": "player-end",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "448450",
+      "name": "播放暂停",
+      "font_class": "player-pause",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "7333004",
+      "name": "播放",
+      "font_class": "player",
+      "unicode": "e692",
+      "unicode_decimal": 59026
+    },
+    {
       "icon_id": "42535431",
       "name": "投诉举报",
       "font_class": "complaint",
@@ -151,20 +172,6 @@
       "font_class": "pp-all",
       "unicode": "e7f8",
       "unicode_decimal": 59384
-    },
-    {
-      "icon_id": "37187704",
-      "name": "播放暂停",
-      "font_class": "player-pause",
-      "unicode": "e7f9",
-      "unicode_decimal": 59385
-    },
-    {
-      "icon_id": "37187703",
-      "name": "播放结束",
-      "font_class": "player-end",
-      "unicode": "e7fa",
-      "unicode_decimal": 59386
     },
     {
       "icon_id": "37217394",
