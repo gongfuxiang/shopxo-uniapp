@@ -156,7 +156,7 @@
         </view>
         <!-- 商品弹出框 -->
         <component-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="添加商品" :propCloseable="true">
-           <component-goods propIsGoodsPopup></component-goods>
+           <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight"></component-goods>
         </component-popup>
         <!-- 分享弹窗 -->
         <component-share-popup ref="share" class="pointer-events-auto"></component-share-popup>

@@ -1,11 +1,11 @@
 <template>
     <!-- #ifndef APP-NVUE -->
-    <view v-if="isShow" ref="ani" :animation="animationData" :class="propCustomClass" :style="transformStyles" @click="onClick">
+    <view v-if="isShow" ref="ani" class="page-width-max" :animation="animationData" :class="propCustomClass" :style="transformStyles" @click="onClick">
         <slot></slot>
     </view>
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
-    <view v-if="isShow" ref="ani" :animation="animationData" :class="propCustomClass" :style="transformStyles" @click="onClick">
+    <view v-if="isShow" ref="ani" class="page-width-max" :animation="animationData" :class="propCustomClass" :style="transformStyles" @click="onClick">
         <slot></slot>
     </view>
     <!-- #endif -->

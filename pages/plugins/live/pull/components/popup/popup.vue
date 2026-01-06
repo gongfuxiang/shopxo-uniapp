@@ -619,6 +619,8 @@
 <style lang="scss" scoped>
     .uni-popup {
         position: fixed;
+        max-width: 1600rpx;
+        margin: 0 auto;
         /* #ifndef APP-NVUE */
         z-index: 99;
 

@@ -2,7 +2,7 @@
     <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh bg-f9" :style="good_style">
         <block v-if="good_list.length > 0">
             <!-- 固定在顶部的商品操作栏 -->
-            <view class="goods-header-fixed" :style="'width:' + windowWidth + 'px;'">
+            <view class="goods-header-fixed" :style="'width:' + propWindowWidth + 'px;'">
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
                         <component-icon propName="list-setup" propSize="36rpx" propColor="#999"></component-icon>
@@ -25,7 +25,7 @@
                 <view v-for="(item, index) in good_list" :key="item.id">
             <!-- #endif -->
                     <!-- 商品项 -->
-                    <view :class="'goods-item flex-row align-c box-border-box'  + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (windowWidth - 24) + 'px;'" :data-index="index" :data-value="item.checkbox" :data-url="item.goods_url" @tap="goods_detail">
+                    <view :class="'goods-item flex-row align-c box-border-box'  + (item.id == explanation_id ? ' bg-red-light' : '')" :style="'width:' + (propWindowWidth - 24) + 'px;'" :data-index="index" :data-value="item.checkbox" :data-url="item.goods_url" @tap="goods_detail">
                         <view class="flex-1">
                             <view class="flex-row align-c">
                                 <view class="pr goods-item-image-container">
@@ -83,7 +83,7 @@
             <!-- #ifdef APP-NVUE -->
                 </cell>
                 <cell>
-                    <component-bottom-line :propStatus="bottom_line_status" :propWidth="windowWidth"></component-bottom-line>
+                    <component-bottom-line :propStatus="bottom_line_status" :propWidth="propWindowWidth"></component-bottom-line>
                 </cell>
             </list>
             <!-- #endif -->
@@ -132,7 +132,15 @@ export default {
         propLiveRoomId: {
             type: Number,
             default: 0
-        }
+        },
+        propWindowWidth: {
+            type: Number,
+            default: 0
+        },
+        propWindowHeight: {
+            type: Number,
+            default: 0
+        },
     },
     data() {
         return {
@@ -145,9 +153,6 @@ export default {
             //#region 打开商品弹出框
             popup_goods_show: false,
             good_list: [],
-            // 获取屏幕大小, 这个组件需要再vue页面和nvue页面使用，所以不能设置为100%，需要获取固定屏幕大小
-            windowWidth: 0,
-            windowHeight: 0,
             //#endregion
     
             //#region 商品列表处理
@@ -176,10 +181,12 @@ export default {
         good_style() {
             // 判断是否是弹出框形式
             if (!this.propIsGoodsPopup) {
-                return `width:${ this.windowWidth }px;height: ${ this.windowHeight }px;`;
+                return `width:${ this.propWindowWidth }px;height: ${ this.propWindowHeight }px;`;
             } else {
+                console.log(this.propWindowHeight);
+                
                 // 如果是弹出框模式的就不全屏显示
-                return `width:${ this.windowWidth }px;height: ${ this.windowHeight - 300}px;`;
+                return `width:${ this.propWindowWidth }px;height: ${ this.propWindowHeight - 300}px;`;
             }
         },
         //#endregion
@@ -219,9 +226,6 @@ export default {
         //#endregion
     },
     mounted() {
-        const data = uni.getWindowInfo();
-        this.windowWidth = data.windowWidth;
-        this.windowHeight = data.windowHeight;
         // 初始化商品列表
         this.init();
         

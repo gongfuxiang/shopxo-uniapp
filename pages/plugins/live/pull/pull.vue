@@ -7,7 +7,7 @@
         </view>
         <template v-if="!is_loading"> 
             <view class="live-content pointer-events-none">
-                <component-live-content ref="liveContent" :propWindowWidth="windowWidth" :propLiveData="live_data" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></component-live-content>
+                <component-live-content ref="liveContent" :propWindowWidth="windowWidth" :propWindowHeight="windowHeight" :propLiveData="live_data" :propLiveConfig="live_config" :propLiveShowImgs="like_show_imgs" @liveBack="live_back" @liveStatus="socket_live_status"></component-live-content>
             </view>
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
                 <view class="flex-col align-c">
