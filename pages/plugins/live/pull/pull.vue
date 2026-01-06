@@ -1,7 +1,7 @@
 <template>
-    <view :class="theme_view + ' re'">
-        <view class="pr live-bg" @dblclick="handle_double_click" @touchend="handle_touch_end" :data-ignore="false">
-            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success"></component-live-video>
+    <view :class="theme_view + ' pr'">
+        <view class="pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedTap="muted_tap"></component-live-video>
             <!-- 简化版点赞效果组件 -->
             <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
@@ -76,7 +76,7 @@
 <style lang="scss" scoped>
     .live-bg {
         background-image: linear-gradient(to bottom,#ba623c,#14766a);
-        width: 100vw;
+        width: 100%;
         height: 100vh;
     }
     .live-content {
@@ -122,8 +122,6 @@
         }
     }
     .live-ended {
-        width: 100vw;
-        height: 100vh;
         background: linear-gradient(to bottom,#AD18F9,#05DFC7);
         position: absolute;
         top: 0;

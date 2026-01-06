@@ -60,7 +60,20 @@
             this.windowWidth = data.windowWidth;
             this.windowHeight = data.windowHeight;
         },
+        mounted() {
+            window.addEventListener('click', this.click_video);
+        },
+        beforeDestroy() {
+            window.removeEventListener('click', this.click_video);
+        },
         methods: {
+            /**
+             * 点击视频区域处理函数
+             * 点击时切换视频是否静音
+             */
+            click_video() {
+                this.$emit('mutedTap');
+            },
             reload_video() {
                 // #ifndef MP
                 // 深拷贝视频源地址，避免直接修改原地址
@@ -173,7 +186,7 @@
 
 <style lang="scss" scoped>
     .video-size {
-        width: 100vw;
+        width: 100%;
         height: 100vh;
     }
     .video-bg {

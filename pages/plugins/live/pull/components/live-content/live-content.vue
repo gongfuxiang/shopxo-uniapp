@@ -3,7 +3,7 @@
     <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" :style="'width:' + propWindowWidth + 'px;height:' + propWindowHeight + 'px;'">
     <!-- #endif -->
     <!-- #ifndef APP-NVUE -->
-    <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" style="width: 100vw;height: 100vh;">
+    <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" style="width: 100%;height: 100vh;">
     <!-- #endif -->
         <!-- 顶部主播信息 -->
         <view class="flex-row align-c jc-sb" :style="header_style">
@@ -123,7 +123,7 @@
                     </view>
                 </view>
                 <!-- 底部交互区域 -->
-                <view class="flex-row align-c mt-5 pointer-events-auto">
+                <view class="flex-row align-c mt-5 pointer-events-auto pr">
                     <template v-if="is_socket_success">
                         <view class="flex-1 bottom-actions-input">
                             <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />

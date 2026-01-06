@@ -33,6 +33,8 @@ export default {
             retry_count: 0, // 重试计数器
             live_room_reconnect_number: 0, // 直播间重连次数
             live_room_reconnect_interval_time: 1, // 直播间重连间隔时间
+            live_like_count: 0, // 点赞次数
+            live_like_click_timer: null,
         }
     },
 
@@ -58,7 +60,7 @@ export default {
         app.globalData.page_share_handle();
 
         const data = uni.getWindowInfo();
-        this.windowWidth = data.windowWidth;
+        this.windowWidth = data.windowWidth > 800 ? 800 : data.windowWidth;
         this.windowHeight = data.windowHeight;
 
         this.init();
@@ -227,24 +229,37 @@ export default {
          * 处理鼠标双击事件
          * @param {Event} event 鼠标事件对象
          */
-        handle_double_click(event) {
-            if (event.target.dataset.ignore) {
-                return;
-            }
-            // 防抖处理，200ms内只能触发一次
-            const currentTime = Date.now();
-            if (currentTime - this.lastLikeTime < 200) {
-                return;
-            }
-            
-            this.lastLikeTime = currentTime;
-            
-            if (this.$refs.fullScreenLikeEffect) {
-                this.$refs.fullScreenLikeEffect.add_like(event);
-            }
+        handle_click(event) {
+            this.live_like_count++;
+    
+            if (this.live_like_count === 1) {
+                // 第一次点击，设置定时器
+                this.live_like_click_timer = setTimeout(function() {
+                    // 单击，重置计数器
+                    this.live_like_count = 0;
+                }, 300); // 300ms内的两次点击算作双击
+            } else if (this.live_like_count === 2) {
+                // 双击
+                clearTimeout(this.live_like_click_timer);
+                this.live_like_count = 0;
+                if (event.target.dataset.ignore) {
+                    return;
+                }
+                // 防抖处理，200ms内只能触发一次
+                const currentTime = Date.now();
+                if (currentTime - this.lastLikeTime < 300) {
+                    return;
+                }
+                
+                this.lastLikeTime = currentTime;
+                
+                if (this.$refs.fullScreenLikeEffect) {
+                    this.$refs.fullScreenLikeEffect.add_like(event);
+                }
 
-            if (this.$refs.liveContent) {
-                this.$refs.liveContent.like_click(event);
+                if (this.$refs.liveContent) {
+                    this.$refs.liveContent.like_click(event);
+                }
             }
         },
         

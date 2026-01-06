@@ -295,6 +295,6 @@
 <style lang="scss" scoped>
     /* 动画元素固定定位样式 */
     .a-img {
-        position: fixed;
+        position: absolute;
     }
 </style>
