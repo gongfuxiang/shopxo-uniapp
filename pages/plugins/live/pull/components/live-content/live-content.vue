@@ -545,12 +545,12 @@
                         setTimeout(() => {
                             _this.is_socket_error = true;
                             _this.socket_error_content = `第${_this.reconnect_count + 1}次连接失败`;
-                            console.log(`第${_this.reconnect_count + 1}次连接失败`);
+                            console.log(`聊天第${_this.reconnect_count + 1}次连接失败`);
                             setTimeout(() => {
                                 // 增加重连计数
                                 _this.reconnect_count++;
                                 _this.socket_connect();
-                                console.log(`第${_this.reconnect_count + 1}次连接`);
+                                console.log(`聊天第${_this.reconnect_count + 1}次连接`);
                             }, 1000); // 逐步增加重连间隔，最大10秒
                         }, 1000); // 逐步增加重连间隔，最大10秒
                     } else {

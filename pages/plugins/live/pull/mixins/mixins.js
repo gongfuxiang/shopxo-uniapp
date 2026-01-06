@@ -211,7 +211,7 @@ export default {
                     const _this = this;
                     // 延迟3秒后尝试重新连接
                     this.ended_timer = setTimeout(() => {
-                        console.log('视频重连次数' + _this.retry_count);
+                        console.log('视频第' + _this.retry_count + '次连接');
                         // 在定时结束后尝试重新连接
                         if (_this.$refs.liveVideo) {
                             _this.$refs.liveVideo.reload_video();
