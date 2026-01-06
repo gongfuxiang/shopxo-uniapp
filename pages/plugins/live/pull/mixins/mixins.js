@@ -68,6 +68,7 @@ export default {
         if (this.$refs.liveContent) {
             this.$refs.liveContent.socket_connect();
         }
+        // 页面显示时，重新加载视频
         if (this.$refs.liveVideo) {
             this.$refs.liveVideo.reload_video();
         }
