@@ -155,19 +155,20 @@ export default {
         loadedmetadata() {
             // 隐藏加载提示
             uni.hideLoading();
+            const _this = this;
             // 如果加载完成了，延迟2秒确定一下直播状态, 有的时候直播状态是正常的也加载成功了，但是获取不到视频流，需要确定一下没有执行error才算是真正的成功
             this.load_timer = setTimeout(() => {
                 console.log('视频数据加载完成');
                 
-                this.retry_count = 0;
+                _this.retry_count = 0;
                 // 直播状态为正常或者暂停直播了，才认为是正常的加载成功
-                if ([0, 1].includes(this.live_status)) {
+                if ([0, 1].includes(_this.live_status)) {
                     // 如果重连的定时器还在运行中，则清除它
-                    if (this.ended_timer) {
+                    if (_this.ended_timer) {
                         // 隐藏加载提示
-                        clearTimeout(this.ended_timer);
+                        clearTimeout(_this.ended_timer);
                     }
-                    this.live_be_right_back_error = false;
+                    _this.live_be_right_back_error = false;
                 }
             }, 2000);
         },
@@ -211,11 +212,12 @@ export default {
                     this.retry_count++;
                     // 暂停直播了或者继续直播了，则提示用户当前主播暂时离开
                     this.live_be_right_back_error = true;
+                    const _this = this;
                     // 延迟3秒后尝试重新连接
                     this.ended_timer = setTimeout(() => {
                         // 在定时结束后尝试重新连接
-                        if (this.$refs.liveVideo) {
-                            this.$refs.liveVideo.reload_video();
+                        if (_this.$refs.liveVideo) {
+                            _this.$refs.liveVideo.reload_video();
                         }
                     }, this.live_room_reconnect_interval_time * 1000);
                 }
