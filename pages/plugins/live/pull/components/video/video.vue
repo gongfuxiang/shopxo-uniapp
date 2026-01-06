@@ -60,12 +60,14 @@
             this.windowWidth = data.windowWidth;
             this.windowHeight = data.windowHeight;
         },
+        // #ifdef H5
         mounted() {
             window.addEventListener('click', this.click_video);
         },
         beforeDestroy() {
             window.removeEventListener('click', this.click_video);
         },
+        //#endif
         methods: {
             /**
              * 点击视频区域处理函数
