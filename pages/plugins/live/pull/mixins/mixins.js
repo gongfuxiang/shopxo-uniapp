@@ -68,6 +68,9 @@ export default {
         if (this.$refs.liveContent) {
             this.$refs.liveContent.socket_connect();
         }
+        if (this.$refs.liveVideo) {
+            this.$refs.liveVideo.reload_video();
+        }
     },
 
     /**
