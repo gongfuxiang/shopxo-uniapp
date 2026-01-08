@@ -339,9 +339,18 @@
                 // 尝试自动播放视频
                 attemptAutoPlay(videoElement, isMuted) {
                     const playPromise = videoElement.play();
-                    
+                    uni.showToast({
+                        title: '开始尝试播放' + playPromise,
+                        icon: 'success',
+                        mask: true
+                    })
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
+                            uni.showToast({
+                                title: '播放成功' + videoElement.muted,
+                                icon: 'success',
+                                mask: true
+                            })
                                 // 自动播放成功
                                 this.autoplayRejected = false;
                                 // 通知父组件静音播放成功
@@ -351,6 +360,11 @@
                                 });
                             })
                             .catch((error) => {
+                                uni.showToast({
+                                    title: '播放失败' + videoElement.muted,,
+                                    icon: 'error',
+                                    mask: true
+                                })
                                 // 自动播放被拒绝
                                 this.autoplayRejected = true;
                                 // 通知父组件静音播放成功
