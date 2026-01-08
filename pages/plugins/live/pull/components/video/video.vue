@@ -153,13 +153,9 @@
              */
             // 网页有的时候直接访问会报错，所以这里需要判断一下，如果报错则静音播放，静音播放成功添加提示，用户操作之后改为非静音播放
             // 静音自动播放成功, 触发事件, 添加提示弹出框，用户操作之后改为非静音播放
-            auto_play_success(e) {
-                uni.showToast({
-                    title: this.muted ? '静音播放成功' : '非静音播放成功',
-                    icon: 'none'
-                });
+            auto_play_success() {
                 // 静音播放成功时，触发事件，提示用户需要修改点击修改播放状态
-                if (e) {
+                if (this.muted) {
                     this.$emit('mutedAutoPlaySuccess', this.muted);
                 }
             },
@@ -170,20 +166,12 @@
              * @param {Boolean} e - 是否自动播放失败
              */
             // 自动播放失败, 静音播放
-            auto_play_error(e) {
-                // 播放失败，并且是非静音状态，则静音播放尝试是否成功
-                if (!e) {
-                    console.log(this.muted);
-                    uni.showToast({
-                        title: this.muted ? '静音播放失败' : '非静音播放失败',
-                        icon: 'none'
-                    });
-                    // 如果是静音播放了，但是还是播放失败
-                    if (this.muted) {
-                        this.$emit('mutedAutoPlayError');
-                    } else {
-                        this.muted = true;
-                    }
+            auto_play_error() {
+                // 如果是静音播放了，但是还是播放失败
+                if (this.muted) {
+                    this.$emit('mutedAutoPlayError');
+                } else {
+                    this.muted = true;
                 }
             },
             
