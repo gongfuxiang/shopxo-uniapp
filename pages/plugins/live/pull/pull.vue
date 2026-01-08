@@ -24,8 +24,8 @@
                 </view>
             </view>
             <!-- 视频播放提示 -->
-            <view v-if="!is_live_ended && is_muted_auto_play_error && !live_be_right_back_error" class="live-muted flex-row align-c jc-c pointer-events-none">
-                <component-icon propName="bofang" propSize="200rpx" propColor="#fff"></component-icon>
+            <view v-if="!is_live_ended && is_muted_auto_play_error && !live_be_right_back_error" class="live-play flex-row align-c jc-c pointer-events-none">
+                <component-icon propName="bofang" propSize="200rpx" propColor="#fff" @click="muted_tap"></component-icon>
             </view>
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
@@ -131,6 +131,26 @@
         .live-muted-text:hover {
             color: rgba(210,27,70,1);
             border-bottom: 1px solid rgba(210,27,70,1);
+        }
+    }
+    .live-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 11;
+        width: 100%;
+        height: 100%;
+        .icon-bofang {
+            height: 200rpx;
+            width: 200rpx;
+            font-size: 200rpx !important;
+            color: inherit !important;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
     .live-ended {
