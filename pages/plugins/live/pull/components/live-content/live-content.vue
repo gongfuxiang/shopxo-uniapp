@@ -49,7 +49,7 @@
                                 <template v-if="item.type == 'user'">
                                     <!-- 用户名和文本内容容器 -->
                                     <view class="inline-block">
-                                        <view class="fl flex-row align-c jc-c padding-top-xs">
+                                        <view class="fl flex-row align-c jc-c padding-top-xsss">
                                             <!-- 头像 -->
                                             <image :src="item.user_avatar != null ? item.user_avatar : userAvatar" class="bulletin-item-avatar" mode="aspectFill"></image>
                                         </view>
