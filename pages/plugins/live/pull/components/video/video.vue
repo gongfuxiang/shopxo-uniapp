@@ -167,6 +167,11 @@
              */
             // 自动播放失败, 静音播放
             auto_play_error() {
+                uni.showToast({
+                    title: this.muted ? '静音播放失败' : '自动播放失败，已切换为静音播放',
+                    icon: 'success',
+                    mask: true
+                })
                 // 如果是静音播放了，但是还是播放失败
                 if (this.muted) {
                     this.$emit('mutedAutoPlayError');
