@@ -60,17 +60,25 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 is_muted_auto_play_success: false,
                 is_muted_auto_play_error: false,
-                initial_reminder: false
             }
         },
         methods: {
             muted_auto_play_success(is_muted) {
                 if (is_muted) {
+                    // 静音播放成功, 显示静音播放按钮
                     this.is_muted_auto_play_success = true;
+                    // 隐藏自动播放按钮
+                    this.is_muted_auto_play_error = false;
                 }
             },
+            // 静音自动播放失败
             muted_auto_play_error() {
+                // 隐藏加载中
+                uni.hideLoading();
+                // 显示自动播放按钮
                 this.is_muted_auto_play_error = true;
+                // 隐藏静音提示
+                this.is_muted_auto_play_success = false;
             },
             // 静音提示点击
             muted_tap() {
