@@ -150,9 +150,9 @@
         width: 100%;
         height: 100%;
         .component-icon-play {
-            height: 200rpx;
-            width: 200rpx;
-            font-size: 200rpx !important;
+            height: 160rpx;
+            width: 160rpx;
+            font-size: 160rpx !important;
             color: inherit !important;
             background: #fff;
             border-radius: 50%;
