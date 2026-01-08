@@ -1,8 +1,7 @@
 <template>
     <view :class="theme_view + ' pr'">
         <view class="pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
-            <text>{{ !is_live_ended && is_muted_auto_play_error && !live_be_right_back_error }}</text>
-            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'https://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedTap="muted_tap"></component-live-video>
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'https://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedAutoPlayError="muted_auto_play_error" @mutedTap="muted_tap"></component-live-video>
             <!-- 简化版点赞效果组件 -->
             <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
