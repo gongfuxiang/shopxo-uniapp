@@ -65,19 +65,11 @@
         },
         methods: {
             muted_auto_play_success(is_muted) {
-                uni.showToast({
-                    title: this.is_muted ? '静音播放成功' : '222225',
-                    icon: 'none'
-                });
                 if (is_muted) {
                     this.is_muted_auto_play_success = true;
                 }
             },
             muted_auto_play_error() {
-                uni.showToast({
-                    title: '显示图标提示',
-                    icon: 'none'
-                });
                 this.is_muted_auto_play_error = true;
             },
             // 静音提示点击
