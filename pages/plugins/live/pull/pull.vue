@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view + ' pr'">
         <view class="pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
-            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedTap="muted_tap"></component-live-video>
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedTap="muted_tap" @mutedAutoPlayError="muted_auto_play_error"></component-live-video>
             <!-- 简化版点赞效果组件 -->
             <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
@@ -22,6 +22,10 @@
                 <view class="live-muted-tips pointer-events-auto">
                     因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
                 </view>
+            </view>
+            <!-- 视频播放提示 -->
+            <view v-if="!is_live_ended && is_muted_auto_play_error && !live_be_right_back_error" class="live-muted flex-row align-c jc-c pointer-events-none">
+                <component-icon propName="bofang" propSize="200rpx" propColor="#fff"></component-icon>
             </view>
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
@@ -55,12 +59,18 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 is_muted_auto_play_success: false,
+                is_muted_auto_play_error: false,
                 initial_reminder: false
             }
         },
         methods: {
-            muted_auto_play_success() {
-                this.is_muted_auto_play_success = true;
+            muted_auto_play_success(is_muted) {
+                if (is_muted) {
+                    this.is_muted_auto_play_success = true;
+                }
+            },
+            muted_auto_play_error() {
+                this.is_muted_auto_play_error = true;
             },
             // 静音提示点击
             muted_tap() {
@@ -69,6 +79,8 @@
                 }
                 // 关闭静音提示
                 this.is_muted_auto_play_success = false;
+                // 关闭播放按钮
+                this.is_muted_auto_play_error = false;
             }
         },
     }

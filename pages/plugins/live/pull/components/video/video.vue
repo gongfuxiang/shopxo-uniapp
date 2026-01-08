@@ -156,7 +156,7 @@
             auto_play_success(e) {
                 // 静音播放成功时，触发事件，提示用户需要修改点击修改播放状态
                 if (e) {
-                    this.$emit('mutedAutoPlaySuccess');
+                    this.$emit('mutedAutoPlaySuccess', this.muted);
                 }
             },
             
@@ -169,7 +169,13 @@
             auto_play_error(e) {
                 // 播放失败，并且是非静音状态，则静音播放尝试是否成功
                 if (!e) {
-                    this.muted = true;
+                    console.log(this.muted);
+                    // 如果是静音播放了，但是还是播放失败
+                    if (this.muted) {
+                        this.$emit('mutedAutoPlayError');
+                    } else {
+                        this.muted = true;
+                    }
                 }
             },
             
