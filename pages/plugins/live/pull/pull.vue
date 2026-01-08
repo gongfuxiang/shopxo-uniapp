@@ -141,7 +141,6 @@
         z-index: 11;
         width: 100%;
         height: 100%;
-        background: red;
         .component-icon-play {
             height: 200rpx;
             width: 200rpx;
