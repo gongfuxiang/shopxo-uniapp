@@ -361,7 +361,7 @@
                             })
                             .catch((error) => {
                                 uni.showToast({
-                                    title: '播放失败' + videoElement.muted,,
+                                    title: '播放失败' + videoElement.muted,
                                     icon: 'error',
                                     mask: true
                                 })
