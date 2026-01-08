@@ -636,7 +636,10 @@
                         this.videoEl.controls = controls
                         this.videoEl.muted = muted
                         this.videoEl.playbackRate = playbackRate
-                        
+                        uni.showToast({
+                            title: this.autoplayRejected && autoplay  ? '自动播放失败，请手动播放' : '自动播放成功',
+                            icon: 'none'
+                        });
                         // 如果更改了静音状态且之前自动播放被拒绝，重新尝试播放
                         if (this.autoplayRejected && autoplay) {
                             this.attemptAutoPlay(this.videoEl, muted);
