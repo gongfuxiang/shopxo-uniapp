@@ -23,6 +23,10 @@
                     因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
                 </view>
             </view>
+            <!-- 视频播放提示 -->
+            <view v-if="!is_live_ended && is_muted_auto_play_error && !live_be_right_back_error" class="live-play flex-row align-c jc-c pointer-events-none">
+                <component-icon propName="bofang" propSize="200rpx" propColor="#fff" @click="muted_tap"></component-icon>
+            </view>
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
                 <view class="flex-1 flex-col align-c jc-c">
@@ -55,12 +59,18 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 is_muted_auto_play_success: false,
+                is_muted_auto_play_error: false,
                 initial_reminder: false
             }
         },
         methods: {
-            muted_auto_play_success() {
-                this.is_muted_auto_play_success = true;
+            muted_auto_play_success(is_muted) {
+                if (is_muted) {
+                    this.is_muted_auto_play_success = true;
+                }
+            },
+            muted_auto_play_error() {
+                this.is_muted_auto_play_error = true;
             },
             // 静音提示点击
             muted_tap() {
@@ -69,6 +79,8 @@
                 }
                 // 关闭静音提示
                 this.is_muted_auto_play_success = false;
+                // 关闭播放按钮
+                this.is_muted_auto_play_error = false;
             }
         },
     }
@@ -119,6 +131,26 @@
         .live-muted-text:hover {
             color: rgba(210,27,70,1);
             border-bottom: 1px solid rgba(210,27,70,1);
+        }
+    }
+    .live-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 11;
+        width: 100%;
+        height: 100%;
+        .icon-bofang {
+            height: 200rpx;
+            width: 200rpx;
+            font-size: 200rpx !important;
+            color: inherit !important;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
     .live-ended {
