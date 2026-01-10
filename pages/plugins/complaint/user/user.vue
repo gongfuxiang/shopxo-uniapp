@@ -73,6 +73,7 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 bottom_fixed_style: '',
+                nav_status_list: [],
                 params: {},
                 field_list: [],
                 is_complaint_app: false,

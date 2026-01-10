@@ -21,6 +21,17 @@
                             <view class="title">{{data.data_title}}</view>
                         </view>
                     </view>
+                    <view v-if="complaint_type_list.length > 0" class="form-gorup border-radius-main spacing-mb">
+                        <view class="form-gorup-title">{{$t('complaint-form.complaint-form.23rdfg')}}<text class="form-group-tips-must">*</text></view>
+                        <view class="section">
+                            <picker name="complaint_type" @change="complaint_type_event" :value="complaint_type_index" :range="complaint_type_list">
+                                <view :class="'picker name ' + (complaint_type_index === null ? 'cr-grey' : 'cr-base')">
+                                    <view v-if="complaint_type_index === null">{{$t('complaint-form.complaint-form.5434rd')}}</view>
+                                    <view v-else>{{ complaint_type_list[complaint_type_index] }}</view>
+                                </view>
+                            </picker>
+                        </view>
+                    </view>
                     <view class="form-gorup border-radius-main spacing-mb">
                         <view class="form-gorup-title padding-right-main">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.87tuff')}}<text class="form-group-tips-must">*</text></view>
                         <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft')" maxlength="230" :value="data.describe || ''"></textarea>
@@ -69,6 +80,8 @@
                 user: null,
                 data: {},
                 business: null,
+                complaint_type_index: null,
+                complaint_type_list: [],
                 editor_path_type: '',
                 form_submit_loading: false,
                 is_complaint_app_login: false,
@@ -141,10 +154,21 @@
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var complaint_type_list = data.complaint_type_list || [];
+                            var complaint_type_index = null;
+                            if((data.data || null) != null && (data.data.complaint_type || null) != null && complaint_type_list.length > 0) {
+                                var temp_index = complaint_type_list.indexOf(data.data.complaint_type);
+                                if(temp_index != -1) {
+                                    complaint_type_index = temp_index;
+                                }
+                            }
                             this.setData({
-                                data: res.data.data.data || {},
-                                business: res.data.data.business || null,
-                                editor_path_type: res.data.data.editor_path_type,
+                                data: data.data || {},
+                                business: data.business || null,
+                                complaint_type_list: complaint_type_list,
+                                complaint_type_index: complaint_type_index,
+                                editor_path_type: data.editor_path_type,
                                 data_list_loding_status: 3,
                             });
                         } else {
@@ -163,6 +187,13 @@
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
+                });
+            },
+            
+            // 投诉/举报类型事件
+            complaint_type_event(e) {
+                this.setData({
+                    complaint_type_index: e.detail.value || 0,
                 });
             },
 
@@ -188,7 +219,11 @@
                 var validation = [
                     { fields: 'describe', msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.6uygft') },
                 ];
+                if(this.complaint_type_list.length > 0) {
+                    validation.push({ fields: 'complaint_type', msg: this.$t('complaint-form.complaint-form.5434rd') });
+                }
                 var form_data = this.data;
+                    form_data['complaint_type'] = (this.complaint_type_index === null || this.complaint_type_list.length == 0) ? '' : (this.complaint_type_list[this.complaint_type_index] || '');
                     form_data['describe'] = e.detail.value.describe;
                 if (app.globalData.fields_check(form_data, validation)) {
                     if((this.business || null) != null) {
