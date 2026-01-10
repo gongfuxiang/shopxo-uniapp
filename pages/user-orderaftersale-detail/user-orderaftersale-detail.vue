@@ -47,7 +47,14 @@
                     <view v-if="(aftersale_data.status != 3 && aftersale_data.status != 5) || (aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null) || ((plugins_intellectstools_data || null) != null) || ((plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null)" class="margin-top-sm oh">
                         <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round margin-right" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
                         <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round margin-right" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
-                        <button v-if="(plugins_intellectstools_data || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" @tap="plugins_intellectstools_service_open_event" hover-class="none">{{$t('common.customer_service')}}</button>
+                        <button v-if="(plugins_intellectstools_data.base_chat || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" data-value="base_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
+                            <iconfont name="icon-chat" size="28rpx" class="cr-white"></iconfont>
+                            <text class="margin-left-xs">{{plugins_intellectstools_data.base_chat.title}}</text>
+                        </button>
+                        <button v-if="(plugins_intellectstools_data.platform_chat || null) != null" type="default" size="mini" class="bg-white br-main cr-main round margin-right" data-value="platform_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
+                            <iconfont name="icon-chat" size="28rpx" class="cr-main"></iconfont>
+                            <text class="margin-left-xs">{{plugins_intellectstools_data.platform_chat.title}}</text>
+                        </button>
                         <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">申请平台介入</button>
                     </view>
                     <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="margin-top-lg">
@@ -292,36 +299,37 @@
         <component-popup :propShow="plugins_intellectstools_service_status" propPosition="bottom" @onclose="plugins_intellectstools_service_close_event">
             <view class="padding-top-main bg-white">
                 <view class="padding-horizontal-main">
-                    <view class="close oh">
+                    <view class="close oh tc">
+                        <text v-if="(plugins_intellectstools_data_chat || null) != null" class="text-size">{{plugins_intellectstools_data_chat.title}}</text>
                         <view class="fr" @tap.stop="plugins_intellectstools_service_close_event">
                             <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                 </view>
                 <view class="popup-service-container">
-                    <view v-if="(plugins_intellectstools_data || null) != null" class="header-service">
-                        <view v-if="(plugins_intellectstools_data.chat || null) != null" class="item padding-main br-t-f9 single-text">
+                    <view v-if="(plugins_intellectstools_data_chat || null) != null" class="header-service">
+                        <view v-if="(plugins_intellectstools_data_chat.data.chat || null) != null" class="item padding-main br-t-f9 single-text">
                             <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">
-                                <image class="dis-inline-block va-m" :src="plugins_intellectstools_data.chat.icon" mode="scaleToFill"></image>
-                                <text class="margin-left-sm va-m cr-blue" :data-value="plugins_intellectstools_data.chat.chat_url">{{ plugins_intellectstools_data.chat.name }}</text>
+                                <image class="dis-inline-block va-m" :src="plugins_intellectstools_data_chat.data.chat.icon" mode="scaleToFill"></image>
+                                <text class="margin-left-sm va-m cr-blue" :data-value="plugins_intellectstools_data_chat.data.chat.chat_url">{{ plugins_intellectstools_data_chat.data.chat.name }}</text>
                             </view>
                         </view>
-                        <view v-if="(plugins_intellectstools_data.service_qq || null) != null" class="item padding-main br-t-f9 single-text">
+                        <view v-if="(plugins_intellectstools_data_chat.data.service_qq || null) != null" class="item padding-main br-t-f9 single-text">
                             <text>Q Q：</text>
-                            <text class="cp" @tap="text_event" data-event="copy" :data-value="plugins_intellectstools_data.service_qq">{{ plugins_intellectstools_data.service_qq }}</text>
+                            <text class="cp" @tap="text_event" data-event="copy" :data-value="plugins_intellectstools_data_chat.data.service_qq">{{ plugins_intellectstools_data_chat.data.service_qq }}</text>
                         </view>
-                        <view v-if="(plugins_intellectstools_data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
+                        <view v-if="(plugins_intellectstools_data_chat.data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
                             <text>{{$t('order.order.7dxbm5')}}：</text>
-                            <text class="cp" @tap="text_event" data-event="tel" :data-value="plugins_intellectstools_data.service_tel">{{ plugins_intellectstools_data.service_tel }}</text>
+                            <text class="cp" @tap="text_event" data-event="tel" :data-value="plugins_intellectstools_data_chat.data.service_tel">{{ plugins_intellectstools_data_chat.data.service_tel }}</text>
                         </view>
-                        <view v-if="(plugins_intellectstools_data.service_weixin || null) != null || (plugins_intellectstools_data.service_line || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
-                            <view v-if="(plugins_intellectstools_data.service_weixin || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                <image class="radius cp" :src="plugins_intellectstools_data.service_weixin" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data.service_weixin"></image>
+                        <view v-if="(plugins_intellectstools_data_chat.data.service_weixin || null) != null || (plugins_intellectstools_data_chat.data.service_line || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
+                            <view v-if="(plugins_intellectstools_data_chat.data.service_weixin || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                <image class="radius cp" :src="plugins_intellectstools_data_chat.data.service_weixin" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data_chat.data.service_weixin"></image>
                                 <view>{{$t('detail.detail.54k10s')}}</view>
                             </view>
-                            <view v-if="(plugins_intellectstools_data.service_line || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                <image class="radius cp" :src="plugins_intellectstools_data.service_line" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data.service_line"></image>
+                            <view v-if="(plugins_intellectstools_data_chat.data.service_line || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                <image class="radius cp" :src="plugins_intellectstools_data_chat.data.service_line" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data_chat.data.service_line"></image>
                                 <view>{{$t('detail.detail.vj4nom')}}</view>
                             </view>
                         </view>
@@ -484,6 +492,7 @@
                 form_express_number: "",
                 // 智能工具插件、客服信息展示
                 plugins_intellectstools_data: null,
+                plugins_intellectstools_data_chat: null,
                 plugins_intellectstools_service_status: false,
                 // 多商户订单售后争议
                 plugins_shop_data: null,
@@ -892,6 +901,7 @@
             // 开启客服弹层
             plugins_intellectstools_service_open_event(e) {
                 this.setData({
+                    plugins_intellectstools_data_chat: this.plugins_intellectstools_data[e.currentTarget.dataset.value] || null,
                     plugins_intellectstools_service_status: true,
                 });
             },
