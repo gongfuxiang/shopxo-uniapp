@@ -250,6 +250,15 @@
                                     <component-no-data propStatus="0"></component-no-data>
                                 </block>
                             </block>
+                            <!-- 使用指南 -->
+                            <block v-else-if="order_item_goods_info_nav_index == 'use-guide'">
+                                <view v-if="(order_item_goods_info_data.goods_use_guide || null) != null" class="web-html-content">
+                                    <mp-html :content="order_item_goods_info_data.goods_use_guide" />
+                                </view>
+                                <block v-else>
+                                    <component-no-data propStatus="0"></component-no-data>
+                                </block>
+                            </block>
                         </scroll-view>
                     </block>
                     <block v-else>
@@ -292,7 +301,8 @@
                     'base': this.$t('common.base'),
                     'params': this.$t('common.params'),
                     'detail-web': this.$t('common.detail_text')+'('+this.$t('common.web_client')+')',
-                    'detail-app': this.$t('common.detail_text')+'('+this.$t('common.app_client')+')'
+                    'detail-app': this.$t('common.detail_text')+'('+this.$t('common.app_client')+')',
+                    'use-guide': this.$t('common.use_guide'),
                 },
             };
         },
