@@ -65,13 +65,19 @@
 */
 .order-item-goods-info-container .nav-base .item:nth-child(1),
 .order-item-goods-info-container .nav-base .item:nth-child(2) {
-    width: 12.5%;
+    width: 18%;
 }
 .order-item-goods-info-container .nav-base .item:nth-child(3),
-.order-item-goods-info-container .nav-base .item:nth-child(4),
-.order-item-goods-info-container .nav-base .item:nth-child(5) {
-    width: 25%;
+.order-item-goods-info-container .nav-base .item:nth-child(4) {
+    width: 32%;
 }
 .order-item-goods-info-container .scroll-content {
     height: 70vh;
+}
+
+/**
+ * 订单商品使用指南弹层
+ */
+.order-item-goods-use-guide-container .scroll-content {
+    max-height: 70vh;
 }

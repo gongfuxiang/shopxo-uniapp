@@ -58,12 +58,17 @@
                                 </view>
                                 <view class="pa right-0 bottom-0 z-i">
                                     <text v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="cr-blue bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</text>
-                                    <view class="dis-inline-block margin-left-lg" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
-                                        <text class="margin-right-xs">商品信息</text>
+                                    <view class="dis-inline-block margin-left" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
+                                        <text class="margin-right-xs">{{$t('user-order-detail.user-order-detail.7f8p26')}}</text>
                                         <iconfont name="icon-arrow-down" color="#999" propClass="va-m"></iconfont>
                                     </view>
                                 </view>
                             </view>
+                        </view>
+                        <view v-if="(use_guide_config || null) != null && (item.goods_use_guide || null) != null" class="margin-top-sm text-size-xs">
+                            <text class="cr-red">{{use_guide_config.title}}：</text>
+                            <text v-if="(use_guide_config.desc || null) != null" class="cr-grey margin-right-lg">{{use_guide_config.desc}}</text>
+                            <text class="cr-blue" :data-index="index" @tap="goods_use_guide_event">{{use_guide_config.tap}}</text>
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
@@ -250,17 +255,29 @@
                                     <component-no-data propStatus="0"></component-no-data>
                                 </block>
                             </block>
-                            <!-- 使用指南 -->
-                            <block v-else-if="order_item_goods_info_nav_index == 'use-guide'">
-                                <view v-if="(order_item_goods_info_data.goods_use_guide || null) != null" class="web-html-content">
-                                    <mp-html :content="order_item_goods_info_data.goods_use_guide" />
-                                </view>
-                                <block v-else>
-                                    <component-no-data propStatus="0"></component-no-data>
-                                </block>
-                            </block>
                         </scroll-view>
                     </block>
+                    <block v-else>
+                        <component-no-data propStatus="0"></component-no-data>
+                    </block>
+                </view>
+            </view>
+        </component-popup>
+
+        <!-- 订单商品使用指南弹层 -->
+        <component-popup :propShow="popup_order_item_goods_use_guide_status" propPosition="bottom" @onclose="popup_order_item_goods_use_guide_close_event">
+            <view class="padding-main bg-white">
+                <view class="close oh pa top-0 right-0 z-i-deep">
+                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_order_item_goods_use_guide_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="order-item-goods-use-guide-container padding-top-xxl">
+                    <scroll-view v-if="(order_item_goods_info_data || null) != null && (order_item_goods_info_data.goods_use_guide || null) != null" :scroll-y="true" class="scroll-content margin-top-sm">
+                        <view class="web-html-content">
+                            <mp-html :content="order_item_goods_info_data.goods_use_guide" />
+                        </view>
+                    </scroll-view>
                     <block v-else>
                         <component-no-data propStatus="0"></component-no-data>
                     </block>
@@ -293,6 +310,8 @@
                 detail_list: [],
                 extension_data: [],
                 site_fictitious: null,
+                use_guide_config: null,
+                popup_order_item_goods_use_guide_status: false,
                 // 商品服务插件
                 order_item_goods_info_data: null,
                 popup_order_item_goods_info_status: false,
@@ -302,7 +321,6 @@
                     'params': this.$t('common.params'),
                     'detail-web': this.$t('common.detail_text')+'('+this.$t('common.web_client')+')',
                     'detail-app': this.$t('common.detail_text')+'('+this.$t('common.app_client')+')',
-                    'use-guide': this.$t('common.use_guide'),
                 },
             };
         },
@@ -386,6 +404,7 @@
                                 ],
                                 extension_data: data.data.extension_data || [],
                                 site_fictitious: data.site_fictitious || null,
+                                use_guide_config: data.use_guide_config || null,
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: '',
@@ -452,6 +471,21 @@
             popup_order_item_goods_info_close_event(e) {
                 this.setData({
                     popup_order_item_goods_info_status: false,
+                });
+            },
+            
+            // 订单商品使用指南弹层开启弹层
+            goods_use_guide_event(e) {
+                this.setData({
+                    order_item_goods_info_data: this.detail.items[e.currentTarget.dataset.index] || null,
+                    popup_order_item_goods_use_guide_status: true,
+                });
+            },
+            
+            // 订单商品使用指南弹层弹层关闭
+            popup_order_item_goods_use_guide_close_event(e) {
+                this.setData({
+                    popup_order_item_goods_use_guide_status: false,
                 });
             },
 
