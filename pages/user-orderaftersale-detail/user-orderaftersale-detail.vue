@@ -55,7 +55,7 @@
                             <iconfont name="icon-chat" size="28rpx" class="cr-main"></iconfont>
                             <text class="margin-left-xs">{{plugins_intellectstools_data.platform_chat.title}}</text>
                         </button>
-                        <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">申请平台介入</button>
+                        <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.sdsfgg')}}</button>
                     </view>
                     <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="margin-top-lg">
                         <view>
@@ -211,6 +211,21 @@
 
             <!-- 没有售后数据/售后数据为已取消则可以重新申请售后 -->
             <view v-if="is_create_aftersale == 1">
+                <!-- 智能工具箱插件（客服信息） -->
+                <view v-if="((plugins_intellectstools_data || null) != null)" class="bg-white padding-main border-radius-main spacing-mb">
+                    <view v-if="(plugins_intellectstools_data.service_msg || null) != null" class="cr-grey margin-top-sm">{{ plugins_intellectstools_data.service_msg }}</view>
+                    <view v-if="(plugins_intellectstools_data.base_chat || null) != null || (plugins_intellectstools_data.platform_chat || null) != null" class="margin-top-sm oh">
+                        <button v-if="(plugins_intellectstools_data.base_chat || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" data-value="base_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
+                            <iconfont name="icon-chat" size="28rpx" class="cr-white"></iconfont>
+                            <text class="margin-left-xs">{{plugins_intellectstools_data.base_chat.title}}</text>
+                        </button>
+                        <button v-if="(plugins_intellectstools_data.platform_chat || null) != null" type="default" size="mini" class="bg-white br-main cr-main round margin-right" data-value="platform_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
+                            <iconfont name="icon-chat" size="28rpx" class="cr-main"></iconfont>
+                            <text class="margin-left-xs">{{plugins_intellectstools_data.platform_chat.title}}</text>
+                        </button>
+                    </view>
+                </view>
+
                 <!-- 类型选择 -->
                 <view v-if="aftersale_type_list.length > 0" class="choose-type padding-main border-radius-main bg-white oh spacing-mb">
                     <block v-for="(item, index) in aftersale_type_list" :key="index">

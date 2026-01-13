@@ -36,6 +36,18 @@
     height: 160rpx;
 }
 
+/**
+ * 使用指南
+ */
+.use-guide-switch-scroll .item {
+    width: 240rpx;
+}
+.use-guide-switch-scroll .item .icon-content,
+.use-guide-switch-scroll .item .icon {
+    width: 60rpx;
+    height: 60rpx;
+}
+
 /*
 * 虚拟销售信息
 */
@@ -73,11 +85,4 @@
 }
 .order-item-goods-info-container .scroll-content {
     height: 70vh;
-}
-
-/**
- * 订单商品使用指南弹层
- */
-.order-item-goods-use-guide-container .scroll-content {
-    max-height: 70vh;
 }

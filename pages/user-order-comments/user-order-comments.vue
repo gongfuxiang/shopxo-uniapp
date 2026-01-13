@@ -3,7 +3,7 @@
         <view class="padding-main">
             <view v-if="detail != null">
                 <form @submit="form_submit" class="form-container">
-                    <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh">
+                    <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh border-radius-main spacing-mb">
                         <view class="oh">
                             <view :data-value="item.goods_url" @tap="url_event" class="cp">
                                 <image class="goods-image fl radius br margin-right-sm" :src="item.images" mode="aspectFill"></image>
@@ -31,7 +31,7 @@
                         </view>
                     </view>
 
-                    <view class="form-gorup anonymous">
+                    <view class="form-gorup border-radius-main spacing-mb">
                         <switch class="va-m" name="is_anonymous" @change="anonymous_event"></switch>
                         <text class="cr-base va-m">{{$t('user-order-comments.user-order-comments.uboc44')}}</text>
                         <text class="fr cr-grey margin-top-sm">{{ anonymous_msg_list[anonymous_value] }}</text>

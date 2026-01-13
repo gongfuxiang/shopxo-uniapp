@@ -2,8 +2,62 @@
     <view :class="theme_view">
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
+                <!-- 基础状态和操作 -->
+                <view class="bg-white padding-main border-radius-main tc spacing-mb">
+                    <view class="padding-vertical-xl">
+                        <!-- 订单状态（0待确认, 1已确认/待支付, 2已支付/待发货, 3已发货/待收货, 4已完成, 5已取消, 6已关闭） -->
+                        <block v-if="detail.status == 5 || detail.status == 6">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-sigh-o" size="68rpx" propClass="cr-red"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-red">{{detail.status_name}}</text>
+                        </block>
+                        <block v-else-if="detail.status == 4">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-enable" size="68rpx" propClass="cr-green"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-green">{{detail.status_name}}</text>
+                        </block>
+                        <block v-else-if="detail.status == 3">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-inventroy-manage" size="68rpx" propClass="cr-blue"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-blue">{{detail.status_name}}</text>
+                        </block>
+                        <block v-else-if="detail.status == 2">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-wait-receive-delivery" size="68rpx" propClass="cr-yellow"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm cr-yellow">{{detail.status_name}}</text>
+                        </block>
+                        <block v-else>
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-wait-payment" size="68rpx"></iconfont>
+                            </view>
+                            <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{detail.status_name}}</text>
+                        </block>
+                    </view>
+                    <view class="item-operation margin-top-sm">
+                        <button v-if="detail.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="detail.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('order.order.1i873j')}}</button>
+                        <button v-if="detail.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
+                        <button v-if="(detail.plugins_express_data || 0) == 1 && (detail.express_data || null) != null" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
+                        <button v-if="(detail.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + detail.plugins_delivery_data" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
+                        <button v-if="detail.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini"  @tap="url_event" :data-value="'/pages/user-order-comments/user-order-comments?id='+detail.id" hover-class="none">{{$t('user-order.user-order.twc3r7')}}</button>
+                        <button v-if="detail.status == 2 && detail.order_model != 2" class="round cr-base br margin-bottom-main" type="default" size="mini" @tap="rush_event" hover-class="none">{{$t('user-order.user-order.lp1v28')}}</button>
+                        <button v-if="detail.operate_data.is_delete == 1" class="round bg-white cr-red br-red margin-bottom-main" type="default" size="mini" @tap="delete_event" hover-class="none">{{$t('common.del')}}</button>
+                        <button v-if="(detail.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + detail.id" hover-class="none">{{$t('user-order.user-order.ht65c9')}}</button>
+                        <button v-if="(detail.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + detail.id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
+                        <button v-if="(detail.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + detail.id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
+                        <button v-if="(detail.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + detail.id" hover-class="none">{{$t('user-order.user-order.9l47b6')}}</button>
+                        <button v-if="(detail.plugins_orderresources_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderresources/orderannex/orderannex?oid=' + detail.id" hover-class="none">{{$t('user-order.user-order.fyuikn')}}</button>
+                        <button v-if="(detail.plugins_is_orderfeed_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderfeed/form/form?oid=' + detail.id" hover-class="none">{{$t('common.feed_text')}}</button>
+                        <button v-if="(detail.plugins_intellectstools_data || null) != null && (detail.plugins_intellectstools_data.continue_buy_data || null) != null && detail.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
+                    </view>
+                </view>
+
                 <!-- 自提信息 -->
-                <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
+                <view v-if="(detail.extraction_data || null) != null" class="site-extraction padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.o38952')}}</view>
                     <view class="panel-content oh tc padding-top-main">
                         <view :data-value="detail.extraction_data.code" @tap="text_copy_event">
@@ -65,14 +119,35 @@
                                 </view>
                             </view>
                         </view>
-                        <view v-if="(use_guide_config || null) != null && (item.goods_use_guide || null) != null" class="margin-top-sm text-size-xs">
-                            <text class="cr-red">{{use_guide_config.title}}：</text>
-                            <text v-if="(use_guide_config.desc || null) != null" class="cr-grey margin-right-lg">{{use_guide_config.desc}}</text>
-                            <text class="cr-blue" :data-index="index" @tap="goods_use_guide_event">{{use_guide_config.tap}}</text>
-                        </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
                         <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
+                    </view>
+                </view>
+
+                <!-- 使用指南 -->
+                <view v-if="(detail.use_guide_data || null) != null && (detail.use_guide_data.data || null) != null && detail.use_guide_data.data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{detail.use_guide_data.title}}</view>
+                    <view class="scroll-view-horizontal margin-top">
+                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'use-guide-switch-item-' + goods_use_guide_data_active_index" class="use-guide-switch-scroll">
+                            <block v-for="(item, index) in detail.use_guide_data.data" :key="index">
+                                <view :class="'item tc cp dis-inline-block'+(index > 0 ? ' margin-left' : '')" :id="'use-guide-switch-item-' + index" :data-index="index" @tap="goods_use_guide_data_switch_event">
+                                    <view :class="'icon-content circle br auto ' + (goods_use_guide_data_active_index == index ? 'border-color-main' : '')">
+                                        <image :src="item.images" mode="aspectFit" class="icon dis-block circle"></image>
+                                    </view>
+                                    <view class="single-text margin-top-xs" :class="goods_use_guide_data_active_index == index ? 'cr-main' : 'cr-base'">{{ item.title }} </view>
+                                </view>
+                            </block>
+                        </scroll-view>
+                    </view>
+                    <view v-if="(detail.use_guide_data.desc || null) != null" class="margin-top-xs text-size-xs cr-grey">{{detail.use_guide_data.desc}}</view>
+                    <view class="br radius padding-main margin-top-sm">
+                        <view v-if="(detail.use_guide_data.data[goods_use_guide_data_active_index]['goods_use_guide'] || null) != null" class="web-html-content">
+                            <mp-html :content="detail.use_guide_data.data[goods_use_guide_data_active_index]['goods_use_guide']" />
+                        </view>
+                        <block v-else>
+                            <component-no-data propStatus="0"></component-no-data>
+                        </block>
                     </view>
                 </view>
 
@@ -264,26 +339,22 @@
             </view>
         </component-popup>
 
-        <!-- 订单商品使用指南弹层 -->
-        <component-popup :propShow="popup_order_item_goods_use_guide_status" propPosition="bottom" @onclose="popup_order_item_goods_use_guide_close_event">
-            <view class="padding-main bg-white">
-                <view class="close oh pa top-0 right-0 z-i-deep">
-                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_order_item_goods_use_guide_close_event">
-                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
-                    </view>
-                </view>
-                <view class="order-item-goods-use-guide-container padding-top-xxl">
-                    <scroll-view v-if="(order_item_goods_info_data || null) != null && (order_item_goods_info_data.goods_use_guide || null) != null" :scroll-y="true" class="scroll-content margin-top-sm">
-                        <view class="web-html-content">
-                            <mp-html :content="order_item_goods_info_data.goods_use_guide" />
-                        </view>
-                    </scroll-view>
-                    <block v-else>
-                        <component-no-data propStatus="0"></component-no-data>
-                    </block>
-                </view>
-            </view>
-        </component-popup>
+        <!-- 支付组件 -->
+        <component-payment
+            ref="payment"
+            :propCurrencySymbol="payment_currency_symbol"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            :propPaymentList="payment_list"
+            propPayDataKey="ids"
+            :propTempPayValue="pay_value"
+            :propPaymentId="payment_id"
+            :propDefaultPaymentId="default_payment_id"
+            :propPayPrice="pay_price"
+            :propIsShowPayment="is_show_payment_popup"
+            @close-payment-popup="payment_popup_event_close"
+            @pay-success="order_item_pay_success_handle"
+        ></component-payment>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
@@ -291,10 +362,12 @@
 </template>
 <script>
     const app = getApp();
+    import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
+    import componentPayment from '@/components/payment/payment';
     import componentHospitalOrderDetail from '@/pages/plugins/hospital/components/order-detail/order-detail';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -310,8 +383,7 @@
                 detail_list: [],
                 extension_data: [],
                 site_fictitious: null,
-                use_guide_config: null,
-                popup_order_item_goods_use_guide_status: false,
+                goods_use_guide_data_active_index: 0,
                 // 商品服务插件
                 order_item_goods_info_data: null,
                 popup_order_item_goods_info_status: false,
@@ -322,6 +394,19 @@
                     'detail-web': this.$t('common.detail_text')+'('+this.$t('common.web_client')+')',
                     'detail-app': this.$t('common.detail_text')+'('+this.$t('common.app_client')+')',
                 },
+                // 前往页面携带的参数
+                payment_currency_symbol: app.globalData.currency_symbol(),
+                pay_url: '',
+                qrcode_url: '',
+                payment_list: [],
+                pay_value: '',
+                pay_price: 0,
+                payment_id: 0,
+                default_payment_id: 0,
+                is_show_payment_popup: false,
+                // 智能工具箱（限定仅可选择下单支付方式）
+                is_order_pay_only_can_buy_payment: 0,
+                original_payment_list: [],
             };
         },
 
@@ -330,6 +415,7 @@
             componentNoData,
             componentBottomLine,
             componentPopup,
+            componentPayment,
             componentHospitalOrderDetail,
         },
 
@@ -341,14 +427,17 @@
             this.setData({
                 params: params,
             });
+
+            // 初始化配置
+            this.init_config();
+
+            // 数据加载
+            this.init();
         },
 
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
-            // 数据加载
-            this.init();
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
@@ -365,7 +454,18 @@
         },
 
         methods: {
-            // 获取数据
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        is_order_pay_only_can_buy_payment: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_order_pay_only_can_buy_payment', 0)),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 初始化
             init() {
                 this.setData({
                     data_list_loding_status: 1,
@@ -379,6 +479,7 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var detail = data.data || null;
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
@@ -404,10 +505,19 @@
                                 ],
                                 extension_data: data.data.extension_data || [],
                                 site_fictitious: data.site_fictitious || null,
-                                use_guide_config: data.use_guide_config || null,
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: '',
+                                // 支付信息
+                                original_payment_list: data.payment_list || [],
+                                payment_list: data.payment_list || [],
+                                default_payment_id: data.default_payment_id || 0,
+                                payment_id: (detail == null) ? 0 : detail.payment_id,
+                                pay_url: app.globalData.get_request_url('pay', 'order'),
+                                qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
+                                payment_currency_symbol: (detail == null ? '' : detail.currency_data.currency_symbol) || this.payment_currency_symbol,
+                                pay_value: (detail == null) ? '' : detail.id,
+                                pay_price: (detail == null) ? '0.00' : detail.price,
                             });
                         } else {
                             this.setData({
@@ -473,26 +583,282 @@
                     popup_order_item_goods_info_status: false,
                 });
             },
-            
-            // 订单商品使用指南弹层开启弹层
-            goods_use_guide_event(e) {
-                this.setData({
-                    order_item_goods_info_data: this.detail.items[e.currentTarget.dataset.index] || null,
-                    popup_order_item_goods_use_guide_status: true,
-                });
-            },
-            
-            // 订单商品使用指南弹层弹层关闭
-            popup_order_item_goods_use_guide_close_event(e) {
-                this.setData({
-                    popup_order_item_goods_use_guide_status: false,
-                });
-            },
 
             // 订单商品信息弹层弹层导航事件
             order_item_goods_info_nav_event(e) {
                 this.setData({
                     order_item_goods_info_nav_index: e.currentTarget.dataset.index || 'base'
+                });
+            },
+
+            // 订单商品使用指南切换事件
+            goods_use_guide_data_switch_event(e) {
+                this.setData({
+                    goods_use_guide_data_active_index: e.currentTarget.dataset.index
+                });
+            },
+
+            // 支付
+            pay_event(e) {            
+                // 智能工具箱（限定仅可选择下单支付方式）
+                if(this.is_order_pay_only_can_buy_payment == 1) {
+                    var payment_list = [];
+                    this.original_payment_list.forEach(function(v, k) {
+                        if(v.id == this.payment_id) {
+                            payment_list.push(v);
+                        }
+                    });
+                } else {
+                    var payment_list = this.original_payment_list;
+                }
+
+                // 设置支付参数
+                this.setData({
+                    is_show_payment_popup: true,
+                    payment_list: payment_list,
+                });
+            },
+
+            // 支付弹窗关闭
+            payment_popup_event_close(e) {
+                this.setData({
+                    is_show_payment_popup: false,
+                });
+            },
+
+            // 支付成功数据设置
+            // 订单完成回调
+            order_item_pay_success_handle(data) {
+                this.init();
+            },
+
+            // 取消
+            cancel_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.cancel_confirm_tips'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('cancel', 'order'),
+                                method: 'POST',
+                                data: {
+                                    id: this.detail.id,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        this.init();
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
+
+            // 收货
+            collect_event(e) {
+                var transactionid = this.detail.weixin_collect_data || null;
+                if(transactionid == null || !uni.openBusinessView) {
+                    this.collect_hand_handle(e);
+                } else {
+                    // 存在微信单号收货数据，则拉起微信确认收货组件、失败则调用手动收货模式
+                    var self = this;
+                    uni.openBusinessView({
+                        businessType: 'weappOrderConfirm',
+                        extraData: {
+                            transaction_id: transactionid
+                        },
+                        success(res) {
+                            self.collect_handle(e);
+                        },
+                        fail(res) {
+                            if((res.status || null) == 'fail') {
+                                self.collect_hand_handle(e);
+                            }
+                        }
+                    });
+                }
+            },
+
+            // 手动收货
+            collect_hand_handle(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            this.collect_handle(e);
+                        }
+                    },
+                });
+            },
+
+            // 收货处理
+            collect_handle(e) {
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('collect', 'order'),
+                    method: 'POST',
+                    data: {
+                        id: this.detail.id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            this.init();
+                            app.globalData.showToast(res.data.msg, 'success');
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 删除
+            delete_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.delete_confirm_tips'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('delete', 'order'),
+                                method: 'POST',
+                                data: {
+                                    id: this.detail.id,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                        this.setData({
+                                            detail: null,
+                                            data_list_loding_status: 0,
+                                        });
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
+            
+            // 催催
+            rush_event(e) {
+                app.globalData.showToast(this.$t('user-order.user-order.f5qqhu'), 'success');
+            },
+
+            // 回购事件
+            continue_buy_event(e) {
+                var item = this.detail;
+                if ((item.plugins_intellectstools_data || null) != null) {
+                    var plugins_intellectstools_data = item.plugins_intellectstools_data;
+                    var continue_buy_data = plugins_intellectstools_data.continue_buy_data || null;
+                    // 是否存在订单可以购买的商品数据
+                    if(continue_buy_data != null && continue_buy_data.length > 0) {
+                        // 是否直接购买
+                        var is_buy_again_buy = parseInt(plugins_intellectstools_data.is_buy_again_buy || 0);
+                        // 是否加入购物车
+                        var is_buy_again_cart = parseInt(plugins_intellectstools_data.is_buy_again_cart || 0);
+                        // 如果同时都支持则让用户选择
+                        if(is_buy_again_buy == 1 && is_buy_again_cart == 1) {
+                            var self = this;
+                            uni.showActionSheet({
+                                itemList: [this.$t('user-order.user-order.a3c81d'), this.$t('user-order.user-order.5o756f')],
+                                success: function (res) {
+                                    if(res.tapIndex == 0) {
+                                        // 加入购物车
+                                        self.continue_order_goods_cart_handle(continue_buy_data, self);
+                                    } else {
+                                        // 直接购买
+                                        self.continue_order_goods_buy_handle(continue_buy_data);
+                                    }
+                                }
+                            });
+                        } else if(is_buy_again_cart == 1) {
+                            // 加入购物车
+                            this.continue_order_goods_cart_handle(continue_buy_data, this);
+                        } else if(is_buy_again_buy == 1) {
+                            // 直接购买
+                            this.continue_order_goods_buy_handle(continue_buy_data);
+                        }
+                    }
+                }
+            },
+
+            // 订单商品直接购买处理
+            continue_order_goods_buy_handle(goods_data) {
+                // 进入订单确认页面
+                var data = {
+                    buy_type: 'goods',
+                    goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
+                };
+                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
+            },
+
+            // 订单商品加入购物车处理
+            continue_order_goods_cart_handle(goods_data, self) {
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("save", "cart"),
+                    method: "POST",
+                    data: { goods_data: goods_data },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, "success");
+                            setTimeout(function() {
+                                app.globalData.url_open('/pages/cart-page/cart-page');
+                            }, 1000);
+                        } else {
+                            if (app.globalData.is_login_check(res.data, self, "continue_order_goods_cart_handle", goods_data)) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 
