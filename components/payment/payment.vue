@@ -932,6 +932,12 @@
                     popup_view_pay_html_is_show: false,
                 });
                 this.to_other();
+
+                let back_data = {
+                    temp_pay_index: this.propTempPayIndex,
+                    payment_id: this.payment_id,
+                };
+                this.$emit('pay-html-close', back_data);
             },
         },
     };

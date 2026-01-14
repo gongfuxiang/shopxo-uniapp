@@ -36,10 +36,11 @@
                             </view>
                             <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{detail.status_name}}</text>
                         </block>
-                        <view v-if="detail.status == 1" class="cr-price margin-top-sm fw-b">
+                        <view v-if="detail.status == 1" class="cr-price fw-b margin-top-sm">
                             <text class="text-size">{{payment_currency_symbol}}</text>
                             <text class="text-size-xl margin-left-xs">{{pay_price}}</text>
                         </view>
+                        <view v-if="(status_tips || null) != null" class="cr-grey text-size-xs margin-top-sm">{{status_tips}}</view>
                     </view>
                     <view class="item-operation margin-top-sm">
                         <button v-if="detail.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
@@ -357,7 +358,9 @@
             :propPayPrice="pay_price"
             :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
-            @pay-success="order_item_pay_success_handle"
+            @pay-success="order_item_pay_back_handle"
+            @pay-fail="order_item_pay_back_handle"
+            @pay-html-close="order_item_pay_back_handle"
         ></component-payment>
 
         <!-- 公共 -->
@@ -387,6 +390,7 @@
                 detail_list: [],
                 extension_data: [],
                 site_fictitious: null,
+                status_tips: null,
                 goods_use_guide_data_active_index: 0,
                 // 商品服务插件
                 order_item_goods_info_data: null,
@@ -509,6 +513,7 @@
                                 ],
                                 extension_data: data.data.extension_data || [],
                                 site_fictitious: data.site_fictitious || null,
+                                status_tips: data.status_tips || null,
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: '',
@@ -630,9 +635,8 @@
                 });
             },
 
-            // 支付成功数据设置
-            // 订单完成回调
-            order_item_pay_success_handle(data) {
+            // 订单成功和失败回调
+            order_item_pay_back_handle(data) {
                 this.init();
             },
 
