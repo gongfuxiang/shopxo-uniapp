@@ -36,6 +36,10 @@
                             </view>
                             <text class="text-size-xl margin-top-sm va-m margin-left-sm">{{detail.status_name}}</text>
                         </block>
+                        <view v-if="detail.status == 1" class="cr-price margin-top-sm fw-b">
+                            <text class="text-size">{{payment_currency_symbol}}</text>
+                            <text class="text-size-xl margin-left-xs">{{pay_price}}</text>
+                        </view>
                     </view>
                     <view class="item-operation margin-top-sm">
                         <button v-if="detail.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
@@ -517,7 +521,7 @@
                                 qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
                                 payment_currency_symbol: (detail == null ? '' : detail.currency_data.currency_symbol) || this.payment_currency_symbol,
                                 pay_value: (detail == null) ? '' : detail.id,
-                                pay_price: (detail == null) ? '0.00' : detail.price,
+                                pay_price: (detail == null) ? '0.00' : detail.total_price,
                             });
                         } else {
                             this.setData({
