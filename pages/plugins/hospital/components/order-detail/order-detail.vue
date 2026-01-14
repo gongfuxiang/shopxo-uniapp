@@ -3,21 +3,25 @@
         <view v-if="(propData || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
             <view class="br-b padding-bottom-main fw-b text-size">{{propData.title}}</view>
             <view class="panel-content oh">
-                <view v-for="(item, index) in propData.data" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                    <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                    <view class="content fl br-l padding-left-main">
-                        <block v-if="(item.type || '') == 'images'">
-                            <image :src="item.value" mode="scaleToFill" class="images" :data-value="item.value" @tap="images_event"></image>
-                        </block>
-                        <block v-else-if="(item.is_copy || 0) == 1">
-                            <text :data-value="item.value" @tap="text_copy_event">
-                                <text>{{ item.value }}</text>
-                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
-                            </text>
-                        </block>
-                        <block v-else>{{ item.value }}</block>
-                    </view>
-                </view>
+                <uni-table :emptyText="$t('common.no_data')">
+                    <block v-for="(item, index) in propData.data" :key="index">
+                        <uni-tr>
+                            <uni-th width="90">{{item.name}}</uni-th>
+                            <uni-td>
+                                <block v-if="(item.type || '') == 'images'">
+                                    <image :src="item.value" mode="scaleToFill" class="images" :data-value="item.value" @tap="images_event"></image>
+                                </block>
+                                <block v-else-if="(item.is_copy || 0) == 1">
+                                    <view :data-value="item.value" @tap="text_copy_event">
+                                        <text>{{ item.value }}</text>
+                                        <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                    </view>
+                                </block>
+                                <block v-else>{{ item.value }}</block>
+                            </uni-td>
+                        </uni-tr>
+                    </block>
+                </uni-table>
             </view>
         </view>
     </view>
