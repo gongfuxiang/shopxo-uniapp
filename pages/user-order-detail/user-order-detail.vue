@@ -105,13 +105,13 @@
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{ item.title }}</view>
-                                <view v-if="item.spec != null" class="margin-top-sm">
+                                <view v-if="item.spec != null" class="margin-top-xs">
                                     <block v-for="(sv, si) in item.spec" :key="si">
                                         <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
                                         <text class="cr-grey">{{ sv.value }}</text>
                                     </block>
                                 </view>
-                                <view class="margin-top-sm">
+                                <view class="margin-top-xs">
                                     <text class="fw-b">{{ detail.currency_data.currency_symbol }}{{ item.price }}</text>
                                     <text class="margin-left-sm">x{{ item.buy_number }}</text>
                                 </view>

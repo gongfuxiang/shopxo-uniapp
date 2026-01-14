@@ -8,13 +8,13 @@
                         <image class="goods-image fl radius" :src="order_data.items.images" mode="aspectFill"></image>
                         <view class="goods-base">
                             <view class="multi-text">{{ order_data.items.title }}</view>
-                            <view v-if="order_data.items.spec != null" class="margin-top-sm">
+                            <view v-if="order_data.items.spec != null" class="margin-top-xs">
                                 <block v-for="(sv, si) in order_data.items.spec" :key="si">
                                     <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
                                     <text class="cr-grey">{{ sv.value }}</text>
                                 </block>
                             </view>
-                            <view class="margin-top-sm">
+                            <view class="margin-top-xs">
                                 <text class="fw-b">{{ order_data.currency_data.currency_symbol }}{{ order_data.items.price }}</text>
                                 <text class="margin-left-sm">x{{ order_data.items.buy_number }}</text>
                             </view>
@@ -47,14 +47,16 @@
                     <view v-if="(aftersale_data.status != 3 && aftersale_data.status != 5) || (aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null) || ((plugins_intellectstools_data || null) != null) || ((plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null)" class="margin-top-sm oh">
                         <button v-if="aftersale_data.status == 1 && aftersale_data.type == 1 && return_goods_address != null" class="bg-green br-green cr-white round margin-right" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
                         <button v-if="aftersale_data.status != 3 && aftersale_data.status != 5" class="bg-yellow br-yellow cr-white round margin-right" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
-                        <button v-if="(plugins_intellectstools_data.base_chat || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" data-value="base_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
-                            <iconfont name="icon-chat" size="28rpx" class="cr-white"></iconfont>
-                            <text class="margin-left-xs">{{plugins_intellectstools_data.base_chat.title}}</text>
-                        </button>
-                        <button v-if="(plugins_intellectstools_data.platform_chat || null) != null" type="default" size="mini" class="bg-white br-main cr-main round margin-right" data-value="platform_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
-                            <iconfont name="icon-chat" size="28rpx" class="cr-main"></iconfont>
-                            <text class="margin-left-xs">{{plugins_intellectstools_data.platform_chat.title}}</text>
-                        </button>
+                        <block v-if="(plugins_intellectstools_data || null) != null">
+                            <button v-if="(plugins_intellectstools_data.base_chat || null) != null" type="default" size="mini" class="bg-green br-green cr-white round margin-right" data-value="base_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
+                                <iconfont name="icon-chat" size="28rpx" class="cr-white"></iconfont>
+                                <text class="margin-left-xs">{{plugins_intellectstools_data.base_chat.title}}</text>
+                            </button>
+                            <button v-if="(plugins_intellectstools_data.platform_chat || null) != null" type="default" size="mini" class="bg-white br-main cr-main round margin-right" data-value="platform_chat" @tap="plugins_intellectstools_service_open_event" hover-class="none">
+                                <iconfont name="icon-chat" size="28rpx" class="cr-main"></iconfont>
+                                <text class="margin-left-xs">{{plugins_intellectstools_data.platform_chat.title}}</text>
+                            </button>
+                        </block>
                         <button v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) == null" type="default" size="mini" class="bg-main br-main cr-white round" @tap="plugins_shop_dispute_interfere_open_event" hover-class="none">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.sdsfgg')}}</button>
                     </view>
                     <view v-if="(plugins_shop_data || null) != null && (plugins_shop_data.status || 0) == 1 && (plugins_shop_data.dispute_data || null) != null" class="margin-top-lg">
