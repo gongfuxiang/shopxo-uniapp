@@ -124,7 +124,8 @@
         "access": "Access",
         "no": "No",
         "cancel_confirm_tips": "After cancellation, it cannot be restored. Are you sure to continue?",
-        "delete_confirm_tips": "After deletion, it cannot be restored. Are you sure to continue?"
+        "delete_confirm_tips": "After deletion, it cannot be restored. Are you sure to continue?",
+        "trace_source_text": "trace to the source"
 	},
     "client": {
         "weixin": "WeChat",
@@ -430,6 +431,7 @@
 			"xcj552": "element",
 			"7xtnjt": "Unconfigured data",
             "0876xf": "Express delivery info",
+            "yhjffg": "Traceability info",
 			"o38952": "Pickup code",
 			"0f26j2": "Order Information",
 			"ct34n5": "Extended Data",
@@ -461,7 +463,10 @@
             "567ygf": "service information",
             "67ujfr": "Service duration",
             "gsfw4d": "Service Name",
-            "6ygfew": "Service Mobile"
+            "6ygfew": "Service Mobile",
+            "3erwer": "traceability code",
+            "dyt44f": "Batch Number",
+            "sdf432": "Batch Expiry Date"
 		}
 	},
 	"setup": {

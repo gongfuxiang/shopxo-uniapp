@@ -177,14 +177,20 @@
                     <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
                         <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.s70kj4')}}</view>
                         <view class="panel-content oh">
-                            <view v-for="(item, index) in panel_base_data_list" :key="index" class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                                <view v-if="(item.is_copy || 0) == 1" class="content fl br-l padding-left-main" :data-value="aftersale_data[item.field] || ''" data-event="copy" @tap="text_event">
-                                    <text>{{ aftersale_data[item.field] || '' }}</text>
-                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
-                                </view>
-                                <view v-else class="content fl br-l padding-left-main">{{ aftersale_data[item.field] || '' }}</view>
-                            </view>
+                            <uni-table :emptyText="$t('common.no_data')">
+                                <block v-for="(item, index) in panel_base_data_list" :key="index">
+                                    <uni-tr>
+                                        <uni-th width="90">{{item.name}}</uni-th>
+                                        <uni-td>
+                                            <view v-if="(item.is_copy || 0) == 1" :data-value="aftersale_data[item.field] || ''" data-event="copy" @tap="text_event">
+                                                <text>{{ aftersale_data[item.field] || '' }}</text>
+                                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                            </view>
+                                            <block v-else>{{ aftersale_data[item.field] || '' }}</block>
+                                        </uni-td>
+                                    </uni-tr>
+                                </block>
+                            </uni-table>
                         </view>
                     </view>
 
@@ -192,10 +198,20 @@
                     <view v-if="aftersale_data.status > 1 && aftersale_data.type == 1" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                         <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
                         <view class="panel-content oh">
-                            <view v-for="(item, index) in panel_express_data_list" :key="index" class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                                <view class="content fl br-l padding-left-main">{{ aftersale_data[item.field] || "" }}</view>
-                            </view>
+                            <uni-table :emptyText="$t('common.no_data')">
+                                <block v-for="(item, index) in panel_express_data_list" :key="index">
+                                    <uni-tr>
+                                        <uni-th width="90">{{item.name}}</uni-th>
+                                        <uni-td>
+                                            <view v-if="(item.is_copy || 0) == 1" :data-value="aftersale_data[item.field] || ''" data-event="copy" @tap="text_event">
+                                                <text>{{ aftersale_data[item.field] || '' }}</text>
+                                                <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                            </view>
+                                            <block v-else>{{ aftersale_data[item.field] || '' }}</block>
+                                        </uni-td>
+                                    </uni-tr>
+                                </block>
+                            </uni-table>
                         </view>
                     </view>
 
@@ -491,6 +507,7 @@
                     {
                         name: this.$t('user-order-detail.user-order-detail.2byl8l'),
                         field: "express_number",
+                        is_copy: 1
                     },
                     {
                         name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
