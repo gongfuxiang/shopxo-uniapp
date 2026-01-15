@@ -46,10 +46,13 @@
                 <!-- 底部操作 -->
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <view v-if="(user || null) != null && params.is_list != 0" class="tr padding-bottom-lg padding-right-sm">
-                            <text class="cr-blue cp" @tap="url_event" data-value="/pages/plugins/complaint/user/user">{{$t('complaint-form.complaint-form.ssdff4')}} >></text>
+                        <view class="flex-row align-c gap-10">
+                            <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('common.submit')}}</button>
+                            <view v-if="(user || null) != null && params.is_list != 0" class="tc cp flex-width-half-half" @tap="url_event" data-value="/pages/plugins/complaint/user/user">
+                                <iconfont name="icon-order-list" size="34rpx" propClass="cr-base"></iconfont>
+                                <view class="cr-base">{{$t('common.list')}}</view>
+                            </view>
                         </view>
-                        <button class="item cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('common.submit')}}</button>
                     </view>
                 </view>
             </form>

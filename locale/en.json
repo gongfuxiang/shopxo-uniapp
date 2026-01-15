@@ -38,6 +38,7 @@
         "compare": "Compare",
 		"search": "Search",
 		"num": "quantity",
+        "list": "List",
 		"order": "order form",
 		"service": "service",
         "base": "Base",
@@ -2003,8 +2004,7 @@
             "23rdfg": "Complaint/Report Type",
             "5434rd": "Please select the type of complaint/report",
     		"78iudg": "proof image",
-    		"56ys33": "Please upload complete and clear images, up to a maximum of 10",
-    		"ssdff4": "My submission record"
+    		"56ys33": "Please upload complete and clear images, up to a maximum of 10"
     	}
     },
     "orderfeed-form": {
