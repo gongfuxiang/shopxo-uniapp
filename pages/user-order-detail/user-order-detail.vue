@@ -570,9 +570,9 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
+                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '', is_copy: 1 },
                                     { name: this.$t('user-order-detail.user-order-detail.346376'), value: data.data.warehouse_name || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.io6p5k'), value: data.data.order_model_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '', is_copy: 1 },
                                     { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: data.data.pay_status_name || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.vg4jb1'), value: data.data.price || '' },
