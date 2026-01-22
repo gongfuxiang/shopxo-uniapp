@@ -231,7 +231,7 @@
                 // #endif
             },
 
-            // 打开相册选择
+            // 打开图片选择
             choose_image_handle(type, self) {
                 uni.chooseImage({
                     sourceType: [type],
