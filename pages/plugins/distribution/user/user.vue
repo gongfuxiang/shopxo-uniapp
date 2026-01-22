@@ -16,7 +16,7 @@
                                     </view>
                                     <view class="head-item padding-left-main flex-1 flex-width">
                                         <view class="cr-white">
-                                            <view class="dis-inline-block text-size fw-b" @tap="user_referrer">{{ nickname }}</view>
+                                            <view class="dis-inline-block text-size fw-b">{{ nickname }}</view>
                                             <view v-if="(user_referrer || null) != null" class="dis-inline-block margin-left-lg br-b-f9 padding-bottom-xss text-size-xs" data-event="copy" :data-value="user_referrer" @tap="text_event">
                                                 <view class="dis-inline-block">
                                                     <text>{{$t('common.recommend_code_name')}}</text>

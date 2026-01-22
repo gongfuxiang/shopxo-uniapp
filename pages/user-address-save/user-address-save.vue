@@ -31,7 +31,7 @@
                                     <block v-if="is_user_address_forbid_choice_region == 0">
                                         <view class="flex-row align-c" :class="home_user_address_map_status == 1 ? 'br-t-dashed padding-top-sm margin-top-sm' : ''">
                                             <view class="flex-1 flex-width">
-                                                <view @tap="open_ragion" class="single-text">
+                                                <view @tap="open_region" class="single-text">
                                                     <text v-if="province_name"> {{ province_name }}{{ city_name ? '-' + city_name : '' }}{{ county_name ? '-' + county_name : '' }} </text>
                                                     <text v-else class="cr-grey-9">{{$t('extraction-apply.extraction-apply.cy87k6')}}</text>
                                                 </view>
@@ -726,7 +726,7 @@
                     },
                 });
             },
-            open_ragion(e) {
+            open_region(e) {
                 this.setData({
                     region_picker_show: true,
                 });
