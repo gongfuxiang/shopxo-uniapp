@@ -83,7 +83,7 @@
                 form_submit_disabled_status: false,
                 default_avatar: app.globalData.data.default_user_head_src,
                 user_data: {},
-                gender_list: [],
+                gender_list: []
             };
         },
 
@@ -170,6 +170,9 @@
             // 头像事件
             choose_avatar_event(e = null) {
                 let self = this;
+
+                // #ifndef APP
+                // 如果是微信/支付宝小程序，直接使用其API（不需要权限弹窗）
                 let arr = ['weixin', 'alipay'];
                 if (arr.indexOf(this.application_client_type) != -1) {
                     if(e !== null) {
@@ -195,8 +198,62 @@
                         },
                     });
                 }
+                // #endif
+
+                // App端先显示权限选择弹窗
+                // #ifdef APP
+                uni.showActionSheet({
+                    title: self.$t('common.choice_image_source_text'),
+                    itemList: [self.$t('common.camera_text'), self.$t('common.album_choice_text')],
+                    success: (res) => {
+                        if(res.tapIndex == 0) {
+                            var type = 'camera';
+                            var title = self.$t('common.need_camera_power_text');
+                            var msg = self.$t('common.camera_get_access_text');
+                        } else {
+                            var type = 'album';
+                            var title = self.$t('common.need_album_power_text');
+                            var msg = self.$t('common.album_get_access_text');
+                        }
+                        uni.showModal({
+                        	title: title,
+                        	content: msg,
+                            cancelText: self.$t('common.cancel'),
+                            confirmText: self.$t('common.confirm'),
+                        	success: function (res) {
+                        		if (res.confirm) {
+                                    self.choose_image_handle(type, self);
+                        		}
+                        	}
+                        });
+                    }
+                });
+                // #endif
             },
-            
+
+            // 打开相册选择
+            choose_image_handle(type, self) {
+                uni.chooseImage({
+                    sourceType: [type],
+                    count: 1,
+                    success(res) {
+                        if (res.tempFilePaths.length > 0) {
+                            self.upload_handle(res.tempFilePaths[0], self);
+                        }
+                    },
+                    fail(err) {
+                        // 用户拒绝权限或取消操作
+                        if (err.errMsg && err.errMsg.indexOf('cancel') === -1) {
+                            uni.showModal({
+                                title: self.$t('common.power_refuse_text'),
+                                content: (type == 'camera') ? self.$t('common.camera_error_text') : self.$t('common.album_error_text'),
+                                showCancel: false
+                            });
+                        }
+                    }
+                });
+            },
+
             // 上传处理
             upload_handle(image, self) {
                 uni.uploadFile({
@@ -302,4 +359,83 @@
 </script>
 <style>
     @import './personal.css';
+    
+    /* 权限说明弹窗样式 */
+    .permission-modal-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+    
+    .permission-modal {
+        width: 80%;
+        max-width: 600rpx;
+        background-color: #fff;
+        border-radius: 16rpx;
+        overflow: hidden;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .permission-modal-title {
+        padding: 40rpx 30rpx 20rpx;
+        font-size: 36rpx;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+    }
+    
+    .permission-modal-content {
+        padding: 20rpx 30rpx 40rpx;
+        font-size: 28rpx;
+        line-height: 1.5;
+        color: #666;
+        text-align: center;
+    }
+    
+    .permission-modal-buttons {
+        display: flex;
+        border-top: 1rpx solid #eee;
+    }
+    
+    .permission-btn {
+        flex: 1;
+        height: 88rpx;
+        line-height: 88rpx;
+        font-size: 32rpx;
+        background: none;
+        border-radius: 0;
+        margin: 0;
+        position: relative;
+    }
+    
+    .permission-btn::after {
+        border: none;
+    }
+    
+    .permission-btn.cancel {
+        color: #666;
+        border-right: 1rpx solid #eee;
+    }
+    
+    .permission-btn.confirm {
+        color: #007aff;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 </style>

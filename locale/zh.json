@@ -126,7 +126,17 @@
         "no": "不了",
         "cancel_confirm_tips": "取消后不可恢复，确定继续吗?",
         "delete_confirm_tips": "删除后不可恢复，确定继续吗?",
-        "trace_source_text": "溯源"
+        "trace_source_text": "溯源",
+        "choice_image_source_text": "选择图片来源",
+        "camera_text": "拍照",
+        "album_choice_text": "从相册选择",
+        "need_camera_power_text": "需要相机权限",
+        "power_refuse_text": "权限被拒绝",
+        "camera_get_access_text": "我们需要访问您的相机，以便拍摄照片用作头像。请允许后继续！",
+        "camera_error_text": "需要相机权限才能拍照，您可以在系统设置中开启权限！",
+        "need_album_power_text": "需要相册权限",
+        "album_get_access_text": "我们需要访问您的相册，以便选择图片用作头像。请允许后继续！",
+        "album_error_text": "需要相册权限才能选择图片，您可以在系统设置中开启权限！"
 	},
     "client": {
         "weixin": "微信",

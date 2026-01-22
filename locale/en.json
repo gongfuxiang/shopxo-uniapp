@@ -126,7 +126,17 @@
         "no": "No",
         "cancel_confirm_tips": "After cancellation, it cannot be restored. Are you sure to continue?",
         "delete_confirm_tips": "After deletion, it cannot be restored. Are you sure to continue?",
-        "trace_source_text": "trace to the source"
+        "trace_source_text": "trace to the source",
+        "choice_image_source_text": "Select image source",
+        "camera_text": "take a photo",
+        "album_choice_text": "Select from album",
+        "need_camera_power_text": "Camera permission required",
+        "power_refuse_text": "Permission denied",
+        "camera_get_access_text": "We need to access your camera in order to take photos as avatars. Please allow to continue!",
+        "camera_error_text": "Camera permission is required to take photos, you can enable permission in the system settings!",
+        "need_album_power_text": "Album permission required",
+        "album_get_access_text": "We need to access your photo album in order to select images to use as avatars. Please allow to continue!",
+        "album_error_text": "Album permission is required to select images. You can enable permission in the system settings!"
 	},
     "client": {
         "weixin": "WeChat",
