@@ -35,7 +35,7 @@
                         </view>
                     </block>
                 </view>
-                <view v-if="info.is_reply && info.is_reply === '1'" class="padding-main br-t-dashed">
+                <view v-if="info.is_reply && info.is_reply == 1" class="padding-main br-t-dashed">
                     <view class="flex-row jc-sb align-c">
                         <view class="flex-row align-c">
                             <image v-if="(logo_square || null) != null" :src="logo_square" mode="widthFix" class="admin-img circle br-f5 margin-right-sm"></image>

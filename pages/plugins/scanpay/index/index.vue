@@ -333,7 +333,7 @@
                     } else {
                         this.concat_string('0' + v);
                     }
-                } else if (v === '0') {
+                } else if (v == 0) {
                     if (price.length > 0) {
                         this.control_price(price, v);
                     } else {

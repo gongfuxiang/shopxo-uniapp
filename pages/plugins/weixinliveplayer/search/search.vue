@@ -13,7 +13,7 @@
                 <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white oh pr spacing-mb">
                     <view class="flex-row jc-sb cp" :class="Number(item.status) > 3 ? 'expire' : ''" :data-value="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" @tap="url_event">
                         <image class="radius" :src="item.share_img" mode="aspectFill"></image>
-                        <view v-if="item.status === '1'" class="pa bottom-0 left-0 live-content circle">
+                        <view v-if="item.status == 1" class="pa bottom-0 left-0 live-content circle">
                             <view class="live-action flex-row jc-sa align-e">
                                 <view class="live-1"></view>
                                 <view class="live-2"></view>
@@ -30,17 +30,17 @@
                             </view>
                             <view class="self-e text-size-xs cr-grey-9 flex-row align-c" :class="'status-' + item.status"
                                 ><!-- 未开始 -->
-                                <iconfont v-if="item.status === '0'" name="icon-time" propClass="margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-if="item.status == 0" name="icon-time" propClass="margin-right-xs pr top-xs"></iconfont>
                                 <!-- 直播中 -->
-                                <div v-else-if="item.status === '1'" class="spread margin-right-sm">
+                                <div v-else-if="item.status == 1" class="spread margin-right-sm">
                                     <div class="ring"></div>
                                     <div class="ring"></div>
                                     <div class="ring"></div>
                                 </div>
                                 <!-- 暂停中 -->
-                                <iconfont v-else-if="item.status === '2'" name="icon-player-pause" propClass="margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-else-if="item.status == 2" name="icon-player-pause" propClass="margin-right-xs pr top-xs"></iconfont>
                                 <!-- 已结束 -->
-                                <iconfont v-else-if="item.status === '3'" name="icon-player-end" propClass="margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-else-if="item.status == 3" name="icon-player-end" propClass="margin-right-xs pr top-xs"></iconfont>
                                 <!-- 其他 -->
                                 <iconfont v-else name="icon-lose-efficacy" propClass="margin-right-xs pr top-xs"></iconfont>
                                 {{ item.status_name }}

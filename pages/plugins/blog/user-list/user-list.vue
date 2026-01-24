@@ -11,7 +11,7 @@
                             <view class="flex-1 flex-width">
                                 <view class="multi-text text-size fw-b margin-bottom-xs">{{ item.title }}</view>
                                 <view class="text-size-sm cr-grey-9 margin-bottom-sm">{{ item.date }}</view>
-                                <view class="badge" :class="item.status == '0' ? 'info' : item.status === '1' ? 'success' : 'error'">{{ item.status_name }}</view>
+                                <view class="badge" :class="item.status == '0' ? 'info' : item.status == 1 ? 'success' : 'error'">{{ item.status_name }}</view>
                             </view>
                         </view>
                         <view class="br-t-f5 flex-row jc-sa align-c text-size tc">
