@@ -6,6 +6,13 @@
   "description": "1. diy, form, 小程序仅base64, TIF，（web端也可以使用这个方式）；2. web端 Base64, WOFF2, WOFF, TEF, SVG, EOT",
   "glyphs": [
     {
+      "icon_id": "39482322",
+      "name": "医生",
+      "font_class": "doctor",
+      "unicode": "eca0",
+      "unicode_decimal": 60576
+    },
+    {
       "icon_id": "4329134",
       "name": "药丸",
       "font_class": "pill",
@@ -20,18 +27,11 @@
       "unicode_decimal": 58885
     },
     {
-      "icon_id": "22953498",
-      "name": "医生",
-      "font_class": "doctor",
-      "unicode": "e636",
-      "unicode_decimal": 58934
-    },
-    {
-      "icon_id": "8288904",
-      "name": "宠物医生",
-      "font_class": "doctor-pet",
-      "unicode": "e863",
-      "unicode_decimal": 59491
+      "icon_id": "8922367",
+      "name": "医药箱",
+      "font_class": "medicine-wide",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
     },
     {
       "icon_id": "2733963",

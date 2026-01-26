@@ -168,7 +168,7 @@
                     });
                     var newData = {
                         goods_id: this.goods_id,
-                        image_list: this.image_list,
+                        images: this.image_list,
                         is_anonymous: this.is_anonymous,
                         ...validate,
                     };
