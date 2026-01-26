@@ -1,7 +1,15 @@
 <template>
     <view :class="theme_view">
         <view v-if="(propData || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-            <view class="br-b padding-bottom-main fw-b text-size">{{propData.title}}</view>
+            <view class="br-b padding-bottom-main">
+                <text class="fw-b text-size">{{propData.title}}</text>
+                <view v-if="(propData.chat || null) != null && ((propData.chat.url || null) != null) && ((propData.chat.name || null) != null)" class="fr" @tap="webview_url_event">
+                    <view class="dis-inline-block va-m">
+                        <iconfont name="icon-doctor" size="28rpx" propClass="cr-blue"></iconfont>
+                    </view>
+                    <text class="va-m margin-left-xs cr-blue">{{propData.chat.name}}</text>
+                </view>
+            </view>
             <view class="panel-content oh">
                 <uni-table :emptyText="$t('common.no_data')">
                     <block v-for="(item, index) in propData.data" :key="index">
@@ -49,6 +57,11 @@ export default {
         // 文本复制
         text_copy_event(e) {
             app.globalData.text_copy_event(e);
+        },
+
+        // webviwe打开链接
+        webview_url_event() {
+            app.globalData.open_web_view(this.propData.chat.url);
         }
     }
 };

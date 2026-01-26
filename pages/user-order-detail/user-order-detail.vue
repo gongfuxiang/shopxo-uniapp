@@ -285,10 +285,10 @@
                                     <uni-tr v-if="(detail.trace_source_data[item['id']] || null) != null && (detail.trace_source_data[item['id']][index2+1] || null) != null">
                                         <uni-td>{{$t('common.num')}}{{index2+1}}</uni-td>
                                         <uni-td>
-                                            <block v-if="(detail.trace_source_data[item['id']][index2+1]['code'] || null) != null" :data-value="detail.trace_source_data[item['id']][index2+1]['code']" @tap="text_copy_event">
+                                            <view v-if="(detail.trace_source_data[item['id']][index2+1]['code'] || null) != null" :data-value="detail.trace_source_data[item['id']][index2+1]['code']" @tap="text_copy_event">
                                                 <text>{{detail.trace_source_data[item['id']][index2+1]['code']}}</text>
                                                 <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
-                                            </block>
+                                            </view>
                                         </uni-td>
                                         <uni-td>
                                             <block v-if="(detail.trace_source_data[item['id']][index2+1]['batch_number'] || null) != null">
