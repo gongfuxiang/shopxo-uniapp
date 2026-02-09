@@ -7,7 +7,9 @@
                         <text class="fw-b">{{item.title}}</text>
                         <text class="fr cr-base">{{item.add_time_time}}</text>
                     </view>
-                    <view class="cr-grey margin-top-lg">{{item.detail}}</view>
+                    <view class="web-html-content cr-grey margin-top-lg">
+                        <mp-html :content="item.detail" />
+                    </view>
                 </view>
             </view>
             <view v-else>
