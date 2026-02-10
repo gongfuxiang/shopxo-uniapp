@@ -339,7 +339,7 @@
 
                                     this.display_video_list.forEach((item, index) => {
                                         // this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
-                                        this.video_contexts[index] = document.getElementById(`video_${index}`);
+                                        this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
                                     });
 
                                     setTimeout(() => {
@@ -366,9 +366,12 @@
             },
             video_play_event(video_contexts) { 
                 try {
-                    video_contexts.play();
+                    video_contexts.play().catch(() => {
+                        this.setData({ 
+                            paused: true,
+                        });
+                    });
                 } catch (error) {
-                    console.log(error);
                     this.setData({ 
                         paused: true,
                     });
