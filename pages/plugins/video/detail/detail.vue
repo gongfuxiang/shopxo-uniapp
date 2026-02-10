@@ -20,8 +20,8 @@
                     <view class="video-container pr" @tap.stop="toggle_play_pause">
                         <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
                         
-                        <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="true" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update"></video>
-                        
+                        <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update"></video>
+
                         <view v-if="paused && current_index === index" class="play-icon">
                             <view class="pr">
                                 <view class="play-icon-bg"></view>
@@ -63,10 +63,10 @@
                             </view>
 
                             <!-- Progress Bar -->
-                            <!-- <view class="progress-bar-container" v-if="current_index === index">
+                            <view class="progress-bar-container" v-if="current_index === index">
                                 <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
                                 <text class="time-display">{{ format_time(current_video_progress) }} / {{ format_time(current_video_duration) }}</text>
-                            </view> -->
+                            </view>
                         </template>
                     </view>
                 </swiper-item>
@@ -332,8 +332,7 @@
                             });
                             if (is_last == 1 && is_next == 1) {
                                 this.update_display_data();
-                                console.log(this.display_video_list);
-                                
+
                                 setTimeout(() => { 
                                     // // 更新分享信息
                                     this.update_share_info(this.display_video_list[0]);
@@ -344,18 +343,7 @@
 
                                     setTimeout(() => {
                                         if (this.video_contexts[0]) { // 当前播放的视频索引为0
-                                            console.log(this.video_contexts[0]);
-                                            // try {
-                                                this.video_contexts[0].play().catch(error => {
-                                                    this.setData({ 
-                                                        paused: true,
-                                                    });
-                                                });
-                                            // } catch (error) {
-                                            //     this.setData({ 
-                                            //         paused: true,
-                                            //     });
-                                            // }
+                                            this.video_play_event(this.video_contexts[0]);
                                         }
                                     }, 200);
                                 }, 0);
@@ -374,6 +362,18 @@
                         });
                     }
                 });
+            },
+            video_play_event(video_contexts) { 
+                try {
+                    video_contexts.play().then((err) => {
+                        console.log(err);
+                        
+                    });
+                } catch (error) {
+                    this.setData({ 
+                        paused: true,
+                    });
+                }
             },
             update_share_info(data) {
                 const info = {
@@ -582,19 +582,23 @@
                 setTimeout(() => {
                     // 播放当前视频
                     if (this.video_contexts[current]) {
-                        this.video_contexts[current].play();
+                        this.video_play_event(this.video_contexts[current]);
                     }
                 }, 100);
             },
             // 切换播放暂停
             toggle_play_pause() {
-                if (!this.video_contexts[this.current_index]) return; // 当前播放的视频索引为1
+                if (this.video_contexts[this.current_index] == null) return; // 当前播放的视频索引为1
 
-                this.paused = !this.paused;
+                this.setData({ 
+                    paused: !this.paused 
+                });
+                // this.paused = !this.paused;
+                console.log(this.paused);
                 if (this.paused) {
                     this.video_contexts[this.current_index].pause(); // 暂停中间的视频
                 } else {
-                    this.video_contexts[this.current_index].play();  // 播放中间的视频
+                    this.video_play_event(this.video_contexts[this.current_index]); // 播放中间的视频
                 }
             },
             // 收藏
@@ -885,8 +889,8 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: #fff;
-            width: 80rpx;
-            height: 80rpx;
+            width: 60rpx;
+            height: 60rpx;
             z-index: 0;
         }
         .play-icon-iconfont {
