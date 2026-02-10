@@ -21,8 +21,14 @@
                         <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
                         
                         <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="true" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update"></video>
+                        
                         <view v-if="paused && current_index === index" class="play-icon">
-                            <text>▶</text>
+                            <view class="pr">
+                                <view class="play-icon-bg"></view>
+                                <view class="pa z-i play-icon-iconfont">
+                                    <iconfont name="icon-bofang" size="120rpx" propClass="" color="#4F3E35"></iconfont>
+                                </view>
+                            </view>
                         </view>
                         
                         <template v-if="!show_comment_modal">
@@ -338,7 +344,18 @@
 
                                     setTimeout(() => {
                                         if (this.video_contexts[0]) { // 当前播放的视频索引为0
-                                            this.video_contexts[0].play();
+                                            console.log(this.video_contexts[0]);
+                                            // try {
+                                                this.video_contexts[0].play().catch(error => {
+                                                    this.setData({ 
+                                                        paused: true,
+                                                    });
+                                                });
+                                            // } catch (error) {
+                                            //     this.setData({ 
+                                            //         paused: true,
+                                            //     });
+                                            // }
                                         }
                                     }, 200);
                                 }, 0);
@@ -862,12 +879,22 @@
         left: 50%;
         transform: translate(-50%, -50%);
         pointer-events: none;
-        font-size: 80rpx;
-        color: rgba(255, 255, 255, 0.6);
-        background: rgba(0, 0, 0, 0.5);
-        width: 120rpx;
-        height: 120rpx;
-        border-radius: 50%;
+        .play-icon-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            width: 80rpx;
+            height: 80rpx;
+            z-index: 0;
+        }
+        .play-icon-iconfont {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 
     .right-actions {
