@@ -1,67 +1,74 @@
 <template>
     <view class="content pr">
-        <!-- 搜索框 -->
-		<view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
-			<view id="search-height" class="flex-row align-c">
-                <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-                <!-- #ifndef MP-ALIPAY -->
-				<view class="cp" @tap="handle_back">
-					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
-				</view>
-                <!-- #endif -->
-				<view class="wh-auto ht-auto" :style="header_padding_left">
-					<search-component :propIsDisabled="true" @disabledSearch="handle_search" />
-				</view>
-			</view>
-		</view>
-        <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="300" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @change="handle_swiper_change">
-            <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
-                <view class="video-container pr" @tap.stop="toggle_play_pause">
-                    <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
-                    
-                    <video class="video" :src="video_item.videoUrl" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :enable-progress-gesture="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" object-fit="contain" @timeupdate="handle_time_update"></video>
-                    
-                    <text v-if="paused && current_index === index" class="play-icon">▶</text>
-                    <template v-if="!show_comment_modal">
-                        <!-- Right Action Bar -->
-                        <view class="right-actions">
-                            <view class="action-item" :data-value="video_item" @tap.stop="handle_like">
-                                <iconfont name="icon-givealike" :color="video_item.isLike ? '#fff' : ''" size="60rpx" />
-                                <text class="action-text">{{ video_item.fabulous_count }}</text>
-                            </view>
-                            <view class="action-item" :data-value="video_item" @tap.stop="handle_comment">
-                                <iconfont name="icon-comment" color="#fff" size="60rpx" />
-                                <text class="action-text">{{ video_item.comment_obj.count }}</text>
-                            </view>
-                            <view class="action-item" @tap.stop="handle_share">
-                                <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
-                                <text class="action-text">分享</text>
-                            </view>
-                        </view>
-
-                        <!-- Bottom Info -->
-                        <view class="product-card flex-row align-c gap-10">
-                            <view class="product-image">
-                                <image src="https://placehold.co/60x60" alt="张博士防辐射近视眼镜" mode="aspectFill" class="product-image"></image>
-                            </view>
-                            <view class="flex-1 flex-col align-sb jc-c gap-10">
-                                <text class="product-name text-line-1">张博士防辐射近视眼镜</text>
-                                <text class="product-price">¥210.00</text>
-                            </view>
-                            <view class="product-close" @tap.stop="product_close_event">
-                                <iconfont name="icon-close" color="#999" size="30rpx"></iconfont>
-                            </view>
-                        </view>
-
-                        <!-- Progress Bar -->
-                        <view class="progress-bar-container" v-if="current_index === index">
-                            <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
-                            <text class="time-display">{{ format_time(current_video_progress) }} / {{ format_time(current_video_duration) }}</text>
-                        </view>
-                    </template>
+        <template v-if="display_video_list.length > 0">
+            <!-- 搜索框 -->
+            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
+                <view id="search-height" class="flex-row align-c">
+                    <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                    <!-- #ifndef MP-ALIPAY -->
+                    <view class="cp" @tap="handle_back">
+                        <iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
+                    </view>
+                    <!-- #endif -->
+                    <view class="wh-auto ht-auto" :style="header_padding_left">
+                        <search-component :propIsDisabled="true" @disabledSearch="handle_search" />
+                    </view>
                 </view>
-            </swiper-item>
-        </swiper>
+            </view>
+            <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="300" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @change="handle_swiper_change">
+                <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
+                    <view class="video-container pr" @tap.stop="toggle_play_pause">
+                        <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
+                        
+                        <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="true" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update"></video>
+                        <view v-if="paused && current_index === index" class="play-icon">
+                            <text>▶</text>
+                        </view>
+                        
+                        <template v-if="!show_comment_modal">
+                            <!-- Right Action Bar -->
+                            <view class="right-actions">
+                                <view class="action-item" :data-value="video_item" @tap.stop="handle_like">
+                                    <iconfont name="icon-givealike" :color="video_item.isLike ? '#fff' : ''" size="60rpx" />
+                                    <text class="action-text">{{ video_item.access_count }}</text>
+                                </view>
+                                <view class="action-item" :data-value="video_item" @tap.stop="handle_comment">
+                                    <iconfont name="icon-comment" color="#fff" size="60rpx" />
+                                    <text class="action-text">{{ video_item.comments_count }}</text>
+                                </view>
+                                <view class="action-item" @tap.stop="handle_share">
+                                    <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
+                                    <text class="action-text">分享</text>
+                                </view>
+                            </view>
+
+                            <!-- Bottom Info -->
+                            <view class="product-card flex-row align-c gap-10">
+                                <view class="product-image">
+                                    <image src="https://placehold.co/60x60" alt="张博士防辐射近视眼镜" mode="aspectFill" class="product-image"></image>
+                                </view>
+                                <view class="flex-1 flex-col align-sb jc-c gap-10">
+                                    <text class="product-name text-line-1">张博士防辐射近视眼镜</text>
+                                    <text class="product-price">¥210.00</text>
+                                </view>
+                                <view class="product-close" @tap.stop="product_close_event">
+                                    <iconfont name="icon-close" color="#999" size="30rpx"></iconfont>
+                                </view>
+                            </view>
+
+                            <!-- Progress Bar -->
+                            <!-- <view class="progress-bar-container" v-if="current_index === index">
+                                <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
+                                <text class="time-display">{{ format_time(current_video_progress) }} / {{ format_time(current_video_duration) }}</text>
+                            </view> -->
+                        </template>
+                    </view>
+                </swiper-item>
+            </swiper>
+        </template>
+		<template v-else>
+			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+		</template>
         
         <!-- 评论弹窗 -->
         <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
@@ -126,13 +133,13 @@
 
 <script>
     const app = getApp();
-    import videoList from '@/pages/plugins/video/detail/video_list.json';
     import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import searchComponent from '@/pages/plugins/video/components/search.vue';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentNoData from '@/components/no-data/no-data';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
@@ -144,7 +151,8 @@
             commentInfoComponent,
             commentMoreComponent,
             searchComponent,
-            componentSharePopup
+            componentSharePopup,
+            componentNoData
         },
         data() {
             return {
@@ -158,7 +166,9 @@
                 // #ifdef APP
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
                 // #endif
-                videoData: videoList,
+                data_list_loding_status:  1,
+                data_list_loding_msg: '',
+                video_data_list: [],
                 display_video_list: [],
                 current_index: 0,
                 video_contexts: [],
@@ -171,7 +181,7 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0,
-                current_video_id: '1', // 当前播放视频的ID
+                current_video_id: '', // 当前播放视频的ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0,
@@ -183,6 +193,7 @@
                 share_info: {},
                 params: {},
                 header_padding_left: '',
+                report_type_list: [],
             };
         },
         computed: {
@@ -193,11 +204,11 @@
                 return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`;
             },
             current_video_index() { 
-                return this.videoData.findIndex(item => item.id === this.current_video_id);
+                return this.video_data_list.findIndex(item => item.id === this.current_video_id);
             },
             // 如果是第一个或者最后一个的情况下，取消无限轮播
             close_circular() {
-                return this.videoData[0].id == this.current_video_id  || this.videoData[this.videoData.length - 1].id == this.current_video_id;
+                return this.video_data_list[0].id == this.current_video_id  || this.video_data_list[this.video_data_list.length - 1].id == this.current_video_id;
             }
         },
         onLoad(params) {
@@ -209,25 +220,14 @@
                 params: app.globalData.launch_params_handle(params),
             });
         },
-        mounted() {
+        onShow() {
             this.init();
         },
         methods: {
             isEmpty,
             init() { 
-                // 初始化显示数据
-                this.init_display_data();
-                // 更新分享信息
-                this.update_share_info(this.display_video_list[0]);
+                this.get_video_detail(this.params.id);
 
-                this.display_video_list.forEach((item, index) => {
-                    this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
-                });
-                setTimeout(() => {
-                    if (this.video_contexts[0]) { // 当前播放的视频索引为0
-                        this.video_contexts[0].play();
-                    }
-                }, 200);
                 // 小程序下，获取小程序胶囊的宽度
                 let menu_button_info = 'max-width:100%';
                 // #ifndef MP-TOUTIAO
@@ -250,6 +250,113 @@
                     header_padding_left: padding_left,
                     menu_button_info: menu_button_info,
                 });
+
+            },
+            // 获取视频详情
+            get_video_detail(id) {
+                // 获取数据
+			uni.request({
+				url: app.globalData.get_request_url("detail", "index", "video"),
+                    method: 'POST',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        const data = res.data;
+                        if (data.code == 0) {
+                            // const list = data.data.video;
+                            const new_data = data.data;
+                            this.setData({
+                                video_data_list: [new_data.data],
+                                report_type_list: new_data.report_type_list,
+                            });
+                            this.get_last_or_next_data_list(this.params.id, 1, 1);
+                        } else {
+                            this.setData({
+                                data_tabs_loding_status: 2,
+                                data_tabs_loding_msg: data.msg,
+                            });
+                        }
+                    },
+                    fail: (err) => {
+                        this.setData({
+                            data_tabs_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                    }
+                });
+            },
+            // 获取视频列表
+            get_last_or_next_data_list(id, is_last = 0, is_next = 0) {
+                // 获取数据
+			    uni.request({
+                    url: app.globalData.get_request_url("lastnextdata", "index", "video"),
+                    method: 'POST',
+                    data: {
+                        id: id,
+                        is_last: is_last,
+                        is_next: is_next,
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        const data = res.data;
+                        if (data.code == 0) {
+                            const new_data = data.data;
+                            // 第一次的数据
+                            const data_list = JSON.parse(JSON.stringify(this.video_data_list));
+                            if (is_last == 1 && is_next == 1) {
+                                // 上一批数据
+                                if (new_data.last.length > 0) {
+                                    data_list.unshift(...new_data.last);
+                                }
+                                // 下一批数据
+                                if (new_data.next.length > 0) {
+                                    data_list.push(...new_data.next);
+                                }
+                            } else if (is_last == 1 && new_data.last.length > 0) { // 上一页数据
+                                data_list.unshift(...new_data.last);
+                            } else if (is_next == 1 && new_data.next.length > 0) { // 下一页数据
+                                data_list.push(...new_data.next);
+                            }
+
+                            this.setData({
+                                video_data_list: data_list,
+                                current_index: is_last == 1 && is_next == 1 ? 0 : this.current_index,
+                            });
+                            if (is_last == 1 && is_next == 1) {
+                                this.update_display_data();
+                                console.log(this.display_video_list);
+                                
+                                setTimeout(() => { 
+                                    // // 更新分享信息
+                                    this.update_share_info(this.display_video_list[0]);
+
+                                    this.display_video_list.forEach((item, index) => {
+                                        this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                    });
+
+                                    setTimeout(() => {
+                                        if (this.video_contexts[0]) { // 当前播放的视频索引为0
+                                            this.video_contexts[0].play();
+                                        }
+                                    }, 200);
+                                }, 0);
+                            }
+                        } else {
+                            this.setData({
+                                data_tabs_loding_status: 2,
+                                data_tabs_loding_msg: data.msg,
+                            });
+                        }
+                    },
+                    fail: (err) => {
+                        this.setData({
+                            data_tabs_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                    }
+                });
             },
             update_share_info(data) {
                 const info = {
@@ -265,33 +372,24 @@
                 // 分享菜单处理
                 app.globalData.page_share_handle(info);
             },
-            // 初始化显示数据
-            init_display_data() {
-                this.current_video_id = this.videoData[0].id;
-                this.display_video_list = [
-                    this.getVideoByIndex(0),       // 当前元素
-                    this.getVideoByIndex(1),       // 下一个元素
-                    this.getVideoByIndex(2)        // 下两个元素
-                ];
-            },
             // 安全获取视频数据的方法，处理索引超限情况
-            getVideoByIndex(index) {
+            get_video_by_index(index) {
                 // 处理负数索引
                 if (index < 0) {
                     // 循环到数组末尾
-                    const actualIndex = this.videoData.length + (index % this.videoData.length);
-                    return this.videoData[actualIndex];
+                    const actualIndex = this.video_data_list.length + (index % this.video_data_list.length);
+                    return this.video_data_list[actualIndex];
                 }
                 
                 // 处理超出数组长度的索引
-                if (index >= this.videoData.length) {
+                if (index >= this.video_data_list.length) {
                     // 循环到数组开头
-                    const actualIndex = index % this.videoData.length;
-                    return this.videoData[actualIndex];
+                    const actualIndex = index % this.video_data_list.length;
+                    return this.video_data_list[actualIndex];
                 }
                 
                 // 正常情况直接返回
-                return this.videoData[index];
+                return this.video_data_list[index];
             },
             
             // 更新显示数据
@@ -300,21 +398,21 @@
                 // 如果当前索引为0，只显示当前元素和下一个元素
                 if (this.current_index == 0) {
                     list = [
-                        this.getVideoByIndex(this.current_video_index),
-                        this.getVideoByIndex(this.current_video_index + 1), // 下一个元素
-                        this.getVideoByIndex(this.current_video_index - 1) // 上一个元素，
+                        this.get_video_by_index(this.current_video_index),
+                        this.get_video_by_index(this.current_video_index + 1), // 下一个元素
+                        this.get_video_by_index(this.current_video_index - 1) // 上一个元素，
                     ];
                 } else if (this.current_index == 1) { // 索引为1时，为确保无限轮播正常，需要改变数据插入顺序
                     list = [
-                        this.getVideoByIndex(this.current_video_index - 1),
-                        this.getVideoByIndex(this.current_video_index),
-                        this.getVideoByIndex(this.current_video_index + 1)
+                        this.get_video_by_index(this.current_video_index - 1),
+                        this.get_video_by_index(this.current_video_index),
+                        this.get_video_by_index(this.current_video_index + 1)
                     ];
                 } else {
                     list = [
-                        this.getVideoByIndex(this.current_video_index + 1),
-                        this.getVideoByIndex(this.current_video_index - 1),
-                        this.getVideoByIndex(this.current_video_index),
+                        this.get_video_by_index(this.current_video_index + 1),
+                        this.get_video_by_index(this.current_video_index - 1),
+                        this.get_video_by_index(this.current_video_index),
                     ];
                 }
 
@@ -432,9 +530,9 @@
                 if (this.current_video_index == 0 && this.is_slide_start) {
                     // this.$nextTick(() => {
                         const list = [
-                            this.getVideoByIndex(0),
-                            this.getVideoByIndex(1),
-                            this.getVideoByIndex(2)
+                            this.get_video_by_index(0),
+                            this.get_video_by_index(1),
+                            this.get_video_by_index(2)
                         ];
                         
                         this.setData({
@@ -444,12 +542,12 @@
                             swiper_key: get_math()
                         })
                     // })
-                } else if (this.current_video_index == this.videoData.length - 1) {
+                } else if (this.current_video_index == this.video_data_list.length - 1) {
                     // this.$nextTick(() => {
                         const list = [
-                            this.getVideoByIndex(this.current_video_index - 2),
-                            this.getVideoByIndex(this.current_video_index - 1),
-                            this.getVideoByIndex(this.current_video_index),
+                            this.get_video_by_index(this.current_video_index - 2),
+                            this.get_video_by_index(this.current_video_index - 1),
+                            this.get_video_by_index(this.current_video_index),
                         ];
                         this.setData({
                             current_index: 2,
@@ -745,7 +843,6 @@
     .swiper-container {
         width: 100%;
         height: 100vh;
-        background-color: #000;
     }
 
     .video {
@@ -767,6 +864,10 @@
         pointer-events: none;
         font-size: 80rpx;
         color: rgba(255, 255, 255, 0.6);
+        background: rgba(0, 0, 0, 0.5);
+        width: 120rpx;
+        height: 120rpx;
+        border-radius: 50%;
     }
 
     .right-actions {
