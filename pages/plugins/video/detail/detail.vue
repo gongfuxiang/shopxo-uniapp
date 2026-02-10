@@ -15,14 +15,14 @@
                     </view>
                 </view>
             </view>
-            <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="300" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @change="handle_swiper_change">
+            <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                     <view class="video-container pr" @tap.stop="toggle_play_pause">
                         <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
                         
                         <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update"></video>
 
-                        <view v-if="paused && current_index === index" class="play-icon">
+                        <view v-if="paused && current_index == index" class="play-icon">
                             <view class="pr">
                                 <view class="play-icon-bg"></view>
                                 <view class="pa z-i play-icon-iconfont">
@@ -63,8 +63,8 @@
                             </view>
 
                             <!-- Progress Bar -->
-                            <view class="progress-bar-container" v-if="current_index === index">
-                                <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
+                            <view class="progress-bar-container" v-if="current_index == index">
+                                <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" @tap.stop="handle_slider_change" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
                                 <text class="time-display">{{ format_time(current_video_progress) }} / {{ format_time(current_video_duration) }}</text>
                             </view>
                         </template>
@@ -177,10 +177,11 @@
                 video_data_list: [],
                 display_video_list: [],
                 current_index: 0,
-                video_contexts: [],
+                video_contexts: [], // 原生的video视频
+                create_video_contexts: [], // 使用uni.createVideoContext创建的视频上下文
                 paused: false,
                 current_video_progress: 0,
-                current_video_duration: 0,
+                current_video_duration: 1,
                 is_seeking: false,
                 show_comment_modal: false,
                 active_comments: {},
@@ -200,6 +201,7 @@
                 params: {},
                 header_padding_left: '',
                 report_type_list: [],
+                direction: 'direction',
             };
         },
         computed: {
@@ -210,11 +212,16 @@
                 return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`;
             },
             current_video_index() { 
-                return this.video_data_list.findIndex(item => item.id === this.current_video_id);
+                return this.video_data_list.findIndex(item => item.id == this.current_video_id);
             },
             // 如果是第一个或者最后一个的情况下，取消无限轮播
             close_circular() {
                 return this.video_data_list[0].id == this.current_video_id  || this.video_data_list[this.video_data_list.length - 1].id == this.current_video_id;
+            },
+            disable_touch() {
+                console.log(this.direction);
+                
+                return (this.current_video_index == 0 && this.direction == 'prev') || (this.current_video_index == this.video_data_list.length - 1 && this.direction == 'next');
             }
         },
         onLoad(params) {
@@ -232,8 +239,6 @@
         methods: {
             isEmpty,
             init() { 
-                this.get_video_detail(this.params.id);
-
                 // 小程序下，获取小程序胶囊的宽度
                 let menu_button_info = 'max-width:100%';
                 // #ifndef MP-TOUTIAO
@@ -255,14 +260,16 @@
                 this.setData({
                     header_padding_left: padding_left,
                     menu_button_info: menu_button_info,
+                    current_video_id: this.params.id,
                 });
 
+                this.get_video_detail(this.params.id);
             },
             // 获取视频详情
             get_video_detail(id) {
                 // 获取数据
-			uni.request({
-				url: app.globalData.get_request_url("detail", "index", "video"),
+			    uni.request({
+				    url: app.globalData.get_request_url("detail", "index", "video"),
                     method: 'POST',
                     data: {
                         id: id
@@ -330,15 +337,16 @@
                                 video_data_list: data_list,
                                 current_index: is_last == 1 && is_next == 1 ? 0 : this.current_index,
                             });
-                            if (is_last == 1 && is_next == 1) {
-                                this.update_display_data();
+                            // 更新数据信息
+                            this.update_display_data();
 
+                            if (is_last == 1 && is_next == 1) {
                                 setTimeout(() => { 
                                     // // 更新分享信息
                                     this.update_share_info(this.display_video_list[0]);
 
                                     this.display_video_list.forEach((item, index) => {
-                                        // this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                        this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
                                         this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
                                     });
 
@@ -528,6 +536,21 @@
                     form_images_list: list,
                 });
             },
+            on_transition(e) {
+                const dy = e.detail.dy;
+                let status = 'direction'
+                if (dy > 0) {
+                    status = 'next'
+                } else if (dy < 0) {
+                    status = 'prev'
+                }
+                // 如果历史的是向下滑动，这次也是向下滑动，就不更新数据
+                if (this.direction != status) {
+                    this.setData({
+                        direction: status,
+                    })
+                }
+            },
             // 视频滚动处理逻辑
             handle_swiper_change(event) {
                 const { current } = event.detail;
@@ -543,41 +566,50 @@
                     current_video_duration: 0,
                     is_seeking: false,
                 })
+                const id = this.display_video_list[current].id;
+                const index = this.video_data_list.findIndex(item => item.id == id);
+                // 数组中的视频即将结束时，向上滑动时调用上面的数据
+                if (index < 2 && this.direction == 'prev') {
+                    this.get_last_or_next_data_list(this.video_data_list[0].id, 1, 0);
+                } else if (index < this.video_data_list.length - 3 && this.direction == 'next') {
+                    // 数组中的视频即将结束时，向下滑动时调用下面的数据
+                    this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
+                }
                 // 更新当前播放视频的ID
                 this.current_video_id = this.display_video_list[current].id;
-                // 当滑动到边界时更新显示数据
-                if (this.current_video_index == 0 && this.is_slide_start) {
-                    // this.$nextTick(() => {
-                        const list = [
-                            this.get_video_by_index(0),
-                            this.get_video_by_index(1),
-                            this.get_video_by_index(2)
-                        ];
+                // // 当滑动到边界时更新显示数据
+                // if (this.current_video_index == 0 && this.is_slide_start) {
+                //     // this.$nextTick(() => {
+                //         const list = [
+                //             this.get_video_by_index(0),
+                //             this.get_video_by_index(1),
+                //             this.get_video_by_index(2)
+                //         ];
                         
-                        this.setData({
-                            is_slide_start: false,
-                            current_index: 0,
-                            display_video_list: list,
-                            swiper_key: get_math()
-                        })
-                    // })
-                } else if (this.current_video_index == this.video_data_list.length - 1) {
-                    // this.$nextTick(() => {
-                        const list = [
-                            this.get_video_by_index(this.current_video_index - 2),
-                            this.get_video_by_index(this.current_video_index - 1),
-                            this.get_video_by_index(this.current_video_index),
-                        ];
-                        this.setData({
-                            current_index: 2,
-                            display_video_list: list,
-                            swiper_key: get_math()
-                        })
-                } else {
-                    this.is_slide_start = true;
+                //         this.setData({
+                //             is_slide_start: false,
+                //             current_index: 0,
+                //             display_video_list: list,
+                //             swiper_key: get_math()
+                //         })
+                //     // })
+                // } else if (this.current_video_index == this.video_data_list.length - 1) {
+                //     // this.$nextTick(() => {
+                //         const list = [
+                //             this.get_video_by_index(this.current_video_index - 2),
+                //             this.get_video_by_index(this.current_video_index - 1),
+                //             this.get_video_by_index(this.current_video_index),
+                //         ];
+                //         this.setData({
+                //             current_index: 2,
+                //             display_video_list: list,
+                //             swiper_key: get_math()
+                //         })
+                // } else {
+                //     this.is_slide_start = true;
                     // 预加载当前index之后的视频
-                    this.update_display_data();
-                }
+                // this.update_display_data();
+                // }
                 // 更新分享信息
                 this.update_share_info(this.display_video_list[current]);
 
@@ -595,8 +627,7 @@
                 this.setData({ 
                     paused: !this.paused 
                 });
-                // this.paused = !this.paused;
-                console.log(this.paused);
+                // 判断是否暂停
                 if (this.paused) {
                     this.video_contexts[this.current_index].pause(); // 暂停中间的视频
                 } else {
@@ -675,7 +706,7 @@
 
             send_comment(e) {
                 let comment_text = '';
-                if (e.type === 'confirm') {
+                if (e.type == 'confirm') {
                     comment_text = e.detail.value;
                 }
                 
@@ -693,10 +724,10 @@
                 const new_comments = JSON.parse(JSON.stringify(this.active_comments));
                 if (!isEmpty(this.comment_id)) {
                     new_comments.forEach(item => {
-                        if (item.id === this.comment_id) {
+                        if (item.id == this.comment_id) {
                             // 如果回复的是子评论
                             if (!isEmpty(this.sub_comment_id)) {
-                                const new_data = item.sub_comments.find(item => item.id === this.sub_comment_id);
+                                const new_data = item.sub_comments.find(item => item.id == this.sub_comment_id);
                                 if (new_data) {
                                     newComment.reply = new_data.userNick;
                                 }
@@ -723,7 +754,7 @@
             },
             // 展开子评论
             open_sub_comment(id) {
-                const comment = this.active_comments.find(item => item.id === id);
+                const comment = this.active_comments.find(item => item.id == id);
                 if (comment) {
                     comment.show_sub_comment = true;
                     comment.show_sub_comment_loading = true;
@@ -741,7 +772,7 @@
             },
             // 收起子评论
             close_sub_comment(id) {
-                const comment = this.active_comments.find(item => item.id === id);
+                const comment = this.active_comments.find(item => item.id == id);
                 if (comment) {
                     comment.show_sub_comment = false;
                 }
@@ -779,7 +810,7 @@
             },
             // 主评论回复
             comment_reply(id) {
-                const data = this.active_comments.find(item => item.id === id);
+                const data = this.active_comments.find(item => item.id == id);
                 if (!isEmpty(data)) {
                     this.setData({ 
                         input_placeholder: `@${data.userNick}`,
@@ -790,7 +821,7 @@
             },
             // 主评论点赞
             comment_like(id) {
-                const data = this.active_comments.find(item => item.id === id);
+                const data = this.active_comments.find(item => item.id == id);
                 if (!isEmpty(data)) {
                     this.setData({ 
                         comment_id: id,
@@ -800,9 +831,9 @@
             },
             // 子评论回复
             sub_comment_reply(id, sub_id) {
-                const data = this.active_comments.find(item => item.id === id);
+                const data = this.active_comments.find(item => item.id == id);
                 if (!isEmpty(data)) {
-                    const sub_data = data.sub_comments.find(item => item.id === sub_id);
+                    const sub_data = data.sub_comments.find(item => item.id == sub_id);
                     this.setData({ 
                         input_placeholder: `@${sub_data.userNick}`,
                         comment_id: id,
@@ -812,7 +843,7 @@
             },
             // 子评论点赞
             sub_comment_like(id) {
-                const data = this.active_comments.find(item => item.id === id);
+                const data = this.active_comments.find(item => item.id == id);
                 if (!isEmpty(data)) {
                     this.setData({ 
                         comment_id: id,
@@ -822,9 +853,11 @@
             },
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
-                if (this.video_contexts[this.current_index]) {
-                    this.video_contexts[this.current_index].seek(seek_time);
-                    this.current_video_progress = seek_time;
+                if (this.create_video_contexts[this.current_index]) {
+                    this.create_video_contexts[this.current_index].seek(seek_time);
+                    this.setData({
+                        current_video_progress: seek_time,
+                    })
                 }
                 setTimeout(() => {
                     this.is_seeking = false;
