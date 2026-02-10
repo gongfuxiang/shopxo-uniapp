@@ -338,7 +338,8 @@
                                     this.update_share_info(this.display_video_list[0]);
 
                                     this.display_video_list.forEach((item, index) => {
-                                        this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                        // this.video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                        this.video_contexts[index] = document.getElementById(`video_${index}`);
                                     });
 
                                     setTimeout(() => {
@@ -365,11 +366,9 @@
             },
             video_play_event(video_contexts) { 
                 try {
-                    video_contexts.play().then((err) => {
-                        console.log(err);
-                        
-                    });
+                    video_contexts.play();
                 } catch (error) {
+                    console.log(error);
                     this.setData({ 
                         paused: true,
                     });
