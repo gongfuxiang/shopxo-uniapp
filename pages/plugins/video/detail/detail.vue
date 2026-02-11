@@ -123,6 +123,13 @@
                                 </template>
                             </view>
                         </view>
+                        <template v-if="comment_item_loading">
+                            <loading-component></loading-component>
+                        </template>
+                        <template v-else>
+                            <!-- 结尾 -->
+                            <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                        </template>
                     </view>
                 </scroll-view>
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
@@ -158,6 +165,7 @@
     import searchComponent from '@/pages/plugins/video/components/search.vue';
     import componentSharePopup from '@/components/share-popup/share-popup';
     import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
@@ -170,7 +178,8 @@
             commentMoreComponent,
             searchComponent,
             componentSharePopup,
-            componentNoData
+            componentNoData,
+            componentBottomLine
         },
         data() {
             return {
@@ -197,6 +206,10 @@
                 is_seeking: false,
                 show_comment_modal: false,
                 active_comments: {},
+                comments_page: 1, // 当前评论页
+                comments_page_total: 5, // 评论总页数
+                goods_bottom_line_status: false, //评论页是否显示底部线
+                comment_item_loading: false,
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0,
@@ -799,8 +812,12 @@
                     page: 0,
                     sub_comments: [],
                 }));
+
                 this.setData({
                     active_comments: new_data,
+                    comments_page: 1,
+                    comments_page_total: 5,
+                    comment_item_loading: false,
                     show_comment_modal: true,
                     move_distance: 0,
                 })
@@ -818,8 +835,50 @@
             }, 
             // 评论滚动到底部事件
             handle_comment_to_lower_scroll() {
-                // 加载更多评论
-
+                if (this.goods_bottom_line_status) {
+                    return;
+                }
+                this.comment_item_loading = true;
+                // 获取数据
+			    uni.request({
+                    url: app.globalData.get_request_url("commentsreplylist", "index", "video"),
+                    method: 'POST',
+                    data: {
+                        video_id: this.current_video_id,
+                        page: this.comments_page + 1,
+                        video_comments_id: 0
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        const data = res.data;
+                        if (data.code == 0) {
+                            const new_data = data.data;
+                            if (new_data.data.length > 0) {
+                                // 初始化评论数据
+                                const comment_data = new_data.data.map(item1 => ({
+                                    ...item1,
+                                    show_sub_comment: false,
+                                    show_sub_comment_loading: false,
+                                    page: 0,
+                                    sub_comments: [],
+                                }));
+                                this.active_comments.push(...comment_data);
+                            }
+                            // 是否显示没有更多数据
+                            if (new_data.page >= new_data.page_total) {
+                                // 没有更多数据了
+                                this.setData({
+                                    goods_bottom_line_status: true,
+                                })
+                            }
+                            this.comments_page = new_data.page;
+                            this.comments_page_total = new_data.page_total
+                        }
+                    },
+                    complete: () => {
+                        this.comment_item_loading = false;
+                    }
+                });
             },
             // 评论拖拽开始
             handle_comment_touch_start(e) {
@@ -938,21 +997,6 @@
                         }
                     });
                 }
-                
-                // if (comment) {
-                //     comment.show_sub_comment = true;
-                //     comment.show_sub_comment_loading = true;
-                //     setTimeout(() => {
-                //         comment.sub_comments.push({
-                //             id: `c${Date.now()}`,
-                //             userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
-                //             userNick: '我',
-                //             content: '子评论内容',
-                //             time: new Date().toLocaleString()
-                //         });
-                //         comment.show_sub_comment_loading = false;
-                //     }, 500);
-                // }
             },
             // 收起子评论
             close_sub_comment(id) {
