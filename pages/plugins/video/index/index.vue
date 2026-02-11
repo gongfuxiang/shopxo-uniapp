@@ -82,7 +82,7 @@ export default {
 			// #endif
 			search_query: '',
 			tabs: [],
-			current_tabs_index: '',
+			current_tabs_index: 0,
 			current_tabs_id: '',
 			recommend_videos: [],
 			isLoadingMore: false,
@@ -94,7 +94,7 @@ export default {
 			header_padding_left: '',
 		};
 	},
-	onshow() {
+	onShow() {
 		this.init();
 	},
 	methods: {

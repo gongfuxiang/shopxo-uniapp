@@ -15,6 +15,7 @@
                     </view>
                 </view>
             </view>
+            <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                     <view class="video-container pr" @tap.stop="toggle_play_pause">
@@ -287,14 +288,14 @@
                             this.get_last_or_next_data_list(this.params.id, 1, 1);
                         } else {
                             this.setData({
-                                data_tabs_loding_status: 2,
+                                data_list_loding_status: 2,
                                 data_tabs_loding_msg: data.msg,
                             });
                         }
                     },
                     fail: (err) => {
                         this.setData({
-                            data_tabs_loding_status: 2,
+                            data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     }
@@ -332,17 +333,18 @@
                             } else if (is_next == 1 && new_data.next.length > 0) { // 下一页数据
                                 data_list.push(...new_data.next);
                             }
-
-                            const new_index = data_list.findIndex(item => item.id == this.params.id);
+                            console.log(data_list);
                             
+                            const new_index = data_list.findIndex(item => item.id == this.params.id);
                             this.setData({
                                 video_data_list: data_list,
-                                current_index: is_last == 1 && is_next == 1 ? (new_index < data_list.length - 1 ? new_index : 0) : this.current_index,
+                                current_index: is_last == 1 && is_next == 1 ? (new_index == data_list.length - 1 ? 2 : (new_index == data_list.length - 2 ? 1 : 0)) : this.current_index,
                             });
-                            // 更新数据信息
-                            this.update_display_data();
-
+                            
                             if (is_last == 1 && is_next == 1) {
+                                // 更新数据信息
+                                this.update_display_data();
+
                                 setTimeout(() => { 
                                     // // 更新分享信息
                                     this.update_share_info(this.display_video_list[0]);
@@ -354,33 +356,37 @@
 
                                     setTimeout(() => {
                                         if (this.video_contexts[0]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.video_contexts[0]);
+                                            this.video_play_event(this.video_contexts[0], true);
                                         }
                                     }, 200);
                                 }, 0);
                             }
                         } else {
                             this.setData({
-                                data_tabs_loding_status: 2,
+                                data_list_loding_status: 2,
                                 data_tabs_loding_msg: data.msg,
                             });
                         }
                     },
                     fail: (err) => {
                         this.setData({
-                            data_tabs_loding_status: 2,
+                            data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     }
                 });
             },
-            video_play_event(video_contexts) { 
+            video_play_event(video_contexts, is_first_play = false) { 
                 try {
-                    video_contexts.play().catch(() => {
-                        this.setData({ 
-                            paused: true,
+                    if (is_first_play) {
+                        video_contexts.play().catch(() => {
+                            this.setData({ 
+                                paused: true,
+                            });
                         });
-                    });
+                    } else {
+                        video_contexts.play();
+                    }
                 } catch (error) {
                     this.setData({ 
                         paused: true,
@@ -558,8 +564,8 @@
                 const { current } = event.detail;
 
                 const previousIndex = this.current_index;
-                if (this.video_contexts[previousIndex]) {
-                    this.video_contexts[previousIndex].pause();
+                if (this.create_video_contexts[previousIndex]) {
+                    this.create_video_contexts[previousIndex].pause();
                 }
                 this.setData({
                     current_index: current,
@@ -608,32 +614,35 @@
                             swiper_key: get_math()
                         })
                 } else {
-                    this.is_slide_start = true;
+                    this.setData({
+                        is_slide_start: true
+                    })
                     // 预加载当前index之后的视频
                     this.update_display_data();
                 }
+
                 // 更新分享信息
                 this.update_share_info(this.display_video_list[current]);
 
                 setTimeout(() => {
                     // 播放当前视频
-                    if (this.video_contexts[current]) {
-                        this.video_play_event(this.video_contexts[current]);
+                    if (this.create_video_contexts[current]) {
+                        this.video_play_event(this.create_video_contexts[current], false);
                     }
                 }, 100);
             },
             // 切换播放暂停
             toggle_play_pause() {
-                if (this.video_contexts[this.current_index] == null) return; // 当前播放的视频索引为1
+                if (this.create_video_contexts[this.current_index] == null) return; // 当前播放的视频索引为1
 
                 this.setData({ 
                     paused: !this.paused 
                 });
                 // 判断是否暂停
                 if (this.paused) {
-                    this.video_contexts[this.current_index].pause(); // 暂停中间的视频
+                    this.create_video_contexts[this.current_index].pause(); // 暂停中间的视频
                 } else {
-                    this.video_play_event(this.video_contexts[this.current_index]); // 播放中间的视频
+                    this.video_play_event(this.create_video_contexts[this.current_index], false); // 播放中间的视频
                 }
             },
             // 收藏
