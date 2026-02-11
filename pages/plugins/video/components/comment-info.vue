@@ -2,7 +2,12 @@
     <view class="flex-row align-s gap-10 wh-auto ht-auto"> 
         <image class="comment-avatar" :src="propComment.user.avatar" mode="aspectFill"></image>
         <view class="comment-info flex-col jc-c" @tap="comment_reply">
-            <view class="comment-user">{{ propComment.user.user_name_view }}</view>
+            <view class="flex-row jc-sb gap-10">
+                <view class="comment-user">{{ propComment.user.user_name_view }}</view>
+                <view @tap="option_comment">
+                    <iconfont name="icon-ellipsis" color="#999" size="28rpx" />
+                </view>
+            </view>
             <view class="comment-text">{{ propComment.content }}</view>
             <view class="comment-images flex-row align-c gap-5">
                 <view v-for="(item, index) in propComment.images" class="comment-image">
