@@ -94,28 +94,28 @@
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
                 <!-- 评论内容区域 -->
-                <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scroll="handle_comment_scroll">
+                <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                     <view class="comment-scroll">
                         <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
                             <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
                             <!-- 子评论 -->
                             <view class="sub-comment flex-col jc-c gap-10 mt-10">
-                                <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0" class="sub-comment-list flex-col jc-c">
+                                <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
                                     <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
                                     </view>
                                 </view>
                                 <template v-if="comment_item.comments_count > 0">
                                     <template v-if="!comment_item.show_sub_comment">
-                                        <commentMoreComponent :propId="comment_item.id" :propText="'—— 展开' + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                        <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— 展开' + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                     </template>
                                     <template v-else>
                                         <template v-if="comment_item.show_sub_comment_loading">
                                             <loading-component></loading-component>
                                         </template>
                                         <view v-else class="sub-comment-more flex-row align-c gap-10">
-                                            <view v-if="!comment_item.is_exactly">
-                                                <commentMoreComponent :propId="comment_item.id" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                            <view v-if="comment_item.page && comment_item.page < comment_item.page_total">
+                                                <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                             </view>
                                             <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                         </view>
@@ -796,7 +796,7 @@
                     ...item1,
                     show_sub_comment: false,
                     show_sub_comment_loading: false,
-                    is_exactly: false,
+                    page: 0,
                     sub_comments: [],
                 }));
                 this.setData({
@@ -816,6 +816,11 @@
             handle_comment_scroll(e) {
                 this.comment_scroll_top = e.detail.scrollTop;
             }, 
+            // 评论滚动到底部事件
+            handle_comment_to_lower_scroll() {
+                // 加载更多评论
+
+            },
             // 评论拖拽开始
             handle_comment_touch_start(e) {
                 // 只有滚动到顶部时才允许拖拽
@@ -897,22 +902,57 @@
                 });
             },
             // 展开子评论
-            open_sub_comment(id) {
+            open_sub_comment(id, is_level) {
                 const comment = this.active_comments.find(item => item.id == id);
                 if (comment) {
                     comment.show_sub_comment = true;
                     comment.show_sub_comment_loading = true;
-                    setTimeout(() => {
-                        comment.sub_comments.push({
-                            id: `c${Date.now()}`,
-                            userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
-                            userNick: '我',
-                            content: '子评论内容',
-                            time: new Date().toLocaleString()
-                        });
+                    // 如果是一级，并且有子评论数据，不需要调用接口，直接渲染评论信息
+                    if (is_level == 1 && !isEmpty(comment.sub_comments)) {
                         comment.show_sub_comment_loading = false;
-                    }, 500);
+                        return;
+                    }
+
+                    uni.request({
+                        url: app.globalData.get_request_url("commentsreplylist", "index", "video"),
+                        method: 'POST',
+                        data: {
+                            video_id: this.current_video_id,
+                            video_comments_id: id,
+                            page: comment.page + 1,
+                        },
+                        dataType: 'json',
+                        success: res => {
+                            const data = res.data;
+                            if (data.code == 0) {
+                                const new_data = data.data;
+                                if (new_data.data.length > 0) {
+                                    comment.sub_comments.push(...new_data.data);
+                                }
+                                comment.page = new_data.page;
+                                comment.page_total = new_data.page_total
+                            }
+                        },
+                        complete: () => {
+                            comment.show_sub_comment_loading = false;
+                        }
+                    });
                 }
+                
+                // if (comment) {
+                //     comment.show_sub_comment = true;
+                //     comment.show_sub_comment_loading = true;
+                //     setTimeout(() => {
+                //         comment.sub_comments.push({
+                //             id: `c${Date.now()}`,
+                //             userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg', // Placeholder avatar
+                //             userNick: '我',
+                //             content: '子评论内容',
+                //             time: new Date().toLocaleString()
+                //         });
+                //         comment.show_sub_comment_loading = false;
+                //     }, 500);
+                // }
             },
             // 收起子评论
             close_sub_comment(id) {
@@ -1053,7 +1093,7 @@
                     });
                 }
             },
-            // 主评论点赞
+            // 评论点赞
             comment_like(id, e) {
                 if (!app.globalData.is_single_page_check()) {
                     return false;
@@ -1061,28 +1101,6 @@
                 var user = app.globalData.get_user_info(this, 'comment_like', e);
                 if (user != false) {
                     this.set_givethumbs_num(this.current_video_id, id);
-                }
-            },
-            // 子评论回复
-            sub_comment_reply(id, sub_id) {
-                const data = this.active_comments.find(item => item.id == id);
-                if (!isEmpty(data)) {
-                    const sub_data = data.sub_comments.find(item => item.id == sub_id);
-                    this.setData({ 
-                        input_placeholder: `@${sub_data.user.user_name_view}`,
-                        comment_id: id,
-                        sub_comment_id: sub_id,
-                    });
-                }
-            },
-            // 子评论点赞
-            sub_comment_like(id) {
-                const data = this.active_comments.find(item => item.id == id);
-                if (!isEmpty(data)) {
-                    this.setData({ 
-                        comment_id: id,
-                        sub_comment_id: '',
-                    });
                 }
             },
             handle_slider_change(e) {

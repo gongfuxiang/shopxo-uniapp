@@ -255,7 +255,7 @@ export default {
         font-size: 28rpx;
         color: #999999;
         line-height: 40rpx;
-		margin-top: 40rpx;
+		margin-top: 20rpx;
     }
 }
 
