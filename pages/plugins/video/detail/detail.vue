@@ -15,6 +15,7 @@
                     </view>
                 </view>
             </view>
+            {{ current_index }}
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
@@ -430,8 +431,6 @@
 
             // 实际的swiper切换处理逻辑
             process_swiper_change(current) {
-                const previousIndex = this.current_index;
-
                 // 先暂停所有视频，确保不会有后台播放
                 this.pause_all_videos_except(current);
                 
@@ -495,7 +494,7 @@
 
                 // 延迟播放当前视频，确保DOM更新完成
                 setTimeout(() => {
-                    this.play_current_video_safely(current);
+                    this.play_current_video_safely(this.current_index);
                 }, 150);
             },
 
