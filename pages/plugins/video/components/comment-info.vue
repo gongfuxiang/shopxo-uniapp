@@ -15,7 +15,7 @@
                     <view class="comment-reply">{{ propReplyContent }}</view>
                 </view>
                 <view class="comment-operation-right flex-row align-c gap-5" @tap.stop="comment_like">
-                    <iconfont name="icon-givealike-o-fine" color="#000" size="28rpx" />
+                    <iconfont name="icon-givealike-o-fine" :color="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" size="28rpx" />
                     <view class="comment-like-num">{{ propComment.give_thumbs_count || 0 }}</view>
                 </view>
             </view>
@@ -37,10 +37,6 @@
                 type: [String, Number],
                 default: '',
             },
-            propSubId: {
-                type: [String, Number],
-                default: '',
-            },
             propReplyContent: {
                 type: String,
                 default: '回复'
@@ -48,12 +44,12 @@
         },
         methods: {
             // 回复
-            comment_reply() {
-                this.$emit('comment_reply', this.propId, this.propSubId);
+            comment_reply(e) {
+                this.$emit('comment_reply', this.propId, e);
             },
             // 点赞
-            comment_like() {
-                this.$emit('comment_like', this.propId, this.propSubId);
+            comment_like(e) {
+                this.$emit('comment_like', this.propId, e);
             },
             // 上传图片预览
             upload_show_event(e) {

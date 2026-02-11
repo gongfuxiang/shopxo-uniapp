@@ -21,7 +21,7 @@
                     <view class="video-container pr" @tap.stop="toggle_play_pause">
                         <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
                         
-                        <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update"></video>
+                        <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
 
                         <view v-if="paused && current_index == index" class="play-icon">
                             <view class="pr">
@@ -36,8 +36,8 @@
                             <!-- Right Action Bar -->
                             <view class="right-actions">
                                 <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-value="video_item" @tap.stop="handle_like">
-                                    <iconfont name="icon-givealike" :color="video_item.isLike ? '#fff' : ''" size="60rpx" />
-                                    <text class="action-text">{{ video_item.access_count }}</text>
+                                    <iconfont name="icon-givealike" :color="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'" size="60rpx" />
+                                    <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-value="video_item" @tap.stop="handle_comment">
                                     <iconfont name="icon-comment" color="#fff" size="60rpx" />
@@ -102,7 +102,7 @@
                             <view class="sub-comment flex-col jc-c gap-10 mt-10">
                                 <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0" class="sub-comment-list flex-col jc-c">
                                     <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="comment_item.id" :propSubId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
+                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" @comment_reply="sub_comment_reply" @comment_like="sub_comment_like"></commentInfoComponent>
                                     </view>
                                 </view>
                                 <template v-if="comment_item.comments_count > 0">
@@ -272,23 +272,6 @@
             }
             // #endif
         },
-
-        // 添加 activated 和 deactivated 钩子处理页面切换
-        activated() {
-            // 页面激活时，如果之前是播放状态则继续播放
-            if (!this.paused && this.current_index >= 0) {
-                setTimeout(() => {
-                    this.play_current_video_safely(this.current_index);
-                }, 100);
-            }
-        },
-
-        deactivated() {
-            // 页面失活时暂停所有视频
-            this.pause_all_videos_except(-1); // -1 表示暂停所有视频
-            this.setData({ paused: true });
-        },
-
         methods: {
             isEmpty,
             init() { 
@@ -336,7 +319,7 @@
                             this.setData({
                                 video_data_list: [new_data.data],
                                 report_type_list: new_data.report_type_list,
-                                // base_config_data: new_data.base_config_data,
+                                base_config_data: new_data.base_config_data,
                             });
                             this.get_last_or_next_data_list(this.params.id, 1, 1);
                         } else {
@@ -791,14 +774,18 @@
                     this.video_play_event(this.create_video_contexts[this.current_index], false); // 播放中间的视频
                 }
             },
+            handle_play() {
+                this.setData({ paused: false });
+            },
             // 收藏
             handle_like(e) {
-                const video = e.currentTarget.dataset.value;
-                video.is_fabulous = !video.is_fabulous;
-                if (video.is_fabulous) {
-                    video.fabulous_count++;
-                } else {
-                    video.fabulous_count--;
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info(this, 'handle_like', e);
+                if (user != false) {
+                    const value = e?.currentTarget?.dataset?.value || {}; 
+                    this.set_givethumbs_num(value.id);
                 }
             },
             // 打开评论区
@@ -972,33 +959,46 @@
             // 更新点赞数量
             set_givethumbs_num(id, comments_id) {
                 uni.request({
-                    url: app.globalData.get_request_url("data", "index", "video"),
+                    url: app.globalData.get_request_url("givethumbs", "index", "video"),
                     method: 'POST',
                     data:  {
                         video_id: id,
-                        ...(isEmpty(comments_id)) ? {} : {video_comments_id: comments_id}),
+                        ...(isEmpty(comments_id) ? {} : {video_comments_id: comments_id}),
                     },
                     dataType: 'json',
                     success: res => {
                         const data = res.data;
                         if (data.code == 0) {
                             const new_data = data.data;
-                            // 更新视频数据
                             this.video_data_list.forEach(item => {
                                 if (item.id == id) {
-                                    const new_item = {
-                                        ...item,
-                                        ...new_data,
-                                    };
-                                    item = new_item;
+                                    if (!isEmpty(comments_id)) {
+                                        item.comments.forEach(comment => {
+                                            if (comment.id == comments_id) {
+                                                comment.give_thumbs_count = new_data.count;
+                                                comment.is_give_thumbs = new_data.is_active;
+                                            } else {
+                                                comment.sub_comments.forEach(sub_comment => {
+                                                    if (sub_comment.id == comments_id) {
+                                                        sub_comment.give_thumbs_count = new_data.count;
+                                                        sub_comment.is_give_thumbs = new_data.is_active;
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    } else {
+                                        item.give_thumbs_count = new_data.count;
+                                        item.is_give_thumbs = new_data.is_active;
+                                    }
                                 }
                             });
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
                         }
-                    }
-                });
-                this.video_data_list.forEach(item => {
-                    if (item.id == id) {
-                        item.givethumbs_num = num;
                     }
                 });
             },
@@ -1036,13 +1036,13 @@
                 }
             },
             // 主评论点赞
-            comment_like(id) {
-                const data = this.active_comments.find(item => item.id == id);
-                if (!isEmpty(data)) {
-                    this.setData({ 
-                        comment_id: id,
-                        sub_comment_id: '',
-                    });
+            comment_like(id, e) {
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info(this, 'comment_like', e);
+                if (user != false) {
+                    this.set_givethumbs_num(this.current_video_id, id);
                 }
             },
             // 子评论回复
