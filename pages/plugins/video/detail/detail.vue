@@ -970,28 +970,46 @@
                         const data = res.data;
                         if (data.code == 0) {
                             const new_data = data.data;
-                            this.video_data_list.forEach(item => {
+
+                            // 提取更新点赞状态的公共函数
+                            const updateThumbsStatus = (target, new_data) => {
+                                target.give_thumbs_count = new_data.count;
+                                target.is_give_thumbs = new_data.is_active;
+                            };
+
+                            // 优化后的遍历逻辑
+                            for (let i = 0; i < this.video_data_list.length; i++) {
+                                const item = this.video_data_list[i];
                                 if (item.id == id) {
                                     if (!isEmpty(comments_id)) {
-                                        item.comments.forEach(comment => {
-                                            if (comment.id == comments_id) {
-                                                comment.give_thumbs_count = new_data.count;
-                                                comment.is_give_thumbs = new_data.is_active;
-                                            } else {
-                                                comment.sub_comments.forEach(sub_comment => {
-                                                    if (sub_comment.id == comments_id) {
-                                                        sub_comment.give_thumbs_count = new_data.count;
-                                                        sub_comment.is_give_thumbs = new_data.is_active;
+                                        // 安全检查comments数组是否存在
+                                        if (this.active_comments && Array.isArray(this.active_comments)) {
+                                            for (let j = 0; j < this.active_comments.length; j++) {
+                                                const comment = this.active_comments[j];
+                                                if (comment.id == comments_id) {
+                                                    updateThumbsStatus(comment, new_data);
+                                                    return; // 找到后直接返回
+                                                } else {
+                                                    // 安全检查sub_comments数组是否存在
+                                                    if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
+                                                        for (let k = 0; k < comment.sub_comments.length; k++) {
+                                                            const sub_comment = comment.sub_comments[k];
+                                                            
+                                                            if (sub_comment.id == comments_id) {
+                                                                updateThumbsStatus(sub_comment, new_data);
+                                                                return; // 找到后直接返回
+                                                            }
+                                                        }
                                                     }
-                                                });
+                                                }
                                             }
-                                        });
+                                        }
                                     } else {
-                                        item.give_thumbs_count = new_data.count;
-                                        item.is_give_thumbs = new_data.is_active;
+                                        updateThumbsStatus(item, new_data);
                                     }
+                                    break; // 处理完当前item后跳出外层循环
                                 }
-                            });
+                            }
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
