@@ -203,7 +203,9 @@
                 header_padding_left: '',
                 report_type_list: [],
                 direction: 'direction',
-            };
+                video_switch_debounce_timer: null, // 视频切换防抖定时器
+                video_cleanup_timer: null, // 视频清理定时器
+            }
         },
         computed: {
             swiperStyle() {
@@ -237,6 +239,42 @@
         onShow() {
             this.init();
         },
+        beforeDestroy() {
+            // 清理定时器
+            if (this.video_switch_debounce_timer) {
+                clearTimeout(this.video_switch_debounce_timer);
+            }
+            if (this.video_cleanup_timer) {
+                clearTimeout(this.video_cleanup_timer);
+            }
+            
+            // 清理所有视频资源
+            this.cleanup_all_videos();
+            
+            // 移除键盘事件监听器
+            // #ifdef H5
+            if (typeof document !== 'undefined') {
+                document.removeEventListener('keydown', this.handle_keydown);
+            }
+            // #endif
+        },
+
+        // 添加 activated 和 deactivated 钩子处理页面切换
+        activated() {
+            // 页面激活时，如果之前是播放状态则继续播放
+            if (!this.paused && this.current_index >= 0) {
+                setTimeout(() => {
+                    this.play_current_video_safely(this.current_index);
+                }, 100);
+            }
+        },
+
+        deactivated() {
+            // 页面失活时暂停所有视频
+            this.pause_all_videos_except(-1); // -1 表示暂停所有视频
+            this.setData({ paused: true });
+        },
+
         methods: {
             isEmpty,
             init() { 
@@ -376,23 +414,142 @@
                     }
                 });
             },
-            video_play_event(video_contexts, is_first_play = false) { 
-                try {
-                    if (is_first_play) {
-                        video_contexts.play().catch(() => {
-                            this.setData({ 
-                                paused: true,
-                            });
-                        });
-                    } else {
-                        video_contexts.play();
-                    }
-                } catch (error) {
-                    this.setData({ 
-                        paused: true,
+            // 视频滚动处理逻辑（带防抖）
+            handle_swiper_change(event) {
+                const { current } = event.detail;
+                
+                // 防抖处理，避免快速切换时的重复操作
+                if (this.video_switch_debounce_timer) {
+                    clearTimeout(this.video_switch_debounce_timer);
+                }
+                
+                this.video_switch_debounce_timer = setTimeout(() => {
+                    this.process_swiper_change(current);
+                }, 50); // 50ms防抖延迟
+            },
+
+            // 实际的swiper切换处理逻辑
+            process_swiper_change(current) {
+                const previousIndex = this.current_index;
+
+                // 先暂停所有视频，确保不会有后台播放
+                this.pause_all_videos_except(current);
+                
+                // 更新状态
+                this.setData({
+                    current_index: current,
+                    paused: false,
+                    current_video_progress: 0,
+                    current_video_duration: 0,
+                    is_seeking: false,
+                });
+
+                const id = this.display_video_list[current].id;
+                const index = this.video_data_list.findIndex(item => item.id == id);
+                
+                // 数据预加载逻辑
+                if (index < 2 && this.direction == 'prev') {
+                    this.get_last_or_next_data_list(this.video_data_list[0].id, 1, 0);
+                } else if (index < this.video_data_list.length - 3 && this.direction == 'next') {
+                    this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
+                }
+
+                // 更新当前播放视频的ID
+                this.current_video_id = this.display_video_list[current].id;
+
+                // 边界处理逻辑
+                if (this.current_video_index == 0 && this.is_slide_start) {
+                    const list = [
+                        this.get_video_by_index(0),
+                        this.get_video_by_index(1),
+                        this.get_video_by_index(2)
+                    ];
+                    
+                    this.setData({
+                        is_slide_start: false,
+                        current_index: 0,
+                        display_video_list: list,
+                        swiper_key: get_math()
                     });
+                } else if (this.current_video_index == this.video_data_list.length - 1) {
+                    const list = [
+                        this.get_video_by_index(this.current_video_index - 2),
+                        this.get_video_by_index(this.current_video_index - 1),
+                        this.get_video_by_index(this.current_video_index),
+                    ];
+                    this.setData({
+                        current_index: 2,
+                        display_video_list: list,
+                        swiper_key: get_math()
+                    });
+                } else {
+                    this.setData({
+                        is_slide_start: true,
+                        swiper_key: get_math()
+                    });
+                    this.update_display_data();
+                }
+
+                // 更新分享信息
+                this.update_share_info(this.display_video_list[current]);
+
+                // 延迟播放当前视频，确保DOM更新完成
+                setTimeout(() => {
+                    this.play_current_video_safely(current);
+                }, 150);
+            },
+
+            // 批量暂停除指定索引外的所有视频
+            pause_all_videos_except(exceptIndex) {
+                // 暂停 uni.createVideoContext 创建的视频
+                this.create_video_contexts.forEach((context, index) => {
+                    if (index !== exceptIndex && context) {
+                        try {
+                            context.pause();
+                        } catch (error) {
+                            console.warn(`暂停视频 ${index} 失败:`, error);
+                        }
+                    }
+                });
+            },
+
+            // 安全播放当前视频
+            play_current_video_safely(index) {
+                // 优先使用 uni.createVideoContext
+                if (this.create_video_contexts[index]) {
+                    this.video_play_event(this.create_video_contexts[index], false);
+                    return;
                 }
             },
+
+            // 切换播放暂停
+            toggle_play_pause() {
+                const currentIndex = this.current_index;
+                
+                // 检查视频上下文是否存在
+                const videoContext = this.create_video_contexts[currentIndex] || this.video_contexts[currentIndex];
+                if (!videoContext) {
+                    console.warn(`当前索引 ${currentIndex} 无可用视频上下文`);
+                    return;
+                }
+
+                this.setData({ 
+                    paused: !this.paused 
+                });
+
+                if (this.paused) {
+                    // 暂停当前视频
+                    try {
+                        videoContext.pause();
+                    } catch (error) {
+                        console.warn('暂停视频失败:', error);
+                    }
+                } else {
+                    // 播放当前视频
+                    this.video_play_event(videoContext, false);
+                }
+            },
+
             update_share_info(data) {
                 const info = {
                     title: data.title || '',
@@ -406,6 +563,26 @@
                 });
                 // 分享菜单处理
                 app.globalData.page_share_handle(info);
+            },
+            // 安全的视频播放事件处理
+            video_play_event(videoContext, is_first_play = false) {
+                if (!videoContext) {
+                    this.setData({ paused: true });
+                    return;
+                }
+
+                try {
+                    if (is_first_play) {
+                        videoContext.play().catch((error) => {
+                            this.setData({ paused: true });
+                        });
+                    } else {
+                        videoContext.play();
+                    }
+                } catch (error) {
+                    console.error('视频播放异常:', error);
+                    this.setData({ paused: true });
+                }
             },
             // 安全获取视频数据的方法，处理索引超限情况
             get_video_by_index(index) {
@@ -558,78 +735,6 @@
                         direction: status,
                     })
                 }
-            },
-            // 视频滚动处理逻辑
-            handle_swiper_change(event) {
-                const { current } = event.detail;
-
-                const previousIndex = this.current_index;
-                if (this.create_video_contexts[previousIndex]) {
-                    this.create_video_contexts[previousIndex].pause();
-                }
-                this.setData({
-                    current_index: current,
-                    paused: false,
-                    current_video_progress: 0,
-                    current_video_duration: 0,
-                    is_seeking: false,
-                })
-                const id = this.display_video_list[current].id;
-                const index = this.video_data_list.findIndex(item => item.id == id);
-                // 数组中的视频即将结束时，向上滑动时调用上面的数据
-                if (index < 2 && this.direction == 'prev') {
-                    this.get_last_or_next_data_list(this.video_data_list[0].id, 1, 0);
-                } else if (index < this.video_data_list.length - 3 && this.direction == 'next') {
-                    // 数组中的视频即将结束时，向下滑动时调用下面的数据
-                    this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
-                }
-                // 更新当前播放视频的ID
-                this.current_video_id = this.display_video_list[current].id;
-                // 当滑动到边界时更新显示数据
-                if (this.current_video_index == 0 && this.is_slide_start) {
-                    // this.$nextTick(() => {
-                        const list = [
-                            this.get_video_by_index(0),
-                            this.get_video_by_index(1),
-                            this.get_video_by_index(2)
-                        ];
-                        
-                        this.setData({
-                            is_slide_start: false,
-                            current_index: 0,
-                            display_video_list: list,
-                            swiper_key: get_math()
-                        })
-                    // })
-                } else if (this.current_video_index == this.video_data_list.length - 1) {
-                    // this.$nextTick(() => {
-                        const list = [
-                            this.get_video_by_index(this.current_video_index - 2),
-                            this.get_video_by_index(this.current_video_index - 1),
-                            this.get_video_by_index(this.current_video_index),
-                        ];
-                        this.setData({
-                            current_index: 2,
-                            display_video_list: list,
-                            swiper_key: get_math()
-                        })
-                } else {
-                    this.setData({
-                        is_slide_start: true
-                    })
-                    // 预加载当前index之后的视频
-                    this.update_display_data();
-                }
-
-                // 更新分享信息
-                this.update_share_info(this.display_video_list[current]);
-
-                setTimeout(() => {
-                    // 播放当前视频
-                    if (this.create_video_contexts[current]) {
-                        this.video_play_event(this.create_video_contexts[current], false);
-                    }
-                }, 100);
             },
             // 切换播放暂停
             toggle_play_pause() {
@@ -893,7 +998,24 @@
             // 关闭推荐商品
             product_close_event() {
                 console.log('121245');
-            }
+            },
+
+            // 清理所有视频资源
+            cleanup_all_videos() {
+                try {
+                    // 暂停所有视频
+                    this.pause_all_videos_except(-1);
+                    
+                    // 清空视频上下文数组
+                    this.create_video_contexts = [];
+                    this.video_contexts = [];
+                    
+                    console.log('视频资源清理完成');
+                } catch (error) {
+                    console.error('清理视频资源时出错:', error);
+                }
+            },
+
         }
     };
 </script>
