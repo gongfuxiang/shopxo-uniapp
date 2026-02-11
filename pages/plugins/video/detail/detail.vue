@@ -357,23 +357,42 @@
                         if (data.code == 0) {
                             const new_data = data.data;
                             // 第一次的数据
-                            const data_list = JSON.parse(JSON.stringify(this.video_data_list));
-                            if (is_last == 1 && is_next == 1) {
-                                // 上一批数据
-                                if (new_data.last.length > 0) {
-                                    data_list.unshift(...new_data.last);
-                                }
-                                // 下一批数据
-                                if (new_data.next.length > 0) {
-                                    data_list.push(...new_data.next);
-                                }
-                            } else if (is_last == 1 && new_data.last.length > 0) { // 上一页数据
-                                data_list.unshift(...new_data.last);
-                            } else if (is_next == 1 && new_data.next.length > 0) { // 下一页数据
-                                data_list.push(...new_data.next);
-                            }
-                            console.log(data_list);
+                            let data_list = JSON.parse(JSON.stringify(this.video_data_list));
                             
+                            // 创建现有数据的ID映射表，用于快速去重
+                            const existing_ids = new Map();
+                            data_list.forEach(item => {
+                                existing_ids.set(item.id, true);
+                            });
+                            
+                            if (is_last == 1 && is_next == 1) {
+                                // 上一批数据 - 去重处理
+                                if (new_data.last.length > 0) {
+                                    const unique_last = new_data.last.filter(item => !existing_ids.has(item.id));
+                                    if (unique_last.length > 0) {
+                                        data_list.unshift(...unique_last);
+                                        // 更新ID映射表
+                                        unique_last.forEach(item => existing_ids.set(item.id, true));
+                                    }
+                                }
+                                // 下一批数据 - 去重处理
+                                if (new_data.next.length > 0) {
+                                    const unique_next = new_data.next.filter(item => !existing_ids.has(item.id));
+                                    if (unique_next.length > 0) {
+                                        data_list.push(...unique_next);
+                                    }
+                                }
+                            } else if (is_last == 1 && new_data.last.length > 0) { // 上一页数据 - 去重处理
+                                const unique_last = new_data.last.filter(item => !existing_ids.has(item.id));
+                                if (unique_last.length > 0) {
+                                    data_list.unshift(...unique_last);
+                                }
+                            } else if (is_next == 1 && new_data.next.length > 0) { // 下一页数据 - 去重处理
+                                const unique_next = new_data.next.filter(item => !existing_ids.has(item.id));
+                                if (unique_next.length > 0) {
+                                    data_list.push(...unique_next);
+                                }
+                            }
                             const new_index = data_list.findIndex(item => item.id == this.params.id);
                             this.setData({
                                 video_data_list: data_list,
