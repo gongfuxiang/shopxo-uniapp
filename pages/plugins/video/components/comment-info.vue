@@ -17,6 +17,7 @@
                     </view>
                 </view> 
             </view>
+            <view v-if="!isEmpty(propComment.reply_comments_text)" class="comment-reply-text">{{ propComment.reply_comments_text}}</view>
             <view class="comment-text">{{ propComment.content }}</view>
             <view class="comment-images flex-row align-c gap-5">
                 <view v-for="(item, index) in propComment.images" class="comment-image">
@@ -40,6 +41,7 @@
 
 <script>
     const app = getApp();
+    import { isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             propComment: {
@@ -78,9 +80,10 @@
             }
         },
         methods: {
+            isEmpty,
             // 回复
             comment_reply(e) {
-                this.$emit('comment_reply', this.propId, e);
+                this.$emit('comment_reply', this.propComment, e);
             },
             // 点赞
             comment_like(e) {
@@ -208,5 +211,9 @@
     &:first-child:last-child {
         border-radius: 8rpx;
     }
+}
+.comment-reply-text {
+    color: #ccc;
+    padding: 0 10rpx;
 }
 </style>

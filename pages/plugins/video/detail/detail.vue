@@ -96,39 +96,44 @@
                 <!-- 评论内容区域 -->
                 <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                     <view class="comment-scroll">
-                        <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
-                            <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
-                            <!-- 子评论 -->
-                            <view class="sub-comment flex-col jc-c gap-10 mt-10">
-                                <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
-                                    <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
-                                    </view>
-                                </view>
-                                <template v-if="comment_item.comments_count > 0">
-                                    <template v-if="!comment_item.show_sub_comment">
-                                        <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— 展开' + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                    </template>
-                                    <template v-else>
-                                        <template v-if="comment_item.show_sub_comment_loading">
-                                            <loading-component></loading-component>
-                                        </template>
-                                        <view v-else class="sub-comment-more flex-row align-c gap-10">
-                                            <view v-if="comment_item.page && comment_item.page < comment_item.page_total">
-                                                <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                            </view>
-                                            <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                        <template v-if="active_comments.length > 0">
+                            <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
+                                <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                <!-- 子评论 -->
+                                <view class="sub-comment flex-col jc-c gap-10 mt-10">
+                                    <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
+                                        <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
+                                            <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                         </view>
+                                    </view>
+                                    <template v-if="comment_item.comments_count > 0">
+                                        <template v-if="!comment_item.show_sub_comment">
+                                            <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— 展开' + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                        </template>
+                                        <template v-else>
+                                            <template v-if="comment_item.show_sub_comment_loading">
+                                                <loading-component></loading-component>
+                                            </template>
+                                            <view v-else class="sub-comment-more flex-row align-c gap-10">
+                                                <view v-if="comment_item.page && comment_item.page < comment_item.page_total">
+                                                    <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                </view>
+                                                <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                            </view>
+                                        </template>
                                     </template>
-                                </template>
+                                </view>
                             </view>
-                        </view>
-                        <template v-if="comment_item_loading">
-                            <loading-component></loading-component>
+                            <template v-if="comment_item_loading">
+                                <loading-component></loading-component>
+                            </template>
+                            <template v-else>
+                                <!-- 结尾 -->
+                                <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                            </template>
                         </template>
                         <template v-else>
-                            <!-- 结尾 -->
-                            <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                            <component-no-data propMsg="暂无评论"></component-no-data>
                         </template>
                     </view>
                 </scroll-view>
@@ -136,7 +141,6 @@
                     <view class="comment-input-content flex-col jc-c">
                         <view class="flex-row align-c gap-10 wh-auto ht-auto">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :placeholder="input_placeholder" @input="comment_input_event" @confirm="send_comment" />
-                            <view style="font-size:32rpx;color: #999;" data-type="@" @tap="comment_input_change">@</view>
                             <view data-type="image" @tap="comment_input_change">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
                             </view>
@@ -521,7 +525,7 @@
                     current_index: current,
                     paused: false,
                     current_video_progress: 0,
-                    current_video_duration: 0,
+                    current_video_duration: 1,
                     is_seeking: false,
                     current_video_id: id, // 更新当前播放视频的ID
                 });
@@ -717,9 +721,7 @@
             },
             comment_input_change(e) {
                 const { type } = e.currentTarget.dataset;
-                if (type == '@') {
-                    this.comment_input_value = '@';
-                } else if (type == 'image') {
+                if (type == 'image') {
                     var self = this;
                     uni.chooseImage({
                         count: self.propMaxNum,
@@ -954,52 +956,70 @@
                 }
             },
 
-            send_comment(e) {
-                let comment_text = '';
-                if (e.type == 'confirm') {
-                    comment_text = e.detail.value;
-                }
+            send_comment() {
+                let comment_text = this.comment_input_value;
                 
                 if (!comment_text.trim()) return;
-                // 创建新的评论对象
-                const newComment = {
-                    id: `c${Date.now()}`,
-                    userHead: 'http://8.146.211.120:8080/upload/avatar/d5537aa243ef6a74a50bf4ffd4ca6876.jpg',
-                    userNick: '我',
-                    reply: '',
-                    images: this.form_images_list,
-                    content: comment_text,
-                    time: new Date().toLocaleString()
-                };
-                const new_comments = JSON.parse(JSON.stringify(this.active_comments));
-                if (!isEmpty(this.comment_id)) {
-                    new_comments.forEach(item => {
-                        if (item.id == this.comment_id) {
-                            // 如果回复的是子评论
-                            if (!isEmpty(this.sub_comment_id)) {
-                                const new_data = item.sub_comments.find(item => item.id == this.sub_comment_id);
-                                if (new_data) {
-                                    newComment.reply = new_data.userNick;
-                                }
+
+                // video_id 视频id video_comments_id 父级评论id id 当前评论id
+                let new_video_comments_id = 0;
+                let reply_comments_id = 0
+                if (!isEmpty(this.comments_data)) {
+                    const { video_comments_id, id } = this.comments_data; 
+                    new_video_comments_id = video_comments_id == 0 ? id : video_comments_id;
+                    reply_comments_id = video_comments_id == 0 ? 0 : id;
+                } 
+                uni.request({
+                    url: app.globalData.get_request_url("comments", "index", "video"),
+                    method: 'POST',
+                    data:  {
+                        video_id: this.current_video_id,
+                        video_comments_id: new_video_comments_id, // 如果父级评论id为0说明没有父级id，所以取当前id
+                        reply_comments_id: reply_comments_id, // 如果父级评论id为0说明没有父级id，所以回复id为0
+                        content: comment_text,
+                        images: this.form_images_list.length > 0 ? this.form_images_list[0].url : '',
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        const data = res.data;
+                        if (data.code == 0) {
+                            console.log(data.data);
+                            const new_data = data.data;
+                            // 没有回复时的评论
+                            if (new_video_comments_id == 0) {
+                                this.active_comments.unshift({
+                                    ...new_data,
+                                    show_sub_comment: false,
+                                    show_sub_comment_loading: false,
+                                    page: 0,
+                                    sub_comments: [],
+                                })
+                            } else {
+                                this.active_comments.forEach(item => {
+                                    console.log(item);
+                                    console.log(item.id == new_video_comments_id);
+                                    
+                                    if (item.id == new_video_comments_id) {
+                                        item.sub_comments.unshift(new_data);
+                                        item.comments_count++;
+                                    }
+                                })
                             }
-                            item.sub_comments.unshift(newComment);
+                            // 清空输入框, 更新数据内容
+                            this.setData({
+                                form_images_list: [],
+                                comment_input_value: '',
+                                comments_data: {},
+                                input_placeholder: '请输入您的精彩评论',
+                            });
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
                         }
-                    });
-                } else {
-                    // 如果是新评论的话，需要有子评论的数组
-                    newComment.sub_comments = [];
-                    // 添加数据
-                    new_comments.unshift(newComment);
-                    new_comments.count++;
-                }
-                // 清空输入框, 更新数据内容
-                this.setData({
-                    form_images_list: [],
-                    comment_input_value: '',
-                    active_comments: new_comments,
-                    comment_id: '',
-                    sub_comment_id: '',
-                    input_placeholder: '请输入您的精彩评论',
+                    }
                 });
             },
             // 展开子评论
@@ -1169,13 +1189,11 @@
                 this.is_seeking = true;
             },
             // 主评论回复
-            comment_reply(id) {
-                const data = this.active_comments.find(item => item.id == id);
-                if (!isEmpty(data)) {
+            comment_reply(comments) {
+                if (!isEmpty(comments)) {
                     this.setData({ 
-                        input_placeholder: `@${data.user.user_name_view}`,
-                        comment_id: id,
-                        sub_comment_id: '',
+                        input_placeholder: `@${comments.user.user_name_view}`,
+                        comments_data: comments,
                     });
                 }
             },
@@ -1264,7 +1282,6 @@
             
             // 关闭下拉菜单
             handle_dropdown_item_click(comment_id, obj) {
-                debugger;
                 if (this.active_dropdown_id == comment_id) {
                     this.active_dropdown_id = null;
                 }
