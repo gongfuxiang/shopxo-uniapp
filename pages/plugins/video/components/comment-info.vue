@@ -10,7 +10,7 @@
                         <iconfont name="icon-ellipsis" color="#999" size="28rpx" />
                     </view>
                     <!-- 下拉菜单 -->
-                    <view v-if="dropdownVisible" class="dropdown-menu" @tap.stop>
+                    <view v-if="drop_down_visible" class="dropdown-menu" @tap.stop>
                         <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item"  :class="{ 'dropdown-item-divided': item.divided }" :data-value="item" @tap="handle_dropdown_item_click">
                             <text>{{ item.label }}</text>
                         </view>
@@ -58,7 +58,7 @@
         },
         data() {
             return {
-                dropdownVisible: false,
+                drop_down_visible: false,
                 // 下拉菜单选项数据
                 dropdownOptions: [
                     { label: '删除', type: 'delete' },
@@ -84,10 +84,10 @@
             },
             // 切换下拉菜单
             toggle_dropdown() {
-                this.dropdownVisible = !this.dropdownVisible;
+                this.drop_down_visible = !this.drop_down_visible;
                 
                 // 管理全局点击监听器
-                if (this.dropdownVisible) {
+                if (this.drop_down_visible) {
                     // 延时添加，确保元素已渲染
                     setTimeout(() => {
                         uni.$on('global-click', this.handle_global_click);
@@ -98,8 +98,8 @@
             },
             // 处理全局点击
             handle_global_click() {
-                if (this.dropdownVisible) {
-                    this.dropdownVisible = false;
+                if (this.drop_down_visible) {
+                    this.drop_down_visible = false;
                     uni.$off('global-click', this.handle_global_click);
                 }
             },
@@ -108,7 +108,7 @@
                 const item = e.currentTarget.dataset.value || {};
                 console.log('点击:', item.label);
                 uni.showToast({ title: item.label, icon: 'none' });
-                this.dropdownVisible = false;
+                this.drop_down_visible = false;
                 uni.$off('global-click', this.handle_global_click);
                 this.$emit('dropdown-item-click', { command: item.command, label: item.label });
             }
