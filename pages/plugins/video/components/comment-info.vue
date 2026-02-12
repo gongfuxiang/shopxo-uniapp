@@ -4,9 +4,18 @@
         <view class="comment-info flex-col jc-c" @tap="comment_reply">
             <view class="flex-row jc-sb gap-10">
                 <view class="comment-user">{{ propComment.user.user_name_view }}</view>
-                <view @tap="option_comment">
-                    <iconfont name="icon-ellipsis" color="#999" size="28rpx" />
-                </view>
+                <view class="pr">
+                    <!-- 直接实现下拉菜单 -->
+                    <view class="comment-option" @tap.stop="toggle_dropdown">
+                        <iconfont name="icon-ellipsis" color="#999" size="28rpx" />
+                    </view>
+                    <!-- 下拉菜单 -->
+                    <view v-if="dropdownVisible" class="dropdown-menu" @tap.stop>
+                        <view v-for="(item, index) in dropdownOptions" :key="index" class="dropdown-item"  :class="{ 'dropdown-item-divided': item.divided }" :data-value="item"  @tap="handle_dropdown_item_click(item)">
+                            <text>{{ item.label }}</text>
+                        </view>
+                    </view>
+                </view> 
             </view>
             <view class="comment-text">{{ propComment.content }}</view>
             <view class="comment-images flex-row align-c gap-5">
@@ -47,6 +56,16 @@
                 default: '回复'
             }
         },
+        data() {
+            return {
+                dropdownVisible: false,
+                // 下拉菜单选项数据
+                dropdownOptions: [
+                    { label: '删除', command: 'delete' },
+                    { label: '举报', command: 'report' }
+                ]
+            };
+        },
         methods: {
             // 回复
             comment_reply(e) {
@@ -63,6 +82,42 @@
                     urls: this.propComment.images.map(item => item.url),
                 });
             },
+            // 切换下拉菜单
+            toggle_dropdown() {
+                this.dropdownVisible = !this.dropdownVisible;
+                
+                // 管理全局点击监听器
+                if (this.dropdownVisible) {
+                    // 延时添加，确保元素已渲染
+                    setTimeout(() => {
+                        uni.$on('global-click', this.handle_global_click);
+                    }, 100);
+                } else {
+                    uni.$off('global-click', this.handle_global_click);
+                }
+            },
+            // 处理全局点击
+            handle_global_click() {
+                if (this.dropdownVisible) {
+                    this.dropdownVisible = false;
+                    uni.$off('global-click', this.handle_global_click);
+                }
+            },
+            // 处理下拉菜单项点击
+            handle_dropdown_item_click(item) {
+                console.log('点击:', item.label);
+                uni.showToast({ title: item.label, icon: 'none' });
+                this.dropdownVisible = false;
+                uni.$off('global-click', this.handle_global_click);
+                this.$emit('dropdown-item-click', { command: item.command, label: item.label });
+            }
+        },
+        mounted() {
+            console.log('CommentInfo 组件已挂载');
+        },
+        beforeDestroy() {
+            // 组件销毁前移除全局监听器
+            uni.$off('global-click', this.handle_global_click);
         }
     }   
 </script>
@@ -108,5 +163,53 @@
 .comment-image {
     width: 50rpx;
     height: 50rpx;
+}
+
+/* 下拉菜单样式 */
+.dropdown-menu {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 8rpx;
+    box-shadow: 0 6rpx 16rpx 0 rgba(0, 0, 0, 0.15);
+    border: 1rpx solid #e5e5e5;
+    min-width: 160rpx;
+    z-index: 9999;
+    top: 100%;
+    right: 0;
+    margin-top: 8rpx;
+    padding: 10rpx 0;
+}
+
+.dropdown-item {
+    padding: 20rpx 30rpx;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    
+    &:not(.dropdown-item-divided):active {
+        background-color: #f5f5f5;
+    }
+    
+    &.dropdown-item-divided:not(:first-child)::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 30rpx;
+        right: 30rpx;
+        height: 1rpx;
+        background-color: #f0f0f0;
+    }
+    
+    &:first-child {
+        border-radius: 8rpx 8rpx 0 0;
+    }
+    
+    &:last-child {
+        border-radius: 0 0 8rpx 8rpx;
+    }
+    
+    &:first-child:last-child {
+        border-radius: 8rpx;
+    }
 }
 </style>
