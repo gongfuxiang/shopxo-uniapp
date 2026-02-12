@@ -19,11 +19,11 @@
             </view>
             <view v-if="!isEmpty(propComment.reply_comments_text)" class="comment-reply-text">{{ propComment.reply_comments_text}}</view>
             <view class="comment-text">{{ propComment.content }}</view>
-            <view class="comment-images flex-row align-c gap-5">
-                <view v-for="(item, index) in propComment.images" class="comment-image">
-                    <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
-                </view>
-            </view>
+            <!-- <view class="comment-images flex-row align-c gap-5"> -->
+            <template v-if="!isEmpty(propComment.images)">
+                <image :src="propComment.images" :data-image="propComment.images" @tap="upload_show_event" mode="aspectFill" class="comment-images"></image>
+            </template>
+            <!-- </view> -->
             <view class="comment-operation flex-row align-c jc-sb">
                 <view class="comment-operation-left flex-row align-c gap-10">
                     <view class="comment-time">{{ propComment.add_time }}</view>
@@ -97,9 +97,10 @@
             },
             // 上传图片预览
             upload_show_event(e) {
+                const image = e?.currentTarget?.dataset?.image || '';
                 uni.previewImage({
-                    current: this.propComment.images[e.currentTarget.dataset.index].url,
-                    urls: this.propComment.images.map(item => item.url),
+                    current: 0,
+                    urls: [image],
                 });
             },
             // 切换下拉菜单
@@ -215,5 +216,12 @@
 .comment-reply-text {
     color: #ccc;
     padding: 0 10rpx;
+}
+.comment-operation {
+    margin-top: 10rpx;
+}
+.comment-images {
+    width: 80rpx;
+    height: 80rpx;
 }
 </style>
