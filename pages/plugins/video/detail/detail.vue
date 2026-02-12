@@ -97,12 +97,12 @@
                 <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                     <view class="comment-scroll">
                         <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
-                            <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
+                            <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id === comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle-dropdown="handle_toggle_dropdown" @close-dropdown="handle_close_dropdown"></commentInfoComponent>
                             <!-- 子评论 -->
                             <view class="sub-comment flex-col jc-c gap-10 mt-10">
                                 <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
                                     <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like"></commentInfoComponent>
+                                        <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id === sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle-dropdown="handle_toggle_dropdown" @close-dropdown="handle_close_dropdown"></commentInfoComponent>
                                     </view>
                                 </view>
                                 <template v-if="comment_item.comments_count > 0">
@@ -237,6 +237,8 @@
                 },
                 video_switch_debounce_timer: null, // 视频切换防抖定时器
                 video_cleanup_timer: null, // 视频清理定时器
+                // 添加下拉菜单状态管理
+                active_dropdown_id: null, // 当前显示下拉菜单的评论ID
             }
         },
         computed: {
@@ -1218,7 +1220,62 @@
                     console.error('清理视频资源时出错:', error);
                 }
             },
-
+            // 新增方法：处理下拉菜单切换
+            handle_toggle_dropdown(comment_id) {
+                // 如果点击的是同一个组件，则切换状态；否则关闭其他组件并打开当前组件
+                if (this.active_dropdown_id === comment_id) {
+                    this.active_dropdown_id = null;
+                } else {
+                    this.active_dropdown_id = comment_id;
+                }
+            },
+            
+            // 新增方法：关闭下拉菜单
+            handle_close_dropdown(comment_id) {
+                if (this.active_dropdown_id === comment_id) {
+                    this.active_dropdown_id = null;
+                }
+            },
+            
+            // 新增方法：处理全局点击事件
+            handle_global_click(e) {
+                // 检查点击目标是否在下拉菜单相关元素内
+                const target = e.target || e.srcElement;
+                
+                // 查找点击元素是否在comment-option或dropdown-menu内
+                let isInDropdown = false;
+                let currentElement = target;
+                
+                while (currentElement && currentElement !== document) {
+                    // 检查是否点击了下拉菜单触发器或菜单本身
+                    if (currentElement.classList && 
+                        (currentElement.classList.contains('comment-option') || 
+                         currentElement.classList.contains('dropdown-menu') ||
+                         currentElement.closest('.comment-option') ||
+                         currentElement.closest('.dropdown-menu'))) {
+                        isInDropdown = true;
+                        break;
+                    }
+                    currentElement = currentElement.parentNode;
+                }
+                
+                // 如果点击的不是下拉菜单相关元素，则关闭所有下拉菜单
+                if (!isInDropdown && this.active_dropdown_id !== null) {
+                    this.active_dropdown_id = null;
+                }
+            },
+        },
+        mounted() {
+            // 添加全局点击事件监听
+            document.addEventListener('click', this.handle_global_click);
+            
+            // 添加触摸事件监听（移动端兼容）
+            document.addEventListener('touchstart', this.handle_global_click);
+        },
+        beforeDestroy() {
+            // 移除全局事件监听器
+            document.removeEventListener('click', this.handle_global_click);
+            document.removeEventListener('touchstart', this.handle_global_click);
         }
     };
 </script>

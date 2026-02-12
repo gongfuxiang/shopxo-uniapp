@@ -54,17 +54,27 @@
             propReplyContent: {
                 type: String,
                 default: '回复'
+            },
+            // 新增props：控制下拉菜单显示状态
+            propDropDownVisible: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
             return {
-                drop_down_visible: false,
                 // 下拉菜单选项数据
                 dropdownOptions: [
                     { label: '删除', type: 'delete' },
                     { label: '举报', type: 'report' }
                 ]
             };
+        },
+        computed: {
+            // 使用computed属性映射props状态
+            drop_down_visible() {
+                return this.propDropDownVisible;
+            }
         },
         methods: {
             // 回复
@@ -84,41 +94,21 @@
             },
             // 切换下拉菜单
             toggle_dropdown() {
-                this.drop_down_visible = !this.drop_down_visible;
-                
-                // 管理全局点击监听器
-                if (this.drop_down_visible) {
-                    // 延时添加，确保元素已渲染
-                    setTimeout(() => {
-                        uni.$on('global-click', this.handle_global_click);
-                    }, 100);
-                } else {
-                    uni.$off('global-click', this.handle_global_click);
-                }
-            },
-            // 处理全局点击
-            handle_global_click() {
-                if (this.drop_down_visible) {
-                    this.drop_down_visible = false;
-                    uni.$off('global-click', this.handle_global_click);
-                }
+                // 通知父组件切换当前组件的下拉菜单状态
+                this.$emit('toggle-dropdown', this.propId);
             },
             // 处理下拉菜单项点击
             handle_dropdown_item_click(e) {
                 const item = e.currentTarget.dataset.value || {};
                 console.log('点击:', item.label);
                 uni.showToast({ title: item.label, icon: 'none' });
-                this.drop_down_visible = false;
-                uni.$off('global-click', this.handle_global_click);
+                // 通知父组件关闭下拉菜单
+                this.$emit('close-dropdown', this.propId);
                 this.$emit('dropdown-item-click', { command: item.command, label: item.label });
             }
         },
         mounted() {
             console.log('CommentInfo 组件已挂载');
-        },
-        beforeDestroy() {
-            // 组件销毁前移除全局监听器
-            uni.$off('global-click', this.handle_global_click);
         }
     }   
 </script>
