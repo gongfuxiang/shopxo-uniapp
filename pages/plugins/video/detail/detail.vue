@@ -1179,14 +1179,8 @@
                 }
             },
             // 评论点赞
-            comment_like(id, e) {
-                if (!app.globalData.is_single_page_check()) {
-                    return false;
-                }
-                var user = app.globalData.get_user_info(this, 'comment_like', e);
-                if (user != false) {
-                    this.set_givethumbs_num(this.current_video_id, id);
-                }
+            comment_like(id) {
+                this.set_givethumbs_num(this.current_video_id, id);
             },
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
@@ -1275,38 +1269,43 @@
                     this.active_dropdown_id = null;
                 }
                 this.popup_report_status = true;
-                debugger;
-                // // 处理不同操作
-                // if (data.action == 'delete') {
-                //     // 确认删除
-                //     uni.showModal({
-                //         title: '确认删除',
-                //         content: '确定删除此评论吗？',
-                //         success: (res) => {
-                //             if (res.confirm) {
-                //                 // 调用删除接口
-                //                 this.delete_comment(id);
-                //             }
-                //         }
-                //     });
-                // } else if (data.action == 'report') {
-                //     // 举报评论
-                // }
+                // 处理不同操作
+                if (data.action == 'delete') {
+                    // 确认删除
+                    uni.showModal({
+                        title: '确认删除',
+                        content: '确定删除此评论吗？',
+                        success: (res) => {
+                            if (res.confirm) {
+                                // 调用删除接口
+                                this.delete_comment(id);
+                            }
+                        }
+                    });
+                } else if (data.action == 'report') {
+                    // 举报评论
+                }
             },
             // 删除评论
             delete_comment(comment_id) {
-                // 调用删除接口
-                this.$http.post(this.delete_comment_url, {
-                    comment_id: comment_id
-                }).then((res) => {
-                    if (res.data.code == 200) {
-                        // 删除成功，刷新评论列表
-                        this.get_comment_list();
-                    } else {
-                        uni.showToast({
-                            title: res.data.msg || '删除失败',
-                            icon: 'none'
-                        });
+                uni.request({
+                    url: app.globalData.get_request_url("delete", "index", "video"),
+                    method: 'POST',
+                    data:  {
+                        ids: comment_id,
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        const data = res.data;
+                        if (data.code == 0) {
+                            
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
+                        }
                     }
                 });
             },

@@ -39,6 +39,7 @@
 </template>
 
 <script>
+    const app = getApp();
     export default {
         props: {
             propComment: {
@@ -83,7 +84,13 @@
             },
             // 点赞
             comment_like(e) {
-                this.$emit('comment_like', this.propId, e);
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info(this, 'comment_like', e);
+                if (user != false) {
+                    this.$emit('comment_like', this.propId, e);
+                }
             },
             // 上传图片预览
             upload_show_event(e) {
@@ -99,12 +106,14 @@
             },
             // 处理下拉菜单项点击
             handle_dropdown_item_click(e) {
-                const item = e.currentTarget.dataset.value || {};
-                console.log('点击:', item.label);
-                // uni.showToast({ title: item.label, icon: 'none' });
-                // 通知父组件关闭下拉菜单
-                // this.$emit('close-dropdown', this.propId);
-                this.$emit('dropdown_item_click', this.propId, item);
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info(this, 'comment_like', e);
+                if (user != false) {
+                    const item = e.currentTarget.dataset.value || {};
+                    this.$emit('dropdown_item_click', this.propId, item);
+                }
             }
         }
     }   
