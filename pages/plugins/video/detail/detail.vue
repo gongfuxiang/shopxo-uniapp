@@ -154,15 +154,15 @@
 
         <!-- 举报弹窗 -->
         <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_close_event">
-            <view class="new-report-content">
+            <view class="report-content">
                 <!-- 顶部按钮区域 -->
-                <view class="new-report-header flex-row align-c jc-sb">
-                    <view class="new-report-btn cancel-btn" @tap="popup_close_event">取消</view>
-                    <view class="new-report-title flex-1">举报原因</view>
-                    <view class="new-report-btn submit-btn" @tap="submit_report">确定</view>
+                <view class="report-header flex-row align-c jc-sb">
+                    <view class="report-btn cr-6" @tap="popup_close_event">取消</view>
+                    <view class="report-title flex-1">举报原因</view>
+                    <view class="report-btn cr-blue" @tap="submit_report">确定</view>
                 </view>
                 <!-- 主要内容区域 -->
-                <view class="new-report-body">
+                <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view class="report-section">
                         <view class="report-label">举报原因<text class="ml-10">*</text></view>
@@ -1263,12 +1263,13 @@
             },
             
             // 关闭下拉菜单
-            handle_dropdown_item_click(comment_id, data) {
+            handle_dropdown_item_click(comment_id, obj) {
+                debugger;
                 if (this.active_dropdown_id == comment_id) {
                     this.active_dropdown_id = null;
                 }
                 // 处理不同操作
-                if (data.action == 'delete') {
+                if (obj.type == 'delete') {
                     // 确认删除
                     uni.showModal({
                         title: '确认删除',
@@ -1276,11 +1277,11 @@
                         success: (res) => {
                             if (res.confirm) {
                                 // 调用删除接口
-                                this.delete_comment(id);
+                                this.delete_comment(comment_id);
                             }
                         }
                     });
-                } else if (data.action == 'report') {
+                } else if (obj.type == 'report') {
                     // 举报评论
                     this.popup_report_status = true;
                     this.report_comment_id = comment_id;
@@ -1299,9 +1300,9 @@
                         const data = res.data;
                         if (data.code == 0) {
                             // 删除评论数据
-                            delete_comment_handle(comment_id);
+                            this.delete_comment_handle(comment_id);
                             // 显示删除成功提示
-                            app.globalData.showToast(this.$t('common.delete_success'));
+                            app.globalData.showToast(this.$t('common.del_success'));
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -1430,11 +1431,12 @@
                 // 获取选中的举报原因和具体类型
                 const main_reason = this.report_type_list[this.current_main_index];
                 const sub_reason = main_reason.data[this.current_sub_index];
+                // 调用举报接口
                 uni.request({
                     url: app.globalData.get_request_url("report", "index", "video"),
                     method: 'POST',
                     data:  {
-                        id: comment_id,
+                        id: this.report_comment_id,
                         reason: main_reason.name,
                         type: sub_reason
                     },
@@ -1455,11 +1457,6 @@
                         }
                     }
                 });
-                // 可以在这里调用API提交举报
-                // this.submitReportToServer({
-                //     main_reason: main_reason.name,
-                //     sub_reason: sub_reason
-                // });
             },
             mounted() {
                 // 添加全局点击事件监听
@@ -1771,45 +1768,32 @@
     }
 
     /* 新的举报弹窗样式 */
-    .new-report-content {
+    .report-content {
         width: 100%;
         max-width: 750rpx;
         background-color: #fff;
         border-radius: 20rpx;
     }
 
-    .new-report-header {
+    .report-header {
         padding: 30rpx 40rpx;
-        border-bottom: 1rpx solid #eee;
-        background-color: #f8f8f8;
+        border-bottom: 1rpx solid #ddd;
+        background-color: #fff;
     }
 
-    .new-report-btn {
+    .report-btn {
         font-size: 32rpx;
-        padding: 12rpx 30rpx;
-        border-radius: 6rpx;
         color: #333;
-        font-weight: 500;
     }
 
-    .cancel-btn {
-        background-color: #f5f5f5;
-        border: 1rpx solid #ddd;
-    }
-
-    .submit-btn {
-        background-color: #e74c3c;
-        color: #fff;
-        border: 1rpx solid #d32f2f;
-    }
-
-    .new-report-title {
+    .report-title {
         font-size: 36rpx;
         font-weight: bold;
+        text-align: center;
         color: #333;
     }
 
-    .new-report-body {
+    .report-body {
         padding: 30rpx 40rpx;
     }
 
