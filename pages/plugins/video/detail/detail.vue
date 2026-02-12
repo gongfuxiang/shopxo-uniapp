@@ -153,25 +153,24 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="close_new_report_popup">
+        <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_close_event">
             <view class="new-report-content">
                 <!-- 顶部按钮区域 -->
-                <view class="new-report-header flex-row align-c justify-sb">
-                    <view class="new-report-btn cancel-btn" @tap="close_new_report_popup">取消</view>
-                    <view class="new-report-title">举报原因</view>
-                    <view class="new-report-btn submit-btn" @tap="submit_new_report">确定</view>
+                <view class="new-report-header flex-row align-c jc-sb">
+                    <view class="new-report-btn cancel-btn" @tap="popup_close_event">取消</view>
+                    <view class="new-report-title flex-1">举报原因</view>
+                    <view class="new-report-btn submit-btn" @tap="submit_report">确定</view>
                 </view>
-                
                 <!-- 主要内容区域 -->
                 <view class="new-report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view class="report-section">
-                        <view class="report-label">举报原因<text>*</text></view>
-                        <view class="radio-group-flex">
-                            <view v-for="(mainItem, mainIndex) in report_type_list" :key="mainIndex" class="radio-item flex-row align-c" @tap="selectMainReason(mainIndex)">
+                        <view class="report-label">举报原因<text class="ml-10">*</text></view>
+                        <view class="flex-row align-c gap-10 flex-wrap">
+                            <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" :data-index="main_index" @tap="select_main_reason">
                                 <view class="flex-row align-c">
-                                    <radio :value="mainItem" :checked="current_main_index === mainIndex" class="radio"/>
-                                    <view class="ml-10">{{mainItem.name}}</view>
+                                    <radio :value="main_index.toString()" :checked="current_main_index === main_index" style="transform:scale(0.7)" />
+                                    <view class="flex-row align-c">{{mainItem.name}}</view>
                                 </view>
                             </view>
                         </view>
@@ -179,21 +178,12 @@
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
                     <view class="report-section mt-20" v-if="current_main_index >= 0">
-                        <view class="report-label">请选择具体的类型<text>*</text></view>
-                        <view class="radio-group-flex">
-                            <view 
-                                v-for="(subItem, subIndex) in report_type_list[current_main_index].data" 
-                                :key="subIndex"
-                                class="radio-item flex-row align-c"
-                                @tap="selectSubReason(subIndex)"
-                            >
+                        <view class="report-label">请选择具体的类型<text class="ml-10">*</text></view>
+                        <view class="flex-row align-c gap-10 flex-wrap">
+                            <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" :data-index="sub_index" @tap="select_sub_reason">
                                 <view class="flex-row align-c">
-                                    <radio 
-                                        :value="subIndex.toString()" 
-                                        :checked="current_sub_index === subIndex" 
-                                        class="radio"
-                                    />
-                                    <view class="ml-10">{{subItem}}</view>
+                                    <radio :value="sub_index.toString()" :checked="current_sub_index === sub_index" style="transform:scale(0.7)" />
+                                    <view class="flex-row align-c">{{subItem}}</view>
                                 </view>
                             </view>
                         </view>
@@ -286,10 +276,8 @@
                 header_padding_left: '',
                 report_type_list: [], // 举报类型列表
                 popup_report_status: false, // 举报弹窗状态
-                current_main_index: 0, // 默认选中第一个举报原因
-                current_sub_index: 0, // 默认选中第一个具体类型
-                selected_main_reason: '',
-                selected_sub_reason: ''
+                current_main_index: 0, // 默认不选中任何举报原因
+                current_sub_index: 0, // 默认不选中任何具体类型
             };
         },
         computed: {
@@ -1351,95 +1339,90 @@
             },
             // 关闭举报弹窗
             popup_close_event() {
-                this.popup_report_status = false;
+                this.setData({
+                    popup_report_status: false,
+                    current_main_index: 0,
+                    current_sub_index: 0,
+                });
             },
             // 新的举报弹窗相关方法
-            onMainReasonChange(e) {
+            onMain_reasonChange(e) {
                 const value = parseInt(e.detail.value);
                 this.setData({
                     current_main_index: value,
-                    selected_main_reason: this.report_type_list[value].name,
                     current_sub_index: -1,
-                    selected_sub_reason: ''
                 });
             },
             
-            onSubReasonChange(e) {
+            onSub_reasonChange(e) {
                 const value = parseInt(e.detail.value);
                 if (this.current_main_index >= 0) {
                     this.setData({
                         current_sub_index: value,
-                        selected_sub_reason: this.report_type_list[this.current_main_index].data[value]
                     });
                 }
             },
             
-            // 新增方法：直接选择主原因（用于一行显示的点击）
-            selectMainReason(index) {
-                if (index !== this.current_main_index) {
+            // 直接选择主原因（用于一行显示的点击）
+            select_main_reason(e) {
+                const index = e?.currentTarget?.dataset?.index || 0;
+                const main_index = parseInt(index);
+                if (main_index !== this.current_main_index) {
                     this.setData({
-                        current_main_index: index,
-                        selected_main_reason: this.report_type_list[index].name,
+                        current_main_index: main_index,
                         current_sub_index: 0, // 默认选中第一个子类型
-                        selected_sub_reason: this.report_type_list[index].data[0]
                     });
                 }
             },
             
             // 新增方法：直接选择子类型（用于一行显示的点击）
-            selectSubReason(index) {
-                if (index !== this.current_sub_index) {
+            select_sub_reason(e) {
+                const index = e?.currentTarget?.dataset?.index || 0;
+                const sub_index = parseInt(index);
+                if (sub_index !== this.current_sub_index) {
                     this.setData({
-                        current_sub_index: index,
-                        selected_sub_reason: this.report_type_list[this.current_main_index].data[index]
+                        current_sub_index: sub_index,
                     });
                 }
             },
-            
-            close_report_popup() {
-                this.setData({
-                    popup_report_status: false,
-                    current_main_index: -1,
-                    current_sub_index: -1,
-                    selected_main_reason: '',
-                    selected_sub_reason: ''
-                });
-            },
-            
-            submit_new_report() {
-                if (this.current_main_index < 0) {
-                    uni.showToast({ title: '请选择举报原因', icon: 'none' });
-                    return;
-                }
-                if (this.current_sub_index < 0) {
-                    uni.showToast({ title: '请选择具体类型', icon: 'none' });
-                    return;
-                }
+            submit_report() {
+                // 获取选中的举报原因和具体类型
+                const main_reason = this.report_type_list[this.current_main_index];
+                const sub_reason = main_reason.data[this.current_sub_index];
                 
                 // 这里可以处理提交逻辑
                 console.log('举报提交:', {
-                    main_reason: this.selected_main_reason,
-                    sub_reason: this.selected_sub_reason
+                    main_reason: main_reason.name,
+                    sub_reason: sub_reason
+                });
+                
+                // 显示提交成功的提示
+                uni.showToast({
+                    title: '举报提交成功',
+                    icon: 'success'
                 });
                 
                 // 关闭弹窗
-                this.close_new_report_popup();
+                this.close_report_popup();
                 
                 // 可以在这里调用API提交举报
-                // this.submitReportToServer();
+                // this.submitReportToServer({
+                //     main_reason: main_reason.name,
+                //     sub_reason: sub_reason
+                // });
             },
-        },
-        mounted() {
-            // 添加全局点击事件监听
-            document.addEventListener('click', this.handle_global_click);
-            
-            // 添加触摸事件监听（移动端兼容）
-            document.addEventListener('touchstart', this.handle_global_click);
-        },
-        beforeDestroy() {
-            // 移除全局事件监听器
-            document.removeEventListener('click', this.handle_global_click);
-            document.removeEventListener('touchstart', this.handle_global_click);
+            mounted() {
+                // 添加全局点击事件监听
+                document.addEventListener('click', this.handle_global_click);
+                
+                // 添加触摸事件监听（移动端兼容）
+                document.addEventListener('touchstart', this.handle_global_click);
+            },
+            beforeDestroy() {
+                // 移除全局事件监听器
+                document.removeEventListener('click', this.handle_global_click);
+                document.removeEventListener('touchstart', this.handle_global_click);
+            }
         }
     };
 </script>
@@ -1451,7 +1434,6 @@
     .ml-10 {
         margin-left: 20rpx;
     }
-
     .content,
     .swiper-container {
         width: 100%;
@@ -1797,49 +1779,6 @@
         font-size: 30rpx;
         vertical-align: middle;
     }
-
-    .radio-group-flex {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20rpx;
-    }
-
-    .radio-item {
-        flex: 0 0 calc(33.333% - 20rpx);
-        min-width: 200rpx;
-    }
-
-    .radio {
-        width: 36rpx;
-        height: 36rpx;
-        margin-right: 20rpx;
-    }
-
-    .ml-10 {
-        margin-left: 10rpx;
-    }
-
-    .mt-20 {
-        margin-top: 20rpx;
-    }
-
-    .flex-row {
-        display: flex;
-        flex-direction: row;
-    }
-
-    .flex-col {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .align-c {
-        align-items: center;
-    }
-
-    .justify-sb {
-        justify-content: space-between;
-    }
     // 搜索
     .header-top {
         padding-left: 12px;
@@ -1858,4 +1797,3 @@
         }
     }
 </style>
-
