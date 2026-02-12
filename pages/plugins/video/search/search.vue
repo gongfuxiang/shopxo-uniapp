@@ -1,52 +1,68 @@
 <template>
 	<view class="wh-auto ht-auto pr video-container">
-		<scroll-view scroll-y :show-scrollbar="false" class="ht" @scrolltolower="on_scroll_lower_event" @scrolltoupper="on_scroll_upper_event" lower-threshold="60" scroll-with-animation="true">
+		<scroll-view scroll-y :show-scrollbar="false" class="ht" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation="true">
 			<view class="wh-auto ht-auto pr">
-				<!-- 搜索框 -->
-				<view class="header-top">
-					<view class="header-search" :style="top_content_style + menu_button_info">
-						<view id="search-height" class="flex-row align-c">
-							<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-                			<!-- #ifndef MP-ALIPAY -->
-							<view class="cp" @tap="handle_back">
-								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
-							</view>
-							<!-- #endif -->
-							<view class="wh-auto ht-auto" :style="header_padding_left">
-								<search-component :propSearchQuery="search_query" @search="handle_search" />
-							</view>
-						</view>
-					</view>
-					<!-- 导航栏 -->
-					<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
-						<view class="tabs-scroll-content">
-							<view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="(currentTab === index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab }}</view>
-						</view>
-						<view class="nav-tabs-filter" @click="toggle_filter_popup">
-							<iconfont name="icon-filter" size="32rpx"></iconfont>
-						</view>
-					</view>
-				</view>
-				<!-- 推荐视频卡片区域 -->
-				<view class="recommend-videos">
-					<view class="video-grid">
-						<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
-							<image class="video-thumbnail" :src="item.thumbnail_url" mode="widthFix"></image>
-							<view class="video-info flex-col jc-c"> 
-								<view class="video-title text-line-2">{{ item.title }}</view>
-								<view class="flex-row align-c jc-sb">
-									<view class="video-date">{{ item.date }}</view>
-									<view class="video-likes flex-row align-c gap-4">
-										<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-										<text>{{ item.likes }}</text>
-									</view>
+				<template v-if="tabs.length > 0">
+					<!-- 搜索框 -->
+					<view class="header-top">
+						<view class="header-search" :style="top_content_style + menu_button_info">
+							<view id="search-height" class="flex-row align-c">
+								<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+								<!-- #ifndef MP-ALIPAY -->
+								<view class="cp" @tap="handle_back">
+									<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
+								</view>
+								<!-- #endif -->
+								<view class="wh-auto ht-auto" :style="header_padding_left">
+									<search-component :propSearchQuery="search_query" @search="handle_search" />
 								</view>
 							</view>
 						</view>
+						<!-- 导航栏 -->
+						<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
+							<view class="tabs-scroll-content">
+								<view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab === index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
+							</view>
+							<view class="nav-tabs-filter" @click="toggle_filter_popup">
+								<iconfont name="icon-filter" size="32rpx"></iconfont>
+							</view>
+						</view>
 					</view>
-					<!-- 加载更多 -->
-					<loadingComponent v-if="is_more_loading"></loadingComponent>
-				</view>
+					<!-- 推荐视频卡片区域 -->
+					<view class="recommend-videos">
+						<template v-if="recommend_videos.length > 0">
+							<view class="video-grid">
+								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
+									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
+									<view class="video-info flex-col jc-c"> 
+										<view class="video-title text-line-2">{{ item.title }}</view>
+										<view class="flex-row align-c jc-sb">
+											<view class="video-date">{{ item.add_time_date }}</view>
+											<view class="video-likes flex-row align-c gap-4">
+												<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
+												<text>{{ item.access_count }}</text>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+							<template v-if="page < page_total">
+								<!-- 加载更多 -->
+								<loadingComponent v-if="is_more_loading"></loadingComponent>
+							</template>
+							<template v-else>
+								<!-- 结尾 -->
+								<component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+							</template>
+						</template>
+						<template v-else>
+							<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+						</template>
+					</view>
+				</template>
+				<template v-else>
+					<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
+				</template>
 			</view>
 		</scroll-view>
 		<!-- 选项卡更多弹窗 -->
@@ -79,6 +95,7 @@ import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentPopup from '@/components/popup/popup';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
+import componentBottomLine from '@/components/bottom-line/bottom-line';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
 const app = getApp();
 // 状态栏高度
@@ -91,7 +108,8 @@ export default {
 		searchComponent,
 		componentPopup,
 		loadingComponent,
-		componentNoData
+		componentNoData,
+		componentBottomLine
 	},
 	data() {
 		return {
@@ -108,36 +126,7 @@ export default {
 			search_query: '',
 			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
-			recommend_videos: [
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_homemiddleadv/2019/04/22/1555929400479636.jpg',
-					title: '进销存软件究竟要怎么选？',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '1'
-				},
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_expressforkdn/2019/03/11/1552286675575734.png',
-					title: '一分钟告诉你，进销存是什么，进销存对企业有什么用...',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '2'
-				},
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/goods_category/2023/08/12/1691819651259940.png',
-					title: '全自动Excel进销存管理系统',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '3'
-				},
-				{
-					thumbnail_url: 'http://shopxo.com/static/upload/images/common/2019/05/17/1558073623641199.jpg',
-					title: '管家婆进销存到底有多简单',
-					date: '2025-06-12',
-					likes: 2189,
-					detailId: '4'
-				},
-			],
+			recommend_videos: [],
 			isLoadingMore: false,
 			params: null,
 			filter_popup_status: false,
@@ -157,6 +146,18 @@ export default {
 			},
 			is_more_loading: false,
 			header_padding_left: '',
+			category_list: [],
+			search_order_by_list: [],
+			search_release_time_list: [],
+			search_duration_list: [],
+			page: 0,
+			page_total: 1,
+			search_cid: '',
+			goods_bottom_line_status: false,
+			data_tabs_loding_status: 1,
+			data_tabs_loding_msg: '',
+			data_list_loding_status: 1,
+			data_tabs_loding_msg: ''
 		};
 	},
 	onLoad(params) {
@@ -166,7 +167,7 @@ export default {
 			params: app.globalData.launch_params_handle(params),
 		});
 	},
-	created() {
+	onShow() {
 		this.init();
 	},
 	methods: {
@@ -209,37 +210,113 @@ export default {
                     })
                     .exec(); // 执行查询
             }, 500);
+			// 初始化搜索页数据
+			this.init_data();
+		},
+		init_data () {
+			uni.request({
+				url: app.globalData.get_request_url("searchinit", "index", "video"),
+				method: 'POST',
+				dataType: 'json',
+				success: res => {
+					const data = res.data;
+					if (data.code == 0) {
+						const new_data = data.data;
+						this.setData({
+							category_list: new_data.category_list,
+							search_order_by_list: new_data.search_order_by_list,
+							search_release_time_list: new_data.search_release_time_list,
+							search_duration_list: new_data.search_duration_list,
+							search_cid: new_data?.category_list[0]?.id || '',
+							data_tabs_loding_status: 0,
+						})
+						// 加载数据
+						this.load_recommend_videos();
+					} else {
+						this.setData({
+							data_tabs_loding_status: 2,
+							data_tabs_loding_msg: data.msg,
+						});
+					}
+				},
+				fail: (err) => {
+					this.setData({
+						data_tabs_loding_status: 2,
+						data_list_loding_msg: this.$t('common.internet_error_tips'),
+					});
+				}
+			});
 		},
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
 		handle_search(e) {
-			this.search_query = e;
-			if (this.search_query.trim() == '') {
-				app.globalData.url_open(`/pages/plugins/video/search/search-record`, false);
-			} else {
-				app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
-			}
+			this.setData({
+				search_query: e,
+				page: 0,
+				page_total: 1,
+			})
+			// 更新数据信息
+			this.load_recommend_videos();
 		},
 		switch_tab(e) {
-			const index = e.currentTarget.dataset.index;
-			this.currentTab = index;
+			const index = e?.currentTarget?.dataset?.index || 0;
+			this.setData({
+				currentTab: index,
+				search_cid: this.category_list[index]?.id || '',
+				page: 0,
+				page_total: 1,
+				data_list_loding_status: 1,
+				recommend_videos: []
+			})
 			// 根据当前标签加载对应的数据
 			this.load_recommend_videos();
 		},
 		load_recommend_videos() {
 			// 加载推荐视频数据的逻辑
-			// 根据当前标签加载对应的数据
-			console.log('加载推荐视频数据');
+			uni.request({
+				url: app.globalData.get_request_url("searchdatalist", "index", "video"),
+				method: 'POST',
+				data: {
+					cid: this.search_cid,
+					bwd: this.search_query,
+					rt: '',
+					dn: '',
+					by: '',
+					page: this.page + 1,
+				},
+				dataType: 'json',
+				success: res => {
+					const data = res.data;
+					if (data.code == 0) {
+						const new_data = data.data;
+						this.setData({
+							recommend_videos: new_data.data,
+							page: this.page + 1,
+							page_total: data.page_total,
+							goods_bottom_line_status: this.page + 1 >= data.page_total,
+							data_list_loding_status: 0
+						})
+					} else {
+						this.setData({
+							data_list_loding_status: 2,
+							data_list_loding_msg: data.msg,
+						});
+					}
+				},
+				fail: (err) => {
+					this.setData({
+						data_list_loding_status: 2,
+						data_list_loding_msg: this.$t('common.internet_error_tips'),
+					});
+				}
+			});
 		},
 		navigate_to_detail(e) {
 			const item = e.currentTarget.dataset.value;
 			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
-			this.load_more();
-		},
-		on_scroll_upper_event() {
 			this.load_more();
 		},
 		load_more() {

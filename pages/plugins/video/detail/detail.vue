@@ -983,7 +983,6 @@
                     success: res => {
                         const data = res.data;
                         if (data.code == 0) {
-                            console.log(data.data);
                             const new_data = data.data;
                             // 没有回复时的评论
                             if (new_video_comments_id == 0) {
@@ -996,9 +995,6 @@
                                 })
                             } else {
                                 this.active_comments.forEach(item => {
-                                    console.log(item);
-                                    console.log(item.id == new_video_comments_id);
-                                    
                                     if (item.id == new_video_comments_id) {
                                         item.sub_comments.unshift(new_data);
                                         item.comments_count++;

@@ -15,34 +15,36 @@
 			</view>
 		</view>
 		<!-- 搜索历史记录 -->
-		<view class="search-history flex-col jc-c align-c">
-			<view v-for="(history, index) in search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">
-				<view class="flex-row align-c search-history-title cp" :data-value="history.text" @tap.stop="perform_search">
+		<view v-if="show_search_history.length > 0" class="search-history flex-col jc-c align-c">
+			<view v-for="(history, index) in show_search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">
+				<view class="flex-row align-c search-history-title cp" :data-value="history" @tap.stop="perform_search">
 					<iconfont name="icon-time" size="32rpx"></iconfont>
-					<text>{{ history.text }}</text>
+					<text>{{ history }}</text>
 				</view>
 				<iconfont name="icon-close-line" size="24rpx" :data-index="index" @tap="delete_history"></iconfont>
 			</view>
 			<!-- 查看更多 -->
-			<template v-if="is_view_more">
-				<loadingComponent></loadingComponent>
-			</template>
-			<template v-else>
-				<view class="more-history-btn cp" @tap="view_more_history">查看更多历史</view>
+			<template v-if="search_history.length > (show_search_history.length + 4)">
+				<template v-if="is_view_more">
+					<loadingComponent></loadingComponent>
+				</template>
+				<template v-else>
+					<view class="more-history-btn cp" @tap="view_more_history">查看更多历史</view>
+				</template>
 			</template>
 		</view>
 		<!-- 热搜列表 -->
-		<view class="hot-search">
+		<view v-if="search_history_data.length > 0" class="hot-search">
 			<view class="hot-tabs">
 				<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
 					<view class="tabs-scroll-content">
-						<view v-for="(tab, index) in hot_tabs" :key="index" class="hot-tab-item cp" :class="(hot_current_tab === index) ? 'active' : ''" :data-index="index" @tap="switch_hot_tab">{{ tab }}</view>
+						<view v-for="(tab, index) in search_history_data" :key="index" class="hot-tab-item cp" :class="(hot_current_tab === index) ? 'active' : ''" :data-index="index" @tap="switch_hot_tab">{{ tab.name }}</view>
 					</view>
 				</scroll-view>
 			</view>
 			<view class="hot-list flex-col align-c gap-10">
-				<view v-for="(item, index) in hot_list" :key="index" :class="'cp wh-auto flex-row align-c jc-sb hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.title" @tap.stop="perform_search">
-					<view class="flex-row align-c gap-10">
+				<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.title" @tap.stop="perform_search">
+					<view class="flex-1 flex-row align-c gap-10">
 						<view class="hot-num flex-row align-c jc-c">
 							<view :class="index < 3 ? `hexagon-top hexagon-top-${index + 1}` : 'hexagon-no-top'"><span>{{ index + 1 }}</span></view>
 						</view>
@@ -59,6 +61,7 @@
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
+import { isEmpty } from '../../../../common/js/common/common';
 const app = getApp();
 var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
@@ -84,30 +87,16 @@ export default {
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
 			search_query: '',
-			search_history: [
-				{ text: '软件升级规则' },
-				{ text: '进销存管理系统提升效率' },
-				{ text: '任何人的错都是我的错' },
-				{ text: '心中无敌，方能无敌于天下' }
-			],
-			hot_tabs: ['今日热搜', '点赞热榜', '评论热榜', '分享热榜', '分享热榜', '分享热榜', '分享热榜'],
+			search_history: [],
+			show_search_history: [],
+			search_history_data: [],
 			hot_current_tab: 0,
-			hot_list: [
-				{ title: '国家补贴至高补贴20%', hotness: '811.2万' },
-				{ title: '夏季高质量睡眠秘诀', hotness: '2100' },
-				{ title: '不要总认为自己比别人聪明', hotness: '311' },
-				{ title: '今天最好的表现是明天最低的要求', hotness: '311' },
-				{ title: '今天最好的表现是明天最低的要求', hotness: '311' },
-				{ title: '今天最好的表现是明天最低的要求', hotness: '311' },
-				{ title: '今天最好的表现是明天最低的要求', hotness: '311' },
-				{ title: '今天最好的表现是明天最低的要求', hotness: '311' },
-				{ title: '今天最好的表现是明天最低的要求', hotness: '311' }
-			],
 			is_view_more: false,
 			header_padding_left: '',
+			
 		};
 	},
-	created() {
+	onShow() {
 		this.init();
 	},
 	methods: {
@@ -134,20 +123,43 @@ export default {
 				header_padding_left: padding_left,
 				menu_button_info: menu_button_info
 			});
+			if (this.search_history.length > 0) {
+				this.show_search_history = this.search_history.filter((item, index) => index < 5);
+			} else {
+				this.show_search_history = [];
+			}
+			this.init_data();
+		},
+		init_data() {
+			uni.request({
+				url: app.globalData.get_request_url("searchrecord", "index", "video"),
+				method: 'POST',
+				dataType: 'json',
+				success: res => {
+					const data = res.data;
+					if (data.code == 0) {
+						const new_data = data.data;
+						this.setData({
+							search_history_data: new_data.search_history_data
+						})
+					}
+				}
+			});
 		},
 		// 返回
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
 		handle_search(e) {
+			// 保存搜索历史记录
+			if (!isEmpty(e) && !this.search_history.includes(e)) {
+				this.search_history.push(e);
+			}
 			this.search_query = e;
 			app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
 		},
 		perform_search(e) {
 			this.search_query = e.currentTarget.dataset.value;
-			// uni.navigateTo({
-			// 	url: `/pages/plugins/video/search/search?search_query=${this.search_query}`
-			// });
 		},
 		delete_history(e) {
 			const index = e.currentTarget.dataset.index;
@@ -158,7 +170,9 @@ export default {
 			this.is_view_more = true;
 			setTimeout(() => {
 				this.is_view_more = false;
-			}, 3000);
+				// 每次显示5条数据
+				this.show_search_history = this.search_history.filter((item, index) => index < ((this.show_search_history.length - 1) + 5)) 
+			}, 500);
 		},
 		switch_hot_tab(e) {
 			this.setData({
@@ -304,8 +318,8 @@ export default {
 }
 
 .hot-item {
-	height: 72rpx;
-	padding-left: 20rpx;
+	// height: 72rpx;
+	padding: 16rpx 0 16rpx 20rpx;
 	box-sizing: border-box;
 	background: linear-gradient( 90deg, #F4F4F4 0%, #FFFFFF 100%);
 	border-radius: 8px;
