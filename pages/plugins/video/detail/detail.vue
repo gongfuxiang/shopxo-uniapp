@@ -151,7 +151,14 @@
                 </view>
             </view>
         </view>
-        
+        <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_close_event">
+            <view class="flex-col jc-c gap-20">
+                <view v-for="(item, index) in report_type_list" :key="index" class="flex-row align-c gap-10" @tap="handle_report_type_click(index)">
+                    <iconfont name="icon-checkbox" size="32rpx" color="#999"></iconfont>
+                    <view class="fs-32rpx">{{ item.name }}</view>
+                </view>
+            </view>
+        </component-popup>
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
     </view>
@@ -228,7 +235,8 @@
                 share_info: {},
                 params: {},
                 header_padding_left: '',
-                report_type_list: [],
+                report_type_list: [], // 举报类型列表
+                popup_report_status: false, // 举报弹窗状态
                 direction: 'direction',
                 base_config_data: {
                     is_video_auto_play: 0, 
@@ -1234,26 +1242,28 @@
             },
             
             // 关闭下拉菜单
-            handle_dropdown_item_click(id, data) {
+            handle_dropdown_item_click(comment_id, data) {
                 if (this.active_dropdown_id == comment_id) {
                     this.active_dropdown_id = null;
                 }
-                // 处理不同操作
-                if (data.action == 'delete') {
-                    // 确认删除
-                    uni.showModal({
-                        title: '确认删除',
-                        content: '确定删除此评论吗？',
-                        success: (res) => {
-                            if (res.confirm) {
-                                // 调用删除接口
-                                this.delete_comment(id);
-                            }
-                        }
-                    });
-                } else if (data.action == 'report') {
-                    // 举报评论
-                }
+                this.popup_report_status = true;
+                debugger;
+                // // 处理不同操作
+                // if (data.action == 'delete') {
+                //     // 确认删除
+                //     uni.showModal({
+                //         title: '确认删除',
+                //         content: '确定删除此评论吗？',
+                //         success: (res) => {
+                //             if (res.confirm) {
+                //                 // 调用删除接口
+                //                 this.delete_comment(id);
+                //             }
+                //         }
+                //     });
+                // } else if (data.action == 'report') {
+                //     // 举报评论
+                // }
             },
             // 删除评论
             delete_comment(comment_id) {
@@ -1299,6 +1309,10 @@
                     this.active_dropdown_id = null;
                 }
             },
+            // 关闭举报弹窗
+            popup_close_event() {
+                this.popup_report_status = false;
+            }
         },
         mounted() {
             // 添加全局点击事件监听
@@ -1516,7 +1530,7 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
+        z-index: 99;
         display: flex;
         justify-content: center;
         align-items: flex-end;
