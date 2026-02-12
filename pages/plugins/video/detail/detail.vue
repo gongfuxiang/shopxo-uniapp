@@ -151,11 +151,26 @@
                 </view>
             </view>
         </view>
+        <!-- 举报弹窗 -->
         <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_close_event">
-            <view class="flex-col jc-c gap-20">
-                <view v-for="(item, index) in report_type_list" :key="index" class="flex-row align-c gap-10" @tap="handle_report_type_click(index)">
-                    <iconfont name="icon-checkbox" size="32rpx" color="#999"></iconfont>
-                    <view class="fs-32rpx">{{ item.name }}</view>
+            <view class="report-content">
+                <view class="report-header">
+                    <view class="report-btn cancel-btn" @tap="popup_close_event">取消</view>
+                    <view>举报评论</view>
+                    <view class="report-btn submit-btn" @tap="submit_report">确定</view>
+                </view>
+                <view class="report-content">
+                    <view class="flex-col gap-10">
+                        <view class="report-name">举报原因<text>*</text></view>
+                        <radio-group>
+                            <label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in items" :key="item.value">
+                                <view>
+                                    <radio :value="item.value" :checked="index === current" />
+                                </view>
+                                <view>{{item.name}}</view>
+                            </label>
+                        </radio-group>
+                    </view>
                 </view>
             </view>
         </component-popup>
@@ -235,7 +250,79 @@
                 share_info: {},
                 params: {},
                 header_padding_left: '',
-                report_type_list: [], // 举报类型列表
+                report_type_list: [
+                    {
+                        "name": "谩骂攻击",
+                        "data": [
+                            "言语辱骂",
+                            "人身攻击",
+                            "歧视言论"
+                        ]
+                    },
+                    {
+                        "name": "色情低俗",
+                        "data": [
+                            "性暗示内容",
+                            "不雅暴露",
+                            "性暴力"
+                        ]
+                    },
+                    {
+                        "name": "网络暴力",
+                        "data": [
+                            "人肉搜索",
+                            "恶意骚扰",
+                            "冒充他人"
+                        ]
+                    },
+                    {
+                        "name": "违法违规",
+                        "data": [
+                            "诈骗信息",
+                            "赌博内容",
+                            "涉毒信息"
+                        ]
+                    },
+                    {
+                        "name": "政治敏感",
+                        "data": [
+                            "敏感话题",
+                            "虚假信息",
+                            "煽动言论"
+                        ]
+                    },
+                    {
+                        "name": "垃圾广告",
+                        "data": [
+                            "垃圾营销",
+                            "虚假广告",
+                            "误导信息"
+                        ]
+                    },
+                    {
+                        "name": "未成年相关",
+                        "data": [
+                            "儿童剥削",
+                            "不当内容",
+                            "隐私侵犯"
+                        ]
+                    },
+                    {
+                        "name": "危害人身安全",
+                        "data": [
+                            "威胁恐吓",
+                            "自残内容",
+                            "暴力行为"
+                        ]
+                    },
+                    {
+                        "name": "其他",
+                        "data": [
+                            "引人不适",
+                            "价值导向不良"
+                        ]
+                    }
+                ], // 举报类型列表
                 popup_report_status: false, // 举报弹窗状态
                 direction: 'direction',
                 base_config_data: {
