@@ -276,8 +276,9 @@
                 header_padding_left: '',
                 report_type_list: [], // 举报类型列表
                 popup_report_status: false, // 举报弹窗状态
-                current_main_index: 0, // 默认不选中任何举报原因
-                current_sub_index: 0, // 默认不选中任何具体类型
+                current_main_index: 0, // 默认选中第一个举报原因
+                current_sub_index: 0, // 默认选中第一个具体类型
+                report_comment_id: '', // 举报的评论id
             };
         },
         computed: {
@@ -1243,11 +1244,9 @@
                 try {
                     // 暂停所有视频
                     this.pause_all_videos_except(-1);
-                    
                     // 清空视频上下文数组
                     this.create_video_contexts = [];
                     this.video_contexts = [];
-                    
                     console.log('视频资源清理完成');
                 } catch (error) {
                     console.error('清理视频资源时出错:', error);
@@ -1268,7 +1267,6 @@
                 if (this.active_dropdown_id == comment_id) {
                     this.active_dropdown_id = null;
                 }
-                this.popup_report_status = true;
                 // 处理不同操作
                 if (data.action == 'delete') {
                     // 确认删除
@@ -1284,6 +1282,8 @@
                     });
                 } else if (data.action == 'report') {
                     // 举报评论
+                    this.popup_report_status = true;
+                    this.report_comment_id = comment_id;
                 }
             },
             // 删除评论
@@ -1298,7 +1298,10 @@
                     success: res => {
                         const data = res.data;
                         if (data.code == 0) {
-                            
+                            // 删除评论数据
+                            delete_comment_handle(comment_id);
+                            // 显示删除成功提示
+                            app.globalData.showToast(this.$t('common.delete_success'));
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -1308,6 +1311,45 @@
                         }
                     }
                 });
+            },
+            delete_comment_handle(comment_id) {
+                // 删除成功，从active_comments中移除对应数据
+                if (this.active_comments && Array.isArray(this.active_comments)) {
+                    // 创建新的数组来存储过滤后的结果
+                    const filteredComments = [];
+                    
+                    // 遍历所有评论
+                    for (let i = 0; i < this.active_comments.length; i++) {
+                        const comment = this.active_comments[i];
+                        
+                        // 如果是父级评论且id匹配，跳过整个评论（包括子评论）
+                        if (comment.id == comment_id) {
+                            continue;
+                        }
+                        
+                        // 检查是否有子评论需要删除
+                        if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
+                            // 过滤掉匹配的子评论
+                            const filteredSubComments = comment.sub_comments.filter(
+                                subComment => subComment.id != comment_id
+                            );
+                            
+                            // 如果还有子评论或者本身就是有效的父级评论，则保留
+                            if (filteredSubComments.length > 0 || comment.content) {
+                                // 更新子评论数组
+                                comment.sub_comments = filteredSubComments;
+                                filteredComments.push(comment);
+                            }
+                            // 如果没有子评论且没有内容，则不添加这个父级评论
+                        } else {
+                            // 没有子评论的情况，直接保留父级评论
+                            filteredComments.push(comment);
+                        }
+                    }
+                    
+                    // 更新active_comments
+                    this.active_comments = filteredComments;
+                }
             },
             // 处理全局点击事件
             handle_global_click(e) {
@@ -1388,22 +1430,31 @@
                 // 获取选中的举报原因和具体类型
                 const main_reason = this.report_type_list[this.current_main_index];
                 const sub_reason = main_reason.data[this.current_sub_index];
-                
-                // 这里可以处理提交逻辑
-                console.log('举报提交:', {
-                    main_reason: main_reason.name,
-                    sub_reason: sub_reason
+                uni.request({
+                    url: app.globalData.get_request_url("report", "index", "video"),
+                    method: 'POST',
+                    data:  {
+                        id: comment_id,
+                        reason: main_reason.name,
+                        type: sub_reason
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        const data = res.data;
+                        if (data.code == 0) {
+                            // 显示删除成功提示
+                            app.globalData.showToast('举报成功');
+                            // 关闭弹窗
+                            this.close_report_popup();
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
+                        }
+                    }
                 });
-                
-                // 显示提交成功的提示
-                uni.showToast({
-                    title: '举报提交成功',
-                    icon: 'success'
-                });
-                
-                // 关闭弹窗
-                this.close_report_popup();
-                
                 // 可以在这里调用API提交举报
                 // this.submitReportToServer({
                 //     main_reason: main_reason.name,
