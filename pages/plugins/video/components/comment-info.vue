@@ -11,7 +11,7 @@
                     </view>
                     <!-- 下拉菜单 -->
                     <view v-if="dropdownVisible" class="dropdown-menu" @tap.stop>
-                        <view v-for="(item, index) in dropdownOptions" :key="index" class="dropdown-item"  :class="{ 'dropdown-item-divided': item.divided }" :data-value="item"  @tap="handle_dropdown_item_click(item)">
+                        <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item"  :class="{ 'dropdown-item-divided': item.divided }" :data-value="item" @tap="handle_dropdown_item_click">
                             <text>{{ item.label }}</text>
                         </view>
                     </view>
@@ -61,8 +61,8 @@
                 dropdownVisible: false,
                 // 下拉菜单选项数据
                 dropdownOptions: [
-                    { label: '删除', command: 'delete' },
-                    { label: '举报', command: 'report' }
+                    { label: '删除', type: 'delete' },
+                    { label: '举报', type: 'report' }
                 ]
             };
         },
@@ -104,7 +104,8 @@
                 }
             },
             // 处理下拉菜单项点击
-            handle_dropdown_item_click(item) {
+            handle_dropdown_item_click(e) {
+                const item = e.currentTarget.dataset.value || {};
                 console.log('点击:', item.label);
                 uni.showToast({ title: item.label, icon: 'none' });
                 this.dropdownVisible = false;
