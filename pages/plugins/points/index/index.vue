@@ -1,21 +1,18 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propName="$t('index.index.t26j9z')"></component-nav-back>
+        <view class="pr z-i-deeps">
+            <component-nav-back :propName="$t('index.index.t26j9z')"></component-nav-back>
+        </view>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 广告图片 -->
-                <view class="pa top-0 bg-img wh-auto">
-                    <block v-if="(data_base.right_images || null) != null">
-                        <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
-                    </block>
-                    <block v-else>
-                        <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
-                    </block>
+                <view class="pa top-0 bg-img wh-auto z-i">
+                    <image class="wh-auto" :src="default_images_data.home_banner_images" mode="widthFix" :data-value="data_base.home_banner_images_url || ''" @tap="url_event"></image>
                 </view>
-                <view class="pr padding-top-main">
+                <view class="padding-top-main">
                     <view class="padding-horizontal-main points-content pr">
                         <!-- 顶部 -->
-                        <view class="border-radius-main bg-white pr spacing-mb">
+                        <view class="border-radius-main bg-white pr spacing-mb z-i-deep">
                             <view class="points-user">
                                 <view class="flex-row">
                                     <block v-if="(user || null) == null">
@@ -66,10 +63,10 @@
                         </view>
 
                         <!-- 公告信息 -->
-                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">{{$t('index.index.u5642g')}}</button>
+                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md z-i-deep" @tap="quick_open_event">{{$t('index.index.u5642g')}}</button>
 
                         <!-- 商品兑换 -->
-                        <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
+                        <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0" class="pr z-i-deep">
                             <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet"></component-goods-list>
                         </view>
 
@@ -83,17 +80,6 @@
                             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                         </block>
                     </view>
-
-                    <!-- 积分规则弹窗 -->
-                    <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
-                        <view class="rule">
-                            <view class="cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.index.u5642g')}}</view>
-                            <scroll-view :scroll-y="true" class="item">
-                                <view v-for="(item, index) in data_base.points_desc" :key="index" class="cr-grey text-size-md">{{ item }}</view>
-                            </scroll-view>
-                            <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">{{$t('index.index.qbi72m')}}</button>
-                        </view>
-                    </component-popup>
                 </view>
             </view>
 
@@ -104,6 +90,17 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+
+        <!-- 积分规则弹窗 -->
+        <component-popup v-if="(data_base || null) != null && (data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" propPosition="bottom" @onclose="quick_close_event">
+            <view class="padding-main">
+                <view class="cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.index.u5642g')}}</view>
+                <scroll-view :scroll-y="true" class="content">
+                    <view v-for="(item, index) in data_base.points_desc" :key="index" class="cr-grey text-size-md">{{ item }}</view>
+                </scroll-view>
+                <button type="default" class="bg-main cr-white round text-size-sm margin-top" @tap="quick_close_event">{{$t('index.index.qbi72m')}}</button>
+            </view>
+        </component-popup>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
@@ -133,6 +130,7 @@
                 user: null,
                 data_base: null,
                 user_integral: null,
+                default_images_data: {},
                 avatar_default: app.globalData.data.default_user_head_src,
                 // 自定义分享信息
                 share_info: {},
@@ -146,7 +144,6 @@
                 },
                 // 规则弹窗
                 popup_status: false,
-                propIsBar: false,
                 // 积分明细
                 integral_list: [],
             };
@@ -220,6 +217,7 @@
                             this.setData({
                                 data_base: data.base || null,
                                 user_integral: data.user_integral || null,
+                                default_images_data: data.default_images_data || {},
                             });
                             if ((this.data_base || null) != null) {
                                 // 基础自定义分享

@@ -3,9 +3,9 @@
         <view v-if="(data || null) != null" :class="'page-content min-ht '+((user == null || data.status == -10000) ? 'page-bottom-fixed' : '')">
             <block v-if="data.status == -10000">
                 <!-- 顶部banner -->
-                <image v-if="(data_base.scan_top_banner || null) != null" :src="data_base.scan_top_banner" mode="widthFix" class="dis-block wh-auto auto"></image>
+                <image :src="default_images_data.scan_top_banner" mode="widthFix" class="dis-block wh-auto auto"></image>
                 <!-- 底部图片 -->
-                <image v-if="(data_base.scan_bottom_images || null) != null" :src="data_base.scan_bottom_images" mode="widthFix" class="dis-block wh-auto auto"></image>
+                <image :src="default_images_data.scan_bottom_images" mode="widthFix" class="dis-block wh-auto auto"></image>
                 <!-- 扫码 -->
                 <!-- #ifndef H5 -->
                 <view v-if="user != null" class="pf left-0 bottom-xxxxl wh-auto tc padding-horizontal-main bs-bb">
@@ -25,12 +25,12 @@
             <block v-else>
                 <!-- 领取成功 -->
                 <block v-if="data.status == 0">
-                    <image v-if="(data_base.scan_success_images || null) != null" :src="data_base.scan_success_images" mode="widthFix" class="dis-block wh-auto auto"></image>
+                    <image :src="default_images_data.scan_success_images" mode="widthFix" class="dis-block wh-auto auto"></image>
                     <view class="margin-vertical-xxxl tc">{{data.msg}}</view>
                 </block>
                 <!-- 领取失败 -->
                 <block v-else-if="data.status == -100">
-                    <image v-if="(data_base.scan_fail_images || null) != null" :src="data_base.scan_fail_images" mode="widthFix" class="dis-block wh-auto auto"></image>
+                    <image :src="default_images_data.scan_fail_images" mode="widthFix" class="dis-block wh-auto auto"></image>
                     <view class="margin-vertical-xxxl tc">{{data.msg}}</view>
                 </block>
                 <!-- 其他错误 -->
@@ -71,6 +71,7 @@
                 user: null,
                 data_base: null,
                 data: null,
+                default_images_data: {},
                 // 自定义分享信息
                 share_info: {},
             };
@@ -124,6 +125,7 @@
                             this.setData({
                                 data_base: data.base || null,
                                 data: data.data || null,
+                                default_images_data: data.default_images_data || {},
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: (data.data || null) != null,
