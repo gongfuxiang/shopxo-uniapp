@@ -55,7 +55,7 @@
                 type: String,
                 default: '回复'
             },
-            // 新增props：控制下拉菜单显示状态
+            // 控制下拉菜单显示状态
             propDropDownVisible: {
                 type: Boolean,
                 default: false
@@ -95,20 +95,17 @@
             // 切换下拉菜单
             toggle_dropdown() {
                 // 通知父组件切换当前组件的下拉菜单状态
-                this.$emit('toggle-dropdown', this.propId);
+                this.$emit('toggle_dropdown', this.propId);
             },
             // 处理下拉菜单项点击
             handle_dropdown_item_click(e) {
                 const item = e.currentTarget.dataset.value || {};
                 console.log('点击:', item.label);
-                uni.showToast({ title: item.label, icon: 'none' });
+                // uni.showToast({ title: item.label, icon: 'none' });
                 // 通知父组件关闭下拉菜单
-                this.$emit('close-dropdown', this.propId);
-                this.$emit('dropdown-item-click', { command: item.command, label: item.label });
+                // this.$emit('close-dropdown', this.propId);
+                this.$emit('dropdown_item_click', this.propId, item);
             }
-        },
-        mounted() {
-            console.log('CommentInfo 组件已挂载');
         }
     }   
 </script>
