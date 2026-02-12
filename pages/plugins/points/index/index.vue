@@ -116,12 +116,10 @@
     import componentPopup from '@/components/popup/popup';
     import componentTitle from '@/components/title/title';
     import componentSharePopup from '@/components/share-popup/share-popup';
-    var points_static_url = app.globalData.get_static_url('points', true);
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                points_static_url: points_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

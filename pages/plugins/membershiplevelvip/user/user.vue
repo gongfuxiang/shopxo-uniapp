@@ -4,7 +4,7 @@
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 头部背景 -->
-                <image :src="default_images_data.default_center_head_bg_images_app || (membershiplevelvip_static_url + 'head-bg.png')" mode="widthFix" class="pa top-0 bg-img wh-auto" />
+                <image :src="default_images_data.default_center_head_bg_app_images" mode="widthFix" class="pa top-0 bg-img wh-auto" />
                 <view class="pr padding-top-main">
                     <view class="padding-top-xxxl oh">
                         <!-- 头部 -->
@@ -169,13 +169,10 @@
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
-    var membershiplevelvip_static_url = app.globalData.get_static_url('membershiplevelvip', true) + 'app/center/';
-
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                membershiplevelvip_static_url: membershiplevelvip_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

@@ -5,7 +5,7 @@
             <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
                 <view class="padding-top-xxxl">
                     <!-- 头部背景 -->
-                    <image :src="distribution_static_url + 'distribution-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
+                    <image :src="default_images_data.default_center_head_bg_app_images" mode="widthFix" class="pa top-0 bg-img wh-auto" />
                     <view class="pr padding-top-main">
                         <view class="padding-top-xxxl oh">
                             <!-- 头部 -->
@@ -279,16 +279,15 @@
     import componentPopup from '@/components/popup/popup';
     import componentSearch from '@/components/search/search';
     var currency_symbol = app.globalData.currency_symbol();
-    var distribution_static_url = app.globalData.get_static_url('distribution', true) + 'app/';
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                distribution_static_url: distribution_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 currency_symbol: currency_symbol,
+                default_images_data: {},
                 avatar: app.globalData.data.default_user_head_src,
                 nickname: this.$t('login.login.6yfr9g'),
                 user_referrer: null,
@@ -390,6 +389,7 @@
                                 temp_value.name = temp.name;
                             }
                             this.setData({
+                                default_images_data: data.default_images_data || {},
                                 data_base: data.base || null,
                                 user_level: data.user_level || null,
                                 extraction: data.extraction || null,
