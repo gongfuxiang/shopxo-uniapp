@@ -17,31 +17,33 @@
                 <view v-if="(data.detail_list || null) != null && data.detail_list.length > 0">
                     <!-- 商品 -->
                     <view class="data-list oh">
-                        <view v-for="(item, index) in data.detail_list" :key="index" :class="'item padding-main border-radius-main bg-white oh pr spacing-mb ' + (item.goods.is_error == 0 ? '' : 'br-red')">
-                            <image class="goods-img dis-block border-radius-main fl" :src="item.goods.images" mode="aspectFit" :data-value="item.goods.goods_url" @tap="url_event"></image>
-                            <view class="right-base fr">
-                                <label v-if="item.goods.is_error == 0" class="fr" :data-index="index" @tap="goods_choice_event">
-                                    <radio :checked="item.checked == undefined || item.checked == true" style="transform: scale(0.9)" />
-                                </label>
-                                <view class="single-text padding-right">{{ item.goods.title }}</view>
-                                <view class="single-text margin-top-lg">
-                                    <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
-                                    <text v-if="item.goods.original_price != 0" class="original-price margin-left-sm">{{ currency_symbol }}{{ item.goods.original_price }}</text>
-                                    <text class="cr-grey text-size-xs fr">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
-                                </view>
-                                <view class="margin-top-sm">
-                                    <view v-if="item.goods.is_error == 0">
-                                        <view v-if="(item.spec_text_view || null) != null" class="cr-grey text-size-xs spec-text">{{ item.spec_text_view }}</view>
-                                        <view class="number-content tc oh round pa">
-                                            <view class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index" @tap="goods_buy_number_event">-</view>
-                                            <input class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.stock || item.goods.buy_min_number || 1" :data-index="index" @blur="goods_buy_number_blur" />
-                                            <view class="number-submit tc cr-grey fl va-m" data-type="1" :data-index="index" @tap="goods_buy_number_event">+</view>
-                                        </view>
+                        <block v-for="(item, index) in data.detail_list" :key="index">
+                            <view v-if="(item.goods || null) != null" :class="'item padding-main border-radius-main bg-white oh pr spacing-mb ' + (item.goods.is_error == 0 ? '' : 'br-red')">
+                                <image class="goods-img dis-block border-radius-main fl" :src="item.goods.images" mode="aspectFit" :data-value="item.goods.goods_url" @tap="url_event"></image>
+                                <view class="right-base fr">
+                                    <label v-if="item.goods.is_error == 0" class="fr" :data-index="index" @tap="goods_choice_event">
+                                        <radio :checked="item.checked == undefined || item.checked == true" style="transform: scale(0.9)" />
+                                    </label>
+                                    <view class="single-text padding-right">{{ item.goods.title }}</view>
+                                    <view class="single-text margin-top-lg">
+                                        <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
+                                        <text v-if="item.goods.original_price != 0" class="original-price margin-left-sm">{{ currency_symbol }}{{ item.goods.original_price }}</text>
+                                        <text class="cr-grey text-size-xs fr">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
                                     </view>
-                                    <view v-else class="cr-red text-size-xs tr margin-top-xxl">{{ item.goods.error_msg }}</view>
+                                    <view class="margin-top-sm">
+                                        <view v-if="item.goods.is_error == 0">
+                                            <view v-if="(item.spec_text_view || null) != null" class="cr-grey text-size-xs spec-text">{{ item.spec_text_view }}</view>
+                                            <view class="number-content tc oh round pa">
+                                                <view class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index" @tap="goods_buy_number_event">-</view>
+                                                <input class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.stock || item.goods.buy_min_number || 1" :data-index="index" @blur="goods_buy_number_blur" />
+                                                <view class="number-submit tc cr-grey fl va-m" data-type="1" :data-index="index" @tap="goods_buy_number_event">+</view>
+                                            </view>
+                                        </view>
+                                        <view v-else class="cr-red text-size-xs tr margin-top-xxl">{{ item.goods.error_msg }}</view>
+                                    </view>
                                 </view>
                             </view>
-                        </view>
+                        </block>
                     </view>
 
                     <!-- 导航 -->
