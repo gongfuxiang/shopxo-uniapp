@@ -1,35 +1,36 @@
 <template>
 	<view class="wh-auto ht-auto pr video-container">
-		<scroll-view scroll-y :show-scrollbar="false" class="ht" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation="true">
-			<view class="wh-auto ht-auto pr">
-				<template v-if="tabs.length > 0">
-					<!-- 搜索框 -->
-					<view class="header-top">
-						<view class="header-search" :style="top_content_style + menu_button_info">
-							<view id="search-height" class="flex-row align-c">
-								<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-								<!-- #ifndef MP-ALIPAY -->
-								<view class="cp" @tap="handle_back">
-									<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
-								</view>
-								<!-- #endif -->
-								<view class="wh-auto ht-auto" :style="header_padding_left">
-									<search-component :propSearchQuery="search_query" @search="handle_search" />
-								</view>
+		
+		<view class="wh-auto ht-auto pr">
+			<template v-if="tabs.length > 0">
+				<!-- 搜索框 -->
+				<view class="header-top">
+					<view class="header-search" :style="top_content_style + menu_button_info">
+						<view id="search-height" class="flex-row align-c">
+							<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+							<!-- #ifndef MP-ALIPAY -->
+							<view class="cp" @tap="handle_back">
+								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 							</view>
-						</view>
-						<!-- 导航栏 -->
-						<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
-							<view class="tabs-scroll-content">
-								<view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab === index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
-							</view>
-							<view class="nav-tabs-filter" @click="toggle_filter_popup">
-								<iconfont name="icon-filter" size="32rpx"></iconfont>
+							<!-- #endif -->
+							<view class="wh-auto ht-auto" :style="header_padding_left">
+								<search-component :propSearchQuery="search_query" @search="handle_search" />
 							</view>
 						</view>
 					</view>
-					<!-- 推荐视频卡片区域 -->
-					<view class="recommend-videos">
+					<!-- 导航栏 -->
+					<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
+						<view class="tabs-scroll-content">
+							<view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab === index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
+						</view>
+						<view class="nav-tabs-filter" @click="toggle_filter_popup">
+							<iconfont name="icon-filter" size="32rpx"></iconfont>
+						</view>
+					</view>
+				</view>
+				<!-- 推荐视频卡片区域 -->
+				<view class="recommend-videos">
+					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation="true">
 						<template v-if="recommend_videos.length > 0">
 							<view class="video-grid">
 								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
@@ -58,13 +59,13 @@
 						<template v-else>
 							<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 						</template>
-					</view>
-				</template>
-				<template v-else>
-					<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
-				</template>
-			</view>
-		</scroll-view>
+					</scroll-view>
+				</view>
+			</template>
+			<template v-else>
+				<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
+			</template>
+		</view>
 		<!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="filter_popup_status" propPosition="top" :propMask="true" @onclose="close_filter_popup">
             <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')" :style="{ 'padding-top': popup_top }">
@@ -75,7 +76,7 @@
                             <view v-for="(item, index) in popup_list" :key="index" class="filter-group">
                                 <view class="filter-title">{{ item.title }}</view>
                                 <view class="filter-options">
-                                    <view v-for="(option, index) in item.list" :key="index" :class="'filter-option ' + (option.id == filter_params[item.id] ? 'active' : '')" :data-id="item.id" :data-option-id="option.id" @tap="select_filter">{{ option.name }}</view>
+                                    <view v-for="(option, index) in item.list" :key="index" :class="'filter-option ' + (option.type == filter_params[item.id] ? 'active' : '')" :data-type="option.type" :data-id="item.id" @tap="select_filter">{{ option.name }}</view>
                                 </view>
                             </view>
                         </view>
@@ -97,6 +98,7 @@ import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
 import componentBottomLine from '@/components/bottom-line/bottom-line';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
+import { isEmpty } from '../../../../common/js/common/common';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -133,23 +135,18 @@ export default {
 			popup_top: '0rpx',
 			platform: app.globalData.application_client_type(),
 			popup_list: [
-				{ title: '排序依据', id: 'sort', list: [{ id: '1', name: '综合排序'}, { id: '2', name: '最新发布'}, { id: '3', name: '最多点赞'}]},
-				{ title: '发布时间', id: 'time', list: [{ id: '1', name: '不限'}, { id: '2', name: '一天内'}, { id: '3', name: '一周内'}, { id: '4', name: '半年内'}] },
-				{ title: '视频时长', id: 'duration', list: [{ id: '1', name: '不限'}, { id: '2', name: '1分钟以下'}, { id: '3', name: '1-5分钟'}, { id: '4', name: '5分钟以上'}] },
-				{ title: '搜索范围', id: 'scope', list: [{ id: '1', name: '不限'}, { id: '2', name: '最近看过'}, { id: '3', name: '还未看过'}]}
+				{ title: '排序依据', id: 'sort', list: []},
+				{ title: '发布时间', id: 'time', list: [] },
+				{ title: '视频时长', id: 'duration', list: [] },
 			],
 			filter_params: {
-				sort: '1',
-				time: '1',
-				duration: '1',
-				scope: '1',
+				sort: 'default',
+				time: 'default',
+				duration: 'default',
 			},
 			is_more_loading: false,
 			header_padding_left: '',
 			category_list: [],
-			search_order_by_list: [],
-			search_release_time_list: [],
-			search_duration_list: [],
 			page: 0,
 			page_total: 1,
 			search_cid: '',
@@ -157,7 +154,7 @@ export default {
 			data_tabs_loding_status: 1,
 			data_tabs_loding_msg: '',
 			data_list_loding_status: 1,
-			data_tabs_loding_msg: ''
+			data_list_loding_msg: ''
 		};
 	},
 	onLoad(params) {
@@ -222,13 +219,21 @@ export default {
 					const data = res.data;
 					if (data.code == 0) {
 						const new_data = data.data;
+						// 数组数据更新
+						this.popup_list.forEach(item => {
+							if (item.id == 'sort') {
+								item.list = new_data.search_order_by_list;
+							} else if (item.id == 'time') {
+								item.list = new_data.search_release_time_list;
+							} else if (item.id == 'duration') {
+								item.list = new_data.search_duration_list;
+							}
+						});
 						this.setData({
 							category_list: new_data.category_list,
-							search_order_by_list: new_data.search_order_by_list,
-							search_release_time_list: new_data.search_release_time_list,
-							search_duration_list: new_data.search_duration_list,
 							search_cid: new_data?.category_list[0]?.id || '',
 							data_tabs_loding_status: 0,
+							popup_list: this.popup_list
 						})
 						// 加载数据
 						this.load_recommend_videos();
@@ -255,6 +260,8 @@ export default {
 				search_query: e,
 				page: 0,
 				page_total: 1,
+				data_list_loding_status: 1,
+				recommend_videos: []
 			})
 			// 更新数据信息
 			this.load_recommend_videos();
@@ -274,27 +281,34 @@ export default {
 		},
 		load_recommend_videos() {
 			// 加载推荐视频数据的逻辑
+			const { time = '', duration = '', sort = ''} = this.filter_params;
+			const new_page = this.page + 1;
 			uni.request({
 				url: app.globalData.get_request_url("searchdatalist", "index", "video"),
 				method: 'POST',
 				data: {
 					cid: this.search_cid,
-					bwd: this.search_query,
-					rt: '',
-					dn: '',
-					by: '',
-					page: this.page + 1,
+					bwd: this.search_query, // 搜索关键字
+					rt: time, // 发布时间
+					dn: duration, // 视频时长
+					by: sort, // 排序
+					page: new_page,
 				},
 				dataType: 'json',
 				success: res => {
 					const data = res.data;
 					if (data.code == 0) {
-						const new_data = data.data;
+						const responseData = data.data;
+						// 验证数据有效性并安全地合并数组
+						if (responseData && Array.isArray(responseData.data)) {
+							// 使用扩展运算符合并数组
+							this.recommend_videos.push(...responseData.data);
+						}
 						this.setData({
-							recommend_videos: new_data.data,
-							page: this.page + 1,
+							recommend_videos: this.recommend_videos,
+							page: new_page,
 							page_total: data.page_total,
-							goods_bottom_line_status: this.page + 1 >= data.page_total,
+							goods_bottom_line_status: new_page >= data.page_total,
 							data_list_loding_status: 0
 						})
 					} else {
@@ -317,9 +331,11 @@ export default {
 			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
+			debugger;
 			this.load_more();
 		},
 		load_more() {
+			debugger;
 			// 加载更多数据的逻辑
 			if (this.is_more_loading) {
 				return;
@@ -352,13 +368,21 @@ export default {
 		},
 		// 更新筛选条件的值
 		select_filter(e) {
-			const id = e.currentTarget.dataset.id;
-			const option_id = e.currentTarget.dataset.optionId;
-			this.filter_params[id] = option_id;
+			const type = e?.currentTarget?.dataset?.type || '';
+			const id = e?.currentTarget?.dataset?.id || '';
+			if (!isEmpty(id)) {
+				this.filter_params[id] = type;
+			}
 			this.setData({
 				filter_params: this.filter_params,
+				page: 0,
+				page_total: 1,
+				data_list_loding_status: 1,
+				recommend_videos: []
 			});
 			this.close_filter_popup();
+			// 重新初始化数据
+			this.load_recommend_videos();
 		}
 	}
 };
@@ -449,8 +473,9 @@ export default {
 /* #endif */
 /* 推荐视频列表 */
 .recommend-videos {
-	padding: 20rpx 16rpx;
+	padding: 20rpx 0;
 	.video-grid {
+		padding: 0 16rpx;
 		column-count: 2;
 		column-gap: 10px;
 	}
@@ -539,5 +564,8 @@ export default {
 	.popup-content {
 		z-index: 8 !important;
 	}
+}
+.recommend-scroll {
+	height: calc(100vh - 223rpx);
 }
 </style>
