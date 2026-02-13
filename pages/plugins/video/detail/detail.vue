@@ -94,7 +94,7 @@
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
                 <!-- 评论内容区域 -->
-                <scroll-view class="comment-list" scroll-y show-scrollbar="false" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
+                <scroll-view class="comment-list" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                     <view class="comment-scroll">
                         <template v-if="active_comments.length > 0">
                             <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
@@ -283,6 +283,7 @@
                 current_main_index: 0, // 默认选中第一个举报原因
                 current_sub_index: 0, // 默认选中第一个具体类型
                 report_comment_id: '', // 举报的评论id
+                comment_scroll_top: 0,
             };
         },
         computed: {
@@ -1016,6 +1017,10 @@
                                         item.comments_count++;
                                     }
                                 })
+                                this.setData({
+                                    video_data_list: this.video_data_list,
+                                    comment_scroll_top: 0 + Math.random() // 添加主评论时滚动到最顶部
+                                })
                             } else {
                                 this.active_comments.forEach(item => {
                                     if (item.id == new_video_comments_id) {
@@ -1027,7 +1032,6 @@
                             // 清空输入框, 更新数据内容
                             this.setData({
                                 active_comments: this.active_comments,
-                                video_data_list: this.video_data_list,
                                 form_images_list: [],
                                 comment_input_value: '',
                                 comments_data: {},
@@ -1391,8 +1395,8 @@
                                 comment.sub_comments = filteredSubComments;
                                 filteredComments.push(comment);
                             } 
+                            // 更新显示的评论数
                             comment.comments_count = filteredSubComments.length;
-                            // 如果没有子评论且没有内容，则不添加这个父级评论
                         } else {
                             // 没有子评论的情况，直接保留父级评论
                             filteredComments.push(comment);
@@ -1404,7 +1408,7 @@
                             item.comments_count = filteredComments.length;
                         }
                     })
-                    // 更新active_comments
+                    // 更新数据
                     this.setData({
                         active_comments: filteredComments,
                         video_data_list: this.video_data_list
