@@ -1807,9 +1807,11 @@
     .comment-modal {
         position: fixed;
         top: 0;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
         height: 100%;
+        max-width: 1600rpx;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 99;
         display: flex;
