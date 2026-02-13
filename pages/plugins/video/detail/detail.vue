@@ -327,11 +327,13 @@
             this.init();
         },
         mounted() {
+            // #ifdef H5
             // 添加全局点击事件监听
             document.addEventListener('click', this.handle_global_click);
             
             // 添加触摸事件监听（移动端兼容）
             document.addEventListener('touchstart', this.handle_global_click);
+            //#endif
             // 创建监听事件
             this.bind_keyboard_listener();
         },
@@ -352,11 +354,11 @@
             if (typeof document !== 'undefined') {
                 document.removeEventListener('keydown', this.handle_keydown);
             }
-            // #endif
-            this.unbind_keyboard_listener();
             // 移除全局事件监听器
             document.removeEventListener('click', this.handle_global_click);
             document.removeEventListener('touchstart', this.handle_global_click);
+            // #endif
+            this.unbind_keyboard_listener();
         },
         methods: {
             isEmpty,

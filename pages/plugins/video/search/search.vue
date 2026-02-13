@@ -1,5 +1,6 @@
 <template>
-	<view class="wh-auto ht-auto pr video-container bottom-line-exclude-bottom">
+	<view class="wh-auto ht-auto pr video-container">
+		
 		<view class="wh-auto ht-auto pr">
 			<template v-if="tabs.length > 0">
 				<!-- 搜索框 -->
@@ -29,10 +30,10 @@
 				</view>
 				<!-- 推荐视频卡片区域 -->
 				<view class="recommend-videos">
-					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true">
+					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation="true">
 						<template v-if="recommend_videos.length > 0">
 							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-id="item.id" @click="navigate_to_detail">
+								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
 									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
 									<view class="video-info flex-col jc-c"> 
 										<view class="video-title text-line-2">{{ item.title }}</view>
@@ -40,14 +41,20 @@
 											<view class="video-date">{{ item.add_time_date }}</view>
 											<view class="video-likes flex-row align-c gap-4">
 												<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-												<text>{{ item.give_thumbs_count }}</text>
+												<text>{{ item.access_count }}</text>
 											</view>
 										</view>
 									</view>
 								</view>
 							</view>
-							<!-- 结尾 -->
-							<component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+							<template v-if="page < page_total">
+								<!-- 加载更多 -->
+								<loadingComponent v-if="is_more_loading"></loadingComponent>
+							</template>
+							<template v-else>
+								<!-- 结尾 -->
+								<component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+							</template>
 						</template>
 						<template v-else>
 							<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -240,7 +247,7 @@ export default {
 				fail: (err) => {
 					this.setData({
 						data_tabs_loding_status: 2,
-						data_tabs_loding_msg: this.$t('common.internet_error_tips'),
+						data_list_loding_msg: this.$t('common.internet_error_tips'),
 					});
 				}
 			});
@@ -300,8 +307,8 @@ export default {
 						this.setData({
 							recommend_videos: this.recommend_videos,
 							page: new_page,
-							page_total: responseData.page_total,
-							goods_bottom_line_status: new_page >= responseData.page_total,
+							page_total: data.page_total,
+							goods_bottom_line_status: new_page >= data.page_total,
 							data_list_loding_status: 0
 						})
 					} else {
@@ -320,20 +327,38 @@ export default {
 			});
 		},
 		navigate_to_detail(e) {
-			const id = e?.currentTarget?.dataset?.id || '';
-			if (id == '') {
-				return false;
-			} else {
-				app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${id}`, false);
-			}
+			const item = e.currentTarget.dataset.value;
+			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
 		},
 		on_scroll_lower_event() {
-			// 添加额外的检查条件
-			if (this.page >= this.page_total) {
+			debugger;
+			this.load_more();
+		},
+		load_more() {
+			debugger;
+			// 加载更多数据的逻辑
+			if (this.is_more_loading) {
 				return;
 			}
-			// 加载更多数据
-			this.load_recommend_videos();
+			this.is_more_loading = true;
+			setTimeout(() => {
+				// 假设这里加载了更多的视频数据
+				const data = this.recommend_videos;
+				const newVideos = [
+					{
+						thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_homemiddleadv/2019/04/22/1555929400479636.jpg',
+						title: '新视频标题',
+						date: '2025-06-13',
+						likes: 1500,
+						detailId: '5'
+					}
+				];
+				data.push(...newVideos);
+				this.setData({
+					recommend_videos: data,
+					is_more_loading: false,
+				});
+			}, 20000);
 		},
 		toggle_filter_popup() {
 			this.filter_popup_status = !this.filter_popup_status;
@@ -453,10 +478,6 @@ export default {
 		padding: 0 16rpx;
 		column-count: 2;
 		column-gap: 10px;
-		/* 添加这些样式确保滚动事件能正常触发 */
-		min-height: 100%;
-		overflow-y: auto;
-		-webkit-overflow-scrolling: touch;
 	}
 
 	.video-card {
@@ -545,8 +566,6 @@ export default {
 	}
 }
 .recommend-scroll {
-	/* 使用更精确的高度计算 */
-	height: calc(100vh - 240rpx); /* 增加一些高度确保滚动空间 */
-	min-height: 500px; /* 设置最小高度 */
+	height: calc(100vh - 223rpx);
 }
 </style>
