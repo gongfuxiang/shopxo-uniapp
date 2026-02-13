@@ -1016,7 +1016,8 @@ export const time_stamp = (time, date_style = 'horizontal', date_type) => {
 
 export const video_get_top_left_padding = () => {
     var pages = getCurrentPages();
-    if (pages.length > 1) {
+    const is_tab = app.globalData.is_tabbar_pages();
+    if (pages.length > 1 && is_tab) {
         return 'padding-left: 16rpx;box-sizing: border-box;padding-right: 50rpx;';
     } else {
         return 'padding-left: 100rpx;box-sizing: border-box;padding-right: 50rpx;';
