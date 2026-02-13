@@ -139,7 +139,13 @@
                 </scroll-view>
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
                     <view class="comment-input-content flex-col jc-c">
-                        <view class="flex-row align-c gap-10 wh-auto ht-auto">
+                        <view v-if="!isEmpty(comments_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
+                            <text class="size-12 cr-f text-line-1">@{{ comments_data.user.user_name_view }}:{{ comments_data.content }}</text>
+                            <view data-type="image" @tap="comment_data_delete">
+                                <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
+                            </view>
+                        </view>
+                        <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
                             <view data-type="image" @tap="comment_input_change">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
@@ -195,10 +201,27 @@
                 </view>
             </view>
         </component-popup>
-        <!-- 添加评论 -->
-        <view v-if="is_add_comment" class="keyboard-input" :style="'width:100%;bottom:' + listener_height + 'px;'">
-            <view class="keyboard-input-border">
-                <input :value="comment_input_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+        <!-- 添加评论弹出框 -->
+        <view v-if="is_add_comment" class="keyboard-input br-top-shadow" :style="'width:100%;bottom:' + listener_height + 'px;'">
+            <view class="comment-input-content flex-col jc-c">
+                <view v-if="!isEmpty(comments_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
+                    <text class="size-12 cr-f text-line-1">@{{ comments_data.user.user_name_view }}:{{ comments_data.content }}</text>
+                    <view data-type="image" @tap="comment_data_delete">
+                        <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
+                    </view>
+                </view>
+                <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
+                    <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                    <view data-type="image" @tap="comment_input_change">
+                        <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
+                    <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
+                        <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
+                        <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                    </view>
+                </view>
             </view>
         </view>
         <!-- 分享弹窗 -->
@@ -210,6 +233,7 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
+    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import searchComponent from '@/pages/plugins/video/components/search.vue';
     import componentSharePopup from '@/components/share-popup/share-popup';
@@ -229,7 +253,8 @@
             componentSharePopup,
             componentNoData,
             componentBottomLine,
-            componentPopup
+            componentPopup,
+            loadingComponent
         },
         data() {
             return {
@@ -291,6 +316,7 @@
                 is_add_comment: false,
                 // 监听键盘高度变化事件
                 listener_height: 0,
+                comments_data: {}
             };
         },
         computed: {
@@ -836,7 +862,7 @@
             },
             // 评论输入图片删除
             comment_input_img_close(e) {
-                const { index } = e.currentTarget.dataset;
+                const index = e?.currentTarget?.dataset?.index || 0;
                 var list = this.form_images_list;
                 list.splice(index, 1);
                 this.setData({
@@ -1247,10 +1273,14 @@
                 this.active_dropdown_id = null;
                 if (!isEmpty(comments)) {
                     this.setData({ 
-                        input_placeholder: `@${comments.user.user_name_view}`,
                         comments_data: comments,
                     });
                 }
+            },
+            comment_data_delete() {
+                this.setData({ 
+                    comments_data: {},
+                });
             },
             // 评论点赞
             comment_like(id) {
@@ -1777,9 +1807,11 @@
     .comment-modal {
         position: fixed;
         top: 0;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
         height: 100%;
+        max-width: 1600rpx;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 99;
         display: flex;
@@ -1856,17 +1888,20 @@
     .comment-input-content {
         flex: 1;
         border: 2rpx solid #eee;
-        border-radius: 8rpx;
-        padding-right: 16rpx;
+        border-radius: 16rpx;
+        // padding-right: 16rpx;
         font-size: 28rpx;
+    }
+    .pr-16 {
+        padding-right: 16rpx;
     }
     .comment-input-img-container {
         padding: 10rpx 16rpx 16rpx 16rpx;
     }
     .comment-input-img-close {
         position: absolute;
-        right: -10rpx;
-        top: -10rpx;
+        right: -15rpx;
+        top: -15rpx;
         z-index: 2;
     }
     .comment-input-img {
@@ -1942,12 +1977,20 @@
         left: 0;
         z-index: 99;
         background: #fff;
-        padding: 20rpx 16rpx;
+        padding: 20rpx;
         box-sizing: border-box;
     }
     .keyboard-input-border {
-        padding: 16rpx 22rpx;
         border: 2rpx solid #ddd;
-        border-radius: 50rpx;
+        border-radius: 16rpx;
+    }
+    .keyboard-input-content {
+        padding: 16rpx 22rpx;
+    }
+    .comment-reply-content {
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10rpx;
+        border-radius: 16rpx;
+        color: #fff;
     }
 </style>
