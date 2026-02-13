@@ -11,7 +11,7 @@
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">
-                        <search-component :propIsDisabled="true" @disabledSearch="handle_search" />
+                        <search-component :propSearchQuery="search_query" propIsDisabled @disabledSearch="handle_search" />
                     </view>
                 </view>
             </view>
@@ -293,6 +293,7 @@
                 is_add_comment: false,
                 // 监听键盘高度变化事件
                 listener_height: 0,
+                search_query: '',
             };
         },
         computed: {
@@ -912,6 +913,7 @@
             // 关闭评论区
             close_comment_modal() {
                 this.setData({
+                    active_dropdown_id: null,
                     show_comment_modal: false,
                     move_distance: 0,
                 })
@@ -1245,6 +1247,7 @@
             },
             // 主评论回复
             comment_reply(comments) {
+                this.active_dropdown_id = null;
                 if (!isEmpty(comments)) {
                     this.setData({ 
                         input_placeholder: `@${comments.user.user_name_view}`,
@@ -1254,6 +1257,7 @@
             },
             // 评论点赞
             comment_like(id) {
+                this.active_dropdown_id = null;
                 this.set_givethumbs_num(this.current_video_id, id);
             },
             handle_slider_change(e) {
@@ -1548,6 +1552,7 @@
             add_comment() {
                 //#ifndef H5
                 this.is_add_comment = true;
+                this.active_dropdown_id = null;
                 //#endif
             },
             /**

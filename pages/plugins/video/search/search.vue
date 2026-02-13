@@ -33,7 +33,7 @@
 					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation="true">
 						<template v-if="recommend_videos.length > 0">
 							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
+								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-id="item.id" @tap="navigate_to_detail">
 									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
 									<view class="video-info flex-col jc-c"> 
 										<view class="video-title text-line-2">{{ item.title }}</view>
@@ -327,8 +327,12 @@ export default {
 			});
 		},
 		navigate_to_detail(e) {
-			const item = e.currentTarget.dataset.value;
-			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
+			const id = e?.currentTarget?.dataset?.id || '';
+			if (id == '') {
+				return false;
+			} else {
+				app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${id}`, false);
+			}
 		},
 		on_scroll_lower_event() {
 			debugger;
