@@ -11,7 +11,7 @@
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">
-                        <search-component :propSearchQuery="search_query" propIsDisabled @disabledSearch="handle_search" />
+                        <search-component propIsDisabled @disabledSearch="handle_search" />
                     </view>
                 </view>
             </view>
@@ -293,7 +293,6 @@
                 is_add_comment: false,
                 // 监听键盘高度变化事件
                 listener_height: 0,
-                search_query: '',
             };
         },
         computed: {

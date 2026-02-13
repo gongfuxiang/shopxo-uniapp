@@ -7,7 +7,7 @@
 					<view class="header-top">
 						<view class="ht-auto" :style="top_content_style + menu_button_info">
 							<view id="search-height" class="wh-auto ht-auto" :style="header_padding_left">
-								<search-component :propSearchQuery="search_query" propIsDisabled @disabledSearch="handle_search"/>
+								<search-component propIsDisabled @disabledSearch="handle_search"/>
 							</view>
 						</view>
 						<template v-if="tabs.length > 0">
@@ -84,7 +84,6 @@ export default {
 			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
-			search_query: '',
 			tabs: [],
 			current_tabs_index: 0,
 			current_tabs_id: '',
