@@ -1,5 +1,5 @@
 <template>
-	<view class="wh-auto ht-auto pr video-container">
+	<view class="wh-auto ht-auto pr video-container bottom-line-exclude-bottom">
 		<template v-if="tabs.length > 0">
 			<scroll-view  scroll-y :show-scrollbar="false" class="ht" lower-threshold="60" scroll-with-animation="true">
 				<view class="wh-auto ht-auto pr">
@@ -15,7 +15,10 @@
 							<view class="nav-tabs">
 								<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
 									<view class="tabs-scroll-content">
-										<view v-for="(item, index) in tabs" :key="index" class="tab-item" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">{{ item.name }}</view>
+										<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
+											<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image" :src="item.icon" mode="aspectFit"></image>
+											{{ item.name }}
+										</view>
 									</view>
 								</scroll-view>
 							</view>
@@ -57,6 +60,7 @@
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentNoData from '@/components/no-data/no-data';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
+import { isEmpty } from '../../../../common/js/common/common';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -98,6 +102,7 @@ export default {
 		this.init();
 	},
 	methods: {
+		isEmpty,
 		init() {
 			// 小程序下，获取小程序胶囊的宽度
 			let menu_button_info = 'max-width:100%';
@@ -322,5 +327,9 @@ export default {
 		color: #999999;
 		line-height: 34rpx;
 	}
+}
+.tabs-scroll-image {
+	width: 40rpx;
+	height: 40rpx;
 }
 </style>

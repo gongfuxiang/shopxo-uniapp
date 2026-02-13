@@ -1,65 +1,71 @@
 <template>
-	<view class="wh-auto ht pr search-record-container">
-		<!-- 搜索框 -->
-		<view class="header-top" :style="top_content_style + menu_button_info">
-			<view id="search-height" class="flex-row align-c">
-				<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-                <!-- #ifndef MP-ALIPAY -->
-				<view class="cp" @tap="handle_back">
-					<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
-				</view>
-				<!-- #endif -->
-				<view class="wh-auto ht-auto" :style="header_padding_left">
-					<search-component :propSearchQuery="search_query" @search="handle_search" />
-				</view>
-			</view>
-		</view>
-		<!-- 搜索历史记录 -->
-		<view v-if="show_search_history.length > 0" class="search-history flex-col jc-c align-c">
-			<view v-for="(history, index) in show_search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">
-				<view class="flex-row align-c search-history-title cp" :data-value="history" @tap.stop="perform_search">
-					<iconfont name="icon-time" size="32rpx"></iconfont>
-					<text>{{ history }}</text>
-				</view>
-				<iconfont name="icon-close-line" size="24rpx" :data-index="index" @tap="delete_history"></iconfont>
-			</view>
-			<!-- 查看更多 -->
-			<template v-if="search_history.length > (show_search_history.length + 4)">
-				<template v-if="is_view_more">
-					<loadingComponent></loadingComponent>
-				</template>
-				<template v-else>
-					<view class="more-history-btn cp" @tap="view_more_history">查看更多历史</view>
-				</template>
-			</template>
-		</view>
-		<!-- 热搜列表 -->
-		<view v-if="search_history_data.length > 0" class="hot-search">
-			<view class="hot-tabs">
-				<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
-					<view class="tabs-scroll-content">
-						<view v-for="(tab, index) in search_history_data" :key="index" class="hot-tab-item cp" :class="(hot_current_tab === index) ? 'active' : ''" :data-index="index" @tap="switch_hot_tab">{{ tab.name }}</view>
+	<view class="wh-auto ht pr search-record-container bottom-line-exclude-bottom">
+		<template v-if="search_history_data.length > 0">
+			<!-- 搜索框 -->
+			<view class="header-top" :style="top_content_style + menu_button_info">
+				<view id="search-height" class="flex-row align-c">
+					<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+					<!-- #ifndef MP-ALIPAY -->
+					<view class="cp" @tap="handle_back">
+						<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
 					</view>
-				</scroll-view>
+					<!-- #endif -->
+					<view class="wh-auto ht-auto" :style="header_padding_left">
+						<search-component :propSearchQuery="search_query" @search="handle_search" />
+					</view>
+				</view>
 			</view>
-			<view class="hot-list flex-col align-c gap-10">
-				<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.title" @tap.stop="perform_search">
-					<view class="flex-1 flex-row align-c gap-10">
-						<view class="hot-num flex-row align-c jc-c">
-							<view :class="index < 3 ? `hexagon-top hexagon-top-${index + 1}` : 'hexagon-no-top'"><span>{{ index + 1 }}</span></view>
+			<!-- 搜索历史记录 -->
+			<view v-if="show_search_history.length > 0" class="search-history flex-col jc-c align-c">
+				<view v-for="(history, index) in show_search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">
+					<view class="flex-row align-c search-history-title cp" :data-value="history" @tap.stop="perform_search">
+						<iconfont name="icon-time" size="32rpx"></iconfont>
+						<text>{{ history }}</text>
+					</view>
+					<iconfont name="icon-close-line" size="24rpx" :data-index="index" @tap="delete_history"></iconfont>
+				</view>
+				<!-- 查看更多 -->
+				<template v-if="search_history.length > (show_search_history.length + 4)">
+					<template v-if="is_view_more">
+						<loadingComponent></loadingComponent>
+					</template>
+					<template v-else>
+						<view class="more-history-btn cp" @tap="view_more_history">查看更多历史</view>
+					</template>
+				</template>
+			</view>
+			<!-- 热搜列表 -->
+			<view v-if="search_history_data.length > 0" class="hot-search">
+				<view class="hot-tabs">
+					<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
+						<view class="tabs-scroll-content">
+							<view v-for="(tab, index) in search_history_data" :key="index" class="hot-tab-item cp" :class="(hot_current_tab === index) ? 'active' : ''" :data-index="index" @tap="switch_hot_tab">{{ tab.name }}</view>
 						</view>
-						<view class="hot-title">{{ item.title }}</view>
+					</scroll-view>
+				</view>
+				<view class="hot-list flex-col align-c gap-10">
+					<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.title" @tap.stop="perform_search">
+						<view class="flex-1 flex-row align-c gap-10">
+							<view class="hot-num flex-row align-c jc-c">
+								<view :class="index < 3 ? `hexagon-top hexagon-top-${index + 1}` : 'hexagon-no-top'"><span>{{ index + 1 }}</span></view>
+							</view>
+							<view class="hot-title">{{ item.title }}</view>
+						</view>
+						<view class="hot-hotness">热度 {{ item.hotness }}</view>
 					</view>
-					<view class="hot-hotness">热度 {{ item.hotness }}</view>
 				</view>
 			</view>
-		</view>
+		</template>
+		<template v-else>
+			<component-no-data :propStatus="data_loding_status" :propMsg="data_loding_msg"></component-no-data>
+		</template>
 	</view>
 </template>
 
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+import componentNoData from '@/components/no-data/no-data';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
 import { isEmpty } from '../../../../common/js/common/common';
 const app = getApp();
@@ -72,7 +78,8 @@ bar_height = 0;
 export default {
 	components: {
 		searchComponent,
-		loadingComponent
+		loadingComponent,
+		componentNoData
 	},
 	data() {
 		return {
@@ -93,7 +100,8 @@ export default {
 			hot_current_tab: 0,
 			is_view_more: false,
 			header_padding_left: '',
-			
+			data_loding_status: 1,
+			data_loding_msg: '',
 		};
 	},
 	onShow() {
@@ -142,7 +150,18 @@ export default {
 						this.setData({
 							search_history_data: new_data.search_history_data
 						})
+					} else {
+						this.setData({
+							data_loding_status: 2,
+							data_loding_msg: data.msg,
+						});
 					}
+				},
+				fail: (err) => {
+					this.setData({
+						data_loding_status: 2,
+						data_loding_msg: this.$t('common.internet_error_tips'),
+					});
 				}
 			});
 		},
@@ -159,7 +178,9 @@ export default {
 			app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
 		},
 		perform_search(e) {
-			this.search_query = e.currentTarget.dataset.value;
+			const value = e?.currentTarget?.dataset?.value || '';
+			// 直接跳转到搜索页
+			this.handle_search(value);
 		},
 		delete_history(e) {
 			const index = e.currentTarget.dataset.index;
@@ -178,7 +199,6 @@ export default {
 			this.setData({
 				hot_current_tab: e.currentTarget.dataset.index,
 			});
-			// 根据当前标签加载对应的数据
 		}
 	}
 };

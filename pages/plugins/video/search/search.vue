@@ -1,6 +1,5 @@
 <template>
-	<view class="wh-auto ht-auto pr video-container">
-		
+	<view class="wh-auto ht-auto pr video-container bottom-line-exclude-bottom">
 		<view class="wh-auto ht-auto pr">
 			<template v-if="tabs.length > 0">
 				<!-- 搜索框 -->
@@ -33,7 +32,7 @@
 					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true">
 						<template v-if="recommend_videos.length > 0">
 							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item" @click="navigate_to_detail">
+								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-id="item.id" @click="navigate_to_detail">
 									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
 									<view class="video-info flex-col jc-c"> 
 										<view class="video-title text-line-2">{{ item.title }}</view>
@@ -241,7 +240,7 @@ export default {
 				fail: (err) => {
 					this.setData({
 						data_tabs_loding_status: 2,
-						data_list_loding_msg: this.$t('common.internet_error_tips'),
+						data_tabs_loding_msg: this.$t('common.internet_error_tips'),
 					});
 				}
 			});
@@ -321,8 +320,12 @@ export default {
 			});
 		},
 		navigate_to_detail(e) {
-			const item = e.currentTarget.dataset.value;
-			app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${item.detailId}`, false);
+			const id = e?.currentTarget?.dataset?.id || '';
+			if (id == '') {
+				return false;
+			} else {
+				app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${id}`, false);
+			}
 		},
 		on_scroll_lower_event() {
 			// 添加额外的检查条件

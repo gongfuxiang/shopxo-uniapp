@@ -88,7 +88,7 @@
         
         <!-- 评论弹窗 -->
         <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
-            <view class="comment-content" :style="commentContentStyle" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+            <view class="comment-content bottom-line-exclude-bottom" :style="commentContentStyle" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                 <view class="comment-header">
                     <text class="comment-count">评论</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
@@ -168,7 +168,7 @@
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
-                    <view class="report-section">
+                    <view v-if="report_type_list.length > 0" class="report-section">
                         <view class="report-label">举报原因<text class="ml-10">*</text></view>
                         <view class="flex-row align-c gap-10 flex-wrap">
                             <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" :data-index="main_index" @tap="select_main_reason">
@@ -181,7 +181,7 @@
                     </view>
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
-                    <view class="report-section mt-20" v-if="current_main_index >= 0">
+                    <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index]">
                         <view class="report-label">请选择具体的类型<text class="ml-10">*</text></view>
                         <view class="flex-row align-c gap-10 flex-wrap">
                             <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" :data-index="sub_index" @tap="select_sub_reason">
@@ -297,7 +297,11 @@
             },
             // 如果是第一个或者最后一个的情况下，取消无限轮播
             close_circular() {
-                return this.video_data_list[0].id == this.current_video_id  || this.video_data_list[this.video_data_list.length - 1].id == this.current_video_id;
+                if (this.video_data_list.length > 0) {
+                    return this.video_data_list[0].id == this.current_video_id  || this.video_data_list[this.video_data_list.length - 1].id == this.current_video_id;
+                } else {
+                    return true
+                }
             }
         },
         onLoad(params) {
@@ -475,13 +479,22 @@
 
                                     this.display_video_list.forEach((item, index) => {
                                         this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                        //#ifdef H5
                                         this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
+                                        //#endif
                                     });
 
                                     setTimeout(() => {
+                                        //#ifdef H5
                                         if (this.video_contexts[0]) { // 当前播放的视频索引为0
                                             this.video_play_event(this.video_contexts[0], true);
                                         }
+                                        //#endif
+                                        //#ifndef H5
+                                        if (this.create_video_contexts[0]) { // 当前播放的视频索引为0
+                                            this.video_play_event(this.create_video_contexts[0], true);
+                                        }
+                                        //#endif
                                     }, 200);
                                 }, 0);
                             }
@@ -656,9 +669,14 @@
 
                 try {
                     if (is_first_play) {
+                        //#ifdef H5
                         videoContext.play().catch((error) => {
                             this.setData({ paused: true });
                         });
+                        //#endif
+                        //#ifndef H5
+                        videoContext.play();  
+                        //#endif
                     } else {
                         videoContext.play();
                     }
@@ -993,6 +1011,11 @@
                                     page: 0,
                                     sub_comments: [],
                                 })
+                                this.video_data_list.forEach(item => {
+                                    if (item.id == this.current_video_id) {
+                                        item.comments_count++;
+                                    }
+                                })
                             } else {
                                 this.active_comments.forEach(item => {
                                     if (item.id == new_video_comments_id) {
@@ -1003,6 +1026,8 @@
                             }
                             // 清空输入框, 更新数据内容
                             this.setData({
+                                active_comments: this.active_comments,
+                                video_data_list: this.video_data_list,
                                 form_images_list: [],
                                 comment_input_value: '',
                                 comments_data: {},
@@ -1094,6 +1119,9 @@
                                     item = new_item;
                                 }
                             });
+                            this.setData({
+                                video_data_list: this.video_data_list
+                            })
                         }
                     }
                 });
@@ -1152,6 +1180,9 @@
                                     break; // 处理完当前item后跳出外层循环
                                 }
                             }
+                            this.setData({
+                                video_data_list: this.video_data_list
+                            })
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -1233,6 +1264,9 @@
                         item.show_goods = false;
                     }
                 });
+                this.setData({
+                    video_data_list: this.video_data_list
+                })
             },
             handle_product_card_item(e) {
                 const id = e?.currentTarget?.dataset?.id || '';
@@ -1252,6 +1286,9 @@
                         }
                     }
                 });
+                this.setData({
+                    video_data_list: this.video_data_list
+                })
             },
             // 清理所有视频资源
             cleanup_all_videos() {
@@ -1430,7 +1467,7 @@
                 }
             },
             
-            // 新增方法：直接选择子类型（用于一行显示的点击）
+            // 直接选择子类型（用于一行显示的点击）
             select_sub_reason(e) {
                 const index = e?.currentTarget?.dataset?.index || 0;
                 const sub_index = parseInt(index);
