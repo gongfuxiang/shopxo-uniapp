@@ -4,7 +4,7 @@
         <view class="search-iconfont-container">
             <iconfont name="icon-search-fine"></iconfont>
         </view>
-        <input type="text" v-model="search_query" placeholder="请输入您的搜索内容" @input="handle_search" />
+        <input type="text" v-model="search_query" :adjust-position="false" placeholder="请输入您的搜索内容" @input="handle_search" />
         <view class="search-line"></view>
         <view class="search-button" @tap="perform_search">搜索</view>
     </view>
@@ -101,7 +101,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1;
+        z-index: 99;
     }
 }
 </style>

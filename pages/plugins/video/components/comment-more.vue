@@ -18,6 +18,10 @@ export default {
             type: String,
             default: '展开'
         },
+        propIsLevel: {
+            type: Number,
+            default: 1
+        },
         propIconName: {
             type: String,
             default: 'icon-arrow-down'
@@ -25,7 +29,7 @@ export default {
     },
     methods: {
         comment_more_event() {
-            this.$emit('comment_more_event', this.propId);
+            this.$emit('comment_more_event', this.propId, this.propIsLevel);
         }
     }
 }   
