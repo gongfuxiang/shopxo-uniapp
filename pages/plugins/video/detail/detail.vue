@@ -1390,16 +1390,25 @@
                                 // 更新子评论数组
                                 comment.sub_comments = filteredSubComments;
                                 filteredComments.push(comment);
-                            }
+                            } 
+                            comment.comments_count = filteredSubComments.length;
                             // 如果没有子评论且没有内容，则不添加这个父级评论
                         } else {
                             // 没有子评论的情况，直接保留父级评论
                             filteredComments.push(comment);
                         }
                     }
-                    
+                    // 删除之后更新评论数据
+                    this.video_data_list.forEach(item => {
+                        if (item.id == this.current_video_id) {
+                            item.comments_count = filteredComments.length;
+                        }
+                    })
                     // 更新active_comments
-                    this.active_comments = filteredComments;
+                    this.setData({
+                        active_comments: filteredComments,
+                        video_data_list: this.video_data_list
+                    })
                 }
             },
             // 处理全局点击事件

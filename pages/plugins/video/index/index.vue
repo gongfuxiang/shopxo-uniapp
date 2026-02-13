@@ -36,7 +36,7 @@
 											<view class="video-date">{{ item.add_time_date }}</view>
 											<view class="video-likes flex-row align-c gap-4">
 												<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-												<text>{{ item.access_count }}</text>
+												<text>{{ item.give_thumbs_count }}</text>
 											</view>
 										</view>
 									</view>
