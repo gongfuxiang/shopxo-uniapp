@@ -350,6 +350,10 @@
         onShow() {
             this.init();
         },
+        onHide() {
+            // 清理所有视频资源
+            this.cleanup_all_videos();
+        },
         mounted() {
             // #ifdef H5
             // 添加全局点击事件监听
