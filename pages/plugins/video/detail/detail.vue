@@ -535,7 +535,7 @@
 
                                 setTimeout(() => { 
                                     // // 更新分享信息
-                                    this.update_share_info(this.display_video_list[0]);
+                                    this.update_share_info(this.display_video_list[this.current_index]);
 
                                     this.display_video_list.forEach((item, index) => {
                                         this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
