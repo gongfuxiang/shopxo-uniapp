@@ -196,7 +196,7 @@
             </view>
         </component-popup>
         <!-- 添加评论 -->
-        <view v-if="is_add_comment" class="keyboard-input" :style="'width:100%;bottom:' + listener_height + 'px;'">
+        <view v-if="is_add_comment" class="keyboard-input br-top-shadow" :style="'width:100%;bottom:' + listener_height + 'px;'">
             <view class="keyboard-input-border">
                 <input :value="comment_input_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
             </view>
@@ -210,6 +210,7 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
+    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import searchComponent from '@/pages/plugins/video/components/search.vue';
     import componentSharePopup from '@/components/share-popup/share-popup';
@@ -229,7 +230,8 @@
             componentSharePopup,
             componentNoData,
             componentBottomLine,
-            componentPopup
+            componentPopup,
+            loadingComponent
         },
         data() {
             return {
