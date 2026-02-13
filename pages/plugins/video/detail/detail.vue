@@ -536,7 +536,7 @@
                                 setTimeout(() => { 
                                     // // 更新分享信息
                                     this.update_share_info(this.display_video_list[0]);
-
+                                    
                                     this.display_video_list.forEach((item, index) => {
                                         this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
                                         //#ifdef H5
@@ -547,12 +547,12 @@
                                     setTimeout(() => {
                                         //#ifdef H5
                                         if (this.video_contexts[0]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.video_contexts[0], true);
+                                            this.video_play_event(this.video_contexts[this.current_index], true);
                                         }
                                         //#endif
                                         //#ifndef H5
                                         if (this.create_video_contexts[0]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.create_video_contexts[0], true);
+                                            this.video_play_event(this.create_video_contexts[this.current_index], true);
                                         }
                                         //#endif
                                     }, 200);
