@@ -44,14 +44,22 @@
 					</scroll-view>
 				</view>
 				<view class="hot-list flex-col align-c gap-10">
-					<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.title" @tap.stop="perform_search">
+					<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-url="item.url" @tap.stop="perform_url">
 						<view class="flex-1 flex-row align-c gap-10">
 							<view class="hot-num flex-row align-c jc-c">
 								<view :class="index < 3 ? `hexagon-top hexagon-top-${index + 1}` : 'hexagon-no-top'"><span>{{ index + 1 }}</span></view>
 							</view>
 							<view class="hot-title">{{ item.title }}</view>
 						</view>
-						<view class="hot-hotness">热度 {{ item.hotness }}</view>
+						<view class="hot-hotness flex-row align-c gap-5">
+							<template v-if="search_history_data[hot_current_tab].field == 'add_time_tips'">
+								<iconfont name="icon-time" size="32rpx" color="#999"></iconfont>
+							</template>
+							<template v-else>
+								<iconfont name="icon-fire" size="32rpx" color="#999"></iconfont>
+							</template>
+							{{ item[search_history_data[hot_current_tab].field] }}
+						</view>
 					</view>
 				</view>
 			</view>
@@ -183,8 +191,19 @@ export default {
 			this.handle_search(value);
 		},
 		delete_history(e) {
-			const index = e.currentTarget.dataset.index;
-			this.search_history.splice(index, 1);
+			const index = e?.currentTarget?.dataset?.index;
+			const data = this.show_search_history[index];
+			if (!isEmpty(data)) {
+				const newIndex = this.search_history.findIndex(item => item == data);
+				this.search_history.splice(newIndex, 1);
+			}
+			this.show_search_history.splice(index, 1);
+		},
+		perform_url(e) {
+			const url = e?.currentTarget?.dataset?.url || '';
+			if (!isEmpty(url)) {
+				app.globalData.url_open(url);
+			}
 		},
 		view_more_history() {
 			// 查看更多历史逻辑
