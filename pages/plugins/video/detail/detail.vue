@@ -140,7 +140,7 @@
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
                     <view class="comment-input-content flex-col jc-c">
                         <view class="flex-row align-c gap-10 wh-auto ht-auto">
-                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :placeholder="input_placeholder" @input="comment_input_event" @confirm="send_comment" />
+                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
                             <view data-type="image" @tap="comment_input_change">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
                             </view>
@@ -195,7 +195,12 @@
                 </view>
             </view>
         </component-popup>
-
+        <!-- 添加评论 -->
+        <view v-if="is_add_comment" class="keyboard-input" :style="'width:100%;bottom:' + listener_height + 'px;'">
+            <view class="keyboard-input-border">
+                <input :value="comment_input_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+            </view>
+        </view>
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
     </view>
@@ -284,6 +289,10 @@
                 current_sub_index: 0, // 默认选中第一个具体类型
                 report_comment_id: '', // 举报的评论id
                 comment_scroll_top: 0,
+                comment_value: '',
+                is_add_comment: false,
+                // 监听键盘高度变化事件
+                listener_height: 0,
             };
         },
         computed: {
@@ -317,6 +326,15 @@
         onShow() {
             this.init();
         },
+        mounted() {
+            // 添加全局点击事件监听
+            document.addEventListener('click', this.handle_global_click);
+            
+            // 添加触摸事件监听（移动端兼容）
+            document.addEventListener('touchstart', this.handle_global_click);
+            // 创建监听事件
+            this.bind_keyboard_listener();
+        },
         beforeDestroy() {
             // 清理定时器
             if (this.video_switch_debounce_timer) {
@@ -335,6 +353,10 @@
                 document.removeEventListener('keydown', this.handle_keydown);
             }
             // #endif
+            this.unbind_keyboard_listener();
+            // 移除全局事件监听器
+            document.removeEventListener('click', this.handle_global_click);
+            document.removeEventListener('touchstart', this.handle_global_click);
         },
         methods: {
             isEmpty,
@@ -1521,18 +1543,36 @@
                     }
                 });
             },
-            mounted() {
-                // 添加全局点击事件监听
-                document.addEventListener('click', this.handle_global_click);
-                
-                // 添加触摸事件监听（移动端兼容）
-                document.addEventListener('touchstart', this.handle_global_click);
+            add_comment() {
+                //#ifndef H5
+                this.is_add_comment = true;
+                //#endif
             },
-            beforeDestroy() {
-                // 移除全局事件监听器
-                document.removeEventListener('click', this.handle_global_click);
-                document.removeEventListener('touchstart', this.handle_global_click);
-            }
+            /**
+             * 键盘高度变化监听处理
+             * @param {Object} res - 键盘高度变化事件对象
+             */
+            listener(res) {
+                console.log(res);
+                // 减1是为了兼容，避免跟键盘之间会不连贯
+                if (res.height > 0) {
+                    this.listener_height = res.height - 1;
+                } else {
+                    this.listener_height = 0;
+                }
+            },
+            /**
+             * 绑定键盘高度变化监听事件
+             */
+            bind_keyboard_listener() {
+                uni.onKeyboardHeightChange(this.listener);
+            },
+            /**
+             * 解绑键盘高度变化监听事件
+             */
+            unbind_keyboard_listener() {
+                uni.offKeyboardHeightChange(this.listener);
+            },
         }
     };
 </script>
@@ -1892,5 +1932,18 @@
             opacity: 0.27;
             border-color: transparent;
         }
+    }
+    .keyboard-input {
+        position: fixed;
+        left: 0;
+        z-index: 99;
+        background: #fff;
+        padding: 20rpx 16rpx;
+        box-sizing: border-box;
+    }
+    .keyboard-input-border {
+        padding: 16rpx 22rpx;
+        border: 2rpx solid #ddd;
+        border-radius: 50rpx;
     }
 </style>
