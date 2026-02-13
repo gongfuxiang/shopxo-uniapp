@@ -209,7 +209,6 @@
 <script>
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
-    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import searchComponent from '@/pages/plugins/video/components/search.vue';
@@ -224,7 +223,6 @@
     // #endif
     export default {
         components: {
-            loadingComponent,
             commentInfoComponent,
             commentMoreComponent,
             searchComponent,
