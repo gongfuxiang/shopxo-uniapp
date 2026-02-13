@@ -351,6 +351,13 @@
             this.init();
         },
         onHide() {
+            // 清理定时器
+            if (this.video_switch_debounce_timer) {
+                clearTimeout(this.video_switch_debounce_timer);
+            }
+            if (this.video_cleanup_timer) {
+                clearTimeout(this.video_cleanup_timer);
+            }
             // 清理所有视频资源
             this.cleanup_all_videos();
         },
