@@ -351,6 +351,13 @@
             this.init();
         },
         onHide() {
+            // 清理定时器
+            if (this.video_switch_debounce_timer) {
+                clearTimeout(this.video_switch_debounce_timer);
+            }
+            if (this.video_cleanup_timer) {
+                clearTimeout(this.video_cleanup_timer);
+            }
             // 清理所有视频资源
             this.cleanup_all_videos();
         },
@@ -539,13 +546,13 @@
 
                                     setTimeout(() => {
                                         //#ifdef H5
-                                        if (this.video_contexts[0]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.video_contexts[0], true);
+                                        if (this.video_contexts[this.current_index]) { // 当前播放的视频索引为0
+                                            this.video_play_event(this.video_contexts[this.current_index], true);
                                         }
                                         //#endif
                                         //#ifndef H5
-                                        if (this.create_video_contexts[0]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.create_video_contexts[0], true);
+                                        if (this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为0
+                                            this.video_play_event(this.create_video_contexts[this.current_index], true);
                                         }
                                         //#endif
                                     }, 200);
