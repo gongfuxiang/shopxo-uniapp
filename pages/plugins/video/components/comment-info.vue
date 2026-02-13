@@ -24,10 +24,10 @@
                 <image :src="propComment.images" :data-image="propComment.images" @tap="upload_show_event" mode="aspectFill" class="comment-images"></image>
             </template>
             <!-- </view> -->
-            <view class="comment-operation flex-row align-c jc-sb">
+            <view class="comment-operation flex-row align-c jc-sb gap-10">
                 <view class="comment-operation-left flex-row align-c gap-10">
                     <view class="comment-time">{{ propComment.add_time }}</view>
-                    <view class="comment-reply">{{ propReplyContent }}</view>
+                    <view class="comment-reply flex-row align-c gap-5">{{ propReplyContent }}({{ propComment.comments_count }})</view>
                 </view>
                 <view class="comment-operation-right flex-row align-c gap-5" @tap.stop="comment_like">
                     <iconfont name="icon-givealike-o-fine" :color="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" size="28rpx" />
