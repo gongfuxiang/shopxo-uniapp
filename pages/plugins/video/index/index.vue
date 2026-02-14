@@ -5,8 +5,14 @@
 				<view class="wh-auto ht-auto pr">
 					<!-- 搜索框 -->
 					<view class="header-top">
-						<view class="ht-auto" :style="top_content_style + menu_button_info">
-							<view id="search-height" class="wh-auto ht-auto" :style="header_padding_left">
+						<view id="search-height" class="ht-auto flex-row align-c" :style="top_content_style + menu_button_info">
+							<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+							<!-- #ifndef MP-ALIPAY -->
+							<view v-if="is_show_back" class="cp" @tap="handle_back">
+								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="ml-10 mr-10"></iconfont>
+							</view>
+							<!-- #endif -->
+							<view class="wh-auto ht-auto" :style="header_padding_left">
 								<search-component propIsDisabled @disabledSearch="handle_search"/>
 							</view>
 						</view>
@@ -84,6 +90,7 @@ export default {
 			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
+			is_show_back: true,
 			tabs: [],
 			current_tabs_index: 0,
 			current_tabs_id: '',
@@ -120,8 +127,9 @@ export default {
 			// #ifdef MP-ALIPAY
 				padding_left = video_get_top_left_padding();
 			// #endif
-
+			let pages = getCurrentPages();
 			this.setData({
+				is_show_back: pages.length > 1 && !app.globalData.is_tabbar_pages(),
 				header_padding_left: padding_left,
 				menu_button_info: menu_button_info,
 			});
@@ -217,7 +225,10 @@ export default {
 			} else {
 				app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${id}`, false);
 			}
-		}
+		},
+		handle_back() {
+			app.globalData.page_back_prev_event();
+		},
 	}
 };
 </script>
