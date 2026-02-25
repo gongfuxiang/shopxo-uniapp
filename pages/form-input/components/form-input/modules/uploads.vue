@@ -150,6 +150,7 @@
         created: function () {},
         methods: {
             init() {
+                console.log(this.propData)
                 // 将80%的宽度分成16份
                 const block = (sys_width * 0.8) / 16;
                 this.setData({

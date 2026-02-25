@@ -9,7 +9,6 @@
                             :propIsOnEvent="true"
                             :propIsRequired="false"
                             :propPlaceholder="$t('user.user.nk3cpq')"
-                            propClass="br"
                             propSize="md"
                             :propIsBtn="true"
                             :propDefaultValue="search_input_keywords_value"
@@ -32,19 +31,13 @@
 
                     <view class="form-gorup bg-white border-radius-main margin-top-main">
                         <view class="form-gorup-title">{{$t('visit-form.visit-form.0su017')}}<text class="form-group-tips-must">*</text></view>
-                        <textarea class="cr-base" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" :placeholder="$t('visit-form.visit-form.e9r65a')" :value="data.content || ''"></textarea>
+                        <textarea class="cr-base" name="content" maxlength="230" placeholder-class="cr-grey-9" :placeholder="$t('visit-form.visit-form.e9r65a')" :value="data.content || ''"></textarea>
                     </view>
 
                     <view class="form-gorup form-container-upload oh border-radius-main margin-top-main">
                         <view class="form-gorup-title">{{$t('visit-form.visit-form.6l81lz')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('order.order.o11d44')}}{{form_images_max_count}}{{$t('buy.buy.5iuqow')}}</text></view>
-                        <view class="form-upload-data oh">
-                            <block v-if="form_images_list.length > 0">
-                                <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
-                                    <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
-                                    <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
-                                </view>
-                            </block>
-                            <image v-if="(form_images_list || null) == null || form_images_list.length < form_images_max_count" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                        <view class="margin-top-sm">
+                            <component-upload :propData="form_images_list" :propMaxNum="form_images_max_count" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                         </view>
                     </view>
 
@@ -70,6 +63,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentSearch from '@/components/search/search';
+    import componentUpload from '@/components/upload/upload';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
@@ -94,7 +88,8 @@
         components: {
             componentCommon,
             componentNoData,
-            componentSearch
+            componentSearch,
+            componentUpload
         },
 
         onLoad(params) {
@@ -305,91 +300,11 @@
                 });
             },
 
-            // 上传图片预览
-            upload_show_event(e) {
-                uni.previewImage({
-                    current: this.form_images_list[e.currentTarget.dataset.index],
-                    urls: this.form_images_list,
+            // 上传回调
+            upload_image_event(res, index) {
+                this.setData({
+                    form_images_list: res,
                 });
-            },
-
-            // 图片删除
-            upload_delete_event(e) {
-                var self = this;
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
-                    success(res) {
-                        if (res.confirm) {
-                            var list = self.form_images_list;
-                            list.splice(e.currentTarget.dataset.index, 1);
-                            self.setData({
-                                form_images_list: list,
-                            });
-                        }
-                    },
-                });
-            },
-            
-            // 文件上传
-            file_upload_event(e) {
-                var self = this;
-                uni.chooseImage({
-                    count: this.form_images_max_count,
-                    success(res) {
-                        var success = 0;
-                        var fail = 0;
-                        var length = res.tempFilePaths.length;
-                        var count = 0;
-                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                    },
-                });
-            },
-            
-            // 采用递归的方式上传多张
-            upload_one_by_one(img_paths, success, fail, count, length) {
-                var self = this;
-                if (self.form_images_list.length < this.form_images_max_count) {
-                    uni.uploadFile({
-                        url: app.globalData.get_request_url("index", "ueditor"),
-                        filePath: img_paths[count],
-                        name: "upfile",
-                        formData: {
-                            action: "uploadimage",
-                            path_type: self.editor_path_type,
-                        },
-                        success: function (res) {
-                            success++;
-                            if (res.statusCode == 200) {
-                                var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
-                                if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    list.push(data.data.url);
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                } else {
-                                    app.globalData.showToast(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (e) {
-                            fail++;
-                        },
-                        complete: function (e) {
-                            count++;
-            
-                            // 下一张
-                            if (count >= length) {
-                                // 上传完毕，作一下提示
-                                //app.showToast('上传成功' + success +'张', 'success');
-                            } else {
-                                // 递归调用，上传下一张
-                                self.upload_one_by_one(img_paths, success, fail, count, length);
-                            }
-                        },
-                    });
-                }
             }
         },
     };

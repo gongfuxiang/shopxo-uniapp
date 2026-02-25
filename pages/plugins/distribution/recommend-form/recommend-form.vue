@@ -3,57 +3,53 @@
         <view class="page-bottom-fixed">
             <block v-if="data_list_loding_status == 3">
                 <form @submit="form_submit" class="form-container">
-                    <view class="padding-main oh">
-                        <view class="form-gorup bg-white form-container-upload oh">
-                            <view class="form-gorup-title">{{$t('recommend-form.recommend-form.57zrl5')}}<text class="form-group-tips">{{$t('recommend-form.recommend-form.3vk50b')}}</text></view>
-                            <view class="form-upload-data oh">
-                                <block v-if="(recommend_data.icon || null) != null">
-                                    <view class="item fl">
-                                        <text class="delete-icon" @tap="upload_delete_event">x</text>
-                                        <image :src="recommend_data.icon" @tap="upload_show_event" mode="aspectFill"></image>
-                                    </view>
-                                </block>
-                                <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                    <view class="padding-main">
+                        <view class="bg-white oh border-radius-main">
+                            <view class="form-gorup">
+                                <view class="form-gorup-title">{{$t('recommend-form.recommend-form.57zrl5')}}<text class="form-group-tips">{{$t('recommend-form.recommend-form.3vk50b')}}</text></view>
+                                <view class="margin-top-sm">
+                                    <component-upload :propData="(recommend_data.icon || null) != null ? [recommend_data.icon] : []" :propMaxNum="1" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
+                                </view>
                             </view>
-                        </view>
 
-                        <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">{{$t('user-detail.user-detail.uy6lrz')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.q4qr64')" />
-                        </view>
+                            <view class="form-gorup">
+                                <view class="form-gorup-title">{{$t('user-detail.user-detail.uy6lrz')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.q4qr64')" />
+                            </view>
 
-                        <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">{{$t('form.form.xy87t8')}}</view>
-                            <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.29au77')" />
-                        </view>
+                            <view class="form-gorup">
+                                <view class="form-gorup-title">{{$t('form.form.xy87t8')}}</view>
+                                <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.29au77')" />
+                            </view>
 
-                        <view class="form-gorup anonymous">
-                            <view class="form-gorup-title">{{$t('form.form.043a10')}}</view>
-                            <switch name="is_enable" style="transform: scale(0.9)" class="margin-top-sm" :checked="recommend_data.is_enable == 1"></switch>
-                        </view>
+                            <view class="form-gorup anonymous">
+                                <view class="form-gorup-title">{{$t('form.form.043a10')}}</view>
+                                <switch name="is_enable" style="transform: scale(0.9)" class="margin-top-sm" :checked="recommend_data.is_enable == 1"></switch>
+                            </view>
 
-                        <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">{{$t('recommend-form.recommend-form.5ws7m3')}}<text class="form-group-tips-must">*</text></view>
-                            <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
-                                <block v-for="(item, index) in recommend_data.detail_list" :key="index">
-                                    <view v-if="(item.goods || null) != null" :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
-                                        <view :data-value="item.goods.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
-                                            <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
-                                        </view>
-                                        <view class="base fr">
-                                            <view class="cr-base single-text">{{ item.goods.title }}</view>
-                                            <view class="margin-top-xs">
-                                                <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
-                                                <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
+                            <view class="form-gorup">
+                                <view class="form-gorup-title">{{$t('recommend-form.recommend-form.5ws7m3')}}<text class="form-group-tips-must">*</text></view>
+                                <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
+                                    <block v-for="(item, index) in recommend_data.detail_list" :key="index">
+                                        <view v-if="(item.goods || null) != null" :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
+                                            <view :data-value="item.goods.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
+                                                <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
                                             </view>
-                                            <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
-                                            <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">{{$t('common.remove')}}</text>
+                                            <view class="base fr">
+                                                <view class="cr-base single-text">{{ item.goods.title }}</view>
+                                                <view class="margin-top-xs">
+                                                    <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
+                                                    <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
+                                                </view>
+                                                <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
+                                                <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">{{$t('common.remove')}}</text>
+                                            </view>
                                         </view>
-                                    </view>
-                                </block>
-                            </view>
-                            <view class="margin-top-sm padding-vertical-main">
-                                <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">{{$t('recommend-form.recommend-form.27goz3')}}</text>
+                                    </block>
+                                </view>
+                                <view class="margin-top-sm padding-vertical-main">
+                                    <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">{{$t('recommend-form.recommend-form.27goz3')}}</text>
+                                </view>
                             </view>
                         </view>
 
@@ -130,12 +126,12 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
-    var common_static_url = app.globalData.get_static_url('common');
+    import componentUpload from '@/components/upload/upload';
+
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 bottom_fixed_style: '',
@@ -159,6 +155,7 @@
             componentNoData,
             componentPopup,
             componentGoodsSpecChoice,
+            componentUpload
         },
 
         onLoad(params) {
@@ -315,88 +312,12 @@
                 }
             },
 
-            // 上传图片预览
-            upload_show_event(e) {
-                uni.previewImage({
-                    current: this.recommend_data.icon,
-                    urls: [this.recommend_data.icon],
-                });
-            },
-
-            // 图片删除
-            upload_delete_event(e) {
-                var self = this;
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
-                    success(res) {
-                        if (res.confirm) {
-                            var temp_data = self.recommend_data || {};
-                            temp_data['icon'] = '';
-                            self.setData({
-                                recommend_data: temp_data,
-                            });
-                        }
-                    },
-                });
-            },
-
-            // 文件上传
-            file_upload_event(e) {
-                var self = this;
-                uni.chooseImage({
-                    count: 1,
-                    success(res) {
-                        var success = 0;
-                        var fail = 0;
-                        var length = res.tempFilePaths.length;
-                        var count = 0;
-                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                    },
-                });
-            },
-
-            // 采用递归的方式上传多张
-            upload_one_by_one(img_paths, success, fail, count, length) {
-                var self = this;
-                uni.uploadFile({
-                    url: app.globalData.get_request_url('index', 'ueditor'),
-                    filePath: img_paths[count],
-                    name: 'upfile',
-                    formData: {
-                        action: 'uploadimage',
-                        path_type: self.editor_path_type,
-                    },
-                    success: function (res) {
-                        success++;
-                        if (res.statusCode == 200) {
-                            var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
-                            if (data.code == 0 && (data.data.url || null) != null) {
-                                var temp_data = self.recommend_data || {};
-                                temp_data['icon'] = data.data.url;
-                                self.setData({
-                                    recommend_data: temp_data,
-                                });
-                            } else {
-                                app.globalData.showToast(data.msg);
-                            }
-                        }
-                    },
-                    fail: function (e) {
-                        fail++;
-                    },
-                    complete: function (e) {
-                        count++;
-
-                        // 下一张
-                        if (count >= length) {
-                            // 上传完毕，作一下提示
-                            //app.showToast('上传成功' + success +'张', 'success');
-                        } else {
-                            // 递归调用，上传下一张
-                            self.upload_one_by_one(img_paths, success, fail, count, length);
-                        }
-                    },
+            // 上传回调
+            upload_image_event(res, index) {
+                var temp_data = this.recommend_data || {};
+                temp_data['icon'] = res[0];
+                this.setData({
+                    recommend_data: temp_data,
                 });
             },
 

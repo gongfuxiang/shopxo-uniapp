@@ -1,72 +1,67 @@
 <template>
     <view :class="theme_view">
-        <view class="page-bottom-fixed">
+        <view v-if="data_list_loding_status == 3" class="page-bottom-fixed">
             <form @submit="form_submit" class="form-container">
-                <view class="margin-main oh border-radius-main">
-                    <view class="form-gorup bg-white form-container-upload oh">
-                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.u439pg')}}<text class="form-group-tips">{{$t('extraction-apply.extraction-apply.bflosr')}}</text></view>
-                        <view class="form-upload-data oh">
-                            <block v-if="(extraction_data.logo || null) != null">
-                                <view class="item fl">
-                                    <text class="delete-icon" @tap="upload_delete_event">x</text>
-                                    <image :src="extraction_data.logo" @tap="upload_show_event" mode="aspectFill"></image>
+                <view class="padding-main">
+                    <view class="bg-white oh border-radius-main">
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.u439pg')}}<text class="form-group-tips">{{$t('extraction-apply.extraction-apply.bflosr')}}</text></view>
+                            <view class="margin-top-sm">
+                                <component-upload :propData="(extraction_data.logo || null) != null ? [extraction_data.logo] : []" :propMaxNum="1" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
+                            </view>
+                        </view>
+
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.9t81k8')}}</view>
+                            <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.wt1w0m')" />
+                        </view>
+
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('user-detail.user-detail.k5867n')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.73efnt')" />
+                        </view>
+
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('user-detail.user-detail.gfe703')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.qixk24')" />
+                        </view>
+
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.cy87k6')}}<text class="form-group-tips-must">*</text></view>
+                            <view class="select-address oh">
+                                <view class="section fl">
+                                    <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
+                                        <view :class="'name ' + (province_value == null ? 'cr-grey' : 'cr-base')">{{ (province_list[province_value] || null) == null ? default_province : province_list[province_value]['name'] }}</view>
+                                    </picker>
                                 </view>
-                            </block>
-                            <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                                <view class="section fl">
+                                    <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
+                                        <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
+                                    </picker>
+                                    <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.liqbru')">{{$t('extraction-apply.extraction-apply.liqbru')}}</text>
+                                </view>
+                                <view class="section fl">
+                                    <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
+                                        <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
+                                    </picker>
+                                    <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.r4q86m')">{{$t('extraction-apply.extraction-apply.r4q86m')}}</text>
+                                </view>
+                            </view>
                         </view>
-                    </view>
 
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.9t81k8')}}</view>
-                        <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.wt1w0m')" />
-                    </view>
+                        <view class="form-gorup bg-white">
+                            <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.gxo73a')" />
+                        </view>
 
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">{{$t('user-detail.user-detail.k5867n')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.73efnt')" />
-                    </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">{{$t('user-detail.user-detail.gfe703')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.qixk24')" />
-                    </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.cy87k6')}}<text class="form-group-tips-must">*</text></view>
-                        <view class="select-address oh">
-                            <view class="section fl">
-                                <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
-                                    <view :class="'name ' + (province_value == null ? 'cr-grey' : 'cr-base')">{{ (province_list[province_value] || null) == null ? default_province : province_list[province_value]['name'] }}</view>
-                                </picker>
-                            </view>
-                            <view class="section fl">
-                                <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
-                                    <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
-                                </picker>
-                                <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.liqbru')">{{$t('extraction-apply.extraction-apply.liqbru')}}</text>
-                            </view>
-                            <view class="section fl">
-                                <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
-                                    <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
-                                </picker>
-                                <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.r4q86m')">{{$t('extraction-apply.extraction-apply.r4q86m')}}</text>
+                        <view class="form-gorup bg-white">
+                            <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.47v7m0')}}<text class="form-group-tips-must">*</text></view>
+                            <view @tap="choose_location_event" class="form-gorup-text">
+                                <view v-if="(user_location.status || 0) == 1" class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
+                                <view v-else class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
                             </view>
                         </view>
                     </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.gxo73a')" />
-                    </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.47v7m0')}}<text class="form-group-tips-must">*</text></view>
-                        <view @tap="choose_location_event" class="form-gorup-text">
-                            <view v-if="(user_location.status || 0) == 1" class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
-                            <view v-else class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
-                        </view>
-                    </view>
-
                     <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb">{{$t('extraction-apply.extraction-apply.5y2yzu')}}</view>
                     <view class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
@@ -76,6 +71,10 @@
                 </view>
             </form>
         </view>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
 
         <!-- 位置选择 -->
         <component-choice-location ref="choice_location" :propIsShowAddressChoice="false" @onBack="user_back_choice_location"></component-choice-location>
@@ -87,13 +86,14 @@
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNoData from "@/components/no-data/no-data";
     import componentChoiceLocation from '@/components/choice-location/choice-location';
-    var common_static_url = app.globalData.get_static_url('common');
+    import componentUpload from '@/components/upload/upload';
+
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
                 params: {},
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -119,7 +119,9 @@
 
         components: {
             componentCommon,
-            componentChoiceLocation
+            componentNoData,
+            componentChoiceLocation,
+            componentUpload
         },
 
         onLoad(params) {
@@ -183,6 +185,7 @@
                             self.setData({
                                 extraction_data: extraction_data || {},
                                 editor_path_type: data.editor_path_type || '',
+                                data_list_loding_status: 3,
                             });
 
                             // 数据设置
@@ -222,7 +225,10 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.h8f437'));
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.h8f437'),
+                        });
                     },
                 });
             },
@@ -513,91 +519,15 @@
                 });
             },
 
-            // 上传图片预览
-            upload_show_event(e) {
-                uni.previewImage({
-                    current: this.extraction_data.logo,
-                    urls: [this.extraction_data.logo],
+            // 上传回调
+            upload_image_event(res, index) {
+                var temp_data = this.extraction_data || {};
+                temp_data['logo'] = res[0];
+                this.setData({
+                    extraction_data: temp_data,
                 });
-            },
-
-            // 图片删除
-            upload_delete_event(e) {
-                var self = this;
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
-                    success(res) {
-                        if (res.confirm) {
-                            var temp_data = self.extraction_data || {};
-                            temp_data['logo'] = '';
-                            self.setData({
-                                extraction_data: temp_data,
-                            });
-                        }
-                    },
-                });
-            },
-
-            // 文件上传
-            file_upload_event(e) {
-                var self = this;
-                uni.chooseImage({
-                    count: 1,
-                    success(res) {
-                        var success = 0;
-                        var fail = 0;
-                        var length = res.tempFilePaths.length;
-                        var count = 0;
-                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                    },
-                });
-            },
-
-            // 采用递归的方式上传多张
-            upload_one_by_one(img_paths, success, fail, count, length) {
-                var self = this;
-                uni.uploadFile({
-                    url: app.globalData.get_request_url('index', 'ueditor'),
-                    filePath: img_paths[count],
-                    name: 'upfile',
-                    formData: {
-                        action: 'uploadimage',
-                        path_type: self.editor_path_type,
-                    },
-                    success: function (res) {
-                        success++;
-                        if (res.statusCode == 200) {
-                            var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
-                            if (data.code == 0 && (data.data.url || null) != null) {
-                                var temp_data = self.extraction_data || {};
-                                temp_data['logo'] = data.data.url;
-                                self.setData({
-                                    extraction_data: temp_data,
-                                });
-                            } else {
-                                app.globalData.showToast(data.msg);
-                            }
-                        }
-                    },
-                    fail: function (e) {
-                        fail++;
-                    },
-                    complete: function (e) {
-                        count++;
-
-                        // 下一张
-                        if (count >= length) {
-                            // 上传完毕，作一下提示
-                            //app.showToast('上传成功' + success +'张', 'success');
-                        } else {
-                            // 递归调用，上传下一张
-                            self.upload_one_by_one(img_paths, success, fail, count, length);
-                        }
-                    },
-                });
-            },
-        },
+            }
+        }
     };
 </script>
 <style>

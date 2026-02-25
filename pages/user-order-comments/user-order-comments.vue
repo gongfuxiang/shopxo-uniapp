@@ -10,23 +10,15 @@
                             </view>
                             <view class="item-base fl margin-top-sm">
                                 <block v-for="(tv, ti) in [1, 2, 3, 4, 5]" :key="ti">
-                                    <image class="xingxing-icon va-m" :src="common_static_url + 'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tv"></image>
+                                    <image class="star-icon va-m" :src="common_static_url + 'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tv"></image>
                                 </block>
                                 <text v-if="form_rating_list[index] != undefined" class="cr-grey va-m margin-left-xs">{{ rating_msg[form_rating_list[index] - 1] }}</text>
                             </view>
                         </view>
                         <view class="margin-top-main br-t">
                             <textarea @input="form_content_event" :data-index="index" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-order-comments.user-order-comments.r9r3h0')" maxlength="230"></textarea>
-                            <view class="form-container-upload">
-                                <view class="form-upload-data oh">
-                                    <block v-if="(form_images_list[index] || null) != null && form_images_list[index].length > 0">
-                                        <view v-for="(iv, ix) in form_images_list[index]" :key="ix" class="item fl">
-                                            <text class="delete-icon" @tap="upload_delete_event" :data-index="index" :data-ix="ix">x</text>
-                                            <image :src="iv" @tap="upload_show_event" :data-index="index" :data-ix="ix" mode="aspectFill" class="padding-xs dis-block"></image>
-                                        </view>
-                                    </block>
-                                    <image v-if="(form_images_list[index] || null) == null || form_images_list[index].length < 3" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event" :data-index="index"></image>
-                                </view>
+                            <view class="margin-top-sm">
+                                <component-upload :propData="form_images_list[index]" :propCallData="index" :propMaxNum="3" :propPathType="editor_path_type" @call-back="upload_image_event"></component-upload>
                             </view>
                         </view>
                     </view>
@@ -57,6 +49,7 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentUpload from '@/components/upload/upload';
 
     var common_static_url = app.globalData.get_static_url("common");
     export default {
@@ -83,6 +76,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentUpload
         },
 
         onLoad(params) {
@@ -159,112 +153,13 @@
                 });
             },
 
-            // 上传图片预览
-            upload_show_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var ix = e.currentTarget.dataset.ix;
-                uni.previewImage({
-                    current: this.form_images_list[index][ix],
-                    urls: this.form_images_list[index],
-                });
-            },
-
-            // 图片删除
-            upload_delete_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var ix = e.currentTarget.dataset.ix;
-                var self = this;
-                uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('order.order.psi67g'),
-                    success(res) {
-                        if (res.confirm) {
-                            var list = self.form_images_list;
-                            list[index].splice(ix, 1);
-                            self.setData({
-                                form_images_list: list,
-                            });
-                        }
-                    },
-                });
-            },
-
-            // 文件上传
-            file_upload_event(e) {
-                // 数据初始化
-                var index = e.currentTarget.dataset.index;
-                var temp_list = this.form_images_list;
-                var length = this.detail.items.length;
-                for (var i = 0; i < length; i++) {
-                    if (temp_list[i] == undefined) {
-                        temp_list[i] = [];
-                    }
-                }
+            // 上传回调
+            upload_image_event(res, index) {
+                var temp = this.form_images_list;
+                temp[index] = res;
                 this.setData({
-                    form_images_list: temp_list,
+                    form_images_list: temp,
                 });
-
-                // 处理上传文件
-                var self = this;
-                uni.chooseImage({
-                    count: 3,
-                    success(res) {
-                        var success = 0;
-                        var fail = 0;
-                        var length = res.tempFilePaths.length;
-                        var count = 0;
-                        self.upload_one_by_one(index, res.tempFilePaths, success, fail, count, length);
-                    },
-                });
-            },
-
-            // 采用递归的方式上传多张
-            upload_one_by_one(index, img_paths, success, fail, count, length) {
-                var self = this;
-                if ((self.form_images_list[index] || null) == null || self.form_images_list[index].length < 3) {
-                    uni.uploadFile({
-                        url: app.globalData.get_request_url("index", "ueditor"),
-                        filePath: img_paths[count],
-                        name: "upfile",
-                        formData: {
-                            action: "uploadimage",
-                            path_type: self.editor_path_type,
-                        },
-                        success: function (res) {
-                            success++;
-                            if (res.statusCode == 200) {
-                                var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
-                                if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    if ((list[index] || null) == null) {
-                                        list[index] = [];
-                                    }
-                                    list[index].push(data.data.url);
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                } else {
-                                    app.globalData.showToast(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (e) {
-                            fail++;
-                        },
-                        complete: function (e) {
-                            count++;
-
-                            // 下一张
-                            if (count >= length) {
-                                // 上传完毕，作一下提示
-                                //app.showToast('上传成功' + success +'张', 'success');
-                            } else {
-                                // 递归调用，上传下一张
-                                self.upload_one_by_one(index, img_paths, success, fail, count, length);
-                            }
-                        },
-                    });
-                }
             },
 
             // 是否匿名事件
