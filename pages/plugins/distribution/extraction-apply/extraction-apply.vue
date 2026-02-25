@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="page-bottom-fixed">
             <form @submit="form_submit" class="form-container">
-                <view class="padding-main oh border-radius-main">
+                <view class="margin-main oh border-radius-main">
                     <view class="form-gorup bg-white form-container-upload oh">
                         <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.u439pg')}}<text class="form-group-tips">{{$t('extraction-apply.extraction-apply.bflosr')}}</text></view>
                         <view class="form-upload-data oh">

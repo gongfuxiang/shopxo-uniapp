@@ -1022,7 +1022,7 @@
 	"extraction-apply": {
 		"extraction-apply": {
 			"u439pg": "Logo image",
-			"bflosr": "Suggest 300x300px",
+			"bflosr": "Suggest 300*300px",
 			"9t81k8": "alias",
 			"cy87k6": "Provinces cities and districts",
 			"liqbru": "Please select a province first",
@@ -1055,8 +1055,6 @@
 	"extraction-order": {
 		"extraction-order": {
 			"2y7lq1": "Picking up goods",
-			"3m038g": "Pickup code",
-			"xb4044": "search criteria",
 			"suo4oz": "Please enter the pickup code",
 			"kuqvlv": "Order number/pickup code",
 			"znufs8": "Please enter the pickup code",

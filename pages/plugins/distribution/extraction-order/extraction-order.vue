@@ -48,9 +48,15 @@
         <!-- 取货 popup -->
         <component-popup :propShow="is_show_take_popup" propPosition="bottom" @onclose="take_popup_event_close">
             <view class="form-container bg-base padding-horizontal-main padding-top-main padding-bottom-xs">
-                <view class="form-gorup tc bg-white margin-top-lg">
-                    <view class="form-gorup-title">{{$t('extraction-order.extraction-order.3m038g')}}</view>
-                    <input type="number" :value="extraction_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-order.extraction-order.suo4oz')" maxlength="4" @input="extraction_code_input_event" />
+                <view class="form-gorup tc bg-white border-radius-main margin-top-lg">
+                    <view class="flex-row align-c">
+                        <!-- #ifndef H5 -->
+                        <view class="margin-right" @tap="scan_event" data-type="take">
+                            <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
+                        </view>
+                        <!-- #endif -->
+                        <input type="number" class="wh-auto" :placeholder="$t('extraction-order.extraction-order.suo4oz')" placeholder-class="cr-grey-c" :value="extraction_code" @input="extraction_code_input_event" />
+                    </view>
                 </view>
                 <view class="form-gorup form-gorup-submit">
                     <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_take_event">{{$t('common.confirm')}}</button>
@@ -61,9 +67,15 @@
         <!-- 搜索 popup -->
         <component-popup :propShow="is_show_search_popup" propPosition="bottom" @onclose="search_popup_event_close">
             <view class="form-container bg-base padding-horizontal-main padding-top-main padding-bottom-xs">
-                <view class="form-gorup tc bg-white margin-top-lg">
-                    <view class="form-gorup-title">{{$t('extraction-order.extraction-order.xb4044')}}</view>
-                    <input type="number" :value="search_keywords_value" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-order.extraction-order.kuqvlv')" @input="search_input_keywords_event" />
+                <view class="form-gorup tc bg-white border-radius-main margin-top-lg">
+                    <view class="flex-row align-c">
+                        <!-- #ifndef H5 -->
+                        <view class="margin-right" @tap="scan_event" data-type="search">
+                            <uni-icons type="scan" size="56rpx" color="#666"></uni-icons>
+                        </view>
+                        <!-- #endif -->
+                        <input type="number" class="wh-auto" :placeholder="$t('extraction-order.extraction-order.suo4oz')" placeholder-class="cr-grey-c" :value="search_keywords_value" @input="search_input_keywords_event" />
+                    </view>
                 </view>
                 <view class="form-gorup form-gorup-submit">
                     <button class="bg-main-pair br-main-pair cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="search_submit_event">{{$t('common.search')}}</button>
@@ -411,6 +423,29 @@ const app = getApp();
                 });
                 this.get_data_list(1);
             },
+
+            // 扫码事件
+            scan_event(e) {
+                var self = this;
+                var type = e.currentTarget.dataset.type
+                uni.scanCode({
+                	success: function (res) {
+                        if((res.result || null) != null) {
+                            if(type == 'search') {
+                                self.setData({
+                                    search_keywords_value: res.result,
+                                });
+                                self.search_submit_event();
+                            } else {
+                                self.setData({
+                                    extraction_code: res.result,
+                                });
+                                self.form_submit_take_event();
+                            }
+                        }
+                	}
+                });
+            }
         },
     };
 </script>

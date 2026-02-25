@@ -1012,7 +1012,7 @@
 	"extraction-apply": {
 		"extraction-apply": {
 			"u439pg": "logo图片",
-			"bflosr": "建议300x300px",
+			"bflosr": "建议300*300px",
 			"9t81k8": "别名",
 			"cy87k6": "省市区",
 			"liqbru": "请先选择省份",
@@ -1045,8 +1045,6 @@
 	"extraction-order": {
 		"extraction-order": {
 			"2y7lq1": "取货",
-			"3m038g": "取货码",
-			"xb4044": "搜索条件",
 			"suo4oz": "请输入取货码",
 			"kuqvlv": "订单号/取货码",
 			"znufs8": "请输入取件码",
