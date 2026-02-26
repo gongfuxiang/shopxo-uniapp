@@ -610,10 +610,10 @@
                 // 使用URLSearchParams处理当前查询参数
                 const url = new URL(location.href);
                 url.searchParams.set('id', id);
-                
-                history.replaceState(null, '', url.pathname + url.search);
+                // 替换URL路径，保持查询参数不变
+                const pathname = location.href.split('?')[0];
+                history.replaceState(null, '', pathname + url.search);
                 //#endif
-
                 const index = this.video_data_list.findIndex(item => item.id == id);
                 
                 // 数据预加载逻辑
