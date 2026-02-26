@@ -549,16 +549,18 @@
                                     });
 
                                     setTimeout(() => {
-                                        //#ifdef H5
-                                        if (this.video_contexts[this.current_index]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.video_contexts[this.current_index], true);
+                                        if (!this.paused) {
+                                            //#ifdef H5
+                                            if (this.video_contexts[this.current_index]) { // 当前播放的视频索引为0
+                                                this.video_play_event(this.video_contexts[this.current_index], true);
+                                            }
+                                            //#endif
+                                            //#ifndef H5
+                                            if (this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为0
+                                                this.video_play_event(this.create_video_contexts[this.current_index], true);
+                                            }
+                                            //#endif
                                         }
-                                        //#endif
-                                        //#ifndef H5
-                                        if (this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.create_video_contexts[this.current_index], true);
-                                        }
-                                        //#endif
                                     }, 200);
                                 }, 0);
                             }
