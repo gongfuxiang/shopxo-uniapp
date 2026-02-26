@@ -19,16 +19,16 @@
 					</view>
 					<!-- 轮播 -->
 					<view v-if="slider_list.length > 0" class="padding-horizontal-main">
-						<component-banner :propData="slider_list"></component-banner>
+						<component-banner :propData="slider_list" propBackgroundColor="#333" propSelectedBackgroundColor="#999"></component-banner>
 					</view>
 					<template v-if="tabs.length > 0">
 						<!-- 导航栏 -->
 						<view class="nav-tabs" :class="{ 'nav-tabs-sticky': is_nav_sticky }">
-							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
+							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll nowrap">
 								<view class="tabs-scroll-content">
 									<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
-										<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image" :src="item.icon" mode="aspectFit"></image>
-										{{ item.name }}
+										<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image radius va-m" :src="item.icon" mode="aspectFill"></image>
+										<text class="va-m">{{ item.name }}</text>
 									</view>
 								</view>
 							</scroll-view>
@@ -216,7 +216,7 @@ export default {
 		},
 		handle_search() {
 			// 跳转到搜索记录页面
-			app.globalData.url_open(`/pages/plugins/video/search/search-record`, false);
+			app.globalData.url_open(`/pages/plugins/video/search-record/search-record`, false);
 		},
 		switch_tab(e) {
 			const id = e?.currentTarget?.dataset?.id || 0;
@@ -250,123 +250,6 @@ export default {
 	}
 };
 </script>
-
 <style lang="scss" scoped>
-.header-top {
-	position: sticky;
-	top: 0;
-	background: #fff;
-	z-index: 9;
-}
-/* 导航栏 */
-.nav-tabs {
-	position: sticky;
-	top: 110rpx;
-	width: 100%;
-	padding: 0 16rpx 20rpx 16rpx;
-	z-index: 9;
-	background: transparent; // 默认透明背景
-	transition: background-color 0.3s ease; // 添加背景色过渡动画
-	
-	&.nav-tabs-sticky {
-		background: #fff; // 粘性状态时背景变白
-	}
-	
-	.tabs-scroll-content {
-		display: flex;
-		align-items: center;
-		gap: 48rpx;
-	}
-	.tab-item {
-		position: relative;
-		white-space: nowrap;
-		padding-bottom: 8rpx;
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #666666;
-		line-height: 40rpx;
-	}
-
-	.tab-item.active {
-		color: #333333;
-	}
-	
-	.tab-item::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 0;
-		height: 4px;
-		background-color: #333;
-		transition: width 0.6s ease;
-	}
-
-	.tab-item.active::after {
-		width: 100%;
-	}
-
-	.tab-item.active {
-		color: #333;
-	}
-}
-
-/* #ifdef MP-WEIXIN | APP-PLUS */
-.tabs-scroll {
-	::v-deep ::-webkit-scrollbar {
-		width: 0rpx!important;
-		height: 0rpx!important;
-		background-color: transparent;
-	}
-}
-/* #endif */
-/* 推荐视频列表 */
-.recommend-videos {
-	padding: 20rpx 16rpx;
-	.video-grid {
-		column-count: 2;
-		column-gap: 10px;
-	}
-
-	.video-card {
-		background-color: #fff;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-		overflow: hidden;
-		break-inside: avoid;
-		margin-bottom: 10px;
-		width: 100%;
-	}
-
-	.video-thumbnail {
-		width: 100%;
-		object-fit: contain;
-	}
-
-	.video-info {
-		padding: 20rpx;
-		padding-top: 10rpx;
-		gap: 20rpx;
-	}
-
-	.video-title {
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #333333;
-		line-height: 40rpx;
-	}
-
-	.video-date,
-	.video-likes {
-		font-weight: 400;
-		font-size: 24rpx;
-		color: #999999;
-		line-height: 34rpx;
-	}
-}
-.tabs-scroll-image {
-	width: 40rpx;
-	height: 40rpx;
-}
+    @import './index.css';
 </style>

@@ -1,0 +1,181 @@
+.header-top {
+	position: sticky;
+	top: 0;
+	background: #fff;
+	z-index: 9;
+}
+.header-search {
+	padding-left: 24rpx;
+	box-sizing: border-box;
+}
+/* 导航栏 */
+.nav-tabs {
+	position: relative;
+	width: 100%;
+	padding: 0 16rpx 20rpx 16rpx;
+	box-sizing: border-box;
+	.tabs-scroll-content {
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		overflow-x: auto;
+		gap: 48rpx;
+	}
+	.nav-tabs-filter {
+		padding-top: 8rpx;
+		box-sizing: border-box;
+	}
+	.tab-item {
+		position: relative;
+		white-space: nowrap;
+		padding-bottom: 16rpx;
+		box-sizing: border-box;
+		font-weight: 500;
+		font-size: 28rpx;
+		color: #666666;
+		line-height: 40rpx;
+	}
+
+	.tab-item.active {
+		color: #333333;
+	}
+	
+	.tab-item::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 0;
+		height: 4px;
+		background-color: #333;
+		transition: width 0.6s ease;
+        border-radius: 8rpx;
+	}
+
+	.tab-item.active::after {
+		width: 64rpx;
+	}
+
+	.tab-item.active {
+		color: #333;
+	}
+}
+
+@media (max-width: 500px) { 
+	.nav-tabs {
+		align-items: center;
+		.nav-tabs-filter {
+			padding-top: 0;
+		}
+	}
+}
+
+/* #ifdef MP-WEIXIN | APP-PLUS */
+.tabs-scroll {
+	::v-deep ::-webkit-scrollbar
+	{
+		width: 0rpx!important;
+		height: 0rpx!important;
+		background-color: transparent;
+	}
+}
+/* #endif */
+/* 推荐视频列表 */
+.recommend-videos {
+	padding: 20rpx 0;
+	.video-grid {
+		padding: 0 16rpx;
+		column-count: 2;
+		column-gap: 10px;
+	}
+
+	.video-card {
+		background-color: #fff;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		overflow: hidden;
+		break-inside: avoid;
+		margin-bottom: 10px;
+		width: 100%;
+	}
+
+	.video-thumbnail {
+		width: 100%;
+		object-fit: contain;
+	}
+
+	.video-info {
+		padding: 20rpx;
+		padding-top: 10rpx;
+		gap: 20rpx;
+	}
+
+	.video-title {
+		font-weight: 500;
+		font-size: 28rpx;
+		color: #333333;
+		line-height: 40rpx;
+	}
+
+	.video-date,
+	.video-likes {
+		font-weight: 400;
+		font-size: 24rpx;
+		color: #999999;
+		line-height: 34rpx;
+	}
+}
+
+/* 筛选条件弹窗样式 */
+.filter-group {
+	margin-bottom: 40rpx;
+}
+
+.filter-title {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	margin-bottom: 24rpx;
+}
+
+.filter-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20rpx;
+}
+
+.filter-option {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	padding: 10rpx 32rpx;
+	background-color: #e8e8e8;
+	border-radius: 4rpx;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.filter-option:hover {
+	background-color: #e0e0e0;
+}
+.filter-option.active {
+	background-color: #333;
+    color: #fff;
+}
+.nav-list-more {
+	padding: 20rpx 40rpx;
+}
+::v-deep .popup {
+	.popup-mask { 
+		z-index: 8 !important;
+	}
+	.popup-content {
+		z-index: 8 !important;
+	}
+}
+.recommend-scroll {
+	height: calc(100vh - 223rpx);
+}

@@ -2079,7 +2079,7 @@
                     }
                 },
                 {
-                    "path": "search/search-record",
+                    "path": "search/search",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
@@ -2093,7 +2093,7 @@
                     }
                 },
                 {
-                    "path": "search/search",
+                    "path": "search-record/search-record",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
