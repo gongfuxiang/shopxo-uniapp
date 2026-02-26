@@ -126,7 +126,7 @@
 }
 
 .hot-tab-item.active::after {
-    width: 64rpx;
+    width: 52rpx;
 }
 
 .hot-tab-item.active {

@@ -12,7 +12,7 @@
 .nav-tabs {
 	position: relative;
 	width: 100%;
-	padding: 0 16rpx 20rpx 16rpx;
+	padding: 0 24rpx 20rpx 24rpx;
 	box-sizing: border-box;
 	.tabs-scroll-content {
 		display: flex;
@@ -54,7 +54,7 @@
 	}
 
 	.tab-item.active::after {
-		width: 64rpx;
+		width: 52rpx;
 	}
 
 	.tab-item.active {
@@ -85,7 +85,7 @@
 .recommend-videos {
 	padding: 20rpx 0;
 	.video-grid {
-		padding: 0 16rpx;
+		padding: 0 24rpx;
 		column-count: 2;
 		column-gap: 10px;
 	}

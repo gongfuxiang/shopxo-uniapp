@@ -51,7 +51,7 @@
 	}
 
 	.tab-item.active::after {
-		width: 64rpx;
+		width: 52rpx;
 	}
 
 	.tab-item.active {
@@ -70,7 +70,7 @@
 /* #endif */
 /* 推荐视频列表 */
 .recommend-videos {
-	padding: 20rpx 16rpx;
+	padding: 10rpx 24rpx 24rpx 24rpx;
 	.video-grid {
 		column-count: 2;
 		column-gap: 20rpx;
