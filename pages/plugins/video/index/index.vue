@@ -16,24 +16,24 @@
 								<search-component propIsDisabled @disabledSearch="handle_search"/>
 							</view>
 						</view>
-						<!-- 轮播 -->
-						<view v-if="slider_list.length > 0" class="padding-horizontal-main">
-							<component-banner :propData="slider_list" propSize="mini"></component-banner>
-						</view>
-						<template v-if="tabs.length > 0">
-							<!-- 导航栏 -->
-							<view class="nav-tabs">
-								<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
-									<view class="tabs-scroll-content">
-										<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
-											<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image" :src="item.icon" mode="aspectFit"></image>
-											{{ item.name }}
-										</view>
-									</view>
-								</scroll-view>
-							</view>
-						</template>
 					</view>
+					<!-- 轮播 -->
+					<view v-if="slider_list.length > 0" class="padding-horizontal-main">
+						<component-banner :propData="slider_list"></component-banner>
+					</view>
+					<template v-if="tabs.length > 0">
+						<!-- 导航栏 -->
+						<view class="nav-tabs">
+							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
+								<view class="tabs-scroll-content">
+									<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
+										<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image" :src="item.icon" mode="aspectFit"></image>
+										{{ item.name }}
+									</view>
+								</view>
+							</scroll-view>
+						</view>
+					</template>
 					<template v-if="recommend_videos.length > 0">
 						<!-- 推荐视频卡片区域 -->
 						<view class="recommend-videos">
@@ -250,9 +250,12 @@ export default {
 }
 /* 导航栏 */
 .nav-tabs {
-	position: relative;
+	position: sticky;
+	top: 110rpx;
 	width: 100%;
 	padding: 0 16rpx 20rpx 16rpx;
+	background: #fff;
+	z-index: 9;
 	.tabs-scroll-content {
 		display: flex;
 		align-items: center;
