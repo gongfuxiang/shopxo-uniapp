@@ -248,6 +248,7 @@ export default {
 <style lang="scss" scoped>
 .search-record-container {
     background: #fff;
+	height: 100vh;
 }
 
 .header-top {
