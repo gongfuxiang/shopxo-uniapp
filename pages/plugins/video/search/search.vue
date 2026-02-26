@@ -154,7 +154,8 @@ export default {
 			data_tabs_loding_status: 1,
 			data_tabs_loding_msg: '',
 			data_list_loding_status: 1,
-			data_list_loding_msg: ''
+			data_list_loding_msg: '',
+			search_history: [],
 		};
 	},
 	onLoad(params) {
@@ -207,6 +208,8 @@ export default {
                     })
                     .exec(); // 执行查询
             }, 500);
+			this.search_history = uni.getStorageSync('cache_plugins_video_search_history_key') || [];
+
 			// 初始化搜索页数据
 			this.init_data();
 		},
@@ -263,6 +266,10 @@ export default {
 				data_list_loding_status: 1,
 				recommend_videos: []
 			})
+			if (!isEmpty(e) && !this.search_history.includes(e)) {
+				this.search_history.push(e);
+				uni.setStorageSync('cache_plugins_video_search_history_key', this.search_history);
+			}
 			// 更新数据信息
 			this.load_recommend_videos();
 		},
