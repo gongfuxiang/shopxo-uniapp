@@ -20,6 +20,7 @@
                         :propIsOnEvent="true"
                         :propIsRequired="false"
                         :propPlaceholder="$t('order.order.725882')"
+                        propBrColor="#eee"
                         :propIsBtn="true"
                         :propDefaultValue="search_input_keywords_value"
                         <!-- #ifdef MP || APP -->
