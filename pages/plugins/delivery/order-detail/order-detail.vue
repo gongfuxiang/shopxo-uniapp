@@ -43,26 +43,27 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('common.base_info_text')}}</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                            <view class="content fl br-l padding-left-main">
-                                <block v-if="(item.type || null) == 'images-list'">
-                                    <view v-if="(item.value || null) != null && item.value.length > 0" class="images-list">
-                                        <block v-for="(iv, ii) in item.value" :key="ii">
-                                            <image class="item-images radius fl dis-block br padding-xs" :src="iv" mode="aspectFit" :data-ii="ii" @tap="images_list_event"></image>
+                        <uni-table :emptyText="$t('common.no_data')">
+                            <block v-for="(item, index) in detail_list" :key="index">
+                                <uni-tr>
+                                    <uni-th width="90">{{item.name}}</uni-th>
+                                    <uni-td>
+                                        <block v-if="(item.type || null) == 'images-list'">
+                                            <view v-if="(item.value || null) != null && item.value.length > 0" class="images-list">
+                                                <block v-for="(iv, ii) in item.value" :key="ii">
+                                                    <image class="item-images radius fl dis-block br padding-xs" :src="iv" mode="aspectFit" :data-ii="ii" @tap="images_list_event"></image>
+                                                </block>
+                                            </view>
                                         </block>
-                                    </view>
-                                </block>
-                                <block v-else>
-                                    <block v-if="(item.event || null) == null">
-                                        <text>{{item.value}}</text>
-                                    </block>
-                                    <block v-else>
-                                        <view data-event="copy" :data-value="item.value" @tap="text_event">{{item.value}}</view>
-                                    </block>
-                                </block>
-                            </view>
-                        </view>
+                                        <view v-else-if="(item.is_copy || 0) == 1" data-event="copy" :data-value="item.value" @tap="text_event">
+                                            <text>{{ item.value }}</text>
+                                            <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs margin-left-sm">{{$t('common.copy')}}</text>
+                                        </view>
+                                        <text v-else>{{item.value}}</text>
+                                    </uni-td>
+                                </uni-tr>
+                            </block>
+                        </uni-table>
                     </view>
                 </view>
 
@@ -181,7 +182,7 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.main_order_no || '', event: 'copy' },
+                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.main_order_no || '', is_copy: 1 },
                                     { name: this.$t('order-detail.order-detail.ygvc34'), value: data.data.merchant_name || '' },
                                     { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || '' },
                                     { name: this.$t('order-detail.order-detail.8n1f72'), value: data.data.buy_number_count || '' },
