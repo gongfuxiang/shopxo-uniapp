@@ -54,6 +54,11 @@
                 type: Boolean,
                 default: false,
             },
+            // 是否返回全部信息
+            propIsAllInfo: {
+                type: Boolean,
+                default: false,
+            },
             // 路径类型 默认common
             propPathType: {
                 type: String,
@@ -98,10 +103,20 @@
                                 var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
                                 if (data.code == 0 && (data.data.url || null) != null) {
                                     if(self.propSingleCall) {
-                                        self.$emit('call-back', data.data.url, self.propCallData);
+                                        // 是否返回全部信息
+                                        if(self.propIsAllInfo) {
+                                            self.$emit('call-back', data.data, self.propCallData);
+                                        } else {
+                                            self.$emit('call-back', data.data.url, self.propCallData);
+                                        }
                                     } else {
                                         var list = self.form_images_list;
-                                        list.push(data.data.url);
+                                        // 返回全部信息
+                                        if(self.propIsAllInfo) {
+                                            list.push(data.data);
+                                        } else {
+                                            list.push(data.data.url);
+                                        }
                                         self.setData({
                                             form_images_list: list,
                                         });

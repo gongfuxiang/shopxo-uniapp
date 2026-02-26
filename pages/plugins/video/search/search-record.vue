@@ -139,11 +139,16 @@ export default {
 				header_padding_left: padding_left,
 				menu_button_info: menu_button_info
 			});
+			// 搜索历史记录
+			this.search_history = uni.getStorageSync('search_history_key') || [];
 			if (this.search_history.length > 0) {
 				this.show_search_history = this.search_history.filter((item, index) => index < 5);
 			} else {
 				this.show_search_history = [];
 			}
+			// 初始化数据
+			this.search_query = '';
+
 			this.init_data();
 		},
 		init_data() {
@@ -181,8 +186,10 @@ export default {
 			// 保存搜索历史记录
 			if (!isEmpty(e) && !this.search_history.includes(e)) {
 				this.search_history.push(e);
+				uni.setStorageSync('search_history_key', this.search_history);
 			}
 			this.search_query = e;
+			// 跳转到搜索页
 			app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
 		},
 		perform_search(e) {
@@ -198,6 +205,7 @@ export default {
 				this.search_history.splice(newIndex, 1);
 			}
 			this.show_search_history.splice(index, 1);
+			uni.setStorageSync('search_history_key', this.search_history);
 		},
 		perform_url(e) {
 			const url = e?.currentTarget?.dataset?.url || '';

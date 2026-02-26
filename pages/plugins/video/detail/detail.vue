@@ -39,7 +39,7 @@
                                     <iconfont name="icon-givealike" :color="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'" size="60rpx" />
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
-                                <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-value="video_item" @tap.stop="handle_comment">
+                                <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
                                     <iconfont name="icon-comment" color="#fff" size="60rpx" />
                                     <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
@@ -115,9 +115,9 @@
                                                 <loading-component></loading-component>
                                             </template>
                                             <view v-else class="sub-comment-more flex-row align-c gap-10">
-                                                <view v-if="comment_item.page && comment_item.page < comment_item.page_total">
+                                                <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
                                                     <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                                </view>
+                                                </template>
                                                 <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                             </view>
                                         </template>
@@ -147,9 +147,9 @@
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <view data-type="image" @tap="comment_input_change">
+                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="chat_upload_images_event">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
-                            </view>
+                            </component-upload>
                         </view>
                         <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
                             <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
@@ -212,9 +212,9 @@
                 </view>
                 <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                     <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <view data-type="image" @tap="comment_input_change">
-                        <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
-                    </view>
+                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="chat_upload_images_event">
+                        <iconfont name="icon-layout-module-single-images" size="48rpx" color="#999"></iconfont>
+                    </component-upload>
                 </view>
                 <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
                     <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
@@ -240,6 +240,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
+    import componentUpload from '@/components/upload/upload';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
@@ -254,7 +255,8 @@
             componentNoData,
             componentBottomLine,
             componentPopup,
-            loadingComponent
+            loadingComponent,
+            componentUpload
         },
         data() {
             return {
@@ -316,7 +318,8 @@
                 is_add_comment: false,
                 // 监听键盘高度变化事件
                 listener_height: 0,
-                comments_data: {}
+                comments_data: {},
+                editor_path_type: 'video',
             };
         },
         computed: {
@@ -324,7 +327,7 @@
                 return this.show_comment_modal ? (this.move_distance > 0 ? `height: calc(30% + ${this.move_distance}px);` : 'height: 30%;') : 'height: 100%;';
             },
             commentContentStyle() {
-                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`;
+                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% + 20rpx - ${this.move_distance}px);` : `transform: translateY(0); height: calc(70% + 20rpx);`;
             },
             current_video_index() { 
                 return this.video_data_list.findIndex(item => item.id == this.current_video_id);
@@ -443,6 +446,7 @@
                                 video_data_list: [new_data.data],
                                 report_type_list: new_data.report_type_list,
                                 base_config_data: new_data.base_config_data,
+                                editor_path_type: new_data.editor_path_type,
                             });
                             this.get_last_or_next_data_list(this.params.id, 1, 1);
                         } else {
@@ -545,16 +549,18 @@
                                     });
 
                                     setTimeout(() => {
-                                        //#ifdef H5
-                                        if (this.video_contexts[this.current_index]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.video_contexts[this.current_index], true);
+                                        if (!this.paused) {
+                                            //#ifdef H5
+                                            if (this.video_contexts[this.current_index]) { // 当前播放的视频索引为0
+                                                this.video_play_event(this.video_contexts[this.current_index], true);
+                                            }
+                                            //#endif
+                                            //#ifndef H5
+                                            if (this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为0
+                                                this.video_play_event(this.create_video_contexts[this.current_index], true);
+                                            }
+                                            //#endif
                                         }
-                                        //#endif
-                                        //#ifndef H5
-                                        if (this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为0
-                                            this.video_play_event(this.create_video_contexts[this.current_index], true);
-                                        }
-                                        //#endif
                                     }, 200);
                                 }, 0);
                             }
@@ -602,7 +608,14 @@
                     is_seeking: false,
                     current_video_id: id, // 更新当前播放视频的ID
                 });
-
+                //#ifdef H5
+                // 使用URLSearchParams处理当前查询参数
+                const url = new URL(location.href);
+                url.searchParams.set('id', id);
+                // 替换URL路径，保持查询参数不变
+                const pathname = location.href.split('?')[0];
+                history.replaceState(null, '', pathname + url.search);
+                //#endif
                 const index = this.video_data_list.findIndex(item => item.id == id);
                 
                 // 数据预加载逻辑
@@ -711,7 +724,7 @@
                     title: data.title || '',
                     desc: data.desc || '',
                     path: '/pages/plugins/video/detail/detail',
-                    query: app.globalData.json_to_url_params(this.params),
+                    query: 'id=' + this.current_video_id,
                     img: data.poster_url || ''
                 }
                 this.setData({
@@ -797,70 +810,14 @@
             comment_input_event(e) {
                 this.comment_input_value = e.detail.value;
             },
-            comment_input_change(e) {
-                const { type } = e.currentTarget.dataset;
-                if (type == 'image') {
-                    var self = this;
-                    uni.chooseImage({
-                        count: self.propMaxNum,
-                        success(res) {
-                            var success = 0;
-                            var fail = 0;
-                            var length = res.tempFilePaths.length;
-                            var count = 0;
-                            self.upload_one_by_one(res.tempFilePaths, success, fail, count, length, 'uploadimage');
-                        },
-                    });
-                }
-            },
-            // 采用递归的方式上传多张
-            upload_one_by_one(img_paths, success, fail, count, length, action) {
-                var self = this;
-                if (self.form_images_list.length <= this.propMaxNum) {
-                    uni.uploadFile({
-                        url: app.globalData.get_request_url('index', 'ueditor'),
-                        filePath: img_paths[count],
-                        name: 'upfile',
-                        formData: {
-                            action: action,
-                            path_type: self.propPathType,
-                        },
-                        success: function (res) {
-                            success++;
-                            if (res.statusCode == 200) {
-                                var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
-                                if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    list.push({
-                                        url: data.data.url,
-                                        name: data.data.original,
-                                        size: data.data.size,
-                                    });
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                    self.$emit('call-back', self.form_images_list, self.propCallData);
-                                } else {
-                                    app.globalData.showToast(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (e) {
-                            console.log(e);
-                            fail++;
-                        },
-                        complete: function (e) {
-                            count++;
-
-                            // 下一张
-                            if (count >= length) {
-                                // 上传完毕，作一下提示
-                                //app.showToast('上传成功' + success +'张', 'success');
-                            } else {
-                                // 递归调用，上传下一张
-                                self.upload_one_by_one(img_paths, success, fail, count, length, action);
-                            }
-                        },
+            
+            chat_upload_images_event(res) {
+                if((res || null) != null) {
+                    // 存储上传图片内容
+                    this.form_images_list.push({
+                        url: res.url,
+                        name: res.name,
+                        size: res.size,
                     });
                 }
             },
@@ -925,7 +882,8 @@
             },
             // 打开评论区
             handle_comment(e) {
-                const old_data = e?.currentTarget?.dataset?.value || '';
+                const id = e?.currentTarget?.dataset?.id || '';
+                const old_data = this.video_data_list.find(item => item.id == id);
                 // 初始化评论数据
                 const new_data = old_data.comments_list.map(item1 => ({
                     ...item1,
@@ -1086,6 +1044,11 @@
                                     if (item.id == new_video_comments_id) {
                                         item.sub_comments.unshift(new_data);
                                         item.comments_count++;
+                                        if (!item.show_sub_comment) {
+                                            item.show_sub_comment = true;
+                                            item.page = 0;
+                                            item.page_total = 1;
+                                        }
                                     }
                                 })
                             }
@@ -1174,18 +1137,14 @@
                         if (data.code == 0) {
                             const new_data = data.data;
                             // 更新视频数据
-                            this.video_data_list.forEach(item => {
-                                if (item.id == id) {
-                                    const new_item = {
-                                        ...item,
-                                        ...new_data,
-                                    };
-                                    item = new_item;
-                                }
-                            });
-                            this.setData({
-                                video_data_list: this.video_data_list
-                            })
+                            const index = this.video_data_list.findIndex(item => item.id == id);
+                            if (index !== -1) {
+                                // 使用Object.assign更新原对象，保持引用不变
+                                Object.assign(this.video_data_list[index], {
+                                    ...this.video_data_list[index],
+                                    ...new_data.data
+                                });
+                            }
                         }
                     }
                 });
@@ -1442,7 +1401,6 @@
                     // 遍历所有评论
                     for (let i = 0; i < this.active_comments.length; i++) {
                         const comment = this.active_comments[i];
-                        
                         // 如果是父级评论且id匹配，跳过整个评论（包括子评论）
                         if (comment.id == comment_id) {
                             continue;
@@ -1450,19 +1408,19 @@
                         
                         // 检查是否有子评论需要删除
                         if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
-                            // 过滤掉匹配的子评论
-                            const filteredSubComments = comment.sub_comments.filter(
-                                subComment => subComment.id != comment_id
-                            );
-                            
-                            // 如果还有子评论或者本身就是有效的父级评论，则保留
-                            if (filteredSubComments.length > 0 || comment.content) {
-                                // 更新子评论数组
+                            const index = comment.sub_comments.findIndex(subComment => subComment.id == comment_id);
+                            if (index != -1) {
+                                // 过滤掉匹配的子评论
+                                const filteredSubComments = comment.sub_comments.filter(subComment => subComment.id != comment_id);
+                                // 如果还有子评论或者本身就是有效的父级评论，则保留
+                                if (filteredSubComments.length <= 0) {
+                                    comment.show_sub_comment = false;
+                                }
                                 comment.sub_comments = filteredSubComments;
-                                filteredComments.push(comment);
-                            } 
-                            // 更新显示的评论数
-                            comment.comments_count = filteredSubComments.length;
+                                // 更新显示的评论数
+                                comment.comments_count = comment.comments_count - 1;
+                            }
+                            filteredComments.push(comment);
                         } else {
                             // 没有子评论的情况，直接保留父级评论
                             filteredComments.push(comment);
@@ -1598,7 +1556,6 @@
              * @param {Object} res - 键盘高度变化事件对象
              */
             listener(res) {
-                console.log(res);
                 // 减1是为了兼容，避免跟键盘之间会不连贯
                 if (res.height > 0) {
                     this.listener_height = res.height - 1;
