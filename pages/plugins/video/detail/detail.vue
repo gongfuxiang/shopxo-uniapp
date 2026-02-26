@@ -327,7 +327,7 @@
                 return this.show_comment_modal ? (this.move_distance > 0 ? `height: calc(30% + ${this.move_distance}px);` : 'height: 30%;') : 'height: 100%;';
             },
             commentContentStyle() {
-                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% - ${this.move_distance}px);` : `transform: translateY(0); height: 70%;`;
+                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% + 20rpx - ${this.move_distance}px);` : `transform: translateY(0); height: calc(70% + 20rpx);`;
             },
             current_video_index() { 
                 return this.video_data_list.findIndex(item => item.id == this.current_video_id);
