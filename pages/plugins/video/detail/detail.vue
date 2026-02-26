@@ -50,7 +50,6 @@
                             </view>
                             <view v-if="!isEmpty(video_item.goods) && base_config_data && base_config_data.is_video_detail_show_goods && base_config_data.is_video_detail_show_goods == 1" class="product-card">
                                 <view class="flex-col gap-10">
-                                    <text>{{ video_item.show_goods }}</text>
                                     <view v-if="video_item.show_goods" class="flex-row align-c gap-10 product-card-item" :data-id="video_item.id" @tap.stop="handle_product_card_item">
                                         <view class="product-image">
                                             <image :src="video_item.goods.images" mode="aspectFill" class="product-image"></image>
@@ -353,8 +352,8 @@
             });
         },
         onShow() {
-            if (!this.is_manual_pause && this.video_contexts != null) {
-                this.video_play_event(this.video_contexts[this.current_index], true);
+            if (!this.is_manual_pause && this.create_video_contexts[this.current_index]) {
+                this.video_play_event(this.create_video_contexts[this.current_index]);
             }
         },
         onHide() {
@@ -681,9 +680,6 @@
                     if (index !== exceptIndex && context) {
                         try {
                             context.pause();
-                            this.setData({
-                                is_manual_pause: false,
-                            });
                         } catch (error) {
                             console.warn(`暂停视频 ${index} 失败:`, error);
                         }
@@ -695,7 +691,7 @@
             play_current_video_safely(index) {
                 // 优先使用 uni.createVideoContext
                 if (this.create_video_contexts[index]) {
-                    this.video_play_event(this.create_video_contexts[index], false);
+                    this.video_play_event(this.create_video_contexts[index]);
                     return;
                 }
             },
@@ -724,7 +720,7 @@
                     }
                 } else {
                     // 播放当前视频
-                    this.video_play_event(videoContext, false);
+                    this.video_play_event(videoContext);
                 }
             },
 
