@@ -1,7 +1,7 @@
 <template>
 	<view class="wh-auto ht-auto pr video-container bottom-line-exclude-bottom">
 		<template v-if="tabs.length > 0">
-			<scroll-view  scroll-y :show-scrollbar="false" class="ht" lower-threshold="60" scroll-with-animation="true">
+			<scroll-view  scroll-y :show-scrollbar="false" class="ht" lower-threshold="60" scroll-with-animation="true" @scroll="on_scroll_event">
 				<view class="wh-auto ht-auto pr">
 					<!-- 搜索框 -->
 					<view class="header-top">
@@ -16,24 +16,24 @@
 								<search-component propIsDisabled @disabledSearch="handle_search"/>
 							</view>
 						</view>
-						<!-- 轮播 -->
-						<view v-if="slider_list.length > 0" class="padding-horizontal-main">
-							<component-banner :propData="slider_list" propSize="mini"></component-banner>
-						</view>
-						<template v-if="tabs.length > 0">
-							<!-- 导航栏 -->
-							<view class="nav-tabs">
-								<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
-									<view class="tabs-scroll-content">
-										<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
-											<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image" :src="item.icon" mode="aspectFit"></image>
-											{{ item.name }}
-										</view>
-									</view>
-								</scroll-view>
-							</view>
-						</template>
 					</view>
+					<!-- 轮播 -->
+					<view v-if="slider_list.length > 0" class="padding-horizontal-main">
+						<component-banner :propData="slider_list"></component-banner>
+					</view>
+					<template v-if="tabs.length > 0">
+						<!-- 导航栏 -->
+						<view class="nav-tabs" :class="{ 'nav-tabs-sticky': is_nav_sticky }">
+							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
+								<view class="tabs-scroll-content">
+									<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
+										<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image" :src="item.icon" mode="aspectFit"></image>
+										{{ item.name }}
+									</view>
+								</view>
+							</scroll-view>
+						</view>
+					</template>
 					<template v-if="recommend_videos.length > 0">
 						<!-- 推荐视频卡片区域 -->
 						<view class="recommend-videos">
@@ -109,6 +109,8 @@ export default {
 			menu_button_info: '',
 			header_padding_left: '',
 			slider_list: [],
+			is_nav_sticky: false, // 控制nav-tabs是否处于粘性状态
+			nav_sticky_threshold: 50 // 粘性阈值，与CSS中的top值对应
 		};
 	},
 	onShow() {
@@ -237,6 +239,14 @@ export default {
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
+		// 滚动事件处理
+		on_scroll_event(e) {
+			const scrollTop = e.detail.scrollTop;
+			// 当滚动距离大于等于阈值时，设置nav-tabs为粘性状态（背景变白）
+			this.setData({
+				is_nav_sticky: scrollTop >= this.nav_sticky_threshold
+			});
+		}
 	}
 };
 </script>
@@ -250,9 +260,18 @@ export default {
 }
 /* 导航栏 */
 .nav-tabs {
-	position: relative;
+	position: sticky;
+	top: 110rpx;
 	width: 100%;
 	padding: 0 16rpx 20rpx 16rpx;
+	z-index: 9;
+	background: transparent; // 默认透明背景
+	transition: background-color 0.3s ease; // 添加背景色过渡动画
+	
+	&.nav-tabs-sticky {
+		background: #fff; // 粘性状态时背景变白
+	}
+	
 	.tabs-scroll-content {
 		display: flex;
 		align-items: center;
