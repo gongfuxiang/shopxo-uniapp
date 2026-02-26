@@ -147,9 +147,9 @@
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <view data-type="image" @tap="comment_input_change">
+                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="chat_upload_images_event">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
-                            </view>
+                            </component-upload>
                         </view>
                         <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
                             <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
@@ -212,9 +212,9 @@
                 </view>
                 <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                     <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <view data-type="image" @tap="comment_input_change">
-                        <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
-                    </view>
+                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="chat_upload_images_event">
+                        <iconfont name="icon-layout-module-single-images" size="48rpx" color="#999"></iconfont>
+                    </component-upload>
                 </view>
                 <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
                     <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
@@ -240,6 +240,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
+    import componentUpload from '@/components/upload/upload';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
@@ -254,7 +255,8 @@
             componentNoData,
             componentBottomLine,
             componentPopup,
-            loadingComponent
+            loadingComponent,
+            componentUpload
         },
         data() {
             return {
@@ -316,7 +318,8 @@
                 is_add_comment: false,
                 // 监听键盘高度变化事件
                 listener_height: 0,
-                comments_data: {}
+                comments_data: {},
+                editor_path_type: 'video',
             };
         },
         computed: {
@@ -443,6 +446,7 @@
                                 video_data_list: [new_data.data],
                                 report_type_list: new_data.report_type_list,
                                 base_config_data: new_data.base_config_data,
+                                editor_path_type: new_data.editor_path_type,
                             });
                             this.get_last_or_next_data_list(this.params.id, 1, 1);
                         } else {
@@ -797,70 +801,14 @@
             comment_input_event(e) {
                 this.comment_input_value = e.detail.value;
             },
-            comment_input_change(e) {
-                const { type } = e.currentTarget.dataset;
-                if (type == 'image') {
-                    var self = this;
-                    uni.chooseImage({
-                        count: self.propMaxNum,
-                        success(res) {
-                            var success = 0;
-                            var fail = 0;
-                            var length = res.tempFilePaths.length;
-                            var count = 0;
-                            self.upload_one_by_one(res.tempFilePaths, success, fail, count, length, 'uploadimage');
-                        },
-                    });
-                }
-            },
-            // 采用递归的方式上传多张
-            upload_one_by_one(img_paths, success, fail, count, length, action) {
-                var self = this;
-                if (self.form_images_list.length <= this.propMaxNum) {
-                    uni.uploadFile({
-                        url: app.globalData.get_request_url('index', 'ueditor'),
-                        filePath: img_paths[count],
-                        name: 'upfile',
-                        formData: {
-                            action: action,
-                            path_type: self.propPathType,
-                        },
-                        success: function (res) {
-                            success++;
-                            if (res.statusCode == 200) {
-                                var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
-                                if (data.code == 0 && (data.data.url || null) != null) {
-                                    var list = self.form_images_list;
-                                    list.push({
-                                        url: data.data.url,
-                                        name: data.data.original,
-                                        size: data.data.size,
-                                    });
-                                    self.setData({
-                                        form_images_list: list,
-                                    });
-                                    self.$emit('call-back', self.form_images_list, self.propCallData);
-                                } else {
-                                    app.globalData.showToast(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (e) {
-                            console.log(e);
-                            fail++;
-                        },
-                        complete: function (e) {
-                            count++;
-
-                            // 下一张
-                            if (count >= length) {
-                                // 上传完毕，作一下提示
-                                //app.showToast('上传成功' + success +'张', 'success');
-                            } else {
-                                // 递归调用，上传下一张
-                                self.upload_one_by_one(img_paths, success, fail, count, length, action);
-                            }
-                        },
+            
+            chat_upload_images_event(res) {
+                if((res || null) != null) {
+                    // 存储上传图片内容
+                    this.form_images_list.push({
+                        url: res.url,
+                        name: res.name,
+                        size: res.size,
                     });
                 }
             },
