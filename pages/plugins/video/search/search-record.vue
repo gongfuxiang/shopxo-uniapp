@@ -338,6 +338,7 @@ export default {
 /* 热门搜索 */
 .hot-search {
 	padding: 40rpx;
+	background: #fff;
 }
 
 .hot-tabs {
