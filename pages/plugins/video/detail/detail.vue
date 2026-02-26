@@ -620,6 +620,12 @@
                 // 替换URL路径，保持查询参数不变
                 const pathname = location.href.split('?')[0];
                 history.replaceState(null, '', pathname + url.search);
+                
+                // 更新页面标题
+                const currentVideo = this.video_data_list.find(item => item.id == id);
+                if (currentVideo && currentVideo.videoContent) {
+                    document.title = currentVideo.videoContent;
+                }
                 //#endif
                 const index = this.video_data_list.findIndex(item => item.id == id);
                 
