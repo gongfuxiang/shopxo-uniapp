@@ -350,9 +350,6 @@
                 params: app.globalData.launch_params_handle(params),
             });
         },
-        onShow() {
-            this.init();
-        },
         onHide() {
             // 清理定时器
             if (this.video_switch_debounce_timer) {
@@ -365,6 +362,7 @@
             this.cleanup_all_videos();
         },
         mounted() {
+            this.init();
             // #ifdef H5
             // 添加全局点击事件监听
             document.addEventListener('click', this.handle_global_click);
@@ -422,10 +420,10 @@
                 this.setData({
                     header_padding_left: padding_left,
                     menu_button_info: menu_button_info,
-                    current_video_id: this.params.id,
+                    current_video_id: isEmpty(this.current_video_id) ? this.params.id : this.current_video_id,
                 });
 
-                this.get_video_detail(this.params.id);
+                this.get_video_detail(this.current_video_id);
             },
             // 获取视频详情
             get_video_detail(id) {
@@ -544,7 +542,9 @@
                                     this.display_video_list.forEach((item, index) => {
                                         this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
                                         //#ifdef H5
-                                        this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
+                                        if (document.getElementById(`video_${index}`) != null) { 
+                                            this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
+                                        }
                                         //#endif
                                     });
 
@@ -1095,7 +1095,9 @@
                             const data = res.data;
                             if (data.code == 0) {
                                 const new_data = data.data;
-                                if (new_data.data.length > 0) {
+                                if (comment.page == 0) {
+                                    comment.sub_comments = new_data.data;
+                                } else if (new_data.data.length > 0) {
                                     comment.sub_comments.push(...new_data.data);
                                 }
                                 comment.page = new_data.page;

@@ -17,15 +17,22 @@
 			</view>
 			<!-- 搜索历史记录 -->
 			<view v-if="show_search_history.length > 0" class="search-history flex-col jc-c align-c">
+				<view class="wh-auto flex-row align-c jc-sb">
+					<text class="size-14 cr-6">历史记录</text>
+					<view class="flex-row algin-c gap-5" @tap="clear_history">
+						<iconfont name="icon-delete" size="28rpx" color="#999"></iconfont>
+						<text class="size-12 cr-9">清除记录</text>
+					</view>
+				</view>
 				<view v-for="(history, index) in show_search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">
-					<view class="flex-row align-c search-history-title cp" :data-value="history" @tap.stop="perform_search">
+					<view class="flex-1 flex-row align-c search-history-title cp" :data-value="history" @tap.stop="perform_search">
 						<iconfont name="icon-time" size="32rpx"></iconfont>
 						<text>{{ history }}</text>
 					</view>
 					<iconfont name="icon-close-line" size="24rpx" :data-index="index" @tap="delete_history"></iconfont>
 				</view>
 				<!-- 查看更多 -->
-				<template v-if="search_history.length > (show_search_history.length + 4)">
+				<template v-if="search_history.length > show_search_history.length">
 					<template v-if="is_view_more">
 						<loadingComponent></loadingComponent>
 					</template>
@@ -225,6 +232,13 @@ export default {
 		switch_hot_tab(e) {
 			this.setData({
 				hot_current_tab: e.currentTarget.dataset.index,
+			});
+		},
+		clear_history() {
+			uni.setStorageSync('search_history_key', []);
+			this.setData({
+				search_history: [],
+				show_search_history: [],
 			});
 		}
 	}
