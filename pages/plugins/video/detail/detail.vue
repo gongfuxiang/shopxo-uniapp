@@ -606,6 +606,13 @@
                     is_seeking: false,
                     current_video_id: id, // 更新当前播放视频的ID
                 });
+                //#ifdef H5
+                // 使用URLSearchParams处理当前查询参数
+                const url = new URL(location.href);
+                url.searchParams.set('id', id);
+                
+                history.replaceState(null, '', url.pathname + url.search);
+                //#endif
 
                 const index = this.video_data_list.findIndex(item => item.id == id);
                 
@@ -715,7 +722,7 @@
                     title: data.title || '',
                     desc: data.desc || '',
                     path: '/pages/plugins/video/detail/detail',
-                    query: app.globalData.json_to_url_params(this.params),
+                    query: 'id=' + this.current_video_id,
                     img: data.poster_url || ''
                 }
                 this.setData({
@@ -1127,28 +1134,15 @@
                         const data = res.data;
                         if (data.code == 0) {
                             const new_data = data.data;
-                            // 合并评论列表
-                            // let video_data = JSON.parse(JSON.stringify(this.video_data_list));
                             // 更新视频数据
-                            this.video_data_list.forEach(item => {
-                                if (item.id == id) {
-                                    console.log(new_data.data.comments_list, '1');
-                                    const new_item = {
-                                        ...item,
-                                        ...new_data.data,
-                                        comments_list: new_data.data.comments_list,
-                                    };
-                                    console.log(new_item, '2');
-                                    
-                                    item = new_item;
-                                }
-                            });
-                            console.log(this.video_data_list, '3');
-                            
-                            // 更新数据
-                            // this.setData({
-                            //     video_data_list: video_data
-                            // })
+                            const index = this.video_data_list.findIndex(item => item.id == id);
+                            if (index !== -1) {
+                                // 使用Object.assign更新原对象，保持引用不变
+                                Object.assign(this.video_data_list[index], {
+                                    ...this.video_data_list[index],
+                                    ...new_data.data
+                                });
+                            }
                         }
                     }
                 });
@@ -1560,7 +1554,6 @@
              * @param {Object} res - 键盘高度变化事件对象
              */
             listener(res) {
-                console.log(res);
                 // 减1是为了兼容，避免跟键盘之间会不连贯
                 if (res.height > 0) {
                     this.listener_height = res.height - 1;
