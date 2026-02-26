@@ -147,7 +147,7 @@ export default {
 				menu_button_info: menu_button_info
 			});
 			// 搜索历史记录
-			this.search_history = uni.getStorageSync('search_history_key') || [];
+			this.search_history = uni.getStorageSync('cache_plugins_video_search_history_key') || [];
 			if (this.search_history.length > 0) {
 				this.show_search_history = this.search_history.filter((item, index) => index < 5);
 			} else {
@@ -193,7 +193,7 @@ export default {
 			// 保存搜索历史记录
 			if (!isEmpty(e) && !this.search_history.includes(e)) {
 				this.search_history.push(e);
-				uni.setStorageSync('search_history_key', this.search_history);
+				uni.setStorageSync('cache_plugins_video_search_history_key', this.search_history);
 			}
 			this.search_query = e;
 			// 跳转到搜索页
@@ -212,7 +212,7 @@ export default {
 				this.search_history.splice(newIndex, 1);
 			}
 			this.show_search_history.splice(index, 1);
-			uni.setStorageSync('search_history_key', this.search_history);
+			uni.setStorageSync('cache_plugins_video_search_history_key', this.search_history);
 		},
 		perform_url(e) {
 			const url = e?.currentTarget?.dataset?.url || '';
@@ -235,7 +235,7 @@ export default {
 			});
 		},
 		clear_history() {
-			uni.setStorageSync('search_history_key', []);
+			uni.setStorageSync('cache_plugins_video_search_history_key', []);
 			this.setData({
 				search_history: [],
 				show_search_history: [],
