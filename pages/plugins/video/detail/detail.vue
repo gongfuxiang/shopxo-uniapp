@@ -542,7 +542,15 @@
                                 this.update_display_data();
 
                                 setTimeout(() => { 
-                                    // // 更新分享信息
+                                    //#ifdef H5
+                                    // 更新页面标题
+                                    const current_video = this.video_data_list.find(item => item.id == id);
+                                    if (current_video && current_video.title) {
+                                        document.title = current_video.title;
+                                    }
+                                    //#endif
+                                    
+                                    // 更新分享信息
                                     this.update_share_info(this.display_video_list[this.current_index]);
 
                                     this.display_video_list.forEach((item, index) => {
