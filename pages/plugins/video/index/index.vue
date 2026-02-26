@@ -16,6 +16,10 @@
 								<search-component propIsDisabled @disabledSearch="handle_search"/>
 							</view>
 						</view>
+						<!-- 轮播 -->
+						<view v-if="slider_list.length > 0" class="padding-horizontal-main">
+							<component-banner :propData="slider_list" propSize="mini"></component-banner>
+						</view>
 						<template v-if="tabs.length > 0">
 							<!-- 导航栏 -->
 							<view class="nav-tabs">
@@ -65,6 +69,7 @@
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentNoData from '@/components/no-data/no-data';
+import componentBanner from '@/components/slider/slider';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
 import { isEmpty } from '../../../../common/js/common/common';
 const app = getApp();
@@ -76,7 +81,8 @@ bar_height = 0;
 export default {
 	components: {
 		searchComponent,
-		componentNoData
+		componentNoData,
+		componentBanner,
 	},
 	data() {
 		return {
@@ -102,6 +108,7 @@ export default {
 			data_list_loding_msg: '',
 			menu_button_info: '',
 			header_padding_left: '',
+			slider_list: [],
 		};
 	},
 	onShow() {
@@ -150,6 +157,7 @@ export default {
 							tabs: new_data.category_list,
 							current_tabs_id: new_data.category_list.length > 0 ? new_data.category_list[this.current_tabs_index].id : '',
 							data_tabs_loding_status: 0,
+							slider_list: new_data.slider_list,
 						});
 						// 获取第一个分类的视频列表
 						this.get_video_list(this.current_tabs_id);
