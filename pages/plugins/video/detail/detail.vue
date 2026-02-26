@@ -1128,9 +1128,9 @@
                         if (data.code == 0) {
                             const new_data = data.data;
                             // 合并评论列表
-                            let video_data = JSON.parse(JSON.stringify(this.video_data_list));
+                            // let video_data = JSON.parse(JSON.stringify(this.video_data_list));
                             // 更新视频数据
-                            const new_video_data = video_data.map(item => {
+                            this.video_data_list.forEach(item => {
                                 if (item.id == id) {
                                     console.log(new_data.data.comments_list, '1');
                                     const new_item = {
@@ -1143,12 +1143,12 @@
                                     item = new_item;
                                 }
                             });
-                            console.log(new_video_data, '3');
+                            console.log(this.video_data_list, '3');
                             
                             // 更新数据
-                            this.setData({
-                                video_data_list: new_video_data
-                            })
+                            // this.setData({
+                            //     video_data_list: video_data
+                            // })
                         }
                     }
                 });
