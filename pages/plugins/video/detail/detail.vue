@@ -39,7 +39,7 @@
                                     <iconfont name="icon-givealike" :color="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'" size="60rpx" />
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
-                                <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-value="video_item" @tap.stop="handle_comment">
+                                <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
                                     <iconfont name="icon-comment" color="#fff" size="60rpx" />
                                     <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
@@ -873,7 +873,8 @@
             },
             // 打开评论区
             handle_comment(e) {
-                const old_data = e?.currentTarget?.dataset?.value || '';
+                const id = e?.currentTarget?.dataset?.id || '';
+                const old_data = this.video_data_list.find(item => item.id == id);
                 // 初始化评论数据
                 const new_data = old_data.comments_list.map(item1 => ({
                     ...item1,
@@ -1126,18 +1127,27 @@
                         const data = res.data;
                         if (data.code == 0) {
                             const new_data = data.data;
+                            // 合并评论列表
+                            let video_data = JSON.parse(JSON.stringify(this.video_data_list));
                             // 更新视频数据
-                            this.video_data_list.forEach(item => {
+                            const new_video_data = video_data.map(item => {
                                 if (item.id == id) {
+                                    console.log(new_data.data.comments_list, '1');
                                     const new_item = {
                                         ...item,
-                                        ...new_data,
+                                        ...new_data.data,
+                                        comments_list: new_data.data.comments_list,
                                     };
+                                    console.log(new_item, '2');
+                                    
                                     item = new_item;
                                 }
                             });
+                            console.log(new_video_data, '3');
+                            
+                            // 更新数据
                             this.setData({
-                                video_data_list: this.video_data_list
+                                video_data_list: new_video_data
                             })
                         }
                     }
