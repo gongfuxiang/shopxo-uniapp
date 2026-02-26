@@ -486,11 +486,10 @@
                         if (data.code == 0) {
                             const new_data = data.data;
                             // 第一次的数据
-                            let data_list = JSON.parse(JSON.stringify(this.video_data_list));
-                            
+                            // let data_list = JSON.parse(JSON.stringify(this.video_data_list));
                             // 创建现有数据的ID映射表，用于快速去重
                             const existing_ids = new Map();
-                            data_list.forEach(item => {
+                            this.video_data_list.forEach(item => {
                                 existing_ids.set(item.id, true);
                             });
                             
@@ -499,7 +498,7 @@
                                 if (new_data.last.length > 0) {
                                     const unique_last = new_data.last.filter(item => !existing_ids.has(item.id));
                                     if (unique_last.length > 0) {
-                                        data_list.unshift(...unique_last);
+                                        this.video_data_list.unshift(...unique_last);
                                         // 更新ID映射表
                                         unique_last.forEach(item => existing_ids.set(item.id, true));
                                     }
@@ -508,23 +507,24 @@
                                 if (new_data.next.length > 0) {
                                     const unique_next = new_data.next.filter(item => !existing_ids.has(item.id));
                                     if (unique_next.length > 0) {
-                                        data_list.push(...unique_next);
+                                        this.video_data_list.push(...unique_next);
                                     }
                                 }
                             } else if (is_last == 1 && new_data.last.length > 0) { // 上一页数据 - 去重处理
                                 const unique_last = new_data.last.filter(item => !existing_ids.has(item.id));
                                 if (unique_last.length > 0) {
-                                    data_list.unshift(...unique_last);
+                                    this.video_data_list.unshift(...unique_last);
                                 }
                             } else if (is_next == 1 && new_data.next.length > 0) { // 下一页数据 - 去重处理
                                 const unique_next = new_data.next.filter(item => !existing_ids.has(item.id));
                                 if (unique_next.length > 0) {
-                                    data_list.push(...unique_next);
+                                    this.video_data_list.push(...unique_next);
                                 }
                             }
                             // 更新当前视频商品信息
-                            const new_index = data_list.findIndex(item => item.id == this.params.id);
-                            data_list.forEach((item) => {
+                            const new_index = this.video_data_list.findIndex(item => item.id == this.params.id);
+                            // 处理当前视频商品信息
+                            this.video_data_list.forEach((item) => {
                                 if (isEmpty(item.show_goods)) {
                                     if (this.base_config_data && this.base_config_data.is_video_detail_show_goods_modal && this.base_config_data.is_video_detail_show_goods_modal == 1) {
                                         item.show_goods = true;
@@ -534,8 +534,8 @@
                                 }
                             });
                             this.setData({
-                                video_data_list: data_list,
-                                current_index: is_last == 1 && is_next == 1 ? (new_index == data_list.length - 1 ? 2 : (new_index == data_list.length - 2 ? 1 : 0)) : this.current_index,
+                                video_data_list: this.video_data_list,
+                                current_index: is_last == 1 && is_next == 1 ? (new_index == this.video_data_list.length - 1 ? 2 : (new_index == this.video_data_list.length - 2 ? 1 : 0)) : this.current_index,
                             });
                             
                             if (is_last == 1 && is_next == 1) {
