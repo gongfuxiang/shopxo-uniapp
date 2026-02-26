@@ -115,9 +115,9 @@
                                                 <loading-component></loading-component>
                                             </template>
                                             <view v-else class="sub-comment-more flex-row align-c gap-10">
-                                                <view v-if="comment_item.page && comment_item.page < comment_item.page_total">
+                                                <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
                                                     <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                                </view>
+                                                </template>
                                                 <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                             </view>
                                         </template>
@@ -1034,6 +1034,11 @@
                                     if (item.id == new_video_comments_id) {
                                         item.sub_comments.unshift(new_data);
                                         item.comments_count++;
+                                        if (!item.show_sub_comment) {
+                                            item.show_sub_comment = true;
+                                            item.page = 0;
+                                            item.page_total = 1;
+                                        }
                                     }
                                 })
                             }
@@ -1390,7 +1395,6 @@
                     // 遍历所有评论
                     for (let i = 0; i < this.active_comments.length; i++) {
                         const comment = this.active_comments[i];
-                        
                         // 如果是父级评论且id匹配，跳过整个评论（包括子评论）
                         if (comment.id == comment_id) {
                             continue;
@@ -1398,19 +1402,19 @@
                         
                         // 检查是否有子评论需要删除
                         if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
-                            // 过滤掉匹配的子评论
-                            const filteredSubComments = comment.sub_comments.filter(
-                                subComment => subComment.id != comment_id
-                            );
-                            
-                            // 如果还有子评论或者本身就是有效的父级评论，则保留
-                            if (filteredSubComments.length > 0 || comment.content) {
-                                // 更新子评论数组
+                            const index = comment.sub_comments.findIndex(subComment => subComment.id == comment_id);
+                            if (index != -1) {
+                                // 过滤掉匹配的子评论
+                                const filteredSubComments = comment.sub_comments.filter(subComment => subComment.id != comment_id);
+                                // 如果还有子评论或者本身就是有效的父级评论，则保留
+                                if (filteredSubComments.length <= 0) {
+                                    comment.show_sub_comment = false;
+                                }
                                 comment.sub_comments = filteredSubComments;
-                                filteredComments.push(comment);
-                            } 
-                            // 更新显示的评论数
-                            comment.comments_count = filteredSubComments.length;
+                                // 更新显示的评论数
+                                comment.comments_count = comment.comments_count - 1;
+                            }
+                            filteredComments.push(comment);
                         } else {
                             // 没有子评论的情况，直接保留父级评论
                             filteredComments.push(comment);
