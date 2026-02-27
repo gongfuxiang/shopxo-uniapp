@@ -149,6 +149,13 @@ export default {
         // 分享菜单处理
         app.globalData.page_share_handle();
 	},
+    
+    // 下拉刷新
+    onPullDownRefresh() {
+        // 初始化数据
+        this.init_data();
+    },
+
 	methods: {
 		isEmpty,
         // 初始化
@@ -188,6 +195,7 @@ export default {
 				method: 'POST',
 				dataType: 'json',
 				success: res => {
+                    uni.stopPullDownRefresh();
 					const data = res.data;
 					if (data.code == 0) {
 						const new_data = data.data;
@@ -207,6 +215,7 @@ export default {
 					}
 				},
 				fail: (err) => {
+                    uni.stopPullDownRefresh();
 					this.setData({
 						data_tabs_loding_status: 2,
 						data_list_loding_msg: this.$t('common.internet_error_tips'),
