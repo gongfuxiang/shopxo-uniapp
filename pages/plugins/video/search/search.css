@@ -12,7 +12,7 @@
 .nav-tabs {
 	position: relative;
 	width: 100%;
-	padding: 0 24rpx 20rpx 24rpx;
+	padding: 10rpx 24rpx 20rpx 24rpx;
 	box-sizing: border-box;
 }
 
@@ -80,26 +80,18 @@
 }
 /* #endif */
 /* 推荐视频列表 */
-.recommend-videos {
-	padding: 20rpx 0;
-}
-
 .recommend-videos .video-grid {
-	padding: 0 24rpx;
 	column-count: 2;
-	column-gap: 10px;
-	/* 添加这些样式确保滚动事件能正常触发 */
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
+	column-gap: 20rpx;
 }
 
 .recommend-videos .video-card {
 	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	border-radius: 4px;
+	box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+	border-radius: 8rpx;
 	overflow: hidden;
 	break-inside: avoid;
-	margin-bottom: 10px;
+	margin-bottom: 20rpx;
 	width: 100%;
 }
 
@@ -175,9 +167,4 @@
 }
 ::v-deep .popup .popup-mask { 
 	z-index: 8 !important;
-}
-.recommend-scroll {
-	/* 使用更精确的高度计算 */
-	height: calc(100vh - 240rpx); /* 增加一些高度确保滚动空间 */
-	min-height: 500px; /* 设置最小高度 */
 }

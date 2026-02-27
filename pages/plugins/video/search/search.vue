@@ -1,82 +1,76 @@
 <template>
-	<view class="wh-auto ht-auto pr video-container">
-		<view class="wh-auto ht-auto pr">
-			<template v-if="category_list.length > 0">
-				<!-- 搜索框 -->
-				<view class="header-top">
-					<view class="header-search" :style="top_content_style + menu_button_info">
-						<view id="search-height" class="flex-row align-c">
-							<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-							<!-- #ifndef MP-ALIPAY -->
-							<view class="cp" @tap="handle_back">
-								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
-							</view>
-							<!-- #endif -->
-							<view class="wh-auto ht-auto" :style="header_padding_left">
-								<search-component :propSearchQuery="search_keywords" @search="handle_search" />
-							</view>
-						</view>
-					</view>
-					<!-- 导航栏 -->
-					<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
-						<view class="tabs-scroll-content">
-							<view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab == index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
-						</view>
-						<view class="nav-tabs-filter" @click="toggle_filter_popup">
-							<iconfont name="icon-filter" size="32rpx"></iconfont>
-						</view>
-					</view>
-				</view>
-				<!-- 推荐视频卡片区域 -->
-				<view class="recommend-videos">
-					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true">
-						<template v-if="recommend_videos.length > 0">
-							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
-									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
-									<view class="video-info flex-col jc-c"> 
-										<view class="video-title text-line-2">{{ item.title }}</view>
-										<view class="flex-row align-c jc-sb">
-											<view class="video-date">{{ item.add_time_date }}</view>
-											<view class="video-likes flex-row align-c gap-4">
-												<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-												<text>{{ item.give_thumbs_count }}</text>
-											</view>
-										</view>
-									</view>
-								</view>
-							</view>
-							<template v-if="page < page_total">
-								<!-- 加载更多 -->
-								<loadingComponent v-if="is_more_loading"></loadingComponent>
-							</template>
-							<template v-else>
-								<!-- 结尾 -->
-								<component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
-							</template>
-						</template>
-						<template v-else>
-							<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-						</template>
-					</scroll-view>
-				</view>
-			</template>
-			<template v-else>
-				<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
-			</template>
-		</view>
+    <view :class="theme_view">
+        <template v-if="category_list.length > 0">
+            <!-- 搜索框 -->
+            <view class="header-top">
+                <view class="header-search" :style="top_content_style + menu_button_info">
+                    <view id="search-height" class="flex-row align-c">
+                        <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                        <!-- #ifndef MP-ALIPAY -->
+                        <view class="cp" @tap="handle_back">
+                            <iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
+                        </view>
+                        <!-- #endif -->
+                        <view class="wh-auto ht-auto" :style="header_padding_left">
+                            <search-component :propSearchQuery="search_keywords" @search="handle_search" />
+                        </view>
+                    </view>
+                </view>
+                <!-- 导航栏 -->
+                <view class="nav-tabs flex-row align-s jc-sb gap-10"> 
+                    <view class="tabs-scroll-content">
+                        <view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab == index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
+                    </view>
+                    <view class="nav-tabs-filter" @click="toggle_filter_popup">
+                        <iconfont name="icon-filter" size="32rpx"></iconfont>
+                    </view>
+                </view>
+            </view>
+            <!-- 推荐视频卡片区域 -->
+            <scroll-view class="recommend-videos" scroll-y :show-scrollbar="false" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true" :style="scroll_view_style">
+                <template v-if="recommend_videos.length > 0">
+                    <view class="video-grid padding-main">
+                        <view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
+                            <image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
+                            <view class="video-info flex-col jc-c"> 
+                                <view class="video-title text-line-2">{{ item.title }}</view>
+                                <view class="flex-row align-c jc-sb">
+                                    <view class="video-date">{{ item.add_time_date }}</view>
+                                    <view class="video-likes flex-row align-c gap-4">
+                                        <iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
+                                        <text>{{ item.give_thumbs_count }}</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <template v-if="page < page_total">
+                        <!-- 加载更多 -->
+                        <loadingComponent v-if="is_more_loading"></loadingComponent>
+                    </template>
+                    <template v-else>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                    </template>
+                </template>
+                <template v-else>
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                </template>
+            </scroll-view>
+        </template>
+        <template v-else>
+            <component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
+        </template>
 		<!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="filter_popup_status" propPosition="top" :propMask="true" @onclose="close_filter_popup">
-            <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')" :style="{ 'padding-top': popup_top }">
-                <view class="divider-b">
-                    <view class="nav-list-more">
-                        <view class="flex-row flex-wrap align-c">
-                            <!-- 筛选列表 -->
-                            <view v-for="(item, index) in popup_list" :key="index" class="filter-group">
-                                <view class="filter-title">{{ item.title }}</view>
-                                <view class="filter-options">
-                                    <view v-for="(option, index) in item.list" :key="index" :class="'filter-option ' + (option.type == filter_params[item.id] ? 'active' : '')" :data-type="option.type" :data-id="item.id" @tap="select_filter">{{ option.name }}</view>
-                                </view>
+            <view class="padding-bottom-lg" :style="filter_popup_top_style">
+                <view class="nav-list-more">
+                    <view class="flex-row flex-wrap align-c">
+                        <!-- 筛选列表 -->
+                        <view v-for="(item, index) in popup_list" :key="index" class="filter-group">
+                            <view class="filter-title">{{ item.title }}</view>
+                            <view class="filter-options">
+                                <view v-for="(option, index) in item.list" :key="index" :class="'filter-option ' + (option.type == filter_params[item.id] ? 'active' : '')" :data-type="option.type" :data-id="item.id" @tap="select_filter">{{ option.name }}</view>
                             </view>
                         </view>
                     </view>
@@ -114,6 +108,7 @@ export default {
 	},
 	data() {
 		return {
+            theme_view: app.globalData.get_theme_value_view(),
 			// 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
 			// #ifdef MP
 			top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
@@ -130,8 +125,8 @@ export default {
 			isLoadingMore: false,
 			params: null,
 			filter_popup_status: false,
-			popup_top: '0rpx',
-			platform: app.globalData.application_client_type(),
+			filter_popup_top_style: '',
+            scroll_view_style: '',
 			popup_list: [
 				{ title: this.$t('video-search.video-search.sdfgg4'), id: 'sort', list: []},
 				{ title: this.$t('video-search.video-search.gf3212'), id: 'time', list: [] },
@@ -209,24 +204,8 @@ export default {
 			this.setData({
 				header_padding_left: padding_left,
 				menu_button_info: menu_button_info,
+                search_history: uni.getStorageSync(this.cache_key) || [],
 			});
-			// 获取头部的高度
-			setTimeout(() => {
-                const query = uni.createSelectorQuery().in(this);
-                // 选择我们想要的元素
-                query
-                    .select('.header-top')
-                    .boundingClientRect((res) => {
-                        if ((res || null) != null) {
-                            // data包含元素的宽度、高度等信息
-                            this.setData({
-                                popup_top: res.height * 2 + 'rpx',
-                            });
-                        }
-                    })
-                    .exec(); // 执行查询
-            }, 500);
-			this.search_history = uni.getStorageSync(this.cache_key) || [];
 
 			// 初始化搜索页数据
 			this.init_data();
@@ -257,9 +236,25 @@ export default {
 							search_cid: new_data?.category_list[0]?.id || '',
 							data_tabs_loding_status: 0,
 							popup_list: this.popup_list
-						})
+						});
+
 						// 加载数据
 						this.load_recommend_videos();
+
+                        // 获取头部的高度
+                        let self = this;
+                        setTimeout(() => {
+                            const query = uni.createSelectorQuery().in(this);
+                            query.select('.header-top').boundingClientRect()
+                            query.selectViewport().scrollOffset();
+                            query.exec(function (res) {
+                                self.setData({
+                                    header_top_value: res[0].height,
+                                    filter_popup_top_style: 'padding-top:' + res[0].height + 'px;',
+                                    scroll_view_style: 'height: calc(100vh - '+res[0].height+'px);',
+                                });
+                            });
+                        }, 100);
 					} else {
 						this.setData({
 							data_tabs_loding_status: 2,

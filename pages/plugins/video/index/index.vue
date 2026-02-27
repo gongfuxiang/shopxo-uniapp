@@ -1,67 +1,63 @@
 <template>
-	<view class="wh-auto ht-auto pr video-container bottom-line-exclude-bottom">
-		<template v-if="tabs.length > 0">
-			<scroll-view  scroll-y :show-scrollbar="false" class="ht" lower-threshold="60" scroll-with-animation="true" @scroll="on_scroll_event">
-				<view class="wh-auto ht-auto pr">
-					<!-- 搜索框 -->
-					<view class="header-top">
-						<view id="search-height" class="ht-auto flex-row align-c" :style="top_content_style + menu_button_info">
-							<!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-							<!-- #ifndef MP-ALIPAY -->
-							<view v-if="is_show_back" class="cp" @tap="handle_back">
-								<iconfont name="icon-arrow-left " size="36rpx" color="#333" class="ml-10 mr-10"></iconfont>
-							</view>
-							<!-- #endif -->
-							<view class="wh-auto ht-auto" :style="header_padding_left">
-								<search-component propIsDisabled @disabledSearch="handle_search"/>
-							</view>
-						</view>
-					</view>
-					<!-- 轮播 -->
-					<view v-if="slider_list.length > 0" class="padding-horizontal-main">
-						<component-banner :propData="slider_list" propBackgroundColor="#333" propSelectedBackgroundColor="#999"></component-banner>
-					</view>
-					<template v-if="tabs.length > 0">
-						<!-- 导航栏 -->
-						<view class="nav-tabs" :class="{ 'nav-tabs-sticky': is_nav_sticky }" :style="nav_sticky_style">
-							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll nowrap">
-								<view class="tabs-scroll-content">
-									<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
-										<image v-if="!isEmpty(item.icon)" class="tabs-scroll-image radius va-m" :src="item.icon" mode="aspectFill"></image>
-										<text class="va-m">{{ item.name }}</text>
-									</view>
-								</view>
-							</scroll-view>
-						</view>
-					</template>
-					<template v-if="recommend_videos.length > 0">
-						<!-- 推荐视频卡片区域 -->
-						<view class="recommend-videos">
-							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
-									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
-									<view class="video-info flex-col jc-c"> 
-										<view class="video-title text-line-2">{{ item.title }}</view>
-										<view class="flex-row align-c jc-sb">
-											<view class="video-date">{{ item.add_time_date }}</view>
-											<view class="video-likes flex-row align-c gap-4">
-												<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-												<text>{{ item.give_thumbs_count }}</text>
-											</view>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-                        <!-- 结尾 -->
-                        <component-bottom-line :propStatus="true"></component-bottom-line>
-					</template>
-					<template v-else>
-						<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-					</template>
-				</view>
-			</scroll-view>
-		</template>
+	<view :class="theme_view">
+        <view v-if="tabs.length > 0" class=" pr">
+            <!-- 搜索框 -->
+            <view class="top-search bg-white spacing-mb">
+                <view class="flex-row align-c" :style="top_content_style + menu_button_info">
+                    <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                    <!-- #ifndef MP-ALIPAY -->
+                    <view v-if="is_show_back" class="cp" @tap="handle_back">
+                        <iconfont name="icon-arrow-left " size="36rpx" color="#333" class="ml-10 mr-10"></iconfont>
+                    </view>
+                    <!-- #endif -->
+                    <view class="wh-auto" :style="header_padding_left">
+                        <search-component propIsDisabled @disabledSearch="handle_search"/>
+                    </view>
+                </view>
+            </view>
+            <!-- 轮播 -->
+            <view v-if="slider_list.length > 0" class="padding-horizontal-main">
+                <component-banner :propData="slider_list" propBackgroundColor="#333" propSelectedBackgroundColor="#999"></component-banner>
+            </view>
+            <template v-if="tabs.length > 0">
+                <!-- 导航栏 -->
+                <view class="nav-tabs bs-bb" :class="{ 'bg-white': is_nav_sticky }" :style="nav_sticky_style">
+                    <scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll nowrap">
+                        <view class="tabs-scroll-content">
+                            <view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
+                                <image v-if="!isEmpty(item.icon)" class="tabs-scroll-image radius va-m" :src="item.icon" mode="aspectFill"></image>
+                                <text class="va-m">{{ item.name }}</text>
+                            </view>
+                        </view>
+                    </scroll-view>
+                </view>
+            </template>
+            <template v-if="recommend_videos.length > 0">
+                <!-- 推荐视频卡片区域 -->
+                <view class="recommend-videos">
+                    <view class="video-grid">
+                        <view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
+                            <image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
+                            <view class="video-info flex-col jc-c"> 
+                                <view class="video-title text-line-2">{{ item.title }}</view>
+                                <view class="flex-row align-c jc-sb">
+                                    <view class="video-date">{{ item.add_time_date }}</view>
+                                    <view class="video-likes flex-row align-c gap-4">
+                                        <iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
+                                        <text>{{ item.give_thumbs_count }}</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="true"></component-bottom-line>
+            </template>
+            <template v-else>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propLoadingLogoTop="50vh"></component-no-data>
+            </template>
+        </view>
 		<template v-else>
 			<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
 		</template>
@@ -90,6 +86,7 @@ export default {
 	},
 	data() {
 		return {
+            theme_view: app.globalData.get_theme_value_view(),
 			// 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
 			// #ifdef MP
 			top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
@@ -100,6 +97,7 @@ export default {
 			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
+            is_first: true,
 			is_show_back: true,
 			tabs: [],
 			current_tabs_index: 0,
@@ -114,12 +112,7 @@ export default {
 			header_padding_left: '',
 			slider_list: [],
 			is_nav_sticky: false, // 控制nav-tabs是否处于粘性状态
-			// #ifdef H5 || MP-TOUTIAO
-			nav_sticky_threshold: 55, // 粘性阈值，与CSS中的top值对应
-			// #endif
-			// #ifdef MP || APP
-			nav_sticky_threshold: bar_height + 53, // 粘性阈值，与CSS中的top值对应
-			// #endif
+			nav_sticky_threshold: 0, // 粘性阈值，与CSS中的top值对应
 			nav_sticky_style: '',
 		};
 	},
@@ -149,6 +142,11 @@ export default {
         // 分享菜单处理
         app.globalData.page_share_handle();
 	},
+    
+    // 下拉刷新
+    onPullDownRefresh() {
+        this.init_data(true);
+    },
 
 	methods: {
 		isEmpty,
@@ -178,28 +176,44 @@ export default {
 				menu_button_info: menu_button_info,
 			});
 			// 初始化数据
-			this.init_data();
+			this.init_data(!this.is_first);
 		},
         
         // 初始化数据
-		init_data() {
+		init_data(is_list_loading = false) {
 			// 获取数据
 			uni.request({
 				url: app.globalData.get_request_url("indexinit", "index", "video"),
 				method: 'POST',
 				dataType: 'json',
 				success: res => {
+                    uni.stopPullDownRefresh();
 					const data = res.data;
 					if (data.code == 0) {
 						const new_data = data.data;
 						this.setData({
+                            is_first: false,
 							tabs: new_data.category_list,
 							current_tabs_id: new_data.category_list.length > 0 ? new_data.category_list[this.current_tabs_index].id : '',
 							data_tabs_loding_status: 0,
 							slider_list: new_data.slider_list,
 						});
 						// 获取第一个分类的视频列表
-						this.get_video_list(this.current_tabs_id);
+						this.get_video_list(this.current_tabs_id, is_list_loading);
+
+                        // 获取节点位置
+                        let self = this;
+                        setTimeout(() => {
+                            let query = uni.createSelectorQuery();
+                            query.select('.top-search').boundingClientRect();
+                            query.selectViewport().scrollOffset();
+                            query.exec(function (res) {
+                                self.setData({
+                                    nav_sticky_threshold: res[0].height,
+                                    nav_sticky_style: 'top:' + res[0].height + 'px;',
+                                });
+                            });
+                        }, 100);
 					} else {
 						this.setData({
 							data_tabs_loding_status: 2,
@@ -208,6 +222,7 @@ export default {
 					}
 				},
 				fail: (err) => {
+                    uni.stopPullDownRefresh();
 					this.setData({
 						data_tabs_loding_status: 2,
 						data_list_loding_msg: this.$t('common.internet_error_tips'),
@@ -217,10 +232,11 @@ export default {
 		},
         
         // 获取数据列表
-		get_video_list(id = '') {
+		get_video_list(id = '', is_list_loading = false) {
 			this.setData({
 				data_list_loding_status: 1,
 				data_list_loding_msg: '',
+                recommend_videos: is_list_loading ? this.recommend_videos : [],
 			});
 			// 获取数据
 			uni.request({
@@ -283,12 +299,10 @@ export default {
 		},
 
 		// 滚动事件处理
-		on_scroll_event(e) {
-			const scrollTop = e.detail.scrollTop;
+		onPageScroll(e) {
 			// 当滚动距离大于等于阈值时，设置nav-tabs为粘性状态（背景变白）
 			this.setData({
-				is_nav_sticky: scrollTop >= this.nav_sticky_threshold,
-				nav_sticky_style: 'top:' + this.nav_sticky_threshold * 2 + 'rpx;',
+				is_nav_sticky: e.scrollTop >= this.nav_sticky_threshold
 			});
 		}
 	}

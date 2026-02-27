@@ -1,6 +1,6 @@
 <template>
-    <view class="content pr">
-        <template v-if="display_video_list.length > 0">
+    <view :class="theme_view">
+        <view v-if="display_video_list.length > 0" class="content pr">
             <!-- 搜索框 -->
             <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
                 <view id="search-height" class="flex-row align-c">
@@ -81,7 +81,7 @@
                     </view>
                 </swiper-item>
             </swiper>
-        </template>
+        </view>
 		<template v-else>
 			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 		</template>
@@ -247,19 +247,9 @@
     bar_height = 0;
     // #endif
     export default {
-        components: {
-            commentInfoComponent,
-            commentMoreComponent,
-            searchComponent,
-            componentSharePopup,
-            componentNoData,
-            componentBottomLine,
-            componentPopup,
-            loadingComponent,
-            componentUpload
-        },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 // 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
                 // #ifdef MP
                 top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
@@ -322,6 +312,17 @@
                 editor_path_type: 'video',
                 is_manual_pause: false, // 是否手动暂停
             };
+        },
+        components: {
+            commentInfoComponent,
+            commentMoreComponent,
+            searchComponent,
+            componentSharePopup,
+            componentNoData,
+            componentBottomLine,
+            componentPopup,
+            loadingComponent,
+            componentUpload
         },
         computed: {
             // 视频列表高度
