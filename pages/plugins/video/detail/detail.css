@@ -21,22 +21,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    .play-icon-bg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #fff;
-        width: 60rpx;
-        height: 60rpx;
-        z-index: 0;
-    }
-    .play-icon-iconfont {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+}
+
+.play-icon .play-icon-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 60rpx;
+    height: 60rpx;
+    z-index: 0;
+}
+
+.play-icon .play-icon-iconfont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .right-actions {
@@ -81,44 +83,46 @@
     left: 30rpx;
     color: #fff;
     z-index: 99;
-    .product-card-item {
-        background: #DDDDDD;
-        padding: 16rpx;
-        border-radius: 8rpx;
-    }
-    .product-image {
-        width: 100rpx;
-        height: 100rpx;
-    }
-    .product-name {
-        font-weight: 500;
-        font-size: 28rpx;
-        color: #333333;
-        line-height: 40rpx;
-    }
-    .product-price {
-        font-weight: 500;
-        font-size: 32rpx;
-        color: #FF1919;
-        line-height: 44rpx;
-    }
-    .product-close {
-        position: absolute;
-        right: -10rpx;
-        top: -14rpx;
-    }
-    .product-button {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 300rpx;
-        height: 88rpx;
-        padding: 0 20rpx;
-        background: rgba(40, 40, 40, 0.45);
-        border-radius: 88rpx;
-        border: 2rpx solid rgba(151, 151, 151, 0.53);
-        cursor: pointer;
-    }
+}
+
+.product-card .product-card-item {
+    background: #DDDDDD;
+    padding: 16rpx;
+    border-radius: 8rpx;
+}
+.product-card .product-image {
+    width: 100rpx;
+    height: 100rpx;
+}
+.product-card .product-name {
+    font-weight: 500;
+    font-size: 28rpx;
+    color: #333333;
+    line-height: 40rpx;
+}
+.product-card .product-price {
+    font-weight: 500;
+    font-size: 32rpx;
+    color: #FF1919;
+    line-height: 44rpx;
+}
+.product-card .product-close {
+    position: absolute;
+    right: -10rpx;
+    top: -14rpx;
+}
+
+.product-card .product-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300rpx;
+    height: 88rpx;
+    padding: 0 20rpx;
+    background: rgba(40, 40, 40, 0.45);
+    border-radius: 88rpx;
+    border: 2rpx solid rgba(151, 151, 151, 0.53);
+    cursor: pointer;
 }
 
 .author {
@@ -202,6 +206,7 @@
 .comment-content {
     width: 100%;
     height: 70%;
+    transition: all 0.35s linear;
     background-color: #fff;
     border-top-left-radius: 30rpx;
     border-top-right-radius: 30rpx;
@@ -232,12 +237,13 @@
 .comment-list {
     flex: 1;
     overflow: hidden;
-    .comment-scroll {
-        width: 100%;
-        height: 100%;
-        padding: 30rpx;
-        box-sizing: border-box;
-    }
+}
+
+.comment-list .comment-scroll {
+    width: 100%;
+    height: 100%;
+    padding: 30rpx;
+    box-sizing: border-box;
 }
 
 .comment-item {
@@ -269,9 +275,9 @@
     flex: 1;
     border: 2rpx solid #eee;
     border-radius: 16rpx;
-    // padding-right: 16rpx;
     font-size: 28rpx;
 }
+
 .pr-16 {
     padding-right: 16rpx;
 }
@@ -335,7 +341,7 @@
     font-size: 30rpx;
     vertical-align: middle;
 }
-// 搜索
+/* 搜索 */
 .header-top {
     padding-left: 12px;
     box-sizing: border-box;
@@ -345,13 +351,12 @@
     z-index: 9;
     width: 100%;
 }
-.header-top {
-    ::v-deep .search-bar {
-        background:#D8D8D8;
-        opacity: 0.27;
-        border-color: transparent;
-    }
+.header-top ::v-deep .search-bar {
+    background:#D8D8D8;
+    opacity: 0.27;
+    border-color: transparent;
 }
+
 .keyboard-input {
     position: fixed;
     left: 0;

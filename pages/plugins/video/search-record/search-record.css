@@ -13,78 +13,32 @@
 }
 
 /* #ifdef MP-WEIXIN | APP-PLUS */
-.tabs-scroll {
-	::v-deep ::-webkit-scrollbar
-	{
+.tabs-scroll ::v-deep ::-webkit-scrollbar {
 		width: 0rpx!important;
 		height: 0rpx!important;
 		background-color: transparent;
-	}
 }
 /* #endif */
 /* 推荐视频列表 */
-.recommend-videos {
-	padding: 0 16rpx 20rpx 16rpx;
-	.video-grid {
-		column-count: 2;
-		column-gap: 10px;
-	}
-
-	.video-card {
-		background-color: #fff;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-		overflow: hidden;
-		break-inside: avoid;
-		margin-bottom: 10px;
-		width: 100%;
-	}
-
-	.video-thumbnail {
-		width: 100%;
-		object-fit: contain;
-	}
-
-	.video-info {
-		padding: 20rpx;
-		padding-top: 10rpx;
-		gap: 20rpx;
-	}
-
-	.video-title {
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #333333;
-		line-height: 40rpx;
-	}
-
-	.video-date,
-	.video-likes {
-		font-weight: 400;
-		font-size: 24rpx;
-		color: #999999;
-		line-height: 34rpx;
-	}
-}
-
 .search-history {
 	padding: 20rpx 40rpx 24rpx 40rpx;
     gap: 40rpx;
     border-bottom: 2rpx solid #EDEDED;
-    .search-history-title {
-        font-weight: 500;
-        font-size: 28rpx;
-        color: #666666;
-        line-height: 40rpx;
-        gap: 20rpx;
-    }
-    .more-history-btn {
-        font-weight: 400;
-        font-size: 28rpx;
-        color: #999999;
-        line-height: 40rpx;
-		margin-top: 20rpx;
-    }
+}
+
+.search-history .search-history-title {
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #666666;
+	line-height: 40rpx;
+	gap: 20rpx;
+}
+.search-history .more-history-btn {
+    font-weight: 400;
+    font-size: 28rpx;
+    color: #999999;
+    line-height: 40rpx;
+	margin-top: 20rpx;
 }
 
 /* 热门搜索 */
@@ -96,11 +50,12 @@
 .hot-tabs {
 	display: flex;
 	margin-bottom: 20rpx;
-    .tabs-scroll-content {
-        display: flex;
-        align-items: center;
-        gap: 40rpx;
-    }
+}
+
+.hot-tabs .tabs-scroll-content {
+	display: flex;
+	align-items: center;
+	gap: 40rpx;
 }
 
 .hot-tab-item {

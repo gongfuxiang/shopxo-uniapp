@@ -1,7 +1,7 @@
 <template>
 	<view class="wh-auto ht-auto pr video-container">
 		<view class="wh-auto ht-auto pr">
-			<template v-if="tabs.length > 0">
+			<template v-if="category_list.length > 0">
 				<!-- 搜索框 -->
 				<view class="header-top">
 					<view class="header-search" :style="top_content_style + menu_button_info">
@@ -29,7 +29,7 @@
 				</view>
 				<!-- 推荐视频卡片区域 -->
 				<view class="recommend-videos">
-					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="60" scroll-with-animation="true">
+					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true">
 						<template v-if="recommend_videos.length > 0">
 							<view class="video-grid">
 								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-id="item.id" @tap="navigate_to_detail">
@@ -40,7 +40,7 @@
 											<view class="video-date">{{ item.add_time_date }}</view>
 											<view class="video-likes flex-row align-c gap-4">
 												<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-												<text>{{ item.access_count }}</text>
+												<text>{{ item.give_thumbs_count }}</text>
 											</view>
 										</view>
 									</view>
@@ -125,7 +125,6 @@ export default {
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
 			search_query: '',
-			tabs: ['推荐', 'DIV装修', '商城管理', '多商户', '多门店', '客服','多门店', '客服'],
 			currentTab: 0,
 			recommend_videos: [],
 			isLoadingMore: false,
@@ -212,6 +211,7 @@ export default {
 			// 初始化搜索页数据
 			this.init_data();
 		},
+		// 获取初始化数据
 		init_data () {
 			uni.request({
 				url: app.globalData.get_request_url("searchinit", "index", "video"),
@@ -254,9 +254,11 @@ export default {
 				}
 			});
 		},
+		// 返回上一页
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
+		// 搜索按钮点击事件
 		handle_search(e) {
 			this.setData({
 				search_query: e,
@@ -313,8 +315,8 @@ export default {
 						this.setData({
 							recommend_videos: this.recommend_videos,
 							page: new_page,
-							page_total: data.page_total,
-							goods_bottom_line_status: new_page >= data.page_total,
+							page_total: responseData.page_total,
+							goods_bottom_line_status: new_page >= responseData.page_total,
 							data_list_loding_status: 0
 						})
 					} else {
@@ -341,34 +343,12 @@ export default {
 			}
 		},
 		on_scroll_lower_event() {
-			debugger;
-			this.load_more();
-		},
-		load_more() {
-			debugger;
-			// 加载更多数据的逻辑
-			if (this.is_more_loading) {
+			// 添加额外的检查条件
+			if (this.page >= this.page_total) {
 				return;
 			}
-			this.is_more_loading = true;
-			setTimeout(() => {
-				// 假设这里加载了更多的视频数据
-				const data = this.recommend_videos;
-				const newVideos = [
-					{
-						thumbnail_url: 'http://shopxo.com/static/upload/images/plugins_homemiddleadv/2019/04/22/1555929400479636.jpg',
-						title: '新视频标题',
-						date: '2025-06-13',
-						likes: 1500,
-						detailId: '5'
-					}
-				];
-				data.push(...newVideos);
-				this.setData({
-					recommend_videos: data,
-					is_more_loading: false,
-				});
-			}, 20000);
+			// 加载更多数据
+			this.load_recommend_videos();
 		},
 		toggle_filter_popup() {
 			this.filter_popup_status = !this.filter_popup_status;

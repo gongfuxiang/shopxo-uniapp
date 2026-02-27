@@ -14,117 +14,120 @@
 	width: 100%;
 	padding: 0 24rpx 20rpx 24rpx;
 	box-sizing: border-box;
-	.tabs-scroll-content {
-		display: flex;
-		align-items: center;
-		overflow: hidden;
-		overflow-x: auto;
-		gap: 48rpx;
-	}
-	.nav-tabs-filter {
-		padding-top: 8rpx;
-		box-sizing: border-box;
-	}
-	.tab-item {
-		position: relative;
-		white-space: nowrap;
-		padding-bottom: 16rpx;
-		box-sizing: border-box;
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #666666;
-		line-height: 40rpx;
-	}
+}
 
-	.tab-item.active {
-		color: #333333;
-	}
+.nav-tabs .tabs-scroll-content {
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	overflow-x: auto;
+	gap: 48rpx;
+}
+.nav-tabs .nav-tabs-filter {
+	padding-top: 8rpx;
+	box-sizing: border-box;
+}
+.nav-tabs .tab-item {
+	position: relative;
+	white-space: nowrap;
+	padding-bottom: 16rpx;
+	box-sizing: border-box;
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #666666;
+	line-height: 40rpx;
+}
+
+.nav-tabs .tab-item.active {
+	color: #333333;
+}
 	
-	.tab-item::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 0;
-		height: 4px;
-		background-color: #333;
-		transition: width 0.6s ease;
-        border-radius: 8rpx;
-	}
+.nav-tabs .tab-item::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 4px;
+	background-color: #333;
+	transition: width 0.6s ease;
+	border-radius: 8rpx;
+}
 
-	.tab-item.active::after {
-		width: 52rpx;
-	}
+.nav-tabs .tab-item.active::after {
+	width: 52rpx;
+}
 
-	.tab-item.active {
-		color: #333;
-	}
+.nav-tabs .tab-item.active {
+	color: #333;
 }
 
 @media (max-width: 500px) { 
 	.nav-tabs {
 		align-items: center;
-		.nav-tabs-filter {
-			padding-top: 0;
-		}
+	}
+	.nav-tabs .nav-tabs-filter {
+		padding-top: 0;
 	}
 }
 
 /* #ifdef MP-WEIXIN | APP-PLUS */
-.tabs-scroll {
-	::v-deep ::-webkit-scrollbar
-	{
-		width: 0rpx!important;
-		height: 0rpx!important;
-		background-color: transparent;
-	}
+.tabs-scroll ::v-deep ::-webkit-scrollbar {
+	width: 0rpx!important;
+	height: 0rpx!important;
+	background-color: transparent;
 }
 /* #endif */
 /* 推荐视频列表 */
 .recommend-videos {
 	padding: 20rpx 0;
-	.video-grid {
-		padding: 0 24rpx;
-		column-count: 2;
-		column-gap: 10px;
-	}
+}
 
-	.video-card {
-		background-color: #fff;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
-		overflow: hidden;
-		break-inside: avoid;
-		margin-bottom: 10px;
-		width: 100%;
-	}
+.recommend-videos .video-grid {
+	padding: 0 24rpx;
+	column-count: 2;
+	column-gap: 10px;
+	/* 添加这些样式确保滚动事件能正常触发 */
+	min-height: 100%;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
 
-	.video-thumbnail {
-		width: 100%;
-		object-fit: contain;
-	}
+.recommend-videos .video-card {
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	overflow: hidden;
+	break-inside: avoid;
+	margin-bottom: 10px;
+	width: 100%;
+}
 
-	.video-info {
-		padding: 20rpx;
-		padding-top: 10rpx;
-		gap: 20rpx;
-	}
+.recommend-videos .video-thumbnail {
+	width: 100%;
+	object-fit: contain;
+}
 
-	.video-title {
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #333333;
-		line-height: 40rpx;
-	}
+.recommend-videos .video-info {
+	padding: 20rpx;
+	padding-top: 10rpx;
+	gap: 20rpx;
+}
 
-	.video-date,
-	.video-likes {
-		font-weight: 400;
-		font-size: 24rpx;
-		color: #999999;
-		line-height: 34rpx;
-	}
+.recommend-videos .video-title {
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #333333;
+	line-height: 40rpx;
+}
+
+.recommend-videos .video-date,
+.recommend-videos .video-likes {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #999999;
+	line-height: 34rpx;
 }
 
 /* 筛选条件弹窗样式 */
@@ -168,14 +171,14 @@
 .nav-list-more {
 	padding: 20rpx 40rpx;
 }
-::v-deep .popup {
-	.popup-mask { 
-		z-index: 8 !important;
-	}
-	.popup-content {
-		z-index: 8 !important;
-	}
+::v-deep .popup .popup-content {
+	z-index: 8 !important;
+}
+::v-deep .popup .popup-mask { 
+	z-index: 8 !important;
 }
 .recommend-scroll {
-	height: calc(100vh - 223rpx);
+	/* 使用更精确的高度计算 */
+	height: calc(100vh - 240rpx); /* 增加一些高度确保滚动空间 */
+	min-height: 500px; /* 设置最小高度 */
 }

@@ -7,111 +7,111 @@
 /* 导航栏 */
 .nav-tabs {
 	position: sticky;
-	top: 110rpx;
 	width: 100%;
 	padding: 0 16rpx 20rpx 24rpx;
 	z-index: 9;
-	background: transparent; // 默认透明背景
-	transition: background-color 0.3s ease; // 添加背景色过渡动画
-	
-	&.nav-tabs-sticky {
-		background: #fff; // 粘性状态时背景变白
-	}
-	
-	.tabs-scroll-content {
-		display: flex;
-		align-items: center;
-		gap: 48rpx;
-	}
-	.tab-item {
-		position: relative;
-		white-space: nowrap;
-		padding-bottom: 16rpx;
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #666666;
-		line-height: 40rpx;
-	}
+	background: transparent; /* 默认透明背景 */
+	transition: background-color 0.3s ease; /* 添加背景色过渡动画 */
+}
 
-	.tab-item.active {
-		color: #333333;
-	}
+.nav-tabs.nav-tabs-sticky {
+	background: #fff; /* 粘性状态时背景变白 */
+}
 	
-	.tab-item::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 0;
-		height: 4px;
-		background-color: #333;
-		transition: width 0.6s ease;
-        border-radius: 8rpx;
-	}
+.nav-tabs .tabs-scroll-content {
+	display: flex;
+	align-items: center;
+	gap: 48rpx;
+}
+.nav-tabs .tab-item {
+	position: relative;
+	white-space: nowrap;
+	padding-bottom: 16rpx;
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #666666;
+	line-height: 40rpx;
+}
 
-	.tab-item.active::after {
-		width: 52rpx;
-	}
+.nav-tabs .tab-item.active {
+	color: #333333;
+}
+	
+.nav-tabs .tab-item::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 4px;
+	background-color: #333;
+	transition: width 0.6s ease;
+	border-radius: 8rpx;
+}
 
-	.tab-item.active {
-		color: #333;
-	}
+.nav-tabs .tab-item.active::after {
+	width: 52rpx;
+}
+
+.nav-tabs .tab-item.active {
+	color: #333;
 }
 
 /* #ifdef MP-WEIXIN | APP-PLUS */
-.tabs-scroll {
-	::v-deep ::-webkit-scrollbar {
-		width: 0rpx!important;
-		height: 0rpx!important;
-		background-color: transparent;
-	}
+.tabs-scroll ::v-deep ::-webkit-scrollbar {
+	width: 0rpx!important;
+	height: 0rpx!important;
+	background-color: transparent;
 }
+
 /* #endif */
 /* 推荐视频列表 */
 .recommend-videos {
 	padding: 10rpx 24rpx 24rpx 24rpx;
-	.video-grid {
-		column-count: 2;
-		column-gap: 20rpx;
-	}
-
-	.video-card {
-		background-color: #fff;
-		box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
-		border-radius: 8rpx;
-		overflow: hidden;
-		break-inside: avoid;
-		margin-bottom: 20rpx;
-		width: 100%;
-	}
-
-	.video-thumbnail {
-		width: 100%;
-		object-fit: contain;
-	}
-
-	.video-info {
-		padding: 20rpx;
-		padding-top: 10rpx;
-		gap: 20rpx;
-	}
-
-	.video-title {
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #333333;
-		line-height: 40rpx;
-	}
-
-	.video-date,
-	.video-likes {
-		font-weight: 400;
-		font-size: 24rpx;
-		color: #999999;
-		line-height: 34rpx;
-	}
 }
+
+.recommend-videos .video-grid {
+	column-count: 2;
+	column-gap: 20rpx;
+}
+
+.recommend-videos .video-card {
+	background-color: #fff;
+	box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+	border-radius: 8rpx;
+	overflow: hidden;
+	break-inside: avoid;
+	margin-bottom: 20rpx;
+	width: 100%;
+}
+
+.recommend-videos .video-thumbnail {
+	width: 100%;
+	object-fit: contain;
+}
+
+.recommend-videos .video-info {
+	padding: 20rpx;
+	padding-top: 10rpx;
+	gap: 20rpx;
+}
+
+.recommend-videos .video-title {
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #333333;
+	line-height: 40rpx;
+}
+
+.recommend-videos .video-date,
+.recommend-videos .video-likes {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #999999;
+	line-height: 34rpx;
+}
+
 .tabs-scroll-image {
 	width: 40rpx;
 	height: 40rpx;

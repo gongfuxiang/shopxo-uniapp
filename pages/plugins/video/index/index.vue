@@ -23,7 +23,7 @@
 					</view>
 					<template v-if="tabs.length > 0">
 						<!-- 导航栏 -->
-						<view class="nav-tabs" :class="{ 'nav-tabs-sticky': is_nav_sticky }">
+						<view class="nav-tabs" :class="{ 'nav-tabs-sticky': is_nav_sticky }" :style="nav_sticky_style">
 							<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll nowrap">
 								<view class="tabs-scroll-content">
 									<view v-for="(item, index) in tabs" :key="index" class="tab-item flex-row align-c gap-5" :class="{ active: current_tabs_index === index }" :data-index="index" :data-id="item.id" @tap="switch_tab">
@@ -110,7 +110,13 @@ export default {
 			header_padding_left: '',
 			slider_list: [],
 			is_nav_sticky: false, // 控制nav-tabs是否处于粘性状态
-			nav_sticky_threshold: 50 // 粘性阈值，与CSS中的top值对应
+			// #ifdef H5 || MP-TOUTIAO
+			nav_sticky_threshold: 55, // 粘性阈值，与CSS中的top值对应
+			// #endif
+			// #ifdef MP || APP
+			nav_sticky_threshold: bar_height + 53, // 粘性阈值，与CSS中的top值对应
+			// #endif
+			nav_sticky_style: '',
 		};
 	},
 	onShow() {
@@ -242,9 +248,12 @@ export default {
 		// 滚动事件处理
 		on_scroll_event(e) {
 			const scrollTop = e.detail.scrollTop;
+			console.log(this.nav_sticky_threshold);
+			
 			// 当滚动距离大于等于阈值时，设置nav-tabs为粘性状态（背景变白）
 			this.setData({
-				is_nav_sticky: scrollTop >= this.nav_sticky_threshold
+				is_nav_sticky: scrollTop >= this.nav_sticky_threshold,
+				nav_sticky_style: 'top:' + this.nav_sticky_threshold * 2 + 'rpx;',
 			});
 		}
 	}

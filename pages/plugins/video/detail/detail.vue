@@ -324,12 +324,15 @@
             };
         },
         computed: {
+            // 视频列表高度
             swiperStyle() {
                 return this.show_comment_modal ? (this.move_distance > 0 ? `height: calc(30% + ${this.move_distance}px);` : 'height: 30%;') : 'height: 100%;';
             },
+            // 评论内容区域高度
             commentContentStyle() {
                 return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(70% + 20rpx - ${this.move_distance}px);` : `transform: translateY(0); height: calc(70% + 20rpx);`;
             },
+            // 当前播放视频的索引
             current_video_index() { 
                 return this.video_data_list.findIndex(item => item.id == this.current_video_id);
             },
@@ -431,7 +434,10 @@
 
                 this.get_video_detail(this.current_video_id);
             },
-            // 获取视频详情
+            /*
+             * 获取视频详情
+             * @param {*} id 视频id
+            */
             get_video_detail(id) {
                 // 获取数据
 			    uni.request({
@@ -468,7 +474,12 @@
                     }
                 });
             },
-            // 获取视频列表
+            /*
+             * 获取视频列表
+             * @param {*} id 视频id
+             * @param {*} is_last 是否获取上一批数据
+             * @param {*} is_next 是否获取下一批数据
+            */
             get_last_or_next_data_list(id, is_last = 0, is_next = 0) {
                 // 获取数据
 			    uni.request({
@@ -532,13 +543,14 @@
                                     }
                                 }
                             });
+                            // 更新所有视频信息
                             this.setData({
                                 video_data_list: this.video_data_list,
                                 current_index: is_last == 1 && is_next == 1 ? (new_index == this.video_data_list.length - 1 ? 2 : (new_index == this.video_data_list.length - 2 ? 1 : 0)) : this.current_index,
                             });
 
                             if (is_last == 1 && is_next == 1) {
-                                // 更新数据信息
+                                // 更新显示数据数据信息
                                 this.update_display_data();
 
                                 setTimeout(() => { 
@@ -788,7 +800,9 @@
                 return this.video_data_list[index];
             },
 
-            // 更新显示数据
+            /*
+             * 更新显示的视频数据
+             */
             update_display_data() {
                 let list = [];
                 // 如果当前索引为0，只显示当前元素和下一个元素
@@ -1229,7 +1243,21 @@
                     }
                 });
             },
-
+            // 主评论回复
+            comment_reply(comments) {
+                this.active_dropdown_id = null;
+                if (!isEmpty(comments)) {
+                    this.setData({ 
+                        comments_data: comments,
+                    });
+                }
+            },
+            // 删除评论数据
+            comment_data_delete() {
+                this.setData({ 
+                    comments_data: {},
+                });
+            },
             // 播放进度变化时触发
             handle_time_update(e) {
                 if (this.is_seeking) return;
@@ -1249,29 +1277,16 @@
                     current_video_progress: e.detail.currentTime,
                 });
             },
-
+            // 视频进度条拖动时触发事件
             handle_slider_changing() {
                 this.is_seeking = true;
-            },
-            // 主评论回复
-            comment_reply(comments) {
-                this.active_dropdown_id = null;
-                if (!isEmpty(comments)) {
-                    this.setData({ 
-                        comments_data: comments,
-                    });
-                }
-            },
-            comment_data_delete() {
-                this.setData({ 
-                    comments_data: {},
-                });
             },
             // 评论点赞
             comment_like(id) {
                 this.active_dropdown_id = null;
                 this.set_givethumbs_num(this.current_video_id, id);
             },
+            // 视频进度条拖动完成触发事件
             handle_slider_change(e) {
                 const seek_time = e.detail.value;
                 if (this.create_video_contexts[this.current_index]) {
@@ -1284,7 +1299,7 @@
                     this.is_seeking = false;
                 }, 100);
             },
-
+            // 视频进度条时间显示
             format_time(seconds) {
                 if (isNaN(seconds) || seconds < 0) {
                     return '00:00';
@@ -1293,9 +1308,11 @@
                 const sec = Math.floor(seconds % 60);
                 return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
             },
+            // 返回上一页
             handle_back() {
                app.globalData.page_back_prev_event();
             },
+            // 跳转搜索记录页面
             handle_search() {
                 // 跳转到搜索记录页面
                 app.globalData.url_open(`/pages/plugins/video/search-record/search-record`, false);
@@ -1312,6 +1329,7 @@
                     video_data_list: this.video_data_list
                 })
             },
+            // 点击商品卡片触发事件
             handle_product_card_item(e) {
                 const id = e?.currentTarget?.dataset?.id || '';
                 const data = this.video_data_list.find(item => item.id == id);
@@ -1319,6 +1337,7 @@
                     app.globalData.url_open(data.goods.goods_url);
                 }
             },
+            // 点击购买商品按钮触发事件
             handle_product_button(e) {
                 const id = e.currentTarget.dataset.id;
                 this.video_data_list.forEach((item, index) => {
@@ -1407,6 +1426,7 @@
                     }
                 });
             },
+            // 删除评论数据处理
             delete_comment_handle(comment_id) {
                 // 删除成功，从active_comments中移除对应数据
                 if (this.active_comments && Array.isArray(this.active_comments)) {
@@ -1489,23 +1509,6 @@
                     current_sub_index: 0,
                 });
             },
-            // 新的举报弹窗相关方法
-            onMain_reasonChange(e) {
-                const value = parseInt(e.detail.value);
-                this.setData({
-                    current_main_index: value,
-                    current_sub_index: -1,
-                });
-            },
-            
-            onSub_reasonChange(e) {
-                const value = parseInt(e.detail.value);
-                if (this.current_main_index >= 0) {
-                    this.setData({
-                        current_sub_index: value,
-                    });
-                }
-            },
             
             // 直接选择主原因（用于一行显示的点击）
             select_main_reason(e) {
@@ -1529,6 +1532,9 @@
                     });
                 }
             },
+            /*
+            * 提交举报
+            */
             submit_report() {
                 // 获取选中的举报原因和具体类型
                 const main_reason = this.report_type_list[this.current_main_index];
@@ -1560,6 +1566,7 @@
                     }
                 });
             },
+            // 键盘显示时，切换输入框
             add_comment() {
                 //#ifndef H5
                 this.is_add_comment = true;
