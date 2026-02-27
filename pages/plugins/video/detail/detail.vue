@@ -147,7 +147,7 @@
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="chat_upload_images_event">
+                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                                 <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
                             </component-upload>
                         </view>
@@ -212,7 +212,7 @@
                 </view>
                 <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                     <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="chat_upload_images_event">
+                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                         <iconfont name="icon-layout-module-single-images" size="48rpx" color="#999"></iconfont>
                     </component-upload>
                 </view>
@@ -536,20 +536,12 @@
                                 video_data_list: this.video_data_list,
                                 current_index: is_last == 1 && is_next == 1 ? (new_index == this.video_data_list.length - 1 ? 2 : (new_index == this.video_data_list.length - 2 ? 1 : 0)) : this.current_index,
                             });
-                            
+
                             if (is_last == 1 && is_next == 1) {
                                 // 更新数据信息
                                 this.update_display_data();
 
                                 setTimeout(() => { 
-                                    //#ifdef H5
-                                    // 更新页面标题
-                                    const current_video = this.video_data_list.find(item => item.id == id);
-                                    if (current_video && current_video.title) {
-                                        document.title = current_video.title;
-                                    }
-                                    //#endif
-                                    
                                     // 更新分享信息
                                     this.update_share_info(this.display_video_list[this.current_index]);
 
@@ -732,6 +724,7 @@
                 }
             },
 
+            // 更新分享信息
             update_share_info(data) {
                 const info = {
                     title: data.title || '',
@@ -745,7 +738,11 @@
                 });
                 // 分享菜单处理
                 app.globalData.page_share_handle(info);
+
+                // 更新页面标题
+                uni.setNavigationBarTitle({title: data.title});
             },
+
             // 安全的视频播放事件处理
             video_play_event(videoContext, is_first_play = false) {
                 if (!videoContext) {
@@ -790,7 +787,7 @@
                 // 正常情况直接返回
                 return this.video_data_list[index];
             },
-            
+
             // 更新显示数据
             update_display_data() {
                 let list = [];
@@ -819,12 +816,14 @@
                     display_video_list: list
                 })
             },
+
             // 评论输入框事件
             comment_input_event(e) {
                 this.comment_input_value = e.detail.value;
             },
-            
-            chat_upload_images_event(res) {
+
+            // 图片上传回调
+            upload_images_event(res) {
                 if((res || null) != null) {
                     // 存储上传图片内容
                     this.form_images_list.push({
@@ -834,6 +833,7 @@
                     });
                 }
             },
+
             // 上传图片预览
             upload_show_event(e) {
                 uni.previewImage({
@@ -841,6 +841,7 @@
                     urls: this.form_images_list.map(item => item.url),
                 });
             },
+
             // 评论输入图片删除
             comment_input_img_close(e) {
                 const index = e?.currentTarget?.dataset?.index || 0;
@@ -850,6 +851,8 @@
                     form_images_list: list,
                 });
             },
+
+            // swiper-item 的位置发生改变时
             on_transition(e) {
                 const dy = e.detail.dy;
                 let status = 'direction';
@@ -865,9 +868,12 @@
                     })
                 }
             },
+
+            // 播放
             handle_play() {
                 this.setData({ paused: false, is_manual_pause: false });
             },
+
             // 收藏
             handle_like(e) {
                 if (!app.globalData.is_single_page_check()) {
@@ -992,9 +998,9 @@
                 }
             },
 
+            // 评论
             send_comment() {
                 let comment_text = this.comment_input_value;
-                
                 if (!comment_text.trim()) return;
 
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id
@@ -1069,6 +1075,7 @@
                     }
                 });
             },
+
             // 展开子评论
             open_sub_comment(id, is_level) {
                 const comment = this.active_comments.find(item => item.id == id);
@@ -1109,6 +1116,7 @@
                     });
                 }
             },
+
             // 收起子评论
             close_sub_comment(id) {
                 const comment = this.active_comments.find(item => item.id == id);
@@ -1116,6 +1124,8 @@
                     comment.show_sub_comment = false;
                 }
             },
+
+            // 分享事件
             handle_share() {
                 if ((this.$refs.share || null) != null) {
                     this.$refs.share.init({
@@ -1124,6 +1134,7 @@
                     });
                 }
             },
+
             // 更新视频数据信息
             get_video_data_detail(id) {
                 uni.request({
@@ -1150,6 +1161,7 @@
                     }
                 });
             },
+
             // 更新点赞数量
             set_givethumbs_num(id, comments_id) {
                 uni.request({
@@ -1217,6 +1229,8 @@
                     }
                 });
             },
+
+            // 播放进度变化时触发
             handle_time_update(e) {
                 if (this.is_seeking) return;
                 let duration = this.current_video_duration;
