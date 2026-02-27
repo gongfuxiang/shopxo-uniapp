@@ -2060,7 +2060,9 @@
                         "transparentTitle": "always",
                         "titlePenetrate": "YES",
                         // #endif
-                        "enablePullDownRefresh": true,
+                        "enablePullDownRefresh": false,
+                        // 禁止页面下拉
+                        "disableScroll": true,
                         "navigationBarTitleText": ""
                     }
                 },
