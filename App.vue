@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'https://new.shopxo.vip/',
+                request_url:'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'https://new.shopxo.vip/',
+                static_url:'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -3178,7 +3178,11 @@
                         'pages/plugins/signin/detail/detail',
                         'pages/plugins/membershiplevelvip/index/index',
                         'pages/plugins/ask/index/index',
-                        'pages/cashier/cashier'
+                        'pages/cashier/cashier',
+                        'pages/plugins/video/index/index',
+                        'pages/plugins/video/detail/detail',
+                        'pages/plugins/video/search/search',
+                        'pages/plugins/video/search-record/search-record'
                     ];
                     // 当前tab页面
                     if(this.is_system_tabbar_pages('/'+url) != -1 || pages_always.indexOf(url) != -1) {
