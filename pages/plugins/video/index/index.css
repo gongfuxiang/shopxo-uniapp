@@ -46,7 +46,7 @@
 	width: 0;
 	height: 4px;
 	background-color: #333;
-	transition: width 0.6s ease;
+	transition: width 0.6s linear;
 	border-radius: 8rpx;
 }
 

@@ -14,9 +14,9 @@
 
 /* #ifdef MP-WEIXIN | APP-PLUS */
 .tabs-scroll ::v-deep ::-webkit-scrollbar {
-		width: 0rpx!important;
-		height: 0rpx!important;
-		background-color: transparent;
+	width: 0rpx!important;
+	height: 0rpx!important;
+	background-color: transparent;
 }
 /* #endif */
 /* 推荐视频列表 */
