@@ -206,7 +206,6 @@
 .comment-content {
     width: 100%;
     height: 70%;
-    transition: height 0.35s linear;
     background-color: #fff;
     border-top-left-radius: 30rpx;
     border-top-right-radius: 30rpx;
