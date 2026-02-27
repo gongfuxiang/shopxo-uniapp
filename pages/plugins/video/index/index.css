@@ -8,7 +8,7 @@
 .nav-tabs {
 	position: sticky;
 	width: 100%;
-	padding: 0 16rpx 20rpx 24rpx;
+	padding: 20rpx 16rpx 20rpx 24rpx;
 	z-index: 9;
 	background: transparent; /* 默认透明背景 */
 	transition: background-color 0.3s ease; /* 添加背景色过渡动画 */
