@@ -62,7 +62,7 @@
                                     <view class="bg-base border-radius-main padding-main oh">
                                         <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" :placeholder="$t('user-address-save.user-address-save.b32r6v')" placeholder-class="cr-grey" />
                                         <view class="padding-top-sm tr" :class="identfication_show ? '' : 'dis-none'">
-                                            <button type="default" size="mini" class="btn round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">{{$t('goods-search.goods-search.pxk051')}}</button>
+                                            <button type="default" size="mini" class="btn round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">{{$t('common.clear')}}</button>
                                             <button type="default" size="mini" class="btn round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">{{$t('user-address-save.user-address-save.s3o1p5')}}</button>
                                         </view>
                                     </view>

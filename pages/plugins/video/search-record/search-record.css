@@ -1,8 +1,3 @@
-.search-record-container {
-    background: #fff;
-	height: 100vh;
-}
-
 .header-top {
 	position: sticky;
 	top: 0;
@@ -42,11 +37,6 @@
 }
 
 /* 热门搜索 */
-.hot-search {
-	padding: 40rpx;
-	background: #fff;
-}
-
 .hot-tabs {
 	display: flex;
 	margin-bottom: 20rpx;

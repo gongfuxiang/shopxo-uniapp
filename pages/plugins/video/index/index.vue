@@ -38,7 +38,7 @@
 						<!-- 推荐视频卡片区域 -->
 						<view class="recommend-videos">
 							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-id="item.id" @tap="navigate_to_detail">
+								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
 									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
 									<view class="video-info flex-col jc-c"> 
 										<view class="video-title text-line-2">{{ item.title }}</view>
@@ -53,6 +53,8 @@
 								</view>
 							</view>
 						</view>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="true"></component-bottom-line>
 					</template>
 					<template v-else>
 						<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -69,6 +71,7 @@
 <script>
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentNoData from '@/components/no-data/no-data';
+import componentBottomLine from '@/components/bottom-line/bottom-line';
 import componentBanner from '@/components/slider/slider';
 import { video_get_top_left_padding } from '@/common/js/common/common.js';
 import { isEmpty } from '../../../../common/js/common/common';
@@ -82,6 +85,7 @@ export default {
 	components: {
 		searchComponent,
 		componentNoData,
+        componentBottomLine,
 		componentBanner,
 	},
 	data() {
@@ -119,11 +123,35 @@ export default {
 			nav_sticky_style: '',
 		};
 	},
+    
+    onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+    
+        // 设置参数
+        this.setData({
+            params: params,
+        });
+    },
+
 	onShow() {
-		this.init();
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+        
+        // 加载数据
+        this.init();
+        
+        // 公共onshow事件
+        if ((this.$refs.common || null) != null) {
+            this.$refs.common.on_show();
+        }
+        
+        // 分享菜单处理
+        app.globalData.page_share_handle();
 	},
 	methods: {
 		isEmpty,
+        // 初始化
 		init() {
 			// 小程序下，获取小程序胶囊的宽度
 			let menu_button_info = 'max-width:100%';
@@ -151,6 +179,8 @@ export default {
 			// 初始化数据
 			this.init_data();
 		},
+        
+        // 初始化数据
 		init_data() {
 			// 获取数据
 			uni.request({
@@ -184,6 +214,8 @@ export default {
 				}
 			});
 		},
+        
+        // 获取数据列表
 		get_video_list(id = '') {
 			this.setData({
 				data_list_loding_status: 1,
@@ -220,10 +252,14 @@ export default {
 				}
 			})
 		},
+
+        // 搜索事件
 		handle_search() {
 			// 跳转到搜索记录页面
 			app.globalData.url_open(`/pages/plugins/video/search-record/search-record`, false);
 		},
+
+        // 选项卡切换事件
 		switch_tab(e) {
 			const id = e?.currentTarget?.dataset?.id || 0;
 			const index = e?.currentTarget?.dataset?.index || 0;
@@ -234,22 +270,20 @@ export default {
 			// 根据当前标签加载对应的数据
 			this.get_video_list(id);
 		},
-		navigate_to_detail(e) {
-			const id = e?.currentTarget?.dataset?.id || '';
-			if (id == '') {
-				return false;
-			} else {
-				app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${id}`, false);
-			}
-		},
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        },
+
+        // 返回上一页事件
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
+
 		// 滚动事件处理
 		on_scroll_event(e) {
 			const scrollTop = e.detail.scrollTop;
-			console.log(this.nav_sticky_threshold);
-			
 			// 当滚动距离大于等于阈值时，设置nav-tabs为粘性状态（背景变白）
 			this.setData({
 				is_nav_sticky: scrollTop >= this.nav_sticky_threshold,

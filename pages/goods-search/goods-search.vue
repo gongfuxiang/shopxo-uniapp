@@ -60,7 +60,7 @@
                             <text>{{$t('goods-search.goods-search.j8o278')}}</text>
                             <text class="cr-main"> {{data_total}} </text>
                             <text>{{$t('goods-search.goods-search.t9nikq')}}</text>
-                            <text class="fr cr-red cp" @tap="map_remove_event">{{$t('goods-search.goods-search.pxk051')}}</text>
+                            <text class="fr cr-red cp" @tap="map_remove_event">{{$t('common.clear')}}</text>
                         </view>
                         <!-- 搜索关键字 -->
                         <input type="text" confirm-type="search" :placeholder="$t('customview.customview.726k7y')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg"

@@ -2,16 +2,16 @@
     <view :class="theme_view">
         <view v-if="(data || null) != null && (data_base || null) != null">
             <view class="flex-row jc-sb align-c">
-                <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="fw-b">{{$t('user-order.user-order.twc3r7')}}{{ data.comments_count || '' }}</view>
+                <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="fw-b">{{$t('common.comment')}}{{ data.comments_count || '' }}</view>
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tr blog-comments-bottom-container cr-grey">
                     <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block cr-base" :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
                         <iconfont name="icon-message-square" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
-                        <text class="text-size-xs">{{$t('ask-comments.ask-comments.2zlnb5')}}{{ data.comments_count }})</text>
+                        <text class="text-size-xs">{{$t('common.comment')}}({{ data.comments_count }})</text>
                     </view>
                     <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'base')" :data-blogid="data.id" @tap="give_thumbs_event">
                         <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
-                        <text class="va-m text-size-xs">{{$t('ask-comments.ask-comments.du7rcv')}}{{ data.give_thumbs_count }})</text>
+                        <text class="va-m text-size-xs">{{$t('common.like')}}({{ data.give_thumbs_count }})</text>
                     </view>
                     <view class="item dis-inline-block cr-base" @tap="popup_share_event">
                         <iconfont name="icon-share" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
@@ -31,7 +31,7 @@
                                 <!-- #ifndef MP-ALIPAY -->
                                 <text class="text-size-xs cr-grey-d margin-right-sm">{{$t('login.login.n24i5u')}}{{ input_comments_length_value }}{{$t('ask-comments.ask-comments.6l6vz7')}}</text>
                                 <!-- #endif  -->
-                                <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('user-order.user-order.twc3r7')}}</button>
+                                <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('common.comment')}}</button>
                             </view>
                         </view>
                     </view>
@@ -51,11 +51,11 @@
                             <view class="blog-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
                                 <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-blogcommentsid="item.id" @tap="modal_open_event">
                                     <iconfont name="icon-message-square" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                    <text class="va-m">{{$t('ask-comments.ask-comments.3fcnme')}}{{ item.comments_count }})</text>
+                                    <text class="va-m">{{$t('common.reply')}}({{ item.comments_count }})</text>
                                 </view>
                                 <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="1" :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="give_thumbs_event">
                                     <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                    <text class="va-m">{{$t('ask-comments.ask-comments.du7rcv')}}{{ item.give_thumbs_count }})</text>
+                                    <text class="va-m">{{$t('common.like')}}({{ item.give_thumbs_count }})</text>
                                 </view>
                             </view>
                             <view v-if="(item.reply_comments_list || null) != null && item.reply_comments_list.length > 0" class="reply-blog-comments-list">
@@ -73,7 +73,7 @@
                                                 <view class="blog-comments-right-content-operate flex-row jc-e align-c text-size-xs cr-grey-9 padding-0">
                                                     <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="comments.user.user_name_view" :data-blogcommentsid="comments.blog_comments_id" :data-replycommentsid="comments.id" @tap="modal_open_event">
                                                         <iconfont name="icon-message-square" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                                        <text class="va-m">{{$t('ask-comments.ask-comments.3fcnme')}}{{ comments.comments_count }})</text>
+                                                        <text class="va-m">{{$t('common.reply')}}({{ comments.comments_count }})</text>
                                                     </view>
                                                     <view
                                                         v-if="(data_base.is_blog_give_thumbs || 0) == 1"
@@ -87,7 +87,7 @@
                                                         @tap="give_thumbs_event"
                                                     >
                                                         <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-givealike' : 'icon-givealike-o'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                                        <text class="va-m">{{$t('ask-comments.ask-comments.du7rcv')}}{{ comments.give_thumbs_count }})</text>
+                                                        <text class="va-m">{{$t('common.like')}}({{ comments.give_thumbs_count }})</text>
                                                     </view>
                                                 </view>
                                             </view>
@@ -124,7 +124,7 @@
             <view v-if="input_comments_modal_status" class="blog-comments-modal pf">
                 <view class="blog-comments-modal-content bg-white border-radius-main pr">
                     <view class="tc margin-bottom-lg">
-                        <text>{{$t('ask-comments.ask-comments.8sjar6')}}{{ input_comments_modal_username }}</text>
+                        <text>{{$t('common.reply')}} @{{ input_comments_modal_username }}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
                                 <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
@@ -136,7 +136,7 @@
                         <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                         <view class="fr">
                             <text class="va-m text-size-xs cr-grey margin-right-lg">{{$t('login.login.n24i5u')}}{{ input_comments_length_value }}{{$t('ask-comments.ask-comments.6l6vz7')}}</text>
-                            <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('user-order.user-order.twc3r7')}}</button>
+                            <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('common.comment')}}</button>
                         </view>
                     </view>
                 </view>

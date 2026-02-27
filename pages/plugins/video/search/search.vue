@@ -13,14 +13,14 @@
 							</view>
 							<!-- #endif -->
 							<view class="wh-auto ht-auto" :style="header_padding_left">
-								<search-component :propSearchQuery="search_query" @search="handle_search" />
+								<search-component :propSearchQuery="search_keywords" @search="handle_search" />
 							</view>
 						</view>
 					</view>
 					<!-- 导航栏 -->
 					<view class="nav-tabs flex-row align-s jc-sb gap-10"> 
 						<view class="tabs-scroll-content">
-							<view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab === index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
+							<view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab == index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
 						</view>
 						<view class="nav-tabs-filter" @click="toggle_filter_popup">
 							<iconfont name="icon-filter" size="32rpx"></iconfont>
@@ -32,7 +32,7 @@
 					<scroll-view scroll-y :show-scrollbar="false" class="recommend-scroll" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true">
 						<template v-if="recommend_videos.length > 0">
 							<view class="video-grid">
-								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-id="item.id" @tap="navigate_to_detail">
+								<view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
 									<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
 									<view class="video-info flex-col jc-c"> 
 										<view class="video-title text-line-2">{{ item.title }}</view>
@@ -124,7 +124,7 @@ export default {
 			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
-			search_query: '',
+			search_keywords: '',
 			currentTab: 0,
 			recommend_videos: [],
 			isLoadingMore: false,
@@ -133,9 +133,9 @@ export default {
 			popup_top: '0rpx',
 			platform: app.globalData.application_client_type(),
 			popup_list: [
-				{ title: '排序依据', id: 'sort', list: []},
-				{ title: '发布时间', id: 'time', list: [] },
-				{ title: '视频时长', id: 'duration', list: [] },
+				{ title: this.$t('video-search.video-search.sdfgg4'), id: 'sort', list: []},
+				{ title: this.$t('video-search.video-search.gf3212'), id: 'time', list: [] },
+				{ title: this.$t('video-search.video-search.iuyt42'), id: 'duration', list: [] },
 			],
 			filter_params: {
 				sort: 'default',
@@ -154,19 +154,39 @@ export default {
 			data_list_loding_status: 1,
 			data_list_loding_msg: '',
 			search_history: [],
+            cache_key: 'cache_plugins_video_search_history_key',
 		};
 	},
-	onLoad(params) {
-		// 设置参数
-		this.setData({
-			search_query: params.search_query || '',
-			params: app.globalData.launch_params_handle(params),
-		});
-	},
-	onShow() {
-		this.init();
-	},
+    onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
+        params = app.globalData.launch_params_handle(params);
+        this.setData({
+        	search_keywords: params.keywords || '',
+        	params: params,
+        });
+    },
+    
+    onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+        
+        // 加载数据
+        this.init();
+        
+        // 公共onshow事件
+        if ((this.$refs.common || null) != null) {
+            this.$refs.common.on_show();
+        }
+        
+        // 分享菜单处理
+        app.globalData.page_share_handle();
+    },
+
 	methods: {
+        // 初始化
 		init() {
 			// 小程序下，获取小程序胶囊的宽度
 			let menu_button_info = 'max-width:100%';
@@ -206,11 +226,12 @@ export default {
                     })
                     .exec(); // 执行查询
             }, 500);
-			this.search_history = uni.getStorageSync('cache_plugins_video_search_history_key') || [];
+			this.search_history = uni.getStorageSync(this.cache_key) || [];
 
 			// 初始化搜索页数据
 			this.init_data();
 		},
+
 		// 获取初始化数据
 		init_data () {
 			uni.request({
@@ -254,26 +275,30 @@ export default {
 				}
 			});
 		},
+
 		// 返回上一页
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
+
 		// 搜索按钮点击事件
 		handle_search(e) {
 			this.setData({
-				search_query: e,
+				search_keywords: e,
 				page: 0,
 				page_total: 1,
 				data_list_loding_status: 1,
 				recommend_videos: []
 			})
 			if (!isEmpty(e) && !this.search_history.includes(e)) {
-				this.search_history.push(e);
-				uni.setStorageSync('cache_plugins_video_search_history_key', this.search_history);
+				this.search_history.unshift(e);
+				uni.setStorageSync(this.cache_key, this.search_history);
 			}
 			// 更新数据信息
 			this.load_recommend_videos();
 		},
+
+        // 选项卡切换事件
 		switch_tab(e) {
 			const index = e?.currentTarget?.dataset?.index || 0;
 			this.setData({
@@ -287,6 +312,8 @@ export default {
 			// 根据当前标签加载对应的数据
 			this.load_recommend_videos();
 		},
+
+        // 记载视频
 		load_recommend_videos() {
 			// 加载推荐视频数据的逻辑
 			const { time = '', duration = '', sort = ''} = this.filter_params;
@@ -296,7 +323,7 @@ export default {
 				method: 'POST',
 				data: {
 					cid: this.search_cid,
-					bwd: this.search_query, // 搜索关键字
+					bwd: this.search_keywords, // 搜索关键字
 					rt: time, // 发布时间
 					dn: duration, // 视频时长
 					by: sort, // 排序
@@ -334,14 +361,13 @@ export default {
 				}
 			});
 		},
-		navigate_to_detail(e) {
-			const id = e?.currentTarget?.dataset?.id || '';
-			if (id == '') {
-				return false;
-			} else {
-				app.globalData.url_open(`/pages/plugins/video/detail/detail?id=${id}`, false);
-			}
+
+        // url事件
+		url_event(e) {
+            app.globalData.url_event(e);
 		},
+
+        // 滚动事件
 		on_scroll_lower_event() {
 			// 添加额外的检查条件
 			if (this.page >= this.page_total) {
@@ -350,12 +376,17 @@ export default {
 			// 加载更多数据
 			this.load_recommend_videos();
 		},
+
+        // 筛选弹窗切换
 		toggle_filter_popup() {
 			this.filter_popup_status = !this.filter_popup_status;
 		},
+        
+        // 关闭筛选弹窗
 		close_filter_popup() {
 			this.filter_popup_status = false;
 		},
+
 		// 更新筛选条件的值
 		select_filter(e) {
 			const type = e?.currentTarget?.dataset?.type || '';

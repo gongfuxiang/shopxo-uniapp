@@ -19,9 +19,9 @@
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                     <view class="video-container pr" @tap.stop="toggle_play_pause">
-                        <view class="video-bg" :style="!isEmpty(video_item.poster_url) ? 'background-image: url(' + video_item.poster_url + ')' : ''"></view>
+                        <view class="video-bg" :style="!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : ''"></view>
                         
-                        <video class="video" :src="video_item.video_url" :poster="video_item.poster_url" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
+                        <video class="video" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
 
                         <view v-if="paused && current_index == index" class="play-icon">
                             <view class="pr">
@@ -45,7 +45,7 @@
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
                                     <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
-                                    <text class="action-text">分享</text>
+                                    <text class="action-text">{{$t('common.share')}}</text>
                                 </view>
                             </view>
                             <view v-if="!isEmpty(video_item.goods) && base_config_data && base_config_data.is_video_detail_show_goods && base_config_data.is_video_detail_show_goods == 1" class="product-card">
@@ -65,7 +65,7 @@
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c gap-10">
                                             <iconfont name="icon-cart-have" color="#F5C366" size="30rpx"></iconfont>
-                                            <text class="size-14 cr-f">购买商品</text>
+                                            <text class="size-14 cr-f">{{$t('common.buy')}} {{$t('common.goods')}}</text>
                                         </view>
                                         <iconfont name="icon-angle-right" color="#fff" size="30rpx"></iconfont>
                                     </view>
@@ -90,7 +90,7 @@
         <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
             <view class="comment-content bottom-line-exclude-bottom" :style="commentContentStyle" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                 <view class="comment-header">
-                    <text class="comment-count">评论</text>
+                    <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
                 <!-- 评论内容区域 -->
@@ -108,7 +108,7 @@
                                     </view>
                                     <template v-if="comment_item.comments_count > 0">
                                         <template v-if="!comment_item.show_sub_comment">
-                                            <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— 展开' + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + '条回复'" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                            <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                         </template>
                                         <template v-else>
                                             <template v-if="comment_item.show_sub_comment_loading">
@@ -116,9 +116,9 @@
                                             </template>
                                             <view v-else class="sub-comment-more flex-row align-c gap-10">
                                                 <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
-                                                    <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" propText="展开" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                 </template>
-                                                <commentMoreComponent :propId="comment_item.id" propText="收起" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                             </view>
                                         </template>
                                     </template>
@@ -133,7 +133,7 @@
                             </template>
                         </template>
                         <template v-else>
-                            <component-no-data propMsg="暂无评论"></component-no-data>
+                            <component-no-data :propMsg="$t('common.no_data')"></component-no-data>
                         </template>
                     </view>
                 </scroll-view>
@@ -163,19 +163,19 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_close_event">
+        <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_report_close_event">
             <view class="report-content">
                 <!-- 顶部按钮区域 -->
                 <view class="report-header flex-row align-c jc-sb">
-                    <view class="report-btn cr-6" @tap="popup_close_event">取消</view>
-                    <view class="report-title flex-1">举报原因</view>
-                    <view class="report-btn cr-blue" @tap="submit_report">确定</view>
+                    <view class="report-btn cr-6" @tap="popup_report_close_event">{{$t('common.cancel')}}</view>
+                    <view class="report-title flex-1">{{$t('video-detail.video-detail.rfsdfg')}}</view>
+                    <view class="report-btn cr-blue" @tap="submit_report">{{$t('common.confirm')}}</view>
                 </view>
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view v-if="report_type_list.length > 0" class="report-section">
-                        <view class="report-label">举报原因<text class="ml-10">*</text></view>
+                        <view class="report-label">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10">*</text></view>
                         <view class="flex-row align-c gap-10 flex-wrap">
                             <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" :data-index="main_index" @tap="select_main_reason">
                                 <view class="flex-row align-c">
@@ -188,7 +188,7 @@
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
                     <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index]">
-                        <view class="report-label">请选择具体的类型<text class="ml-10">*</text></view>
+                        <view class="report-label">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10">*</text></view>
                         <view class="flex-row align-c gap-10 flex-wrap">
                             <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" :data-index="sub_index" @tap="select_sub_reason">
                                 <view class="flex-row align-c">
@@ -294,7 +294,7 @@
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
-                input_placeholder: '请输入您的精彩评论',
+                input_placeholder: this.$t('video-detail.video-detail.98yyuf'),
                 comment_input_value: '',
                 propMaxNum: 1,
                 form_images_list: [],
@@ -354,11 +354,25 @@
                 params: app.globalData.launch_params_handle(params),
             });
         },
+
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 视频播放
             if (!this.is_manual_pause && this.create_video_contexts[this.current_index]) {
                 this.video_play_event(this.create_video_contexts[this.current_index]);
             }
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
+
         onHide() {
             // 清理定时器
             if (this.video_switch_debounce_timer) {
@@ -371,14 +385,16 @@
             this.cleanup_all_videos();
         },
         mounted() {
+            // 初始化
             this.init();
+
             // #ifdef H5
             // 添加全局点击事件监听
             document.addEventListener('click', this.handle_global_click);
-            
             // 添加触摸事件监听（移动端兼容）
             document.addEventListener('touchstart', this.handle_global_click);
             //#endif
+
             // 创建监听事件
             this.bind_keyboard_listener();
         },
@@ -390,7 +406,7 @@
             if (this.video_cleanup_timer) {
                 clearTimeout(this.video_cleanup_timer);
             }
-            
+
             // 清理所有视频资源
             this.cleanup_all_videos();
             
@@ -743,7 +759,7 @@
                     desc: data.desc || '',
                     path: '/pages/plugins/video/detail/detail',
                     query: 'id=' + this.current_video_id,
-                    img: data.poster_url || ''
+                    img: data.cover || ''
                 }
                 this.setData({
                     share_info: info,
@@ -1077,7 +1093,7 @@
                                 form_images_list: [],
                                 comment_input_value: '',
                                 comments_data: {},
-                                input_placeholder: '请输入您的精彩评论',
+                                input_placeholder: this.$t('video-detail.video-detail.98yyuf'),
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
@@ -1358,10 +1374,6 @@
                 try {
                     // 暂停所有视频
                     this.pause_all_videos_except(-1);
-                    // 清空视频上下文数组
-                    // this.create_video_contexts = [];
-                    // this.video_contexts = [];
-                    console.log('视频资源清理完成');
                 } catch (error) {
                     console.error('清理视频资源时出错:', error);
                 }
@@ -1385,8 +1397,8 @@
                 if (obj.type == 'delete') {
                     // 确认删除
                     uni.showModal({
-                        title: '确认删除',
-                        content: '确定删除此评论吗？',
+                        title: this.$t('common.warm_tips'),
+                        content: this.$t('common.delete_confirm_tips'),
                         success: (res) => {
                             if (res.confirm) {
                                 // 调用删除接口
@@ -1410,12 +1422,11 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        const data = res.data;
-                        if (data.code == 0) {
+                        if (res.data.code == 0) {
                             // 删除评论数据
                             this.delete_comment_handle(comment_id);
                             // 显示删除成功提示
-                            app.globalData.showToast(this.$t('common.del_success'));
+                            app.globalData.showToast(res.data.msg, 'success');
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -1502,7 +1513,7 @@
                 }
             },
             // 关闭举报弹窗
-            popup_close_event() {
+            popup_report_close_event() {
                 this.setData({
                     popup_report_status: false,
                     current_main_index: 0,
@@ -1550,12 +1561,11 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        const data = res.data;
-                        if (data.code == 0) {
+                        if (res.data.code == 0) {
                             // 显示删除成功提示
-                            app.globalData.showToast('举报成功');
+                            app.globalData.showToast(res.data.msg, 'success');
                             // 关闭弹窗
-                            this.close_report_popup();
+                            this.popup_report_close_event();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);

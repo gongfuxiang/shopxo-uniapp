@@ -4,9 +4,9 @@
         <view class="search-iconfont-container">
             <iconfont name="icon-search-fine"></iconfont>
         </view>
-        <input type="text" v-model="search_query" :adjust-position="false" placeholder="请输入您的搜索内容" @input="handle_search" @confirm="perform_search" />
+        <input type="text" v-model="search_keywords" :adjust-position="false" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
         <view class="search-line"></view>
-        <view class="search-button" @tap="perform_search">搜索</view>
+        <view class="search-button" @tap="perform_search">{{$t('common.search')}}</view>
     </view>
 </template>
 
@@ -24,13 +24,13 @@ export default {
     },
     data() {
         return {
-            search_query: ''
+            search_keywords: ''
         }
     },
     watch: {
         propSearchQuery: {
             handler(newVal, oldVal) {
-                this.search_query = newVal;
+                this.search_keywords = newVal;
             },
             immediate: true
         }
@@ -41,17 +41,17 @@ export default {
     methods: {
         init() {
             this.setData({
-                search_query: this.search_query
+                search_keywords: this.search_keywords
             })
         },
         handle_search(event) {
             this.setData({
-                search_query: event.target.value,
+                search_keywords: event.target.value,
             });
         },
         perform_search() {
             // 这里可以添加搜索逻辑
-            this.$emit('search', this.search_query);
+            this.$emit('search', this.search_keywords);
         },
         disabled_search() {
             this.$emit('disabledSearch');

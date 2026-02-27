@@ -1,5 +1,5 @@
 <template>
-	<view class="wh-auto ht pr search-record-container bottom-line-exclude-bottom">
+	<view class="wh-auto pr bg-white bottom-line-exclude-bottom">
 		<template v-if="search_history_data.length > 0">
 			<!-- 搜索框 -->
 			<view class="header-top" :style="top_content_style + menu_button_info">
@@ -11,21 +11,21 @@
 					</view>
 					<!-- #endif -->
 					<view class="wh-auto ht-auto" :style="header_padding_left">
-						<search-component :propSearchQuery="search_query" @search="handle_search" />
+						<search-component :propSearchQuery="search_keywords" @search="handle_search" />
 					</view>
 				</view>
 			</view>
 			<!-- 搜索历史记录 -->
 			<view v-if="show_search_history.length > 0" class="search-history flex-col jc-c align-c">
 				<view class="wh-auto flex-row align-c jc-sb">
-					<text class="size-14 cr-6">历史记录</text>
+					<text class="size-14 cr-6">{{$t('common.history_record')}}</text>
 					<view class="flex-row algin-c gap-5" @tap="clear_history">
 						<iconfont name="icon-delete" size="28rpx" color="#999"></iconfont>
-						<text class="size-12 cr-9">清除记录</text>
+						<text class="size-12 cr-9">{{$t('common.clear_record')}}</text>
 					</view>
 				</view>
 				<view v-for="(history, index) in show_search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">
-					<view class="flex-1 flex-row align-c search-history-title cp" :data-value="history" @tap.stop="perform_search">
+					<view class="flex-1 flex-row align-c search-history-title cp" :data-value="history" @tap.stop="history_search_event">
 						<iconfont name="icon-time" size="32rpx"></iconfont>
 						<text>{{ history }}</text>
 					</view>
@@ -37,12 +37,12 @@
 						<loadingComponent></loadingComponent>
 					</template>
 					<template v-else>
-						<view class="more-history-btn cp" @tap="view_more_history">查看更多历史</view>
+						<view class="more-history-btn cp" @tap="view_more_history">{{$t('common.view_more')}} {{$t('common.history')}}</view>
 					</template>
 				</template>
 			</view>
 			<!-- 热搜列表 -->
-			<view v-if="search_history_data.length > 0" class="hot-search">
+			<view v-if="search_history_data.length > 0" class="bg-white padding-xxl">
 				<view class="hot-tabs">
 					<scroll-view scroll-x :show-scrollbar="false" class="tabs-scroll" style="white-space: nowrap;">
 						<view class="tabs-scroll-content">
@@ -51,7 +51,7 @@
 					</scroll-view>
 				</view>
 				<view class="hot-list flex-col align-c gap-10">
-					<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-url="item.url" @tap.stop="perform_url">
+					<view v-for="(item, index) in search_history_data[hot_current_tab].data" :key="index" :class="'cp wh-auto flex-row align-c jc-sb gap-10 hot-item' + (index < 3 ? ' hot-item-top' : '')" :data-value="item.url" @tap.stop="url_event">
 						<view class="flex-1 flex-row align-c gap-10">
 							<view class="hot-num flex-row align-c jc-c">
 								<view :class="index < 3 ? `hexagon-top hexagon-top-${index + 1}` : 'hexagon-no-top'"><span>{{ index + 1 }}</span></view>
@@ -108,7 +108,7 @@ export default {
 			// #ifdef APP
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
-			search_query: '',
+			search_keywords: '',
 			search_history: [],
 			show_search_history: [],
 			search_history_data: [],
@@ -117,11 +117,35 @@ export default {
 			header_padding_left: '',
 			data_loding_status: 1,
 			data_loding_msg: '',
+            cache_key: 'cache_plugins_video_search_history_key',
 		};
 	},
-	onShow() {
-		this.init();
+	onLoad(params) {
+	    // 调用公共事件方法
+	    app.globalData.page_event_onload_handle(params);
+
+	    // 设置参数
+	    this.setData({
+	        params: params,
+	    });
 	},
+	
+	onShow() {
+	    // 调用公共事件方法
+	    app.globalData.page_event_onshow_handle();
+	    
+	    // 加载数据
+	    this.init();
+	    
+	    // 公共onshow事件
+	    if ((this.$refs.common || null) != null) {
+	        this.$refs.common.on_show();
+	    }
+	    
+	    // 分享菜单处理
+	    app.globalData.page_share_handle();
+	},
+
 	methods: {
 		init() {
 			// 小程序下，获取小程序胶囊的宽度
@@ -147,17 +171,19 @@ export default {
 				menu_button_info: menu_button_info
 			});
 			// 搜索历史记录
-			this.search_history = uni.getStorageSync('cache_plugins_video_search_history_key') || [];
+			this.search_history = uni.getStorageSync(this.cache_key) || [];
 			if (this.search_history.length > 0) {
 				this.show_search_history = this.search_history.filter((item, index) => index < 5);
 			} else {
 				this.show_search_history = [];
 			}
 			// 初始化数据
-			this.search_query = '';
+			this.search_keywords = '';
 
 			this.init_data();
 		},
+
+        // 初始化数据
 		init_data() {
 			uni.request({
 				url: app.globalData.get_request_url("searchrecord", "index", "video"),
@@ -185,25 +211,44 @@ export default {
 				}
 			});
 		},
-		// 返回
+
+		// 返回事件
 		handle_back() {
 			app.globalData.page_back_prev_event();
 		},
-		handle_search(e) {
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        },
+
+        // 热搜切换事件
+        switch_hot_tab(e) {
+        	this.setData({
+        		hot_current_tab: e.currentTarget.dataset.index,
+        	});
+        },
+
+        // 搜索处理
+		handle_search(value) {
 			// 保存搜索历史记录
-			if (!isEmpty(e) && !this.search_history.includes(e)) {
-				this.search_history.push(e);
-				uni.setStorageSync('cache_plugins_video_search_history_key', this.search_history);
+			if (!isEmpty(value) && !this.search_history.includes(value)) {
+				this.search_history.unshift(value);
+				uni.setStorageSync(this.cache_key, this.search_history);
 			}
-			this.search_query = e;
+			this.search_keywords = value;
 			// 跳转到搜索页
-			app.globalData.url_open(`/pages/plugins/video/search/search?search_query=${this.search_query}`, false);
+			app.globalData.url_open(`/pages/plugins/video/search/search?keywords=${this.search_keywords}`, false);
 		},
-		perform_search(e) {
+
+        // 历史搜索事件
+		history_search_event(e) {
 			const value = e?.currentTarget?.dataset?.value || '';
 			// 直接跳转到搜索页
 			this.handle_search(value);
 		},
+
+        // 删除历史搜索记录
 		delete_history(e) {
 			const index = e?.currentTarget?.dataset?.index;
 			const data = this.show_search_history[index];
@@ -212,14 +257,10 @@ export default {
 				this.search_history.splice(newIndex, 1);
 			}
 			this.show_search_history.splice(index, 1);
-			uni.setStorageSync('cache_plugins_video_search_history_key', this.search_history);
+			uni.setStorageSync(this.cache_key, this.search_history);
 		},
-		perform_url(e) {
-			const url = e?.currentTarget?.dataset?.url || '';
-			if (!isEmpty(url)) {
-				app.globalData.url_open(url);
-			}
-		},
+
+        // 查看更多历史搜索记录
 		view_more_history() {
 			// 查看更多历史逻辑
 			this.is_view_more = true;
@@ -229,13 +270,10 @@ export default {
 				this.show_search_history = this.search_history.filter((item, index) => index < ((this.show_search_history.length - 1) + 5)) 
 			}, 500);
 		},
-		switch_hot_tab(e) {
-			this.setData({
-				hot_current_tab: e.currentTarget.dataset.index,
-			});
-		},
+
+        // 清除历史搜索记录
 		clear_history() {
-			uni.setStorageSync('cache_plugins_video_search_history_key', []);
+			uni.setStorageSync(this.cache_key, []);
 			this.setData({
 				search_history: [],
 				show_search_history: [],

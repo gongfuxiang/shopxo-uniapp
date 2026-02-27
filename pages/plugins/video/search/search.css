@@ -89,7 +89,6 @@
 	column-count: 2;
 	column-gap: 10px;
 	/* 添加这些样式确保滚动事件能正常触发 */
-	min-height: 100%;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
 }

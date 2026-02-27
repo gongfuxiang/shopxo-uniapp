@@ -24,8 +24,8 @@
                             </view>
                             <view v-if="(item.blog_data || null) != null" class="single-text cr-grey text-size-xs">
                                 <text>{{ blog_main_name }}: {{ item.blog_data.blog_count }}</text>
-                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">{{ $t('index.index.lkld04') }}{{ item.blog_data.comments_count }}</text>
-                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">{{ $t('index.index.r6vv25') }}{{ item.blog_data.give_thumbs_count }}</text>
+                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">{{$t('common.comment')}}:{{ item.blog_data.comments_count }}</text>
+                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">{{$t('common.like')}}:{{ item.blog_data.give_thumbs_count }}</text>
                             </view>
                         </view>
                     </view>

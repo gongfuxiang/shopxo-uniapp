@@ -1,7 +1,7 @@
 <template>
     <view class="more-title flex-row align-c" @tap="comment_more_event">
-        {{ propText }}
-        <view class="ml-3">
+        <text>{{ propText || $t('common.expand') }}</text>
+        <view class="ml-5">
             <iconfont :name="propIconName" color="#999" size="20rpx" />
         </view>
     </view>
@@ -16,7 +16,7 @@ export default {
         },
         propText: {
             type: String,
-            default: '展开'
+            default: ''
         },
         propIsLevel: {
             type: Number,
@@ -36,9 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ml-3 {
-    margin-left: 6rpx;
-}
 .more-title {
     font-size: 24rpx;
     color: #999999;

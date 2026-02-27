@@ -45,8 +45,11 @@ export default {
     onLoad(params) {
         // 调用公共事件方法
         app.globalData.page_event_onload_handle(params);
+
         // 设置参数
-        this.params = app.globalData.launch_params_handle(params);
+        this.setData({
+            params: app.globalData.launch_params_handle(params),
+        });
     },
     
     /**
@@ -56,14 +59,13 @@ export default {
         // 调用公共事件方法
         app.globalData.page_event_onshow_handle();
 
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-
         const data = uni.getWindowInfo();
         this.windowWidth = data.windowWidth > 800 ? 800 : data.windowWidth;
         this.windowHeight = data.windowHeight;
 
+        // 初始化
         this.init();
+
         // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
         if (this.$refs.liveContent) {
             this.$refs.liveContent.socket_connect();
@@ -72,6 +74,9 @@ export default {
         if (this.$refs.liveVideo) {
             this.$refs.liveVideo.reload_video();
         }
+
+        // 分享菜单处理
+        app.globalData.page_share_handle();
     },
 
     /**

@@ -17,8 +17,15 @@
 		"add": "Add",
         "copy": "Copy",
         "remove": "Remove",
+        "expand": "Expand",
+        "retract": "Retract",
+        "reply": "Reply",
         "remove_success": "Remove successful",
         "remove_fail": "Remove failed",
+        "history": "History",
+        "history_record": "History record",
+        "clear": "Clear",
+        "clear_record": "Clear record",
 		"del": "Delete",
         "del_record": "Delete record",
         "del_success": "Delete successful",
@@ -49,6 +56,8 @@
         "refuse": "Refuse",
         "buy": "Buy",
         "complaint": "Complaint",
+        "comment": "Comment",
+        "like": "Like",
         "info": "Info",
         "web_client": "WebClient",
         "app_client": "AppClient",
@@ -332,8 +341,9 @@
         "plugins-certificate-userauth-detail": "Certificate detail",
         "plugins-goodscompare-index": "Goods Compare",
         "plugins-video-index": "Short Video List",
-        "plugins-video-search": "Short video search",
         "plugins-video-detail": "Short video details",
+        "plugins-video-search": "Short video search",
+        "plugins-video-search-record": "Short video searchrecord",
         "plugins-live-pull": "Live Details",
         "plugins-complaint-user": "Complaint/Report List",
         "plugins-complaint-form": "Complaint/Report",
@@ -666,7 +676,6 @@
 		"goods-search": {
 			"j8o278": "Filter out",
 			"t9nikq": "Piece of data",
-			"pxk051": "clear",
             "4eerty": "origin",
 			"6n8316": "brand",
 			"v6e5b7": "attribute"
@@ -683,8 +692,6 @@
 			"75l3l2": "Unreturned",
 			"17vy72": "Missing tab data!",
 			"i78v36": "Returning to the store",
-			"lkld04": "Comment:",
-			"r6vv25": "Like:",
 			"6rsqp1": "All",
 			"pot64x": "Popular",
 			"8t4j95": "Recommended products",
@@ -1551,7 +1558,6 @@
 	},
 	"user-order": {
 		"user-order": {
-			"twc3r7": "comment",
 			"lp1v28": "Urge and urge",
 			"ht65c9": "Suborder",
 			"9l47b6": "form",
@@ -1627,15 +1633,11 @@
 	},
 	"ask-comments": {
 		"ask-comments": {
-			"2zlnb5": "Comment（",
-			"du7rcv": "Like（",
 			"6l6vz7": "word",
-			"3fcnme": "Reply（",
 			"ymmd24": "Replies",
 			"dfhg54": "View more replies",
 			"5401r1": "Comments",
 			"4l77wt": "View more comments",
-			"8sjar6": "Reply@",
 			"m67961": "Looking forward to your speech",
 			"3o1rq6": "The maximum input character limit has been exceeded"
 		}
@@ -1644,12 +1646,6 @@
 		"ask-comments-goods": {
 			"xl51n6": "Answers",
 			"g6mc44": "If you have any questions, please ask other classmates~"
-		}
-	},
-	"binding-list": {
-		"binding-list": {
-			"2u4v35": "Put it away",
-			"91d60h": "launch"
 		}
 	},
 	"bottom-line": {
@@ -2019,6 +2015,20 @@
     	"orderfeed-form": {
     		"54rttr": "Choose other products",
             "fsdft3": "Feedback on this product"
+    	}
+    },
+    "video-search": {
+    	"video-search": {
+    		"sdfgg4": "Sort by",
+            "gf3212": "Release time",
+            "iuyt42": "video duration"
+    	}
+    },
+    "video-detail": {
+    	"video-detail": {
+            "rfsdfg": "Reason for reporting",
+            "fsdf33": "Please choose a specific type",
+            "98yyuf": "Please enter your wonderful comment"
     	}
     }
 }

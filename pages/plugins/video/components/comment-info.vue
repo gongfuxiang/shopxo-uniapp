@@ -27,7 +27,7 @@
             <view class="comment-operation flex-row align-c jc-sb gap-10">
                 <view class="comment-operation-left flex-row align-c gap-10">
                     <view class="comment-time">{{ propComment.add_time }}</view>
-                    <view class="comment-reply flex-row align-c gap-5">{{ propReplyContent }}({{ propComment.comments_count }})</view>
+                    <view class="comment-reply flex-row align-c gap-5">{{ propReplyContent || $t('common.reply') }}({{ propComment.comments_count }})</view>
                 </view>
                 <view class="comment-operation-right flex-row align-c gap-5" @tap.stop="comment_like">
                     <iconfont name="icon-givealike-o-fine" :color="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" size="28rpx" />
@@ -56,7 +56,7 @@
             },
             propReplyContent: {
                 type: String,
-                default: '回复'
+                default: ''
             },
             // 控制下拉菜单显示状态
             propDropDownVisible: {
@@ -68,8 +68,8 @@
             return {
                 // 下拉菜单选项数据
                 dropdownOptions: [
-                    { label: '删除', type: 'delete' },
-                    { label: '举报', type: 'report' }
+                    { label: this.$t('common.del'), type: 'delete' },
+                    { label: this.$t('common.complaint'), type: 'report' }
                 ]
             };
         },

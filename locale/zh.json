@@ -17,8 +17,15 @@
 		"add": "新增",
         "copy": "复制",
         "remove": "移除",
+        "expand": "展开",
+        "retract": "收起",
+        "reply": "回复",
         "remove_success": "移除成功",
         "remove_fail": "移除失败",
+        "history": "历史",
+        "history_record": "历史记录",
+        "clear": "清除",
+        "clear_record": "清除记录",
 		"del": "删除",
         "del_record": "删除记录",
         "del_success": "删除成功",
@@ -49,6 +56,8 @@
         "refuse": "拒绝",
         "buy": "购买",
         "complaint": "举报",
+        "comment": "评论",
+        "like": "点赞",
         "info": "信息",
         "web_client": "web端",
         "app_client": "手机端",
@@ -330,8 +339,9 @@
         "plugins-certificate-userauth-detail": "资质认证详情",
         "plugins-goodscompare-index": "商品对比",
         "plugins-video-index": "短视频列表",
-        "plugins-video-search": "短视频搜索",
         "plugins-video-detail": "短视频详情",
+        "plugins-video-search": "短视频搜索",
+        "plugins-video-search-record": "短视频搜索记录",
         "plugins-live-pull": "直播详情",
         "plugins-complaint-user": "投诉/举报列表",
         "plugins-complaint-form": "投诉/举报",
@@ -657,7 +667,6 @@
 		"goods-search": {
 			"j8o278": "筛选出",
 			"t9nikq": "条数据",
-			"pxk051": "清除",
             "4eerty": "产地",
 			"6n8316": "品牌",
 			"v6e5b7": "属性"
@@ -674,8 +683,6 @@
 			"75l3l2": "未回",
 			"17vy72": "缺失tab数据！",
 			"i78v36": "回到店铺",
-			"lkld04": "评论:",
-			"r6vv25": "点赞:",
 			"6rsqp1": "所有",
 			"pot64x": "热门",
 			"8t4j95": "推荐商品",
@@ -1541,7 +1548,6 @@
 	},
 	"user-order": {
 		"user-order": {
-			"twc3r7": "评论",
 			"lp1v28": "催催",
 			"ht65c9": "子单",
 			"9l47b6": "表单",
@@ -1617,15 +1623,11 @@
 	},
 	"ask-comments": {
 		"ask-comments": {
-			"2zlnb5": "评论(",
-			"du7rcv": "点赞(",
 			"6l6vz7": "字",
-			"3fcnme": "回复(",
 			"ymmd24": "条回复",
 			"dfhg54": "查看更多回复",
 			"5401r1": "条评论",
 			"4l77wt": "查看更多评论",
-			"8sjar6": "回复 @",
 			"m67961": "期待您的发言...",
 			"3o1rq6": "已超过最大输入字符限制"
 		}
@@ -1634,12 +1636,6 @@
 		"ask-comments-goods": {
 			"xl51n6": "条回答",
 			"g6mc44": "有疑问就问问其他同学吧～"
-		}
-	},
-	"binding-list": {
-		"binding-list": {
-			"2u4v35": "收起",
-			"91d60h": "展开"
 		}
 	},
 	"bottom-line": {
@@ -2003,6 +1999,20 @@
     	"orderfeed-form": {
     		"54rttr": "选择其他商品",
             "fsdft3": "反馈该商品"
+    	}
+    },
+    "video-search": {
+    	"video-search": {
+    		"sdfgg4": "排序依据",
+            "gf3212": "发布时间",
+            "iuyt42": "视频时长"
+    	}
+    },
+    "video-detail": {
+    	"video-detail": {
+            "rfsdfg": "举报原因",
+            "fsdf33": "请选择具体的类型",
+            "98yyuf": "请输入您的精彩评论"
     	}
     }
 }

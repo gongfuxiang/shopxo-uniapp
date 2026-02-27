@@ -4,7 +4,7 @@
             <view class="more-history-btn-icon margin-right-xs">
                 <iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
             </view>
-            <text>{{ propContent }}</text>
+            <text>{{ propContent || $t('common.loading_in_text') }}</text>
         </view>
     </view>
 </template>
@@ -14,7 +14,7 @@
         props: {
             propContent: {
                 type: String,
-                default: '加载中'
+                default: ''
             }
         }
     }   
