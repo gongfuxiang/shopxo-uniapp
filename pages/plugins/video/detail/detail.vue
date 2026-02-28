@@ -139,8 +139,8 @@
                 </scroll-view>
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
                     <view class="comment-input-content flex-col jc-c">
-                        <view v-if="!isEmpty(comments_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
-                            <text class="size-12 cr-f text-line-1">@{{ comments_data.user.user_name_view }}:{{ comments_data.content }}</text>
+                        <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
+                            <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                             <view data-type="image" @tap="comment_data_delete">
                                 <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
                             </view>
@@ -204,8 +204,8 @@
         <!-- 添加评论弹出框 -->
         <view v-if="is_add_comment" class="keyboard-input br-top-shadow" :style="'width:100%;bottom:' + listener_height + 'px;'">
             <view class="comment-input-content flex-col jc-c">
-                <view v-if="!isEmpty(comments_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
-                    <text class="size-12 cr-f text-line-1">@{{ comments_data.user.user_name_view }}:{{ comments_data.content }}</text>
+                <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
+                    <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                     <view data-type="image" @tap="comment_data_delete">
                         <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
                     </view>
@@ -312,7 +312,7 @@
                 is_add_comment: false,
                 // 监听键盘高度变化事件
                 listener_height: 0,
-                comments_data: {},
+                comments_reply_data: {},
                 editor_path_type: 'video',
                 is_manual_pause: false, // 是否手动暂停
             };
@@ -952,6 +952,9 @@
                     active_dropdown_id: null,
                     show_comment_modal: false,
                     comment_scroll_top: 0 + Math.random(), // 关闭评论时滚动到最顶部
+                    comments_reply_data: {}, // 清空回复评论数据
+                    form_images_list: [], // 清空上传图片
+                    comment_input_value: '', // 清空输入框内容
                     move_distance: 0,
                 })
             },
@@ -1054,8 +1057,8 @@
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id
                 let new_video_comments_id = 0;
                 let reply_comments_id = 0
-                if (!isEmpty(this.comments_data)) {
-                    const { video_comments_id, id } = this.comments_data; 
+                if (!isEmpty(this.comments_reply_data)) {
+                    const { video_comments_id, id } = this.comments_reply_data; 
                     new_video_comments_id = video_comments_id == 0 ? id : video_comments_id;
                     reply_comments_id = video_comments_id == 0 ? 0 : id;
                 } 
@@ -1110,7 +1113,7 @@
                                 active_comments: this.active_comments,
                                 form_images_list: [],
                                 comment_input_value: '',
-                                comments_data: {},
+                                comments_reply_data: {},
                                 input_placeholder: this.$t('video-detail.video-detail.98yyuf'),
                             });
                         } else {
@@ -1282,14 +1285,14 @@
                 this.active_dropdown_id = null;
                 if (!isEmpty(comments)) {
                     this.setData({ 
-                        comments_data: comments,
+                        comments_reply_data: comments,
                     });
                 }
             },
-            // 删除评论数据
+            // 删除回复评论数据
             comment_data_delete() {
                 this.setData({ 
-                    comments_data: {},
+                    comments_reply_data: {},
                 });
             },
             // 播放进度变化时触发
@@ -1461,10 +1464,28 @@
                 if (this.active_comments && Array.isArray(this.active_comments)) {
                     // 创建新的数组来存储过滤后的结果
                     const filteredComments = [];
+
+                    for (let i = 0; i < this.active_comments.length; i++) {
+                        const comment = this.active_comments[i];
+                        // 如果主评论跟回复评论相同，则清空回复评论数据
+                        if (comment.id == this.comments_reply_data.id) {
+                            this.comments_reply_data = {}; 
+                        }
+                        
+                        // 检查是否有子评论需要删除
+                        if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
+                            // 如果子评论跟回复评论id对上
+                            const comment_index = comment.sub_comments.findIndex(subComment => subComment.id == this.comments_reply_data.id);
+                            if (comment_index != -1) {
+                                this.comments_reply_data = {};
+                            }
+                        }
+                    }
                     
                     // 遍历所有评论
                     for (let i = 0; i < this.active_comments.length; i++) {
                         const comment = this.active_comments[i];
+
                         // 如果是父级评论且id匹配，跳过整个评论（包括子评论）
                         if (comment.id == comment_id) {
                             continue;
