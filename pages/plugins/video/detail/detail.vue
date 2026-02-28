@@ -1102,8 +1102,10 @@
                                         item.comments_count++;
                                         if (!item.show_sub_comment) {
                                             item.show_sub_comment = true;
-                                            item.page = 0;
-                                            item.page_total = 1;
+                                            // 如果回复总数跟当前显示的数量对得上，就不显示展开. 如果之前没有页面时，设置页数和分页都为1， 否则保持之前的分页
+                                            item.page = item.comments_count == item.sub_comments.length ? (!isEmpty(item.page) && item.page > 0 ? item.page : 1) : 0;
+                                            // 如果之前没有数据时，设置总页数为1
+                                            item.page_total = !isEmpty(item.page_total) ? item.page_total : 1;
                                         }
                                     }
                                 })
