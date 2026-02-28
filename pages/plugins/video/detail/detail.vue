@@ -31,7 +31,6 @@
                                 </view>
                             </view>
                         </view>
-                        
                         <template v-if="!show_comment_modal">
                             <!-- Right Action Bar -->
                             <view class="right-actions">
@@ -88,7 +87,7 @@
         
         <!-- 评论弹窗 -->
         <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
-            <view class="comment-content bottom-line-exclude-bottom" :style="commentContentStyle">
+            <view class="comment-content bottom-line-exclude-bottom" @tap.stop :style="commentContentStyle">
                 <view class="comment-header" data-type="header" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
