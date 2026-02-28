@@ -93,7 +93,7 @@
                     <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
-                <view class="flex-1 flex-row" data-type="scroll" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+                <view class="flex-1 flex-row oh" data-type="scroll" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <!-- 评论内容区域 -->
                     <scroll-view class="comment-list" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                         <view class="comment-scroll">
