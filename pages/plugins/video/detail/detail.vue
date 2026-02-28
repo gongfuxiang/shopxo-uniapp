@@ -88,55 +88,58 @@
         
         <!-- 评论弹窗 -->
         <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
-            <view class="comment-content bottom-line-exclude-bottom" :style="commentContentStyle" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
-                <view class="comment-header">
+            <view class="comment-content bottom-line-exclude-bottom" :style="commentContentStyle">
+                <view class="comment-header" data-type="header" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
-                <!-- 评论内容区域 -->
-                <scroll-view class="comment-list" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
-                    <view class="comment-scroll">
-                        <template v-if="active_comments.length > 0">
-                            <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
-                                <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
-                                <!-- 子评论 -->
-                                <view class="sub-comment flex-col jc-c gap-10 mt-10">
-                                    <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
-                                        <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                            <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
-                                        </view>
-                                    </view>
-                                    <template v-if="comment_item.comments_count > 0">
-                                        <template v-if="!comment_item.show_sub_comment">
-                                            <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                        </template>
-                                        <template v-else>
-                                            <template v-if="comment_item.show_sub_comment_loading">
-                                                <loading-component></loading-component>
-                                            </template>
-                                            <view v-else class="sub-comment-more flex-row align-c gap-10">
-                                                <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
-                                                    <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
-                                                </template>
-                                                <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                <view class="flex-1 flex-row" data-type="scroll" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+                    <!-- 评论内容区域 -->
+                    <scroll-view class="comment-list" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
+                        <view class="comment-scroll">
+                            <template v-if="active_comments.length > 0">
+                                <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
+                                    <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                    <!-- 子评论 -->
+                                    <view class="sub-comment flex-col jc-c gap-10 mt-10">
+                                        <view v-if="comment_item.sub_comments && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
+                                            <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
+                                                <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                             </view>
+                                        </view>
+                                        <template v-if="comment_item.comments_count > 0">
+                                            <template v-if="!comment_item.show_sub_comment">
+                                                <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                            </template>
+                                            <template v-else>
+                                                <template v-if="comment_item.show_sub_comment_loading">
+                                                    <loading-component></loading-component>
+                                                </template>
+                                                <view v-else class="sub-comment-more flex-row align-c gap-10">
+                                                    <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
+                                                        <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                    </template>
+                                                    <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                </view>
+                                            </template>
                                         </template>
-                                    </template>
+                                    </view>
                                 </view>
-                            </view>
-                            <template v-if="comment_item_loading">
-                                <loading-component></loading-component>
+                                <template v-if="comment_item_loading">
+                                    <loading-component></loading-component>
+                                </template>
+                                <template v-else>
+                                    <!-- 结尾 -->
+                                    <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                                </template>
                             </template>
                             <template v-else>
-                                <!-- 结尾 -->
-                                <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
+                                <component-no-data :propMsg="$t('common.no_data')"></component-no-data>
                             </template>
-                        </template>
-                        <template v-else>
-                            <component-no-data :propMsg="$t('common.no_data')"></component-no-data>
-                        </template>
-                    </view>
-                </scroll-view>
+                        </view>
+                    </scroll-view>
+                </view>
+                
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
                     <view class="comment-input-content flex-col jc-c">
                         <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
@@ -1019,8 +1022,9 @@
             },
             // 评论拖拽开始
             handle_comment_touch_start(e) {
-                // 只有滚动到顶部时才允许拖拽
-                if (this.comment_scroll_top <= 5) {
+                const type = e?.target?.dataset?.type || 'header';
+                // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
+                if ((this.comment_scroll_top <= 5 && type == 'scroll') || type == 'header') {
                     this.comment_start_y = e.touches[0].pageY;
                     this.comment_current_y = this.comment_start_y;
                     this.move_distance = 0;   
@@ -1028,8 +1032,9 @@
             },
             // 评论拖拽中
             handle_comment_touch_move(e) {
-                // 只有滚动到顶部时才允许拖拽
-                if (this.comment_scroll_top <= 5) {
+                const type = e?.target?.dataset?.type || 'header';
+                // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
+                if ((this.comment_scroll_top <= 5 && type == 'scroll') || type == 'header') {
                     this.comment_current_y = e.touches[0].pageY;
                     this.move_distance = this.comment_current_y - this.comment_start_y;
                 }
@@ -1037,8 +1042,9 @@
 
             // 评论拖拽结束
             handle_comment_touch_end(e) {
-                // 只有滚动到顶部时才允许拖拽
-                if (this.comment_scroll_top <= 5) {
+                const type = e?.target?.dataset?.type || 'header';
+                // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
+                if ((this.comment_scroll_top <= 5 && type == 'scroll') || type == 'header') {
                     const move_distance = this.comment_current_y - this.comment_start_y;
                     // 如果拖拽距离足够大，关闭评论弹窗
                     if (move_distance > 150) {
