@@ -83,15 +83,19 @@
 .recommend-videos .video-grid {
 	column-count: 2;
 	column-gap: 20rpx;
+	column-fill: balance;
+}
+
+.recommend-videos .video-card-item {
+	break-inside: avoid;
+	padding-bottom: 20rpx;
 }
 
 .recommend-videos .video-card {
+	overflow: hidden;
 	background-color: #fff;
 	box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
 	border-radius: 8rpx;
-	overflow: hidden;
-	break-inside: avoid;
-	margin-bottom: 20rpx;
 	width: 100%;
 }
 

@@ -36,18 +36,20 @@
                 <!-- 推荐视频卡片区域 -->
                 <view class="recommend-videos">
                     <view class="video-grid">
-                        <view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
-                            <image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
-                            <view class="video-info flex-col jc-c"> 
-                                <view class="video-title text-line-2">{{ item.title }}</view>
-                                <view class="flex-row align-c jc-sb">
-                                    <view class="video-date">{{ item.add_time_date }}</view>
-                                    <view class="video-likes flex-row align-c gap-4">
-                                        <iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-                                        <text>{{ item.give_thumbs_count }}</text>
-                                    </view>
-                                </view>
-                            </view>
+                        <view v-for="(item, index) in recommend_videos" :key="index" class="video-card-item">
+							<view class="video-card" :data-value="item.url" @tap="url_event">
+								<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
+								<view class="video-info flex-col jc-c"> 
+									<view class="video-title text-line-2">{{ item.title }}</view>
+									<view class="flex-row align-c jc-sb">
+										<view class="video-date">{{ item.add_time_date }}</view>
+										<view class="video-likes flex-row align-c gap-4">
+											<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
+											<text>{{ item.give_thumbs_count }}</text>
+										</view>
+									</view>
+								</view>
+							</view>
                         </view>
                     </view>
                 </view>

@@ -953,9 +953,8 @@
             },
             // 评论滚动事件, 记录滚动位置
             handle_comment_scroll(e) {
-                this.setData({
-                    comment_scroll_top: e.detail.scrollTop,
-                })
+                console.log(e);
+                this.comment_scroll_top = e.detail.scrollTop;
             }, 
             // 评论滚动到底部事件
             handle_comment_to_lower_scroll() {

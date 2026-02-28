@@ -30,18 +30,20 @@
             <scroll-view class="recommend-videos" scroll-y :show-scrollbar="false" @scrolltolower="on_scroll_lower_event" lower-threshold="150" scroll-with-animation="true" enhanced="true" :style="scroll_view_style">
                 <template v-if="recommend_videos.length > 0">
                     <view class="video-grid padding-main">
-                        <view v-for="(item, index) in recommend_videos" :key="index" class="video-card" :data-value="item.url" @tap="url_event">
-                            <image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
-                            <view class="video-info flex-col jc-c"> 
-                                <view class="video-title text-line-2">{{ item.title }}</view>
-                                <view class="flex-row align-c jc-sb">
-                                    <view class="video-date">{{ item.add_time_date }}</view>
-                                    <view class="video-likes flex-row align-c gap-4">
-                                        <iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
-                                        <text>{{ item.give_thumbs_count }}</text>
-                                    </view>
-                                </view>
-                            </view>
+                        <view v-for="(item, index) in recommend_videos" :key="index" class="video-card-item">
+							<view class="video-card" :data-value="item.url" @tap="url_event">
+								<image class="video-thumbnail" :src="item.cover" mode="widthFix"></image>
+								<view class="video-info flex-col jc-c"> 
+									<view class="video-title text-line-2">{{ item.title }}</view>
+									<view class="flex-row align-c jc-sb">
+										<view class="video-date">{{ item.add_time_date }}</view>
+										<view class="video-likes flex-row align-c gap-4">
+											<iconfont name="icon-givealike-o-fine" size="24rpx"></iconfont>
+											<text>{{ item.give_thumbs_count }}</text>
+										</view>
+									</view>
+								</view>
+							</view>
                         </view>
                     </view>
                     <template v-if="page < page_total">
