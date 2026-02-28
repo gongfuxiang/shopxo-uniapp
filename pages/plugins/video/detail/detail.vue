@@ -298,6 +298,7 @@
                 base_config_data: {},
                 video_switch_debounce_timer: null, // 视频切换防抖定时器
                 video_cleanup_timer: null, // 视频清理定时器
+                comment_scroll_debounce_timer: null, // 评论滚动防抖定时器
                 // 添加下拉菜单状态管理
                 active_dropdown_id: null, // 当前显示下拉菜单的评论ID
                 params: {},
@@ -307,7 +308,6 @@
                 current_main_index: 0, // 默认选中第一个举报原因
                 current_sub_index: 0, // 默认选中第一个具体类型
                 report_comment_id: '', // 举报的评论id
-                comment_scroll_top: 0,
                 comment_value: '',
                 is_add_comment: false,
                 // 监听键盘高度变化事件
@@ -411,6 +411,9 @@
             }
             if (this.video_cleanup_timer) {
                 clearTimeout(this.video_cleanup_timer);
+            }
+            if (this.comment_scroll_debounce_timer) {
+                clearTimeout(this.comment_scroll_debounce_timer);
             }
 
             // 清理所有视频资源
@@ -948,13 +951,21 @@
                 this.setData({
                     active_dropdown_id: null,
                     show_comment_modal: false,
+                    comment_scroll_top: 0 + Math.random(), // 关闭评论时滚动到最顶部
                     move_distance: 0,
                 })
             },
-            // 评论滚动事件, 记录滚动位置
+            // 评论滚动事件, 记录滚动位置（带防抖）
             handle_comment_scroll(e) {
-                console.log(e);
-                this.comment_scroll_top = e.detail.scrollTop;
+                // 清除之前的防抖定时器
+                if (this.comment_scroll_debounce_timer) {
+                    clearTimeout(this.comment_scroll_debounce_timer);
+                }
+                
+                // 设置新的防抖定时器
+                this.comment_scroll_debounce_timer = setTimeout(() => {
+                    this.comment_scroll_top = e.detail.scrollTop;
+                }, 200); // 100ms防抖延迟
             }, 
             // 评论滚动到底部事件
             handle_comment_to_lower_scroll() {
