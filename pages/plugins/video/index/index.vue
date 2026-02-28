@@ -61,6 +61,9 @@
 		<template v-else>
 			<component-no-data :propStatus="data_tabs_loding_status" :propMsg="data_tabs_loding_msg"></component-no-data>
 		</template>
+
+		<!-- 公共 -->
+        <component-common ref="common"></component-common>
 	</view>
 </template>
 
@@ -69,8 +72,8 @@ import searchComponent from '@/pages/plugins/video/components/search.vue';
 import componentNoData from '@/components/no-data/no-data';
 import componentBottomLine from '@/components/bottom-line/bottom-line';
 import componentBanner from '@/components/slider/slider';
-import { video_get_top_left_padding } from '@/common/js/common/common.js';
-import { isEmpty } from '../../../../common/js/common/common';
+import componentCommon from '@/components/common/common';
+import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -83,6 +86,7 @@ export default {
 		componentNoData,
         componentBottomLine,
 		componentBanner,
+		componentCommon
 	},
 	data() {
 		return {
@@ -148,6 +152,14 @@ export default {
         this.init_data(true);
     },
 
+	// 滚动事件处理
+	onPageScroll(e) {
+		// 当滚动距离大于等于阈值时，设置nav-tabs为粘性状态（背景变白）
+		this.setData({
+			is_nav_sticky: e.scrollTop >= this.nav_sticky_threshold
+		});
+	},
+
 	methods: {
 		isEmpty,
         // 初始化
@@ -204,9 +216,8 @@ export default {
                         // 获取节点位置
                         let self = this;
                         setTimeout(() => {
-                            let query = uni.createSelectorQuery();
+                            let query = uni.createSelectorQuery().in(this);
                             query.select('.top-search').boundingClientRect();
-                            query.selectViewport().scrollOffset();
                             query.exec(function (res) {
                                 self.setData({
                                     nav_sticky_threshold: res[0].height,
@@ -296,14 +307,6 @@ export default {
         // 返回上一页事件
 		handle_back() {
 			app.globalData.page_back_prev_event();
-		},
-
-		// 滚动事件处理
-		onPageScroll(e) {
-			// 当滚动距离大于等于阈值时，设置nav-tabs为粘性状态（背景变白）
-			this.setData({
-				is_nav_sticky: e.scrollTop >= this.nav_sticky_threshold
-			});
 		}
 	}
 };

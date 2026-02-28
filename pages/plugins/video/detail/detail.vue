@@ -226,6 +226,9 @@
         </view>
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 
@@ -241,6 +244,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
+    import componentCommon from '@/components/common/common';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
@@ -322,7 +326,8 @@
             componentBottomLine,
             componentPopup,
             loadingComponent,
-            componentUpload
+            componentUpload,
+            componentCommon
         },
         computed: {
             // 视频列表高度
@@ -948,7 +953,9 @@
             },
             // 评论滚动事件, 记录滚动位置
             handle_comment_scroll(e) {
-                this.comment_scroll_top = e.detail.scrollTop;
+                this.setData({
+                    comment_scroll_top: e.detail.scrollTop,
+                })
             }, 
             // 评论滚动到底部事件
             handle_comment_to_lower_scroll() {

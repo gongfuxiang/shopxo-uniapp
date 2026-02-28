@@ -74,6 +74,9 @@
 		<template v-else>
 			<component-no-data :propStatus="data_loding_status" :propMsg="data_loding_msg"></component-no-data>
 		</template>
+		
+		<!-- 公共 -->
+        <component-common ref="common"></component-common>
 	</view>
 </template>
 
@@ -81,8 +84,8 @@
 import searchComponent from '@/pages/plugins/video/components/search.vue';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
-import { video_get_top_left_padding } from '@/common/js/common/common.js';
-import { isEmpty } from '../../../../common/js/common/common';
+import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
+import componentCommon from '@/components/common/common';
 const app = getApp();
 var system = app.globalData.get_system_info(null, null, true);
 // 状态栏高度
@@ -94,7 +97,8 @@ export default {
 	components: {
 		searchComponent,
 		loadingComponent,
-		componentNoData
+		componentNoData,
+		componentCommon
 	},
 	data() {
 		return {

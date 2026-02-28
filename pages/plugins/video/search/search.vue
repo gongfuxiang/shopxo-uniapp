@@ -81,6 +81,9 @@
                 </view>
             </view>
         </componentPopup>
+		
+		<!-- 公共 -->
+        <component-common ref="common"></component-common>
 	</view>
 </template>
 
@@ -90,8 +93,8 @@ import componentPopup from '@/components/popup/popup';
 import loadingComponent from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
 import componentBottomLine from '@/components/bottom-line/bottom-line';
-import { video_get_top_left_padding } from '@/common/js/common/common.js';
-import { isEmpty } from '../../../../common/js/common/common';
+import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
+import componentCommon from '@/components/common/common';
 const app = getApp();
 // 状态栏高度
 var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -104,7 +107,8 @@ export default {
 		componentPopup,
 		loadingComponent,
 		componentNoData,
-		componentBottomLine
+		componentBottomLine,
+		componentCommon
 	},
 	data() {
 		return {
@@ -246,12 +250,11 @@ export default {
                         setTimeout(() => {
                             const query = uni.createSelectorQuery().in(this);
                             query.select('.header-top').boundingClientRect()
-                            query.selectViewport().scrollOffset();
                             query.exec(function (res) {
                                 self.setData({
                                     header_top_value: res[0].height,
                                     filter_popup_top_style: 'padding-top:' + res[0].height + 'px;',
-                                    scroll_view_style: 'height: calc(100vh - '+res[0].height+'px);',
+                                    scroll_view_style: 'height: calc(100vh - '+ res[0].height + 'px);',
                                 });
                             });
                         }, 100);
