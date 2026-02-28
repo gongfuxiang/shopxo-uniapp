@@ -1464,52 +1464,36 @@
                 if (this.active_comments && Array.isArray(this.active_comments)) {
                     // 创建新的数组来存储过滤后的结果
                     const filteredComments = [];
-
-                    for (let i = 0; i < this.active_comments.length; i++) {
-                        const comment = this.active_comments[i];
-                        // 如果主评论跟回复评论相同，则清空回复评论数据
-                        if (comment.id == this.comments_reply_data.id) {
-                            this.comments_reply_data = {}; 
-                        }
-                        
-                        // 检查是否有子评论需要删除
-                        if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
-                            // 如果子评论跟回复评论id对上
-                            const comment_index = comment.sub_comments.findIndex(subComment => subComment.id == this.comments_reply_data.id);
-                            if (comment_index != -1) {
-                                this.comments_reply_data = {};
-                            }
-                        }
-                    }
-                    
-                    // 遍历所有评论
                     for (let i = 0; i < this.active_comments.length; i++) {
                         const comment = this.active_comments[i];
 
-                        // 如果是父级评论且id匹配，跳过整个评论（包括子评论）
-                        if (comment.id == comment_id) {
+                        // 清空回复评论数据（仅当匹配时）
+                        if (comment.id === this.comments_reply_data.id || (comment.sub_comments && Array.isArray(comment.sub_comments) && comment.sub_comments.some(subComment => subComment.id === this.comments_reply_data.id))) {
+                            this.comments_reply_data = {};
+                        }
+
+                        // 如果是父级评论且 id 匹配，跳过整个评论（包括子评论）
+                        if (comment.id === comment_id) {
                             continue;
                         }
-                        
-                        // 检查是否有子评论需要删除
+
+                        // 处理子评论
                         if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
-                            const index = comment.sub_comments.findIndex(subComment => subComment.id == comment_id);
-                            if (index != -1) {
-                                // 过滤掉匹配的子评论
-                                const filteredSubComments = comment.sub_comments.filter(subComment => subComment.id != comment_id);
-                                // 如果还有子评论或者本身就是有效的父级评论，则保留
-                                if (filteredSubComments.length <= 0) {
+                            // 查找并移除匹配的子评论
+                            const targetSubCommentIndex = comment.sub_comments.findIndex(subComment => subComment.id === comment_id);
+                            if (targetSubCommentIndex !== -1) {
+                                // 移除目标子评论
+                                comment.sub_comments.splice(targetSubCommentIndex, 1);
+                                // 更新显示状态和评论数
+                                if (comment.sub_comments.length === 0) {
                                     comment.show_sub_comment = false;
                                 }
-                                comment.sub_comments = filteredSubComments;
-                                // 更新显示的评论数
-                                comment.comments_count = comment.comments_count - 1;
+                                comment.comments_count -= 1;
                             }
-                            filteredComments.push(comment);
-                        } else {
-                            // 没有子评论的情况，直接保留父级评论
-                            filteredComments.push(comment);
                         }
+
+                        // 保留当前评论
+                        filteredComments.push(comment);
                     }
                     // 删除之后更新评论数据
                     this.video_data_list.forEach(item => {
