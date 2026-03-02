@@ -86,25 +86,13 @@
 
             // 初始化配置
             init_config(status = false, params = {}) {
-                if ((status || false) == true) {
+                if (status) {
                     // 初始化数据
-                    if(app.globalData.data.is_use_native_tabbar == 0) {
-                        let pages = app.globalData.app_tabbar_pages() || [];
-                        let current_page = '/'+app.globalData.current_page(false);
-                        if(pages.length > 0 && pages[0] == current_page) {
-                            let base = app.globalData.get_config('plugins_base.startad.data') || {};
-                            let data = app.globalData.get_config('plugins_startad_list') || [];
-                            if(data.length > 0 && parseInt(base.is_status || 0) == 1) {
-                                let self = this;
-                                setTimeout(function() {
-                                    this.init(params);
-                                }, 500);
-                            } else {
-                                this.init(params);
-                            }
-                        } else {
-                            this.init(params);
-                        }
+                    if(app.globalData.is_init_config_success_pages_begin()) {
+                        let self = this;
+                        setTimeout(function() {
+                            self.init(params);
+                        }, 500);
                     } else {
                         this.init(params);
                     }

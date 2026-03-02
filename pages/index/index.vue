@@ -433,23 +433,11 @@
             app.globalData.page_event_onshow_handle();
 
             // 数据加载、存在开屏广告则延迟加载
-            if(this.load_status == 0) {
-                let pages = app.globalData.app_tabbar_pages() || [];
-                let current_page = '/'+app.globalData.current_page(false);
-                if(pages.length > 0 && pages[0] == current_page) {
-                    let base = app.globalData.get_config('plugins_base.startad.data') || {};
-                    let data = app.globalData.get_config('plugins_startad_list') || [];
-                    if(data.length > 0 && parseInt(base.is_status || 0) == 1) {
-                        let self = this;
-                        setTimeout(function() {
-                            self.init();
-                        }, 500);
-                    } else {
-                        this.init();
-                    }
-                } else {
-                    this.init();
-                }
+            if(this.load_status == 0 && app.globalData.is_init_config_success_pages_begin()) {
+                let self = this;
+                setTimeout(function() {
+                    self.init();
+                }, 500);
             } else {
                 this.init();
             }
