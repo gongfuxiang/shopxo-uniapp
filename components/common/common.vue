@@ -82,16 +82,32 @@
 
                 // 初始化配置
                 this.init_config(false, params);
-
-                // 系统底部菜单
-                this.footer_init();
             },
 
             // 初始化配置
             init_config(status = false, params = {}) {
                 if ((status || false) == true) {
                     // 初始化数据
-                    this.init(params);
+                    if(app.globalData.data.is_use_native_tabbar == 0) {
+                        let pages = app.globalData.app_tabbar_pages() || [];
+                        let current_page = '/'+app.globalData.current_page(false);
+                        if(pages.length > 0 && pages[0] == current_page) {
+                            let base = app.globalData.get_config('plugins_base.startad.data') || {};
+                            let data = app.globalData.get_config('plugins_startad_list') || [];
+                            if(data.length > 0 && parseInt(base.is_status || 0) == 1) {
+                                let self = this;
+                                setTimeout(function() {
+                                    this.init(params);
+                                }, 500);
+                            } else {
+                                this.init(params);
+                            }
+                        } else {
+                            this.init(params);
+                        }
+                    } else {
+                        this.init(params);
+                    }
                 } else {
                     app.globalData.is_config(this, 'init_config', params);
                 }
@@ -109,31 +125,7 @@
             },
 
             // 底部菜单初始化
-            footer_init() {
-                if(app.globalData.data.is_use_native_tabbar == 0) {
-                    let pages = app.globalData.app_tabbar_pages() || [];
-                    let current_page = '/'+app.globalData.current_page(false);
-                    if(pages.length > 0 && pages[0] == current_page) {
-                        let base = app.globalData.get_config('plugins_base.startad.data') || {};
-                        let data = app.globalData.get_config('plugins_startad_list') || [];
-                        if(data.length > 0 && parseInt(base.is_status || 0) == 1) {
-                            let self = this;
-                            setTimeout(function() {
-                                self.footer_init_handle();
-                            }, 500);
-                        } else {
-                            this.footer_init_handle();
-                        }
-                    } else {
-                        this.footer_init_handle();
-                    }
-                } else {
-                    this.footer_init_handle();
-                }
-            },
-
-            // 底部菜单初始化处理
-            footer_init_handle(status = 0) {
+            footer_init(status = 0) {
                 var is_use_native_tabbar = app.globalData.data.is_use_native_tabbar == 1;
                 var upd_data = {
                     is_tabbar: is_use_native_tabbar ? false : app.globalData.is_tabbar_pages()
@@ -143,10 +135,10 @@
                     upd_data['app_tabbar'] = app.globalData.get_config('app_tabbar') || null;
                 }
                 this.setData(upd_data);
-
+                
                 // 如果没有菜单数据则读取一次
                 if(!is_use_native_tabbar && status == 0 && (upd_data['app_tabbar'] || null) == null) {
-                    app.globalData.init_config(0, this, 'footer_init_handle', 1);
+                    app.globalData.init_config(0, this, 'footer_init', 1);
                 }
             },
 

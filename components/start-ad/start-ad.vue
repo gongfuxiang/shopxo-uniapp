@@ -42,7 +42,7 @@
                 // 定时任务记录
                 timer: null,
                 // 倒计时跳过
-                skip_time: 3,
+                skip_time: 6,
                 // 轮播自动播放时间
                 interval_time: 3000,
             }
@@ -85,7 +85,7 @@
                     this.setData({
                         is_first: false,
                         data: app.globalData.get_config('plugins_startad_list') || [],
-                        skip_time: parseInt(base.skip_time || 3),
+                        skip_time: parseInt(base.skip_time || 6),
                         interval_time: parseInt(base.interval_time || 3)*1000,
                         show: parseInt(base.is_status || 0) == 1,
                     });
