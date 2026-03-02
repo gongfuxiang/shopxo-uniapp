@@ -119,7 +119,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     .banner {
         transform: translateY(0);
     }

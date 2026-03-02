@@ -70,7 +70,7 @@
         }
     };
 </script>
-<style>
+<style scoped>
     .emoji-popup {
         padding: 20rpx 10rpx 0 10rpx;
         position: relative;

@@ -20,7 +20,7 @@
         methods: {}
     };
 </script>
-<style>
+<style scoped>
     .status-bar-height {
     	height: 20px;
     }

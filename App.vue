@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'https://new.shopxo.vip/',
+                request_url:'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'https://new.shopxo.vip/',
+                static_url:'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -1608,8 +1608,24 @@
                 // 主题设置
                 self.set_theme_value(data.plugins_themestyle_data);
 
-                // 设置底部菜单
-                self.set_tabbar(data.plugins_themestyle_data);
+                // 设置底部菜单、存在开屏广告则延迟加载
+                if(this.data.is_use_native_tabbar == 1) {
+                    let pages = self.app_tabbar_pages() || [];
+                    let current_page = '/'+self.current_page(false);
+                    if(pages.length > 0 && pages[0] == current_page) {
+                        let base = self.get_config('plugins_base.startad.data') || {};
+                        let data = self.get_config('plugins_startad_list') || [];
+                        if(data.length > 0 && parseInt(base.is_status || 0) == 1) {
+                            setTimeout(function() {
+                                self.set_tabbar(data.plugins_themestyle_data);
+                            }, 500);
+                        } else {
+                            self.set_tabbar(data.plugins_themestyle_data);
+                        }
+                    } else {
+                        self.set_tabbar(data.plugins_themestyle_data);
+                    }
+                }
 
                 // 用户自动登录处理
                 self.user_auto_login_handle();
@@ -2726,59 +2742,57 @@
 
             // 底部菜单设置
             set_tabbar(theme) {
-                if(this.data.is_use_native_tabbar == 1) {
-                    // 当前主题
-                    if ((theme || null) == null) {
-                        theme = this.get_theme_value();
-                    }
-                
-                    // 整体样式
-                    uni.setTabBarStyle({
-                        selectedColor: this.get_theme_color(theme),
-                        color: '#333333',
-                        backgroundColor: '#ffffff',
-                        borderStyle: 'black'
-                    });
+                // 当前主题
+                if ((theme || null) == null) {
+                    theme = this.get_theme_value();
+                }
+            
+                // 整体样式
+                uni.setTabBarStyle({
+                    selectedColor: this.get_theme_color(theme),
+                    color: '#333333',
+                    backgroundColor: '#ffffff',
+                    borderStyle: 'black'
+                });
 
-                    // 菜单
-                    var temp_system_tabbar = this.data.system_tabbar;
-                    if(temp_system_tabbar.length > 0) {
-                        // 首页
-                        uni.setTabBarItem({
-                            index: 0,
-                            iconPath: 'static/images/common/tabbar/home.png',
-                            selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
-                            text: i18n.t('common.home'),
-                        });
-                    }
-                    // 后面三个菜单存在则设置
-                    for(var i in temp_system_tabbar) {
-                        switch(temp_system_tabbar[i]) {
-                            case '/pages/goods-category/goods-category' :
-                                uni.setTabBarItem({
-                                    index: parseInt(i),
-                                    iconPath: 'static/images/common/tabbar/category.png',
-                                    selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
-                                    text: i18n.t('common.category'),
-                                });
-                                break;
-                            case '/pages/cart/cart' :
-                                uni.setTabBarItem({
-                                    index: parseInt(i),
-                                    iconPath: 'static/images/common/tabbar/cart.png',
-                                    selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
-                                    text: i18n.t('common.cart'),
-                                });
-                                break;
-                            case '/pages/user/user' :
-                                uni.setTabBarItem({
-                                    index: parseInt(i),
-                                    iconPath: 'static/images/common/tabbar/user.png',
-                                    selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
-                                    text: i18n.t('common.my'),
-                                });
-                                break;
-                        }
+                // 菜单
+                var temp_system_tabbar = this.data.system_tabbar;
+                if(temp_system_tabbar.length > 0) {
+                    // 首页
+                    uni.setTabBarItem({
+                        index: 0,
+                        iconPath: 'static/images/common/tabbar/home.png',
+                        selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
+                        text: i18n.t('common.home'),
+                    });
+                }
+                // 后面三个菜单存在则设置
+                for(var i in temp_system_tabbar) {
+                    switch(temp_system_tabbar[i]) {
+                        case '/pages/goods-category/goods-category' :
+                            uni.setTabBarItem({
+                                index: parseInt(i),
+                                iconPath: 'static/images/common/tabbar/category.png',
+                                selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
+                                text: i18n.t('common.category'),
+                            });
+                            break;
+                        case '/pages/cart/cart' :
+                            uni.setTabBarItem({
+                                index: parseInt(i),
+                                iconPath: 'static/images/common/tabbar/cart.png',
+                                selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
+                                text: i18n.t('common.cart'),
+                            });
+                            break;
+                        case '/pages/user/user' :
+                            uni.setTabBarItem({
+                                index: parseInt(i),
+                                iconPath: 'static/images/common/tabbar/user.png',
+                                selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
+                                text: i18n.t('common.my'),
+                            });
+                            break;
                     }
                 }
             },

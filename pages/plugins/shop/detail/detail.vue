@@ -42,6 +42,9 @@
                             <component-goods-list :propData="{ style_type: 1, goods_list: data }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                             <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">查看更多商品 >></button>
                         </view>
+
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     </view>
                     <block v-else>
                         <component-no-data propStatus="0"></component-no-data>
@@ -64,6 +67,9 @@
                                 </block>
                             </view>
                         </view>
+
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     </block>
                     <block v-else>
                         <component-no-data propStatus="0"></component-no-data>
@@ -75,14 +81,14 @@
                     <block v-if="(data || null) != null && data.length > 0">
                         <!-- 拖拽模式、引入拖拽数据模块 -->
                         <component-layout :propData="data"></component-layout>
+
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     </block>
                     <block v-else>
                         <component-no-data propStatus="0"></component-no-data>
                     </block>
                 </block>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
                 <!-- 公共 -->
                 <component-common ref="common"></component-common>

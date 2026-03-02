@@ -26,6 +26,9 @@
             </view>
         </view>
 
+        <!-- 开屏广告 -->
+        <component-start-ad ref="start_ad"></component-start-ad>
+
         <!-- app管理 -->
         <component-app-admin ref="app_admin" :propIsHideStar="true"></component-app-admin>
 
@@ -41,6 +44,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentStartAd from '@/components/start-ad/start-ad.vue';
     import componentAppAdmin from '@/components/app-admin/app-admin';
     import componentUserBase from '@/components/user-base/user-base';
     import componentPopupscreen from '@/components/popupscreen/popupscreen';
@@ -66,6 +70,11 @@
                 type: Boolean,
                 default: true,
             },
+            // 是否引入开屏广告
+            propIsStartAd: {
+                type: Boolean,
+                default: true,
+            },
             // 是否引入app管理
             propIsAppAdmin: {
                 type: Boolean,
@@ -88,6 +97,7 @@
             },
         },
         components: {
+            componentStartAd,
             componentAppAdmin,
             componentUserBase,
             componentPopupscreen,
@@ -122,6 +132,11 @@
 
             // 初始化业务处理
             init_business_handle(params) {
+                // 开屏广告
+                if (this.propIsStartAd && (this.$refs.start_ad || null) != null) {
+                    this.$refs.start_ad.init(params);
+                }
+
                 // 弹屏广告
                 if (this.propIsPopupscreen && (this.$refs.popupscreen || null) != null) {
                     this.$refs.popupscreen.init(params);

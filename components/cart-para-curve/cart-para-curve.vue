@@ -97,7 +97,7 @@
         }
     };
 </script>
-<style>
+<style scoped>
     @keyframes moveY {
         to {
             transform: translateY(var(--y));
