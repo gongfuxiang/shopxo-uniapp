@@ -1,5 +1,5 @@
 <template>
-	<view class="wh-auto pr bg-white bottom-line-exclude-bottom">
+	<view class="search-record-container pr bottom-line-exclude-bottom">
 		<template v-if="search_history_data.length > 0">
 			<!-- 搜索框 -->
 			<view class="header-top" :style="top_content_style + menu_button_info">
