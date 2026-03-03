@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'https://new.shopxo.vip/',
+                request_url:'https://d1.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'https://new.shopxo.vip/',
+                static_url:'https://d1.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -3166,7 +3166,7 @@
                 clearInterval(this.data.get_user_location_timer);
 
                 // 移除开屏广告状态
-                uni.setStorageSync('plugins_startad_cache_key', null);
+                uni.removeStorageSync('plugins_startad_cache_key');
             },
 
             // 商品访问数据存储缓存
@@ -3280,7 +3280,7 @@
                 // 是否存在开屏广告插件
                 if(this.is_plugins_startad_status()) {
                     // 移除开屏广告状态
-                    uni.setStorageSync('plugins_startad_cache_key', null);
+                    uni.removeStorageSync('plugins_startad_cache_key');
                 }
             },
 
