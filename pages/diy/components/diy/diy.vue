@@ -44,6 +44,8 @@
                                         <component-diy-realstore v-else-if="item.key == 'realstore'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-realstore>
                                         <component-diy-blog-list v-else-if="item.key == 'blog'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-blog-list>
                                         <component-diy-blog-tabs v-else-if="item.key == 'blog-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-blog-tabs>
+                                        <component-diy-plugins-video-list v-else-if="item.key == 'plugins-video'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-video-list>
+                                        <component-diy-plugins-video-tabs v-else-if="item.key == 'plugins-video-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-plugins-video-tabs>
                                         <component-diy-shop v-else-if="item.key == 'shop'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-shop>
                                         <component-diy-binding v-else-if="item.key == 'binding'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-binding>
                                         <component-diy-ask v-else-if="item.key == 'ask'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-ask>
@@ -133,6 +135,8 @@
     import componentDiyArticleTabs from '@/pages/diy/components/diy/article-tabs';
     import componentDiyBlogList from '@/pages/diy/components/diy/blog-list';
     import componentDiyBlogTabs from '@/pages/diy/components/diy/blog-tabs';
+    import componentDiyPluginsVideoList from '@/pages/diy/components/diy/plugins-video-list';
+    import componentDiyPluginsVideoTabs from '@/pages/diy/components/diy/plugins-video-tabs';
     import componentDiyHotZone from '@/pages/diy/components/diy/hot-zone';
     import componentDiyCoupon from '@/pages/diy/components/diy/coupon';
     import componentDiyFloatWindow from '@/pages/diy/components/diy/float-window';
@@ -207,6 +211,8 @@
             componentDiyArticleTabs,
             componentDiyBlogList,
             componentDiyBlogTabs,
+            componentDiyPluginsVideoList,
+            componentDiyPluginsVideoTabs,
             componentDiyHotZone,
             componentDiyCoupon,
             componentDiyAuxiliaryLine,

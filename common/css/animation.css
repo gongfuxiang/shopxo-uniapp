@@ -100,7 +100,7 @@
                 transform-origin: 0% 100%;
     }
 }
-// 中间区域放大
+/* 中间区域放大 */
 .scale-up-ver-center {
 	-webkit-animation: scale-up-ver-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-ver-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;

@@ -5,7 +5,7 @@
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(blog_theme)" class="flex-wrap" :class="blog_theme_class" :style="blog_theme !== '3' ? blog_spacing : ''">
                     <view v-for="(item, index) in data_list" :key="index" class="item oh" :style="blog_style" :data-value="item.data.url" @tap="url_event">
-                        <view :class="blog_theme == '0' ? 'flex-row oh' : 'flex-col oh ht-auto'" :style="blog_img_style">
+                        <view :class="blog_theme == '0' ? 'flex-row oh' : 'flex-col oh h'" :style="blog_img_style">
                             <template v-if="blog_theme !== '3'">
                                 <view class="oh pr flex-row">
                                     <template v-if="item.new_cover.length > 0">
@@ -20,13 +20,13 @@
                             </template>
                             <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1" :class="blog_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="blog_theme !== '0' ? content_padding : ''">
                                 <view class="flex-col" :class="blog_theme == '3' ? 'flex-1 flex-width' : ''" :style="'gap:' + name_desc_space + 'px;'">
-                                    <view v-if="field_show.includes('3')" class="title" :class="blog_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="blog_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
-                                    <view v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="blog_desc">{{ item.data.describe || '' }}</view>
+                                    <text v-if="field_show.includes('3')" class="title" :class="blog_theme == '3' ? 'text-line-1' : 'text-line-2'" :style="blog_name">{{ item.new_title ? item.new_title : item.data.title }}</text>
+                                    <text v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="blog_desc">{{ item.data.describe || '' }}</text>
                                 </view>
                                 <view class="flex-row jc-sb gap-8" :class="blog_theme == '3' ? 'margin-left' : 'align-e margin-top'">
-                                    <view :style="blog_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
+                                    <text :style="blog_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</text>
                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="blog_page_view">
-                                        <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
+                                        <iconfont name="icon-eye" propContainerDisplay="flex" size="24rpx"></iconfont>
                                         <view>
                                             {{ item.data.access_count ? item.data.access_count : '' }}
                                         </view>
@@ -58,13 +58,13 @@
                                             </view>
                                             <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || (field_show.includes('3') && name_float == '0')" class="jc-sb flex-1 flex-col" :style="blog_theme !== '0' ? content_padding : ''">
                                                 <view class="flex-col" :style="'gap:' + name_desc_space + 'px;'">
-                                                    <view v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="blog_name + blog_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</view>
-                                                    <view v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="blog_desc">{{ item.data.describe || '' }}</view>
+                                                    <text v-if="field_show.includes('3') && name_float == '0'" class="title text-line-2" :style="blog_name + blog_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</text>
+                                                    <text v-if="field_show.includes('2')" :class="'desc ' + field_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="blog_desc">{{ item.data.describe || '' }}</text>
                                                 </view>
                                                 <view :class="'flex-row jc-sb gap-8 align-e' + ((field_show.includes('3') && name_float == '0') || field_show.includes('2') ? ' margin-top' : '')">
-                                                    <view :style="blog_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
+                                                    <text :style="blog_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</text>
                                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="blog_page_view">
-                                                        <iconfont name="icon-eye" propContainerDisplay="flex"></iconfont>
+                                                        <iconfont name="icon-eye" propContainerDisplay="flex" size="24rpx"></iconfont>
                                                         <view>
                                                             {{ item.data.access_count ? item.data.access_count : '' }}
                                                         </view>
@@ -190,9 +190,9 @@
                 const new_style = this.propValue.style || {};
                 // 描述样式
                 const desc_size = new_style.desc_size;
-                let desc_style = 'font-size:' + desc_size + 'px;line-height:' + desc_size + 'px;height:' + desc_size + 'px;color:' + new_style.desc_color + ';';
+                let desc_style = 'font-size:' + desc_size * 2 + 'rpx;line-height:' + desc_size * 2 + 'rpx;height:' + desc_size * 2 + 'rpx;color:' + new_style.desc_color + ';';
                 if (new_content.field_desc_row == '2') {
-                    desc_style = 'font-size:' + desc_size + 'px;line-height:' + (desc_size > 0 ? desc_size + 3 : 0 ) + 'px;height:'+ (desc_size > 0 ? (desc_size + 3) * 2 : 0) + 'px;color:' + new_style.desc_color + ';';
+                    desc_style = 'font-size:' + desc_size * 2 + 'rpx;line-height:' + (desc_size > 0 ? desc_size + 3 : 0 ) * 2 + 'rpx;height:'+ (desc_size > 0 ? (desc_size + 3) * 2 : 0) * 2 + 'rpx;color:' + new_style.desc_color + ';';
                 }
                 this.setData({
                     field_desc_row: new_content.field_desc_row,
@@ -213,10 +213,10 @@
                     blog_theme: new_content.theme,
                     field_show: new_content.field_show,
                     // 样式
-                    blog_name: 'font-size:' + new_style.name_size + 'px;' + 'font-weight:' + new_style.name_weight + ';' + 'color:' + new_style.name_color + ';',
+                    blog_name: 'font-size:' + new_style.name_size * 2 + 'rpx;' + 'font-weight:' + new_style.name_weight + ';' + 'color:' + new_style.name_color + ';',
                     blog_desc: desc_style,
-                    blog_date: 'font-size:' + new_style.time_size + 'px;' + 'font-weight:' + new_style.time_weight + ';' + 'color:' + new_style.time_color + ';',
-                    blog_page_view: 'font-size:' + new_style.page_view_size + 'px;' + 'font-weight:' + new_style.page_view_weight + ';' + 'color:' + new_style.page_view_color + ';',
+                    blog_date: 'font-size:' + new_style.time_size * 2 + 'rpx;' + 'font-weight:' + new_style.time_weight + ';' + 'color:' + new_style.time_color + ';',
+                    blog_page_view: 'font-size:' + new_style.page_view_size * 2 + 'rpx;' + 'font-weight:' + new_style.page_view_weight + ';' + 'color:' + new_style.page_view_color + ';',
                     content_radius: radius_computer(new_style.content_radius),
                     img_radius: radius_computer(new_style.img_radius),
                     // 内间距
@@ -287,7 +287,7 @@
                 } else if (this.blog_theme == '1') {
                     this.setData({
                         img_size: img_style,
-                        blog_style: `width: calc(50% - ${new_style.blog_spacing + (margin_width * 2) / 2}px);` + this.content_radius + all_style,
+                        blog_style: `width: calc(50% - ${(new_style.blog_spacing + (margin_width * 2)) / 2}px);` + this.content_radius + all_style,
                         blog_img_style: background_computer(blog_data)
                     });
                 } else if (this.blog_theme == '2') {
@@ -362,6 +362,9 @@
     };
 </script>
 <style lang="scss" scoped>
+    .h {
+        height: 100%;
+    }
     .style1 {
         .item {
             max-width: 100%;
