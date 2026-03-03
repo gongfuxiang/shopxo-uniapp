@@ -31,8 +31,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
-                // 是否首次
-                is_first: true,
+                cache_key: 'plugins_startad_cache_key',
                 // 列表数据
                 data: [],
                 // 当前轮播位置
@@ -64,7 +63,11 @@
             }
         },
         created: function () {
-            this.init_config();
+            if(app.globalData.data.common_data_init_status == 1) {
+                this.init();
+            } else {
+                this.init_config();
+            }
         },
         methods: {
             // 初始化配置
@@ -78,28 +81,35 @@
 
             // 初始化
             init() {
-                let pages = app.globalData.app_tabbar_pages() || [];
-                let current_page = '/'+app.globalData.current_page(false);
-                if(this.is_first && pages.length > 0 && pages[0] == current_page) {
-                    let base = app.globalData.get_config('plugins_base.startad.data') || {};
-                    this.setData({
-                        is_first: false,
-                        data: app.globalData.get_config('plugins_startad_list') || [],
-                        skip_time: parseInt(base.skip_time || 6),
-                        interval_time: parseInt(base.interval_time || 3)*1000,
-                        show: parseInt(base.is_status || 0) == 1,
-                    });
-                    if(this.show) {
-                        if (app.globalData.data.is_use_native_tabbar == 1) {
-                            uni.hideTabBar();
-                        }
-                        let self = this;
-                        self.timer = setInterval(() => {
-                            self.skip_time--;
-                            if(self.skip_time <= 0) {
-                                self.skip_event();
+                let key = this.cache_key;
+                let status = parseInt(uni.getStorageSync(key) || 0);
+                if(status == 0) {
+                    let pages = app.globalData.app_tabbar_pages() || [];
+                    let current_page = '/'+app.globalData.current_page(false);
+                    if(pages.length > 0 && pages[0] == current_page) {
+                        let base = app.globalData.get_config('plugins_base.startad.data') || {};
+                        this.setData({
+                            data: app.globalData.get_config('plugins_startad_list') || [],
+                            skip_time: parseInt(base.skip_time || 6),
+                            interval_time: parseInt(base.interval_time || 3)*1000,
+                            show: parseInt(base.is_status || 0) == 1,
+                        });
+                        if(this.show) {
+                            if (app.globalData.data.is_use_native_tabbar == 1) {
+                                uni.hideTabBar();
                             }
-                        }, 1000);
+                            let self = this;
+                            self.timer = setInterval(() => {
+                                self.skip_time--;
+                                if(self.skip_time <= 0) {
+                                    self.skip_event();
+                                }
+                            }, 1000);
+                            uni.setStorage({
+                                key: key,
+                                data: 1,
+                            });
+                        }
                     }
                 }
             },

@@ -1,20 +1,22 @@
 <template>
     <view :class="theme_view">
         <!-- 底部菜单 -->
-        <block v-if="is_tabbar">
+        <block v-if="propIsFooter && is_tabbar">
             <component-diy-footer :propKey="key" :propValue="app_tabbar" @onFooterHeight="footer_height_value_event"></component-diy-footer>
             <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
         </block>
 
         <!-- 弹窗业务 -->
-        <component-modal-business ref="modal_business" 
-            :propIsGrayscale="propIsGrayscale"
-            :propIsFooterSeat="propIsFooterSeat"
-            :propIsAppAdmin="propIsAppAdmin"
-            :propIsUserBase="propIsUserBase"
-            :propIsPopupscreen="propIsPopupscreen"
-            :propIsCertificate="propIsCertificate"
-        ></component-modal-business>
+        <block v-if="propIsModalBusiness">
+            <component-modal-business ref="modal_business" 
+                :propIsGrayscale="propIsGrayscale"
+                :propIsFooterSeat="propIsFooterSeat"
+                :propIsAppAdmin="propIsAppAdmin"
+                :propIsUserBase="propIsUserBase"
+                :propIsPopupscreen="propIsPopupscreen"
+                :propIsCertificate="propIsCertificate"
+            ></component-modal-business>
+        </block>
     </view>
 </template>
 <script>
@@ -26,12 +28,23 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 key: '',
+                is_first: 0,
                 is_tabbar: false,
                 app_tabbar: null,
                 footer_height_value: 0,
             };
         },
         props: {
+            // 是否底部菜单加载
+            propIsFooter: {
+                type: Boolean,
+                default: true,
+            },
+            // 是否业务弹窗加载
+            propIsModalBusiness: {
+                type: Boolean,
+                default: true,
+            },
             // 是否灰度
             propIsGrayscale: {
                 type: Boolean,
@@ -69,7 +82,6 @@
         },
         // 页面被展示
         created: function () {
-            // 初始化配置
             this.init_config();
         },
         methods: {
@@ -88,14 +100,7 @@
             init_config(status = false, params = {}) {
                 if (status) {
                     // 初始化数据
-                    if(app.globalData.is_init_config_success_pages_begin()) {
-                        let self = this;
-                        setTimeout(function() {
-                            self.init(params);
-                        }, 500);
-                    } else {
-                        this.init(params);
-                    }
+                    this.init(params);
                 } else {
                     app.globalData.is_config(this, 'init_config', params);
                 }
@@ -104,10 +109,19 @@
             // 初始化数据
             init(params = {}) {
                 // 系统底部菜单
-                this.footer_init();
+                if(this.propIsFooter) {
+                    if(this.is_first && app.globalData.is_init_config_success_pages_begin()) {
+                        let self = this;
+                        setTimeout(function() {
+                            self.footer_init();
+                        }, 500);
+                    } else {
+                        this.footer_init();
+                    }
+                }
 
                 // 业务弹窗
-                if ((this.$refs.modal_business || null) != null) {
+                if (this.propIsModalBusiness && (this.$refs.modal_business || null) != null && (this.$refs.modal_business.init || null) != null) {
                     this.$refs.modal_business.init(params);
                 }
             },
@@ -116,6 +130,7 @@
             footer_init(status = 0) {
                 var is_use_native_tabbar = app.globalData.data.is_use_native_tabbar == 1;
                 var upd_data = {
+                    is_first: false,
                     is_tabbar: is_use_native_tabbar ? false : app.globalData.is_tabbar_pages()
                 };
                 if(upd_data['is_tabbar']) {

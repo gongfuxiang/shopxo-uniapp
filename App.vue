@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'http://shopxo.com/',
+                request_url:'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'http://shopxo.com/',
+                static_url:'https://new.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -23,10 +23,10 @@
                 application_logo: '',
 
                 // 版本号、如: v1.0.0
-                version: 'v6.7.1',
+                version: 'v6.8.0',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.7.1 20251028',
+                app_version_info: 'v6.8.0 20260305',
 
                 // 货币价格符号
                 currency_symbol: '￥',
@@ -1625,6 +1625,12 @@
 
             // 是否初始化配置成功后，页面前处理，返回true则页面需要延迟加载
             is_init_config_success_pages_begin(self = this) {
+                // 是否存在开屏广告插件
+                return this.is_plugins_startad_status(self);
+            },
+
+            // 是否存在开屏广告插件
+            is_plugins_startad_status(self = this) {
                 // 是否有开屏广告
                 let pages = self.app_tabbar_pages() || [];
                 let current_page = '/'+self.current_page(false);
@@ -3158,6 +3164,9 @@
                 this.data.network_type_page_record_timer = null;
                 // 清除弹出位置权限提示定时任务
                 clearInterval(this.data.get_user_location_timer);
+
+                // 移除开屏广告状态
+                uni.setStorageSync('plugins_startad_cache_key', null);
             },
 
             // 商品访问数据存储缓存
@@ -3267,6 +3276,12 @@
             page_event_onload_handle(params) {
                 // 获取用户当前位置
                 this.get_user_location();
+
+                // 是否存在开屏广告插件
+                if(this.is_plugins_startad_status()) {
+                    // 移除开屏广告状态
+                    uni.setStorageSync('plugins_startad_cache_key', null);
+                }
             },
 
             // 页面展示事件处理

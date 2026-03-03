@@ -21,13 +21,15 @@
                         </template>
                         <!-- 底部公共 -->
                         <template slot="diy-bottom-common">
-                            <component-common ref="common"></component-common>
+                            <component-common ref="common_footer" :propIsModalBusiness="false"></component-common>
                         </template>
                     </component-diy>
                 </block>
                 <block v-else>
                     <component-no-data propStatus="0" propPage="home"></component-no-data>
                 </block>
+                <!-- 底部公共 -->
+                <component-common ref="common" :propIsFooter="false"></component-common>
             </block>
             <!-- 自动和手动模式 -->
             <block v-else>
@@ -180,6 +182,9 @@
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
+            }
+            if ((this.$refs.common_footer || null) != null) {
+                this.$refs.common_footer.on_show();
             }
         },
 
