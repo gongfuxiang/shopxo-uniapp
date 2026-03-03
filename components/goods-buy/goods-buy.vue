@@ -872,7 +872,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     .goods-spec-base {
         height: 230rpx;
     }

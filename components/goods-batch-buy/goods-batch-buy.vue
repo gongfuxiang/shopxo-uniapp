@@ -501,7 +501,7 @@ export default {
     },
 };
 </script>
-<style>
+<style scoped>
     .plugins-batchbuy-container {
         height: 70vh;
         padding-bottom: 160rpx;

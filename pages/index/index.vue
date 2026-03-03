@@ -285,10 +285,10 @@
 
             <!-- 快捷导航 -->
             <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-
-            <!-- 公共 -->
-            <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
         </block>
+
+        <!-- 公共 -->
+        <component-common ref="common" :propIsGrayscale="plugins_mourning_data_is_app"></component-common>
     </view>
 </template>
 <script>
@@ -432,8 +432,15 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
-            // 数据加载
-            this.init();
+            // 数据加载、存在开屏广告则延迟加载
+            if(this.load_status == 0 && app.globalData.is_init_config_success_pages_begin()) {
+                let self = this;
+                setTimeout(function() {
+                    self.init();
+                }, 500);
+            } else {
+                this.init();
+            }
 
             // 初始化配置
             if(app.globalData.get_config('status') == 1) {

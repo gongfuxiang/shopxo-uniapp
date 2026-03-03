@@ -477,9 +477,9 @@
                     success: res => {
                         const data = res.data;
                         if (data.code == 0) {
-                            // const list = data.data.video;
                             const new_data = data.data;
                             this.setData({
+                                data_list_loding_status: 3,
                                 video_data_list: [new_data.data],
                                 report_type_list: new_data.report_type_list,
                                 base_config_data: new_data.base_config_data,
@@ -488,7 +488,7 @@
                             this.get_last_or_next_data_list(this.params.id, 1, 1);
                         } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_tabs_loding_msg: data.msg,
                             });
                         }
@@ -607,18 +607,7 @@
                                     }, 200);
                                 }, 0);
                             }
-                        } else {
-                            this.setData({
-                                data_list_loding_status: 2,
-                                data_tabs_loding_msg: data.msg,
-                            });
                         }
-                    },
-                    fail: (err) => {
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
-                        });
                     }
                 });
             },

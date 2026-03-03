@@ -82,16 +82,20 @@
 
                 // 初始化配置
                 this.init_config(false, params);
-
-                // 系统底部菜单
-                this.footer_init();
             },
 
             // 初始化配置
             init_config(status = false, params = {}) {
-                if ((status || false) == true) {
+                if (status) {
                     // 初始化数据
-                    this.init(params);
+                    if(app.globalData.is_init_config_success_pages_begin()) {
+                        let self = this;
+                        setTimeout(function() {
+                            self.init(params);
+                        }, 500);
+                    } else {
+                        this.init(params);
+                    }
                 } else {
                     app.globalData.is_config(this, 'init_config', params);
                 }
@@ -119,7 +123,7 @@
                     upd_data['app_tabbar'] = app.globalData.get_config('app_tabbar') || null;
                 }
                 this.setData(upd_data);
-
+                
                 // 如果没有菜单数据则读取一次
                 if(!is_use_native_tabbar && status == 0 && (upd_data['app_tabbar'] || null) == null) {
                     app.globalData.init_config(0, this, 'footer_init', 1);

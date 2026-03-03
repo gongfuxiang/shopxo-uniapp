@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) != null && status == 1" class="plugins-popupscreen wh-auto ht-auto">
+        <view v-if="(data || null) != null && status == 1" class="plugins-popupscreen">
             <view class="content pr">
                 <image class="dis-block auto" :src="data.images" mode="widthFix" :data-value="data.images_url || ''" @tap="url_event"></image>
                 <view class="tc margin-top-xl">
@@ -34,9 +34,7 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
-                    this.setData({
-                        data: app.globalData.get_config('plugins_base.popupscreen.data') || null,
-                    });
+                    this.init();
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -44,7 +42,7 @@
 
             // 初始化
             init() {
-                var data = this.data || null;
+                let data = app.globalData.get_config('plugins_base.popupscreen.data') || null;
                 if (data != null && parseInt(data.is_app_enable || 0) == 1 && parseInt(data.is_valid || 0) == 1) {
                     // 是否全局
                     var temp_status = true;
@@ -76,6 +74,7 @@
                                 }, ct * 1000);
                             }
                             this.setData({
+                                data: data,
                                 status: 1,
                                 timer: timer,
                             });
@@ -111,6 +110,8 @@
         top: 0;
         z-index: 20;
         background-color: rgb(0 0 0 / 0.3);
+        width: 100%;
+        height: 100%;
     }
     .plugins-popupscreen .close {
         right: 10%;

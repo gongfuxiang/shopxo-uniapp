@@ -318,7 +318,7 @@
         }
     };
 </script>
-<style>
+<style scoped>
     .goods-spec-choice-content {
         max-height: 50vh;
         overflow-y: scroll;

@@ -1018,7 +1018,7 @@
         }
     };
 </script>
-<style>
+<style scoped>
     .plugins-realstore-cart-mask,
     .plugins-realstore-buy-type-mask {
         left: 0;

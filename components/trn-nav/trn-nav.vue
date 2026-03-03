@@ -70,7 +70,7 @@
 		}
 	}
 </script>
-<style>
+<style scoped>
 	.trn-nav-top {
 		padding-top: var(--status-bar-height);
         opacity: 0;

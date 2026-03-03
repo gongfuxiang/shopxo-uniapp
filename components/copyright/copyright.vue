@@ -20,7 +20,7 @@
         methods: {}
     };
 </script>
-<style>
+<style scoped>
     .copyright {
         color: #cfcfcf;
         text-align: center;

@@ -20,6 +20,7 @@
         "expand": "Expand",
         "retract": "Retract",
         "reply": "Reply",
+        "skip": "Skip",
         "remove_success": "Remove successful",
         "remove_fail": "Remove failed",
         "history": "History",

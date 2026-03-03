@@ -128,7 +128,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     .switch-container {
         display: flex;
         flex-direction: row;

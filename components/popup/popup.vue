@@ -135,7 +135,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     .popup {
         opacity: 0;
     }
