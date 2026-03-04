@@ -188,6 +188,9 @@ button:before {
 .wh-auto {
     width: 100% !important;
 }
+.ht-auto {
+    height: 100% !important;
+}
 .tc {
     text-align: center;
 }
