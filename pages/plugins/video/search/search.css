@@ -165,6 +165,7 @@
 }
 .nav-list-more {
 	padding: 20rpx 40rpx;
+    max-height: 70vh;
 }
 ::v-deep .popup .popup-content {
 	z-index: 8 !important;

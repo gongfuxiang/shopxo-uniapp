@@ -46,12 +46,15 @@
                 <!-- 视频 -->
                 <block v-if="(goods.video || null) != null">
                     <view v-if="goods_video_is_autoplay" class="goods-video pa tc">
-                        <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
+                        <video class="video" :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'">
+                            <cover-view class="goods-video-submit pa">
+                                <cover-image class="image cp" @tap="goods_video_close_event" :src="common_static_url + 'video-close-icon.png'" mode="aspectFit"></cover-image>
+                            </cover-view>
+                        </video>
                     </view>
-                    <view class="goods-video-submit pa">
-                        <image v-if="!goods_video_is_autoplay" class="goods-video-play cp" @tap="goods_video_play_event" :src="common_static_url + 'video-play-icon.png'" mode="aspectFit"></image>
-                        <image v-if="goods_video_is_autoplay" class="goods-video-close cp" @tap="goods_video_close_event" :src="common_static_url + 'video-close-icon.png'" mode="aspectFit"></image>
-                    </view>
+                    <cover-view v-else class="goods-video-submit pa">
+                        <cover-image class="image cp" @tap="goods_video_play_event" :src="common_static_url + 'video-play-icon.png'" mode="aspectFit"></cover-image>
+                    </cover-view>
                 </block>
                 <!-- 相册内容 -->
                 <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="swiper" :style="'height: ' + photo_height + ' !important;'">
