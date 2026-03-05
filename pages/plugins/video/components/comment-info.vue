@@ -10,7 +10,7 @@
                         <iconfont name="icon-ellipsis" color="#999" size="28rpx" />
                     </view>
                     <!-- 下拉菜单 -->
-                    <view v-if="drop_down_visible" class="dropdown-menu" @tap.stop>
+                    <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop>
                         <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item" :data-value="item" @tap="handle_dropdown_item_click">
                             <text>{{ item.label }}</text>
                         </view>
