@@ -1,12 +1,12 @@
 <template> 
-    <view class="search-bar pr">
+    <view class="search-bar pr flex-row align-c" :style="search_width_style">
         <view v-if="propIsDisabled" class="search-mask" @tap="disabled_search"></view>
         <view class="search-iconfont-container">
             <iconfont name="icon-search-fine"></iconfont>
         </view>
-        <input type="text" v-model="search_keywords" :adjust-position="false" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
+        <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
         <view class="search-line"></view>
-        <view class="search-button" @tap="perform_search">{{$t('common.search')}}</view>
+        <text class="search-button" @tap="perform_search">{{$t('common.search')}}</text>
     </view>
 </template>
 
@@ -26,17 +26,31 @@ export default {
         propIsDisabled: {
             type: Boolean,
             default: false
+        },
+        propWidth: {
+            type: Number,
+            default: 0
         }
     },
     data() {
         return {
-            search_keywords: ''
+            search_keywords: '',
+            search_width_style: '',
         }
     },
     watch: {
         propSearchQuery: {
             handler(newVal, oldVal) {
                 this.search_keywords = newVal;
+            },
+            immediate: true
+        },
+        propWidth: {
+            handler(newVal, oldVal) {
+                console.log(newVal, oldVal);
+                if (newVal !== oldVal && newVal > 0) {
+                    this.search_width_style = 'width:' + newVal - 40 + 'px;';
+                }
             },
             immediate: true
         }
@@ -66,44 +80,46 @@ export default {
 /* 搜索框 */
 .search-bar {
 	display: flex;
+    flex-direction: row;
 	align-items: center;
 	background: rgba(255,255,255,0.5);
 	border-radius: 38rpx;
 	border: 2rpx solid #313131;
-    height: 100%;
+    height: 80rpx;
 	margin: 0 24rpx;
-	.search-iconfont-container {
-		padding: 16rpx 30rpx;
-		padding-right: 20rpx;
-	}
-	input {
-		flex: 1;
-		height: 100%;
-		padding: 16rpx 0;
-		box-sizing: border-box;
-        background: transparent;
-	}
-	.search-line {
-		width: 2rpx;
-		height: 100%;
-		padding: 16rpx 0;
-		margin-left: 20rpx;
-		background-color: #eee;
-	}
-	.search-button { 
-		font-weight: 500;
-		font-size: 28rpx;
-		color: #333333;
-		line-height: 20px;
-		padding: 16rpx 30rpx 16rpx 20rpx;
-	}
-    .search-mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 99;
-    }
+}
+.search-iconfont-container {
+    padding: 16rpx 30rpx;
+    padding-right: 20rpx;
+}
+input {
+    flex: 1;
+    height: 76rpx;
+    padding: 16rpx 0;
+    box-sizing: border-box;
+    background: transparent;
+}
+.search-line {
+    width: 2rpx;
+    height: 44rpx;
+    margin: 16rpx 0;
+    margin-left: 20rpx;
+    box-sizing: border-box;
+    background-color: #eee;
+}
+.search-button { 
+    font-weight: 500;
+    font-size: 28rpx;
+    color: #333333;
+    line-height: 20px;
+    padding: 16rpx 30rpx 16rpx 20rpx;
+}
+.search-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80rpx;
+    z-index: 99;
 }
 </style>

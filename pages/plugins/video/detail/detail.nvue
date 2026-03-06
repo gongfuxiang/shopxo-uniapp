@@ -66,9 +66,8 @@
                     </view>
                 </swiper-item>
             </swiper>
-            
             <!-- 搜索框 -->
-            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info + ' width: ' + windowWidth + 'px'">
+            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info + ' width: ' + windowWidth + 'px;'">
                 <view id="search-height" class="flex-row align-c">
                     <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                     <!-- #ifndef MP-ALIPAY -->
@@ -76,7 +75,7 @@
                         <u-icon propName="arrow-left" propSize="36rpx" propColor="#333" class="mr-10"></u-icon>
                     </view>
                     <!-- #endif -->
-                    <view class="wh-auto ht-auto" :style="header_padding_left">
+                    <view class="flex-1" :style="header_padding_left">
                         <search-component propIsDisabled @disabledSearch="handle_search" :propsWidth="windowWidth" />
                     </view>
                 </view>
@@ -469,7 +468,7 @@
             init() { 
                 try {
                     // 小程序下，获取小程序胶囊的宽度
-                    let menu_button_info = 'max-width:100%';
+                    let menu_button_info = `max-width:${ this.windowWidth }px;`;
                     // #ifndef MP-TOUTIAO
                         // #ifdef MP
                         // 判断是否有胶囊
@@ -489,7 +488,9 @@
                     this.header_padding_left = padding_left;
                     this.menu_button_info = menu_button_info;
                     this.current_video_id = isEmpty(this.current_video_id) ? this.params.id : this.current_video_id;
-
+                    // top_content_style 为undefined， 在这里重新赋值
+                    console.log(this.top_content_style);
+                    this.top_content_style = 'padding-top:' + bar_height + 'px;padding-bottom:10px;';
                     this.get_video_detail(this.current_video_id);
                 } catch (error) {
                     console.error('init error:', error);
@@ -2200,13 +2201,13 @@
     }
     /* 搜索 */
     .header-top {
-        padding-left: 12px;
+        padding-left: 24rpx;
         box-sizing: border-box;
         position: absolute;
         top: 0;
         left: 0;
         z-index: 9;
-        width: 100%;
+        // width: 100%;
     }
     .header-top ::v-deep .search-bar {
         background:#D8D8D8;
