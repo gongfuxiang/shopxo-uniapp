@@ -1,9 +1,8 @@
 <template>
     <view :class="theme_view" :style="width_height_style">
-        <text>{{ display_video_list }}</text>
         <view v-if="display_video_list && display_video_list.length > 0" class="content pr" :style="width_height_style">
             <!-- 视频列表 -->
-            <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
+            <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="width_height_style + swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
                     <view class="video-container pr" @tap.stop="toggle_play_pause">
                         <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
@@ -722,8 +721,10 @@
                         
                         this.is_slide_start = false;
                         this.current_index = 0;
-                        this.display_video_list = list;
                         this.swiper_key = get_math();
+                        this.$nextTick(() => {
+                            this.display_video_list.splice(0, this.display_video_list.length, ...list);
+                        });
                     } else if (this.current_video_index == this.video_data_list.length - 1) {
                         const list = [
                             this.get_video_by_index(this.current_video_index - 2),
@@ -731,23 +732,17 @@
                             this.get_video_by_index(this.current_video_index),
                         ];
                         this.current_index = 2;
-                        this.display_video_list = list;
                         this.swiper_key = get_math();
+                        this.$nextTick(() => {
+                            this.display_video_list.splice(0, this.display_video_list.length, ...list);
+                        });
                     } else {
                         this.is_slide_start = true;
                         this.swiper_key = get_math();
                         this.update_display_data();
                     }
-
-                    // 更新分享信息
-                    this.update_share_info(this.display_video_list[current]);
-
-                    // 延迟播放当前视频，确保DOM更新完成
-                    setTimeout(() => {
-                        this.play_current_video_safely(this.current_index);
-                    }, 150);
                 } catch (error) {
-                    console.error('process_swiper_change error:', error);
+                     console.error('process_swiper_change error:', error);
                 }
             },
 
@@ -917,8 +912,15 @@
                             this.get_video_by_index(this.current_video_index),
                         ];
                     }
-
-                    this.display_video_list = list;
+                    console.log(list);
+                    // this.$nextTick(() => {
+                    if (this.display_video_list && this.display_video_list.length > 0) {
+                        this.display_video_list.splice(0, this.display_video_list.length, ...list);
+                    } else {
+                        this.display_video_list = list;
+                    }
+                    this.$forceUpdate();
+                    // });
                 } catch (error) {
                     console.error('update_display_data error:', error);
                 }
