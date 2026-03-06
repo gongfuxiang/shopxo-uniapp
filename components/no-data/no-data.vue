@@ -79,8 +79,14 @@
     </view>
 </template>
 <script>
+    //#ifdef APP-NVUE
+    import i18n from '@/locale/index.js';
+    //#endif
     const app = getApp();
     export default {
+        //#ifdef APP-NVUE
+        i18n,
+        //#endif
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),

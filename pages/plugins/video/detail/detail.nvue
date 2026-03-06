@@ -1,20 +1,7 @@
 <template>
     <view :class="theme_view" :style="width_height_style">
+        <text>{{ display_video_list }}</text>
         <view v-if="display_video_list && display_video_list.length > 0" class="content pr" :style="width_height_style">
-            <!-- 搜索框 -->
-            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
-                <view id="search-height" class="flex-row align-c">
-                    <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
-                    <!-- #ifndef MP-ALIPAY -->
-                    <view class="cp" @tap="handle_back">
-                        <u-icon propName="arrow-left" propSize="36rpx" propColor="#333" class="mr-10"></u-icon>
-                    </view>
-                    <!-- #endif -->
-                    <view class="wh-auto ht-auto" :style="header_padding_left">
-                        <search-component propIsDisabled @disabledSearch="handle_search" />
-                    </view>
-                </view>
-            </view>
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
@@ -80,6 +67,21 @@
                     </view>
                 </swiper-item>
             </swiper>
+            
+            <!-- 搜索框 -->
+            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
+                <view id="search-height" class="flex-row align-c">
+                    <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                    <!-- #ifndef MP-ALIPAY -->
+                    <view class="cp" @tap="handle_back">
+                        <u-icon propName="arrow-left" propSize="36rpx" propColor="#333" class="mr-10"></u-icon>
+                    </view>
+                    <!-- #endif -->
+                    <view class="wh-auto ht-auto" :style="header_padding_left">
+                        <search-component propIsDisabled @disabledSearch="handle_search" />
+                    </view>
+                </view>
+            </view>
         </view>
 		<template v-else>
 			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -165,7 +167,7 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <component-popup :propShow="popup_report_status" propPosition="bottom" @onclose="popup_report_close_event">
+        <u-popup ref="popupReportRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @change="popup_report_close_event" @callBack="submit_report">
             <view class="report-content">
                 <!-- 顶部按钮区域 -->
                 <view class="report-header flex-row align-c jc-sb">
@@ -202,7 +204,7 @@
                     </view>
                 </view>
             </view>
-        </component-popup>
+        </u-popup>
         <!-- 添加评论弹出框 -->
         <view v-if="is_add_comment" class="keyboard-input br-top-shadow" :style="'width:'+ windowWidth +'px;bottom:' + listener_height + 'px;'">
             <view class="comment-input-content flex-col jc-c">
@@ -292,7 +294,7 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0, // 评论拖拽距离
-                current_video_id: 1, // 当前播放视频的ID
+                current_video_id: '', // 当前播放视频的ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
@@ -312,7 +314,6 @@
                 params: {},
                 header_padding_left: '',
                 report_type_list: [], // 举报类型列表
-                popup_report_status: false, // 举报弹窗状态
                 current_main_index: 0, // 默认选中第一个举报原因
                 current_sub_index: 0, // 默认选中第一个具体类型
                 report_comment_id: '', // 举报的评论id
@@ -500,6 +501,7 @@
              * @param {*} id 视频 id
             */
             get_video_detail(id) {
+                console.log(id);
                 try {
                     // 获取数据
                     uni.request({
@@ -610,12 +612,14 @@
                                     }
                                 });
                                 // 更新所有视频信息
-                                this.video_data_list = this.video_data_list;
+                                // this.video_data_list = this.video_data_list;
                                 this.current_index = is_last == 1 && is_next == 1 ? (new_index == this.video_data_list.length - 1 ? 2 : (new_index == this.video_data_list.length - 2 ? 1 : 0)) : this.current_index;
 
                                 if (is_last == 1 && is_next == 1) {
                                     // 更新显示数据数据信息
                                     this.update_display_data();
+                                    
+                                    console.log(this.display_video_list, '1125');
 
                                     setTimeout(() => { 
                                         if (this.display_video_list && this.display_video_list.length > 0) {
@@ -1607,7 +1611,7 @@
                         });
                     } else if (obj.type == 'report') {
                         // 举报评论
-                        this.popup_report_status = true;
+                        this.$refs.popupReportRef.open();
                         this.report_comment_id = comment_id;
                     }
                 } catch (error) {
@@ -1729,7 +1733,7 @@
             // 关闭举报弹窗
             popup_report_close_event() {
                 try {
-                    this.popup_report_status = false;
+                    this.$refs.popupReportRef.close();
                     this.current_main_index = 0;
                     this.current_sub_index = 0;
                 } catch (error) {
