@@ -26,7 +26,9 @@
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        //#ifdef APP-NVUE
         i18n,
+        //#endif
         props: {
             // 是否使用卡槽
             propSlot: {

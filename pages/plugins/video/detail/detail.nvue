@@ -3,13 +3,13 @@
         <view v-if="display_video_list && display_video_list.length > 0" class="content pr" :style="width_height_style">
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="width_height_style + swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
-                <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
-                    <view class="video-container pr" @tap.stop="toggle_play_pause">
+                <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id" :style="width_height_style">
+                    <view class="video-container pr" @tap.stop="toggle_play_pause" :style="width_height_style">
                         <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
                         
                         <video class="video" :style="width_height_style" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
 
-                        <view v-if="paused && current_index == index" class="play-icon">
+                        <view v-if="paused && current_index == index" class="play-icon" :style="width_height_style">
                             <view class="pr">
                                 <view class="play-icon-bg"></view>
                                 <view class="pa z-i play-icon-iconfont">
@@ -25,7 +25,7 @@
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
-                                    <u-icon propName="icon-comment" propSize="60rpx" propColor="#fff"></u-icon>
+                                    <u-icon propName="comment" propSize="60rpx" propColor="#fff"></u-icon>
                                     <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
@@ -34,13 +34,13 @@
                                 </view>
                             </view>
                             <view v-if="!isEmpty(video_item.goods) && base_config_data && base_config_data.is_video_detail_show_goods && base_config_data.is_video_detail_show_goods == 1" class="product-card">
-                                <view class="flex-col gap-10">
-                                    <view v-if="video_item.show_goods" class="flex-row align-c gap-10 product-card-item" :data-id="video_item.id" @tap.stop="handle_product_card_item">
-                                        <view class="product-image">
-                                            <image :src="video_item.goods.images" mode="aspectFill" class="product-image"></image>
+                                <view class="flex-col">
+                                    <view v-if="video_item.show_goods" class="flex-row align-c product-card-item" style="margin-bottom: 20rpx;" :data-id="video_item.id" @tap.stop="handle_product_card_item">
+                                        <view style="width: 100rpx;height:100rpx;">
+                                            <image :src="video_item.goods.images" mode="aspectFill" style="width: 100rpx;height:100rpx;"></image>
                                         </view>
-                                        <view class="flex-1 flex-col align-sb jc-c gap-10">
-                                            <text class="product-name text-line-1">{{ video_item.goods.title }}</text>
+                                        <view class="flex-1 flex-col align-sb jc-c" style="margin-left: 20rpx;">
+                                            <text class="product-name text-line-1" style="margin-bottom: 20rpx;">{{ video_item.goods.title }}</text>
                                             <text class="product-price">¥{{ video_item.goods.price }}</text>
                                         </view>
                                         <view class="product-close" :data-id="video_item.id" @tap.stop="product_close_event">
@@ -48,17 +48,17 @@
                                         </view>
                                     </view>
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
-                                        <view class="product-button-left flex-row align-c gap-10">
+                                        <view class="product-button-left flex-row align-c">
                                             <u-icon propName="cart-have" propSize="30rpx" propColor="#F5C366"></u-icon>
-                                            <text class="size-14 cr-f">{{$t('common.buy')}} {{$t('common.goods')}}</text>
+                                            <text class="size-14 cr-f" style="margin-left: 20rpx;">{{$t('common.buy')}} {{$t('common.goods')}}</text>
                                         </view>
-                                        <iconfont name="icon-angle-right" color="#fff" size="30rpx"></iconfont>
+                                        <u-icon propName="angle-right" propSize="30rpx" propColor="#fff"></u-icon>
                                     </view>
                                 </view>
                             </view>
 
                             <!-- Progress Bar -->
-                            <view class="progress-bar-container" v-if="current_index == index">
+                            <view class="progress-bar-container" v-if="current_index == index" :style="'width: ' + windowHeight + 'px'">
                                 <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" @tap.stop="handle_slider_change" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
                                 <text class="time-display">{{ format_time(current_video_progress) }} / {{ format_time(current_video_duration) }}</text>
                             </view>
@@ -68,7 +68,7 @@
             </swiper>
             
             <!-- 搜索框 -->
-            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info">
+            <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info + ' width: ' + windowWidth + 'px'">
                 <view id="search-height" class="flex-row align-c">
                     <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                     <!-- #ifndef MP-ALIPAY -->
@@ -77,7 +77,7 @@
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">
-                        <search-component propIsDisabled @disabledSearch="handle_search" />
+                        <search-component propIsDisabled @disabledSearch="handle_search" :propsWidth="windowWidth" />
                     </view>
                 </view>
             </view>
@@ -293,7 +293,7 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0, // 评论拖拽距离
-                current_video_id: '', // 当前播放视频的ID
+                current_video_id: 5, // 当前播放视频的ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
@@ -612,15 +612,15 @@
                                 });
                                 // 更新所有视频信息
                                 // this.video_data_list = this.video_data_list;
+                                this.$set(this, 'video_data_list', this.video_data_list)
                                 this.current_index = is_last == 1 && is_next == 1 ? (new_index == this.video_data_list.length - 1 ? 2 : (new_index == this.video_data_list.length - 2 ? 1 : 0)) : this.current_index;
 
                                 if (is_last == 1 && is_next == 1) {
-                                    // 更新显示数据数据信息
-                                    this.update_display_data();
-                                    
-                                    console.log(this.display_video_list, '1125');
-
                                     setTimeout(() => { 
+                                        // 更新显示数据数据信息
+                                        this.update_display_data(true);
+                                        console.log(this.display_video_list, '1125');
+
                                         if (this.display_video_list && this.display_video_list.length > 0) {
                                             // 更新分享信息
                                             this.update_share_info(this.display_video_list[this.current_index]);
@@ -722,9 +722,8 @@
                         this.is_slide_start = false;
                         this.current_index = 0;
                         this.swiper_key = get_math();
-                        this.$nextTick(() => {
-                            this.display_video_list.splice(0, this.display_video_list.length, ...list);
-                        });
+                        // 刷新数据
+                        this.update_display_video_list(list);
                     } else if (this.current_video_index == this.video_data_list.length - 1) {
                         const list = [
                             this.get_video_by_index(this.current_video_index - 2),
@@ -733,9 +732,8 @@
                         ];
                         this.current_index = 2;
                         this.swiper_key = get_math();
-                        this.$nextTick(() => {
-                            this.display_video_list.splice(0, this.display_video_list.length, ...list);
-                        });
+                        // 刷新数据
+                        this.update_display_video_list(list);
                     } else {
                         this.is_slide_start = true;
                         this.swiper_key = get_math();
@@ -806,6 +804,27 @@
                     }
                 } catch (error) {
                     console.error('toggle_play_pause error:', error);
+                }
+            },
+            // 播放数组更新
+            update_display_video_list(list) {
+                try {
+                    // 不理解为什么这里时undefined的
+                    // 根据 weex 的通用做法，需要同时改变“引用”和“长度”两个维度才能被识别数组更新。
+                    // 1. 先清空原数组（触发长度变化）
+                    if (this.display_video_list && this.display_video_list.length > 0) {
+                        this.display_video_list.splice(0, this.display_video_list.length)
+                    } else {
+                        this.display_video_list = [];
+                    }
+                    // this.$nextTick(() => {
+                    // setTimeout(() => { 
+                        // 2. 再把新数据 push 进去（触发内容变化）
+                        list.forEach(item => this.display_video_list.push(item))
+                    // }, 0); 
+                    // });
+                } catch (e) {
+                   console.log('update_display_video_list', e);
                 }
             },
 
@@ -889,7 +908,7 @@
             /*
              * 更新显示的视频数据
              */
-            update_display_data() {
+            update_display_data(flag = false) {
                 try {
                     let list = [];
                     // 如果当前索引为0，只显示当前元素和下一个元素
@@ -912,15 +931,15 @@
                             this.get_video_by_index(this.current_video_index),
                         ];
                     }
-                    console.log(list);
-                    // this.$nextTick(() => {
-                    if (this.display_video_list && this.display_video_list.length > 0) {
-                        this.display_video_list.splice(0, this.display_video_list.length, ...list);
-                    } else {
-                        this.display_video_list = list;
+                    console.log(this.display_video_list);
+                    // this.$set(this, 'display_video_list', list)
+                    // 刷新数据
+                    this.update_display_video_list(list);
+                    // 第一次需要强制刷新
+                    if (flag) {
+                        // 页面数据不更新，执行强制刷新
+                        this.$forceUpdate();
                     }
-                    this.$forceUpdate();
-                    // });
                 } catch (error) {
                     console.error('update_display_data error:', error);
                 }
@@ -1214,7 +1233,8 @@
                                             item.comments_count++;
                                         }
                                     })
-                                    this.video_data_list = this.video_data_list;
+                                    // this.video_data_list = this.video_data_list;
+                                    this.$set(this, 'video_data_list', this.video_data_list)
                                     this.comment_scroll_top = 0 + Math.random(); // 添加主评论时滚动到最顶部
                                 } else {
                                     this.active_comments.forEach(item => {
@@ -1408,7 +1428,8 @@
                                     }
                                 }
 
-                                this.video_data_list = this.video_data_list;
+                                // this.video_data_list = this.video_data_list;
+                                this.$set(this, 'video_data_list', this.video_data_list)
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
@@ -1534,7 +1555,8 @@
                         }
                     });
 
-                    this.video_data_list = this.video_data_list;
+                    // this.video_data_list = this.video_data_list;
+                    this.$set(this, 'video_data_list', this.video_data_list)
                 } catch (error) {
                     console.error('product_close_event error:', error);
                 }
@@ -1565,7 +1587,8 @@
                         }
                     });
 
-                    this.video_data_list = this.video_data_list;
+                    // this.video_data_list = this.video_data_list;
+                    this.$set(this, 'video_data_list', this.video_data_list)
                 } catch (error) {
                     console.error('handle_product_button error:', error);
                 }
@@ -1695,7 +1718,8 @@
                         })
                         // 更新数据
                         this.active_comments = filteredComments;
-                        this.video_data_list = this.video_data_list;
+                        // this.video_data_list = this.video_data_list;
+                        this.$set(this, 'video_data_list', this.video_data_list)
                     }
                 } catch (error) {
                     console.error('delete_comment_handle error:', error);
@@ -1854,21 +1878,8 @@
     };
 </script>
 <style lang="scss" scoped>
-    .content,
-    .swiper-container {
-        width: 100%;
-        height: 100vh;
-    }
-    
-    .video {
-        width: 100%;
-        height: 100%;
-    }
-    
     .video-container {
         position: relative;
-        width: 100%;
-        height: 100%;
     }
     
     .play-icon {
@@ -1915,13 +1926,6 @@
         margin-top: 40rpx;
     }
     
-    .user-avatar {
-        width: 100rpx;
-        height: 100rpx;
-        border-radius: 50%;
-        border: 4rpx solid #fff;
-    }
-    
     .icon {
         width: 70rpx;
         height: 70rpx;
@@ -1929,6 +1933,7 @@
     
     .action-text {
         font-size: 28rpx;
+        color: #fff;
         margin-top: 10rpx;
     }
     
@@ -1941,35 +1946,32 @@
         z-index: 99;
     }
     
-    .product-card .product-card-item {
+    .product-card-item {
         background: #DDDDDD;
         padding: 16rpx;
         border-radius: 8rpx;
     }
-    .product-card .product-image {
-        width: 100rpx;
-        height: 100rpx;
-    }
-    .product-card .product-name {
+    .product-name {
         font-weight: 500;
         font-size: 28rpx;
         color: #333333;
         line-height: 40rpx;
     }
-    .product-card .product-price {
+    .product-price {
         font-weight: 500;
         font-size: 32rpx;
         color: #FF1919;
         line-height: 44rpx;
     }
-    .product-card .product-close {
+    .product-close {
         position: absolute;
         right: -10rpx;
         top: -14rpx;
     }
     
-    .product-card .product-button {
+    .product-button {
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: space-between;
         width: 300rpx;
