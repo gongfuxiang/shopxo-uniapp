@@ -142,7 +142,7 @@
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
                     <view class="comment-input-content flex-col jc-c">
                         <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
-                            <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
+                            <text class="size-12 cr-f text-line-1">@{{ isEmpty(comments_reply_data.user) ? '' : comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                             <view data-type="image" @tap="comment_data_delete">
                                 <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
                             </view>
@@ -248,8 +248,9 @@
     import componentUpload from '@/components/upload/upload';
     import componentCommon from '@/components/common/common';
     // 多语言
-    import { initVueI18n } from '@dcloudio/uni-i18n';
-    const { t } = initVueI18n()
+    import { initVueI18n } from '@dcloudio/uni-i18n'
+    import i18nMessages from '@/locale/index-nvue.js'
+    const { t } = initVueI18n(i18nMessages)
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
@@ -289,11 +290,11 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0, // 评论拖拽距离
-                current_video_id: '', // 当前播放视频的ID
+                current_video_id: 1, // 当前播放视频的ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
-                input_placeholder: this.$t('video-detail.video-detail.98yyuf'),
+                input_placeholder: t('video-detail.video-detail.98yyuf'),
                 comment_input_value: '',
                 propMaxNum: 1,
                 form_images_list: [],
@@ -321,7 +322,8 @@
                 editor_path_type: 'video',
                 is_manual_pause: false, // 是否手动暂停
                 windowWidth: 0,
-                windowHeight: 0
+                windowHeight: 0,
+                
             };
         },
         components: {
@@ -355,10 +357,14 @@
             },
             // 如果是第一个或者最后一个的情况下，取消无限轮播
             close_circular() {
-                if (this.video_data_list && this.video_data_list.length > 0) {
-                    return this.video_data_list[0].id == this.current_video_id  || this.video_data_list[this.video_data_list.length - 1].id == this.current_video_id;
-                } else {
-                    return true
+                try {
+                    if (this.video_data_list && this.video_data_list.length > 0) {
+                        return this.video_data_list[0].id == this.current_video_id  || this.video_data_list[this.video_data_list.length - 1].id == this.current_video_id;
+                    } else {
+                        return true
+                    }
+                } catch {
+                    console.log('close_circular');
                 }
             },
             width_height_style() {
@@ -366,32 +372,40 @@
             }
         },
         onLoad(params) {
-            // 调用公共事件方法
-            app.globalData.page_event_onload_handle(params);
+            try {
+                // 调用公共事件方法
+                app.globalData.page_event_onload_handle(params);
 
-            // 设置参数
-            this.params = app.globalData.launch_params_handle(params);
+                // 设置参数
+                this.params = app.globalData.launch_params_handle(params);
+            } catch {
+                console.log('close_circular');
+            }
         },
 
         onShow() {
-            const data = uni.getWindowInfo();
-            this.windowWidth = data.windowWidth > 800 ? 800 : data.windowWidth;
-            this.windowHeight = data.windowHeight;
-            // 调用公共事件方法
-            app.globalData.page_event_onshow_handle();
+            try {
+                const data = uni.getWindowInfo();
+                this.windowWidth = data.windowWidth > 800 ? 800 : data.windowWidth;
+                this.windowHeight = data.windowHeight;
+                // 调用公共事件方法
+                app.globalData.page_event_onshow_handle();
 
-            // 视频播放
-            if (!this.is_manual_pause && this.create_video_contexts && this.create_video_contexts[this.current_index]) {
-                this.video_play_event(this.create_video_contexts[this.current_index]);
+                // 视频播放
+                if (!this.is_manual_pause && this.create_video_contexts && this.create_video_contexts[this.current_index]) {
+                    this.video_play_event(this.create_video_contexts[this.current_index]);
+                }
+
+                // 公共onshow事件
+                if ((this.$refs.common || null) != null) {
+                    this.$refs.common.on_show();
+                }
+
+                // 分享菜单处理
+                app.globalData.page_share_handle();
+            } catch {
+                console.log('close_circular');
             }
-
-            // 公共onshow事件
-            if ((this.$refs.common || null) != null) {
-                this.$refs.common.on_show();
-            }
-
-            // 分享菜单处理
-            app.globalData.page_share_handle();
         },
 
         onHide() {
@@ -406,18 +420,22 @@
             this.cleanup_all_videos();
         },
         mounted() {
-            // 初始化
-            this.init();
+            try {
+                // 初始化
+                this.init();
 
-            // #ifdef H5
-            // 添加全局点击事件监听
-            document.addEventListener('click', this.handle_global_click);
-            // 添加触摸事件监听（移动端兼容）
-            document.addEventListener('touchstart', this.handle_global_click);
-            //#endif
+                // #ifdef H5
+                // 添加全局点击事件监听
+                document.addEventListener('click', this.handle_global_click);
+                // 添加触摸事件监听（移动端兼容）
+                document.addEventListener('touchstart', this.handle_global_click);
+                //#endif
 
-            // 创建监听事件
-            this.bind_keyboard_listener();
+                // 创建监听事件
+                this.bind_keyboard_listener();
+            } catch {
+                console.log('close_circular');
+            }
         },
         beforeDestroy() {
             // 清理定时器
@@ -491,20 +509,24 @@
                         },
                         dataType: 'json',
                         success: res => {
-                            const data = res.data;
-                            if (data.code == 0) {
-                                const new_data = data.data;
-                                // 数据更新
-                                this.data_list_loding_status = 3;
-                                this.video_data_list = [new_data.data];
-                                this.report_type_list = new_data.report_type_list;
-                                this.base_config_data = new_data.base_config_data;
-                                this.editor_path_type = new_data.editor_path_type;
-
-                                this.get_last_or_next_data_list(this.params.id, 1, 1);
-                            } else {
-                                this.data_list_loding_status =  0;
-                                this.data_tabs_loding_msg = data.msg;
+                            try { 
+                                const data = res.data;
+                                if (data.code == 0) {
+                                    const new_data = data.data;
+                                    // 数据更新
+                                    this.data_list_loding_status = 3;
+                                    this.video_data_list = [new_data.data];
+                                    this.report_type_list = new_data.report_type_list;
+                                    this.base_config_data = new_data.base_config_data;
+                                    this.editor_path_type = new_data.editor_path_type;
+                                
+                                    this.get_last_or_next_data_list(this.params.id, 1, 1);
+                                } else {
+                                    this.data_list_loding_status =  0;
+                                    this.data_tabs_loding_msg = data.msg;
+                                }
+                            } catch {
+                                console.error('get_video_detail error:', error);
                             }
                         },
                         fail: (err) => {
@@ -548,7 +570,7 @@
                                 
                                 if (is_last == 1 && is_next == 1) {
                                     // 上一批数据 - 去重处理
-                                    if (new_data.last.length > 0) {
+                                    if (new_data.last && new_data.last.length > 0) {
                                         const unique_last = new_data.last.filter(item => !existing_ids.has(item.id));
                                         if (unique_last.length > 0) {
                                             this.video_data_list.unshift(...unique_last);
@@ -557,18 +579,18 @@
                                         }
                                     }
                                     // 下一批数据 - 去重处理
-                                    if (new_data.next.length > 0) {
+                                    if (new_data.next && new_data.next.length > 0) {
                                         const unique_next = new_data.next.filter(item => !existing_ids.has(item.id));
                                         if (unique_next.length > 0) {
                                             this.video_data_list.push(...unique_next);
                                         }
                                     }
-                                } else if (is_last == 1 && new_data.last.length > 0) { // 上一页数据 - 去重处理
+                                } else if (is_last == 1 && new_data.last && new_data.last.length > 0) { // 上一页数据 - 去重处理
                                     const unique_last = new_data.last.filter(item => !existing_ids.has(item.id));
                                     if (unique_last.length > 0) {
                                         this.video_data_list.unshift(...unique_last);
                                     }
-                                } else if (is_next == 1 && new_data.next.length > 0) { // 下一页数据 - 去重处理
+                                } else if (is_next == 1 && new_data.next && new_data.next.length > 0) { // 下一页数据 - 去重处理
                                     const unique_next = new_data.next.filter(item => !existing_ids.has(item.id));
                                     if (unique_next.length > 0) {
                                         this.video_data_list.push(...unique_next);
@@ -595,20 +617,24 @@
                                     this.update_display_data();
 
                                     setTimeout(() => { 
-                                        // 更新分享信息
-                                        this.update_share_info(this.display_video_list[this.current_index]);
-
-                                        this.display_video_list.forEach((item, index) => {
-                                            // this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
-                                            this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
-                                            //#ifdef H5
-                                            if (document.getElementById(`video_${index}`) != null) { 
-                                                // this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
-                                                this.$set(this.video_contexts, index, document.getElementById(`video_${index}`).querySelector('video'));  
-                                            }
-                                            //#endif
-                                        });
-
+                                        if (this.display_video_list && this.display_video_list.length > 0) {
+                                            // 更新分享信息
+                                            this.update_share_info(this.display_video_list[this.current_index]);
+                                            
+                                            this.display_video_list.forEach((item, index) => {
+                                                // this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                                if (this.create_video_contexts) {
+                                                    this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
+                                                }
+                                                //#ifdef H5
+                                                if (document.getElementById(`video_${index}`) != null && this.video_contexts) { 
+                                                    // this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
+                                                    this.$set(this.video_contexts, index, document.getElementById(`video_${index}`).querySelector('video'));  
+                                                }
+                                                //#endif
+                                            });
+                                        }
+                                        
                                         setTimeout(() => {
                                             //#ifdef H5
                                             if (this.video_contexts && this.video_contexts[this.current_index]) { // 当前播放的视频索引为 0
@@ -723,16 +749,18 @@
             // 批量暂停除指定索引外的所有视频
             pause_all_videos_except(exceptIndex) {
                 try {
-                    // 暂停 uni.createVideoContext 创建的视频
-                    this.create_video_contexts.forEach((context, index) => {
-                        if (index !== exceptIndex && context) {
-                            try {
-                                context.pause();
-                            } catch (error) {
-                                console.warn(`暂停视频 ${index} 失败:`, error);
+                    if (this.create_video_contexts && this.create_video_contexts.length > 0) {
+                        // 暂停 uni.createVideoContext 创建的视频
+                        this.create_video_contexts.forEach((context, index) => {
+                            if (index !== exceptIndex && context) {
+                                try {
+                                    context.pause();
+                                } catch (error) {
+                                    console.warn(`暂停视频 ${index} 失败:`, error);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 } catch (error) {
                     console.error('pause_all_videos_except error:', error);
                 }
@@ -841,14 +869,14 @@
                     if (index < 0) {
                         // 循环到数组末尾
                         const actualIndex = this.video_data_list.length + (index % this.video_data_list.length);
-                        return this.video_data_list[actualIndex];
+                        return this.video_data_list[actualIndex] || {};
                     }
                     
                     // 处理超出数组长度的索引
                     if (index >= this.video_data_list.length) {
                         // 循环到数组开头
                         const actualIndex = index % this.video_data_list.length;
-                        return this.video_data_list[actualIndex];
+                        return this.video_data_list[actualIndex] || {};
                     }
                     
                     // 正常情况直接返回
@@ -1378,7 +1406,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1567,8 +1595,8 @@
                     if (obj.type == 'delete') {
                         // 确认删除
                         uni.showModal({
-                            title: this.$t('common.warm_tips'),
-                            content: this.$t('common.delete_confirm_tips'),
+                            title: t('common.warm_tips'),
+                            content: t('common.delete_confirm_tips'),
                             success: (res) => {
                                 if (res.confirm) {
                                     // 调用删除接口
@@ -1605,7 +1633,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1762,7 +1790,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1819,5 +1847,383 @@
     };
 </script>
 <style lang="scss" scoped>
-    @import './detail.css';
+    .content,
+    .swiper-container {
+        width: 100%;
+        height: 100vh;
+    }
+    
+    .video {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .video-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .play-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+    
+    .play-icon .play-icon-bg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        width: 60rpx;
+        height: 60rpx;
+        z-index: 0;
+    }
+    
+    .play-icon .play-icon-iconfont {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .right-actions {
+        position: absolute;
+        right: 20rpx;
+        bottom: 200rpx;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #fff;
+        z-index: 10;
+    }
+    
+    .action-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 40rpx;
+    }
+    
+    .user-avatar {
+        width: 100rpx;
+        height: 100rpx;
+        border-radius: 50%;
+        border: 4rpx solid #fff;
+    }
+    
+    .icon {
+        width: 70rpx;
+        height: 70rpx;
+    }
+    
+    .action-text {
+        font-size: 28rpx;
+        margin-top: 10rpx;
+    }
+    
+    .product-card {
+        position: absolute;
+        width: 440rpx;
+        bottom: 180rpx;
+        left: 30rpx;
+        color: #fff;
+        z-index: 99;
+    }
+    
+    .product-card .product-card-item {
+        background: #DDDDDD;
+        padding: 16rpx;
+        border-radius: 8rpx;
+    }
+    .product-card .product-image {
+        width: 100rpx;
+        height: 100rpx;
+    }
+    .product-card .product-name {
+        font-weight: 500;
+        font-size: 28rpx;
+        color: #333333;
+        line-height: 40rpx;
+    }
+    .product-card .product-price {
+        font-weight: 500;
+        font-size: 32rpx;
+        color: #FF1919;
+        line-height: 44rpx;
+    }
+    .product-card .product-close {
+        position: absolute;
+        right: -10rpx;
+        top: -14rpx;
+    }
+    
+    .product-card .product-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 300rpx;
+        height: 88rpx;
+        padding: 0 20rpx;
+        background: rgba(40, 40, 40, 0.45);
+        border-radius: 88rpx;
+        border: 2rpx solid rgba(151, 151, 151, 0.53);
+        cursor: pointer;
+    }
+    
+    .author {
+        font-size: 36rpx;
+        font-weight: bold;
+    }
+    ::v-deep .uni-video-container {
+        background: transparent;
+    }
+    .video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        background-size: cover;
+        background-position: center;
+        transform: scale(3);
+        filter: blur(100rpx);
+        opacity: 0.7;
+    }
+    
+    .video-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+    }
+    
+    .video-content {
+        display: block;
+        font-size: 30rpx;
+        margin-top: 16rpx;
+        max-width: 70%;
+    }
+    
+    .progress-bar-container {
+        position: absolute;
+        bottom: 60rpx;
+        left: 20rpx;
+        right: 20rpx;
+        display: flex;
+        align-items: center;
+        z-index: 11;
+    }
+    
+    .progress-slider {
+        flex: 1;
+        margin: 0 20rpx;
+    }
+    
+    .time-display {
+        color: #fff;
+        font-size: 24rpx;
+        text-shadow: 2rpx 2rpx 2rpx rgba(0, 0, 0, 0.6);
+        width: 180rpx;
+        text-align: right;
+    }
+    
+    /* 评论弹窗样式 */
+    .comment-modal {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 100%;
+        max-width: 1600rpx;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+    
+    .comment-content {
+        width: 100%;
+        height: 70%;
+        background-color: #fff;
+        border-top-left-radius: 30rpx;
+        border-top-right-radius: 30rpx;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+    }
+    
+    .comment-header {
+        padding: 30rpx;
+        box-sizing: border-box;
+        border-bottom: 2rpx solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .comment-count {
+        font-weight: bold;
+        font-size: 32rpx;
+    }
+    
+    .close-btn {
+        font-size: 40rpx;
+        color: #999;
+    }
+    
+    .comment-list {
+        flex: 1;
+        overflow: hidden;
+    }
+    
+    .comment-list .comment-scroll {
+        width: 100%;
+        height: 100%;
+        padding: 30rpx;
+        box-sizing: border-box;
+    }
+    
+    .comment-item {
+        margin-bottom: 30rpx;
+    }
+    
+    .sub-comment {
+        margin-left: 100rpx;
+    }
+    
+    .sub-comment-list {
+        gap: 40rpx;
+    }
+    .comment-input-container {
+        display: flex;
+        padding: 20rpx;
+        border-top: 2rpx solid #eee;
+    }
+    
+    .comment-input {
+        flex: 1;
+        font-size: 28rpx;
+        height: 50rpx;
+        padding: 16rpx;
+        box-sizing: content-box;
+    }
+    
+    .comment-input-content {
+        flex: 1;
+        border: 2rpx solid #eee;
+        border-radius: 16rpx;
+        font-size: 28rpx;
+    }
+    
+    .pr-16 {
+        padding-right: 16rpx;
+    }
+    .comment-input-img-container {
+        padding: 10rpx 16rpx 16rpx 16rpx;
+    }
+    .comment-input-img-close {
+        position: absolute;
+        right: -15rpx;
+        top: -15rpx;
+        z-index: 2;
+    }
+    .comment-input-img {
+        width: 50rpx;
+        height: 50rpx;
+    }
+    
+    /* 新的举报弹窗样式 */
+    .report-content {
+        width: 100%;
+        max-width: 750rpx;
+        background-color: #fff;
+        border-radius: 20rpx;
+    }
+    
+    .report-header {
+        padding: 30rpx 40rpx;
+        border-bottom: 1rpx solid #ddd;
+        background-color: #fff;
+    }
+    
+    .report-btn {
+        font-size: 32rpx;
+        color: #333;
+    }
+    
+    .report-title {
+        font-size: 36rpx;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+    }
+    
+    .report-body {
+        padding: 30rpx 40rpx;
+    }
+    
+    .report-section {
+        margin-bottom: 30rpx;
+    }
+    
+    .report-label {
+        font-size: 32rpx;
+        font-weight: bold;
+        margin-bottom: 20rpx;
+        color: #333;
+    }
+    
+    .report-label text {
+        color: #e74c3c;
+        font-size: 30rpx;
+        vertical-align: middle;
+    }
+    /* 搜索 */
+    .header-top {
+        padding-left: 12px;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9;
+        width: 100%;
+    }
+    .header-top ::v-deep .search-bar {
+        background:#D8D8D8;
+        opacity: 0.27;
+        border-color: transparent;
+    }
+    
+    .keyboard-input {
+        position: fixed;
+        left: 0;
+        z-index: 99;
+        background: #fff;
+        padding: 20rpx;
+        box-sizing: border-box;
+    }
+    .keyboard-input-border {
+        border: 2rpx solid #ddd;
+        border-radius: 16rpx;
+    }
+    .keyboard-input-content {
+        padding: 16rpx 22rpx;
+    }
+    .comment-reply-content {
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10rpx;
+        border-radius: 16rpx;
+        color: #fff;
+    }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <view class="more-title flex-row align-c" @tap="comment_more_event">
-        <text>{{ propText || $t('common.expand') }}</text>
+        <text>{{ propText || expand_html }}</text>
         <view class="ml-5">
             <iconfont :name="propIconName" color="#999" size="20rpx" />
         </view>
@@ -8,6 +8,12 @@
 </template>
 
 <script> 
+//#ifdef APP-NVUE
+    import { initVueI18n } from '@dcloudio/uni-i18n'
+    import i18nMessages from '@/locale/index-nvue.js'
+    const { t } = initVueI18n(i18nMessages)
+    const $t = t;
+//#endif
 export default {
     props: {
         propId: {
@@ -26,6 +32,11 @@ export default {
             type: String,
             default: 'icon-arrow-down'
         },
+    },
+    data() {
+        return {
+            expand_html: $t('common.expand'),
+        };
     },
     methods: {
         comment_more_event() {
