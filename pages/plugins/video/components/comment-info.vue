@@ -27,7 +27,7 @@
             <view class="comment-operation flex-row align-c jc-sb gap-10">
                 <view class="comment-operation-left flex-row align-c gap-10">
                     <view class="comment-time">{{ propComment.add_time }}</view>
-                    <view class="comment-reply flex-row align-c gap-5">{{ propReplyContent || reply_html }}({{ propComment.comments_count }})</view>
+                    <view class="comment-reply flex-row align-c gap-5">{{ propReplyContent || $t('common.reply') }}({{ propComment.comments_count }})</view>
                 </view>
                 <view class="comment-operation-right flex-row align-c gap-5" @tap.stop="comment_like">
                     <iconfont name="icon-givealike-o-fine" :color="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" size="28rpx" />
@@ -42,13 +42,13 @@
 <script>
     const app = getApp();
     //#ifdef APP-NVUE
-        import { initVueI18n } from '@dcloudio/uni-i18n'
-        import i18nMessages from '@/locale/index-nvue.js'
-        const { t } = initVueI18n(i18nMessages)
-        const $t = t;
+    import i18n from '@/locale/index.js';
     //#endif
     import { isEmpty } from '@/common/js/common/common.js';
     export default {
+        //#ifdef APP-NVUE
+        i18n,
+        //#endif
         props: {
             propComment: {
                 type: Object,
@@ -76,8 +76,7 @@
                 dropdownOptions: [
                     { label: this.$t('common.del'), type: 'delete' },
                     { label: this.$t('common.complaint'), type: 'report' }
-                ],
-                reply_html: $t('common.reply'),
+                ]
             };
         },
         computed: {

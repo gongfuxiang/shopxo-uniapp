@@ -122,7 +122,12 @@
                     upd_data['key'] = Math.random();
                     upd_data['app_tabbar'] = app.globalData.get_config('app_tabbar') || null;
                 }
+                //#ifndef APP-NVUE
                 this.setData(upd_data);
+                //#endif
+                //#ifdef APP-NVUE
+                this.upd_data = upd_data;
+                //#endif
                 
                 // 如果没有菜单数据则读取一次
                 if(!is_use_native_tabbar && status == 0 && (upd_data['app_tabbar'] || null) == null) {
@@ -132,9 +137,14 @@
 
             // 底部菜单高度回调事件
             footer_height_value_event(value) {
+                //#ifndef APP-NVUE
                 this.setData({
                     footer_height_value: (value*2)+20
                 });
+                //#endif
+                //#ifdef APP-NVUE
+                this.footer_height_value = (value*2)+20;
+                //#endif
                 this.$emit('onFooterHeight', value);
 
                 // 存储底部菜单高度

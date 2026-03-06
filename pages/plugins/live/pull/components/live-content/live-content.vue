@@ -24,7 +24,7 @@
                     <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
                 </view>
                 <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
-                    <component-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></component-icon>
+                    <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
                 </view>
             </view>
         </view>
@@ -112,7 +112,7 @@
                                     <text class="size-12 cr-f">讲解中</text>
                                 </view>
                                 <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
-                                    <component-icon propName="close-line" propSize="18rpx" propColor="#fff"></component-icon>
+                                    <u-icon propName="close-line" propSize="18rpx" propColor="#fff"></u-icon>
                                 </view>
                             </view>
                         </view>
@@ -135,15 +135,15 @@
                         </view>
                     </template>
                     <view class="bottom-actions-icon" @tap="add_goods">
-                        <component-icon propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></component-icon>
+                        <u-icon propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></u-icon>
                     </view>
                     <component-like-button ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
                         <view class="bottom-actions-icon">
-                            <component-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></component-icon>
+                            <u-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></u-icon>
                         </view>
                     </component-like-button>
                     <view class="bottom-actions-icon" @tap="share_event">
-                        <component-icon propName="share-solid" propColor="#fff" propSize="32rpx"></component-icon>
+                        <u-icon propName="share-solid" propColor="#fff" propSize="32rpx"></u-icon>
                     </view>
                 </view>
             </view>
@@ -155,30 +155,24 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <component-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="添加商品" :propCloseable="true">
+        <u-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="添加商品" :propCloseable="true">
            <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight"></component-goods>
-        </component-popup>
+        </u-popup>
         <!-- 分享弹窗 -->
-        <component-share-popup ref="share" class="pointer-events-auto"></component-share-popup>
+        <u-share-popup ref="share" class="pointer-events-auto"></u-share-popup>
     </view>
 </template>
 
 <script>
     import componentGoods from "@/pages/plugins/live/pull/components/goods/goods.vue";
-    import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
-    import componentPopup from "@/pages/plugins/live/pull/components/popup/popup";
     import componentLikeButton from "@/pages/plugins/live/pull/components/like-button/like-button";
-    import componentSharePopup from "@/pages/plugins/live/pull/components/share-popup/share-popup.vue";
     import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
     export default {
         name: 'LiveContent',
         components: {
             componentGoods,
-            componentIcon,
-            componentPopup,
             componentLikeButton,
-            componentSharePopup
         },
         /**
          * 直播内容组件属性

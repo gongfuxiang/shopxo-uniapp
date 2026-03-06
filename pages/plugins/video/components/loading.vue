@@ -2,7 +2,7 @@
     <view class="wh-auto ht-auto flex-row align-c jc-c">
         <view class="more-history-btn cp flex-row align-c">
             <view class="more-history-btn-icon margin-right-xs">
-                <iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
+                <u-icon propName="reset" propSize="28rpx" propColor="#999"></u-icon>
             </view>
             <text>{{ propContent || $t('common.loading_in_text') }}</text>
         </view>
@@ -10,7 +10,13 @@
 </template>
 
 <script>
+    //#ifdef APP-NVUE
+    import i18n from '@/locale/index.js';
+    //#endif
     export default {
+        //#ifdef APP-NVUE
+        i18n,
+        //#endif
         props: {
             propContent: {
                 type: String,

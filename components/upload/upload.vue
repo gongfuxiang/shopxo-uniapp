@@ -20,9 +20,13 @@
     </view>
 </template>
 <script>
+    //#ifdef APP-NVUE
+    import i18n from '@/locale/index.js';
+    //#endif
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        i18n,
         props: {
             // 是否使用卡槽
             propSlot: {

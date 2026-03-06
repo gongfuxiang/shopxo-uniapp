@@ -7,7 +7,7 @@
                     <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                     <!-- #ifndef MP-ALIPAY -->
                     <view class="cp" @tap="handle_back">
-                        <iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
+                        <u-icon propName="arrow-left" propSize="36rpx" propColor="#333" class="mr-10"></u-icon>
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">
@@ -27,7 +27,7 @@
                             <view class="pr">
                                 <view class="play-icon-bg"></view>
                                 <view class="pa z-i play-icon-iconfont">
-                                    <iconfont name="icon-bofang" size="120rpx" propClass="" color="#4F3E35"></iconfont>
+                                    <u-icon propName="icon-bofang" propSize="120rpx" propColor="#4F3E35"></u-icon>
                                 </view>
                             </view>
                         </view>
@@ -35,15 +35,15 @@
                             <!-- Right Action Bar -->
                             <view class="right-actions">
                                 <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-value="video_item" @tap.stop="handle_like">
-                                    <iconfont name="icon-givealike" :color="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'" size="60rpx" />
+                                    <u-icon propName="givealike" propSize="60rpx" :propColor="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'"></u-icon>
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
-                                    <iconfont name="icon-comment" color="#fff" size="60rpx" />
+                                    <u-icon propName="icon-comment" propSize="60rpx" propColor="#fff"></u-icon>
                                     <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
-                                    <iconfont name="icon-share-solid" color="#fff" size="60rpx"></iconfont>
+                                    <u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></u-icon>
                                     <text class="action-text">{{$t('common.share')}}</text>
                                 </view>
                             </view>
@@ -58,12 +58,12 @@
                                             <text class="product-price">¥{{ video_item.goods.price }}</text>
                                         </view>
                                         <view class="product-close" :data-id="video_item.id" @tap.stop="product_close_event">
-                                            <iconfont name="icon-close" color="#999" size="30rpx"></iconfont>
+                                            <u-icon propName="close" propSize="30rpx" propColor="#999"></u-icon>
                                         </view>
                                     </view>
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c gap-10">
-                                            <iconfont name="icon-cart-have" color="#F5C366" size="30rpx"></iconfont>
+                                            <u-icon propName="cart-have" propSize="30rpx" propColor="#F5C366"></u-icon>
                                             <text class="size-14 cr-f">{{$t('common.buy')}} {{$t('common.goods')}}</text>
                                         </view>
                                         <iconfont name="icon-angle-right" color="#fff" size="30rpx"></iconfont>
@@ -144,18 +144,18 @@
                         <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
                             <text class="size-12 cr-f text-line-1">@{{ isEmpty(comments_reply_data.user) ? '' : comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                             <view data-type="image" @tap="comment_data_delete">
-                                <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
+                                <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
                             </view>
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
                             <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                                <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
+                                <u-icon propName="layout-module-single-images" propSize="32rpx" propColor="#999"></u-icon>
                             </component-upload>
                         </view>
                         <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
                             <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                                <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
+                                <u-icon propName="close" propSize="10" propColor="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></u-icon>
                                 <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
                             </view>
                         </view>
@@ -209,28 +209,28 @@
                 <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
                     <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                     <view data-type="image" @tap="comment_data_delete">
-                        <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
+                        <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
                     </view>
                 </view>
                 <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                     <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
                     <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                        <iconfont name="icon-layout-module-single-images" size="48rpx" color="#999"></iconfont>
+                        <u-icon propName="layout-module-single-images" propSize="48rpx" propColor="#999"></u-icon>
                     </component-upload>
                 </view>
                 <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
                     <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                        <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
+                        <u-icon propName="close" propSize="10" propColor="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></u-icon>
                         <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
                     </view>
                 </view>
             </view>
         </view>
         <!-- 分享弹窗 -->
-        <component-share-popup ref="share"></component-share-popup>
+        <u-share-popup ref="share" class="pointer-events-auto"></u-share-popup>
 
         <!-- 公共 -->
-        <component-common ref="common"></component-common>
+        <!-- <component-common ref="common"></component-common> -->
     </view>
 </template>
 
@@ -241,22 +241,24 @@
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import searchComponent from '@/pages/plugins/video/components/search.vue';
-    import componentSharePopup from '@/components/share-popup/share-popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
     import componentCommon from '@/components/common/common';
     // 多语言
-    import { initVueI18n } from '@dcloudio/uni-i18n'
-    import i18nMessages from '@/locale/index-nvue.js'
-    const { t } = initVueI18n(i18nMessages)
+    //#ifdef APP-NVUE
+    import i18n from '@/locale/index.js';
+    //#endif
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO || H5
     bar_height = 0;
     // #endif
     export default {
+        //#ifdef APP-NVUE
+        i18n,
+        //#endif
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -294,7 +296,7 @@
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
-                input_placeholder: t('video-detail.video-detail.98yyuf'),
+                input_placeholder: $t('video-detail.video-detail.98yyuf'),
                 comment_input_value: '',
                 propMaxNum: 1,
                 form_images_list: [],
@@ -330,7 +332,6 @@
             commentInfoComponent,
             commentMoreComponent,
             searchComponent,
-            componentSharePopup,
             componentNoData,
             componentBottomLine,
             componentPopup,
@@ -531,7 +532,7 @@
                         },
                         fail: (err) => {
                             this.data_list_loding_status = 2;
-                            this.data_list_loding_msg = t('common.internet_error_tips');
+                            this.data_list_loding_msg = $t('common.internet_error_tips');
                         }
                     });
                 } catch (error) {
@@ -1229,12 +1230,12 @@
                                 this.form_images_list = [];
                                 this.comment_input_value = '';
                                 this.comments_reply_data = {};
-                                this.input_placeholder = t('video-detail.video-detail.98yyuf');
+                                this.input_placeholder = $t('video-detail.video-detail.98yyuf');
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1406,7 +1407,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1595,8 +1596,8 @@
                     if (obj.type == 'delete') {
                         // 确认删除
                         uni.showModal({
-                            title: t('common.warm_tips'),
-                            content: t('common.delete_confirm_tips'),
+                            title: $t('common.warm_tips'),
+                            content: $t('common.delete_confirm_tips'),
                             success: (res) => {
                                 if (res.confirm) {
                                     // 调用删除接口
@@ -1633,7 +1634,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1790,7 +1791,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast(t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
                                 }
                             }
                         }

@@ -11,7 +11,13 @@
 </template>
 
 <script>
+//#ifdef APP-NVUE
+import i18n from '@/locale/index.js';
+//#endif
 export default {
+    //#ifdef APP-NVUE
+    i18n,
+    //#endif
     props: {
         propSearchQuery: {
             type: String,
@@ -40,14 +46,10 @@ export default {
     },
     methods: {
         init() {
-            this.setData({
-                search_keywords: this.search_keywords
-            })
+            this.search_keywords = this.search_keywords;
         },
         handle_search(event) {
-            this.setData({
-                search_keywords: event.target.value,
-            });
+            this.search_keywords = event.target.value;
         },
         perform_search() {
             // 这里可以添加搜索逻辑

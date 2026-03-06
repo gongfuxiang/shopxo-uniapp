@@ -9,7 +9,7 @@
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
                 <view class="flex-1 flex-col align-c jc-c">
-                    <component-icon propName="smallbell" propSize="100rpx" propColor="#fff"></component-icon>
+                    <u-icon propName="smallbell" propSize="100rpx" propColor="#fff"></u-icon>
                     <text class="pointer-events-auto text-size mb-5 cr-white">主播暂时离开</text>
                     <text class="pointer-events-auto text-size-sm cr-white">休息片刻，更多精彩马上到来</text>
                 </view>
@@ -31,7 +31,6 @@
     </view>
 </template>
 <script>
-    import componentIcon from './components/icon/icon.vue';
     import componentLiveVideo from './components/video/video.vue';
     import componentLiveContent from './components/live-content/live-content.vue';
     // 引入点赞效果组件
@@ -41,7 +40,6 @@
     const app = getApp();
     export default {
         components: {
-            componentIcon,
             componentLiveVideo,
             componentLiveContent,
             componentFullScreenLikeEffect
