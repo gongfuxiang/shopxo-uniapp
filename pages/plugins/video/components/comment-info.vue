@@ -1,13 +1,13 @@
 <template> 
-    <view class="flex-row align-s gap-10 wh-auto ht-auto"> 
+    <view class="flex-row align-s wh-auto ht-auto"> 
         <image class="comment-avatar" :src="propComment.user.avatar" mode="aspectFill"></image>
-        <view class="comment-info flex-col jc-c" @tap="comment_reply">
-            <view class="flex-row jc-sb gap-10">
-                <view class="comment-user">{{ propComment.user.user_name_view }}</view>
-                <view class="pr">
+        <view class="comment-info flex-col jc-c" style="margin-left: 20rpx;" @tap="comment_reply">
+            <view class="flex-row jc-sb">
+                <text class="comment-user">{{ propComment.user.user_name_view }}</text>
+                <view class="pr" style="margin-left: 20rpx;">
                     <!-- 直接实现下拉菜单 -->
                     <view class="comment-option" @tap.stop="toggle_dropdown">
-                        <iconfont name="icon-ellipsis" color="#999" size="28rpx" />
+                        <u-icon propName="ellipsis" propColor="#999" propSize="28rpx"></u-icon>
                     </view>
                     <!-- 下拉菜单 -->
                     <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop>
@@ -17,21 +17,21 @@
                     </view>
                 </view> 
             </view>
-            <view v-if="!isEmpty(propComment.reply_comments_text)" class="comment-reply-text">{{ propComment.reply_comments_text}}</view>
-            <view class="comment-text">{{ propComment.content }}</view>
+            <text v-if="!isEmpty(propComment.reply_comments_text)" class="comment-reply-text">{{ propComment.reply_comments_text}}</text>
+            <text class="comment-text">{{ propComment.content }}</text>
             <!-- <view class="comment-images flex-row align-c gap-5"> -->
             <template v-if="!isEmpty(propComment.images)">
                 <image :src="propComment.images" :data-image="propComment.images" @tap="upload_show_event" mode="aspectFill" class="comment-images"></image>
             </template>
             <!-- </view> -->
-            <view class="comment-operation flex-row align-c jc-sb gap-10">
-                <view class="comment-operation-left flex-row align-c gap-10">
-                    <view class="comment-time">{{ propComment.add_time }}</view>
-                    <view class="comment-reply flex-row align-c gap-5">{{ propReplyContent || $t('common.reply') }}({{ propComment.comments_count }})</view>
+            <view class="comment-operation flex-row align-c jc-sb">
+                <view class="comment-operation-left flex-row align-c">
+                    <text class="comment-time">{{ propComment.add_time }}</text>
+                    <text class="comment-reply flex-row align-c gap-5" style="margin-left: 20rpx;">{{ propReplyContent || $t('common.reply') }}({{ propComment.comments_count }})</text>
                 </view>
-                <view class="comment-operation-right flex-row align-c gap-5" @tap.stop="comment_like">
-                    <iconfont name="icon-givealike-o-fine" :color="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" size="28rpx" />
-                    <view class="comment-like-num">{{ propComment.give_thumbs_count || 0 }}</view>
+                <view class="comment-operation-right flex-row align-c" style="margin-left: 20rpx;" @tap.stop="comment_like">
+                    <u-icon propName="givealike-o-fine" :propColor="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" propSize="28rpx"></u-icon>
+                    <text class="comment-like-num" style="margin-left: 10rpx;">{{ propComment.give_thumbs_count || 0 }}</text>
                 </view>
             </view>
             <slot name="sub-comment"></slot>

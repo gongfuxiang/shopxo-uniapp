@@ -25,8 +25,8 @@
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
-                                    <u-icon propName="comment" propSize="60rpx" propColor="#fff" :data-id="video_item.id"></u-icon>
-                                    <text class="action-text" :data-id="video_item.id">{{ video_item.comments_count }}</text>
+                                    <u-icon propName="comment" propSize="60rpx" propColor="#fff"></u-icon>
+                                    <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
                                     <u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></u-icon>
@@ -86,39 +86,39 @@
 		</template>
         
         <!-- 评论弹窗 -->
-        <view v-if="show_comment_modal" class="comment-modal" @tap="close_comment_modal">
+        <view v-if="show_comment_modal" class="comment-modal" :style="width_height_style" @tap="close_comment_modal">
             <view class="comment-content bottom-line-exclude-bottom" @tap.stop :style="commentContentStyle">
                 <view class="comment-header" data-type="header" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
-                <view class="flex-1 flex-row oh" data-type="scroll" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+                <view class="flex-1 flex-row oh" :style="'width:' + windowWidth + 'px;'" data-type="scroll" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <!-- 评论内容区域 -->
-                    <scroll-view class="comment-list" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
-                        <view class="comment-scroll">
+                    <scroll-view class="comment-list flex-row" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
+                        <view class="comment-scroll flex-row" :style="'width:' + windowWidth + 'px;'">
                             <template v-if="active_comments && active_comments.length > 0">
-                                <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index">
-                                    <commentInfoComponent class="wh-auto ht-auto" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index" :style="'width:' + windowWidth + 'px;'">
+                                    <commentInfoComponent :style="'width: ' + windowWidth + 'px;'" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                     <!-- 子评论 -->
-                                    <view class="sub-comment flex-col jc-c gap-10 mt-10">
+                                    <view class="sub-comment flex-col jc-c gap-10 mt-10" >
                                         <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
                                             <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                                <commentInfoComponent class="wh-auto ht-auto" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                                <commentInfoComponent :style="'width:' + windowWidth + 'px;'" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                             </view>
                                         </view>
                                         <template v-if="comment_item.comments_count > 0">
                                             <template v-if="!comment_item.show_sub_comment">
-                                                <commentMoreComponent :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                <commentMoreComponent :style="'width:' + windowWidth + 'px;'" :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                             </template>
                                             <template v-else>
                                                 <template v-if="comment_item.show_sub_comment_loading">
-                                                    <loading-component></loading-component>
+                                                    <loading-component :style="'width:' + windowWidth + 'px;'"></loading-component>
                                                 </template>
                                                 <view v-else class="sub-comment-more flex-row align-c gap-10">
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
-                                                        <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                        <commentMoreComponent :style="'width:' + windowWidth + 'px;'" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                     </template>
-                                                    <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :style="'width:' + windowWidth + 'px;'" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                 </view>
                                             </template>
                                         </template>
@@ -148,7 +148,7 @@
                             </view>
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
+                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
                             <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                                 <u-icon propName="layout-module-single-images" propSize="32rpx" propColor="#999"></u-icon>
                             </component-upload>
@@ -262,16 +262,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                // 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
-                // #ifdef MP
-                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
-                // #endif
-                // #ifdef H5 || MP-TOUTIAO
-                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
-                // #endif
-                // #ifdef APP
                 top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
-                // #endif
                 data_list_loding_status:  1,
                 data_list_loding_msg: '',
                 video_data_list: [],
@@ -296,7 +287,6 @@
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
-                input_placeholder: $t('video-detail.video-detail.98yyuf'),
                 comment_input_value: '',
                 propMaxNum: 1,
                 form_images_list: [],
@@ -345,7 +335,7 @@
             },
             // 评论内容区域高度
             commentContentStyle() {
-                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); height: calc(${this.windowHeight * 0.7 } + 20rpx - ${this.move_distance}px);` : `transform: translateY(0); height: calc(${this.windowHeight * 0.7 } + 20rpx);`;
+                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); width:${this.windowWidth }px; height: calc(${this.windowHeight * 0.7 - 10} - ${this.move_distance}px);` : `transform: translateY(0); width:${this.windowWidth }px;height: calc(${this.windowHeight * 0.7 + 10 }px);`;
             },
             // 当前播放视频的索引
             current_video_index() { 
@@ -488,12 +478,8 @@
                     this.header_padding_left = padding_left;
                     this.menu_button_info = menu_button_info;
                     this.current_video_id = isEmpty(this.current_video_id) ? this.params.id : this.current_video_id;
-                    // top_content_style 为undefined， 在这里重新赋值
-                    console.log(this.top_content_style);
-                    this.top_content_style = 'padding-top:' + bar_height + 'px;padding-bottom:10px;';
-                    // if (!isEmpty(this.current_video_id)) {
-                        this.get_video_detail(this.current_video_id || 2);
-                    // }
+                    
+                    this.get_video_detail(this.current_video_id);
                 } catch (error) {
                     console.error('init error:', error);
                 }
@@ -624,15 +610,12 @@
                                 if (is_last == 1 && is_next == 1) {
                                     setTimeout(() => { 
                                         // 更新显示数据数据信息
-                                        this.update_display_data(true);
-                                        console.log(this.display_video_list, '1125');
+                                        this.update_display_data();
 
                                         if (this.display_video_list && this.display_video_list.length > 0) {
                                             // 更新分享信息
                                             this.update_share_info(this.display_video_list[this.current_index]);
                                             
-                                            this.create_video_contexts = [];
-                                            this.video_contexts = [];
                                             this.display_video_list.forEach((item, index) => {
                                                 // this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
                                                 this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
@@ -827,8 +810,6 @@
             toggle_play_pause() {
                 try {
                     const currentIndex = this.current_index;
-                    console.log(this.create_video_contexts);
-                    console.log(this.video_contexts);
                     // 检查视频上下文是否存在
                     const videoContext = this.create_video_contexts[currentIndex] || this.video_contexts[currentIndex];
                     if (!videoContext) {
@@ -956,7 +937,7 @@
             /*
              * 更新显示的视频数据
              */
-            update_display_data(flag = false) {
+            update_display_data() {
                 try {
                     let list = [];
                     // 如果当前索引为0，只显示当前元素和下一个元素
@@ -967,14 +948,8 @@
                     } else {
                         list = this.update_video_list([1, -1, 0]);
                     }
-                    // this.$set(this, 'display_video_list', list)
                     // 刷新数据
                     this.update_display_video_list(list);
-                    // 第一次需要强制刷新
-                    if (flag) {
-                        // 页面数据不更新，执行强制刷新
-                        this.$forceUpdate();
-                    }
                 } catch (error) {
                     console.error('update_display_data error:', error);
                 }
@@ -1295,7 +1270,6 @@
                                 this.form_images_list = [];
                                 this.comment_input_value = '';
                                 this.comments_reply_data = {};
-                                this.input_placeholder = $t('video-detail.video-detail.98yyuf');
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
@@ -2093,14 +2067,16 @@
     .comment-modal {
         position: fixed;
         top: 0;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 0;
+        // left: 50%;
+        // transform: translateX(-50%);
         width: 100%;
         height: 100%;
         max-width: 1600rpx;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 99;
         display: flex;
+        flex-direction: row;
         justify-content: center;
         align-items: flex-end;
     }
@@ -2121,6 +2097,7 @@
         box-sizing: border-box;
         border-bottom: 2rpx solid #eee;
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
@@ -2140,7 +2117,7 @@
         overflow: hidden;
     }
     
-    .comment-list .comment-scroll {
+    .comment-scroll {
         width: 100%;
         height: 100%;
         padding: 30rpx;
@@ -2160,6 +2137,7 @@
     }
     .comment-input-container {
         display: flex;
+        flex-direction: row;
         padding: 20rpx;
         border-top: 2rpx solid #eee;
     }

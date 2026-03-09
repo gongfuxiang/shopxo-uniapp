@@ -1,6 +1,6 @@
 <template>
     <view class="more-title flex-row align-c" @tap="comment_more_event">
-        <text>{{ propText || $t('common.expand') }}</text>
+        <text class="more-title">{{ propText || $t('common.expand') }}</text>
         <view class="ml-5">
             <iconfont :name="propIconName" color="#999" size="20rpx" />
         </view>
