@@ -34,7 +34,7 @@
                         <template v-if="!show_comment_modal">
                             <!-- Right Action Bar -->
                             <view class="right-actions">
-                                <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-value="video_item" @tap.stop="handle_like">
+                                <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_like">
                                     <iconfont name="icon-givealike" :color="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'" size="60rpx" />
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
@@ -933,8 +933,8 @@
                 }
                 var user = app.globalData.get_user_info(this, 'handle_like', e);
                 if (user != false) {
-                    const value = e?.currentTarget?.dataset?.value || {}; 
-                    this.set_givethumbs_num(value.id);
+                    const id = e?.currentTarget?.dataset?.id || ''; 
+                    this.set_givethumbs_num(id);
                 }
             },
             // 打开评论区

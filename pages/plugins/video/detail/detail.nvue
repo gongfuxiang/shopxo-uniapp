@@ -10,7 +10,7 @@
                         <video class="video" :style="width_height_style" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
 
                         <view v-if="paused && current_index == index" class="play-icon" :style="width_height_style">
-                            <view class="pr">
+                            <view class="flex-1 pr flex-row align-c jc-c">
                                 <view class="play-icon-bg"></view>
                                 <view class="pa z-i play-icon-iconfont">
                                     <u-icon propName="icon-bofang" propSize="120rpx" propColor="#4F3E35"></u-icon>
@@ -20,13 +20,13 @@
                         <template v-if="!show_comment_modal">
                             <!-- Right Action Bar -->
                             <view class="right-actions">
-                                <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-value="video_item" @tap.stop="handle_like">
+                                <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_like">
                                     <u-icon propName="givealike" propSize="60rpx" :propColor="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'"></u-icon>
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
-                                    <u-icon propName="comment" propSize="60rpx" propColor="#fff"></u-icon>
-                                    <text class="action-text">{{ video_item.comments_count }}</text>
+                                    <u-icon propName="comment" propSize="60rpx" propColor="#fff" :data-id="video_item.id"></u-icon>
+                                    <text class="action-text" :data-id="video_item.id">{{ video_item.comments_count }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
                                     <u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></u-icon>
@@ -58,8 +58,8 @@
                             </view>
 
                             <!-- Progress Bar -->
-                            <view class="progress-bar-container" v-if="current_index == index" :style="'width: ' + windowHeight + 'px'">
-                                <slider class="progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" @tap.stop="handle_slider_change" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
+                            <view class="progress-bar-container" v-if="current_index == index" :style="'width: ' + (windowWidth - 20) + 'px'">
+                                <slider class="flex-1 progress-slider" :value="current_video_progress" :max="current_video_duration" @change.stop="handle_slider_change" @changing="handle_slider_changing" @tap.stop="handle_slider_change" block-size="14" activeColor="#FFFFFF" backgroundColor="rgba(255, 255, 255, 0.4)" />
                                 <text class="time-display">{{ format_time(current_video_progress) }} / {{ format_time(current_video_duration) }}</text>
                             </view>
                         </template>
@@ -292,7 +292,7 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0, // 评论拖拽距离
-                current_video_id: 5, // 当前播放视频的ID
+                current_video_id: 1, // 当前播放视频的ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
@@ -491,7 +491,9 @@
                     // top_content_style 为undefined， 在这里重新赋值
                     console.log(this.top_content_style);
                     this.top_content_style = 'padding-top:' + bar_height + 'px;padding-bottom:10px;';
-                    this.get_video_detail(this.current_video_id);
+                    // if (!isEmpty(this.current_video_id)) {
+                        this.get_video_detail(this.current_video_id || 2);
+                    // }
                 } catch (error) {
                     console.error('init error:', error);
                 }
@@ -629,11 +631,11 @@
                                             // 更新分享信息
                                             this.update_share_info(this.display_video_list[this.current_index]);
                                             
+                                            this.create_video_contexts = [];
+                                            this.video_contexts = [];
                                             this.display_video_list.forEach((item, index) => {
                                                 // this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
-                                                if (this.create_video_contexts) {
-                                                    this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
-                                                }
+                                                this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
                                                 //#ifdef H5
                                                 if (document.getElementById(`video_${index}`) != null && this.video_contexts) { 
                                                     // this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
@@ -694,7 +696,7 @@
                     }
                     // 其他情况 -> 返回 0
                     return 0;
-                catch (error) {
+                } catch (error) {
                     console.error('calculate_new_index error:', error);
                 }   
             },
@@ -770,7 +772,7 @@
                         this.update_display_data();
                     }
                 } catch (error) {
-                     console.error('process_swiper_change error:', error);
+                    console.error('process_swiper_change error:', error);
                 }
             },
             update_video_list(offsets) {
@@ -783,7 +785,7 @@
                         }
                     }
                     return list;
-                catch (error) {
+                } catch (error) {
                     console.error('update_video_list error:', error);
                 }
             },
@@ -825,6 +827,8 @@
             toggle_play_pause() {
                 try {
                     const currentIndex = this.current_index;
+                    console.log(this.create_video_contexts);
+                    console.log(this.video_contexts);
                     // 检查视频上下文是否存在
                     const videoContext = this.create_video_contexts[currentIndex] || this.video_contexts[currentIndex];
                     if (!videoContext) {
@@ -1064,8 +1068,8 @@
                     }
                     var user = app.globalData.get_user_info(this, 'handle_like', e);
                     if (user != false) {
-                        const value = e?.currentTarget?.dataset?.value || {}; 
-                        this.set_givethumbs_num(value.id);
+                        // const id = e?.currentTarget?.dataset?.id || ''; 
+                        this.set_givethumbs_num(this.current_video_id);
                     }
                 } catch (error) {
                     console.error('handle_like error:', error);
@@ -1074,23 +1078,27 @@
             // 打开评论区
             handle_comment(e) {
                 try {
-                    const id = e?.currentTarget?.dataset?.id || '';
-                    const old_data = this.video_data_list.find(item => item.id == id);
-                    // 初始化评论数据
-                    const new_data = old_data.comments_list.map(item1 => ({
-                        ...item1,
-                        show_sub_comment: false,
-                        show_sub_comment_loading: false,
-                        page: 0,
-                        sub_comments: [],
-                    }));
-
-                    this.active_comments = new_data;
-                    this.comments_page = 1;
-                    this.comments_page_total = 5;
-                    this.comment_item_loading = false;
-                    this.show_comment_modal = true;
-                    this.move_distance = 0;
+                    e.stopPropagation();
+                    // const id = this.current_video_id;
+                    const old_data = this.video_data_list.find(item => item.id == this.current_video_id);
+                    console.log(old_data);
+                    if (old_data && old_data.comments_list) {
+                        console.log('2225');
+                        // 初始化评论数据
+                        const new_data = old_data.comments_list.map(item1 => ({
+                            ...item1,
+                            show_sub_comment: false,
+                            show_sub_comment_loading: false,
+                            page: 0,
+                            sub_comments: [],
+                        }));
+                        this.active_comments = new_data;
+                        this.comments_page = 1;
+                        this.comments_page_total = 5;
+                        this.comment_item_loading = false;
+                        this.show_comment_modal = true;
+                        this.move_distance = 0;
+                    }
                 } catch (error) {
                     console.error('handle_comment error:', error);
                 }
@@ -1508,8 +1516,12 @@
                         duration = e.detail.duration;
                     }
                     // #endif
-                    this.current_video_duration = duration;
-                    this.current_video_progress = e.detail.currentTime;
+                    // this.$nextTick(() => {
+                        // this.current_video_duration = duration;
+                        // this.current_video_progress = e.detail.currentTime;
+                    // })
+                    this.$set(this, 'current_video_duration', duration);
+                    this.$set(this, 'current_video_progress', e.detail.currentTime)
                 } catch (error) {
                     console.error('handle_time_update error:', error);
                 }
@@ -2059,6 +2071,7 @@
         left: 20rpx;
         right: 20rpx;
         display: flex;
+        flex-direction: row;
         align-items: center;
         z-index: 11;
     }

@@ -1,6 +1,6 @@
 <template> 
     <view class="search-bar pr" :style="search_width_style">
-        <view class="search-bar-w flex-row align-c pr" :style="search_width_style">
+        <view class="flex-1 search-bar-w">
             <view class="search-iconfont-container">
                 <u-icon propName="search-fine"></u-icon>
             </view>
@@ -50,9 +50,8 @@ export default {
         },
         propWidth: {
             handler(newVal, oldVal) {
-                console.log(newVal, oldVal);
                 if (newVal !== oldVal && newVal > 0) {
-                    this.search_width_style = 'width:' + newVal - 40 + 'px;';
+                    this.search_width_style = 'width:' + newVal - 40 + 'px !important ;';
                 }
             },
             immediate: true
@@ -83,6 +82,10 @@ export default {
 .search-bar-w {
     width: 100%;
     height: 80rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #fff;
 }
 /* 搜索框 */
 .search-bar {
@@ -91,6 +94,10 @@ export default {
 	border: 2rpx solid #313131;
     height: 80rpx;
 	margin: 0 24rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
 }
 .search-iconfont-container {
     padding: 16rpx 30rpx;
@@ -115,15 +122,19 @@ input {
     font-weight: 500;
     font-size: 28rpx;
     color: #333333;
-    line-height: 20px;
+    line-height: 40rpx;
     padding: 16rpx 30rpx 16rpx 20rpx;
+    background: blue;
 }
 .search-mask {
     position: absolute;
     top: 0;
     left: 0;
+    //#ifndef APP-NVUE
     width: 100%;
+    //#endif
     height: 80rpx;
     z-index: 99;
+    background: red;
 }
 </style>
