@@ -1,12 +1,15 @@
 <template> 
-    <view class="search-bar pr flex-row align-c" :style="search_width_style">
-        <view v-if="propIsDisabled" class="search-mask" @tap="disabled_search"></view>
-        <view class="search-iconfont-container">
-            <iconfont name="icon-search-fine"></iconfont>
+    <view class="search-bar pr" :style="search_width_style">
+        <view class="search-bar-w flex-row align-c pr" :style="search_width_style">
+            <view class="search-iconfont-container">
+                <u-icon propName="search-fine"></u-icon>
+            </view>
+            <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
+            <view class="search-line"></view>
+            <text class="search-button" @tap="perform_search">{{$t('common.search')}}</text>
         </view>
-        <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
-        <view class="search-line"></view>
-        <text class="search-button" @tap="perform_search">{{$t('common.search')}}</text>
+        <!-- 禁用搜索时的蒙层，nvue页面不支持z-index属性 是按照顺序来判断层级-->
+        <view v-if="propIsDisabled" class="search-mask" :style="search_width_style" @tap="disabled_search"></view>
     </view>
 </template>
 
@@ -77,11 +80,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search-bar-w {
+    width: 100%;
+    height: 80rpx;
+}
 /* 搜索框 */
 .search-bar {
-	display: flex;
-    flex-direction: row;
-	align-items: center;
 	background: rgba(255,255,255,0.5);
 	border-radius: 38rpx;
 	border: 2rpx solid #313131;
