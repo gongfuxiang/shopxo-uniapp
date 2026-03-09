@@ -331,11 +331,14 @@
         computed: {
             // 视频列表高度
             swiperStyle() {
-                return this.show_comment_modal ? (this.move_distance > 0 ? `height: calc(${this.windowHeight * 0.3 } + ${this.move_distance}px);` : `height: ${this.windowHeight * 0.3 };`) : `height: ${ this.windowHeight };`;
+                return this.show_comment_modal ? (this.move_distance > 0 ? `height: ${Math.round(this.windowHeight * 0.3) + this.move_distance}px;` : `height: ${Math.round(this.windowHeight * 0.3)}px;`) : `height: ${this.windowHeight}px;`;
             },
             // 评论内容区域高度
             commentContentStyle() {
-                return this.show_comment_modal && this.move_distance > 0 ? `transform: translateY(3px); width:${this.windowWidth }px; height: calc(${this.windowHeight * 0.7 - 10} - ${this.move_distance}px);` : `transform: translateY(0); width:${this.windowWidth }px;height: calc(${this.windowHeight * 0.7 + 10 }px);`;
+                const baseHeight = Math.round(this.windowHeight * 0.7);
+                return this.show_comment_modal && this.move_distance > 0 
+                    ? `transform: translateY(3px); width:${this.windowWidth}px; height: ${baseHeight - 10 - this.move_distance}px;` 
+                    : `transform: translateY(0); width:${this.windowWidth}px; height: ${baseHeight + 10}px;`;
             },
             // 当前播放视频的索引
             current_video_index() { 
@@ -2068,11 +2071,6 @@
         position: fixed;
         top: 0;
         left: 0;
-        // left: 50%;
-        // transform: translateX(-50%);
-        width: 100%;
-        height: 100%;
-        max-width: 1600rpx;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 99;
         display: flex;
@@ -2082,8 +2080,6 @@
     }
     
     .comment-content {
-        width: 100%;
-        height: 70%;
         background-color: #fff;
         border-top-left-radius: 30rpx;
         border-top-right-radius: 30rpx;
@@ -2118,8 +2114,8 @@
     }
     
     .comment-scroll {
-        width: 100%;
-        height: 100%;
+        width: 750rpx;
+        height: 854rpx;
         padding: 30rpx;
         box-sizing: border-box;
     }
@@ -2176,7 +2172,7 @@
     
     /* 新的举报弹窗样式 */
     .report-content {
-        width: 100%;
+        width: 750rpx;
         max-width: 750rpx;
         background-color: #fff;
         border-radius: 20rpx;
