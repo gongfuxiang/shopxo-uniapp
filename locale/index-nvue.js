@@ -18,7 +18,11 @@ export default {
         "common_complaint": "举报",
         "upload_b33f08": "上传图片",
         "common_warm_tips": "温馨提示",
-        "order_psi67g": "删除后不可恢复、继续吗？"
+        "order_psi67g": "删除后不可恢复、继续吗？",
+        "common_internet_error_tips": "网络错误，请稍后重试",
+        "common_sub_error_retry_tips": "提交失败，请重试",
+        "video_detail_98yyuf": "请输入评论内容",
+        "common_delete_confirm_tips": "删除后不可恢复、继续吗？"
 	},
 	"en": {
 		"common_reply": "Reply",
@@ -39,6 +43,10 @@ export default {
         "common_complaint": "Complaint",
         "upload_b33f08": "Upload",
         "common_warm_tips": "Kind reminder",
-        "order_psi67g": "Unable to recover or continue after deletion?"
+        "order_psi67g": "Unable to recover or continue after deletion?",
+        "common_internet_error_tips": "Network error, please try again later",
+        "common_sub_error_retry_tips": "Submission failed, please try again",
+        "video_detail_98yyuf": "Please enter comment content",
+        "common_delete_confirm_tips": "Unable to recover or continue after deletion?"
 	}
 }

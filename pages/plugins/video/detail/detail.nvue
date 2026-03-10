@@ -539,7 +539,7 @@
                         },
                         fail: (err) => {
                             this.data_list_loding_status = 2;
-                            this.data_list_loding_msg = $t('common.internet_error_tips');
+                            this.data_list_loding_msg = t('common_internet_error_tips');
                         }
                     });
                 } catch (error) {
@@ -1325,7 +1325,7 @@
                                         }
                                     })
                                 }
-                                // 清空输入框, 更新数据内容
+                                // 清空输入框，更新数据内容
                                 this.active_comments = this.active_comments;
                                 this.form_images_list = [];
                                 this.comment_input_value = '';
@@ -1334,16 +1334,15 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common_sub_error_retry_tips'));
                                 }
                             }
                         }
                     });
                 } catch (error) {
-                    console.error('send_comment error:', error);
+                  console.error('send_comment error:', error);
                 }
             },
-
             // 展开子评论
             open_sub_comment(id, is_level) {
                 try {
@@ -1508,7 +1507,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common_sub_error_retry_tips'));
                                 }
                             }
                         }
@@ -1744,13 +1743,13 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common_sub_error_retry_tips'));
                                 }
                             }
                         }
                     });
                 } catch (error) {
-                    console.error('delete_comment error:', error);
+                   console.error('send_comment error:', error);
                 }
             },
             // 删除评论数据处理
@@ -1902,7 +1901,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast($t('common.sub_error_retry_tips'));
+                                    app.globalData.showToast(t('common_sub_error_retry_tips'));
                                 }
                             }
                         }
