@@ -18,6 +18,7 @@
         ]
     },
     "dependencies": {
-        "hls.js": "^1.6.15"
+        "hls.js": "^1.6.15",
+        "jweixin-module": "^1.6.0"
     }
 }

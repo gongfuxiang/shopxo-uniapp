@@ -88,13 +88,13 @@
         <!-- 评论弹窗 -->
         <view v-if="show_comment_modal" class="comment-modal" :style="width_height_style" @tap="close_comment_modal">
             <view class="comment-content bottom-line-exclude-bottom" @tap.stop :style="commentContentStyle">
-                <view class="comment-header" data-type="header" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+                <view class="comment-header" data-type="header" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
                 </view>
-                <view class="flex-1 flex-row oh" :style="'width:' + windowWidth + 'px;'" data-type="scroll" @tap.stop @touchstart="handle_comment_touch_start" @touchmove="handle_comment_touch_move" @touchend="handle_comment_touch_end">
+                <view class="flex-1 flex-row oh" :style="'width:' + windowWidth + 'px;'" data-type="scroll" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <!-- 评论内容区域 -->
-                    <scroll-view class="comment-list flex-row" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
+                    <scroll-view class="comment-list flex-row" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation :scroll-with-touch="!is_dragging" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                         <view class="comment-scroll flex-row" :style="'width:' + windowWidth + 'px;'">
                             <template v-if="active_comments && active_comments.length > 0">
                                 <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index" :style="'width:' + windowWidth + 'px;'">
@@ -283,7 +283,8 @@
                 comment_start_y: 0, // 评论开始拖拽位置
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0, // 评论拖拽距离
-                current_video_id: 1, // 当前播放视频的ID
+                is_dragging: false, // 是否正在拖拽中
+                current_video_id: 1, // 当前播放视频的 ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
@@ -348,7 +349,6 @@
                     return -1;
                 }
             },
-            // 如果是第一个或者最后一个的情况下，取消无限轮播
             close_circular() {
                 try {
                     if (this.video_data_list && this.video_data_list.length > 0) {
@@ -1180,6 +1180,10 @@
                     const type = e?.target?.dataset?.type || 'header';
                     // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
                     if ((this.comment_scroll_top <= 5 && type == 'scroll') || type == 'header') {
+                        // 阻止默认行为，防止页面滚动干扰
+                        if (e.preventDefault) {
+                            e.preventDefault();
+                        }
                         this.comment_current_y = e?.touches[0]?.pageY || 0;
                         this.move_distance = this.comment_current_y - this.comment_start_y;
                     }
@@ -2085,7 +2089,7 @@
         border-top-right-radius: 30rpx;
         display: flex;
         flex-direction: column;
-        transition: transform 0.3s ease;
+        transition: height 0.3s ease;
     }
     
     .comment-header {

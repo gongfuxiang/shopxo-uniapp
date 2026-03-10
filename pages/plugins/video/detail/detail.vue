@@ -981,7 +981,7 @@
                 // 设置新的防抖定时器
                 this.comment_scroll_debounce_timer = setTimeout(() => {
                     this.comment_scroll_top = e.detail.scrollTop;
-                }, 200); // 100ms防抖延迟
+                }, 100); // 100ms防抖延迟
             }, 
             // 评论滚动到底部事件
             handle_comment_to_lower_scroll() {
