@@ -298,9 +298,7 @@
                 video_switch_debounce_timer: null, // 视频切换防抖定时器
                 video_cleanup_timer: null, // 视频清理定时器
                 comment_scroll_debounce_timer: null, // 评论滚动防抖定时器
-                // 添加下拉菜单状态管理
-                active_dropdown_id: null, // 当前显示下拉菜单的评论ID
-                params: {},
+                comment_move_throttle_timer: null, // 评论拖拽节流定时器
                 header_padding_left: '',
                 report_type_list: [], // 举报类型列表
                 current_main_index: 0, // 默认选中第一个举报原因
@@ -338,7 +336,7 @@
             commentContentStyle() {
                 const baseHeight = Math.round(this.windowHeight * 0.7);
                 return this.show_comment_modal && this.move_distance > 0 
-                    ? `transform: translateY(6px); width:${this.windowWidth}px; height: ${baseHeight - 10 - this.move_distance}px;` 
+                    ? `transform: translateY(3px); width:${this.windowWidth}px; height: ${baseHeight - 10 - this.move_distance}px;` 
                     : `transform: translateY(0); width:${this.windowWidth}px; height: ${baseHeight + 10}px;`;
             },
             // 当前播放视频的索引
@@ -440,6 +438,9 @@
             }
             if (this.comment_scroll_debounce_timer) {
                 clearTimeout(this.comment_scroll_debounce_timer);
+            }
+            if (this.comment_move_throttle_timer) {
+                clearTimeout(this.comment_move_throttle_timer);
             }
 
             // 清理所有视频资源
@@ -1098,6 +1099,12 @@
                     this.is_dragging = false; // 重置拖拽状态
                     this.comment_start_y = 0; // 重置起始位置
                     this.comment_current_y = 0; // 重置当前位置
+                    
+                    // 清理节流定时器
+                    if (this.comment_move_throttle_timer) {
+                        clearTimeout(this.comment_move_throttle_timer);
+                        this.comment_move_throttle_timer = null;
+                    }
                 } catch (error) {
                     console.error('close_comment_modal error:', error);
                 }
@@ -1200,14 +1207,24 @@
                         if (distance > 10) {
                             this.is_dragging = true;
                             this.comment_current_y = current_y;
+                            
+                            // 使用节流控制 move_distance 的更新频率，避免计算属性频繁触发导致抖动
+                            if (this.comment_move_throttle_timer) {
+                                return;
+                            }
+                            
                             this.move_distance = distance;
+                            
+                            // 设置节流定时器，16ms 约等于 60fps，保证流畅度同时避免过度更新
+                            this.comment_move_throttle_timer = setTimeout(() => {
+                                this.comment_move_throttle_timer = null;
+                            }, 80);
                         }
                     }
                 } catch(error) {
                     console.error('handle_comment_touch_move error:', error);
                 }
             },
-
             // 评论拖拽结束
             handle_comment_touch_end(e) {
                 try {
@@ -1222,12 +1239,17 @@
                             this.move_distance = 0;
                         }
                         this.is_dragging = false; // 拖拽结束，重置状态
+                        
+                        // 清理节流定时器
+                        if (this.comment_move_throttle_timer) {
+                            clearTimeout(this.comment_move_throttle_timer);
+                            this.comment_move_throttle_timer= null;
+                        }
                     }
                 } catch (error) {
                     console.error('handle_comment_touch_end error:', error);
                 }
             },
-
             // 评论
             send_comment() {
                 try {
@@ -2106,7 +2128,7 @@
         border-top-right-radius: 30rpx;
         display: flex;
         flex-direction: column;
-        transition: transform 0.3s ease-in;
+
     }
     
     .comment-header {
