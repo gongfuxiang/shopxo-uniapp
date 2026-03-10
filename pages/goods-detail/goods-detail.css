@@ -244,7 +244,7 @@
 }
 
 /**
- * 价格信息与秒杀结合
+ * 价格信息与倒计时（限时秒杀，预售）
  */
 .countdown-content {
     width: 38%;
@@ -278,7 +278,7 @@
 .goods-base-price-countdown .price-content .unit{
     color: #ffcece !important;
 }
-.price-content .price-icon.seckill {
+.price-content .price-icon.countdown-drift {
     position: absolute;
     right: 20rpx;
     bottom: 20rpx;

@@ -59,7 +59,7 @@
                         <view :class="'flex-row jc-sa gap-20 buy-nav-btn-number-' + (opt_button.length || 0)">
                             <block v-for="(item, index) in opt_button" :key="index">
                                 <view v-if="(item.name || null) != null && (item.type || null) != null" class="item">
-                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" :data-business="item.business || ''" hover-class="none">{{ item.name }}</button>
+                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" :data-business="item.business || ''" :data-buylink="item.buylink || ''" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
                         </view>
@@ -181,7 +181,6 @@
                     goods_spec_base_price: goods.price,
                     goods_spec_base_original_price: goods.original_price || 0,
                     goods_spec_base_inventory: goods.inventory,
-                    goods_spec_base_images: goods.images,
                     goods_spec_base_inventory_unit: goods.inventory_unit,
                     goods_show_price_unit: goods.show_price_unit,
                     goods_show_original_price_unit: goods.show_original_price_unit,
@@ -192,10 +191,16 @@
                     is_success_tips: is_success_tips,
                     goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
                 });
+                // 封面仅首次初始化
+                if((this.goods_spec_base_images || null) == null) {
+                    this.setData({
+                        goods_spec_base_images: goods.images,
+                    });
+                }
 
                 // 初始化不能选择规格处理
                 var is_init = (params.is_init === undefined) ? 1 : params.is_init;
-                this.spec_handle_dont(0, is_init);
+                this.spec_handle_dont(null, is_init);
 
                 // 获取规格详情
                 this.get_spec_detail();
@@ -625,29 +630,30 @@
                 }
 
                 // 是否不能选择
-                key = parseInt(key);
-                for (var i in temp_spec) {
-                    for (var k in temp_spec[i]['value']) {
-                        if (i > key) {
-                            temp_spec[i]['value'][k]['is_dont'] = 'spec-dont-choose';
-                            temp_spec[i]['value'][k]['is_disabled'] = '';
-                            temp_spec[i]['value'][k]['is_active'] = '';
-                        } else {
-                            if (is_init == 1) {
+                if(key !== null) {
+                    key = parseInt(key);
+                    for (var i in temp_spec) {
+                        for (var k in temp_spec[i]['value']) {
+                            if (i > key) {
+                                temp_spec[i]['value'][k]['is_dont'] = 'spec-dont-choose';
+                                temp_spec[i]['value'][k]['is_disabled'] = '';
                                 temp_spec[i]['value'][k]['is_active'] = '';
+                            } else {
+                                if (is_init == 1) {
+                                    temp_spec[i]['value'][k]['is_active'] = '';
+                                }
+                            }
+
+                            // 当只有一个规格的时候
+                            if (key == 0 && temp_spec.length == 1) {
+                                temp_spec[i]['value'][k]['is_disabled'] = (temp_spec[i]['value'][k]['is_only_level_one'] || null) != null && parseInt(temp_spec[i]['value'][k]['inventory'] || 0) <= 0 ? 'spec-items-disabled' : '';
                             }
                         }
-
-                        // 当只有一个规格的时候
-                        if (key == 0 && temp_spec.length == 1) {
-                            temp_spec[i]['value'][k]['is_disabled'] = (temp_spec[i]['value'][k]['is_only_level_one'] || null) != null && parseInt(temp_spec[i]['value'][k]['inventory'] || 0) <= 0 ? 'spec-items-disabled' : '';
-                        }
                     }
+                    this.setData({
+                        goods_spec_choose: temp_spec,
+                    });
                 }
-
-                this.setData({
-                    goods_spec_choose: temp_spec,
-                });
             },
 
             // 数量输入事件
@@ -771,6 +777,7 @@
                     var type = (e == null) ? this.buy_event_type : (e.currentTarget.dataset.type || this.buy_event_type);
                     var value = (e == null) ? null : (e.currentTarget.dataset.value || null);
                     var business = (e == null) ? null : (e.currentTarget.dataset.business || null);
+                    var buylink = (e == null) ? null : (e.currentTarget.dataset.buylink || null);
                     switch (type) {
                         // 展示型、商品页面规格选择展示型 拨打电话操作
                         case 'show':
@@ -798,13 +805,13 @@
                             // 转换数据
                             var data_params = encodeURIComponent(base64.encode(JSON.stringify(data)));
 
-                            // 是否互联网医院插件-开处方
-                            if(business == 'plugins-hospital') {
-                                app.globalData.url_open('/pages/plugins/hospital/prescription/prescription?data=' + data_params);
-                            } else {
-                                // 默认进去订单确认页面
-                                app.globalData.url_open('/pages/buy/buy?data=' + data_params);
+                            // 购买链接、默认系统购买页面
+                            if(buylink == null) {
+                                buylink = '/pages/buy/buy';
                             }
+                            // 进去订单确认页面
+                            app.globalData.url_open(buylink+'?data=' + data_params);
+
                             // 关闭弹窗
                             this.popup_close_event();
                             break;
