@@ -51,10 +51,8 @@
     const dom = weex.requireModule('dom');
     // nvue页面在方法中使用时的处理
     import { initVueI18n } from '@dcloudio/uni-i18n';
-    import en from '@/locale/en.json'
-    import zhHans from '@/locale/zh.json'
-    const messages = { en, 'zh-Hans': zhHans }
-    const { t } = initVueI18n(messages)
+    import indexNvue from '@/locale/index-nvue.js';
+    const { t } = initVueI18n(indexNvue)
     //#endif
    import { isEmpty } from '@/common/js/common/common.js';
    export default {
