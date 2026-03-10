@@ -338,7 +338,7 @@
             commentContentStyle() {
                 const baseHeight = Math.round(this.windowHeight * 0.7);
                 return this.show_comment_modal && this.move_distance > 0 
-                    ? `transform: translateY(3px); width:${this.windowWidth}px; height: ${baseHeight - 10 - this.move_distance}px;` 
+                    ? `transform: translateY(6px); width:${this.windowWidth}px; height: ${baseHeight - 10 - this.move_distance}px;` 
                     : `transform: translateY(0); width:${this.windowWidth}px; height: ${baseHeight + 10}px;`;
             },
             // 当前播放视频的索引
@@ -1076,6 +1076,10 @@
                         this.comment_item_loading = false;
                         this.show_comment_modal = true;
                         this.move_distance = 0;
+                        this.is_dragging = false; // 重置拖拽状态
+                        this.comment_start_y = 0; // 重置起始位置
+                        this.comment_current_y = 0; // 重置当前位置
+                        this.comment_scroll_top = 0 + Math.random(); // 滚动到最顶部
                     }
                 } catch (error) {
                     console.error('handle_comment error:', error);
@@ -1091,6 +1095,9 @@
                     this.form_images_list = []; // 清空上传图片
                     this.comment_input_value = ''; // 清空输入框内容
                     this.move_distance = 0;
+                    this.is_dragging = false; // 重置拖拽状态
+                    this.comment_start_y = 0; // 重置起始位置
+                    this.comment_current_y = 0; // 重置当前位置
                 } catch (error) {
                     console.error('close_comment_modal error:', error);
                 }
@@ -1168,7 +1175,8 @@
                     if ((this.comment_scroll_top <= 5 && type == 'scroll') || type == 'header') {
                         this.comment_start_y = e?.touches[0]?.pageY || 0;
                         this.comment_current_y = this.comment_start_y;
-                        this.move_distance = 0;   
+                        this.move_distance = 0;
+                        this.is_dragging = false; // 开始时不设置为拖拽状态，需要移动一定距离后才算拖拽
                     }
                 } catch (error) {
                     console.error('handle_comment_touch_start error:', error);
@@ -1184,10 +1192,18 @@
                         if (e.preventDefault) {
                             e.preventDefault();
                         }
-                        this.comment_current_y = e?.touches[0]?.pageY || 0;
-                        this.move_distance = this.comment_current_y - this.comment_start_y;
+                        
+                        const current_y = e?.touches[0]?.pageY || 0;
+                        const distance = current_y - this.comment_start_y;
+                        
+                        // 只有向下移动且距离超过阈值（30px）才开始拖拽，避免误触和抖动
+                        if (distance > 10) {
+                            this.is_dragging = true;
+                            this.comment_current_y = current_y;
+                            this.move_distance = distance;
+                        }
                     }
-                } catch (error) {
+                } catch(error) {
                     console.error('handle_comment_touch_move error:', error);
                 }
             },
@@ -1205,6 +1221,7 @@
                         } else {
                             this.move_distance = 0;
                         }
+                        this.is_dragging = false; // 拖拽结束，重置状态
                     }
                 } catch (error) {
                     console.error('handle_comment_touch_end error:', error);
@@ -2089,7 +2106,7 @@
         border-top-right-radius: 30rpx;
         display: flex;
         flex-direction: column;
-        transition: height 0.3s ease;
+        transition: transform 0.3s ease-in;
     }
     
     .comment-header {
