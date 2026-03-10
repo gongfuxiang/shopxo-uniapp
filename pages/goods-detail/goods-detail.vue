@@ -76,13 +76,13 @@
             </view>
 
             <!-- 价格信息 -->
-            <view class="goods-base-price bg-white oh spacing-mb" :class="countdown_is_valid ? 'goods-base-price-countdown' : ''">
+            <view class="goods-base-price bg-white oh spacing-mb" :class="countdown_is_valid ? 'goods-base-price-countdown' : ''" :style="countdown_is_valid ? 'background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
                 <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
                 <block v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
                     <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsAlone="true"></component-wholesale-rules>
                 </block>
                 <!-- 价格 -->
-                <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="countdown_is_valid ? 'background-image: url(' + countdown_data.config.goods_detail_header + ')' : ''">
+                <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="countdown_is_valid ? 'background-image: url(' + countdown_data.config.goods_detail_header + ');background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
                     <!-- 批发插件是否开启隐藏价格信息 -->
                     <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
                         <!-- 售价 -->

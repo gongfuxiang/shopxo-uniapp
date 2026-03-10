@@ -254,10 +254,10 @@
     margin-bottom: 10rpx;
 }
 .goods-base-price-countdown {
-    background: #e84742 !important;
+    background-color: #e84742 !important;
 }
 .goods-base-price-countdown .price-content {
-    background: #f9534e;
+    background-color: #f9534e;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 60%;
