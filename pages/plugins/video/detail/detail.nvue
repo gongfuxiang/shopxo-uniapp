@@ -94,31 +94,31 @@
                 </view>
                 <view class="flex-1 flex-row oh" :style="'width:' + windowWidth + 'px;'" data-type="scroll" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <!-- 评论内容区域 -->
-                    <scroll-view class="comment-list flex-row" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation :scroll-with-touch="!is_dragging" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
-                        <view class="comment-scroll flex-row" :style="'width:' + windowWidth + 'px;'">
+                    <scroll-view class="flex-1 comment-list flex-row bg-red" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation :scroll-with-touch="!is_dragging" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
+                        <view class="comment-scroll" :style="'width:' + windowWidth + 'px;'">
                             <template v-if="active_comments && active_comments.length > 0">
-                                <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index" :style="'width:' + windowWidth + 'px;'">
-                                    <commentInfoComponent :style="'width: ' + windowWidth + 'px;'" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index" :style="window_more_style">
+                                    <commentInfoComponent :style="window_more_style" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                     <!-- 子评论 -->
                                     <view class="sub-comment flex-col jc-c gap-10 mt-10" >
                                         <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
                                             <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                                <commentInfoComponent :style="'width:' + windowWidth + 'px;'" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                                <commentInfoComponent :style="window_more_style" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                             </view>
                                         </view>
                                         <template v-if="comment_item.comments_count > 0">
                                             <template v-if="!comment_item.show_sub_comment">
-                                                <commentMoreComponent :style="'width:' + windowWidth + 'px;'" :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="1" :propText="'—— '+ $t('common.expand') + (comment_item.comments_count ? comment_item.comments_count || 0 : 0) + $t('ask-comments.ask-comments.ymmd24')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                             </template>
                                             <template v-else>
                                                 <template v-if="comment_item.show_sub_comment_loading">
-                                                    <loading-component :style="'width:' + windowWidth + 'px;'"></loading-component>
+                                                    <loading-component :style="window_more_style"></loading-component>
                                                 </template>
                                                 <view v-else class="sub-comment-more flex-row align-c gap-10">
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
-                                                        <commentMoreComponent :style="'width:' + windowWidth + 'px;'" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                        <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                     </template>
-                                                    <commentMoreComponent :style="'width:' + windowWidth + 'px;'" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                 </view>
                                             </template>
                                         </template>
@@ -313,7 +313,7 @@
                 is_manual_pause: false, // 是否手动暂停
                 windowWidth: 0,
                 windowHeight: 0,
-                
+                padding_width: 0,
             };
         },
         components: {
@@ -360,6 +360,9 @@
             },
             width_height_style() {
                 return `width: ${ this.windowWidth }px;height: ${ this.windowHeight }px;`;
+            },
+            window_more_style() {
+                return `width: ${ this.windowWidth - this.padding_width }px;`
             }
         },
         onLoad(params) {
@@ -479,6 +482,8 @@
                     // #ifdef MP-ALIPAY
                         padding_left = video_get_top_left_padding();
                     // #endif
+                    this.padding_width = app.globalData.rpx_to_px(30);
+                    
                     this.header_padding_left = padding_left;
                     this.menu_button_info = menu_button_info;
                     this.current_video_id = isEmpty(this.current_video_id) ? this.params.id : this.current_video_id;
@@ -1333,6 +1338,7 @@
             // 展开子评论
             open_sub_comment(id, is_level) {
                 try {
+                    console.log(id);
                     const comment = this.active_comments.find(item => item.id == id);
                     if (comment) {
                         comment.show_sub_comment = true;
@@ -2157,8 +2163,6 @@
     }
     
     .comment-scroll {
-        width: 750rpx;
-        height: 854rpx;
         padding: 30rpx;
         box-sizing: border-box;
     }
