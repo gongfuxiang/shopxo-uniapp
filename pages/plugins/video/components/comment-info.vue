@@ -6,7 +6,7 @@
                 <text class="comment-user">{{ propComment.user.user_name_view }}</text>
                 <view class="pr" style="margin-left: 20rpx;">
                     <!-- 直接实现下拉菜单 -->
-                    <view :id="'comment-option-' + propId" class="comment-option" @tap.stop="toggle_dropdown">
+                    <view ref="commentOption" class="comment-option" @tap.stop="toggle_dropdown">
                         <u-icon propName="ellipsis" propColor="#999" propSize="28rpx"></u-icon>
                     </view>
                     <!-- 下拉菜单 -->
@@ -16,8 +16,8 @@
                     <!-- #ifndef APP-NVUE -->
                     <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop></view>
                     <!-- #endif -->
-                        <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item" :data-value="item" @tap="handle_dropdown_item_click">
-                            <text>{{ item.label }}</text>
+                        <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item" :data-value="item" @tap.stop="handle_dropdown_item_click">
+                            <text style="font-size: 28rpx;color: #666;">{{ item.label }}</text>
                         </view>
                     </view>
                 </view> 
@@ -48,17 +48,24 @@
     const app = getApp();
     //#ifdef APP-NVUE
     import i18n from '@/locale/index.js';
+    const dom = weex.requireModule('dom');
+    // nvue页面在方法中使用时的处理
+    import { initVueI18n } from '@dcloudio/uni-i18n';
+    import en from '@/locale/en.json'
+    import zhHans from '@/locale/zh.json'
+    const messages = { en, 'zh-Hans': zhHans }
+    const { t } = initVueI18n(messages)
     //#endif
-    import { isEmpty } from '@/common/js/common/common.js';
-    export default {
+   import { isEmpty } from '@/common/js/common/common.js';
+   export default {
         //#ifdef APP-NVUE
-        i18n,
+       i18n,
         //#endif
         props: {
             propComment: {
                 type: Object,
                 default: () => {
-                    return {};
+                   return {};
                 },
             },
             propId: {
@@ -76,48 +83,53 @@
             }
         },
         data() {
-            return {
+           return {
                 // 下拉菜单选项数据
                 dropdownOptions: [],
                 // 下拉菜单位置信息
-                dropdownMenuTop: 0
+                dropdownMenuTop: 0,
+                dropdownMenuLeft: 0
             };
         },
         mounted() {
             this.init();
         },
         computed: {
-            // 使用computed属性映射props状态
+            // 使用 computed 属性映射 props 状态
             drop_down_visible() {
-                return this.propDropDownVisible;
+               return this.propDropDownVisible;
             },
             // 下拉菜单样式
             dropdownMenuStyle() {
-                return `top: ${this.dropdownMenuTop}px;`
+               return `top: ${this.dropdownMenuTop}px;`;
             }
         },
-        methods: {
+       methods: {
             isEmpty,
             init() {
-                const label1 = $t('common.delete');
-                const label2 = $t('common.report');
-                console.log(label1, label2);
+                //#ifdef APP-NVUE
                 this.dropdownOptions = [
-                    { label: label1, type: 'delete' },
-                    { label: label2, type: 'report' }
+                    { label: t('common_delete'), type: 'delete' },
+                    { label: t('common_complaint'), type: 'report' }
                 ]
+                //#endif
+                //#ifndef APP-NVUE
+                this.dropdownOptions = [
+                    { label: $t('common.delete'), type: 'delete' },
+                    { label: $t('common.complaint'), type: 'report' }
+                ]
+                //#endif
             },
             // 回复
             comment_reply(e) {
-                console.log('124545');
                 this.$emit('comment_reply', this.propComment, e);
             },
             // 点赞
             comment_like(e) {
                 if (!app.globalData.is_single_page_check()) {
-                    return false;
+                   return false;
                 }
-                var user = app.globalData.get_user_info(this, 'comment_like', e);
+               var user= app.globalData.get_user_info(this, 'comment_like', e);
                 if (user != false) {
                     this.$emit('comment_like', this.propId, e);
                 }
@@ -145,34 +157,35 @@
             getDropdownPosition() {
                 try {
                     // #ifdef APP-NVUE
-                    // nvue 环境使用 dom 模块
-                    const dom = weex.requireModule('dom');
-                    const commentOptionEl = document.getElementById(`comment-option-${this.propId}`);
+                    // nvue 环境使用 dom 模块的 getComponentRect 方法
+                    const commentOptionEl = this.$refs.commentOption;
                     if (commentOptionEl) {
                         dom.getComponentRect(commentOptionEl, (res) => {
                             if (res && res.size) {
                                 const { top, left, width } = res.size;
                                 // 计算菜单位置：在触发元素下方，右侧对齐
-                                this.dropdownMenuTop = top;
+                                this.dropdownMenuTop = top + 20;
                             }
                         });
                     }
                     // #endif
-                    
                 } catch (error) {
-                    console.error('getDropdownPosition error:', error);
+                    console.error('获取下拉菜单位置失败:', error);
                 }
             },
+            
             // 处理下拉菜单项点击
             handle_dropdown_item_click(e) {
                 if (!app.globalData.is_single_page_check()) {
-                    return false;
+                   e.stopPropagation();
+                   return false;
                 }
                 var user = app.globalData.get_user_info(this, 'comment_like', e);
                 if (user != false) {
                     const item = e.currentTarget.dataset.value || {};
                     this.$emit('dropdown_item_click', this.propId, item);
                 }
+                e.stopPropagation();
             }
         }
     }   
@@ -224,10 +237,12 @@
 /* 下拉菜单样式 */
 .dropdown-menu {
     /* #ifndef APP-NVUE */
-    position: fixed;
+    position: absolute;
+    right: 0;
     /* #endif */
     /* #ifdef APP-NVUE */
     position: fixed;
+    right: 30rpx;
     /* #endif */
     background: #ffffff;
     border-radius: 8rpx;
@@ -235,6 +250,7 @@
     border: 1rpx solid #e5e5e5;
     min-width: 160rpx;
     z-index: 9999;
+    top: 100%;
     margin-top: 8rpx;
     padding: 10rpx 0;
 }

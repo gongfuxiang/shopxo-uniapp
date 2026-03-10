@@ -147,8 +147,8 @@
                                 <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
                             </view>
                         </view>
-                        <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
+                        <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
+                            <input :value="comment_input_value" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
                             <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                                 <u-icon propName="layout-module-single-images" propSize="32rpx" propColor="#999"></u-icon>
                             </component-upload>
@@ -167,12 +167,6 @@
         <!-- 举报弹窗 -->
         <u-popup ref="popupReportRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @change="popup_report_close_event" @callBack="submit_report">
             <view class="report-content">
-                <!-- 顶部按钮区域 -->
-                <view class="report-header flex-row align-c jc-sb">
-                    <view class="report-btn cr-6" @tap="popup_report_close_event">{{$t('common.cancel')}}</view>
-                    <view class="report-title flex-1">{{$t('video-detail.video-detail.rfsdfg')}}</view>
-                    <view class="report-btn cr-blue" @tap="submit_report">{{$t('common.confirm')}}</view>
-                </view>
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
@@ -212,8 +206,8 @@
                         <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
                     </view>
                 </view>
-                <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                    <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
+                    <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
                     <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                         <u-icon propName="layout-module-single-images" propSize="48rpx" propColor="#999"></u-icon>
                     </component-upload>
@@ -249,6 +243,12 @@
     // 多语言
     //#ifdef APP-NVUE
     import i18n from '@/locale/index.js';
+    // nvue页面在方法中使用时的处理
+    import { initVueI18n } from '@dcloudio/uni-i18n';
+    import en from '@/locale/en.json'
+    import zhHans from '@/locale/zh.json'
+    const messages = { en, 'zh-Hans': zhHans }
+    const { t } = initVueI18n(messages)
     //#endif
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -1705,9 +1705,11 @@
                     // 处理不同操作
                     if (obj.type == 'delete') {
                         // 确认删除
+                        const tips = t('common.warm_tips');
+                        const content = t('common.delete_confirm_tips');
                         uni.showModal({
-                            title: $t('common.warm_tips'),
-                            content: $t('common.delete_confirm_tips'),
+                            title: tips,
+                            content: content,
                             success: (res) => {
                                 if (res.confirm) {
                                     // 调用删除接口
@@ -1914,8 +1916,10 @@
             // 键盘显示时，切换输入框
             add_comment() {
                 try {
-                    this.show_comment_modal = true;
-                    this.move_distance = 0;
+                    //#ifndef H5
+                    this.is_add_comment = true;
+                    this.active_dropdown_id = null;
+                    //#endif
                 } catch (error) {
                     console.error('add_comment error:', error);
                 }
@@ -2200,9 +2204,9 @@
     .comment-input {
         flex: 1;
         font-size: 28rpx;
-        height: 50rpx;
+        height: 82rpx;
         padding: 16rpx;
-        box-sizing: content-box;
+        box-sizing: border-box;
     }
     
     .comment-input-content {
