@@ -1625,15 +1625,15 @@
             // 关闭推荐商品
             product_close_event(e) {
                 try {
-                    const id = e?.currentTarget?.dataset?.id || '';
                     this.video_data_list.forEach((item) => {
-                        if (item.id == id) {
+                        if (item.id == this.current_video_id) {
                             item.show_goods = false;
                         }
                     });
-
                     // this.video_data_list = this.video_data_list;
-                    this.$set(this, 'video_data_list', this.video_data_list)
+                    this.$set(this, 'video_data_list', this.video_data_list);
+                    console.log(this.video_data_list);
+                    e.stopPropagation();
                 } catch (error) {
                     console.error('product_close_event error:', error);
                 }
@@ -1702,11 +1702,9 @@
                     // 处理不同操作
                     if (obj.type == 'delete') {
                         // 确认删除
-                        const tips = t('common.warm_tips');
-                        const content = t('common.delete_confirm_tips');
                         uni.showModal({
-                            title: tips,
-                            content: content,
+                            title: t('common_warm_tips'),
+                            content: t('common_delete_confirm_tips'),
                             success: (res) => {
                                 if (res.confirm) {
                                     // 调用删除接口
