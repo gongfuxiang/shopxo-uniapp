@@ -4,7 +4,7 @@
             <view class="more-history-btn-icon margin-right-xs">
                 <u-icon propName="reset" propSize="28rpx" propColor="#999"></u-icon>
             </view>
-            <text>{{ propContent || $t('common.loading_in_text') }}</text>
+            <text style="font-size: 28rpx;color: #999999; line-height: 40rpx;">{{ propContent || $t('common.loading_in_text') }}</text>
         </view>
     </view>
 </template>

@@ -73,11 +73,11 @@
         data() {
             return {
                 // 下拉菜单选项数据
-                dropdownOptions: [
-                    { label: this.$t('common.del'), type: 'delete' },
-                    { label: this.$t('common.complaint'), type: 'report' }
-                ]
+                dropdownOptions: []
             };
+        },
+        mounted() {
+            this.init();
         },
         computed: {
             // 使用computed属性映射props状态
@@ -87,8 +87,15 @@
         },
         methods: {
             isEmpty,
+            init() {
+                this.dropdownOptions = [
+                    { label: '删除', type: 'delete' },
+                    { label: '举报', type: 'report' }
+                ]
+            },
             // 回复
             comment_reply(e) {
+                console.log('124545');
                 this.$emit('comment_reply', this.propComment, e);
             },
             // 点赞
@@ -110,9 +117,11 @@
                 });
             },
             // 切换下拉菜单
-            toggle_dropdown() {
+            toggle_dropdown(e) {
                 // 通知父组件切换当前组件的下拉菜单状态
                 this.$emit('toggle_dropdown', this.propId);
+                
+                e.stopPropagation();
             },
             // 处理下拉菜单项点击
             handle_dropdown_item_click(e) {
@@ -174,7 +183,12 @@
 
 /* 下拉菜单样式 */
 .dropdown-menu {
+    /* #ifndef APP-NVUE */
     position: absolute;
+    /* #endif */
+    /* #ifdef APP-NVUE */
+    position: fixed;
+    /* #endif */
     background: #ffffff;
     border-radius: 8rpx;
     box-shadow: 0 6rpx 16rpx 0 rgba(0, 0, 0, 0.15);

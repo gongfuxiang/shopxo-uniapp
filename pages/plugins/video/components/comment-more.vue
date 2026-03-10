@@ -2,7 +2,7 @@
     <view class="more-title flex-row align-c" @tap="comment_more_event">
         <text class="more-title">{{ propText || $t('common.expand') }}</text>
         <view class="ml-5">
-            <iconfont :name="propIconName" color="#999" size="20rpx" />
+            <u-icon :propName="propIconName" propColor="#999" propSize="20rpx"></u-icon>
         </view>
     </view>
 </template>
@@ -30,7 +30,7 @@ export default {
         },
         propIconName: {
             type: String,
-            default: 'icon-arrow-down'
+            default: 'arrow-down'
         },
     },
     methods: {

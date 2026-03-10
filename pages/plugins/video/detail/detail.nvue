@@ -86,7 +86,7 @@
 		</template>
         
         <!-- 评论弹窗 -->
-        <view v-if="show_comment_modal" class="comment-modal" :style="width_height_style" @tap="close_comment_modal">
+        <view v-if="show_comment_modal" class="comment-modal" :style="width_height_style">
             <view class="comment-content bottom-line-exclude-bottom" @tap.stop :style="commentContentStyle">
                 <view class="comment-header" data-type="header" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <text class="comment-count">{{$t('common.comment')}}</text>
@@ -94,16 +94,16 @@
                 </view>
                 <view class="flex-1 flex-row oh" :style="'width:' + windowWidth + 'px;'" data-type="scroll" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <!-- 评论内容区域 -->
-                    <scroll-view class="flex-1 comment-list flex-row bg-red" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation :scroll-with-touch="!is_dragging" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
+                    <scroll-view class="flex-1 comment-list flex-row" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation :scroll-with-touch="!is_dragging" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll">
                         <view class="comment-scroll" :style="'width:' + windowWidth + 'px;'">
                             <template v-if="active_comments && active_comments.length > 0">
                                 <view class="comment-item flex-col" v-for="(comment_item, index) in active_comments" :key="index" :style="window_more_style">
                                     <commentInfoComponent :style="window_more_style" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                     <!-- 子评论 -->
-                                    <view class="sub-comment flex-col jc-c gap-10 mt-10" >
-                                        <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c">
-                                            <view class="sub-comment-item flex-row align-s gap-10" v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index">
-                                                <commentInfoComponent :style="window_more_style" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
+                                    <view class="sub-comment flex-col jc-c mt-10">
+                                        <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" style="margin-buttom: 20rpx;" class="sub-comment-list flex-col jc-c">
+                                            <view v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index" class="sub-comment-item flex-row align-s" style="margin-bottom: 20rpx;">
+                                                <commentInfoComponent :style="window_sub_more_style" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                             </view>
                                         </view>
                                         <template v-if="comment_item.comments_count > 0">
@@ -118,7 +118,7 @@
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
                                                         <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                     </template>
-                                                    <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                 </view>
                                             </template>
                                         </template>
@@ -299,13 +299,18 @@
                 video_cleanup_timer: null, // 视频清理定时器
                 comment_scroll_debounce_timer: null, // 评论滚动防抖定时器
                 comment_move_throttle_timer: null, // 评论拖拽节流定时器
+                // 添加下拉菜单状态管理
+                active_dropdown_id: null, // 当前显示下拉菜单的评论ID
+                params: {},
                 header_padding_left: '',
                 report_type_list: [], // 举报类型列表
+                popup_report_status: false, // 举报弹窗状态
                 current_main_index: 0, // 默认选中第一个举报原因
                 current_sub_index: 0, // 默认选中第一个具体类型
                 report_comment_id: '', // 举报的评论id
                 comment_value: '',
                 is_add_comment: false,
+               
                 // 监听键盘高度变化事件
                 listener_height: 0,
                 comments_reply_data: {},
@@ -314,6 +319,7 @@
                 windowWidth: 0,
                 windowHeight: 0,
                 padding_width: 0,
+                sub_comment_padding_left: 0,
             };
         },
         components: {
@@ -363,6 +369,9 @@
             },
             window_more_style() {
                 return `width: ${ this.windowWidth - this.padding_width }px;`
+            },
+            window_sub_more_style() {
+                return `width: ${ this.windowWidth - this.sub_comment_padding_left }px;`
             }
         },
         onLoad(params) {
@@ -483,7 +492,8 @@
                         padding_left = video_get_top_left_padding();
                     // #endif
                     this.padding_width = app.globalData.rpx_to_px(30);
-                    
+                    this.sub_comment_padding_left = app.globalData.rpx_to_px(80);
+
                     this.header_padding_left = padding_left;
                     this.menu_button_info = menu_button_info;
                     this.current_video_id = isEmpty(this.current_video_id) ? this.params.id : this.current_video_id;
@@ -1092,8 +1102,9 @@
                 }
             },
             // 关闭评论区
-            close_comment_modal() {
+            close_comment_modal(e) {
                 try {
+                    console.log('close_comment_modal', e.currentTarget.dataset.type);
                     this.active_dropdown_id = null;
                     this.show_comment_modal = false;
                     this.comment_scroll_top = 0 + Math.random(); // 关闭评论时滚动到最顶部
@@ -1679,6 +1690,7 @@
                     } else {
                         this.active_dropdown_id = comment_id;
                     }
+                    console.log(this.active_dropdown_id);
                 } catch (error) {
                     console.error('handle_toggle_dropdown error:', error);
                 }

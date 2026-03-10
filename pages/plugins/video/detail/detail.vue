@@ -118,7 +118,7 @@
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
                                                         <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                     </template>
-                                                    <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                 </view>
                                             </template>
                                         </template>
