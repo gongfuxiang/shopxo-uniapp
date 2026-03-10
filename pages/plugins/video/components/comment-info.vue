@@ -6,11 +6,16 @@
                 <text class="comment-user">{{ propComment.user.user_name_view }}</text>
                 <view class="pr" style="margin-left: 20rpx;">
                     <!-- 直接实现下拉菜单 -->
-                    <view class="comment-option" @tap.stop="toggle_dropdown">
+                    <view :id="'comment-option-' + propId" class="comment-option" @tap.stop="toggle_dropdown">
                         <u-icon propName="ellipsis" propColor="#999" propSize="28rpx"></u-icon>
                     </view>
                     <!-- 下拉菜单 -->
-                    <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop>
+                    <!-- #ifdef APP-NVUE -->
+                    <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" :style="dropdownMenuStyle" @tap.stop>
+                    <!-- #endif -->
+                    <!-- #ifndef APP-NVUE -->
+                    <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop></view>
+                    <!-- #endif -->
                         <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item" :data-value="item" @tap="handle_dropdown_item_click">
                             <text>{{ item.label }}</text>
                         </view>
@@ -73,7 +78,9 @@
         data() {
             return {
                 // 下拉菜单选项数据
-                dropdownOptions: []
+                dropdownOptions: [],
+                // 下拉菜单位置信息
+                dropdownMenuTop: 0
             };
         },
         mounted() {
@@ -83,14 +90,21 @@
             // 使用computed属性映射props状态
             drop_down_visible() {
                 return this.propDropDownVisible;
+            },
+            // 下拉菜单样式
+            dropdownMenuStyle() {
+                return `top: ${this.dropdownMenuTop}px;`
             }
         },
         methods: {
             isEmpty,
             init() {
+                const label1 = $t('common.delete');
+                const label2 = $t('common.report');
+                console.log(label1, label2);
                 this.dropdownOptions = [
-                    { label: '删除', type: 'delete' },
-                    { label: '举报', type: 'report' }
+                    { label: label1, type: 'delete' },
+                    { label: label2, type: 'report' }
                 ]
             },
             // 回复
@@ -118,10 +132,36 @@
             },
             // 切换下拉菜单
             toggle_dropdown(e) {
+                // 获取 comment-option 的位置信息
+                this.getDropdownPosition();
+                
                 // 通知父组件切换当前组件的下拉菜单状态
                 this.$emit('toggle_dropdown', this.propId);
                 
                 e.stopPropagation();
+            },
+            
+            // 获取下拉菜单位置
+            getDropdownPosition() {
+                try {
+                    // #ifdef APP-NVUE
+                    // nvue 环境使用 dom 模块
+                    const dom = weex.requireModule('dom');
+                    const commentOptionEl = document.getElementById(`comment-option-${this.propId}`);
+                    if (commentOptionEl) {
+                        dom.getComponentRect(commentOptionEl, (res) => {
+                            if (res && res.size) {
+                                const { top, left, width } = res.size;
+                                // 计算菜单位置：在触发元素下方，右侧对齐
+                                this.dropdownMenuTop = top;
+                            }
+                        });
+                    }
+                    // #endif
+                    
+                } catch (error) {
+                    console.error('getDropdownPosition error:', error);
+                }
             },
             // 处理下拉菜单项点击
             handle_dropdown_item_click(e) {
@@ -184,7 +224,7 @@
 /* 下拉菜单样式 */
 .dropdown-menu {
     /* #ifndef APP-NVUE */
-    position: absolute;
+    position: fixed;
     /* #endif */
     /* #ifdef APP-NVUE */
     position: fixed;
@@ -195,8 +235,6 @@
     border: 1rpx solid #e5e5e5;
     min-width: 160rpx;
     z-index: 9999;
-    top: 100%;
-    right: 0;
     margin-top: 8rpx;
     padding: 10rpx 0;
 }
