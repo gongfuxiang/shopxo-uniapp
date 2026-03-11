@@ -1056,6 +1056,7 @@
                     } else if (dy < 0) {
                         status = 'prev';
                     }
+                    console.log('on_transition:', dy);
                     // 如果历史的是向下滑动，这次也是向下滑动，就不更新数据
                     if (this.direction != status) {
                         this.direction = status;
@@ -1651,7 +1652,6 @@
                     });
                     // this.video_data_list = this.video_data_list;
                     this.$set(this, 'video_data_list', this.video_data_list);
-                    console.log(this.video_data_list);
                     e.stopPropagation();
                 } catch (error) {
                     console.error('product_close_event error:', error);
@@ -2054,8 +2054,8 @@
     }
     .product-close {
         position: absolute;
-        right: -15rpx;
-        top: -20rpx;
+        right: -20rpx;
+        top: -26rpx;
     }
     
     .product-button {
