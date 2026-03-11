@@ -244,7 +244,7 @@
 
 <script>
     const app = getApp();
-    import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
+    import { get_math, isEmpty, video_get_top_left_padding, showToast } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
     import loadingComponent from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
@@ -768,7 +768,7 @@
                 try {
                     const move_distance = this.swiper_current_y - this.swiper_start_y;
                     // 判断滑动方向：向下为正，向上为负
-                    if (Math.abs(move_distance) > (this.windowHeight * 0.4)) {
+                    if (Math.abs(move_distance) > (this.windowHeight * 0.3)) {
                         // 只有滑动距离超过屏幕高度的 15% 才触发切换
                         if (move_distance > 0) {
                             // 向下滑动，切换到上一个视频
@@ -800,20 +800,23 @@
             handle_swiper_change_by_direction(direction) {
                 try {
                     let new_index = this.current_index;
-                    const listLength = this.display_video_list.length;
-                    
                     if (direction === 'prev') {
                         // 向下滑动，切换到上一个
-                        new_index = this.current_index - 1;
+                        if (this.current_video_index <= 0) {
+                            app.globalData.showToast('已经是第一个视频了');
+                            return;
+                        } else {
+                            new_index = (this.current_index - 1 + this.video_data_list.length) % this.video_data_list.length;
+                        }
                     } else if (direction === 'next') {
                         // 向上滑动，切换到下一个
-                        new_index = this.current_index + 1;
+                        if (this.current_video_index >= this.video_data_list.length - 1) {
+                            app.globalData.showToast('已经是最后一个视频了');
+                            return;
+                        } else {
+                            new_index = (this.current_index + 1 + this.video_data_list.length) % this.video_data_list.length;
+                        }
                     }
-
-                    if (new_index < 0 || new_index > listLength) {
-                        return;
-                    }
-                    
                     // 创建模拟的 event 对象
                     const mockEvent = {
                         detail: {
