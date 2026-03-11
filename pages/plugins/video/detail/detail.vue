@@ -18,7 +18,7 @@
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
-                    <view class="video-container pr" @tap.stop="toggle_play_pause">
+                    <view class="video-container pr" @tap.stop="toggle_play_pause" @touchstart.prevent="handle_swiper_touch_start" @touchmove.prevent="handle_swiper_touch_move" @touchend="handle_swiper_touch_end">
                         <view class="video-bg" :style="!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : ''"></view>
                         
                         <video class="video" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
@@ -317,6 +317,11 @@
                 comments_reply_data: {},
                 editor_path_type: 'video',
                 is_manual_pause: false, // 是否手动暂停
+                // 视频滚动
+                swiper_start_y: 0,
+                swiper_current_y: 0,
+                swiper_move_distance: 0,
+                swiper_move_throttle_timer: null,
             };
         },
         components: {
@@ -786,7 +791,75 @@
                     this.video_play_event(videoContext);
                 }
             },
-
+            // 视频拖拽开始
+            handle_swiper_touch_start(e) {
+                try {
+                    // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
+                    this.swiper_start_y = e?.touches[0]?.pageY || 0;
+                    this.swiper_current_y = this.swiper_start_y;
+                    this.swiper_move_distance = 0;
+                } catch (error) {
+                    console.error('handle_swiper_touch_start error:', error);
+                }
+            },
+            // 视频拖拽中
+            handle_swiper_touch_move(e) {
+                try {
+                    const current_y = e?.touches[0]?.pageY || 0;
+                    const distance = current_y - this.swiper_start_y;
+                    
+                    // 只有向下移动且距离超过阈值（10px）才开始拖拽，避免误触和抖动
+                    if (Math.abs(distance) > 10) {
+                        this.swiper_current_y = current_y;
+                        
+                        // 使用节流控制 move_distance 的更新频率，避免计算属性频繁触发导致抖动
+                        if (this.swiper_move_throttle_timer) {
+                            return;
+                        }
+                        
+                        this.move_distance = distance;
+                        
+                        // 设置节流定时器，16ms 约等于 60fps，保证流畅度同时避免过度更新
+                        this.swiper_move_throttle_timer = setTimeout(() => {
+                            this.swiper_move_throttle_timer = null;
+                        }, 80);
+                    }
+                } catch(error) {
+                    console.error('handle_swiper_touch_move error:', error);
+                }
+            },
+            // 视频拖拽结束
+            handle_swiper_touch_end(e) {
+                try {
+                    const move_distance = this.swiper_current_y - this.swiper_start_y;
+                    // 只有滑动距离超过屏幕高度的 15% 才触发切换
+                    if (move_distance > 0) {
+                        // 向下滑动，切换到上一个
+                        if (this.current_video_index <= 0) {
+                            app.globalData.showToast('已经是第一个视频了');
+                            return;
+                        }
+                    } else {
+                        // 向上滑动，切换到下一个
+                        if (this.current_video_index >= this.video_data_list.length - 1) {
+                            app.globalData.showToast('已经是最后一个视频了');
+                            return;
+                        }
+                    }
+                    
+                    // 清理节流定时器
+                    if (this.swiper_move_throttle_timer) {
+                        clearTimeout(this.swiper_move_throttle_timer);
+                        this.swiper_move_throttle_timer = null;
+                    }
+                    
+                    // 重置拖拽状态
+                    this.swiper_start_y = 0;
+                    this.swiper_current_y = 0;
+                } catch (error) {
+                    console.error('handle_swiper_touch_end error:', error);
+                }
+            },
             // 更新分享信息
             update_share_info(data) {
                 const info = {
