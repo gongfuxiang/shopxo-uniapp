@@ -14,7 +14,7 @@
                     <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" :style="dropdownMenuStyle" @tap.stop>
                     <!-- #endif -->
                     <!-- #ifndef APP-NVUE -->
-                    <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop></view>
+                    <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop>
                     <!-- #endif -->
                         <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item" :data-value="item" @tap.stop="handle_dropdown_item_click">
                             <text style="font-size: 28rpx;color: #666;">{{ item.label }}</text>
@@ -113,8 +113,8 @@
                 //#endif
                 //#ifndef APP-NVUE
                 this.dropdownOptions = [
-                    { label: $t('common.delete'), type: 'delete' },
-                    { label: $t('common.complaint'), type: 'report' }
+                    { label: this.$t('common.del'), type: 'delete' },
+                    { label: this.$t('common.complaint'), type: 'report' }
                 ]
                 //#endif
             },

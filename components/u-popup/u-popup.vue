@@ -7,18 +7,18 @@
                     <view v-if="propCloseType == 'icon' && propCloseable" class="popup-close pa-14 box-border-box" :class="propCloseIconPos" :style="closeIconStyle" @tap="close">
                         <u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></u-icon>
                     </view>
-                    <view v-if="propCloseType == 'text' && propCloseable" class="flex-row jc-sb align-c w abs top-0 pa-14 z-i">
+                    <view v-if="propTitle != ''" class="pr">
+                        <view class="popup-close pa-14 box-border-box" :class="propTitleBorder ? 'br-b-e' : ''">
+                            <view v-if="propTitle != ''" class="title">
+                                <text class="fw tc">{{ propTitle }}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view v-if="propCloseType == 'text' && propCloseable" class="flex-row jc-sb align-c w pa top-0 pa-14 z-i box-border-box" :style="propWidth">
                         <text class="cr-info" @click="close">取消</text>
                         <view class="pr">
                             <text v-if="propIsCustomBtn" class="inline-block" :style="propCustomBtnStyle" @click="custom_change">{{ propCustomBtnText }}</text>
                             <text class="cr-primary" @click="comfirm">确定</text>
-                        </view>
-                    </view>
-                    <view v-if="propTitle != ''" class="pr">
-                        <view class="popup-close pa-14 box-border-box" :class="propTitleBorder ? 'br-b-e' : ''">
-                            <view v-if="propTitle != ''" class="title ">
-                                <text class="fw tc">{{ propTitle }}</text>
-                            </view>
                         </view>
                     </view>
                     <view class="uni-popup__wrapper radius-lg" :style="{ backgroundColor: bg, maxHeight: propHeight }" :class="[popupstyle]" @click="clear">
@@ -186,6 +186,10 @@
             propIsConfirmClose: {
                 type: Boolean,
                 default: true,
+            },
+            propWidth: {
+                type: String,
+                default: '',
             },
         },
 
@@ -473,6 +477,7 @@
                     show: false,
                     type: this.propType,
                 });
+                this.$emit('close')
                 clearTimeout(this.timer);
                 // // 自定义关闭事件
                 // this.customOpen && this.customClose()

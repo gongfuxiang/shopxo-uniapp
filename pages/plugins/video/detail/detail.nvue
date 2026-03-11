@@ -7,13 +7,13 @@
                     <view class="video-container pr" @tap.stop="toggle_play_pause" :style="width_height_style">
                         <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
                         
-                        <video class="video" :style="width_height_style" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
+                        <video class="video" :style="width_height_style + swiperStyle" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play" @tap.stop="toggle_play_pause"></video>
 
-                        <view v-if="paused && current_index == index" class="play-icon" :style="width_height_style">
+                        <view v-if="paused && current_index == index" class="play-icon" :style="width_height_style + swiperStyle">
                             <view class="flex-1 pr flex-row align-c jc-c">
                                 <view class="play-icon-bg"></view>
-                                <view class="pa z-i play-icon-iconfont">
-                                    <u-icon propName="icon-bofang" propSize="120rpx" propColor="#4F3E35"></u-icon>
+                                <view class="pa z-i">
+                                    <u-icon propName="bofang" propSize="120rpx" propColor="#4F3E35"></u-icon>
                                 </view>
                             </view>
                         </view>
@@ -26,7 +26,7 @@
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
                                     <u-icon propName="comment" propSize="60rpx" propColor="#fff"></u-icon>
-                                    <text class="action-text">{{ video_item.comments_count }}</text>
+                                    <text class="action-text">{{ video_item.comments_count }}{{ paused }}{{ current_index == index }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
                                     <u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></u-icon>
@@ -165,33 +165,37 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <u-popup ref="popupReportRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @change="popup_report_close_event" @callBack="submit_report">
+        <u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
             <view class="report-content">
                 <!-- 主要内容区域 -->
                 <view class="report-body">
                     <!-- 第一层：举报原因选择 -->
                     <view v-if="report_type_list && report_type_list.length > 0" class="report-section">
-                        <view class="report-label">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10">*</text></view>
-                        <view class="flex-row align-c gap-10 flex-wrap">
-                            <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" :data-index="main_index" @tap="select_main_reason">
-                                <view class="flex-row align-c">
-                                    <radio :value="main_index.toString()" :checked="current_main_index === main_index" style="transform:scale(0.7)" />
-                                    <view class="flex-row align-c">{{mainItem.name}}</view>
+                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10 report-required">*</text></view>
+                        <view class="flex-row align-c flex-wrap">
+                            <radio-group class="flex-row align-c flex-wrap" :style="window_more_style">
+                                <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" style="margin-right: 20rpx;" :data-index="main_index" @tap.stop="select_main_reason">
+                                    <view class="flex-row align-c">
+                                        <radio :value="main_index.toString()" :checked="current_main_index === main_index" style="transform:scale(0.7)" />
+                                        <text class="flex-row align-c">{{mainItem.name}}</text>
+                                    </view>
                                 </view>
-                            </view>
+                            </radio-group>
                         </view>
                     </view>
                     
                     <!-- 第二层：具体类型选择（当有主类别选中时显示） -->
                     <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index] && report_type_list[current_main_index].data">
-                        <view class="report-label">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10">*</text></view>
-                        <view class="flex-row align-c gap-10 flex-wrap">
-                            <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" :data-index="sub_index" @tap="select_sub_reason">
-                                <view class="flex-row align-c">
-                                    <radio :value="sub_index.toString()" :checked="current_sub_index === sub_index" style="transform:scale(0.7)" />
-                                    <view class="flex-row align-c">{{subItem}}</view>
+                        <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10 report-required">*</text></view>
+                        <view class="flex-row align-c flex-wrap">
+                            <radio-group class="flex-row align-c flex-wrap" :style="window_more_style">
+                                <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" style="margin-right: 20rpx;" :data-index="sub_index" @tap.stop="select_sub_reason">
+                                    <view class="flex-row align-c">
+                                        <radio :value="sub_index.toString()" :checked="current_sub_index === sub_index" style="transform:scale(0.7)" />
+                                        <view class="flex-row align-c">{{subItem}}</view>
+                                    </view>
                                 </view>
-                            </view>
+                            </radio-group>
                         </view>
                     </view>
                 </view>
@@ -824,13 +828,14 @@
             },
 
             // 切换播放暂停
-            toggle_play_pause() {
+            toggle_play_pause(e) {
                 try {
                     const currentIndex = this.current_index;
                     // 检查视频上下文是否存在
                     const videoContext = this.create_video_contexts[currentIndex] || this.video_contexts[currentIndex];
                     if (!videoContext) {
                         console.warn(`当前索引 ${currentIndex} 无可用视频上下文`);
+                        e.stopPropagation();
                         return;
                     }
 
@@ -842,12 +847,14 @@
                         try {
                             videoContext.pause();
                         } catch (error) {
+                            e.stopPropagation();
                             console.warn('暂停视频失败:', error);
                         }
                     } else {
                         // 播放当前视频
                         this.video_play_event(videoContext);
                     }
+                    e.stopPropagation();
                 } catch (error) {
                     console.error('toggle_play_pause error:', error);
                 }
@@ -1102,7 +1109,6 @@
             // 关闭评论区
             close_comment_modal(e) {
                 try {
-                    console.log('close_comment_modal', e.currentTarget.dataset.type);
                     this.active_dropdown_id = null;
                     this.show_comment_modal = false;
                     this.comment_scroll_top = 0 + Math.random(); // 关闭评论时滚动到最顶部
@@ -1837,7 +1843,7 @@
             // 关闭举报弹窗
             popup_report_close_event() {
                 try {
-                    this.$refs.popupReportRef.close();
+                    // this.$refs.popupReportRef.close();
                     this.current_main_index = 0;
                     this.current_sub_index = 0;
                 } catch (error) {
@@ -1849,6 +1855,7 @@
             select_main_reason(e) {
                 try {
                     const index = e?.currentTarget?.dataset?.index || 0;
+                    console.log(index);
                     const main_index = parseInt(index);
                     if (main_index !== this.current_main_index) {
                         this.current_main_index = main_index;
@@ -1964,28 +1971,17 @@
     
     .play-icon {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        top: 0;
+        left: 0;
         pointer-events: none;
     }
     
-    .play-icon .play-icon-bg {
+    .play-icon-bg {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         background: #fff;
         width: 60rpx;
         height: 60rpx;
         z-index: 0;
-    }
-    
-    .play-icon .play-icon-iconfont {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
     }
     
     .right-actions {
@@ -2269,7 +2265,7 @@
         color: #333;
     }
     
-    .report-label text {
+    .report-required {
         color: #e74c3c;
         font-size: 30rpx;
         vertical-align: middle;
