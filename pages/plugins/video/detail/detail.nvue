@@ -4,7 +4,7 @@
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="width_height_style + swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id" :style="width_height_style">
-                    <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style">
+                    <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style" @touchstart.prevent="handle_swiper_touch_start" @touchmove.prevent="handle_swiper_touch_move" @touchend="handle_swiper_touch_end">
                         <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
                         
                         <video class="video" :style="width_height_style + swiperStyle" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play" @tap.stop="toggle_play_pause"></video>
@@ -332,6 +332,11 @@
                 windowHeight: 0,
                 padding_width: 0,
                 sub_comment_padding_left: 0,
+                // 视频滚动
+                swiper_start_y: 0,
+                swiper_current_y: 0,
+                swiper_move_distance: 0,
+                swiper_move_throttle_timer: null,
             };
         },
         components: {
@@ -465,6 +470,9 @@
             }
             if (this.comment_move_throttle_timer) {
                 clearTimeout(this.comment_move_throttle_timer);
+            }
+            if (this.video_move_throttle_timer) {
+                clearTimeout(this.video_move_throttle_timer);
             }
 
             // 清理所有视频资源
@@ -713,11 +721,116 @@
                     console.error('calculate_new_index error:', error);
                 }   
             },
+            // 视频拖拽开始
+            handle_swiper_touch_start(e) {
+                try {
+                    // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
+                    this.swiper_start_y = e?.touches[0]?.pageY || 0;
+                    this.swiper_current_y = this.swiper_start_y;
+                    this.swiper_move_distance = 0;
+                } catch (error) {
+                    console.error('handle_swiper_touch_start error:', error);
+                }
+            },
+            // 视频拖拽中
+            handle_swiper_touch_move(e) {
+                try {
+                    // 阻止默认行为，防止页面滚动干扰
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    }
+                    
+                    const current_y = e?.touches[0]?.pageY || 0;
+                    const distance = current_y - this.swiper_start_y;
+                    
+                    // 只有向下移动且距离超过阈值（10px）才开始拖拽，避免误触和抖动
+                    if (Math.abs(distance) > 10) {
+                        this.swiper_current_y = current_y;
+                        
+                        // 使用节流控制 move_distance 的更新频率，避免计算属性频繁触发导致抖动
+                        if (this.swiper_move_throttle_timer) {
+                            return;
+                        }
+                        
+                        this.move_distance = distance;
+                        
+                        // 设置节流定时器，16ms 约等于 60fps，保证流畅度同时避免过度更新
+                        this.swiper_move_throttle_timer = setTimeout(() => {
+                            this.swiper_move_throttle_timer = null;
+                        }, 80);
+                    }
+                } catch(error) {
+                    console.error('handle_swiper_touch_move error:', error);
+                }
+            },
+            // 视频拖拽结束
+            handle_swiper_touch_end(e) {
+                try {
+                    const move_distance = this.swiper_current_y - this.swiper_start_y;
+                    // 判断滑动方向：向下为正，向上为负
+                    if (Math.abs(move_distance) > (this.windowHeight * 0.4)) {
+                        // 只有滑动距离超过屏幕高度的 15% 才触发切换
+                        if (move_distance > 0) {
+                            // 向下滑动，切换到上一个视频
+                            this.handle_swiper_change_by_direction('prev');
+                        } else {
+                            // 向上滑动，切换到下一个视频
+                            this.handle_swiper_change_by_direction('next');
+                        }
+                    } else {
+                        // 滑动距离不够，重置位置
+                        this.swiper_move_distance = 0;
+                    }
+                    
+                    // 清理节流定时器
+                    if (this.swiper_move_throttle_timer) {
+                        clearTimeout(this.swiper_move_throttle_timer);
+                        this.swiper_move_throttle_timer = null;
+                    }
+                    
+                    // 重置拖拽状态
+                    this.swiper_start_y = 0;
+                    this.swiper_current_y = 0;
+                } catch (error) {
+                    console.error('handle_swiper_touch_end error:', error);
+                }
+            },
+            
+            // 根据滑动方向切换视频
+            handle_swiper_change_by_direction(direction) {
+                try {
+                    let new_index = this.current_index;
+                    const listLength = this.display_video_list.length;
+                    
+                    if (direction === 'prev') {
+                        // 向下滑动，切换到上一个
+                        new_index = this.current_index - 1;
+                    } else if (direction === 'next') {
+                        // 向上滑动，切换到下一个
+                        new_index = this.current_index + 1;
+                    }
+
+                    if (new_index < 0 || new_index > listLength) {
+                        return;
+                    }
+                    
+                    // 创建模拟的 event 对象
+                    const mockEvent = {
+                        detail: {
+                            current: new_index
+                        }
+                    };
+                    
+                    // 调用原有的处理逻辑
+                    this.handle_swiper_change(mockEvent);
+                } catch (error) {
+                    console.error('handle_swiper_change_by_direction error:', error);
+                }
+            },
             // 视频滚动处理逻辑（带防抖）
             handle_swiper_change(event) {
                 try {
                     const { current } = event.detail;
-                    
                     // 防抖处理，避免快速切换时的重复操作
                     if (this.video_switch_debounce_timer) {
                         clearTimeout(this.video_switch_debounce_timer);
@@ -889,7 +1002,7 @@
                     // this.$nextTick(() => {
                     // setTimeout(() => { 
                         // 2. 再把新数据 push 进去（触发内容变化）
-                        list.forEach(item => this.display_video_list.push(item))
+                    list.forEach(item => this.display_video_list.push(item))
                     // }, 0); 
                     // });
                 } catch (e) {
@@ -1056,7 +1169,6 @@
                     } else if (dy < 0) {
                         status = 'prev';
                     }
-                    console.log('on_transition:', dy);
                     // 如果历史的是向下滑动，这次也是向下滑动，就不更新数据
                     if (this.direction != status) {
                         this.direction = status;
