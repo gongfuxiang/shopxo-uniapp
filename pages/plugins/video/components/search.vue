@@ -85,7 +85,6 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background: #fff;
 }
 /* 搜索框 */
 .search-bar {
@@ -124,17 +123,18 @@ input {
     color: #333333;
     line-height: 40rpx;
     padding: 16rpx 30rpx 16rpx 20rpx;
-    background: blue;
 }
 .search-mask {
     position: absolute;
     top: 0;
     left: 0;
+    //#ifdef APP-NVUE
+    width: 750rpx;
+    //#endif
     //#ifndef APP-NVUE
     width: 100%;
     //#endif
     height: 80rpx;
     z-index: 99;
-    background: red;
 }
 </style>
