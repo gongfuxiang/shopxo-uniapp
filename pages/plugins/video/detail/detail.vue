@@ -837,13 +837,11 @@
                         // 向下滑动，切换到上一个
                         if (this.current_video_index <= 0) {
                             app.globalData.showToast('已经是第一个视频了');
-                            return;
                         }
                     } else {
                         // 向上滑动，切换到下一个
                         if (this.current_video_index >= this.video_data_list.length - 1) {
                             app.globalData.showToast('已经是最后一个视频了');
-                            return;
                         }
                     }
                     
