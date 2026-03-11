@@ -599,7 +599,6 @@
 
                             // 基础数据
                             this.setData({
-                                currency_symbol: data.currency_symbol || app.globalData.currency_symbol(),
                                 payment_list: data.payment_list || [],
                             });
 
