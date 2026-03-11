@@ -1584,6 +1584,7 @@
             handle_slider_changing() {
                 try {
                     this.is_seeking = true;
+                    e.stopPropagation();
                 } catch (error) {
                     console.error('handle_slider_changing error:', error);
                 }
@@ -1608,6 +1609,7 @@
                     setTimeout(() => {
                         this.is_seeking = false;
                     }, 100);
+                    e.stopPropagation();
                 } catch (error) {
                     console.error('handle_slider_change error:', error);
                 }
@@ -1665,6 +1667,7 @@
                     if (!isEmpty(data) && !isEmpty(data.goods)) {
                         app.globalData.url_open(data.goods.goods_url);
                     }
+                    e.stopPropagation();    
                 } catch (error) {
                     console.error('handle_product_card_item error:', error);
                 }
@@ -1684,7 +1687,8 @@
                     });
 
                     // this.video_data_list = this.video_data_list;
-                    this.$set(this, 'video_data_list', this.video_data_list)
+                    this.$set(this, 'video_data_list', this.video_data_list);
+                    e.stopPropagation();
                 } catch (error) {
                     console.error('handle_product_button error:', error);
                 }
