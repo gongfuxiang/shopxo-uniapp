@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view v-if="(propStatus || false)" class="data-bottom-line">
             <view class="bottom-exclude flex-row align-c jc-c" :style="'width:' + new_width">
-                <view class="line-item left line-item-left" :style="'width:' + split_width"></view>
-                <text class="line-item msg" :style="'width:' + split_width">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</text>
-                <view class="line-item right line-item-right" :style="'width:' + split_width"></view>
+                <view class="line-item left line-item-left"></view>
+                <text class="line-item msg line-item-msg" :style="'width:' + split_width">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</text>
+                <view class="line-item right line-item-right"></view>
             </view>
         </view>
     </view>
@@ -50,7 +50,7 @@
     }
     .data-bottom-line .line-item.left,
     .data-bottom-line .line-item.right {
-        margin-top: 16rpx;
+        // margin-top: 16rpx;
         border-bottom: 2rpx solid #e1e1e1;
     }
     .data-bottom-line .line-item.msg {
@@ -58,11 +58,31 @@
         text-align: center;
         font-size: 24rpx;
     }
-    .data-bottom-line .line-item.left,
-    .data-bottom-line .line-item.msg {
-        float: left;
+    /* #ifdef APP-NVUE */
+    .line-item-msg {
+        color: #999;
+        text-align: center;
+        font-size: 24rpx;
+        margin: 0 20rpx;
     }
-    .data-bottom-line .line-item.right {
-        float: right;
+    .line-item {
+        width: 750rpx;
     }
+    .line-item-left,
+    .line-item-right {
+        flex: 1;
+        width: 750rpx;
+        height: 2rpx;
+        border-bottom-width: 2rpx;
+        border-bottom-style: solid;
+        border-bottom-color: #e1e1e1;
+    }
+    /* #endif */
+    // .data-bottom-line .line-item.left,
+    // .data-bottom-line .line-item.msg {
+    //     float: left;
+    // }
+    // .data-bottom-line .line-item.right {
+    //     float: right;
+    // }
 </style>

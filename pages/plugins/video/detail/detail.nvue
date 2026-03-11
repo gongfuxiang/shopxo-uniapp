@@ -4,7 +4,7 @@
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="width_height_style + swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id" :style="width_height_style">
-                    <view class="video-container pr" @tap.stop="toggle_play_pause" :style="width_height_style">
+                    <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style">
                         <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
                         
                         <video class="video" :style="width_height_style + swiperStyle" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play" @tap.stop="toggle_play_pause"></video>
@@ -26,7 +26,7 @@
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
                                     <u-icon propName="comment" propSize="60rpx" propColor="#fff"></u-icon>
-                                    <text class="action-text">{{ video_item.comments_count }}{{ paused }}{{ current_index == index }}</text>
+                                    <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
                                     <u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></u-icon>
@@ -44,7 +44,7 @@
                                             <text class="product-price">¥{{ video_item.goods.price }}</text>
                                         </view>
                                         <view class="product-close" :data-id="video_item.id" @tap.stop="product_close_event">
-                                            <u-icon propName="close" propSize="30rpx" propColor="#999"></u-icon>
+                                            <u-icon propName="close" propSize="50rpx" propColor="#999"></u-icon>
                                         </view>
                                     </view>
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
@@ -95,7 +95,7 @@
                 <view class="flex-1 flex-row oh" :style="'width:' + windowWidth + 'px;'" data-type="scroll" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <!-- 评论内容区域 -->
                     <!-- <scroll-view class="flex-1 comment-list flex-row" scroll-y :scroll-top="comment_scroll_top" show-scrollbar="false" scroll-with-animation :scroll-with-touch="!is_dragging" @scrolltolower="handle_comment_to_lower_scroll" @scroll="handle_comment_scroll"> -->
-                        <list class="comment-list comment-scroll" :show-scrollbar="false" :scrollable="!is_dragging" loadmoreoffset="50" @scroll="handle_comment_scroll" @loadmore="handle_comment_to_lower_scroll">
+                        <list class="comment-list comment-scroll" :show-scrollbar="false" :scrollable="!is_dragging" loadmoreoffset="100" @scroll="handle_comment_scroll" @loadmore="handle_comment_to_lower_scroll">
                             <template v-if="active_comments && active_comments.length > 0">
                                 <cell v-for="(comment_item, index) in active_comments" :key="comment_item.id">
                                     <view class="comment-item flex-col"> 
@@ -128,7 +128,9 @@
                                 </cell>
                                 <template v-if="comment_item_loading">
                                     <cell>
-                                        <loading-component></loading-component>
+                                        <view class="flex-row align-c jc-c" :style="window_more_style">
+                                            <loading-component></loading-component>
+                                        </view>
                                     </cell>
                                 </template>
                                 <template v-else>
@@ -294,7 +296,7 @@
                 comment_current_y: 0, // 评论当前拖拽位置
                 move_distance: 0, // 评论拖拽距离
                 is_dragging: false, // 是否正在拖拽中
-                current_video_id: 1, // 当前播放视频的 ID
+                current_video_id: '', // 当前播放视频的 ID
                 is_slide_start: false,
                 swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
@@ -518,7 +520,6 @@
              * @param {*} id 视频 id
             */
             get_video_detail(id) {
-                console.log(id);
                 try {
                     // 获取数据
                     uni.request({
@@ -745,6 +746,7 @@
                     this.current_video_duration = 1;
                     this.is_seeking = false;
                     this.current_video_id = id; // 更新当前播放视频的ID
+                    
                     //#ifdef H5
                     // 使用URLSearchParams处理当前查询参数
                     const url = new URL(location.href);
@@ -783,6 +785,12 @@
                         this.swiper_key = get_math();
                         this.update_display_data();
                     }
+                    // 更新分享信息
+                    this.update_share_info(this.display_video_list[current]);
+                    // 延迟播放当前视频，确保DOM更新完成
+                    setTimeout(() => {
+                        this.play_current_video_safely(this.current_index);
+                    }, 150);
                 } catch (error) {
                     console.error('process_swiper_change error:', error);
                 }
@@ -1088,9 +1096,7 @@
                     e.stopPropagation();
                     // const id = this.current_video_id;
                     const old_data = this.video_data_list.find(item => item.id == this.current_video_id);
-                    console.log(old_data);
                     if (old_data && old_data.comments_list) {
-                        console.log('2225');
                         // 初始化评论数据
                         const new_data = old_data.comments_list.map(item1 => ({
                             ...item1,
@@ -1144,11 +1150,10 @@
                     if (this.comment_scroll_debounce_timer) {
                         clearTimeout(this.comment_scroll_debounce_timer);
                     }
-                    
                     // 设置新的防抖定时器
                     this.comment_scroll_debounce_timer = setTimeout(() => {
-                        this.comment_scroll_top = e.detail.scrollTop;
-                    }, 200); // 100ms防抖延迟
+                        this.comment_scroll_top = Math.abs(e.contentOffset.y);
+                    }, 100); // 100ms防抖延迟
                 } catch (error) {
                     console.error('handle_comment_scroll error:', error);
                 }
@@ -1973,10 +1978,10 @@
     };
 </script>
 <style lang="scss" scoped>
-    .video-container {
-        position: relative;
+    .swiper-container {
+        width: 100vw;
+        height: 100vh;
     }
-    
     .play-icon {
         position: absolute;
         top: 0;
@@ -2049,8 +2054,8 @@
     }
     .product-close {
         position: absolute;
-        right: -10rpx;
-        top: -14rpx;
+        right: -15rpx;
+        top: -20rpx;
     }
     
     .product-button {

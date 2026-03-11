@@ -8,6 +8,7 @@
     "app-plus" : {
         "usingComponents" : true,
         "nvueCompiler" : "uni-app",
+        "nvueStyleCompiler": "uni-app",
         "compilerVersion" : 3,
         "safearea": {
           "bottom": {

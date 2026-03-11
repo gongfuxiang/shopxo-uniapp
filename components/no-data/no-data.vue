@@ -242,7 +242,19 @@
     .no-data-loading .title {
         color: #999;
     }
-
+    /* #ifdef APP-NVUE */
+    .image {
+        width: 160rpx;
+        margin-bottom: 30rpx;
+    }
+    .no-data-tips {
+        font-size: 24rpx;
+        color: #999;
+    }
+    .title {
+        color: #999;
+    }
+    /* #endif */
     /**
      * 名称加载
      */
