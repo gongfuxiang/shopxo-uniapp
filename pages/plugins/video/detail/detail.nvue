@@ -1004,7 +1004,7 @@
                     }
                     // this.$nextTick(() => {
                     // setTimeout(() => { 
-                        // 2. 再把新数据 push 进去（触发内容变化）
+                    // 2. 再把新数据 push 进去（触发内容变化）
                     list.forEach(item => this.display_video_list.push(item))
                     // }, 0); 
                     // });
