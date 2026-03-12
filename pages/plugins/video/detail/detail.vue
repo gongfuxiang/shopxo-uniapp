@@ -929,11 +929,19 @@
                 let list = [];
                 // 如果当前索引为0，只显示当前元素和下一个元素
                 if (this.current_index == 0) {
-                    list = this.update_video_list([0, 1, -1]);
+                    if (this.current_video_index == 0) {
+                        list = this.update_video_list([0, 1, 2]);
+                    } else {
+                        list = this.update_video_list([0, 1, -1]);
+                    }
                 } else if (this.current_index == 1) { // 索引为1时，为确保无限轮播正常，需要改变数据插入顺序
                     list = this.update_video_list([-1, 0, 1]);
                 } else {
-                    list = this.update_video_list([1, -1, 0]);
+                    if (this.current_video_index == this.video_data_list.length - 1) {
+                        list = this.update_video_list([-2, -1, 0]);
+                    } else {
+                        list = this.update_video_list([1, -1, 0]);
+                    }
                 }
                 this.setData({
                     display_video_list: list
