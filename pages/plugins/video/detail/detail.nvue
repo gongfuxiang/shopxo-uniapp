@@ -2110,5 +2110,5 @@
     };
 </script>
 <style lang="scss" scoped>
-@import './detail.css';
+@import './detail-nvue.css';
 </style>
