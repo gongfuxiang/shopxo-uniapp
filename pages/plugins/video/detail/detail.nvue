@@ -237,8 +237,6 @@
         <!-- 分享弹窗 -->
         <u-share-popup ref="share" class="pointer-events-auto"></u-share-popup>
 
-        <!-- 公共 -->
-        <!-- <component-common ref="common"></component-common> -->
     </view>
 </template>
 
@@ -253,7 +251,6 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
-    import componentCommon from '@/components/common/common';
     // 多语言
     //#ifdef APP-NVUE
     import i18n from '@/locale/index.js';
@@ -347,8 +344,7 @@
             componentBottomLine,
             componentPopup,
             loadingComponent,
-            componentUpload,
-            componentCommon
+            componentUpload
         },
         computed: {
             // 视频列表高度
