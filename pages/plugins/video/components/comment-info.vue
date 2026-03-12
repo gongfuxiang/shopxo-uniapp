@@ -287,6 +287,7 @@
 }
 .comment-reply-text {
     color: #ccc;
+    font-size: 28rpx;
     padding: 0 10rpx;
 }
 .comment-operation {

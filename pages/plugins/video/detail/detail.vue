@@ -18,7 +18,7 @@
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
-                    <view class="video-container pr" @tap.stop="toggle_play_pause" @touchstart.prevent="handle_swiper_touch_start" @touchmove.prevent="handle_swiper_touch_move" @touchend="handle_swiper_touch_end">
+                    <view class="video-container pr" @tap.stop="toggle_play_pause" @touchstart="handle_swiper_touch_start" @touchmove="handle_swiper_touch_move" @touchend="handle_swiper_touch_end">
                         <view class="video-bg" :style="!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : ''"></view>
                         
                         <video class="video" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
