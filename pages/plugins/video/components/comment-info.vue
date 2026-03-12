@@ -127,10 +127,13 @@
                 if (!app.globalData.is_single_page_check()) {
                    return false;
                 }
-               var user= app.globalData.get_user_info(this, 'comment_like', e);
+                var user= app.globalData.get_user_info(this, 'comment_like', e);
                 if (user != false) {
                     this.$emit('comment_like', this.propId, e);
                 }
+                //#ifdef APP-NVUE
+                e.stopPropagation();
+                //#endif 
             },
             // 上传图片预览
             upload_show_event(e) {
@@ -217,7 +220,7 @@
     line-height: 34rpx;
 }
 .comment-reply {
-    font-weight: blod;
+    font-weight: 700;
     font-size: 24rpx;
     color: #666666;
     line-height: 34rpx;
@@ -258,7 +261,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
-    
+    /* #ifndef APP-NVUE */
     &:not(.dropdown-item-divided):active {
         background-color: #f5f5f5;
     }
@@ -272,6 +275,7 @@
         height: 1rpx;
         background-color: #f0f0f0;
     }
+    /* #endif */
     
     &:first-child {
         border-radius: 8rpx 8rpx 0 0;

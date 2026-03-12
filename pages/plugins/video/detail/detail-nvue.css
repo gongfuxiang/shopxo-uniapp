@@ -9,7 +9,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: none;
 }
 
 .play-icon-bg {
@@ -99,9 +98,7 @@
     font-size: 36rpx;
     font-weight: bold;
 }
-::v-deep .uni-video-container {
-    background: transparent;
-}
+
 .video-bg {
     position: absolute;
     top: 0;
@@ -128,7 +125,6 @@
 }
 
 .video-content {
-    display: block;
     font-size: 30rpx;
     margin-top: 16rpx;
     max-width: 70%;
@@ -314,11 +310,6 @@
     top: 0;
     left: 0;
     z-index: 9;
-}
-.header-top ::v-deep .search-bar {
-    background:#D8D8D8;
-    opacity: 0.27;
-    border-color: transparent;
 }
 
 .keyboard-input {

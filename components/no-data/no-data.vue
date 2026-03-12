@@ -296,7 +296,12 @@
         position: absolute;
         width: 140rpx;
         height: 140rpx;
+        /* #ifndef APP-NVUE */
         left: calc(50% - 70rpx);
+        /* #endif */
+        /* #ifdef APP-NVUE */
+        left: 0;
+        /* #endif */
         top: 0;
         border-radius: 50%;
         overflow: hidden;

@@ -42,9 +42,11 @@
         padding: 40rpx;
         overflow: hidden;
     }
+    /* #ifndef APP-NVUE */
     .data-bottom-line .bottom-exclude {
         padding-bottom: env(safe-area-inset-bottom);
     }
+    /* #endif */
     .data-bottom-line .line-item {
         width: 33.3%;
     }

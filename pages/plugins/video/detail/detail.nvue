@@ -1,10 +1,10 @@
 <template>
     <view :class="theme_view" :style="width_height_style">
-        <view v-if="display_video_list && display_video_list.length > 0" class="content pr" :style="width_height_style">
+        <view v-if="video_data_list && video_data_list.length > 0" class="content pr" :style="width_height_style">
             <!-- 视频列表 -->
-            <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="width_height_style + swiperStyle" :duration="300" :vertical="true" :circular="false" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
-                <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id" :style="width_height_style">
-                    <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style" @touchstart.prevent="handle_swiper_touch_start" @touchmove.prevent="handle_swiper_touch_move" @touchend="handle_swiper_touch_end">
+            <view class="swiper" ref="swiper" :style="width_height_style">
+                <block v-for="(video_item, index) in video_data_list" :key="video_item.id">
+                    <view class="pr" @tap.stop="toggle_play_pause" @touchstart.prevent="ListTouchStart" @touchmove.prevent="ListTouchMove">
                         <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
                         
                         <video class="video" :style="width_height_style + swiperStyle" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play" @tap.stop="toggle_play_pause"></video>
@@ -64,8 +64,8 @@
                             </view>
                         </template>
                     </view>
-                </swiper-item>
-            </swiper>
+                </block>
+            </view>
             <!-- 搜索框 -->
             <view v-if="!show_comment_modal" class="header-top" :style="top_content_style + menu_button_info + ' width: ' + windowWidth + 'px;'">
                 <view id="search-height" class="flex-row align-c">
@@ -251,6 +251,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
+    import scrollMixins from './scrollMixins';
     // 多语言
     //#ifdef APP-NVUE
     import i18n from '@/locale/index.js';
@@ -268,6 +269,7 @@
         //#ifdef APP-NVUE
         i18n,
         //#endif
+        mixins:[scrollMixins],
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -515,6 +517,13 @@
                     this.current_video_id = isEmpty(this.current_video_id) ? this.params.id : this.current_video_id;
                     
                     this.get_video_detail(this.current_video_id);
+                    
+                    //设置参数
+                    this.typeX = false //开启左右滑动
+                    this.playCount = 2 //剩余多少视频加载视频列表
+                    this.startDistance = 5 //判断左右上下拖动的启动距离 px
+                    this.minTime = 300 //判断快速滑动的时间,该时间内无视回弹距离判断
+                    this.backDistance = 200 //判断上下滑动的回弹距离 px
                 } catch (error) {
                     console.error('init error:', error);
                 }
@@ -545,7 +554,7 @@
                                     this.base_config_data = new_data.base_config_data;
                                     this.editor_path_type = new_data.editor_path_type;
                                 
-                                    this.get_last_or_next_data_list(this.params.id, 1, 1);
+                                    this.get_last_or_next_data_list(this.params.id, 0, 1);
                                 } else {
                                     this.data_list_loding_status =  0;
                                     this.data_tabs_loding_msg = data.msg;
@@ -636,45 +645,21 @@
                                 // 更新所有视频信息
                                 // this.video_data_list = this.video_data_list;
                                 this.$set(this, 'video_data_list', this.video_data_list);
+                                this.video_data_list.forEach((item, index) => {
+                                    // this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
+                                    this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
+                                });
                                 // 逻辑说明：当是最后一个视频且需要播放下一个时，根据数组长度和新索引计算新的当前索引
                                 // - 数组长度 > 2 时：新索引是最后一个元素则返回 2，是倒数第二个则返回 1，否则返回 0
                                 // - 数组长度 <= 2 时：返回 length - 1
-                                this.current_index = is_last == 1 && is_next == 1 ? this.calculate_new_index(this.video_data_list.length, new_index) : this.current_index;
+                                this.current_index = is_last == 1 && is_next == 1 ? new_index : this.current_index;
 
-                                if (is_last == 1 && is_next == 1) {
+                                if (is_next == 1) {
                                     setTimeout(() => { 
-                                        // 更新显示数据数据信息
-                                        this.update_display_data();
-                                        
-                                        setTimeout(() => {
-                                            
-                                            if (this.display_video_list && this.display_video_list.length > 0) {
-                                                // 更新分享信息
-                                                this.update_share_info(this.display_video_list[this.current_index]);
-                                                console.log(this.display_video_list.length);
-                                                this.display_video_list.forEach((item, index) => {
-                                                    // this.create_video_contexts[index] = uni.createVideoContext(`video_${index}`, this);
-                                                    this.$set(this.create_video_contexts, index, uni.createVideoContext(`video_${index}`, this));  
-                                                    //#ifdef H5
-                                                    if (document.getElementById(`video_${index}`) != null && this.video_contexts) { 
-                                                        // this.video_contexts[index] = document.getElementById(`video_${index}`).querySelector('video');
-                                                        this.$set(this.video_contexts, index, document.getElementById(`video_${index}`).querySelector('video'));  
-                                                    }
-                                                    //#endif
-                                                });
-                                            }
-                                            
-                                            //#ifdef H5
-                                            if (this.video_contexts && this.video_contexts[this.current_index]) { // 当前播放的视频索引为 0
-                                                this.video_play_event(this.video_contexts[this.current_index], true);
-                                            }
-                                            //#endif
-                                            //#ifndef H5
-                                            if (this.create_video_contexts && this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为 0
-                                                this.video_play_event(this.create_video_contexts[this.current_index], true);
-                                            }
-                                            //#endif
-                                        }, 200);
+                                        // const index = this.video_data_list.findIndex(item => item.id == this.current_index);
+                                        if (this.create_video_contexts && this.create_video_contexts[this.current_index]) { // 当前播放的视频索引为 0
+                                            this.video_play_event(this.create_video_contexts[this.current_index], true);
+                                        }
                                     }, 100);
                                 }
                             }
@@ -683,40 +668,6 @@
                 } catch (error) {
                     console.error('get_last_or_next_data_list error:', error);
                 }
-            },
-            /**
-             * 计算新的视频索引
-             * 当是最后一个视频且需要播放下一个时，根据数组长度和新索引计算新的当前索引
-             * @param {number} listLength - 视频列表长度
-             * @param {number} newIndex - 新视频在列表中的索引
-             * @returns {number} 计算后的新索引
-             */
-            calculate_new_index(listLength, newIndex) {
-                try {
-                    // 边界处理：空数组
-                    if (listLength === 0) {
-                        return 0;
-                    }
-                    
-                    // 数组长度 <= 2 时，返回最后一个索引
-                    if (listLength <= 2) {
-                        return listLength - 1;
-                    }
-                    
-                    // 数组长度 > 2 时，根据新索引位置返回对应值
-                    // 新索引是最后一个元素 -> 返回 2
-                    if (newIndex === listLength - 1) {
-                        return 2;
-                    }
-                    // 新索引是倒数第二个元素 -> 返回 1
-                    if (newIndex === listLength - 2) {
-                        return 1;
-                    }
-                    // 其他情况 -> 返回 0
-                    return 0;
-                } catch (error) {
-                    console.error('calculate_new_index error:', error);
-                }   
             },
             // 视频拖拽开始
             handle_swiper_touch_start(e) {
@@ -765,7 +716,7 @@
                 try {
                     const move_distance = this.swiper_current_y - this.swiper_start_y;
                     // 判断滑动方向：向下为正，向上为负
-                    if (Math.abs(move_distance) > (this.windowHeight * 0.3)) {
+                    if (Math.abs(move_distance) > (this.windowHeight * 0.25)) {
                         // 只有滑动距离超过屏幕高度的 15% 才触发切换
                         if (move_distance > 0) {
                             // 向下滑动，切换到上一个视频
@@ -802,29 +753,14 @@
                         if (this.current_video_index <= 0) {
                             app.globalData.showToast('已经是第一个视频了');
                             return;
-                        } else {
-                            new_index = this.current_index - 1 < 0 ? 2 : (this.current_index - 1);
                         }
                     } else if (direction === 'next') {
                         // 向上滑动，切换到下一个
                         if (this.current_video_index >= this.video_data_list.length - 1) {
                             app.globalData.showToast('已经是最后一个视频了');
                             return;
-                        } else {
-                            console.log('new_index', this.current_index);
-                            new_index = this.current_index + 1 > 2 ? 0 : (this.current_index + 1);
                         }
                     }
-                    console.log('new_index', new_index);
-                    // 创建模拟的 event 对象
-                    const mockEvent = {
-                        detail: {
-                            current: new_index
-                        }
-                    };
-                    
-                    // 调用原有的处理逻辑
-                    this.handle_swiper_change(mockEvent);
                 } catch (error) {
                     console.error('handle_swiper_change_by_direction error:', error);
                 }
@@ -853,7 +789,6 @@
 
                     const id = this?.display_video_list[current]?.id || '';
                     // 更新状态
-                    this.current_index = current;
                     this.paused = false;
                     this.is_manual_pause = false;
                     this.current_video_progress = 0;
@@ -872,36 +807,38 @@
                     const index = this.video_data_list.findIndex(item => item.id == id);
                     
                     // 数据预加载逻辑
-                    if (index < 2 && this.direction == 'prev') {
-                        this.get_last_or_next_data_list(this.video_data_list[0].id, 1, 0);
-                    } else if (index < this.video_data_list.length - 3 && this.direction == 'next') {
+                    // if (index < 2 && this.direction == 'prev') {
+                    //     this.get_last_or_next_data_list(this.video_data_list[0].id, 1, 0);
+                    // } else 
+                    if (index < this.video_data_list.length - 3 && this.direction == 'next') {
                         this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
                     }
                     // 获取视频详细信息
                     this.get_video_data_detail(id);
-                    // 边界处理逻辑
-                    if (this.current_video_index == 0 && this.is_slide_start) {
-                        const list = this.update_video_list([0, 1, 2]);
+                    // // 边界处理逻辑
+                    // if (this.current_video_index == 0 && this.is_slide_start) {
+                    //     const list = this.update_video_list([0, 1, 2]);
                         
-                        this.is_slide_start = false;
-                        this.current_index = 0;
-                        // this.swiper_key = get_math();
-                        // 刷新数据
-                        this.update_display_video_list(list);
-                    } else if (this.current_video_index == this.video_data_list.length - 1) {
-                        const list = this.update_video_list([-2, -1, 0]);
-                        this.current_index = list.length - 1;
-                        // this.swiper_key = get_math();
-                        // 刷新数据
-                        this.update_display_video_list(list);
-                    } else {
-                        this.is_slide_start = true;
-                        // this.swiper_key = get_math();
-                        this.update_display_data();
-                    }
+                    //     this.is_slide_start = false;
+                    //     this.current_index = 0;
+                    //     // this.swiper_key = get_math();
+                    //     // 刷新数据
+                    //     this.update_display_video_list(list);
+                    // } else if (this.current_video_index == this.video_data_list.length - 1) {
+                    //     const list = this.update_video_list([-2, -1, 0]);
+                    //     this.current_index = list.length - 1;
+                    //     // this.swiper_key = get_math();
+                    //     // 刷新数据
+                    //     this.update_display_video_list(list);
+                    // } else {
+                    //     this.is_slide_start = true;
+                    //     // this.swiper_key = get_math();
+                    //     this.update_display_data();
+                    // }
                     // 更新分享信息
-                    this.update_share_info(this.display_video_list[current]);
-                    this.swiper_key = get_math();
+                    this.update_share_info(this.display_video_list[this.current_video_index]);
+                    // this.swiper_key = get_math();
+                    // this.$forceUpdate();
                     // 延迟播放当前视频，确保DOM更新完成
                     setTimeout(() => {
                         this.play_current_video_safely(this.current_index);
