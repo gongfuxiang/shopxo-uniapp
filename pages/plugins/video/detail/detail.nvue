@@ -188,12 +188,12 @@
                         <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
                             <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_main_reason">
-                                <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c mr-10">
+                                <label v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c mr-10">
                                     <view class="flex-row align-c">
                                         <radio :value="main_index.toString()" :checked="current_main_index === main_index" style="transform:scale(0.7)" />
                                         <text class="report-name flex-row align-c">{{mainItem.name}}</text>
                                     </view>
-                                </view>
+                                </label>
                             </radio-group>
                         </view>
                     </view>
@@ -203,12 +203,12 @@
                         <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
                             <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_sub_reason">
-                                <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c mr-10">
+                                <label v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c mr-10">
                                     <view class="flex-row align-c">
                                         <radio :value="sub_index.toString()" :checked="current_sub_index === sub_index" style="transform:scale(0.7)" />
                                         <text class="report-name flex-row align-c">{{subItem}}</text>
                                     </view>
-                                </view>
+                                </label>
                             </radio-group>
                         </view>
                     </view>
