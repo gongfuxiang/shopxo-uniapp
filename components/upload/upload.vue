@@ -126,8 +126,6 @@
                                             self.$emit('call-back', data.data.url, self.propCallData);
                                         }
                                     } else {
-                                        console.log(list);
-                                        
                                         var list = self.form_images_list;
                                         // 返回全部信息
                                         if(self.propIsAllInfo) {

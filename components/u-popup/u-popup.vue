@@ -1,8 +1,8 @@
 <template>
     <view v-if="showPopup" class="uni-popup" :class="popupstyle + (isDesktop ? ' fixforpc-z-index' : '')">
         <view @touchstart="touchstart">
-            <component-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
-            <component-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
+            <u-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
+            <u-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
                 <view class="pr" :style="'border-radius:' + propRound + 'px'">
                     <view v-if="propCloseType == 'icon' && propCloseable" class="popup-close pa-14 box-border-box" :class="propCloseIconPos" :style="closeIconStyle" @tap="close">
                         <u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></u-icon>
@@ -25,7 +25,7 @@
                         <slot />
                     </view>
                 </view>
-            </component-transition>
+            </u-transition>
         </view>
         <!-- #ifdef H5 -->
         <keypress v-if="maskShow" @esc="onTap" />
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-    import componentTransition from '@/pages/plugins/live/pull/components/transition/transition.vue';
     // #ifdef H5
     import keypress from './keypress.js';
     // #endif
@@ -87,7 +86,6 @@
             // #ifdef H5
             keypress,
             // #endif
-            componentTransition,
         },
         emits: ['change', 'maskClick', 'callBack', 'callBackCustom'],
         props: {

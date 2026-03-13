@@ -64,7 +64,7 @@
             <!-- 2 处理错误 -->
             <view v-else-if="propStatus == 2" class="no-data-box tc">
                 <image class="image" :src="static_dir + 'error.png'" mode="widthFix"></image>
-                <view class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</view>
+                <text class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</text>
                 <view v-if="propBackBtn" class="margin-top-xxxl tc">
                     <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
                 </view>
@@ -73,7 +73,7 @@
             <!-- 0 默认没有数据 -->
             <view v-else-if="propStatus == 0" class="no-data-box tc">
                 <image class="image" :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
-                <view class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</view>
+                <text class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</text>
             </view>
         </view>
     </view>
@@ -249,7 +249,7 @@
     }
     .no-data-tips {
         font-size: 24rpx;
-        color: #999;
+        color: #fff;
     }
     .title {
         color: #999;
