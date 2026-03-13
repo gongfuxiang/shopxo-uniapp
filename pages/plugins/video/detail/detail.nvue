@@ -356,8 +356,8 @@
             commentContentStyle() {
                 const baseHeight = Math.round(this.windowHeight * 0.7);
                 return this.show_comment_modal && this.move_distance > 0 
-                    ? `transform: translateY(3px); width:${this.windowWidth}px; height: ${baseHeight - 10 - this.move_distance}px;` 
-                    : `transform: translateY(0); width:${this.windowWidth}px; height: ${baseHeight + 10}px;`;
+                    ? `transform: translateY(3px); width:${this.windowWidth}px; height: ${baseHeight - this.move_distance}px;` 
+                    : `transform: translateY(0); width:${this.windowWidth}px; height: ${baseHeight}px;`;
             },
             // 当前播放视频的索引
             current_video_index() { 
