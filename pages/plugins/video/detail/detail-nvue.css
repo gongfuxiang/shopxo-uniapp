@@ -312,6 +312,26 @@
     z-index: 9;
 }
 
+.cover-view-center{
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.left-div{
+    position: absolute;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+}
+.right-div{
+    position: absolute;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+}
+
 .keyboard-input {
     position: fixed;
     left: 0;

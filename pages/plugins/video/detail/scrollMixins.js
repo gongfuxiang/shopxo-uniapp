@@ -9,17 +9,16 @@ export default {
 			startDistance:5, //开启左右滑动时有效,判断左右上下拖动的启动距离
 			minTime:300, //判断为快速滑动的时间,该时间内无视回弹
 			backDistance:200, //上下滑动的回弹距离
-			
-			
+            
 			oldTime:0,
 			oldTouces:{},
 			touchType:null,
 			gesToken:0,
-			height:'667px',
 			index:0,
 			oldIndex:0,
 			width:'',
-			sysheight:0,
+            windowWidth: 0,
+			windowHeight:0,
 			distance:0,
 			distanceX:0,
 			scroll:false,
@@ -29,10 +28,10 @@ export default {
 		//#ifdef APP-PLUS
 			plus.screen.lockOrientation("portrait-primary")
 		//#endif
-		this.sysheight = uni.getSystemInfoSync().windowHeight
-		this.height = `${this.sysheight}px` 
-		let width = uni.getSystemInfoSync().windowWidth 
-		this.width = `${width}px` 
+        const data = uni.getWindowInfo();
+        this.windowWidth = data.windowWidth > 800 ? 800 : data.windowWidth;
+        this.windowHeight = data.windowHeight;
+		this.width = `${this.windowWidth}px` 
 	},
 	methods:{
 		getEl: function(el) {
@@ -45,12 +44,8 @@ export default {
 		},
 		// ListTouch触摸开始
 		ListTouchStart(e) {
-			
 			this.oldTime = new Date()
 			this.oldTouces = e.changedTouches[0]
-		},
-		ListTouchEnd(e) {
-			console.log('end')
 		},
 		//判定方向
 		ListTouchMove(e){
@@ -60,7 +55,7 @@ export default {
 			let newTouces = e.changedTouches[0]
 			
 			if(!this.touchType){
-				let startDistance = this.typeX? this.startDistance: 0
+				let startDistance = this.typeX?this.startDistance: 0 
 				
 				//滑动启动条件
 				this.touchType = Math.abs( newTouces.pageY - oldTouces.pageY ) > startDistance ? 'moveY' : null
@@ -74,9 +69,8 @@ export default {
 					this.touchType = newTouces.pageX - oldTouces.pageX > startDistance ? 'moveXR' : this.touchType
 					this.touchType = newTouces.pageX - oldTouces.pageX < -startDistance ? 'moveXL' : this.touchType
 				}
-				console.log(this.typeX);
+				
 			}else{
-                console.log(this.touchType);
 				// 如果在执行动画，就不触发
 				if(this.scroll) return 
 				// 解绑动画
@@ -97,38 +91,24 @@ export default {
 				}else if(this.touchType == 'moveXR'){
 					move = 1
 				}
-				
-				
-				
 				//关闭启动判断
 				this.touchType = 'stop'
 				
 				let touch_origin = `y+${this.distance}<=0 && ${move}==0 && ${this.distanceX}==0 && 
-					y+${this.distance}-${this.sysheight}>=${-this.sysheight*this.video_data_list.length}? 
-					y+${this.distance} : ${this.distance}`
+					y+${this.distance}-${this.windowHeight}>=${-this.windowHeight*this.video_data_list.length}? 
+					y+${this.distance} : ${this.distance}`;
 				// 找到元素 
-				let swiperRef = this.getEl(this.$refs.swiper)
-                console.log(swiperRef);
-				// let leftRef = this.getEl(this.$refs.left)
-				// let rightRef = this.getEl(this.$refs.right)
-				
-				let anchor
-				// if(this.distanceX==0){
-				// 	let touchRef = this.getEl(this.$refs.touch)
-				// 	anchor = touchRef
-				// }
-				
+				let swiperRef = this.getEl(this.$refs.swiper);
+                
 				let gesTokenObj = BindingX.bind({
 					anchor:swiperRef,
 					eventType:'pan',
 					props: [
 						{element:swiperRef, property:'transform.translateY',expression: touch_origin},
-						{element:swiperRef, property:'transform.translateX',expression: `${move}!=0 && ${move}*x>0 ?x+${this.distanceX} : ${this.distanceX}`},
-						// {element:leftRef, property:'transform.translateX',expression: `${move}!=0&& ${move*this.distanceX}<=0&&x+${this.distanceX}<393?x+${this.distanceX} : ${this.distanceX}`},
-						// {element:rightRef, property:'transform.translateX',expression: `${move}!=0&& ${move*this.distanceX}<=0&&x+${this.distanceX}>-393?x+${this.distanceX} : ${this.distanceX}`}
+						{element:swiperRef, property:'transform.translateX',expression: `${move}!=0 && ${move}*x>0 ?x+${this.distanceX} : ${this.distanceX}`}
 					]
 				}, (e) => {
-                    console.log(e, '2558');
+
 					if(e.state === 'end') {
 						this.touchType = null
 						
@@ -140,7 +120,15 @@ export default {
 							// 记录当前坐标
 							const distance = this.distance + e.deltaY
 							
-							if(distance>0 || this.distance + e.deltaY-this.sysheight<-this.sysheight*this.video_data_list.length) return
+							if(distance>0 || this.distance + e.deltaY-this.windowHeight<-this.windowHeight*this.video_data_list.length) {
+								if (this.index == 0) {
+									this.showToast('当前已经是第一条了');
+								    return;
+								} else if (this.index == this.video_data_list.length - 1) {
+									this.showToast('当前已经是最后一条');
+									return
+								}
+							}
 							
 							this.bindTiming(distance,e.deltaY,quickMove)
 						}
@@ -162,7 +150,7 @@ export default {
 			// 开始执行动画
 			this.scroll = true
 			let swiperRef = this.getEl(this.$refs.swiper)
-			let sysheight = this.sysheight
+			let windowHeight = this.windowHeight
 			
 			let changed_Y, final_Y, translate_Y_origin
 			
@@ -174,37 +162,29 @@ export default {
 				translate_Y_origin = `easeOutExpo(t,${distance},${changed_Y},300)` // 运动曲线为easeOutElastic
 			} else{
 				// 往上下拖动超过一半时
-				final_Y = this.distance + (Y>0?1:-1) *this.sysheight
+				final_Y = this.distance + (Y>0?1:-1) *this.windowHeight
 				changed_Y= final_Y - distance// 计算出需要位置的值
-				translate_Y_origin = `easeOutExpo(t,${distance},${changed_Y},900)` // 运动曲线为easeOutExpo
+				translate_Y_origin = `easeOutExpo(t,${distance},${changed_Y},600)` // 运动曲线为easeOutExpo
 			}
-            
-            console.log(translate_Y_origin);
 			let result = BindingX.bind({
 				eventType:'timing',       // 结束的时候是没有任何监听的 用 timing 来做定时的动画
-				exitExpression:"t>600",  // 当时间超过 300ms 结束动画
+				exitExpression:"t>300",  // 当时间超过 300ms 结束动画
 				props: [
 					{element:swiperRef, property:'transform.translateY',expression:translate_Y_origin},
 					]
 				},async (e) => {
-                    console.log(e);
 					if(e.state === 'end' || e.state === 'exit') {
 						this.distance = final_Y
 						this.scroll = false
-                        console.log(this.video_data_list);
-						if( Math.abs(Y)>this.backDistance||quickMove) {
-							for (let item of this.video_data_list) {
-								item.flag = false
-							}
-							this.index = -this.distance/this.sysheight
-							
-							this.video_data_list[this.index].flag = true
+						if(Math.abs(Y)>this.backDistance||quickMove) {
+							this.index = -this.distance/this.windowHeight;
+                            this.process_swiper_change(this.index);
 							//加载视频
 							if(this.video_data_list.length - this.index - 1 <= this.playCount){
-								await this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
+                                this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
 							}
 						}else if(Math.abs(Y)<=this.backDistance&&!quickMove){
-							this.video_data_list[this.index].flag = true
+                            this.play_current_video_safely(this.index);
 						}
 					}
 			})
@@ -213,8 +193,6 @@ export default {
 			// 开始执行动画
 			this.scroll = true
 			let swiperRef = this.getEl(this.$refs.swiper)
-			// let leftRef = this.getEl(this.$refs.left)
-			// let rightRef = this.getEl(this.$refs.right)
 			let width = parseInt(this.width) 
 			
 			let changed_X, final_X, origin
@@ -235,8 +213,6 @@ export default {
 				props: [
 					{element:swiperRef, property:'transform.translateX',expression:origin},
 					{element:swiperRef, property:'transform.translateY',expression:`easeOutExpo(t,${this.distance},0,200)`},
-					// {element:leftRef, property:'transform.translateX',expression:origin},
-					// {element:rightRef, property:'transform.translateX',expression:origin}
 					]
 				},async (e) => {
 					if(e.state === 'end' || e.state === 'exit') {
@@ -245,11 +221,9 @@ export default {
 						if( Math.abs(X)<=10&&this.distanceX==0){
 							
 						}else if( Math.abs(X)>10&&this.distanceX!=0) {
-							for (let item of this.video_data_list) {
-								item.flag = false
-							}
+                            this.pause_all_videos_except(-1);
 						}else if(Math.abs(X)>10&&this.distanceX==0){
-							this.videoPlay(this.index)
+                            this.play_current_video_safely(this.index);
 						}
 						
 					}
@@ -261,7 +235,7 @@ export default {
 			let swiperRef = this.getEl(this.$refs.swiper)
 			let changed_Y, final_Y, origin
 			
-			final_Y = this.distance + (this.index-current) *this.sysheight
+			final_Y = this.distance + (this.index-current) *this.windowHeight
 			changed_Y= final_Y - this.distance // 计算出需要位置的值
 			time = time * Math.abs(this.index-current)
 			origin = `easeOutExpo(t,${this.distance},${changed_Y},${time})` // 运动曲线为easeOutExpo
@@ -274,48 +248,20 @@ export default {
 				props: [
 					{element:swiperRef, property:'transform.translateY',expression:origin},
 				]
-				},async (e) => {
+				}, (e) => {
 					if(e.state === 'end' || e.state === 'exit') {
 						this.distance = final_Y
 						this.scroll = false
 						
-						for (let item of this.video_data_list) {
-							item.flag = false
-						}
-						this.index = -this.distance/this.sysheight
-
-						this.video_data_list[this.index].flag = true
-
-						
+						this.index = -this.distance/this.windowHeight
+                        this.process_swiper_change(this.index);
 						//加载视频
 						if(this.video_data_list.length - this.index - 1 <= this.playCount){
-							await this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
+							this.get_last_or_next_data_list(this.video_data_list[this.video_data_list.length - 1].id, 0, 1);
 						}
-						
-						
 					}
 				
 			})
-		},
-		pauseVideo(val){
-			this.video_data_list[this.oldIndex].initialTime = val
-		},
-		clickVideo(){
-			this.video_data_list[this.index].flag = !this.video_data_list[this.index].flag
-		},
-		videoPlay(index){
-			if(this.distanceX!=0) return
-			let promise = new Promise((resolve,reject)=>{
-				resolve()
-			})
-			promise.then(res=>{
-				this.video_data_list[index].flag = !this.video_data_list[index].flag
-			})
-		},
-	},
-	watch:{
-		index(newVal,oldVal){
-			this.oldIndex = oldVal
 		}
 	}
 }

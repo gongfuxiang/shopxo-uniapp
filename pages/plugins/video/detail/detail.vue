@@ -1342,7 +1342,7 @@
                                                 const comment = this.active_comments[j];
                                                 if (comment.id == comments_id) {
                                                     updateThumbsStatus(comment, new_data);
-                                                    return; // 找到后直接返回
+                                                    console.log(comment);
                                                 } else {
                                                     // 安全检查sub_comments数组是否存在
                                                     if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
@@ -1351,7 +1351,6 @@
                                                             
                                                             if (sub_comment.id == comments_id) {
                                                                 updateThumbsStatus(sub_comment, new_data);
-                                                                return; // 找到后直接返回
                                                             }
                                                         }
                                                     }
@@ -1364,6 +1363,7 @@
                                     break; // 处理完当前item后跳出外层循环
                                 }
                             }
+                            console.log(this.video_data_list[0]);
                             this.setData({
                                 video_data_list: this.video_data_list
                             })
