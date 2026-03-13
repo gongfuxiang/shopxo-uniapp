@@ -163,14 +163,16 @@
                         </view>
                         <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
                             <input :value="comment_input_value" class="comment-input mr-10" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                            <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
                                 <u-icon propName="layout-module-single-images" propSize="32rpx" propColor="#999"></u-icon>
                             </component-upload>
                         </view>
                         <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
                             <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                                <u-icon propName="close" propSize="10" propColor="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></u-icon>
-                                <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                                <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="comment-input-img"></image>
+                                <view class="form-img-icon flex-row align-c jc-c" @tap="comment_input_img_close">
+                                    <u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></u-icon>
+                                </view>
                             </view>
                         </view>
                     </view>
@@ -226,14 +228,16 @@
                 </view>
                 <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
                     <input ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
                         <u-icon propName="layout-module-single-images" propSize="48rpx" propColor="#999"></u-icon>
                     </component-upload>
                 </view>
                 <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
                     <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                        <u-icon propName="close" propSize="10" propColor="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></u-icon>
-                        <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                       <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="comment-input-img"></image>
+                       <view class="form-img-icon flex-row align-c jc-c" @tap="comment_input_img_close">
+                           <u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></u-icon>
+                       </view>
                     </view>
                 </view>
             </view>

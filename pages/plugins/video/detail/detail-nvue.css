@@ -251,15 +251,21 @@
 .comment-input-img-container {
     padding: 10rpx 16rpx 16rpx 16rpx;
 }
-.comment-input-img-close {
-    position: absolute;
-    right: -15rpx;
-    top: -15rpx;
-    z-index: 2;
-}
+
 .comment-input-img {
-    width: 50rpx;
-    height: 50rpx;
+    width: 100rpx;
+    height: 100rpx;
+}
+.form-img-icon {
+    position: absolute;
+    top: 0;
+    right: 6rpx;
+    margin: 5rpx 0 5rpx 5rpx;
+    z-index: 2;
+    height: 30rpx;
+    width: 30rpx;
+    background: #fff;
+    border-radius: 20rpx;
 }
 
 /* 新的举报弹窗样式 */

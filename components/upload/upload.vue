@@ -84,9 +84,14 @@
             };
         },
         mounted() {
+            //#ifndef APP-NVUE
             this.setData({
                 form_images_list: (this.propData || null) == null ? [] : (typeof this.propData == 'string' ? this.propData.split(',') : this.propData),
             });
+            //#endif
+            //#ifdef APP-NVUE
+            this.form_images_list = (this.propData || null) == null ? [] : (typeof this.propData == 'string' ? this.propData.split(',') : this.propData);
+            //#endif
         },
         created: function () {},
 
@@ -111,11 +116,18 @@
                                     if(self.propSingleCall) {
                                         // 是否返回全部信息
                                         if(self.propIsAllInfo) {
+                                            //#ifndef APP-NVUE
                                             self.$emit('call-back', data.data, self.propCallData);
+                                            //#endif
+                                            //#ifdef APP-NVUE
+                                            self.$emit('callBack', data.data, self.propCallData);
+                                            //#endif
                                         } else {
                                             self.$emit('call-back', data.data.url, self.propCallData);
                                         }
                                     } else {
+                                        console.log(list);
+                                        
                                         var list = self.form_images_list;
                                         // 返回全部信息
                                         if(self.propIsAllInfo) {
@@ -123,9 +135,14 @@
                                         } else {
                                             list.push(data.data.url);
                                         }
+                                        //#ifndef APP-NVUE
                                         self.setData({
                                             form_images_list: list,
                                         });
+                                        //#endif
+                                        //#ifdef APP-NVUE
+                                        self.form_images_list = list;
+                                        //#endif
                                         self.$emit('call-back', self.form_images_list, self.propCallData);
                                     }
                                 } else {
@@ -177,9 +194,14 @@
                         if (res.confirm) {
                             var list = self.form_images_list;
                             list.splice(e.currentTarget.dataset.index, 1);
+                            //#ifndef APP-NVUE
                             self.setData({
                                 form_images_list: list,
                             });
+                            //#endif
+                            //#ifdef APP-NVUE
+                            self.form_images_list = list;
+                            //#endif
                             self.$emit('call-back', self.form_images_list, self.propCallData);
                         }
                     },
