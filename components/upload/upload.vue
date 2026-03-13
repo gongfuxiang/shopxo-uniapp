@@ -75,6 +75,10 @@
                 type: [Number, String, Array, Object],
                 default: '',
             },
+            propChooseFocus: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {
             return {
@@ -178,6 +182,18 @@
                         var length = res.tempFilePaths.length;
                         var count = 0;
                         self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
+                    },
+                    complete(res) {
+                        //#ifndef APP-NVUE
+                        if (self.propChooseFocus) {
+                            self.$emit('chooseFocus');
+                        }
+                        //#endif
+                        //#ifdef APP-NVUE
+                        if (self.propChooseFocus) {
+                            uni.$emit('chooseFocus');
+                        }
+                        //#endif
                     },
                 });
             },

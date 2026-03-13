@@ -149,8 +149,8 @@
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                                <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
+                            <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                                <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                             </component-upload>
                         </view>
                         <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
@@ -213,9 +213,9 @@
                     </view>
                 </view>
                 <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                    <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                        <iconfont name="icon-layout-module-single-images" size="48rpx" color="#999"></iconfont>
+                    <input ref="commentInput" :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
+                        <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                     </component-upload>
                 </view>
                 <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
@@ -956,13 +956,23 @@
             // 图片上传回调
             upload_images_event(res) {
                 if((res || null) != null) {
-                    // 存储上传图片内容
-                    this.form_images_list.push({
-                        url: res.url,
-                        name: res.name,
-                        size: res.size,
-                    });
+                    if (this.form_images_list.length > 0) {
+                        this.form_images_list.splice(0, 1, { url: res.url, name: res.name, size: res.size });
+                    } else {
+                        // 存储上传图片内容
+                        this.form_images_list.push({
+                            url: res.url,
+                            name: res.name,
+                            size: res.size,
+                        });
+                    }
                 }
+            },
+            upload_event() {
+                setTimeout(() => {
+                    this.is_add_comment = true;
+                    // this.$refs.commentInput.focus();
+                }, 100);
             },
 
             // 上传图片预览
