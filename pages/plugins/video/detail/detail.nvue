@@ -225,7 +225,7 @@
                     </view>
                 </view>
                 <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
-                    <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                    <input ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
                     <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                         <u-icon propName="layout-module-single-images" propSize="48rpx" propColor="#999"></u-icon>
                     </component-upload>
@@ -876,6 +876,7 @@
             // 关闭评论区
             close_comment_modal(e) {
                 try {
+                    
                     this.active_dropdown_id = null;
                     this.show_comment_modal = false;
                     this.comment_scroll_top = 0 + Math.random(); // 关闭评论时滚动到最顶部
@@ -891,6 +892,10 @@
                     if (this.comment_move_throttle_timer) {
                         clearTimeout(this.comment_move_throttle_timer);
                         this.comment_move_throttle_timer = null;
+                    }
+                    
+                    if (this.$refs.commentRef) {
+                        this.$refs.commentRef.blur();
                     }
                 } catch (error) {
                     console.error('close_comment_modal error:', error);
@@ -1654,6 +1659,7 @@
             add_comment() {
                 try {
                     //#ifndef H5
+                    this.active_dropdown_id = null;
                     this.is_add_comment = true;
                     this.active_dropdown_id = null;
                     //#endif
