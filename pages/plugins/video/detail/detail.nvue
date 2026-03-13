@@ -899,6 +899,7 @@
             // 评论滚动事件，记录滚动位置（带防抖）
             handle_comment_scroll(e) {
                 try {
+                    this.active_dropdown_id = null;
                     // 清除之前的防抖定时器
                     if (this.comment_scroll_debounce_timer) {
                         clearTimeout(this.comment_scroll_debounce_timer);
@@ -1039,6 +1040,7 @@
             // 评论
             send_comment() {
                 try {
+                    this.active_dropdown_id = null;
                     let comment_text = this.comment_input_value;
                     if (!comment_text.trim()) return;
 
@@ -1118,7 +1120,7 @@
             // 展开子评论
             open_sub_comment(id, is_level) {
                 try {
-                    console.log(id);
+                    this.active_dropdown_id = null;
                     const comment = this.active_comments.find(item => item.id == id);
                     if (comment) {
                         comment.show_sub_comment = true;
@@ -1164,6 +1166,7 @@
             // 收起子评论
             close_sub_comment(id) {
                 try {
+                    this.active_dropdown_id = null;
                     const comment = this.active_comments.find(item => item.id == id);
                     if (comment) {
                         comment.show_sub_comment = false;
@@ -1303,6 +1306,7 @@
             // 删除回复评论数据
             comment_data_delete() {
                 try {
+                    this.active_dropdown_id = null;
                     this.comments_reply_data = {};
                 } catch (error) {
                     console.error('comment_data_delete error:', error);
