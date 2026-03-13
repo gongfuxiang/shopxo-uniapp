@@ -371,7 +371,7 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
+            console.log(this.is_manual_pause);
             // 视频播放
             if (!this.is_manual_pause && this.create_video_contexts[this.current_index]) {
                 this.video_play_event(this.create_video_contexts[this.current_index]);

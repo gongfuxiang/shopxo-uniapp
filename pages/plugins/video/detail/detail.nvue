@@ -187,7 +187,7 @@
                                 <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" style="margin-right: 20rpx;" :data-index="main_index" @tap.stop="select_main_reason">
                                     <view class="flex-row align-c">
                                         <radio :value="main_index.toString()" :checked="current_main_index === main_index" style="transform:scale(0.7)" />
-                                        <text class="report-name flex-row align-c">{{mainItem.name}}</text>
+                                        <text class="report-name flex-row align-c">{{mainItem.name}}{{ current_main_index === main_index }}</text>
                                     </view>
                                 </view>
                             </radio-group>
@@ -202,7 +202,7 @@
                                 <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" style="margin-right: 20rpx;" :data-index="sub_index" @tap.stop="select_sub_reason">
                                     <view class="flex-row align-c">
                                         <radio :value="sub_index.toString()" :checked="current_sub_index === sub_index" style="transform:scale(0.7)" />
-                                        <text class="report-name flex-row align-c">{{subItem}}</text>
+                                        <text class="report-name flex-row align-c">{{subItem}}{{ current_sub_index === sub_index }}</text>
                                     </view>
                                 </view>
                             </radio-group>
@@ -397,7 +397,7 @@
                 this.windowHeight = data.windowHeight;
                 // 调用公共事件方法
                 app.globalData.page_event_onshow_handle();
-
+                
                 // 视频播放
                 if (!this.is_manual_pause && this.create_video_contexts && this.create_video_contexts[this.current_index]) {
                     this.video_play_event(this.create_video_contexts[this.current_index]);
