@@ -6,7 +6,7 @@
                 <text class="comment-user">{{ propComment.user.user_name_view }}</text>
                 <view class="pr" style="margin-left: 20rpx;">
                     <!-- 直接实现下拉菜单 -->
-                    <view ref="commentOption" class="comment-option" @tap.stop="toggle_dropdown">
+                    <view ref="commentOption" class="comment-option overlay-content" @tap.stop="toggle_dropdown">
                         <u-icon propName="ellipsis" propColor="#999" propSize="28rpx"></u-icon>
                     </view>
                     <!-- 下拉菜单 -->
@@ -34,7 +34,7 @@
                     <text class="comment-time">{{ propComment.add_time }}</text>
                     <text class="comment-reply flex-row align-c gap-5" style="margin-left: 20rpx;">{{ propReplyContent || $t('common.reply') }}({{ propComment.comments_count }})</text>
                 </view>
-                <view class="comment-operation-right flex-row align-c" style="margin-left: 20rpx;" @tap.stop="comment_like">
+                <view class="comment-operation-right flex-row align-c overlay-content" style="margin-left: 20rpx;" @tap.stop="comment_like">
                     <u-icon propName="givealike-o-fine" :propColor="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" propSize="28rpx"></u-icon>
                     <text class="comment-like-num" style="margin-left: 10rpx;">{{ propComment.give_thumbs_count || 0 }}</text>
                 </view>
