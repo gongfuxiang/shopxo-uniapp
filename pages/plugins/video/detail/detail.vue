@@ -1343,6 +1343,7 @@
                                                 if (comment.id == comments_id) {
                                                     updateThumbsStatus(comment, new_data);
                                                     console.log(comment);
+                                                    break; // 处理完当前item后跳出循环
                                                 } else {
                                                     // 安全检查sub_comments数组是否存在
                                                     if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
@@ -1351,19 +1352,18 @@
                                                             
                                                             if (sub_comment.id == comments_id) {
                                                                 updateThumbsStatus(sub_comment, new_data);
+                                                                break; // 处理完当前item后跳出循环
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    } else {
-                                        updateThumbsStatus(item, new_data);
+                                        this.video_data_list[i].comments_list = this.active_comments;
                                     }
                                     break; // 处理完当前item后跳出外层循环
                                 }
                             }
-                            console.log(this.video_data_list[0]);
                             this.setData({
                                 video_data_list: this.video_data_list
                             })

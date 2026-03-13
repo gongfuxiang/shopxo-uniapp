@@ -1292,7 +1292,7 @@
                                                     const comment = this.active_comments[j];
                                                     if (comment.id == comments_id) {
                                                         updateThumbsStatus(comment, new_data);
-                                                        return; // 找到后直接返回
+                                                        break; // 处理完当前item后跳出循环
                                                     } else {
                                                         // 安全检查sub_comments数组是否存在
                                                         if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
@@ -1301,13 +1301,14 @@
                                                             
                                                                 if (sub_comment.id == comments_id) {
                                                                     updateThumbsStatus(sub_comment, new_data);
-                                                                    return; // 找到后直接返回
+                                                                    break; // 处理完当前item后跳出循环
                                                                 }
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
+                                            this.video_data_list[i].comments_list = this.active_comments;
                                         } else {
                                             updateThumbsStatus(item, new_data);
                                         }
