@@ -11,7 +11,7 @@
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">
-                        <search-component propIsDisabled @disabledSearch="handle_search" />
+                        <component-search propIsDisabled @disabledSearch="handle_search" />
                     </view>
                 </view>
             </view>
@@ -125,7 +125,7 @@
                                     </view>
                                 </view>
                                 <template v-if="comment_item_loading">
-                                    <loading-component></loading-component>
+                                    <component-loading></component-loading>
                                 </template>
                                 <template v-else>
                                     <!-- 结尾 -->
@@ -238,9 +238,9 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
-    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+    import componentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
-    import searchComponent from '@/pages/plugins/video/components/search.vue';
+    import componentSearch from '@/pages/plugins/video/components/search.vue';
     import componentSharePopup from '@/components/share-popup/share-popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -327,12 +327,12 @@
         components: {
             commentInfoComponent,
             commentMoreComponent,
-            searchComponent,
+            componentSearch,
             componentSharePopup,
             componentNoData,
             componentBottomLine,
             componentPopup,
-            loadingComponent,
+            componentLoading,
             componentUpload,
             componentCommon
         },

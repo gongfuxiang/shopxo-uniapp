@@ -76,7 +76,7 @@
                     </view>
                     <!-- #endif -->
                     <view class="flex-1" :style="header_padding_left">
-                        <search-component propIsDisabled @disabledSearch="handle_search" :propsWidth="windowWidth" />
+                        <component-search propIsDisabled @disabledSearch="handle_search" :propsWidth="windowWidth" />
                     </view>
                 </view>
             </view>
@@ -129,7 +129,7 @@
                                 <template v-if="comment_item_loading">
                                     <cell>
                                         <view class="flex-row align-c jc-c" :style="window_more_style">
-                                            <loading-component></loading-component>
+                                            <component-loading></component-loading>
                                         </view>
                                     </cell>
                                 </template>
@@ -244,12 +244,11 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding, showToast } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
-    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+    import ComponentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
-    import searchComponent from '@/pages/plugins/video/components/search.vue';
+    import ComponentSearch from '@/pages/plugins/video/components/search.vue';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentPopup from '@/components/popup/popup';
     import componentUpload from '@/components/upload/upload';
     import scrollMixins from './scrollMixins';
     // 多语言
@@ -332,11 +331,10 @@
         components: {
             commentInfoComponent,
             commentMoreComponent,
-            searchComponent,
+            ComponentSearch,
             componentNoData,
             componentBottomLine,
-            componentPopup,
-            loadingComponent,
+            ComponentLoading,
             componentUpload
         },
         computed: {
