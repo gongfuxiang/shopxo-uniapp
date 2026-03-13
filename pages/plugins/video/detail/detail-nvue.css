@@ -1,6 +1,13 @@
 .content {
     background: #000;
 }
+.cp {
+    height: 80rpx;
+    width: 60rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .swiper-container {
     width: 100vw;
     height: 100vh;
@@ -75,9 +82,7 @@
     line-height: 44rpx;
 }
 .product-close {
-    position: absolute;
-    right: -20rpx;
-    top: -26rpx;
+    margin-left: 20rpx;
 }
 
 .product-button {
@@ -295,6 +300,10 @@
     font-weight: bold;
     margin-bottom: 20rpx;
     color: #333;
+}
+
+.report-name {
+    font-size: 28rpx;
 }
 
 .report-required {

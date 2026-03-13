@@ -92,7 +92,7 @@ export default {
 	border-radius: 38rpx;
 	border: 2rpx solid #313131;
     height: 80rpx;
-	margin: 0 24rpx;
+	margin: 0 24rpx 0 0;
     display: flex;
     flex-direction: row;
     align-items: center;

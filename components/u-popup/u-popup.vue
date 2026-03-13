@@ -8,8 +8,8 @@
                         <u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></u-icon>
                     </view>
                     <view v-if="propTitle != ''" class="pr">
-                        <view class="popup-close pa-14 box-border-box" :class="propTitleBorder ? 'br-b-e' : ''">
-                            <view v-if="propTitle != ''" class="title">
+                        <view class="popup-close pa-14 box-border-box flex-row" :class="propTitleBorder ? 'br-b-e' : ''">
+                            <view v-if="propTitle != ''" class="flex-1 title">
                                 <text class="fw tc">{{ propTitle }}</text>
                             </view>
                         </view>
@@ -695,6 +695,7 @@
         .title {
             width: 100%;
             display: flex;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
         }
@@ -708,5 +709,11 @@
 
     .fixforpc-top {
         top: 0;
+    }
+    .fw {
+        font-weight: 700;
+    }
+    .tc {
+        text-align: center;
     }
 </style>
