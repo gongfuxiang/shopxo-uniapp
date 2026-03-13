@@ -115,7 +115,7 @@ input {
     margin: 16rpx 0;
     margin-left: 20rpx;
     box-sizing: border-box;
-    background-color: #eee;
+    background-color: #aaa;
 }
 .search-button { 
     font-weight: 500;

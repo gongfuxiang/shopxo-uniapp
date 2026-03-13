@@ -5,7 +5,11 @@
             <view class="swiper" ref="swiper">
                 <block v-for="(video_item, index) in video_data_list" :key="video_item.id">
                     <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style + swiperStyle" @touchstart.prevent="ListTouchStart" @touchmove.prevent="ListTouchMove">
-                        <view class="video-bg" :style="(!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : '') + width_height_style"></view>
+                        <view class="video-bg" :style="width_height_style">
+                            <template v-if="!isEmpty(video_item.cover)">
+                                <image class="video-bg-image" :style="width_height_style" :src="video_item.cover" mode="scaleToFill"></image>
+                            </template>
+                        </view>
                         
                         <video class="video" :style="width_height_style + swiperStyle" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play" @tap.stop="toggle_play_pause"></video>
 
@@ -35,12 +39,12 @@
                             </view>
                             <view v-if="!isEmpty(video_item.goods) && base_config_data && base_config_data.is_video_detail_show_goods && base_config_data.is_video_detail_show_goods == 1" class="product-card">
                                 <view class="flex-col">
-                                    <view v-if="video_item.show_goods" class="flex-row align-c product-card-item" style="margin-bottom: 20rpx;" :data-id="video_item.id" @tap.stop="handle_product_card_item">
+                                    <view v-if="video_item.show_goods" class="flex-row align-c product-card-item mb-10" :data-id="video_item.id" @tap.stop="handle_product_card_item">
                                         <view style="width: 100rpx;height:100rpx;">
                                             <image :src="video_item.goods.images" mode="aspectFill" style="width: 100rpx;height:100rpx;"></image>
                                         </view>
-                                        <view class="flex-1 flex-col align-sb jc-c" style="margin-left: 20rpx;">
-                                            <text class="product-name text-line-1" style="margin-bottom: 20rpx;">{{ video_item.goods.title }}</text>
+                                        <view class="flex-1 flex-col align-sb jc-c ml-10">
+                                            <text class="product-name text-line-1 mb-10">{{ video_item.goods.title }}</text>
                                             <text class="product-price">¥{{ video_item.goods.price }}</text>
                                         </view>
                                         <view class="product-close" :data-id="video_item.id" @tap.stop="product_close_event">
@@ -50,7 +54,7 @@
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c">
                                             <u-icon propName="cart-have" propSize="30rpx" propColor="#F5C366"></u-icon>
-                                            <text class="size-14 cr-f" style="margin-left: 20rpx;">{{$t('common.buy')}} {{$t('common.goods')}}</text>
+                                            <text class="size-14 cr-f ml-10">{{$t('common.buy')}} {{$t('common.goods')}}</text>
                                         </view>
                                         <u-icon propName="angle-right" propSize="30rpx" propColor="#fff"></u-icon>
                                     </view>
@@ -72,7 +76,7 @@
                     <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                     <!-- #ifndef MP-ALIPAY -->
                     <view class="cp" @tap="handle_back">
-                        <u-icon propName="arrow-left" propSize="36rpx" propColor="#333" class="mr-10"></u-icon>
+                        <u-icon propName="arrow-left" propSize="36rpx" propColor="#bbb" class="mr-10"></u-icon>
                     </view>
                     <!-- #endif -->
                     <view class="flex-1" :style="header_padding_left">
@@ -158,7 +162,7 @@
                             </view>
                         </view>
                         <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
-                            <input :value="comment_input_value" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
+                            <input :value="comment_input_value" class="comment-input mr-10" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
                             <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                                 <u-icon propName="layout-module-single-images" propSize="32rpx" propColor="#999"></u-icon>
                             </component-upload>
@@ -183,11 +187,11 @@
                     <view v-if="report_type_list && report_type_list.length > 0" class="report-section">
                         <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.rfsdfg')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
-                            <radio-group class="flex-row align-c flex-wrap" :style="window_more_style">
-                                <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c" style="margin-right: 20rpx;" :data-index="main_index" @tap.stop="select_main_reason">
+                            <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_main_reason">
+                                <view v-for="(mainItem, main_index) in report_type_list" :key="main_index" class="flex-row align-c mr-10">
                                     <view class="flex-row align-c">
                                         <radio :value="main_index.toString()" :checked="current_main_index === main_index" style="transform:scale(0.7)" />
-                                        <text class="report-name flex-row align-c">{{mainItem.name}}{{ current_main_index === main_index }}</text>
+                                        <text class="report-name flex-row align-c">{{mainItem.name}}</text>
                                     </view>
                                 </view>
                             </radio-group>
@@ -198,11 +202,11 @@
                     <view  class="report-section mt-20" v-if="current_main_index >= 0 && report_type_list[current_main_index] && report_type_list[current_main_index].data">
                         <view class="report-label flex-row align-c">{{$t('video-detail.video-detail.fsdf33')}}<text class="ml-10 report-required">*</text></view>
                         <view class="flex-row align-c flex-wrap">
-                            <radio-group class="flex-row align-c flex-wrap" :style="window_more_style">
-                                <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c" style="margin-right: 20rpx;" :data-index="sub_index" @tap.stop="select_sub_reason">
+                            <radio-group class="flex-row align-c flex-wrap" :style="window_more_style" @change="select_sub_reason">
+                                <view v-for="(subItem, sub_index) in report_type_list[current_main_index].data" :key="sub_index" class="flex-row align-c mr-10">
                                     <view class="flex-row align-c">
                                         <radio :value="sub_index.toString()" :checked="current_sub_index === sub_index" style="transform:scale(0.7)" />
-                                        <text class="report-name flex-row align-c">{{subItem}}{{ current_sub_index === sub_index }}</text>
+                                        <text class="report-name flex-row align-c">{{subItem}}</text>
                                     </view>
                                 </view>
                             </radio-group>
@@ -607,7 +611,6 @@
             // 实际的 swiper 切换处理逻辑
             process_swiper_change(current) {
                 try {
-                    console.log(current);
                     // 先暂停所有视频，确保不会有后台播放
                     this.pause_all_videos_except(current);
 
@@ -1587,12 +1590,10 @@
             // 直接选择主原因（用于一行显示的点击）
             select_main_reason(e) {
                 try {
-                    const index = e?.currentTarget?.dataset?.index || 0;
+                    const index = e?.detail?.value || 0;
                     const main_index = parseInt(index);
-                    if (main_index !== this.current_main_index) {
-                        this.current_main_index = main_index;
-                        this.current_sub_index = 0; // 默认选中第一个子类型
-                    }
+                    this.current_main_index = main_index;
+                    this.current_sub_index = 0; // 默认选中第一个子类型
                 } catch (error) {
                     console.error('select_main_reason error:', error);
                 }
@@ -1601,11 +1602,9 @@
             // 直接选择子类型（用于一行显示的点击）
             select_sub_reason(e) {
                 try {
-                    const index = e?.currentTarget?.dataset?.index || 0;
+                    const index = e?.detail?.value || 0;
                     const sub_index = parseInt(index);
-                    if (sub_index !== this.current_sub_index) {
-                        this.current_sub_index = sub_index;
-                    }
+                    this.current_sub_index = sub_index;
                 } catch (error) {
                     console.error('select_sub_reason error:', error);
                 }
