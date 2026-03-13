@@ -90,8 +90,8 @@
 		</template>
         
         <!-- 评论弹窗 -->
-        <view v-if="show_comment_modal" class="comment-modal" :style="width_height_style">
-            <view class="comment-content bottom-line-exclude-bottom" @tap.stop :style="commentContentStyle">
+        <view v-if="show_comment_modal" class="comment-modal" :style="width_height_style" @tap="close_comment_modal">
+            <view class="comment-content bottom-line-exclude-bottom" @tap="comment_modal_content" :style="commentContentStyle">
                 <view class="comment-header" data-type="header" @tap.stop @touchstart.prevent="handle_comment_touch_start" @touchmove.prevent="handle_comment_touch_move" @touchend="handle_comment_touch_end">
                     <text class="comment-count">{{$t('common.comment')}}</text>
                     <view class="close-btn" @tap="close_comment_modal">✕</view>
@@ -834,6 +834,14 @@
                 }
             },
 
+            comment_modal_content(e) {
+                try {
+                    e.stopPropagation();
+                } catch (error) {
+                    console.error('comment_modal error:', error);
+                }
+            },
+
             // 收藏
             handle_like(e) {
                 try {
@@ -883,7 +891,6 @@
             // 关闭评论区
             close_comment_modal(e) {
                 try {
-                    
                     this.active_dropdown_id = null;
                     this.show_comment_modal = false;
                     this.comment_scroll_top = 0 + Math.random(); // 关闭评论时滚动到最顶部
@@ -904,6 +911,7 @@
                     if (this.$refs.commentRef) {
                         this.$refs.commentRef.blur();
                     }
+                    e.stopPropagation();
                 } catch (error) {
                     console.error('close_comment_modal error:', error);
                 }
