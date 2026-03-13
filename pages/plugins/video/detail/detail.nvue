@@ -159,7 +159,7 @@
                         </view>
                         <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
                             <input :value="comment_input_value" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :placeholder="$t('video-detail.video-detail.98yyuf')" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                            <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                                 <u-icon propName="layout-module-single-images" propSize="32rpx" propColor="#999"></u-icon>
                             </component-upload>
                         </view>
@@ -222,7 +222,7 @@
                 </view>
                 <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
                     <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
                         <u-icon propName="layout-module-single-images" propSize="48rpx" propColor="#999"></u-icon>
                     </component-upload>
                 </view>
@@ -280,7 +280,6 @@
                 data_list_loding_status:  1,
                 data_list_loding_msg: '',
                 video_data_list: [],
-                display_video_list: [],
                 current_index: 0,
                 video_contexts: [], // 原生的video视频
                 create_video_contexts: [], // 使用uni.createVideoContext创建的视频上下文
@@ -299,15 +298,12 @@
                 move_distance: 0, // 评论拖拽距离
                 is_dragging: false, // 是否正在拖拽中
                 current_video_id: '', // 当前播放视频的 ID
-                is_slide_start: false,
-                swiper_key: get_math(),
                 comment_scroll_top: 0, // 评论滚动距离顶部的距离
                 comment_input_value: '',
-                propMaxNum: 1,
+                propMaxNum: 1, // 上传数量
                 form_images_list: [],
                 share_info: {},
                 menu_button_info: '',
-                direction: 'direction',
                 base_config_data: {},
                 comment_scroll_debounce_timer: null, // 评论滚动防抖定时器
                 comment_move_throttle_timer: null, // 评论拖拽节流定时器
@@ -321,9 +317,8 @@
                 current_sub_index: 0, // 默认选中第一个具体类型
                 report_comment_id: '', // 举报的评论id
                 comment_value: '',
+                 // 监听键盘高度变化事件
                 is_add_comment: false,
-               
-                // 监听键盘高度变化事件
                 listener_height: 0,
                 comments_reply_data: {},
                 editor_path_type: 'video',
@@ -431,13 +426,6 @@
                 // 初始化
                 this.init();
 
-                // #ifdef H5
-                // 添加全局点击事件监听
-                document.addEventListener('click', this.handle_global_click);
-                // 添加触摸事件监听（移动端兼容）
-                document.addEventListener('touchstart', this.handle_global_click);
-                //#endif
-
                 // 创建监听事件
                 this.bind_keyboard_listener();
             } catch {
@@ -455,16 +443,6 @@
 
             // 清理所有视频资源
             this.cleanup_all_videos();
-            
-            // 移除键盘事件监听器
-            // #ifdef H5
-            if (typeof document !== 'undefined') {
-                document.removeEventListener('keydown', this.handle_keydown);
-            }
-            // 移除全局事件监听器
-            document.removeEventListener('click', this.handle_global_click);
-            document.removeEventListener('touchstart', this.handle_global_click);
-            // #endif
             this.unbind_keyboard_listener();
         },
         methods: {
@@ -729,29 +707,6 @@
                     e.stopPropagation();
                 } catch (error) {
                     console.error('toggle_play_pause error:', error);
-                }
-            },
-            // 播放数组更新
-            update_display_video_list(list) {
-                try {
-                    // 不理解为什么这里时undefined的
-                    // 根据 weex 的通用做法，需要同时改变“引用”和“长度”两个维度才能被识别数组更新。
-                    // 1. 先清空原数组（触发长度变化）
-                    if (this.display_video_list && this.display_video_list.length > 0) {
-                        this.display_video_list.splice(0, this.display_video_list.length)
-                    } else {
-                        this.display_video_list = [];
-                    }
-                    // this.display_video_list.splice(0, this.display_video_list.length, ...list);
-                   
-                    // this.$nextTick(() => {
-                    // setTimeout(() => { 
-                    // 2. 再把新数据 push 进去（触发内容变化）
-                    list.forEach(item => this.display_video_list.push(item))
-                    // }, 0); 
-                    // });
-                } catch (e) {
-                   console.log('update_display_video_list', e);
                 }
             },
 
@@ -1365,10 +1320,7 @@
                         duration = e.detail.duration;
                     }
                     // #endif
-                    // this.$nextTick(() => {
-                        // this.current_video_duration = duration;
-                        // this.current_video_progress = e.detail.currentTime;
-                    // })
+                    
                     this.$set(this, 'current_video_duration', duration);
                     this.$set(this, 'current_video_progress', e.detail.currentTime)
                 } catch (error) {
@@ -1404,7 +1356,7 @@
                     setTimeout(() => {
                         this.is_seeking = false;
                     }, 100);
-                    e.stopPropagation();
+                    // e.stopPropagation();
                 } catch (error) {
                     console.error('handle_slider_change error:', error);
                 }
@@ -1619,37 +1571,6 @@
                     }
                 } catch (error) {
                     console.error('delete_comment_handle error:', error);
-                }
-            },
-            // 处理全局点击事件
-            handle_global_click(e) {
-                try {
-                    // 检查点击目标是否在下拉菜单相关元素内
-                    const target = e.target || e.srcElement;
-                    
-                    // 查找点击元素是否在comment-option或dropdown-menu内
-                    let isInDropdown = false;
-                    let currentElement = target;
-                    
-                    while (currentElement && currentElement !== document) {
-                        // 检查是否点击了下拉菜单触发器或菜单本身
-                        if (currentElement.classList && 
-                            (currentElement.classList.contains('comment-option') || 
-                            currentElement.classList.contains('dropdown-menu') ||
-                            currentElement.closest('.comment-option') ||
-                            currentElement.closest('.dropdown-menu'))) {
-                            isInDropdown = true;
-                            break;
-                        }
-                        currentElement = currentElement.parentNode;
-                    }
-                    
-                    // 如果点击的不是下拉菜单相关元素，则关闭所有下拉菜单
-                    if (!isInDropdown && this.active_dropdown_id !== null) {
-                        this.active_dropdown_id = null;
-                    }
-                } catch (error) {
-                    console.error('handle_global_click error:', error);
                 }
             },
             // 关闭举报弹窗
