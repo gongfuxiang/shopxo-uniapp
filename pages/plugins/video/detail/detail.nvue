@@ -229,7 +229,7 @@
                     </view>
                 </view>
                 <view class="flex-row align-c wh-auto ht-auto pr-16 box-border-box" :style="window_more_style">
-                    <input ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                    <input ref="commentRef" :value="comment_input_value" :focus="is_add_comment" class="comment-input" style="margin-right: 20rpx;" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="$t('video-detail.video-detail.98yyuf')" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
 <!--                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
                         <u-icon propName="layout-module-single-images" propSize="48rpx" propColor="#999"></u-icon>
                     </component-upload> -->
