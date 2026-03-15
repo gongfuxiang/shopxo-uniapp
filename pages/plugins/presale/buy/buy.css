@@ -1,0 +1,65 @@
+/**
+* 商品
+*/
+.goods-group-icon {
+    width: 30rpx;
+    height: 30rpx;
+}
+.goods-group-title {
+    font-weight: bold;
+    vertical-align: middle;
+}
+.goods-group-alias {
+    border: 1px solid #3bb4f2;
+    color: #3bb4f2;
+}
+.goods-image {
+    width: 168rpx;
+    height: 168rpx;
+    margin-right: 20rpx;
+}
+.buy-number {
+    right: 0;
+    bottom: 0;
+}
+.goods-base {
+    min-height: 168rpx;
+    margin-left: 180rpx;
+}
+
+/**
+* 导航
+*/
+.bottom-fixed .nav-base {
+    width: 60%;
+}
+.bottom-fixed .nav-submit {
+    width: 40%;
+}
+.bottom-fixed .nav-submit .btn {
+    height: 70rpx;
+    line-height: 70rpx;
+}
+
+/**
+* 支付方式
+*/
+.payment-list .item-content {
+    padding: 20rpx 0;
+}
+.payment-list .item-content .icon {
+    width: 40rpx;
+    height: 40rpx !important;
+}
+.pay-tips {
+    height: 32rpx;
+    line-height: 32rpx;
+    display: inline-block;
+    position: absolute;
+    top: 12rpx;
+    color: #fff;
+    padding: 0 12rpx;
+    border-radius: 16rpx 0 16rpx 0;
+    font-size: 20rpx;
+    background: #D8D8D8 linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
+}
