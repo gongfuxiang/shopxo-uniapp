@@ -4,7 +4,7 @@
             <!-- 视频列表 -->
             <view class="swiper" ref="swiper">
                 <block v-for="(video_item, index) in video_data_list" :key="video_item.id">
-                    <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style + swiperStyle" @touchstart.prevent="ListTouchStart" @touchmove.prevent="ListTouchMove">
+                    <view class="pr" @tap.stop="toggle_play_pause" :style="width_height_style" @touchstart.prevent="ListTouchStart" @touchmove.prevent="ListTouchMove">
                         <view class="video-bg" :style="width_height_style">
                             <template v-if="!isEmpty(video_item.cover)">
                                 <image class="video-bg-image" :style="width_height_style" :src="video_item.cover" mode="scaleToFill"></image>
@@ -434,6 +434,10 @@
                 uni.$on('chooseFocus', (data) => {  
                     this.upload_event();
                 })  
+
+                uni.$on('callBack', (res) => {  
+                    this.upload_images_event(res);
+                })
                 // 初始化
                 this.init();
 
@@ -451,11 +455,12 @@
             if (this.comment_move_throttle_timer) {
                 clearTimeout(this.comment_move_throttle_timer);
             }
-
+        
             // 清理所有视频资源
             this.cleanup_all_videos();
             this.unbind_keyboard_listener();
             uni.$off('chooseFocus');
+            uni.$off('callBack');
         },
         methods: {
             isEmpty,
@@ -924,7 +929,10 @@
                     if (this.$refs.commentRef) {
                         this.$refs.commentRef.blur();
                     }
-                    e.stopPropagation();
+                    
+                    if (e) {
+                        e.stopPropagation();
+                    }
                 } catch (error) {
                     console.error('close_comment_modal error:', error);
                 }
@@ -1021,10 +1029,15 @@
                         }
                         
                         const current_y = e?.touches[0]?.pageY || 0;
+                        const move_y = current_y - this.comment_current_y;
+                        // 小于3的时候不认为是有效滑动，避免因为手指抖动影响
+                        if (move_y < 3) {
+                            return;
+                        }
                         const distance = current_y - this.comment_start_y;
                         
-                        // 只有向下移动且距离超过阈值（30px）才开始拖拽，避免误触和抖动
-                        if (distance > 10) {
+                        // 只有向下移动且距离超过阈值（15px）才开始拖拽，避免误触和抖动
+                        if (distance > 15) {
                             this.is_dragging = true;
                             this.comment_current_y = current_y;
                             
@@ -1032,13 +1045,13 @@
                             if (this.comment_move_throttle_timer) {
                                 return;
                             }
-                            
+
                             this.move_distance = distance;
                             
                             // 设置节流定时器，16ms 约等于 60fps，保证流畅度同时避免过度更新
                             this.comment_move_throttle_timer = setTimeout(() => {
                                 this.comment_move_throttle_timer = null;
-                            }, 80);
+                            }, 60);
                         }
                     }
                 } catch(error) {

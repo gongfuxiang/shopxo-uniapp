@@ -74,11 +74,7 @@
             propCallData: {
                 type: [Number, String, Array, Object],
                 default: '',
-            },
-            propChooseFocus: {
-                type: Boolean,
-                default: false,
-            },
+            }
         },
         data() {
             return {
@@ -125,6 +121,7 @@
                                             //#endif
                                             //#ifdef APP-NVUE
                                             self.$emit('callBack', data.data, self.propCallData);
+                                            uni.$emit('callBack', data.data, self.propCallData);
                                             //#endif
                                         } else {
                                             self.$emit('call-back', data.data.url, self.propCallData);
@@ -185,14 +182,10 @@
                     },
                     complete(res) {
                         //#ifndef APP-NVUE
-                        if (self.propChooseFocus) {
-                            self.$emit('chooseFocus');
-                        }
+                        self.$emit('chooseFocus');
                         //#endif
                         //#ifdef APP-NVUE
-                        if (self.propChooseFocus) {
-                            uni.$emit('chooseFocus');
-                        }
+                        uni.$emit('chooseFocus');
                         //#endif
                     },
                 });

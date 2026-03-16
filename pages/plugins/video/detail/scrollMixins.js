@@ -119,7 +119,6 @@ export default {
 							
 							// 记录当前坐标
 							const distance = this.distance + e.deltaY
-							
 							if(distance>0 || this.distance + e.deltaY-this.windowHeight<-this.windowHeight*this.video_data_list.length) {
 								if (this.index == 0) {
 									this.showToast('当前已经是第一条了');
@@ -163,9 +162,10 @@ export default {
 			} else{
 				// 往上下拖动超过一半时
 				final_Y = this.distance + (Y>0?1:-1) *this.windowHeight
-				changed_Y= final_Y - distance// 计算出需要位置的值
+				changed_Y= final_Y - distance + (Y>0? 23 : -23)// 计算出需要位置的值
 				translate_Y_origin = `easeOutExpo(t,${distance},${changed_Y},600)` // 运动曲线为easeOutExpo
 			}
+			
 			let result = BindingX.bind({
 				eventType:'timing',       // 结束的时候是没有任何监听的 用 timing 来做定时的动画
 				exitExpression:"t>300",  // 当时间超过 300ms 结束动画
@@ -207,6 +207,7 @@ export default {
 				changed_X= final_X - distance// 计算出需要位置的值
 				origin = `easeOutExpo(t,${distance},${changed_X},300)` // 运动曲线为easeOutExpo
 			}
+            console.log(changed_X);
 			let result = BindingX.bind({
 				eventType:'timing',       // 结束的时候是没有任何监听的 用 timing 来做定时的动画
 				exitExpression:"t>300",  // 当时间超过 300ms 结束动画
