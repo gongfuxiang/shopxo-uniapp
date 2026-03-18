@@ -172,12 +172,12 @@
                         </view>
                         <!-- #ifdef H5 -->
                         <view class="pt-4 flex-row align-c">
-                            <button :disabled="isEmpty(comment_input_value)" size="mini" type="primary" class="comment-btn" @tap="send_comment">{{$t('common.send')}}</button>
+                            <button :disabled="isEmpty(comment_input_value)" size="mini" type="default" class="bg-main margin-0 cr-white" @tap="send_comment">{{$t('common.send')}}</button>
                         </view>
                         <!-- #endif -->
                         <!-- #ifndef H5 -->
                         <view v-if="!isEmpty(comment_input_value)" class="pt-4 flex-row align-c">
-                            <button size="mini" type="primary" class="margin-0" @tap="send_comment">{{$t('common.send')}}</button>
+                            <button size="mini" type="default" class="margin-0 bg-main cr-white" @tap="send_comment">{{$t('common.send')}}</button>
                         </view>
                         <!-- #endif -->
                     </view>
@@ -249,7 +249,7 @@
                         <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                     </component-upload>
 
-                    <button :disabled="isEmpty(comment_input_value)" size="mini" type="primary" class="margin-0" @tap="send_comment">{{$t('common.send')}}</button>
+                    <button :disabled="isEmpty(comment_input_value)" size="mini" type="primary" class="margin-0 bg-main cr-white" @tap="send_comment">{{$t('common.send')}}</button>
                 </view>
             </view>
         </view>
