@@ -183,7 +183,7 @@
                                 </view>
                             </view>
                             <view v-if="!isEmpty(comment_input_value)" class="pt-4 flex-row align-c ml-10">
-                                <button size="mini" type="default" class="margin-0 bg-main" @tap="send_comment"><text class="cr-white text-size-sm">{{$t('common.send')}}</text></button>
+                                <button size="mini" type="default" class="margin-0 bg-main border-0" @tap="send_comment"><text class="comment-send-button">{{$t('common.send')}}</text></button>
                             </view>
                         </view>
                     </view>
@@ -256,7 +256,7 @@
                         <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
                     </component-upload>
                 
-                    <button :disabled="isEmpty(comment_input_value)" size="mini" type="default" class="margin-0 bg-main" @tap="send_comment"><text class="cr-white text-size-sm">{{$t('common.send')}}</text></button>
+                    <button :disabled="isEmpty(comment_input_value)" size="mini" type="default" :class="'margin-0 bg-main border-0 ' + (isEmpty(comment_input_value) ? 'disabled' : '')" @tap="send_comment"><text class="comment-send-button text">{{$t('common.send')}}</text></button>
                 </view>
             </view>
         </view>

@@ -64,6 +64,7 @@
 	background-color: #ff0036 !important;
 }
 
+
 /**
  * 导航伪类背景色
  */
@@ -80,10 +81,15 @@
     border-color: #ffe9ed !important;
 	color: #ffa5b7 !important;
 }
+.theme-red .bg-main.disabled,
 .theme-red button[disabled].bg-main {
 	background-color: #ffa7ba !important;
     border-color: #ffa7ba !important;
 	color: #fff5f7 !important;
+}
+
+.theme-red .bg-main.disabled .text {
+	color: #eaeaea !important;
 }
 
 /**
@@ -185,12 +191,17 @@
     border-color: #fbebd6 !important;
     color: #ffcc40 !important;
 }
+
+.theme-yellow .bg-main.disabled,
 .theme-yellow button[disabled].bg-main {
-    background-color: #fdd178 !important;
-    border-color: #fdd178 !important;
-    color: #fff7e7 !important;
+	background-color: #fdd178 !important;
+	border-color: #fdd178 !important;
+	color: #fff7e7 !important;
 }
 
+.theme-yellow .bg-main.disabled .text {
+	color: #fff7e7 !important;
+}
 /**
  * 标题左侧边线
 */
@@ -291,9 +302,15 @@
     border-color: #efefef !important;
 	color: #b7b7b7 !important;
 }
+
+.theme-black .bg-main.disabled,
 .theme-black button[disabled].bg-main {
 	background-color: #c7c7c7 !important;
-    border-color: #c7c7c7 !important;
+	border-color: #c7c7c7 !important;
+	color: #e2e2e2 !important;
+}
+
+.theme-black .bg-main.disabled .text {
 	color: #e2e2e2 !important;
 }
 
@@ -397,9 +414,15 @@
     border-color: #daeade !important;
 	color: #9dcaa6 !important;
 }
+
+.theme-green .bg-main.disabled,
 .theme-green button[disabled].bg-main {
 	background-color: #a8c5ae !important;
-    border-color: #a8c5ae !important;
+	border-color: #a8c5ae !important;
+	color: #d8eadc !important;
+}
+
+.theme-green .bg-main.disabled .text {
 	color: #d8eadc !important;
 }
 
@@ -502,9 +525,15 @@
     border-color: #fbe9dc !important;
 	color: #f7c49e !important;
 }
+
+.theme-orange .bg-main.disabled,
 .theme-orange button[disabled].bg-main {
 	background-color: #f7cdad !important;
-    border-color: #f7cdad !important;
+	border-color: #f7cdad !important;
+	color: #f7efea !important;
+}
+
+.theme-orange .bg-main.disabled .text {
 	color: #f7efea !important;
 }
 
@@ -607,9 +636,15 @@
     border-color: #e3eefd !important;
 	color: #b9d3f7 !important;
 }
+
+.theme-blue .bg-main.disabled,
 .theme-blue button[disabled].bg-main {
 	background-color: #bcd3f5 !important;
-    border-color: #bcd3f5 !important;
+	border-color: #bcd3f5 !important;
+	color: #eef4fd !important;
+}
+
+.theme-blue .bg-main.disabled .text {
 	color: #eef4fd !important;
 }
 
@@ -712,9 +747,15 @@
     border-color: #f1e6de !important;
 	color: #d6bdad !important;
 }
+
+.theme-brown .bg-main.disabled,
 .theme-brown button[disabled].bg-main {
 	background-color: #e4cdbc !important;
-    border-color: #e4cdbc !important;
+	border-color: #e4cdbc !important;
+	color: #f9f4f0 !important;
+}
+
+.theme-brown .bg-main.disabled .text {
 	color: #f9f4f0 !important;
 }
 
@@ -817,12 +858,17 @@
     border-color: #dcd6f1 !important;
 	color: #b2a7dc !important;
 }
+
+.theme-purple .bg-main.disabled,
 .theme-purple button[disabled].bg-main {
 	background-color: #bdb0ef !important;
-    border-color: #bdb0ef !important;
+	border-color: #bdb0ef !important;
 	color: #e7e4f1 !important;
 }
 
+.theme-purple .bg-main.disabled .text {
+	color: #e7e4f1 !important;
+}
 /**
  * 标题左侧边线
 */

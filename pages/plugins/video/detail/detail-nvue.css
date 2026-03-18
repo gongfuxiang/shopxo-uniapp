@@ -245,6 +245,15 @@
     font-size: 28rpx;
 }
 
+.comment-send-button {
+    color: #fff;
+    font-size: 26rpx;
+    padding: 14rpx 34rpx;
+}
+
+.border-0 {
+    border: 0;
+}
 .pr-16 {
     padding-right: 16rpx;
 }
