@@ -232,10 +232,10 @@
 
 .comment-input {
     flex: 1;
+    height: 40rpx;
     font-size: 28rpx;
-    height: 82rpx;
-    padding: 16rpx;
-    box-sizing: border-box;
+    margin: 16rpx;
+    max-height: 400rpx;
 }
 
 .comment-input-content {
@@ -247,6 +247,22 @@
 
 .pr-16 {
     padding-right: 16rpx;
+}
+
+.pt-8 {
+    padding-top: 16rpx;
+}
+.pt-4 {
+    padding-top: 8rpx;
+}
+.mr-10 {
+    margin-right: 20rpx;
+}
+.pr-10 {
+    padding-right: 20rpx;
+}
+.pt-10 {
+    padding-top: 20rpx;
 }
 .comment-input-img-container {
     padding: 10rpx 16rpx 16rpx 16rpx;
