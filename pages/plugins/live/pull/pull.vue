@@ -25,12 +25,12 @@
             </view>
             <!-- 视频播放提示 -->
             <view v-if="!is_live_ended && is_muted_auto_play_error && !live_be_right_back_error" class="live-play flex-row align-c jc-c pointer-events-none">
-                <component-icon propName="bofang" class="component-icon-play" propSize="200rpx" propColor="#fff" @click="muted_tap"></component-icon>
+                <u-icon propName="bofang" class="component-icon-play" propSize="200rpx" propColor="#fff" @click="muted_tap"></u-icon>
             </view>
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
                 <view class="flex-1 flex-col align-c jc-c">
-                    <component-icon propName="coffee" propSize="100rpx" propColor="#fff"></component-icon>
+                    <u-icon propName="coffee" propSize="100rpx" propColor="#fff"></u-icon>
                     <text class="text-size mt-5 cr-white">主播暂时离开</text>
                     <text class="text-size-sm mt-5 cr-white">休息片刻，更多精彩马上到来</text>
                 </view>
@@ -39,7 +39,6 @@
     </view>
 </template>
 <script>
-    import componentIcon from './components/icon/icon.vue';
     import componentLiveVideo from './components/video/video.vue';
     import componentLiveContent from './components/live-content/live-content.vue';
     // 引入点赞效果组件
@@ -51,7 +50,6 @@
         components: {
             componentLiveVideo,
             componentLiveContent,
-            componentIcon,
             componentFullScreenLikeEffect
         },
         mixins: [mixins],

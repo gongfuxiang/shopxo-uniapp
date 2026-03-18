@@ -11,7 +11,7 @@
 					</view>
 					<!-- #endif -->
 					<view class="wh-auto ht-auto" :style="header_padding_left">
-						<search-component :propSearchQuery="search_keywords" @search="handle_search" />
+						<component-search :propSearchQuery="search_keywords" @search="handle_search" />
 					</view>
 				</view>
 			</view>
@@ -34,7 +34,7 @@
 				<!-- 查看更多 -->
 				<template v-if="search_history.length > show_search_history.length">
 					<template v-if="is_view_more">
-						<loadingComponent></loadingComponent>
+						<component-loading></component-loading>
 					</template>
 					<template v-else>
 						<view class="more-history-btn cp" @tap="view_more_history">{{$t('common.view_more')}} {{$t('common.history')}}</view>
@@ -81,8 +81,8 @@
 </template>
 
 <script>
-import searchComponent from '@/pages/plugins/video/components/search.vue';
-import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+import componentSearch from '@/pages/plugins/video/components/search.vue';
+import componentLoading from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
 import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
 import componentCommon from '@/components/common/common';
@@ -95,8 +95,8 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		searchComponent,
-		loadingComponent,
+		componentSearch,
+		componentLoading,
 		componentNoData,
 		componentCommon
 	},

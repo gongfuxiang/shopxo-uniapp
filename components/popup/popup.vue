@@ -131,6 +131,9 @@
                     popup_content_style: 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;',
                 });
                 // #endif
+                //#ifdef APP-NVUE
+                    this.popup_content_style = 'left:' + left + 'px;' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';padding-bottom:' + tabbar_height + 'rpx;';
+                //#endif
             },
         },
     };

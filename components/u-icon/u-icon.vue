@@ -33,7 +33,7 @@
             },
             propSize: {
                 type: [Number, String],
-                default: 32,
+                default: '28rpx',
             },
             propColor: {
                 type: String,

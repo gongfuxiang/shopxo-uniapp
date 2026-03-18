@@ -12,7 +12,7 @@
                         </view>
                         <!-- #endif -->
                         <view class="wh-auto ht-auto" :style="header_padding_left">
-                            <search-component :propSearchQuery="search_keywords" @search="handle_search" />
+                            <component-search :propSearchQuery="search_keywords" @search="handle_search" />
                         </view>
                     </view>
                 </view>
@@ -48,7 +48,7 @@
                     </view>
                     <template v-if="page < page_total">
                         <!-- 加载更多 -->
-                        <loadingComponent v-if="is_more_loading"></loadingComponent>
+                        <component-loading v-if="is_more_loading"></component-loading>
                     </template>
                     <template v-else>
                         <!-- 结尾 -->
@@ -90,9 +90,9 @@
 </template>
 
 <script>
-import searchComponent from '@/pages/plugins/video/components/search.vue';
+import componentSearch from '@/pages/plugins/video/components/search.vue';
 import componentPopup from '@/components/popup/popup';
-import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+import componentLoading from '@/pages/plugins/video/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
 import componentBottomLine from '@/components/bottom-line/bottom-line';
 import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
@@ -105,9 +105,9 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		searchComponent,
+		componentSearch,
 		componentPopup,
-		loadingComponent,
+		componentLoading,
 		componentNoData,
 		componentBottomLine,
 		componentCommon

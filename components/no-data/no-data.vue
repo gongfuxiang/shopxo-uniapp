@@ -62,25 +62,31 @@
             </view>
 
             <!-- 2 处理错误 -->
-            <view v-else-if="propStatus == 2" class="no-data-box tc">
+            <view v-else-if="propStatus == 2" class="no-data-box tc flex-col align-c">
                 <image class="image" :src="static_dir + 'error.png'" mode="widthFix"></image>
-                <view class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</view>
+                <text class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</text>
                 <view v-if="propBackBtn" class="margin-top-xxxl tc">
                     <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
                 </view>
             </view>
 
             <!-- 0 默认没有数据 -->
-            <view v-else-if="propStatus == 0" class="no-data-box tc">
+            <view v-else-if="propStatus == 0" class="no-data-box tc flex-col align-c">
                 <image class="image" :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
-                <view class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</view>
+                <text class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</text>
             </view>
         </view>
     </view>
 </template>
 <script>
+    //#ifdef APP-NVUE
+    import i18n from '@/locale/index.js';
+    //#endif
     const app = getApp();
     export default {
+        //#ifdef APP-NVUE
+        i18n,
+        //#endif
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
@@ -236,7 +242,20 @@
     .no-data-loading .title {
         color: #999;
     }
-
+    /* #ifdef APP-NVUE */
+    .image {
+        width: 160rpx;
+        margin-bottom: 30rpx;
+    }
+    .no-data-tips {
+        font-size: 24rpx;
+        color: #999;
+        text-align: center;
+    }
+    .title {
+        color: #999;
+    }
+    /* #endif */
     /**
      * 名称加载
      */
@@ -278,7 +297,12 @@
         position: absolute;
         width: 140rpx;
         height: 140rpx;
+        /* #ifndef APP-NVUE */
         left: calc(50% - 70rpx);
+        /* #endif */
+        /* #ifdef APP-NVUE */
+        left: 0;
+        /* #endif */
         top: 0;
         border-radius: 50%;
         overflow: hidden;

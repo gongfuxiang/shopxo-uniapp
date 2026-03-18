@@ -11,7 +11,7 @@
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto" :style="header_padding_left">
-                        <search-component propIsDisabled @disabledSearch="handle_search"/>
+                        <component-search propIsDisabled @disabledSearch="handle_search"/>
                     </view>
                 </view>
             </view>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import searchComponent from '@/pages/plugins/video/components/search.vue';
+import componentSearch from '@/pages/plugins/video/components/search.vue';
 import componentNoData from '@/components/no-data/no-data';
 import componentBottomLine from '@/components/bottom-line/bottom-line';
 import componentBanner from '@/components/slider/slider';
@@ -84,7 +84,7 @@ bar_height = 0;
 // #endif
 export default {
 	components: {
-		searchComponent,
+		componentSearch,
 		componentNoData,
         componentBottomLine,
 		componentBanner,

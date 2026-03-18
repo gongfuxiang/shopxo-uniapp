@@ -1,10 +1,10 @@
 <template>
     <view :class="theme_view">
-        <component-popup ref="popupShareRef" mode="bottom" title="" :closeable="false">
+        <u-popup ref="popupShareRef" mode="bottom" title="" :closeable="false">
             <view class="share-popup bg-white flex-row">
                 <view class="close oh pa top-0 right-0 z-i-deep">
                     <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
-                        <component-icon name="close-line" size="28rpx" color="#999"></component-icon>
+                        <u-icon name="close-line" size="28rpx" color="#999"></u-icon>
                     </view>
                 </view>
                 <view class="flex-1 share-popup-content">
@@ -56,7 +56,7 @@
                     </view>
                 </view>
             </view>
-        </component-popup>
+        </u-popup>
         <!-- #ifndef APP-NVUE -->
         <!-- 用户基础 -->
         <component-user-base ref="user_base"></component-user-base>
@@ -69,8 +69,6 @@
     import i18n from '@/locale/index.js';
     //#endif
     var common_static_url = app.globalData.get_static_url('common');
-    import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
-    import componentPopup from '@/pages/plugins/live/pull/components/popup/popup';
     import componentUserBase from '@/components/user-base/user-base';
     export default {
         //#ifdef APP-NVUE  
@@ -95,9 +93,7 @@
         },
 
         components: {
-            componentPopup,
             componentUserBase,
-            componentIcon,
         },
 
         created: function () {

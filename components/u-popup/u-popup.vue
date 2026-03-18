@@ -1,31 +1,31 @@
 <template>
     <view v-if="showPopup" class="uni-popup" :class="popupstyle + (isDesktop ? ' fixforpc-z-index' : '')">
         <view @touchstart="touchstart">
-            <component-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
-            <component-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
+            <u-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
+            <u-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
                 <view class="pr" :style="'border-radius:' + propRound + 'px'">
                     <view v-if="propCloseType == 'icon' && propCloseable" class="popup-close pa-14 box-border-box" :class="propCloseIconPos" :style="closeIconStyle" @tap="close">
-                        <component-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></component-icon>
+                        <u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></u-icon>
                     </view>
-                    <view v-if="propCloseType == 'text' && propCloseable" class="flex-row jc-sb align-c w abs top-0 pa-14 z-i">
+                    <view v-if="propTitle != ''" class="pr">
+                        <view class="popup-close pa-14 box-border-box flex-row" :class="propTitleBorder ? 'br-b-e' : ''">
+                            <view v-if="propTitle != ''" class="flex-1 title">
+                                <text class="fw tc">{{ propTitle }}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view v-if="propCloseType == 'text' && propCloseable" class="flex-row jc-sb align-c w pa top-0 pa-14 z-i box-border-box" :style="propWidth">
                         <text class="cr-info" @click="close">取消</text>
                         <view class="pr">
                             <text v-if="propIsCustomBtn" class="inline-block" :style="propCustomBtnStyle" @click="custom_change">{{ propCustomBtnText }}</text>
                             <text class="cr-primary" @click="comfirm">确定</text>
                         </view>
                     </view>
-                    <view v-if="propTitle != ''" class="pr">
-                        <view class="popup-close pa-14 box-border-box" :class="propTitleBorder ? 'br-b-e' : ''">
-                            <view v-if="propTitle != ''" class="title ">
-                                <text class="fw tc">{{ propTitle }}</text>
-                            </view>
-                        </view>
-                    </view>
                     <view class="uni-popup__wrapper radius-lg" :style="{ backgroundColor: bg, maxHeight: propHeight }" :class="[popupstyle]" @click="clear">
                         <slot />
                     </view>
                 </view>
-            </component-transition>
+            </u-transition>
         </view>
         <!-- #ifdef H5 -->
         <keypress v-if="maskShow" @esc="onTap" />
@@ -34,8 +34,6 @@
 </template>
 
 <script>
-    import componentTransition from '@/pages/plugins/live/pull/components/transition/transition.vue';
-    import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
     // #ifdef H5
     import keypress from './keypress.js';
     // #endif
@@ -88,8 +86,6 @@
             // #ifdef H5
             keypress,
             // #endif
-            componentTransition,
-            componentIcon,
         },
         emits: ['change', 'maskClick', 'callBack', 'callBackCustom'],
         props: {
@@ -188,6 +184,10 @@
             propIsConfirmClose: {
                 type: Boolean,
                 default: true,
+            },
+            propWidth: {
+                type: String,
+                default: '',
             },
         },
 
@@ -475,6 +475,7 @@
                     show: false,
                     type: this.propType,
                 });
+                this.$emit('close')
                 clearTimeout(this.timer);
                 // // 自定义关闭事件
                 // this.customOpen && this.customClose()
@@ -692,6 +693,7 @@
         .title {
             width: 100%;
             display: flex;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
         }
@@ -705,5 +707,11 @@
 
     .fixforpc-top {
         top: 0;
+    }
+    .fw {
+        font-weight: 700;
+    }
+    .tc {
+        text-align: center;
     }
 </style>

@@ -11,14 +11,14 @@
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">
-                        <search-component propIsDisabled @disabledSearch="handle_search" />
+                        <component-search propIsDisabled @disabledSearch="handle_search" />
                     </view>
                 </view>
             </view>
             <!-- 视频列表 -->
             <swiper class="swiper-container" :key="'top-or-buttom-' + swiper_key" :style="swiperStyle" :duration="500" :vertical="true" :circular="close_circular ? false : true" :skip-hidden-item-layout="true" :current="current_index" easing-function="linear" @transition="on_transition" @change="handle_swiper_change">
                 <swiper-item v-for="(video_item, index) in display_video_list" :key="video_item.id">
-                    <view class="video-container pr" @tap.stop="toggle_play_pause">
+                    <view class="video-container pr" @tap.stop="toggle_play_pause" @touchstart="handle_swiper_touch_start" @touchmove="handle_swiper_touch_move" @touchend="handle_swiper_touch_end">
                         <view class="video-bg" :style="!isEmpty(video_item.cover) ? 'background-image: url(' + video_item.cover + ')' : ''"></view>
                         
                         <video class="video" :src="video_item.video_url" :poster="video_item.cover" :id="`video_${index}`" :loop="true" :show-fullscreen-btn="false" :show-center-play-btn="false" :show-play-btn="false" :controls="false" :show-mute-btn="true" object-fit="contain" @timeupdate="handle_time_update" @play="handle_play"></video>
@@ -34,7 +34,7 @@
                         <template v-if="!show_comment_modal">
                             <!-- Right Action Bar -->
                             <view class="right-actions">
-                                <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-value="video_item" @tap.stop="handle_like">
+                                <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_like">
                                     <iconfont name="icon-givealike" :color="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'" size="60rpx" />
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
@@ -118,14 +118,14 @@
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
                                                         <commentMoreComponent :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                     </template>
-                                                    <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="icon-arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
+                                                    <commentMoreComponent :propId="comment_item.id" :propText="$t('common.retract')" propIconName="arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                 </view>
                                             </template>
                                         </template>
                                     </view>
                                 </view>
                                 <template v-if="comment_item_loading">
-                                    <loading-component></loading-component>
+                                    <component-loading></component-loading>
                                 </template>
                                 <template v-else>
                                     <!-- 结尾 -->
@@ -149,8 +149,8 @@
                         </view>
                         <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
                             <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                                <iconfont name="icon-layout-module-single-images" size="32rpx" color="#999"></iconfont>
+                            <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                                <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                             </component-upload>
                         </view>
                         <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
@@ -213,9 +213,9 @@
                     </view>
                 </view>
                 <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                    <input :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <component-upload :propMaxNum="1" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                        <iconfont name="icon-layout-module-single-images" size="48rpx" color="#999"></iconfont>
+                    <input ref="commentInput" :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
+                        <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                     </component-upload>
                 </view>
                 <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
@@ -238,9 +238,9 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
-    import loadingComponent from '@/pages/plugins/video/components/loading.vue';
+    import componentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
-    import searchComponent from '@/pages/plugins/video/components/search.vue';
+    import componentSearch from '@/pages/plugins/video/components/search.vue';
     import componentSharePopup from '@/components/share-popup/share-popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -317,17 +317,22 @@
                 comments_reply_data: {},
                 editor_path_type: 'video',
                 is_manual_pause: false, // 是否手动暂停
+                // 视频滚动
+                swiper_start_y: 0,
+                swiper_current_y: 0,
+                swiper_move_distance: 0,
+                swiper_move_throttle_timer: null,
             };
         },
         components: {
             commentInfoComponent,
             commentMoreComponent,
-            searchComponent,
+            componentSearch,
             componentSharePopup,
             componentNoData,
             componentBottomLine,
             componentPopup,
-            loadingComponent,
+            componentLoading,
             componentUpload,
             componentCommon
         },
@@ -366,7 +371,7 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
+            console.log(this.is_manual_pause);
             // 视频播放
             if (!this.is_manual_pause && this.create_video_contexts[this.current_index]) {
                 this.video_play_event(this.create_video_contexts[this.current_index]);
@@ -573,7 +578,10 @@
                             // 更新所有视频信息
                             this.setData({
                                 video_data_list: this.video_data_list,
-                                current_index: is_last == 1 && is_next == 1 ? (new_index == this.video_data_list.length - 1 ? 2 : (new_index == this.video_data_list.length - 2 ? 1 : 0)) : this.current_index,
+                                // 逻辑说明：当是最后一个视频且需要播放下一个时，根据数组长度和新索引计算新的当前索引
+                                // - 数组长度 > 2 时：新索引是最后一个元素则返回 2，是倒数第二个则返回 1，否则返回 0
+                                // - 数组长度 <= 2 时：返回 length - 1
+                                current_index: is_last == 1 && is_next == 1 ? this.calculate_new_index(this.video_data_list.length, new_index) : this.current_index,
                             });
 
                             if (is_last == 1 && is_next == 1) {
@@ -611,6 +619,36 @@
                     }
                 });
             },
+            /**
+             * 计算新的视频索引
+             * 当是最后一个视频且需要播放下一个时，根据数组长度和新索引计算新的当前索引
+             * @param {number} listLength - 视频列表长度
+             * @param {number} newIndex - 新视频在列表中的索引
+             * @returns {number} 计算后的新索引
+             */
+            calculate_new_index(listLength, newIndex) {
+                // 边界处理：空数组
+                if (listLength === 0) {
+                    return 0;
+                }
+                
+                // 数组长度 <= 2 时，返回最后一个索引
+                if (listLength <= 2) {
+                    return listLength - 1;
+                }
+                
+                // 数组长度 > 2 时，根据新索引位置返回对应值
+                // 新索引是最后一个元素 -> 返回 2
+                if (newIndex === listLength - 1) {
+                    return 2;
+                }
+                // 新索引是倒数第二个元素 -> 返回 1
+                if (newIndex === listLength - 2) {
+                    return 1;
+                }
+                // 其他情况 -> 返回 0
+                return 0;
+            },
             // 视频滚动处理逻辑（带防抖）
             handle_swiper_change(event) {
                 const { current } = event.detail;
@@ -630,7 +668,7 @@
                 // 先暂停所有视频，确保不会有后台播放
                 this.pause_all_videos_except(current);
 
-                const id = this.display_video_list[current].id;
+                const id = this.display_video_list[current]?.id || '';
                 // 更新状态
                 this.setData({
                     current_index: current,
@@ -661,11 +699,7 @@
                 this.get_video_data_detail(id);
                 // 边界处理逻辑
                 if (this.current_video_index == 0 && this.is_slide_start) {
-                    const list = [
-                        this.get_video_by_index(0),
-                        this.get_video_by_index(1),
-                        this.get_video_by_index(2)
-                    ];
+                    const list = this.update_video_list([0, 1, 2]);
                     
                     this.setData({
                         is_slide_start: false,
@@ -674,13 +708,10 @@
                         swiper_key: get_math()
                     });
                 } else if (this.current_video_index == this.video_data_list.length - 1) {
-                    const list = [
-                        this.get_video_by_index(this.current_video_index - 2),
-                        this.get_video_by_index(this.current_video_index - 1),
-                        this.get_video_by_index(this.current_video_index),
-                    ];
+                    const list = this.update_video_list([-2, -1, 0]);
+
                     this.setData({
-                        current_index: 2,
+                        current_index: list.length - 1,
                         display_video_list: list,
                         swiper_key: get_math()
                     });
@@ -700,7 +731,16 @@
                     this.play_current_video_safely(this.current_index);
                 }, 150);
             },
-
+            update_video_list(offsets) {
+                let list = [];
+                for (let i = 0; i < offsets.length; i++) {
+                    const targetIndex = this.current_video_index + offsets[i];
+                    if (targetIndex >= 0 && targetIndex < this.video_data_list.length) {
+                        list.push(this.get_video_by_index(targetIndex));
+                    }
+                }
+                return list;
+            },
             // 批量暂停除指定索引外的所有视频
             pause_all_videos_except(exceptIndex) {
                 // 暂停 uni.createVideoContext 创建的视频
@@ -751,7 +791,73 @@
                     this.video_play_event(videoContext);
                 }
             },
-
+            // 视频拖拽开始
+            handle_swiper_touch_start(e) {
+                try {
+                    // 如果是滚动区域内滚动到顶部才可以拖拽，如果是头部拖拽的话，一直都可以
+                    this.swiper_start_y = e?.touches[0]?.pageY || 0;
+                    this.swiper_current_y = this.swiper_start_y;
+                    this.swiper_move_distance = 0;
+                } catch (error) {
+                    console.error('handle_swiper_touch_start error:', error);
+                }
+            },
+            // 视频拖拽中
+            handle_swiper_touch_move(e) {
+                try {
+                    const current_y = e?.touches[0]?.pageY || 0;
+                    const distance = current_y - this.swiper_start_y;
+                    
+                    // 只有向下移动且距离超过阈值（10px）才开始拖拽，避免误触和抖动
+                    if (Math.abs(distance) > 10) {
+                        this.swiper_current_y = current_y;
+                        
+                        // 使用节流控制 move_distance 的更新频率，避免计算属性频繁触发导致抖动
+                        if (this.swiper_move_throttle_timer) {
+                            return;
+                        }
+                        
+                        this.move_distance = distance;
+                        
+                        // 设置节流定时器，16ms 约等于 60fps，保证流畅度同时避免过度更新
+                        this.swiper_move_throttle_timer = setTimeout(() => {
+                            this.swiper_move_throttle_timer = null;
+                        }, 80);
+                    }
+                } catch(error) {
+                    console.error('handle_swiper_touch_move error:', error);
+                }
+            },
+            // 视频拖拽结束
+            handle_swiper_touch_end(e) {
+                try {
+                    const move_distance = this.swiper_current_y - this.swiper_start_y;
+                    // 只有滑动距离超过屏幕高度的 15% 才触发切换
+                    if (move_distance > 0) {
+                        // 向下滑动，切换到上一个
+                        if (this.current_video_index <= 0) {
+                            app.globalData.showToast('已经是第一个视频了');
+                        }
+                    } else {
+                        // 向上滑动，切换到下一个
+                        if (this.current_video_index >= this.video_data_list.length - 1) {
+                            app.globalData.showToast('已经是最后一个视频了');
+                        }
+                    }
+                    
+                    // 清理节流定时器
+                    if (this.swiper_move_throttle_timer) {
+                        clearTimeout(this.swiper_move_throttle_timer);
+                        this.swiper_move_throttle_timer = null;
+                    }
+                    
+                    // 重置拖拽状态
+                    this.swiper_start_y = 0;
+                    this.swiper_current_y = 0;
+                } catch (error) {
+                    console.error('handle_swiper_touch_end error:', error);
+                }
+            },
             // 更新分享信息
             update_share_info(data) {
                 const info = {
@@ -823,25 +929,20 @@
                 let list = [];
                 // 如果当前索引为0，只显示当前元素和下一个元素
                 if (this.current_index == 0) {
-                    list = [
-                        this.get_video_by_index(this.current_video_index),
-                        this.get_video_by_index(this.current_video_index + 1), // 下一个元素
-                        this.get_video_by_index(this.current_video_index - 1) // 上一个元素，
-                    ];
+                    if (this.current_video_index == 0) {
+                        list = this.update_video_list([0, 1, 2]);
+                    } else {
+                        list = this.update_video_list([0, 1, -1]);
+                    }
                 } else if (this.current_index == 1) { // 索引为1时，为确保无限轮播正常，需要改变数据插入顺序
-                    list = [
-                        this.get_video_by_index(this.current_video_index - 1),
-                        this.get_video_by_index(this.current_video_index),
-                        this.get_video_by_index(this.current_video_index + 1)
-                    ];
+                    list = this.update_video_list([-1, 0, 1]);
                 } else {
-                    list = [
-                        this.get_video_by_index(this.current_video_index + 1),
-                        this.get_video_by_index(this.current_video_index - 1),
-                        this.get_video_by_index(this.current_video_index),
-                    ];
+                    if (this.current_video_index == this.video_data_list.length - 1) {
+                        list = this.update_video_list([-2, -1, 0]);
+                    } else {
+                        list = this.update_video_list([1, -1, 0]);
+                    }
                 }
-
                 this.setData({
                     display_video_list: list
                 })
@@ -855,13 +956,23 @@
             // 图片上传回调
             upload_images_event(res) {
                 if((res || null) != null) {
-                    // 存储上传图片内容
-                    this.form_images_list.push({
-                        url: res.url,
-                        name: res.name,
-                        size: res.size,
-                    });
+                    if (this.form_images_list.length > 0) {
+                        this.form_images_list.splice(0, 1, { url: res.url, name: res.name, size: res.size });
+                    } else {
+                        // 存储上传图片内容
+                        this.form_images_list.push({
+                            url: res.url,
+                            name: res.name,
+                            size: res.size,
+                        });
+                    }
                 }
+            },
+            upload_event() {
+                setTimeout(() => {
+                    this.is_add_comment = true;
+                    // this.$refs.commentInput.focus();
+                }, 100);
             },
 
             // 上传图片预览
@@ -911,8 +1022,8 @@
                 }
                 var user = app.globalData.get_user_info(this, 'handle_like', e);
                 if (user != false) {
-                    const value = e?.currentTarget?.dataset?.value || {}; 
-                    this.set_givethumbs_num(value.id);
+                    const id = e?.currentTarget?.dataset?.id || ''; 
+                    this.set_givethumbs_num(id);
                 }
             },
             // 打开评论区
@@ -959,7 +1070,7 @@
                 // 设置新的防抖定时器
                 this.comment_scroll_debounce_timer = setTimeout(() => {
                     this.comment_scroll_top = e.detail.scrollTop;
-                }, 200); // 100ms防抖延迟
+                }, 100); // 100ms防抖延迟
             }, 
             // 评论滚动到底部事件
             handle_comment_to_lower_scroll() {
@@ -1241,7 +1352,8 @@
                                                 const comment = this.active_comments[j];
                                                 if (comment.id == comments_id) {
                                                     updateThumbsStatus(comment, new_data);
-                                                    return; // 找到后直接返回
+                                                    console.log(comment);
+                                                    break; // 处理完当前item后跳出循环
                                                 } else {
                                                     // 安全检查sub_comments数组是否存在
                                                     if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
@@ -1250,15 +1362,14 @@
                                                             
                                                             if (sub_comment.id == comments_id) {
                                                                 updateThumbsStatus(sub_comment, new_data);
-                                                                return; // 找到后直接返回
+                                                                break; // 处理完当前item后跳出循环
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    } else {
-                                        updateThumbsStatus(item, new_data);
+                                        this.video_data_list[i].comments_list = this.active_comments;
                                     }
                                     break; // 处理完当前item后跳出外层循环
                                 }

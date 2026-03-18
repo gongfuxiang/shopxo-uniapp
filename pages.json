@@ -2070,6 +2070,7 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
                         // #endif
+                        
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
                         "titlePenetrate": "YES",
@@ -2243,7 +2244,7 @@
             {
                 "name": "", //模式名称
                 "path": "", //启动页面，必选
-                "query": "" //启动参数，在页面的onLoad函数里面得到
+                "query": "" //启动参数，在页面的onLoad函数里面得到。
             }
         ]
     }
