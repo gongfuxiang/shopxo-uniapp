@@ -216,17 +216,7 @@ export default {
 						this.get_video_list(this.current_tabs_id, is_list_loading);
 
                         // 获取节点位置
-                        let self = this;
-                        setTimeout(() => {
-                            let query = uni.createSelectorQuery().in(this);
-                            query.select('.top-search').boundingClientRect();
-                            query.exec(function (res) {
-                                self.setData({
-                                    nav_sticky_threshold: res[0].height,
-                                    nav_sticky_style: 'top:' + res[0].height + 'px;',
-                                });
-                            });
-                        }, 100);
+                        this.view_style_handle();
 					} else {
 						this.setData({
 							data_tabs_loding_status: 2,
@@ -243,6 +233,26 @@ export default {
 				}
 			});
 		},
+
+        // 样式处理，获取头部的高度
+        view_style_handle(num = 0) {
+            let self = this;
+            setTimeout(() => {
+                const query = uni.createSelectorQuery().in(self);
+                query.select('.top-search').boundingClientRect((res) => {
+                    if((res || null) == null) {
+                        if(num <= 10) {
+                            self.view_style_handle(num+1);
+                        }
+                    } else {
+                        self.setData({
+                            nav_sticky_threshold: res.height,
+                            nav_sticky_style: 'top:' + res.height + 'px;',
+                        });
+                    }
+                }).exec();
+            }, 100);
+        },
         
         // 获取数据列表
 		get_video_list(id = '', is_list_loading = false) {

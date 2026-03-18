@@ -53,11 +53,11 @@
         <!-- 支付html展示 -->
         <component-popup :propShow="popup_view_pay_html_is_show" propPosition="bottom" @onclose="popup_view_pay_html_event_close">
             <view class="popup-pay-html-content padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
-                <block v-if="(popup_view_pay_data || null) == null">
+                <block v-if="(popup_view_pay_html_content || null) == null">
                     <text class="cr-grey">{{$t('payment.payment.973g2e')}}</text>
                 </block>
                 <block v-else>
-                    <mp-html :content="popup_view_pay_data" />
+                    <mp-html :content="popup_view_pay_html_content" />
                 </block>
             </view>
         </component-popup>
@@ -97,6 +97,7 @@
                 submit_disabled_status: true,
                 order_id: 0,
                 popup_view_pay_html_is_show: false,
+                popup_view_pay_html_content: '',
                 // 打开url地址定时任务和状态
                 open_pay_url_timer: null,
                 open_pay_url_status: true,
@@ -267,15 +268,6 @@
                 });
                 this.$emit('close-payment-popup', false);
             },
-            // 支付二维码展示窗口事件
-            popup_view_pay_qrcode_event_close(e) {
-                // 关闭弹窗
-                this.setData({
-                    popup_view_pay_qrcode_is_show: false,
-                });
-                // 清除定时和支付数据
-                clearInterval(this.pay_statuc_check_timer);
-            },
 
             // 选择支付方式
             checked_payment(e) {
@@ -443,7 +435,8 @@
                                                 confirmText: self.$t('common.confirm'),
                                                 success(res) {
                                                     if (res.confirm) {
-                                                        self.to_other(order_id);
+                                                        // 进入指定页面
+                                                        self.to_other();
                                                     } else {
                                                         self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6mpsl7'));
                                                     }
@@ -463,7 +456,7 @@
                                 // 是否返回html代码展示、则提示错误
                                 if (res.data.code == -6666 && (data || null) != null) {
                                     this.setData({
-                                        popup_view_pay_data: data,
+                                        popup_view_pay_html_content: data,
                                         popup_view_pay_html_is_show: true,
                                     });
                                 } else {
@@ -916,29 +909,49 @@
                     }
                 }
             },
-            to_other(order_id) {
-                if (this.propToAppointPage) {
-                    // 跳转订单列表页
-                    app.globalData.url_open(this.propToAppointPage, true);
-                }
-            },
-            // 页面卸载
-            onUnload(e) {
+
+            // 支付二维码展示窗口事件
+            popup_view_pay_qrcode_event_close(e) {
+                // 关闭弹窗
+                this.setData({
+                    popup_view_pay_qrcode_is_show: false,
+                });
+                // 清除定时和支付数据
                 clearInterval(this.pay_statuc_check_timer);
+
+                // 进入指定页面
+                this.to_other();
             },
+
             // 支付html展示窗口事件
             popup_view_pay_html_event_close(e) {
+                // 关闭弹窗
                 this.setData({
                     popup_view_pay_html_is_show: false,
                 });
-                this.to_other();
-
+                // 回调
                 let back_data = {
                     temp_pay_index: this.propTempPayIndex,
                     payment_id: this.payment_id,
                 };
                 this.$emit('pay-html-close', back_data);
+
+                // 进入指定页面
+                this.to_other();
             },
+
+            // 进入指定页面
+            to_other() {
+                if (this.propToAppointPage) {
+                    // 跳转订单列表页
+                    app.globalData.url_open(this.propToAppointPage, true);
+                }
+            },
+
+            // 页面卸载
+            onUnload(e) {
+                clearInterval(this.pay_statuc_check_timer);
+            }
         },
     };
 </script>

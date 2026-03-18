@@ -347,6 +347,8 @@
                     </view>
                 </view>
             </component-popup>
+
+            <!-- 支付组件 -->
             <component-payment ref="payment" :propIsRedirectTo="true" :propPayUrl="pay_url" :propQrcodeUrl="qrcode_url" :propToAppointPage="to_appoint_page" propPayDataKey="ids" :propPaymentList="payment_list" :propToPageBack="to_page_back" :propToFailPage="to_fail_page"></component-payment>
         </block>
 
@@ -599,7 +601,6 @@
 
                             // 基础数据
                             this.setData({
-                                currency_symbol: data.currency_symbol || app.globalData.currency_symbol(),
                                 payment_list: data.payment_list || [],
                             });
 

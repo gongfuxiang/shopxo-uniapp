@@ -535,7 +535,7 @@ export default {
          * @param {Object} e 事件对象
          */
         goods_detail(e) { 
-            const url = e.currentTarget.dataset.url + '&live_room_id=1';
+            const url = e.currentTarget.dataset.url + '&live_id=1';
             app.globalData.url_open(url);
         },
         

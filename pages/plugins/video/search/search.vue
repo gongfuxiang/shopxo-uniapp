@@ -66,7 +66,7 @@
 		<!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="filter_popup_status" propPosition="top" :propMask="true" @onclose="close_filter_popup">
             <view class="padding-bottom-lg" :style="filter_popup_top_style">
-                <view class="nav-list-more">
+                <scroll-view class="nav-list-more bs-bb" scroll-y>
                     <view class="flex-row flex-wrap align-c">
                         <!-- 筛选列表 -->
                         <view v-for="(item, index) in popup_list" :key="index" class="filter-group">
@@ -76,7 +76,7 @@
                             </view>
                         </view>
                     </view>
-                </view>
+                </scroll-view>
                 <view class="tc padding-top-lg flex-row jc-c align-c" @tap="close_filter_popup">
                     <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc" propContainerDisplay="flex"></iconfont>
@@ -248,18 +248,7 @@ export default {
 						this.load_recommend_videos();
 
                         // 获取头部的高度
-                        let self = this;
-                        setTimeout(() => {
-                            const query = uni.createSelectorQuery().in(this);
-                            query.select('.header-top').boundingClientRect()
-                            query.exec(function (res) {
-                                self.setData({
-                                    header_top_value: res[0].height,
-                                    filter_popup_top_style: 'padding-top:' + res[0].height + 'px;',
-                                    scroll_view_style: 'height: calc(100vh - '+ res[0].height + 'px);',
-                                });
-                            });
-                        }, 100);
+                        this.view_style_handle();
 					} else {
 						this.setData({
 							data_tabs_loding_status: 2,
@@ -275,6 +264,27 @@ export default {
 				}
 			});
 		},
+
+        // 样式处理，获取头部的高度
+        view_style_handle(num = 0) {
+            let self = this;
+            setTimeout(() => {
+                const query = uni.createSelectorQuery().in(self);
+                query.select('.header-top').boundingClientRect((res) => {
+                    if((res || null) == null) {
+                        if(num <= 10) {
+                            self.view_style_handle(num+1);
+                        }
+                    } else {
+                        self.setData({
+                            header_top_value: res.height,
+                            filter_popup_top_style: 'padding-top:' + res.height + 'px;',
+                            scroll_view_style: 'height: calc(100vh - '+ res.height + 'px);',
+                        });
+                    }
+                }).exec();
+            }, 100);
+        },
 
 		// 返回上一页
 		handle_back() {

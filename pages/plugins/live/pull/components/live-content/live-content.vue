@@ -706,7 +706,7 @@
              */
             explain_goods_tap() {
                 if (!isEmpty(this.explain_goods.goods_url)) {
-                    const url = this.explain_goods.goods_url + '&live_room_id=1';
+                    const url = this.explain_goods.goods_url + '&live_id=1';
                     app.globalData.url_open(url);
                 }
             },
@@ -773,7 +773,7 @@
                     system_type: app.globalData.data.system_type,
                     uuid: uuid,
                     token: token,
-                    live_room_id: this.live_data.id, // 直播间id
+                    live_id: this.live_data.id, // 直播间id
                     live_user_id: this.live_user_id, // 直播用户id
                     fd: this.socket_id,
                     type: type,

@@ -140,15 +140,15 @@
                                 </view>
 
                                 <!-- 限时秒杀 - 插件 -->
-                                <view v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0" class="plugins-seckill-data border-radius-main spacing-mb bg-white" :style="'background-image: url(' + plugins_seckill_data.data.home_bg + ');'">
+                                <view v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0" class="plugins-seckill-data border-radius-main spacing-mb bg-white" :style="'background-image: url(' + plugins_seckill_data.data.config.home_bg + ');'">
                                     <view class="flex-row jc-sb align-c padding-top-main padding-horizontal-main">
                                         <view class="flex-1">
-                                            <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
+                                            <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.config.home_title_icon" mode="widthFix"></image>
                                             <view class="dis-inline-block va-m margin-left-sm">
                                                 <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
                                             </view>
                                         </view>
-                                        <text data-value="/pages/plugins/seckill/index/index" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{ $t('common.more') }}</text>
+                                        <text :data-value="plugins_seckill_data.data.config.home_url" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{ $t('common.more') }}</text>
                                     </view>
                                     <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                                 </view>

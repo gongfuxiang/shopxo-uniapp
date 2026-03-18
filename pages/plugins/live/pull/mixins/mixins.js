@@ -100,7 +100,7 @@ export default {
                 url: app.globalData.get_request_url('detail', 'index', 'live'),
                 method: 'POST',
                 data: {
-                    live_room_id: 1
+                    live_id: 1
                 },
                 dataType: 'json',
                 success: (res) => {

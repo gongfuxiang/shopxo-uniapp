@@ -1,10 +1,10 @@
 <template>
     <view :class="theme_view">
         <block v-if="data_list_loding_status == 3">
-            <component-nav-back :propFixed="false" :propStyle="'background: url(' + current.header_bg +') top/100% no-repeat;background-size:100% 100%;'">
+            <component-nav-back :propFixed="false" :propStyle="'background: url(' + config.header_bg +') top/100% no-repeat;background-size:100% 100%;'">
                 <template slot="right" class="flex-1 flex-width seckill-right-title">
                     <view class="flex-1 seckill-right-title tc">
-                        <image :src="current.header_logo" mode="widthFix" class="title pr top-md"></image>
+                        <image :src="config.header_logo" mode="widthFix" class="title pr top-md"></image>
                     </view>
                 </template>
                 <template v-if="periods_list.length > 0" slot="content">
@@ -39,7 +39,7 @@
 
                     <!-- 商品 -->
                     <view v-if="goods.length > 0">
-                        <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="grid_btn_config" :propIsOpenGridBtnSet="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
+                        <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="grid_btn_config" :propIsOpenGridBtnSet="is_open_grid_btn_set" propPriceField="seckill_min_price"></component-goods-list>
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
@@ -95,7 +95,6 @@
                 // 秒杀时段
                 periods_list: [],
                 current: {},
-                time: null,
                 goods: [],
                 is_valid: 0,
                 // 自定义分享信息
@@ -111,7 +110,7 @@
                 // status 0未开始, 1进行中(距离结束还有), 2已结束, 3异常错误
                 seckill_status: 0,
                 // 配置商品列表按钮
-                isOpenGridBtnSet: false,
+                is_open_grid_btn_set: false,
                 grid_btn_config: {
                     name: this.$t('index.index.872w3v'),
                     disabled: true,
@@ -196,7 +195,8 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var periods_list = data.periods_list || [];
-                            var data_base = data.config || null;
+                            var data_base = data.base || null;
+                            var config = data.config || null;
                             var current = data.current || {};
                             var time = current.time || null;
                             var goods = current.goods || [];
@@ -209,11 +209,11 @@
                             this.setData({
                                 periods_list: periods_list,
                                 data_base: data_base,
+                                config: config,
                                 current: current,
-                                time: time,
                                 time_first_text: (time == null) ? '' : time.time_first_text,
                                 seckill_status: (periods_list.length > 0) ? data.periods_list[this.nav_active_index].time.status : 3,
-                                isOpenGridBtnSet: (periods_list.length > 0) ? (data.periods_list[this.nav_active_index].time.status === 1 ? false : true) : false,
+                                is_open_grid_btn_set: (periods_list.length > 0) ? (data.periods_list[this.nav_active_index].time.status === 1 ? false : true) : false,
                                 goods: goods,
                                 is_valid: is_valid,
                                 data_list_loding_msg: '',
@@ -227,7 +227,7 @@
                                         title: this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
                                         path: '/pages/plugins/seckill/index/index',
-                                        img: this.current.header_logo || this.current.header_bg || '',
+                                        img: this.config.header_logo || this.config.header_bg || '',
                                     },
                                 });
                                 // #ifndef MP-ALIPAY
@@ -260,6 +260,7 @@
                     },
                 });
             },
+            // 导航事件
             nav_event(e) {
                 let index = e.currentTarget.dataset.index;
                 let time_first_text = e.currentTarget.dataset.text;
@@ -269,7 +270,7 @@
                     time_first_text: time_first_text,
                     seckill_status: seckill_status,
                     goods: this.periods_list[index].goods,
-                    isOpenGridBtnSet: seckill_status === 1 ? false : true,
+                    is_open_grid_btn_set: seckill_status === 1 ? false : true,
                 });
                 this.reset_scroll();
             },

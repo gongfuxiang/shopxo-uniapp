@@ -176,7 +176,7 @@
     left: 0;
     z-index: 1;
 }
-.goods-video video {
+.goods-video .video {
     width: 100%;
     height: 55vh !important;
 }
@@ -186,9 +186,10 @@
     bottom: 60rpx;
     z-index: 2;
 }
-.goods-video-submit image {
+.goods-video-submit .image {
     width: 80rpx;
     height: 80rpx !important;
+    z-index: 2;
 }
 
 /**
@@ -243,7 +244,7 @@
 }
 
 /**
- * 价格信息与秒杀结合
+ * 价格信息与倒计时（限时秒杀，预售）
  */
 .countdown-content {
     width: 38%;
@@ -253,10 +254,10 @@
     margin-bottom: 10rpx;
 }
 .goods-base-price-countdown {
-    background: #e84742 !important;
+    background-color: #e84742 !important;
 }
 .goods-base-price-countdown .price-content {
-    background: #f9534e;
+    background-color: #f9534e;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 60%;
@@ -277,7 +278,7 @@
 .goods-base-price-countdown .price-content .unit{
     color: #ffcece !important;
 }
-.price-content .price-icon.seckill {
+.price-content .price-icon.countdown-drift {
     position: absolute;
     right: 20rpx;
     bottom: 20rpx;
