@@ -1044,7 +1044,6 @@
                                     preferential_price: data.base.preferential_price,
                                     increase_price: data.base.increase_price,
                                     all_total_price: data.base.total_price,
-                                    buy_currency_symbol: data.currency_symbol,
                                     discount_detail_list: data.goods_list,
                                 });
                             } else {
