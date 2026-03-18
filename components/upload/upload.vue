@@ -4,7 +4,7 @@
             <slot></slot>
         </view>
         <view v-else class="flex-row flex-wrap">
-            <block v-if="form_images_list.length > 0">
+            <block v-if="form_images_list && form_images_list.length > 0">
                 <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
                     <view v-if="propDelete" class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
                         <iconfont name="icon-close-fillup" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
@@ -20,9 +20,15 @@
     </view>
 </template>
 <script>
+    //#ifdef APP-NVUE
+    import i18n from '@/locale/index.js';
+    //#endif
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     export default {
+        //#ifdef APP-NVUE
+        i18n,
+        //#endif
         props: {
             // 是否使用卡槽
             propSlot: {
@@ -68,7 +74,7 @@
             propCallData: {
                 type: [Number, String, Array, Object],
                 default: '',
-            },
+            }
         },
         data() {
             return {
@@ -78,9 +84,14 @@
             };
         },
         mounted() {
+            //#ifndef APP-NVUE
             this.setData({
                 form_images_list: (this.propData || null) == null ? [] : (typeof this.propData == 'string' ? this.propData.split(',') : this.propData),
             });
+            //#endif
+            //#ifdef APP-NVUE
+            this.form_images_list = (this.propData || null) == null ? [] : (typeof this.propData == 'string' ? this.propData.split(',') : this.propData);
+            //#endif
         },
         created: function () {},
 
@@ -105,7 +116,13 @@
                                     if(self.propSingleCall) {
                                         // 是否返回全部信息
                                         if(self.propIsAllInfo) {
+                                            //#ifndef APP-NVUE
                                             self.$emit('call-back', data.data, self.propCallData);
+                                            //#endif
+                                            //#ifdef APP-NVUE
+                                            self.$emit('callBack', data.data, self.propCallData);
+                                            uni.$emit('callBack', data.data, self.propCallData);
+                                            //#endif
                                         } else {
                                             self.$emit('call-back', data.data.url, self.propCallData);
                                         }
@@ -117,9 +134,14 @@
                                         } else {
                                             list.push(data.data.url);
                                         }
+                                        //#ifndef APP-NVUE
                                         self.setData({
                                             form_images_list: list,
                                         });
+                                        //#endif
+                                        //#ifdef APP-NVUE
+                                        self.form_images_list = list;
+                                        //#endif
                                         self.$emit('call-back', self.form_images_list, self.propCallData);
                                     }
                                 } else {
@@ -158,6 +180,14 @@
                         var count = 0;
                         self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
                     },
+                    complete(res) {
+                        //#ifndef APP-NVUE
+                        self.$emit('chooseFocus');
+                        //#endif
+                        //#ifdef APP-NVUE
+                        uni.$emit('chooseFocus');
+                        //#endif
+                    },
                 });
             },
 
@@ -171,9 +201,14 @@
                         if (res.confirm) {
                             var list = self.form_images_list;
                             list.splice(e.currentTarget.dataset.index, 1);
+                            //#ifndef APP-NVUE
                             self.setData({
                                 form_images_list: list,
                             });
+                            //#endif
+                            //#ifdef APP-NVUE
+                            self.form_images_list = list;
+                            //#endif
                             self.$emit('call-back', self.form_images_list, self.propCallData);
                         }
                     },

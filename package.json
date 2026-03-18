@@ -16,5 +16,9 @@
             "前端组件",
             "通用组件"
         ]
+    },
+    "dependencies": {
+        "hls.js": "^1.6.15",
+        "jweixin-module": "^1.6.0"
     }
 }

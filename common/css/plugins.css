@@ -273,3 +273,24 @@
     }   
 }
 /* #endif */
+
+/**
+ * 扩大可点击区域
+ */
+.overlay-content {
+    position: relative;
+    /* #ifdef APP-NVUE */
+    padding: 4rpx 20rpx;
+    /* #endif */
+}
+/* #ifdef APP-NVUE */
+.overlay-content::before {
+    content: '';
+    position: absolute;
+    top: -20rpx;
+    left: -20rpx;
+    right: -20rpx;
+    bottom: -20rpx;
+    z-index: 1;
+}
+ /* #endif */

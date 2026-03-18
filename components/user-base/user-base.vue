@@ -448,10 +448,12 @@
         line-height: 70rpx;
         margin-bottom: 0;
     }
+    /* #ifndef APP-NVUE */
     .user-base-popup .user-nickname-container,
     .user-base-popup .user-mobile-container {
         width: calc(100% - 120rpx);
     }
+    /* #endif */
     .form-container .form-gorup {
         padding: 24rpx 0;
         border-radius: 0;
@@ -464,7 +466,12 @@
         height: 84rpx;
         line-height: 84rpx;
         padding: 0;
+        /* #ifndef APP-NVUE */
         display: inline-flex;
+        /* #endif */
+        /* #ifdef APP-NVUE */
+        display: flex;
+        /* #endif */
         align-items: center;
         justify-content: center;
         border-radius: 12rpx;

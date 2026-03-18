@@ -9,6 +9,7 @@ let i18nConfig = {
     silentTranslationWarn: true,
     messages: {
         "zh": zh,
+        "zh-Hans": zh,
         "en": en
     }
 }

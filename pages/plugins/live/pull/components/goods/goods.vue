@@ -5,11 +5,11 @@
             <view class="goods-header-fixed" :style="'width:' + propWindowWidth + 'px;'">
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
-                        <component-icon propName="list-setup" propSize="36rpx" propColor="#999"></component-icon>
+                        <u-icon propName="list-setup" propSize="36rpx" propColor="#999"></u-icon>
                         <text class="mt-5 size-12 cr-9">订单</text>
                     </view>
                     <view class="flex-col ml-10" @tap="goods_cart">
-                        <component-icon propName="cart-solid" propSize="36rpx" propColor="#999"></component-icon>
+                        <u-icon propName="cart-solid" propSize="36rpx" propColor="#999"></u-icon>
                         <text class="mt-5 size-12 cr-9">购物车</text>
                     </view>
                 </view>
@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import componentIcon from "@/pages/plugins/live/pull/components/icon/icon.vue";
 import componentBottomLine from '@/components/bottom-line/bottom-line.vue';
 const app = getApp();
 
@@ -114,7 +113,6 @@ const app = getApp();
 export default {
     name: 'Goods',
     components: {
-        componentIcon,
         componentBottomLine
     },
     props: {
