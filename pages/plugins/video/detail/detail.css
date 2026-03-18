@@ -398,4 +398,5 @@
     padding: 10rpx;
     border-radius: 16rpx;
     color: #fff;
+    box-sizing: border-box;
 }

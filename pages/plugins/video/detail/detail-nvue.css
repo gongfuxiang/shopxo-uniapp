@@ -258,6 +258,9 @@
 .mr-10 {
     margin-right: 20rpx;
 }
+.ml-10 {
+    margin-left: 20rpx;
+}
 .pr-10 {
     padding-right: 20rpx;
 }
@@ -394,4 +397,5 @@
     padding: 10rpx;
     border-radius: 16rpx;
     color: #fff;
+    box-sizing: border-box;
 }

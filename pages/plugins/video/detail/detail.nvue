@@ -156,33 +156,35 @@
                 </view>
                 
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
-                    <view class="flex-1 flex-row align-s">
-                        <view class="flex-1 comment-input-content flex-col jc-c mr-10">
-                            <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb">
-                                <text class="size-12 cr-f text-line-1 mr-10">@{{ isEmpty(comments_reply_data.user) ? '' : comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
-                                <view data-type="image" @tap="comment_data_delete">
-                                    <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
-                                </view>
+                    <view class="flex-1 flex-col align-c">
+                        <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb" :style="window_more_style">
+                            <text class="size-12 cr-f text-line-1 mr-10">@{{ isEmpty(comments_reply_data.user) ? '' : comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
+                            <view data-type="image" @tap="comment_data_delete">
+                                <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
                             </view>
-                            <view class="flex-row align-s pr-16 box-border-box" @tap="add_comment">
-                                <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.video-detail.98yyuf') : comment_input_value }}</text>
-                                <view class="pt-8" @tap="upload_tap">
-                                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
-                                        <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
-                                    </component-upload>
+                        </view>
+                        <view class="flex-row align-s pt-4" :style="window_more_style">
+                            <view class="flex-1 comment-input-content flex-col jc-c">
+                                <view class="flex-row align-s pr-16 box-border-box" @tap="add_comment">
+                                    <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.video-detail.98yyuf') : comment_input_value }}</text>
+                                    <view class="pt-8" @tap="upload_tap">
+                                        <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
+                                            <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
+                                        </component-upload>
+                                    </view>
                                 </view>
-                            </view>
-                            <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
-                                <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                                    <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="comment-input-img"></image>
-                                    <view class="form-img-icon flex-row align-c jc-c" @tap="comment_input_img_close">
-                                        <u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></u-icon>
+                                <view v-if="form_images_list && form_images_list.length > 0" class="pr w h comment-input-img-container">
+                                    <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
+                                        <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="comment-input-img"></image>
+                                        <view class="form-img-icon flex-row align-c jc-c" @tap="comment_input_img_close">
+                                            <u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></u-icon>
+                                        </view>
                                     </view>
                                 </view>
                             </view>
-                        </view>
-                        <view v-if="!isEmpty(comment_input_value)" class="pt-4 flex-row align-c">
-                            <button size="mini" type="default" class="margin-0 bg-main cr-white" @tap="send_comment">{{$t('common.send')}}</button>
+                            <view v-if="!isEmpty(comment_input_value)" class="pt-4 flex-row align-c ml-10">
+                                <button size="mini" type="default" class="margin-0 bg-main cr-white" @tap="send_comment">{{$t('common.send')}}</button>
+                            </view>
                         </view>
                     </view>
                 </view>
