@@ -245,6 +245,12 @@
     font-size: 28rpx;
 }
 
+.product-image {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 8rpx;
+}
+
 .comment-send-button {
     color: #fff;
     font-size: 26rpx;

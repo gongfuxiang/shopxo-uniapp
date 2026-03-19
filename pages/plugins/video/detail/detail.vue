@@ -64,7 +64,7 @@
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c gap-10">
                                             <iconfont name="icon-cart-have" color="#F5C366" size="30rpx"></iconfont>
-                                            <text class="size-14 cr-f">{{$t('common.buy')}} {{$t('common.goods')}}</text>
+                                            <text class="size-14 cr-f">{{$t('common.buy')}}{{$t('common.goods')}}</text>
                                         </view>
                                         <iconfont name="icon-angle-right" color="#fff" size="30rpx"></iconfont>
                                     </view>
@@ -864,12 +864,20 @@
                     if (move_distance > 0) {
                         // 向下滑动，切换到上一个
                         if (this.current_video_index <= 0) {
-                            app.globalData.showToast('已经是第一个视频了');
+                            setTimeout(() => {
+                                if (!this.show_comment_modal) {
+                                    app.globalData.showToast('已经是第一个视频了');
+                                } 
+                            }, 0);
                         }
                     } else {
                         // 向上滑动，切换到下一个
                         if (this.current_video_index >= this.video_data_list.length - 1) {
-                            app.globalData.showToast('已经是最后一个视频了');
+                            setTimeout(() => {
+                                if (!this.show_comment_modal) {
+                                    app.globalData.showToast('已经是最后一个视频了');
+                                } 
+                            }, 0);
                         }
                     }
                     
@@ -1185,7 +1193,9 @@
             // 评论
             send_comment() {
                 let comment_text = this.comment_input_value;
-                if (!comment_text.trim()) return;
+                if (!comment_text.trim()) {
+                    app.globalData.showToast('请填写评论内容');
+                };
 
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id
                 let new_video_comments_id = 0;
@@ -1209,6 +1219,8 @@
                     success: res => {
                         const data = res.data;
                         if (data.code == 0) {
+                            // 关闭输入框
+                            this.is_add_comment = false;
                             const new_data = data.data;
                             // 没有回复时的评论
                             if (new_video_comments_id == 0) {
@@ -1219,14 +1231,9 @@
                                     page: 0,
                                     sub_comments: [],
                                 })
-                                this.video_data_list.forEach(item => {
-                                    if (item.id == this.current_video_id) {
-                                        item.comments_count++;
-                                    }
-                                })
+                                
                                 this.setData({
-                                    video_data_list: this.video_data_list,
-                                    comment_scroll_top: 0 + Math.random() // 添加主评论时滚动到最顶部
+                                    comment_scroll_top: Date.now(), // 添加主评论时滚动到最顶部
                                 })
                             } else {
                                 this.active_comments.forEach(item => {
@@ -1243,9 +1250,18 @@
                                     }
                                 })
                             }
+                            // 更新视频数据
+                            const videoItem = this.video_data_list.find(item => item.id == this.current_video_id);
+                            if (videoItem) {
+                                videoItem.comments_list = this.active_comments;
+                                if (new_video_comments_id == 0) {
+                                    videoItem.comments_count++;
+                                }
+                            }
                             // 清空输入框, 更新数据内容
                             this.setData({
                                 active_comments: this.active_comments,
+                                video_data_list: this.video_data_list,
                                 form_images_list: [],
                                 comment_input_value: '',
                                 comments_reply_data: {},
@@ -1630,12 +1646,12 @@
                         // 保留当前评论
                         filteredComments.push(comment);
                     }
-                    // 删除之后更新评论数据
-                    this.video_data_list.forEach(item => {
-                        if (item.id == this.current_video_id) {
-                            item.comments_count = filteredComments.length;
-                        }
-                    })
+                    // 更新视频数据
+                    const videoItem = this.video_data_list.find(item => item.id == this.current_video_id);
+                    if (videoItem) {
+                        videoItem.comments_list = filteredComments;
+                        videoItem.comments_count = filteredComments.length;
+                    }
                     // 更新数据
                     this.setData({
                         active_comments: filteredComments,

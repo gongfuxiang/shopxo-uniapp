@@ -101,6 +101,7 @@
 .product-card .product-image {
     width: 100rpx;
     height: 100rpx;
+    border-radius: 8rpx;
 }
 .product-card .product-name {
     font-weight: 500;

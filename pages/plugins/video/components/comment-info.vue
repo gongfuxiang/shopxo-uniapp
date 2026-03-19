@@ -304,5 +304,6 @@
 .comment-images {
     width: 80rpx;
     height: 80rpx;
+    border-radius: 8rpx;
 }
 </style>
