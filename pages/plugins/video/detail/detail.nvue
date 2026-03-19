@@ -117,7 +117,7 @@
                                                 </template>
                                                 <template v-else>
                                                     <template v-if="comment_item.show_sub_comment_loading">
-                                                        <loading-component :style="window_more_style"></loading-component>
+                                                        <component-loading :style="window_more_style"></component-loading>
                                                     </template>
                                                     <view v-else class="sub-comment-more flex-row align-c">
                                                         <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
@@ -270,9 +270,9 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding, showToast } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
-    import ComponentLoading from '@/pages/plugins/video/components/loading.vue';
+    import componentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
-    import ComponentSearch from '@/pages/plugins/video/components/search.vue';
+    import componentSearch from '@/pages/plugins/video/components/search.vue';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentUpload from '@/components/upload/upload';
@@ -357,10 +357,10 @@
         components: {
             commentInfoComponent,
             commentMoreComponent,
-            ComponentSearch,
+            componentSearch,
             componentNoData,
             componentBottomLine,
-            ComponentLoading,
+            componentLoading,
             componentUpload
         },
         watch: {

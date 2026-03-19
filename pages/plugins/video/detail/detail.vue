@@ -112,7 +112,7 @@
                                             </template>
                                             <template v-else>
                                                 <template v-if="comment_item.show_sub_comment_loading">
-                                                    <loading-component></loading-component>
+                                                    <component-loading></component-loading>
                                                 </template>
                                                 <view v-else class="sub-comment-more flex-row align-c gap-10">
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
@@ -1223,7 +1223,7 @@
                             this.is_add_comment = false;
                             //关闭键盘
                             uni.hideKeyboard();
-                            
+
                             const new_data = data.data;
                             // 没有回复时的评论
                             if (new_video_comments_id == 0) {
