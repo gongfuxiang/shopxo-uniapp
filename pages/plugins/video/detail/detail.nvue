@@ -252,7 +252,7 @@
                 </view>
                 
                 <view class="flex-row align-c jc-sb pt-10">
-                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus propFailChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
                         <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
                     </component-upload>
                 

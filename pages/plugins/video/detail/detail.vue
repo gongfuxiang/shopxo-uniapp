@@ -246,7 +246,7 @@
                     </view>
                 </view>
                 <view class="flex-row align-c jc-sb wh-auto">
-                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus propFailChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
                         <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                     </component-upload>
 

@@ -70,6 +70,11 @@
                 type: String,
                 default: 'common',
             },
+            // 失败时是否触发chooseFocus
+            propFailChooseFocus: {
+                type: Boolean,
+                default: false,
+            },
             // 回调数据
             propCallData: {
                 type: [Number, String, Array, Object],
@@ -178,16 +183,24 @@
                         var fail = 0;
                         var length = res.tempFilePaths.length;
                         var count = 0;
-                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                    },
-                    complete(res) {
                         //#ifndef APP-NVUE
                         self.$emit('chooseFocus');
                         //#endif
                         //#ifdef APP-NVUE
                         uni.$emit('chooseFocus');
                         //#endif
+                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
                     },
+                    fail(res) {
+                        if (self.propFailChooseFocus) {
+                            //#ifndef APP-NVUE
+                            self.$emit('chooseFocus');
+                            //#endif
+                            //#ifdef APP-NVUE
+                            uni.$emit('chooseFocus');
+                            //#endif
+                        }
+                    }
                 });
             },
 

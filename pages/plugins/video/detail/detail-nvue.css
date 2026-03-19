@@ -295,6 +295,7 @@
 .comment-input-img {
     width: 100rpx;
     height: 100rpx;
+    border-radius: 8rpx;
 }
 .form-img-icon {
     position: absolute;
