@@ -105,9 +105,9 @@
                                     <view class="comment-item flex-col"> 
                                         <commentInfoComponent :style="window_more_style" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                         <!-- 子评论 -->
-                                        <view class="sub-comment flex-col jc-c mt-10">
-                                            <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" style="margin-buttom: 20rpx;" class="sub-comment-list flex-col jc-c">
-                                                <view v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index" class="sub-comment-item flex-row align-s" style="margin-bottom: 20rpx;">
+                                        <view class="sub-comment flex-col jc-c mt-10 bg-red">
+                                            <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c mb-10">
+                                                <view v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index" class="sub-comment-item flex-row align-s mb-10">
                                                     <commentInfoComponent :style="window_sub_more_style" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                                 </view>
                                             </view>
@@ -119,9 +119,9 @@
                                                     <template v-if="comment_item.show_sub_comment_loading">
                                                         <loading-component :style="window_more_style"></loading-component>
                                                     </template>
-                                                    <view v-else class="sub-comment-more flex-row align-c gap-10">
+                                                    <view v-else class="sub-comment-more flex-row align-c">
                                                         <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
-                                                            <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                            <commentMoreComponent :style="window_more_style" class="mr-10" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                         </template>
                                                         <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                     </view>

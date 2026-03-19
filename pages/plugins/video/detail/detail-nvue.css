@@ -276,6 +276,12 @@
 .ml-10 {
     margin-left: 20rpx;
 }
+.mt-10 {
+    margin-top: 20rpx;
+}
+.mb-10 {
+    margin-bottom: 20rpx;
+}
 .pr-10 {
     padding-right: 20rpx;
 }
