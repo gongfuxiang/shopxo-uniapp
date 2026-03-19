@@ -212,6 +212,10 @@
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
+    // 换行
+    word-break: break-all;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .comment-time {
