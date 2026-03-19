@@ -44,7 +44,7 @@
                     </view>
                     <view class="item-operation margin-top-sm">
                         <button v-if="detail.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" hover-class="none">{{$t('common.cancel')}}</button>
-                        <button v-if="detail.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('order.order.1i873j')}}</button>
+                        <button v-if="detail.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" hover-class="none">{{$t('common.pay')}}</button>
                         <button v-if="detail.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
                         <button v-if="(detail.plugins_express_data || 0) == 1 && (detail.express_data || null) != null" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + detail.id" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                         <button v-if="(detail.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + detail.plugins_delivery_data" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
