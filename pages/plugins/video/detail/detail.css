@@ -101,6 +101,7 @@
 .product-card .product-image {
     width: 100rpx;
     height: 100rpx;
+    border-radius: 8rpx;
 }
 .product-card .product-name {
     font-weight: 500;
@@ -314,6 +315,7 @@
 .comment-input-img {
     width: 50rpx;
     height: 50rpx;
+    border-radius: 8rpx;
 }
 
 /* 新的举报弹窗样式 */

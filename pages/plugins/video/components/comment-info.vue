@@ -1,5 +1,5 @@
 <template> 
-    <view class="flex-row align-s wh-auto ht-auto"> 
+    <view class="flex-row align-s">
         <image class="comment-avatar" :src="propComment.user.avatar" mode="aspectFill"></image>
         <view class="comment-info flex-col jc-c" style="margin-left: 20rpx;" @tap="comment_reply">
             <view class="flex-row jc-sb">
@@ -304,5 +304,6 @@
 .comment-images {
     width: 80rpx;
     height: 80rpx;
+    border-radius: 8rpx;
 }
 </style>

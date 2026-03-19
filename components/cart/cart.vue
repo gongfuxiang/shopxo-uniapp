@@ -162,18 +162,18 @@
                                             <view class="flex-row jc-s flex-nowrap align-c">
                                                 <view>{{ $t('buy.buy.wx78ju') }}</view>
                                                 <view class="sales-price single-text fw-b">
-                                                    <text class="text-size-sm">{{ buy_currency_symbol }}</text>
+                                                    <text class="text-size-sm">{{ currency_symbol }}</text>
                                                     <text class="text-size-lg">{{ total_price }}</text>
                                                 </view>
                                             </view>
                                             <block v-if="is_cart_show_discount == 1 && total_num > 0">
                                                 <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
                                                     <block v-if="preferential_price > 0">
-                                                        <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                                        <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ currency_symbol }}{{ preferential_price }}</view>
                                                     </block>
                                                     <block v-else>
                                                         <block v-if="increase_price > 0">
-                                                            <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ buy_currency_symbol }}{{ increase_price }}</view>
+                                                            <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ currency_symbol }}{{ increase_price }}</view>
                                                         </block>
                                                     </block>
                                                     <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
@@ -238,19 +238,19 @@
                             <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
                                 <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
                                     <view>{{ $t('cart.cart.t41i4x') }}</view>
-                                    <view> {{ buy_currency_symbol }}{{ all_total_price }} </view>
+                                    <view> {{ currency_symbol }}{{ all_total_price }} </view>
                                 </view>
                                 <block v-if="preferential_price > 0">
                                     <view class="flex-row jc-sb align-c text-size-md margin-bottom">
                                         <view class="fw-b">{{ $t('cart.cart.9s0l57') }}</view>
-                                        <view class="cr-red"> {{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                        <view class="cr-red"> {{ currency_symbol }}{{ preferential_price }}</view>
                                     </view>
                                 </block>
                                 <block v-else>
                                     <block v-if="increase_price > 0">
                                         <view class="flex-row jc-sb align-c text-size-md margin-bottom">
                                             <view class="fw-b">{{ $t('cart.cart.qh35gz') }}</view>
-                                            <view class="cr-red"> {{ buy_currency_symbol }}{{ increase_price }}</view>
+                                            <view class="cr-red"> {{ currency_symbol }}{{ increase_price }}</view>
                                         </view>
                                     </block>
                                 </block>
@@ -374,7 +374,6 @@
                 all_total_price: 0,
                 goods_count: 0,
                 discount_detail_list: [],
-                buy_currency_symbol: app.globalData.currency_symbol(),
                 is_selected_all: false,
                 already_selected_status: false,
                 already_valid_selected_status: false,

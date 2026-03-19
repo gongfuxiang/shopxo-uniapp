@@ -40,8 +40,8 @@
                             <view v-if="!isEmpty(video_item.goods) && base_config_data && base_config_data.is_video_detail_show_goods && base_config_data.is_video_detail_show_goods == 1" class="product-card">
                                 <view class="flex-col">
                                     <view v-if="video_item.show_goods" class="flex-row align-c product-card-item mb-10" :data-id="video_item.id" @tap.stop="handle_product_card_item">
-                                        <view style="width: 100rpx;height:100rpx;">
-                                            <image :src="video_item.goods.images" mode="aspectFill" style="width: 100rpx;height:100rpx;"></image>
+                                        <view class="product-image">
+                                            <image :src="video_item.goods.images" mode="aspectFill" class="product-image"></image>
                                         </view>
                                         <view class="flex-1 flex-col align-sb jc-c ml-10">
                                             <text class="product-name text-line-1 mb-10">{{ video_item.goods.title }}</text>
@@ -54,7 +54,7 @@
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c">
                                             <u-icon propName="cart-have" propSize="30rpx" propColor="#F5C366"></u-icon>
-                                            <text class="size-14 cr-f ml-10">{{$t('common.buy')}} {{$t('common.goods')}}</text>
+                                            <text class="size-14 cr-f ml-10">{{$t('common.buy')}}{{$t('common.goods')}}</text>
                                         </view>
                                         <u-icon propName="angle-right" propSize="30rpx" propColor="#fff"></u-icon>
                                     </view>
@@ -106,8 +106,8 @@
                                         <commentInfoComponent :style="window_more_style" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                         <!-- 子评论 -->
                                         <view class="sub-comment flex-col jc-c mt-10">
-                                            <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" style="margin-buttom: 20rpx;" class="sub-comment-list flex-col jc-c">
-                                                <view v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index" class="sub-comment-item flex-row align-s" style="margin-bottom: 20rpx;">
+                                            <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c mb-10">
+                                                <view v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index" class="sub-comment-item flex-row align-s mb-10">
                                                     <commentInfoComponent :style="window_sub_more_style" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                                 </view>
                                             </view>
@@ -117,11 +117,11 @@
                                                 </template>
                                                 <template v-else>
                                                     <template v-if="comment_item.show_sub_comment_loading">
-                                                        <loading-component :style="window_more_style"></loading-component>
+                                                        <component-loading :style="window_more_style"></component-loading>
                                                     </template>
-                                                    <view v-else class="sub-comment-more flex-row align-c gap-10">
+                                                    <view v-else class="sub-comment-more flex-row align-c">
                                                         <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
-                                                            <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
+                                                            <commentMoreComponent :style="window_more_style" class="mr-10" :propId="comment_item.id" :propIsLevel="2" :propText="$t('common.expand')" @comment_more_event="open_sub_comment"></commentMoreComponent>
                                                         </template>
                                                         <commentMoreComponent :style="window_more_style" :propId="comment_item.id" :propText="$t('common.retract')" propIconName="arrow-top" @comment_more_event="close_sub_comment"></commentMoreComponent>
                                                     </view>
@@ -252,7 +252,7 @@
                 </view>
                 
                 <view class="flex-row align-c jc-sb pt-10">
-                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus propFailChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
                         <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
                     </component-upload>
                 
@@ -270,9 +270,9 @@
     const app = getApp();
     import { get_math, isEmpty, video_get_top_left_padding, showToast } from '@/common/js/common/common.js';
     import commentInfoComponent from '@/pages/plugins/video/components/comment-info.vue';
-    import ComponentLoading from '@/pages/plugins/video/components/loading.vue';
+    import componentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
-    import ComponentSearch from '@/pages/plugins/video/components/search.vue';
+    import componentSearch from '@/pages/plugins/video/components/search.vue';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentUpload from '@/components/upload/upload';
@@ -357,10 +357,10 @@
         components: {
             commentInfoComponent,
             commentMoreComponent,
-            ComponentSearch,
+            componentSearch,
             componentNoData,
             componentBottomLine,
-            ComponentLoading,
+            componentLoading,
             componentUpload
         },
         watch: {
@@ -1126,8 +1126,9 @@
                 try {
                     this.active_dropdown_id = null;
                     let comment_text = this.comment_input_value;
-                    if (!comment_text.trim()) return;
-
+                    if (!comment_text.trim()) {
+                        app.globalData.showToast('请填写评论内容');
+                    };
                     // video_id 视频id video_comments_id 父级评论id id 当前评论id
                     let new_video_comments_id = 0;
                     let reply_comments_id = 0
@@ -1150,6 +1151,11 @@
                         success: res => {
                             const data = res.data;
                             if (data.code == 0) {
+                                // 关闭输入框
+                                this.is_add_comment = false;
+                                //关闭键盘
+                                uni.hideKeyboard();
+                                
                                 const new_data = data.data;
                                 // 没有回复时的评论
                                 if (new_video_comments_id == 0) {
@@ -1160,13 +1166,6 @@
                                         page: 0,
                                         sub_comments: [],
                                     })
-                                    this.video_data_list.forEach(item => {
-                                        if (item.id == this.current_video_id) {
-                                            item.comments_count++;
-                                        }
-                                    })
-                                    // this.video_data_list = this.video_data_list;
-                                    this.$set(this, 'video_data_list', this.video_data_list)
                                     this.comment_scroll_top = 0 + Math.random(); // 添加主评论时滚动到最顶部
                                 } else {
                                     this.active_comments.forEach(item => {
@@ -1183,6 +1182,15 @@
                                         }
                                     })
                                 }
+                                // 更新视频数据
+                                const videoItem = this.video_data_list.find(item => item.id == this.current_video_id);
+                                if (videoItem) {
+                                    videoItem.comments_list = this.active_comments;
+                                    if (new_video_comments_id == 0) {
+                                        videoItem.comments_count++;
+                                    }
+                                }
+                                this.$set(this, 'video_data_list', this.video_data_list);
                                 // 清空输入框，更新数据内容
                                 this.active_comments = this.active_comments;
                                 this.form_images_list = [];
@@ -1649,12 +1657,12 @@
                             // 保留当前评论
                             filteredComments.push(comment);
                         }
-                        // 删除之后更新评论数据
-                        this.video_data_list.forEach(item => {
-                            if (item.id == this.current_video_id) {
-                                item.comments_count = filteredComments.length;
-                            }
-                        })
+                        // 更新视频数据
+                        const videoItem = this.video_data_list.find(item => item.id == this.current_video_id);
+                        if (videoItem) {
+                            videoItem.comments_list = filteredComments;
+                            videoItem.comments_count = filteredComments.length;
+                        }
                         // 更新数据
                         this.active_comments = filteredComments;
                         // this.video_data_list = this.video_data_list;

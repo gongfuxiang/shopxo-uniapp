@@ -245,6 +245,12 @@
     font-size: 28rpx;
 }
 
+.product-image {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 8rpx;
+}
+
 .comment-send-button {
     color: #fff;
     font-size: 26rpx;
@@ -270,6 +276,12 @@
 .ml-10 {
     margin-left: 20rpx;
 }
+.mt-10 {
+    margin-top: 20rpx;
+}
+.mb-10 {
+    margin-bottom: 20rpx;
+}
 .pr-10 {
     padding-right: 20rpx;
 }
@@ -283,6 +295,7 @@
 .comment-input-img {
     width: 100rpx;
     height: 100rpx;
+    border-radius: 8rpx;
 }
 .form-img-icon {
     position: absolute;

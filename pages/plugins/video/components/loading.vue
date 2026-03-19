@@ -1,5 +1,5 @@
 <template>
-    <view class="wh-auto ht-auto flex-row align-c jc-c">
+    <view class="flex-row align-c jc-c">
         <view class="more-history-btn cp flex-row align-c">
             <view class="more-history-btn-icon margin-right-xs">
                 <u-icon propName="reset" propSize="28rpx" propColor="#999"></u-icon>
