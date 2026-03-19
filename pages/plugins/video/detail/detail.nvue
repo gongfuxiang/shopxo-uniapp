@@ -105,7 +105,7 @@
                                     <view class="comment-item flex-col"> 
                                         <commentInfoComponent :style="window_more_style" :propComment="comment_item" :propId="comment_item.id" :propDropDownVisible="active_dropdown_id == comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
                                         <!-- 子评论 -->
-                                        <view class="sub-comment flex-col jc-c mt-10 bg-red">
+                                        <view class="sub-comment flex-col jc-c mt-10">
                                             <view v-if="comment_item.sub_comments && Array.isArray(comment_item.sub_comments) && comment_item.sub_comments.length > 0 && comment_item.show_sub_comment" class="sub-comment-list flex-col jc-c mb-10">
                                                 <view v-for="(sub_comment_item, sub_comment_index) in comment_item.sub_comments" :key="sub_comment_index" class="sub-comment-item flex-row align-s mb-10">
                                                     <commentInfoComponent :style="window_sub_more_style" :propComment="sub_comment_item" :propId="sub_comment_item.id" :propDropDownVisible="active_dropdown_id == sub_comment_item.id" @comment_reply="comment_reply" @comment_like="comment_like" @toggle_dropdown="handle_toggle_dropdown" @dropdown_item_click="handle_dropdown_item_click"></commentInfoComponent>
