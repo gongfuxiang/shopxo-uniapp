@@ -1153,6 +1153,9 @@
                             if (data.code == 0) {
                                 // 关闭输入框
                                 this.is_add_comment = false;
+                                //关闭键盘
+                                uni.hideKeyboard();
+                                
                                 const new_data = data.data;
                                 // 没有回复时的评论
                                 if (new_video_comments_id == 0) {
