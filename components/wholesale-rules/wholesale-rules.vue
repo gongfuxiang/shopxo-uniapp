@@ -3,7 +3,7 @@
         <!-- 批发规则展示 -->
         <view v-if="(data || null) != null" class="plugins-wholesale-container scroll-view-horizontal" :class="propIsAlone ? 'is-alone' : ''">
             <scroll-view scroll-x="true">
-                <view :class="'plugins-wholesale-container-rules-view wh-auto padding-main item-number-'+data.rules.length" @tap="popup_wholesale_event">
+                <view :class="'plugins-wholesale-container-rules-view wh-auto padding-horizontal-main padding-top-main padding-bottom-sm bs-bb item-number-'+data.rules.length" @tap="popup_wholesale_event">
                     <view v-for="(item, index) in data.rules" :key="index" class="item">
                         <view class="price">
                             <text v-if="item.arr.type == 1" class="cr-red text-size-xs">{{propCurrencySymbol}}</text>

@@ -6,6 +6,27 @@
   "description": "1. diy, form, 小程序仅base64, TIF，（web端也可以使用这个方式）；2. web端 Base64, WOFF2, WOFF, TEF, SVG, EOT",
   "glyphs": [
     {
+      "icon_id": "16534420",
+      "name": "分享-圆形",
+      "font_class": "share-circle",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "40047917",
+      "name": "进销存更多",
+      "font_class": "more",
+      "unicode": "e76f",
+      "unicode_decimal": 59247
+    },
+    {
+      "icon_id": "15872071",
+      "name": "没有数据",
+      "font_class": "no-data",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
       "icon_id": "39482322",
       "name": "医生",
       "font_class": "doctor",

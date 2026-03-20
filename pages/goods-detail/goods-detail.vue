@@ -75,75 +75,93 @@
                 </view>
             </view>
 
-            <!-- 价格信息 -->
-            <view class="goods-base-price bg-white oh spacing-mb" :class="countdown_is_valid ? 'goods-base-price-countdown' : ''" :style="countdown_is_valid ? 'background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
+            <!-- 基础信息 -->
+            <view class="goods-base-price bg-white oh spacing-mb" :class="countdown_is_valid ? 'goods-base-price-countdown' : ''" :style="countdown_is_valid ? 'background-image: url(' + countdown_data.config.goods_detail_header + ');background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
                 <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
                 <block v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
                     <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsAlone="true"></component-wholesale-rules>
                 </block>
-                <!-- 价格 -->
-                <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="countdown_is_valid ? 'background-image: url(' + countdown_data.config.goods_detail_header + ');background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
-                    <!-- 批发插件是否开启隐藏价格信息 -->
-                    <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
-                        <!-- 售价 -->
-                        <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
-                            <!-- 图标 -->
-                            <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+((countdown_is_valid) ? 'countdown-drift' : '')">{{ show_field_price_text }}</text>
-                            <!-- 售价 -->
-                            <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
-                            <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods_show_price_unit }}</text>
+                <!-- 倒计时 -->
+                <view v-if="countdown_is_valid" class="padding-horizontal-main padding-top-main oh">
+                    <view class="cr-white text-size-xl fw-b single-text fl">{{ countdown_data.config.goods_detail_title }}</view>
+                    <view class="fr">
+                        <view class="dis-inline-block va-m">
+                            <iconfont name="icon-timing-time" color="#ffe500" size="40rpx"></iconfont>
                         </view>
-                        <!-- 预售定金信息 -->
-                        <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="item cr-white">
-                            <text class="text-size-xs va-m">{{ countdown_data.config.goods_detail_icon }}</text>
-                            <text class="text-size-xl margin-right-sm va-m">{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deposit_price }}</text>
-                            <text v-if="countdown_data.presale_goods.deduct_price > 0" class="price-icon round va-m">{{ countdown_data.config.goods_detail_deduct_text }}{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deduct_price }}</text>
+                        <view class="dis-inline-block va-m margin-left-sm">
+                            <component-countdown
+                                :propHour="countdown_data.time.hours"
+                                :propMinute="countdown_data.time.minutes"
+                                :propSecond="countdown_data.time.seconds"
+                                :propMsecShow="true"
+                                propTimeSize="38"
+                                propTimePadding="0"
+                                propTimeWeight="bold"
+                                propTimeBackgroundColor="transparent"
+                                propTimeColor="#ffe500"
+                                propDsColor="#fff"
+                            ></component-countdown>
                         </view>
-                        <!-- 原价 -->
-                        <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
-                        <!-- 积分兑换 -->
-                        <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
-                            <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
-                            <text class="points-price-unit text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
-                        </view>
-                    </block>
-                    <block v-else>
-                        <!-- 批发开启了隐藏价格，则价格容器这里展示批发价格信息 -->
-                        <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
-                    </block>
+                    </view>
                 </view>
-                <block v-if="countdown_is_valid">
-                    <view class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
-                        <view class="time-title cr-white single-text">{{ countdown_data.config.goods_detail_title }}</view>
-                        <component-countdown
-                            :propHour="countdown_data.time.hours"
-                            :propMinute="countdown_data.time.minutes"
-                            :propSecond="countdown_data.time.seconds"
-                            :propMsecShow="true"
-                            propTimeSize="32"
-                            propTimePadding="0"
-                            propTimeWeight="bold"
-                            propTimeBackgroundColor="transparent"
-                            propTimeColor="#ffe500"
-                            propDsColor="#fff"
-                        ></component-countdown>
+                <!-- 价格信息 -->
+                <view class="oh">
+                    <!-- 价格 -->
+                    <view class="price-content padding-vertical-main padding-left-main bs-bb fl">
+                        <!-- 批发插件是否开启隐藏价格信息 -->
+                        <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
+                            <!-- 售价 -->
+                            <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
+                                <!-- 图标 -->
+                                <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m margin-right-xs">{{ show_field_price_text }}</text>
+                                <!-- 售价 -->
+                                <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
+                                <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods_show_price_unit }}</text>
+                            </view>
+                            <!-- 预售定金信息 -->
+                            <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="item cr-white">
+                                <text class="text-size-xs va-m">{{ countdown_data.config.goods_detail_icon }}</text>
+                                <text class="text-size-xl margin-right-sm va-m">{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deposit_price }}</text>
+                                <text v-if="countdown_data.presale_goods.deduct_price > 0" class="price-icon round va-m">{{ countdown_data.config.goods_detail_deduct_text }}{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deduct_price }}</text>
+                            </view>
+                            <!-- 原价 -->
+                            <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
+                            <!-- 积分兑换 -->
+                            <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
+                                <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
+                                <text class="points-price-unit text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
+                            </view>
+                        </block>
+                        <block v-else>
+                            <!-- 批发开启了隐藏价格，则价格容器这里展示批发价格信息 -->
+                            <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                        </block>
                     </view>
-                </block>
-                <block v-else>
+
                     <!-- 右侧操作 -->
-                    <view class="goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-main fr oh">
-                        <!-- 收藏 -->
-                        <view class="collect tc cp fr margin-left" @tap="goods_favor_event">
-                            <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                            <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
-                        </view>
+                    <view class="goods-base-right-opt padding-vertical-main padding-right-main padding-left-xs fr oh">
                         <!-- 分享 -->
-                        <view class="goods-share tc cp fr" @tap="popup_share_event">
-                            <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                            <view class="cr-grey text-size-xs">{{$t('common.share')}}</view>
+                        <view class="goods-share tc cp fl" @tap="popup_share_event">
+                            <view>
+                                <iconfont name="icon-share-circle" :color="countdown_is_valid ? '#fff' : '#999'" size="38rpx" propClass="lh-il"></iconfont>
+                            </view>
+                            <view :class="'text-size-xs '+(countdown_is_valid ? 'cr-white' : 'cr-grey')">{{$t('common.share')}}</view>
+                        </view>
+                        <!-- 收藏 -->
+                        <view class="favor tc cp fr margin-left" @tap="goods_favor_event">
+                            <view>
+                                <iconfont :name="'icon-heart'+(nav_favor_button_info.status == 1 ? '' : '-o')" :color="countdown_is_valid ? '#fff' : (nav_favor_button_info.status == 1 ? theme_color : '#999')" size="38rpx" propClass="lh-il"></iconfont>
+                            </view>
+                            <view :class="'text-size-xs ' + (countdown_is_valid ? 'cr-white' : (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey'))">{{ nav_favor_button_info.text }}</view>
                         </view>
                     </view>
-                </block>
+                </view>
+
+                <!-- 预售定金信息 -->
+                <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="padding-horizontal-main padding-bottom-main cr-white text-size-xs">
+                    <view>{{countdown_data.presale_goods.lastpay_tips}}</view>
+                    <view>{{countdown_data.presale_goods.delivery_tips}}</view>
+                </view>
             </view>
 
             <view class="padding-horizontal-main">
@@ -152,7 +170,7 @@
                     <view class="padding-main">
                         <view class="goods-title-content oh flex-row jc-sb align-c">
                             <!-- 标题容器 -->
-                            <view class="goods-title flex-1 flex-width" :style="'color:' + goods.title_color">
+                            <view class="goods-title fw-b flex-1 flex-width" :style="'color:' + goods.title_color">
                                 <!-- icon -->
                                 <block v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0">
                                     <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
@@ -166,18 +184,6 @@
                                 </block>
                                 <!-- 标题 -->
                                 <text class="va-m">{{ goods.title }}</text>
-                            </view>
-                            <view v-if="(countdown_data || null) !== null" class="flex-row align-c padding-left-main">
-                                <!-- 分享 -->
-                                <view class="goods-share tc cp" @tap="popup_share_event">
-                                    <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                                    <view class="cr-grey text-size-xs">{{$t('common.share')}}</view>
-                                </view>
-                                <!-- 收藏 -->
-                                <view class="collect tc cp margin-left-xxxl" @tap="goods_favor_event">
-                                    <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                                    <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
-                                </view>
                             </view>
                         </view>
                         <!-- 简述 -->
@@ -682,6 +688,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 status_bar_height: bar_height,
                 common_static_url: common_static_url,
                 bottom_fixed_style: '',
