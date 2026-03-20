@@ -99,30 +99,19 @@
 }
 
 /*
- * 限时秒杀 - 插件
+ * 限时秒杀、预售 - 插件
  */
 
-.plugins-seckill-data {
+.plugins-seckill-data,
+.plugins-presale-data {
     background-size: 100% auto;
     background-repeat: no-repeat;
     background-position: top;
-    background-color: #fff;
-
 }
-.plugins-seckill-data .icon {
+.plugins-seckill-data .icon,
+.plugins-presale-data .icon {
     max-width: 140rpx;
     max-height: 34rpx;
-}
-.plugins-seckill-data .goods-list .swiper {
-    height: 310rpx !important;
-}
-.plugins-seckill-data .goods-list .item .goods-img {
-    width: 100%;
-    height: 210rpx;
-}
-.plugins-seckill-data .goods-list .goods-base .icon {
-    right: 20rpx;
-    bottom: 13rpx;
 }
 
 /**

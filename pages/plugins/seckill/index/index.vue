@@ -4,7 +4,7 @@
             <component-nav-back :propFixed="false" :propStyle="'background: url(' + config.header_bg +') top/100% no-repeat;background-size:100% 100%;'">
                 <template slot="right" class="flex-1 flex-width seckill-right-title">
                     <view class="flex-1 seckill-right-title tc">
-                        <image :src="config.header_logo" mode="widthFix" class="title pr top-md"></image>
+                        <image :src="config.header_logo" mode="widthFix" class="header-logo pr top-md"></image>
                     </view>
                 </template>
                 <template v-if="periods_list.length > 0" slot="content">
@@ -33,7 +33,9 @@
                                 </view>
                             </view>
                         </view>
-                        <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">{{$t('index.index.516559')}}<iconfont name="icon-help" size="26rpx" propClass="margin-left-xs pr top-xs" color="#999"></iconfont>
+                        <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" @tap="notice_open_event">
+                            <text class="text-size-xs cr-blak">{{$t('index.index.516559')}}</text>
+                            <iconfont name="icon-help" size="26rpx" propClass="margin-left-xs" color="#999"></iconfont>
                         </view>
                     </view>
 
@@ -49,13 +51,13 @@
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 <!-- 弹窗 -->
-                <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
-                    <view class="rule">
-                        <view class="title cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.index.516559')}}</view>
-                        <scroll-view :scroll-y="true" class="item">
+                <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="notice_close_event">
+                    <view class="padding-main">
+                        <view class="cr-black text-size-md fw-b margin-bottom-main">{{$t('index.index.516559')}}</view>
+                        <scroll-view :scroll-y="true" class="content-notice">
                             <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
                         </scroll-view>
-                        <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">{{$t('index.index.qbi72m')}}</button>
+                        <button type="default" class="bg-main cr-white round text-size-md wh-auto margin-top-lg" @tap="notice_close_event">{{$t('index.index.qbi72m')}}</button>
                     </view>
                 </component-popup>
             </scroll-view>
@@ -84,7 +86,6 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
-                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 scroll_top: 0,
                 scroll_top_old: 0,
                 data_bottom_line_status: false,
@@ -275,13 +276,13 @@
                 this.reset_scroll();
             },
             // 弹层开启
-            quick_open_event(e) {
+            notice_open_event(e) {
                 this.setData({
                     popup_status: true,
                 });
             },
             // 弹层关闭
-            quick_close_event(e) {
+            notice_close_event(e) {
                 this.setData({
                     popup_status: false,
                 });
