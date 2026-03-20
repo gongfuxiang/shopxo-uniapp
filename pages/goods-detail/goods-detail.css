@@ -157,9 +157,6 @@
     font-size: 30rpx;
     line-height: 40rpx;
 }
-.goods-base-content .favor {
-    width: 76rpx;
-}
 
 /**
 * 视频
@@ -206,11 +203,7 @@
     position: relative;
     height: 100%;
 }
-.goods-base-right-opt image {
-    width: 40rpx;
-    height: 40rpx;
-}
-.goods-base-right-opt .collect {
+.goods-base-right-opt .favor {
     width: 76rpx;
 }
 .price-content .price-icon {
