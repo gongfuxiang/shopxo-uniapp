@@ -1289,7 +1289,7 @@
 
             // 进入客服系统
             chat_event() {
-                app.globalData.chat_entry_handle(this.plugins_intellectstools_data.chat.chat_url);
+                app.globalData.chat_entry_handle(this.plugins_intellectstools_data_chat.data.chat.chat_url);
             },
 
             // 文本事件
