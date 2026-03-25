@@ -720,6 +720,8 @@
                 goods_show_price_unit: '',
                 goods_show_original_price_unit: '',
                 goods_video_is_autoplay: false,
+                // 是否加载过购买弹窗
+                is_loading_goods_buy_popup: 0,
                 // 增加随机数，避免无法监听数据列表内部数据更新
                 random_value: 0,
                 // 是否显示底部购买导航
@@ -1016,6 +1018,7 @@
                             if (this.popup_buy_status && parseInt(goods.inventory) > 0) {
                                 if ((this.$refs.goods_buy || null) != null) {
                                     this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button}, ...this.params});
+                                    this.setData({is_loading_goods_buy_popup: 1});
                                 }
                             }
 
@@ -1204,7 +1207,8 @@
                     case 'cart':
                         this.setData({ buy_event_type: type });
                         if ((this.$refs.goods_buy || null) != null) {
-                            this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button, is_init: 0}, ...this.params});
+                            this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button, is_init: this.is_loading_goods_buy_popup == 0 ? 1 : 0}, ...this.params});
+                            this.setData({is_loading_goods_buy_popup: 1});
                         }
                         break;
                     // url事件
