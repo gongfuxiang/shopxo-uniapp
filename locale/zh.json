@@ -55,6 +55,7 @@
         "reason": "原因",
         "close_reason": "关闭原因",
         "refuse": "拒绝",
+        "aftersale": "售后",
         "buy": "购买",
         "pay": "支付",
         "last_pay": "尾款",
@@ -62,6 +63,7 @@
         "comment": "评论",
         "like": "点赞",
         "info": "信息",
+        "refund": "退款",
         "web_client": "web端",
         "app_client": "手机端",
 		"please_input": "请输入",
@@ -136,6 +138,7 @@
         "input_enter_chat_tips": "请输入消息",
         "access": "访问",
         "no": "不了",
+        "refund_audit_confirm_tips": "申请退款管理员审核后将关闭订单，确定继续吗？",
         "cancel_confirm_tips": "取消后不可恢复，确定继续吗?",
         "delete_confirm_tips": "删除后不可恢复，确定继续吗?",
         "trace_source_text": "溯源",
@@ -349,8 +352,10 @@
         "plugins-complaint-user": "投诉/举报列表",
         "plugins-complaint-form": "投诉/举报",
         "plugins-orderfeed-user": "反馈数据列表",
-        "plugins-orderfeed-form": "反馈数据"
-        
+        "plugins-orderfeed-form": "反馈数据",
+        "plugins-presale-index": "预售",
+        "plugins-presale-buy": "订单确认",
+        "plugins-presale-order": "预售订单"
 	},
 	"login": {
 		"login": {

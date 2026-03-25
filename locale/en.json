@@ -55,6 +55,7 @@
         "reason": "Reason",
         "close_reason": "Close Reason",
         "refuse": "Refuse",
+        "aftersale": "Aftersale",
         "buy": "Buy",
         "pay": "Pay",
         "last_pay": "Last pay",
@@ -62,6 +63,7 @@
         "comment": "Comment",
         "like": "Like",
         "info": "Info",
+        "refund": "Refund",
         "web_client": "WebClient",
         "app_client": "AppClient",
 		"please_input": "Please enter",
@@ -136,6 +138,7 @@
         "input_enter_chat_tips": "Please enter a message",
         "access": "Access",
         "no": "No",
+        "refund_audit_confirm_tips": "After the refund administrator's review, the order will be closed. Are you sure to continue?",
         "cancel_confirm_tips": "After cancellation, it cannot be restored. Are you sure to continue?",
         "delete_confirm_tips": "After deletion, it cannot be restored. Are you sure to continue?",
         "trace_source_text": "trace to the source",
@@ -351,7 +354,10 @@
         "plugins-complaint-user": "Complaint/Report List",
         "plugins-complaint-form": "Complaint/Report",
         "plugins-orderfeed-user": "Feed List",
-        "plugins-orderfeed-form": "Feed Data"
+        "plugins-orderfeed-form": "Feed Data",
+        "plugins-presale-index": "Presale",
+        "plugins-presale-buy": "Order Confirmation",
+        "plugins-presale-order": "Presale order"
 	},
 	"login": {
 		"login": {

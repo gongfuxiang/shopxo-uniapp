@@ -33,8 +33,9 @@
                     </block>
                     <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
                     <!-- 订单状态（0待支付，1付定金，2付尾款，3已取消，4已关闭） -->
-                    <view v-if="item.is_buy == 1 || item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
+                    <view v-if="item.is_buy == 1 || item.is_aftersale == 1 || item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
                         <button v-if="item.is_buy == 1"class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.last_pay')}}</button>
+                        <button v-if="item.is_aftersale == 1"class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="aftersale_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.refund')}}</button>
                         <button v-if="item.status == 0"class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.status == 3 || item.status == 4" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
@@ -291,7 +292,7 @@
                 });
             },
 
-            // 取消
+            // 支付
             pay_event(e) {
                 uni.showLoading({
                     title: this.$t('common.processing_in_text'),
@@ -320,6 +321,54 @@
             },
 
             // 取消
+            aftersale_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.refund_audit_confirm_tips'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            // 参数
+                            var value = e.currentTarget.dataset.value;
+                            var index = e.currentTarget.dataset.index;
+                            // 加载loding
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('aftersale', 'order', 'presale'),
+                                method: 'POST',
+                                data: {
+                                    id: value,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        var temp_data_list = this.data_list;
+                                        temp_data_list[index]['is_aftersale'] = 0;
+                                        temp_data_list[index]['aftersale_status'] = 1;
+                                        temp_data_list[index]['aftersale_status_name'] = this.$t('common.wait')+this.$t('common.aftersale');
+                                        this.setData({
+                                            data_list: temp_data_list,
+                                        });
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
+
+            // 取消
             cancel_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
@@ -331,7 +380,6 @@
                             // 参数
                             var value = e.currentTarget.dataset.value;
                             var index = e.currentTarget.dataset.index;
-            
                             // 加载loding
                             uni.showLoading({
                                 title: this.$t('common.processing_in_text'),
@@ -379,7 +427,6 @@
                             // 参数
                             var value = e.currentTarget.dataset.value;
                             var index = e.currentTarget.dataset.index;
-
                             // 加载loding
                             uni.showLoading({
                                 title: this.$t('common.processing_in_text'),
