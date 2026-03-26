@@ -116,10 +116,13 @@ export default {
 			data_list_loding_msg: '',
 			menu_button_info: '',
 			header_padding_left: '',
+            data_base: null,
 			slider_list: [],
 			is_nav_sticky: false, // 控制nav-tabs是否处于粘性状态
 			nav_sticky_threshold: 0, // 粘性阈值，与CSS中的top值对应
 			nav_sticky_style: '',
+            // 自定义分享信息
+            share_info: {},
 		};
 	},
     
@@ -207,11 +210,32 @@ export default {
 						const new_data = data.data;
 						this.setData({
                             is_first: false,
+                            data_base: new_data.base || null,
 							tabs: new_data.category_list,
 							current_tabs_id: new_data.category_list.length > 0 ? new_data.category_list[this.current_tabs_index].id : '',
 							data_tabs_loding_status: 0,
 							slider_list: new_data.slider_list,
 						});
+                        if ((this.data_base || null) != null) {
+                            // 基础自定义分享
+                            this.setData({
+                                share_info: {
+                                    title: this.data_base.seo_title || this.data_base.application_name,
+                                    desc: this.data_base.seo_desc,
+                                    path: '/pages/plugins/video/index/index',
+                                    img: this.data_base.header_logo || '',
+                                },
+                            });
+
+                            // #ifndef MP-ALIPAY
+                            // 导航名称
+                            if ((this.data_base.application_name || null) != null) {
+                                uni.setNavigationBarTitle({
+                                    title: this.data_base.application_name,
+                                });
+                            }
+                            // #endif
+                        }
 						// 获取第一个分类的视频列表
 						this.get_video_list(this.current_tabs_id, is_list_loading);
 
