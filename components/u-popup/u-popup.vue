@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    const app = getApp();
     // #ifdef H5
     import keypress from './keypress.js';
     // #endif
@@ -365,7 +366,7 @@
         },
         mounted() {
             const fixSize = () => {
-                const { windowWidth, windowHeight, windowTop, safeArea, screenHeight, safeAreaInsets } = uni.getSystemInfoSync();
+                const { windowWidth, windowHeight, windowTop, safeArea, screenHeight, safeAreaInsets } = app.globalData.get_system_info();
                 this.popupWidth = windowWidth;
                 this.popupHeight = windowHeight + (windowTop || 0);
                 // TODO fix by mehaotian 是否适配底部安全区 ,目前微信ios 、和 app ios 计算有差异，需要框架修复

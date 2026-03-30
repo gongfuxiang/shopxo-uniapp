@@ -133,8 +133,8 @@
 
                     // #ifndef H5
                     // 底部菜单距离底部的安全距离，减去20、默认的安全距离太高了
-                    var safe_areaInsets = uni.getSystemInfoSync().safeAreaInsets || {};
-                    var bottom = parseInt(safe_areaInsets.bottom || 0);
+                    var safe_area_insets = app.globalData.get_system_info('safeAreaInsets') || {};
+                    var bottom = parseInt(safe_area_insets.bottom || 0);
                     if (bottom > 0) {
                         bottom -= 24;
                     }

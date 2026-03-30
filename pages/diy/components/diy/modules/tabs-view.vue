@@ -313,8 +313,8 @@
                 const findIndex = new_content_tabs_list.findIndex(item => item.is_sliding_fixed == '1');
                 let roll = '';
                 // #ifdef H5
-                let systemInfo = uni.getSystemInfoSync();
-                if(/(iPhone|iPod|Android|ios|iPad)/i.test(systemInfo.platform)) {
+                let platform = app.globalData.get_system_info('platform');
+                if(/(iPhone|iPod|Android|ios|iPad)/i.test(platform)) {
                     roll = 'tabs_phone';
                 } else {
                     roll = 'tabs_pc';

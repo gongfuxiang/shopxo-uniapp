@@ -121,7 +121,7 @@
                 var left = 0;
                 // #ifdef H5
                 // 处理内容左边距、避免父级设置内边距影响
-                var width = uni.getSystemInfoSync().windowWidth;
+                var width = parseInt(app.globalData.get_system_info('windowWidth', 0));
                 if (width > 960) {
                     left = (width - 800) / 2;
                 }

@@ -312,13 +312,13 @@
              * is_real  是否实时读取
              */
             get_system_info(key, dv, is_real) {
-                var info = null;
+                var info = {};
                 if ((is_real || false) == true) {
-                    info = this.set_system_info() || null;
+                    info = this.set_system_info() || {};
                 } else {
-                    info = uni.getStorageSync(this.data.cache_system_info_key) || null;
+                    info = uni.getStorageSync(this.data.cache_system_info_key) || {};
                 }
-                if (info == null || (key || null) == null) {
+                if ((key || null) == null) {
                     return info;
                 }
                 return info[key] == undefined ? (dv == undefined ? null : dv) : info[key];
@@ -328,9 +328,11 @@
              * 设置设备信息
              */
             set_system_info() {
-                var system_info = uni.getSystemInfoSync();
-                uni.setStorageSync(this.data.cache_system_info_key, system_info);
-                return system_info;
+                if(!plus.runtime.isAgreePrivacy()) {
+                    var system_info = uni.getSystemInfoSync();
+                    uni.setStorageSync(this.data.cache_system_info_key, system_info);
+                    return system_info;
+                }
             },
 
             /**
@@ -2032,7 +2034,7 @@
             // 是否pc
             is_pc() {
                 var arr = ['macos', 'windows'];
-                return arr.indexOf(uni.getSystemInfoSync().platform) != -1;
+                return arr.indexOf(this.get_system_info('platform')) != -1;
             },
 
             // 终端类型
