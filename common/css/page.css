@@ -997,6 +997,19 @@ button[disabled].bg-grey {
 }
 
 /**
+ * 文本横向滚动
+ */
+.text-srcoll {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.text-srcoll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/**
  * 商品列表
  */
 .goods-list .cart-badge-icon {

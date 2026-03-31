@@ -41,7 +41,7 @@
                             </view>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.m3op38')}}</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
                         </block>
                     </view>
                 </view>

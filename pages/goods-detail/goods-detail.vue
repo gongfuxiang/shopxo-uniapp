@@ -233,23 +233,41 @@
                 </view>
 
                 <!-- 优惠券 -->
-                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
+                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs flex-row jc-sb align-c spacing-mb">
                     <view class="item-title padding-right-main self-c">{{$t('goods-detail.goods-detail.w3jma9')}}</view>
-                    <view class="flex-row align-c flex-1 flex-width">
-                        <view class="margin-right-main cp flex-1 flex-width flex-row coupon-srcoll">
+                    <view class="flex-row align-c flex-1 flex-width" @tap="popup_coupon_event">
+                        <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view class="coupon-padding margin-right-xs">
+                                <view class="padding-xsss margin-right-xs">
                                     <view class="oh">
                                         <view class="item margin-vertical-xs mini-coupon flex-row flex-nowrap" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
-                                            <text class="nowrap" @tap="popup_coupon_event">{{ item.desc || item.name }}</text>
-                                            <text class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap="coupon_receive_event">{{ item.status_operable_name }}</text>
+                                            <text class="nowrap">{{ item.desc || item.name }}</text>
+                                            <text class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
                                         </view>
                                     </view>
                                 </view>
                             </block>
                         </view>
-                        <view @tap="popup_coupon_event">
+                        <view>
                             <text class="text-size-xs cr-grey-9">{{$t('user-order-detail.user-order-detail.423rmr')}}{{ plugins_coupon_data.data.length }}{{$t('buy.buy.5iuqow')}}</text>
+                            <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
+                        </view>
+                    </view>
+                </view>
+
+                <!-- 满减满折 -->
+                <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="pr oh padding-main border-radius-main bg-white text-size-xs flex-row jc-sb align-c spacing-mb">
+                    <view class="item-title padding-right-main self-c">{{plugins_fullreduce_data.title}}</view>
+                    <view class="flex-row align-c flex-1 flex-width jc-sb cp" @tap="popup_fullreduce_event">
+                        <view class="margin-right-main flex-1 flex-width flex-row text-srcoll">
+                            <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
+                                <block v-for="(item2, index2) in item.rule_lines" :key="index2">
+                                    <view class="dis-inline-block br-main cr-main bg-white radius padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                </block>
+                            </block>
+                        </view>
+                        <view>
+                            <text class="text-size-xs cr-grey-9">{{plugins_fullreduce_data.describe}}</text>
                             <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                         </view>
                     </view>
@@ -538,7 +556,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.0gx41x')}}</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
                         </block>
                     </view>
                 </view>
@@ -559,7 +577,35 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.96y691')}}</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
+                        </block>
+                    </view>
+                </view>
+            </component-popup>
+
+            <!-- 满减满折弹层 -->
+            <component-popup :propShow="popup_fullreduce_status" propPosition="bottom" @onclose="popup_fullreduce_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_fullreduce_close_event">
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="padding-bottom-main">
+                        <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
+                            <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
+                                <view class="padding-bottom-main">
+                                    <view class="fw-b text-size-sm">{{ item.name }}</view>
+                                    <view class="margin-top-sm">
+                                        <block v-for="(item2, index2) in item.rule_lines" :key="index2">
+                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
+                                        </block>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
                         </block>
                     </view>
                 </view>
@@ -581,7 +627,7 @@
                             </view>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.gwwf19')}}</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
                         </block>
                     </view>
                 </view>
@@ -610,7 +656,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.8ej346')}}</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
                         </block>
                     </view>
                 </view>
@@ -784,6 +830,9 @@
                 // 优惠劵插件
                 plugins_coupon_data: null,
                 popup_coupon_status: false,
+                // 满减满折插件
+                plugins_fullreduce_data: null,
+                popup_fullreduce_status: false,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
@@ -999,6 +1048,7 @@
                                 countdown_data: countdown_data,
                                 countdown_is_valid: countdown_is_valid,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
+                                plugins_fullreduce_data: data.plugins_fullreduce_data || null,
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
@@ -1420,6 +1470,23 @@
             popup_coupon_close_event(e) {
                 this.setData({
                     popup_coupon_status: false,
+                });
+            },
+
+            // 满减满折开启弹层
+            popup_fullreduce_event(e) {
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                this.setData({
+                    popup_fullreduce_status: true,
+                });
+            },
+
+            // 满减满折弹层关闭
+            popup_fullreduce_close_event(e) {
+                this.setData({
+                    popup_fullreduce_status: false,
                 });
             },
 

@@ -385,9 +385,6 @@
 /*
 * 优惠劵 - 插件
 */
-.coupon-padding {
-    padding: 2rpx;
-}
 .mini-coupon {
     position: relative;
     display: inline-block;
@@ -416,15 +413,6 @@
 .mini-coupon-br::before,
 .mini-coupon-br::after {
     border: 1px solid #FE5500;
-}
-.coupon-srcoll {
-    white-space: nowrap;
-    overflow-x: auto;
-}
-.coupon-srcoll::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
 }
 .received-coupon {
     background: #FFEBE0;
