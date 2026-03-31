@@ -328,11 +328,15 @@
              * 设置设备信息
              */
             set_system_info() {
+                // #ifdef APP
                 if(!plus.runtime.isAgreePrivacy()) {
-                    var system_info = uni.getSystemInfoSync();
-                    uni.setStorageSync(this.data.cache_system_info_key, system_info);
-                    return system_info;
+                    return {};
                 }
+                // #endif
+
+                var system_info = uni.getSystemInfoSync();
+                uni.setStorageSync(this.data.cache_system_info_key, system_info);
+                return system_info;
             },
 
             /**
