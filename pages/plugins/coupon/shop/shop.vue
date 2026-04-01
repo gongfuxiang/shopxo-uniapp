@@ -1,23 +1,22 @@
 <template>
     <view :class="theme_view">
-        <view class="plugins-coupon-container">
-            <!-- 优惠劵列表 -->
-            <view v-if="data_list.length > 0" class="coupon-content bg-white pr padding-top-main page-bottom-fixed">
-                <view class="flex-col">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
-                    </block>
-                </view>
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        <!-- 优惠劵列表 -->
+        <view v-if="data_list.length > 0" class="padding-main page-bottom-fixed">
+            <view class="flex-col">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
+                </block>
             </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-            </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </view>
+
         <!-- 回到店铺 -->
-        <view v-if="(shop || null) != null" class="popup-bottom bottom-fixed bg-white">
+        <view v-if="(shop || null) != null" class="bottom-fixed">
             <view class="bottom-line-exclude">
                 <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" :data-value="shop.url" @tap="shop_event">{{ $t('index.index.i78v36') }}</button>
             </view>
@@ -222,6 +221,3 @@
         },
     };
 </script>
-<style>
-    @import './shop.css';
-</style>

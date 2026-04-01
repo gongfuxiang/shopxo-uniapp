@@ -76,91 +76,125 @@
             </view>
 
             <!-- 基础信息 -->
-            <view class="goods-base-price bg-white oh spacing-mb" :class="countdown_is_valid ? 'goods-base-price-countdown' : ''" :style="countdown_is_valid ? 'background-image: url(' + countdown_data.config.goods_detail_header + ');background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
-                <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
-                <block v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
-                    <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsAlone="true"></component-wholesale-rules>
-                </block>
-                <!-- 倒计时 -->
-                <view v-if="countdown_is_valid" class="padding-horizontal-main padding-top-main oh">
-                    <view class="cr-white text-size-xl fw-b single-text fl">{{ countdown_data.config.goods_detail_title }}</view>
-                    <view class="fr">
-                        <view class="dis-inline-block va-m">
-                            <iconfont name="icon-timing-time" color="#ffe500" size="40rpx"></iconfont>
-                        </view>
-                        <view class="dis-inline-block va-m margin-left-sm">
-                            <component-countdown
-                                :propHour="countdown_data.time.hours"
-                                :propMinute="countdown_data.time.minutes"
-                                :propSecond="countdown_data.time.seconds"
-                                :propMsecShow="true"
-                                propTimeSize="38"
-                                propTimePadding="0"
-                                propTimeWeight="bold"
-                                propTimeBackgroundColor="transparent"
-                                propTimeColor="#ffe500"
-                                propDsColor="#fff"
-                            ></component-countdown>
+            <view class="spacing-mb">
+                <view class="goods-base-price bg-white oh" :class="countdown_is_valid ? 'goods-base-price-countdown' : ''" :style="countdown_is_valid ? 'background-image: url(' + countdown_data.config.goods_detail_header + ');background-color: '+countdown_data.config.goods_detail_bg_color+' !important;' : ''">
+                    <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
+                    <block v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
+                        <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsAlone="true"></component-wholesale-rules>
+                    </block>
+                    <!-- 倒计时 -->
+                    <view v-if="countdown_is_valid" class="padding-horizontal-main padding-top-main oh">
+                        <view class="cr-white text-size-xl fw-b single-text fl">{{ countdown_data.config.goods_detail_title }}</view>
+                        <view class="fr">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-timing-time" color="#ffe500" size="40rpx"></iconfont>
+                            </view>
+                            <view class="dis-inline-block va-m margin-left-sm">
+                                <component-countdown
+                                    :propHour="countdown_data.time.hours"
+                                    :propMinute="countdown_data.time.minutes"
+                                    :propSecond="countdown_data.time.seconds"
+                                    :propMsecShow="true"
+                                    propTimeSize="38"
+                                    propTimePadding="0"
+                                    propTimeWeight="bold"
+                                    propTimeBackgroundColor="transparent"
+                                    propTimeColor="#ffe500"
+                                    propDsColor="#fff"
+                                ></component-countdown>
+                            </view>
                         </view>
                     </view>
-                </view>
-                <!-- 价格信息 -->
-                <view class="oh">
-                    <!-- 价格 -->
-                    <view class="price-content padding-vertical-main padding-left-main bs-bb fl">
-                        <!-- 批发插件是否开启隐藏价格信息 -->
-                        <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
-                            <!-- 售价 -->
-                            <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
-                                <!-- 图标 -->
-                                <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m margin-right-xs">{{ show_field_price_text }}</text>
+                    <!-- 价格信息 -->
+                    <view class="oh">
+                        <!-- 价格 -->
+                        <view class="price-content padding-vertical-main padding-left-main bs-bb fl">
+                            <!-- 批发插件是否开启隐藏价格信息 -->
+                            <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
                                 <!-- 售价 -->
-                                <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
-                                <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods_show_price_unit }}</text>
+                                <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
+                                    <!-- 图标 -->
+                                    <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m margin-right-xs">{{ show_field_price_text }}</text>
+                                    <!-- 售价 -->
+                                    <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
+                                    <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods_show_price_unit }}</text>
+                                </view>
+                                <!-- 预售定金信息 -->
+                                <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="item cr-white">
+                                    <text class="text-size-xs va-m">{{ countdown_data.config.goods_detail_icon }}</text>
+                                    <text class="text-size-xl margin-right-sm va-m">{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deposit_price }}</text>
+                                    <text v-if="countdown_data.presale_goods.deduct_price > 0" class="price-icon round va-m">{{ countdown_data.config.goods_detail_deduct_text }}{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deduct_price }}</text>
+                                </view>
+                                <!-- 原价 -->
+                                <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
+                                <!-- 积分兑换 -->
+                                <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
+                                    <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
+                                    <text class="points-price-unit text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
+                                </view>
+                            </block>
+                            <block v-else>
+                                <!-- 批发开启了隐藏价格，则价格容器这里展示批发价格信息 -->
+                                <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                            </block>
+                        </view>
+
+                        <!-- 右侧操作 -->
+                        <view class="goods-base-right-opt padding-vertical-main padding-right-main padding-left-xs fr oh">
+                            <!-- 分享 -->
+                            <view class="goods-share tc cp fl" @tap="popup_share_event">
+                                <view>
+                                    <iconfont name="icon-share-circle" :color="countdown_is_valid ? '#fff' : '#999'" size="38rpx" propClass="lh-il"></iconfont>
+                                </view>
+                                <view :class="'text-size-xs '+(countdown_is_valid ? 'cr-white' : 'cr-grey')">{{$t('common.share')}}</view>
                             </view>
-                            <!-- 预售定金信息 -->
-                            <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="item cr-white">
-                                <text class="text-size-xs va-m">{{ countdown_data.config.goods_detail_icon }}</text>
-                                <text class="text-size-xl margin-right-sm va-m">{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deposit_price }}</text>
-                                <text v-if="countdown_data.presale_goods.deduct_price > 0" class="price-icon round va-m">{{ countdown_data.config.goods_detail_deduct_text }}{{ goods.show_price_symbol }}{{ countdown_data.presale_goods.deduct_price }}</text>
+                            <!-- 收藏 -->
+                            <view class="favor tc cp fr margin-left" @tap="goods_favor_event">
+                                <view>
+                                    <iconfont :name="'icon-heart'+(nav_favor_button_info.status == 1 ? '' : '-o')" :color="countdown_is_valid ? '#fff' : (nav_favor_button_info.status == 1 ? theme_color : '#999')" size="38rpx" propClass="lh-il"></iconfont>
+                                </view>
+                                <view :class="'text-size-xs ' + (countdown_is_valid ? 'cr-white' : (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey'))">{{ nav_favor_button_info.text }}</view>
                             </view>
-                            <!-- 原价 -->
-                            <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
-                            <!-- 积分兑换 -->
-                            <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
-                                <text class="points-price-value text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
-                                <text class="points-price-unit text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
-                            </view>
-                        </block>
-                        <block v-else>
-                            <!-- 批发开启了隐藏价格，则价格容器这里展示批发价格信息 -->
-                            <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
-                        </block>
+                        </view>
                     </view>
 
-                    <!-- 右侧操作 -->
-                    <view class="goods-base-right-opt padding-vertical-main padding-right-main padding-left-xs fr oh">
-                        <!-- 分享 -->
-                        <view class="goods-share tc cp fl" @tap="popup_share_event">
-                            <view>
-                                <iconfont name="icon-share-circle" :color="countdown_is_valid ? '#fff' : '#999'" size="38rpx" propClass="lh-il"></iconfont>
-                            </view>
-                            <view :class="'text-size-xs '+(countdown_is_valid ? 'cr-white' : 'cr-grey')">{{$t('common.share')}}</view>
-                        </view>
-                        <!-- 收藏 -->
-                        <view class="favor tc cp fr margin-left" @tap="goods_favor_event">
-                            <view>
-                                <iconfont :name="'icon-heart'+(nav_favor_button_info.status == 1 ? '' : '-o')" :color="countdown_is_valid ? '#fff' : (nav_favor_button_info.status == 1 ? theme_color : '#999')" size="38rpx" propClass="lh-il"></iconfont>
-                            </view>
-                            <view :class="'text-size-xs ' + (countdown_is_valid ? 'cr-white' : (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey'))">{{ nav_favor_button_info.text }}</view>
-                        </view>
+                    <!-- 预售定金信息 -->
+                    <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="padding-horizontal-main padding-bottom-main cr-white text-size-xs">
+                        <view>{{countdown_data.presale_goods.lastpay_tips}}</view>
+                        <view>{{countdown_data.presale_goods.delivery_tips}}</view>
                     </view>
                 </view>
 
-                <!-- 预售定金信息 -->
-                <view v-if="countdown_is_valid && (countdown_data.presale_goods || null) != null" class="padding-horizontal-main padding-bottom-main cr-white text-size-xs">
-                    <view>{{countdown_data.presale_goods.lastpay_tips}}</view>
-                    <view>{{countdown_data.presale_goods.delivery_tips}}</view>
+                <!-- 聚合优惠信数据 -->
+                <view v-if="
+                    ((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0) ||
+                    ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null)
+                " class="padding-main bg-white text-size-xs flex-row jc-sb align-c br-t-f9">
+                    <view class="flex-row align-c flex-1 flex-width" @tap="popup_discount_event">
+                        <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
+                            <!-- 优惠券 -->
+                            <block v-if="((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0)">
+                                <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
+                                    <view class="item mini-coupon flex-row flex-nowrap margin-right-sm" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
+                                        <text>{{ item.desc || item.name }}</text>
+                                        <text class="margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
+                                    </view>
+                                </block>
+                            </block>
+                            <!-- 满减满折 -->
+                            <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
+                                <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
+                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                    </block>
+                                </block>
+                            </block>
+                        </view>
+                        <view>
+                            <text class="text-size-xs cr-grey-9">{{$t('common.view_text')}}</text>
+                            <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
+                        </view>
+                    </view>
                 </view>
             </view>
 
@@ -232,47 +266,6 @@
                     </view>
                 </view>
 
-                <!-- 优惠券 -->
-                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs flex-row jc-sb align-c spacing-mb">
-                    <view class="item-title padding-right-main self-c">{{$t('goods-detail.goods-detail.w3jma9')}}</view>
-                    <view class="flex-row align-c flex-1 flex-width" @tap="popup_coupon_event">
-                        <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
-                            <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view class="padding-xsss margin-right-xs">
-                                    <view class="oh">
-                                        <view class="item margin-vertical-xs mini-coupon flex-row flex-nowrap" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
-                                            <text class="nowrap">{{ item.desc || item.name }}</text>
-                                            <text class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
-                                        </view>
-                                    </view>
-                                </view>
-                            </block>
-                        </view>
-                        <view>
-                            <text class="text-size-xs cr-grey-9">{{$t('user-order-detail.user-order-detail.423rmr')}}{{ plugins_coupon_data.data.length }}{{$t('buy.buy.5iuqow')}}</text>
-                            <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
-                        </view>
-                    </view>
-                </view>
-
-                <!-- 满减满折 -->
-                <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="pr oh padding-main border-radius-main bg-white text-size-xs flex-row jc-sb align-c spacing-mb">
-                    <view class="item-title padding-right-main self-c">{{plugins_fullreduce_data.title}}</view>
-                    <view class="flex-row align-c flex-1 flex-width jc-sb cp" @tap="popup_fullreduce_event">
-                        <view class="margin-right-main flex-1 flex-width flex-row text-srcoll">
-                            <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
-                                <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                    <view class="dis-inline-block br-main cr-main bg-white radius padding-horizontal-sm margin-right-sm">{{item2}}</view>
-                                </block>
-                            </block>
-                        </view>
-                        <view>
-                            <text class="text-size-xs cr-grey-9">{{plugins_fullreduce_data.describe}}</text>
-                            <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
-                        </view>
-                    </view>
-                </view>
-
                 <!-- 规格选择 -->
                 <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white text-size-xs spacing-mb">
                     <view class="fl item-title">{{$t('goods-detail.goods-detail.u401fi')}}</view>
@@ -286,7 +279,6 @@
                     <view>form - input -data</view>
                     <component-form-input-base ref="form_input_base" :propConfig="order_goods_form_data_config" @onItemEvent="order_goods_form_back_item_event" @onSubmitEvent="order_goods_form_back_data_event"></component-form-input-base>
                 </view> -->
-                
             </view>
 
             <view class="padding-horizontal-main">
@@ -561,53 +553,38 @@
                     </view>
                 </view>
             </component-popup>
-
-            <!-- 优惠券弹层 -->
-            <component-popup :propShow="popup_coupon_status" propPosition="bottom" @onclose="popup_coupon_close_event">
+            
+            <!-- 聚合优惠数据弹层 -->
+            <component-popup :propShow="popup_discount_status" propPosition="bottom" @onclose="popup_discount_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh">
-                        <view class="fr" @tap.stop="popup_coupon_close_event">
+                    <view class="close oh padding-bottom-sm">
+                        <view class="fr" @tap.stop="popup_discount_close_event">
                             <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
-                    <view class="plugins-coupon-container padding-bottom-main">
-                        <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
+                    <scroll-view :scroll-y="true" class="max-h-8h">
+                        <!-- 优惠券 -->
+                        <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container spacing-mb">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{$t('goods-detail.goods-detail.w3jma9')}}</view>
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                                 <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                             </block>
-                        </block>
-                        <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
-                        </block>
-                    </view>
-                </view>
-            </component-popup>
-
-            <!-- 满减满折弹层 -->
-            <component-popup :propShow="popup_fullreduce_status" propPosition="bottom" @onclose="popup_fullreduce_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh">
-                        <view class="fr" @tap.stop="popup_fullreduce_close_event">
-                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
                         </view>
-                    </view>
-                    <view class="padding-bottom-main">
-                        <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
+                        <!-- 满减满折 -->
+                        <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullreduce_data.title}}</view>
                             <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
                                 <view class="padding-bottom-main">
-                                    <view class="fw-b text-size-sm">{{ item.name }}</view>
+                                    <view class="text-size-sm">{{ item.name }}</view>
                                     <view class="margin-top-sm">
                                         <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
+                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
                                         </block>
                                     </view>
                                 </view>
                             </block>
-                        </block>
-                        <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('common.no_relevant_data_tips')}}</view>
-                        </block>
-                    </view>
+                        </view>
+                    </scroll-view>
                 </view>
             </component-popup>
 
@@ -827,12 +804,12 @@
                 // 倒计时数据(限时秒杀插件，预售插件)
                 countdown_data: null,
                 countdown_is_valid: false,
+                // 聚合优惠数据
+                popup_discount_status: false,
                 // 优惠劵插件
                 plugins_coupon_data: null,
-                popup_coupon_status: false,
                 // 满减满折插件
                 plugins_fullreduce_data: null,
-                popup_fullreduce_status: false,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
@@ -863,7 +840,7 @@
                 plugins_categorylimit_data: null,
                 
                 
-                order_goods_form_data_config: {"diy_data":[{"name":"单行文本","id":"huycy5dmuha","form_name":"huycy5dmuha","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"single-text","children":[],"com_data":{"type":"single-text","option_list":[{"name":"选项1","value":"kl0rnmc09o","color":"#eb5050"},{"name":"选项2","value":"198jbwrpsez","color":"#f0a800"},{"name":"选项3","value":"yoc7tflcsuk","color":"#46c26f"}],"show_hidden_list":[],"title":"联系人","form_value":"","other_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","max_num":"","min_num":"","is_desensitization":"0","desensitization_value":[],"is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"手机","id":"vb6e5ndybcg","form_name":"vb6e5ndybcg","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"phone","children":[],"com_data":{"title":"手机","form_value":"","form_value_code":"","placeholder":"请输入内容","icon_name":"phone","is_required":"0","is_telephone":"0","is_sms_verification":"0","is_img_sms_verification":"0","is_desensitization":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"日期时间","id":"d9ndhfr5gb","form_name":"d9ndhfr5gb","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"date","children":[],"com_data":{"title":"预约时间","form_value":"","placeholder":"请选择时间","is_required":"0","date_style":"horizontal","date_type":"option6","icon_name":"date","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"地址","id":"n8tstmx6od","form_name":"n8tstmx6od","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"address","children":[],"com_data":{"title":"联系地址","address_type":"detailed","form_value":[],"province_name":"","city_name":"","county_name":"","detailed_value":"","placeholder":"请选择内容","is_required":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"评分","id":"j1cpvk1kdgj","form_name":"j1cpvk1kdgj","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"score","children":[],"com_data":{"title":"评分","form_value":3,"select_color":"#FFD22A","score_type":"1","total":5,"is_required":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"日期时间组","id":"jalb3wwjvjf","form_name":"jalb3wwjvjf","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"date-group","children":[],"com_data":{"title":"日期时间组","form_value":"","start_placeholder":"请选择开始时间","end_placeholder":"请选择结束时间","is_required":"0","date_style":"horizontal","date_type":"option6","icon_name":"date","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"下拉框","id":"22wncvz7gea","form_name":"22wncvz7gea","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"select","children":[],"com_data":{"type":"select","option_list":[{"name":"选项1","value":"0klgib01kl6b","color":"#eb5050"},{"name":"选项2","value":"38wack2kn7m","color":"#f0a800"},{"name":"选项3","value":"dtdiwzza3y","color":"#46c26f"},{"name":"其他333","value":"other","is_other":"1","color":"#051e500a"}],"show_hidden_list":[],"title":"下拉框","form_value":"","other_value":"","placeholder":"请选择内容","is_required":"0","is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""},"is_desensitization":"0","desensitization_value":[]}},{"name":"单选按钮组","id":"6x9vi9xozdt","form_name":"6x9vi9xozdt","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"radio-btns","children":[],"com_data":{"type":"radio-btns","option_list":[{"name":"选项1","value":"d25zos62x2c","color":"#eb5050"},{"name":"选项2","value":"xcjt1koz6hb","color":"#f0a800"},{"name":"选项3","value":"yusvmuoxw5k","color":"#46c26f"},{"name":"其他","value":"other44","is_other":"1","color":"#051e500a"}],"show_hidden_list":[],"title":"单选按钮组","form_value":"","other_value":"","placeholder":"请输入内容","is_required":"0","is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""},"is_desensitization":"0","desensitization_value":[]}},{"name":"下拉复选框","id":"5v1rilx5csr","form_name":"5v1rilx5csr","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"select-multi","children":[],"com_data":{"type":"select-multi","title":"下拉复选框","form_value":[],"is_multicolour":"0","option_list":[{"name":"选项1","value":"3mju4dhucb","color":"#eb5050"},{"name":"选项2","value":"bp2q5uplj54","color":"#f0a800"},{"name":"选项3","value":"62xkhv69oyi","color":"#46c26f"}],"placeholder":"请选择内容","is_required":"0","is_add_option":"1","is_limit_num":"0","min_num":"","max_num":"","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"复选框组","id":"lqb32v7iq7","form_name":"lqb32v7iq7bbbb","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"checkbox","children":[],"com_data":{"type":"checkbox","title":"设计师","form_value":[],"is_multicolour":"0","option_list":[{"name":"小龙","value":"kajd3i5zszn","color":"#eb5050"},{"name":"小花","value":"gf07xhy7gzd","color":"#f0a800"},{"name":"小李","value":"gg0jvm24yr","color":"#46c26f"},{"name":"小红","value":"kpjgnvm6r4q","color":"#a2c204"}],"custom_option_list":[],"placeholder":"请选择内容","is_required":"0","is_add_option":"1","is_limit_num":"0","min_num":"","max_num":"","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"数字","id":"ahzuprj6vas","form_name":"ahzuprj6vas","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"number","children":[],"com_data":{"title":"数字","form_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","is_decimal":"0","is_thousandths_symbol":"0","is_display_uppercase":"0","is_display_money":"0","money_sign":"","decimal_num":0,"format":"num","min_num":"","max_num":"","is_desensitization":"0","desensitization_value":[],"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"多行文本","id":"59m7p80g573","form_name":"59m7p80g573","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"multi-text","children":[],"com_data":{"title":"多行文本","form_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","min_num":"","max_num":"","is_desensitization":"0","desensitization_value":[],"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"图片","id":"otnb2e80re","form_name":"otnb2e80re","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"img","children":[],"com_data":{"title":"图片","img_src":[{"id":2773,"category_id":145,"title":"1712479942145855.png","original":"1712479942145855.png","size":"501.72KB","ext":".png","type":"image","url":"\/static\/upload\/images\/theme_data\/204\/2024\/04\/07\/1712479942145855.png","hash":"85f1b3531200737809f5902b6e2e3f6d1a38409bc41eeebb862275f71d3b9a56","add_time":"2024-04-08 11:26:00","category_name":"theme_data-204","type_name":"图片"}],"img_width":67,"img_scale_type":"1","com_width":75,"com_height":75,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"视频","id":"aj8gzeg11k","form_name":"aj8gzeg11k","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"video","children":[],"com_data":{"title":"视频","video":[{"id":2523,"category_id":9,"title":"1692267246598639.mp4","original":"演示视频.mp4","size":"755.52KB","ext":".mp4","type":"video","url":"\/static\/upload\/video\/goods\/2023\/08\/17\/1692267246598639.mp4","hash":"a31173841bfe1d16c2ff48ab24d954892f556eab9ab2b096e27b7a1788c65d3b","add_time":"2023-08-17 18:14:06","category_name":"商品","type_name":"视频"}],"video_img":[{"id":3112,"category_id":481,"title":"1752571330305769.jpg","original":"科密yc300d.jpg","size":"49.73KB","ext":".jpg","type":"image","url":"\/static\/upload\/images\/plugins_shop\/user\/1\/2025\/07\/15\/1752571330305769.jpg","hash":"2f3bce83924b3ab3039d3f30801ed9e1ca68e50f95c996db661ef9ef2d6d43aa","add_time":"2025-07-15 17:22:10","category_name":"plugins_shop-user-1","type_name":"图片"}],"video_width":245,"video_scale_type":"2","com_width":150,"com_height":150,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"1","help_explain":"对方是否公司的"}}},{"name":"文件","id":"rss33ehfi4s","form_name":"rss33ehfi4s","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"attachments","children":[],"com_data":{"title":"文件","file":[{"id":3029,"category_id":446,"title":"1741665860733584.docx","original":"1741663636736145.docx","size":"27.57KB","ext":".docx","type":"file","url":"\/static\/upload\/file\/plugins_supplier\/user_supplier\/492\/2025\/03\/11\/1741665860733584.docx","hash":"f0466fda840a83e97d8a9a142c7fd22c532398332ec757ccb32fb2ec67c45c1e","add_time":"2025-03-11 12:04:20","category_name":"plugins_supplier-user_supplier-492","type_name":"文件"}],"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"1","help_explain":"但是防晒服公司的"}}},{"name":"辅助线","id":"tfjrb7xe3ul","form_name":"tfjrb7xe3ul","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"auxiliary-line","children":[],"com_data":{"title":"辅助线","line_type":"horizontal","line_style":"solid","line_width":100,"line_location":"center","line_size":1,"line_color":"#000","com_width":150,"com_height":11,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"上传图片","id":"0ype7spb0zmi","form_name":"0ype7spb0zmi","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"upload-img","children":[],"com_data":{"title":"上传图片","form_value":[],"is_required":"0","is_limit_num":"1","limit":3,"is_limit_size":"1","upload_size":1,"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"dashed","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"上传文件","id":"pgf6uhi1ane","form_name":"pgf6uhi1ane","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"upload-attachments","children":[],"com_data":{"title":"上传文件","form_value":[],"is_required":"0","is_limit_num":"1","limit":4,"is_limit_size":"1","upload_size":10,"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"dashed","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"上传视频","id":"v9dle8bpua","form_name":"v9dle8bpua","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"upload-video","children":[],"com_data":{"title":"上传视频","form_value":[],"is_required":"0","is_limit_num":"1","limit":2,"is_limit_size":"1","upload_size":10,"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"dashed","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"富文本","id":"9li7rbb0kf","form_name":"9li7rbb0kf","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"rich-text","children":[],"com_data":{"title":"富文本","form_value":"<p><br><\/p>","placeholder":"请输入内容","is_required":"0","is_longitude_and_latitude":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}}],"overall_config":{"type_value":"default","custom_size_type":"A3","custom_width":842,"custom_height":1191,"is_style_settings":"1","style_settings":{"computer":{"background_type":"img","background_color":"#933B3B","background_image":[{"id":3107,"category_id":492,"title":"1750408910778775.jpeg","original":"龚福祥-身份证-正面（新）的小于2M.jpeg","size":"954.56KB","ext":".jpeg","type":"image","url":"\/static\/upload\/images\/plugins_allinpay\/merchant\/1\/2025\/06\/20\/1750408910778775.jpeg","hash":"4fb3757e1b4974bd3e275ff7682fba0370ba2c47e9ba26042703914d7564d5ee","add_time":"2025-06-20 16:41:50","category_name":"plugins_allinpay-merchant-1","type_name":"图片"}],"heading_type":"color","heading_color":"#C643E0","heading_image":[{"id":3021,"category_id":403,"title":"1739586550127228.jpg","original":"QQ20250215-102718.jpg","size":"27.88KB","ext":".jpg","type":"image","url":"\/static\/upload\/images\/plugins_allocation\/2025\/02\/15\/1739586550127228.jpg","hash":"4058905c9cf160d28772cbacb9d4b2fbe9bf616155f7b1cd33f76b4f415be6fd","add_time":"2025-02-15 10:29:10","category_name":"plugins_allocation","type_name":"图片"}],"is_show_heading_title":"1","heading_title_location":"center","heading_title_size":25,"heading_title_font_weight":"bold","heading_title_color":"#000000","submit_color":"#C643E0","flex_direction":"row","filed_title_width":88,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default","input_width":554},"mobile":{"background_type":"color","background_color":"#F8F8F8","background_image":[],"heading_type":"color","heading_color":"#C1EBFF","heading_image":[{"id":3072,"category_id":475,"title":"1747033016498889.png","original":"vs-icon-3.png","size":"17.67KB","ext":".png","type":"image","url":"\/static\/upload\/images\/plugins_goodscompare\/2025\/05\/12\/1747033016498889.png","hash":"747834aa43050e59c2095adcb2bb185b6c3bfe84298cc8bd7f3fca0bc1d9b4e5","add_time":"2025-05-12 14:56:56","category_name":"plugins_goodscompare","type_name":"图片"}],"is_show_heading_title":"0","heading_title_location":"flex-start","heading_title_size":14,"heading_title_font_weight":"400","heading_title_color":"#000000","submit_color":"#2A94FF","flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default","input_width":354}},"is_front_end_cache":"1","is_show_submit":"1","submit_title":"提交99","is_show_save_draft":"1","save_draft_title":"保存草稿","is_layout_settings":"0","layout_settings":{"computer":{"flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default"},"mobile":{"flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default"}}}},
+                //order_goods_form_data_config: {"diy_data":[{"name":"单行文本","id":"huycy5dmuha","form_name":"huycy5dmuha","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"single-text","children":[],"com_data":{"type":"single-text","option_list":[{"name":"选项1","value":"kl0rnmc09o","color":"#eb5050"},{"name":"选项2","value":"198jbwrpsez","color":"#f0a800"},{"name":"选项3","value":"yoc7tflcsuk","color":"#46c26f"}],"show_hidden_list":[],"title":"联系人","form_value":"","other_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","max_num":"","min_num":"","is_desensitization":"0","desensitization_value":[],"is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"手机","id":"vb6e5ndybcg","form_name":"vb6e5ndybcg","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"phone","children":[],"com_data":{"title":"手机","form_value":"","form_value_code":"","placeholder":"请输入内容","icon_name":"phone","is_required":"0","is_telephone":"0","is_sms_verification":"0","is_img_sms_verification":"0","is_desensitization":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"日期时间","id":"d9ndhfr5gb","form_name":"d9ndhfr5gb","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"date","children":[],"com_data":{"title":"预约时间","form_value":"","placeholder":"请选择时间","is_required":"0","date_style":"horizontal","date_type":"option6","icon_name":"date","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"地址","id":"n8tstmx6od","form_name":"n8tstmx6od","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"address","children":[],"com_data":{"title":"联系地址","address_type":"detailed","form_value":[],"province_name":"","city_name":"","county_name":"","detailed_value":"","placeholder":"请选择内容","is_required":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"评分","id":"j1cpvk1kdgj","form_name":"j1cpvk1kdgj","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"score","children":[],"com_data":{"title":"评分","form_value":3,"select_color":"#FFD22A","score_type":"1","total":5,"is_required":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"日期时间组","id":"jalb3wwjvjf","form_name":"jalb3wwjvjf","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"date-group","children":[],"com_data":{"title":"日期时间组","form_value":"","start_placeholder":"请选择开始时间","end_placeholder":"请选择结束时间","is_required":"0","date_style":"horizontal","date_type":"option6","icon_name":"date","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"下拉框","id":"22wncvz7gea","form_name":"22wncvz7gea","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"select","children":[],"com_data":{"type":"select","option_list":[{"name":"选项1","value":"0klgib01kl6b","color":"#eb5050"},{"name":"选项2","value":"38wack2kn7m","color":"#f0a800"},{"name":"选项3","value":"dtdiwzza3y","color":"#46c26f"},{"name":"其他333","value":"other","is_other":"1","color":"#051e500a"}],"show_hidden_list":[],"title":"下拉框","form_value":"","other_value":"","placeholder":"请选择内容","is_required":"0","is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""},"is_desensitization":"0","desensitization_value":[]}},{"name":"单选按钮组","id":"6x9vi9xozdt","form_name":"6x9vi9xozdt","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"radio-btns","children":[],"com_data":{"type":"radio-btns","option_list":[{"name":"选项1","value":"d25zos62x2c","color":"#eb5050"},{"name":"选项2","value":"xcjt1koz6hb","color":"#f0a800"},{"name":"选项3","value":"yusvmuoxw5k","color":"#46c26f"},{"name":"其他","value":"other44","is_other":"1","color":"#051e500a"}],"show_hidden_list":[],"title":"单选按钮组","form_value":"","other_value":"","placeholder":"请输入内容","is_required":"0","is_multicolour":"0","format":"none","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""},"is_desensitization":"0","desensitization_value":[]}},{"name":"下拉复选框","id":"5v1rilx5csr","form_name":"5v1rilx5csr","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"select-multi","children":[],"com_data":{"type":"select-multi","title":"下拉复选框","form_value":[],"is_multicolour":"0","option_list":[{"name":"选项1","value":"3mju4dhucb","color":"#eb5050"},{"name":"选项2","value":"bp2q5uplj54","color":"#f0a800"},{"name":"选项3","value":"62xkhv69oyi","color":"#46c26f"}],"placeholder":"请选择内容","is_required":"0","is_add_option":"1","is_limit_num":"0","min_num":"","max_num":"","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"复选框组","id":"lqb32v7iq7","form_name":"lqb32v7iq7bbbb","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"checkbox","children":[],"com_data":{"type":"checkbox","title":"设计师","form_value":[],"is_multicolour":"0","option_list":[{"name":"小龙","value":"kajd3i5zszn","color":"#eb5050"},{"name":"小花","value":"gf07xhy7gzd","color":"#f0a800"},{"name":"小李","value":"gg0jvm24yr","color":"#46c26f"},{"name":"小红","value":"kpjgnvm6r4q","color":"#a2c204"}],"custom_option_list":[],"placeholder":"请选择内容","is_required":"0","is_add_option":"1","is_limit_num":"0","min_num":"","max_num":"","arrangement":"horizontal","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"数字","id":"ahzuprj6vas","form_name":"ahzuprj6vas","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"number","children":[],"com_data":{"title":"数字","form_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","is_decimal":"0","is_thousandths_symbol":"0","is_display_uppercase":"0","is_display_money":"0","money_sign":"","decimal_num":0,"format":"num","min_num":"","max_num":"","is_desensitization":"0","desensitization_value":[],"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"多行文本","id":"59m7p80g573","form_name":"59m7p80g573","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"multi-text","children":[],"com_data":{"title":"多行文本","form_value":"","placeholder":"请输入内容","is_required":"0","is_limit_num":"0","min_num":"","max_num":"","is_desensitization":"0","desensitization_value":[],"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"图片","id":"otnb2e80re","form_name":"otnb2e80re","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"img","children":[],"com_data":{"title":"图片","img_src":[{"id":2773,"category_id":145,"title":"1712479942145855.png","original":"1712479942145855.png","size":"501.72KB","ext":".png","type":"image","url":"\/static\/upload\/images\/theme_data\/204\/2024\/04\/07\/1712479942145855.png","hash":"85f1b3531200737809f5902b6e2e3f6d1a38409bc41eeebb862275f71d3b9a56","add_time":"2024-04-08 11:26:00","category_name":"theme_data-204","type_name":"图片"}],"img_width":67,"img_scale_type":"1","com_width":75,"com_height":75,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"视频","id":"aj8gzeg11k","form_name":"aj8gzeg11k","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"video","children":[],"com_data":{"title":"视频","video":[{"id":2523,"category_id":9,"title":"1692267246598639.mp4","original":"演示视频.mp4","size":"755.52KB","ext":".mp4","type":"video","url":"\/static\/upload\/video\/goods\/2023\/08\/17\/1692267246598639.mp4","hash":"a31173841bfe1d16c2ff48ab24d954892f556eab9ab2b096e27b7a1788c65d3b","add_time":"2023-08-17 18:14:06","category_name":"商品","type_name":"视频"}],"video_img":[{"id":3112,"category_id":481,"title":"1752571330305769.jpg","original":"科密yc300d.jpg","size":"49.73KB","ext":".jpg","type":"image","url":"\/static\/upload\/images\/plugins_shop\/user\/1\/2025\/07\/15\/1752571330305769.jpg","hash":"2f3bce83924b3ab3039d3f30801ed9e1ca68e50f95c996db661ef9ef2d6d43aa","add_time":"2025-07-15 17:22:10","category_name":"plugins_shop-user-1","type_name":"图片"}],"video_width":245,"video_scale_type":"2","com_width":150,"com_height":150,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"1","help_explain":"对方是否公司的"}}},{"name":"文件","id":"rss33ehfi4s","form_name":"rss33ehfi4s","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"attachments","children":[],"com_data":{"title":"文件","file":[{"id":3029,"category_id":446,"title":"1741665860733584.docx","original":"1741663636736145.docx","size":"27.57KB","ext":".docx","type":"file","url":"\/static\/upload\/file\/plugins_supplier\/user_supplier\/492\/2025\/03\/11\/1741665860733584.docx","hash":"f0466fda840a83e97d8a9a142c7fd22c532398332ec757ccb32fb2ec67c45c1e","add_time":"2025-03-11 12:04:20","category_name":"plugins_supplier-user_supplier-492","type_name":"文件"}],"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"1","help_explain":"但是防晒服公司的"}}},{"name":"辅助线","id":"tfjrb7xe3ul","form_name":"tfjrb7xe3ul","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"auxiliary-line","children":[],"com_data":{"title":"辅助线","line_type":"horizontal","line_style":"solid","line_width":100,"line_location":"center","line_size":1,"line_color":"#000","com_width":150,"com_height":11,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"上传图片","id":"0ype7spb0zmi","form_name":"0ype7spb0zmi","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"upload-img","children":[],"com_data":{"title":"上传图片","form_value":[],"is_required":"0","is_limit_num":"1","limit":3,"is_limit_size":"1","upload_size":1,"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"dashed","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"上传文件","id":"pgf6uhi1ane","form_name":"pgf6uhi1ane","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"upload-attachments","children":[],"com_data":{"title":"上传文件","form_value":[],"is_required":"0","is_limit_num":"1","limit":4,"is_limit_size":"1","upload_size":10,"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"dashed","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"上传视频","id":"v9dle8bpua","form_name":"v9dle8bpua","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"upload-video","children":[],"com_data":{"title":"上传视频","form_value":[],"is_required":"0","is_limit_num":"1","limit":2,"is_limit_size":"1","upload_size":10,"com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"dashed","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}},{"name":"富文本","id":"9li7rbb0kf","form_name":"9li7rbb0kf","mark_name":"","location":{"x":0,"y":0,"record_x":0,"record_y":0,"staging_y":0},"show_tabs":"0","is_enable":"1","key":"rich-text","children":[],"com_data":{"title":"富文本","form_value":"<p><br><\/p>","placeholder":"请输入内容","is_required":"0","is_longitude_and_latitude":"0","com_width":150,"com_height":66,"common_config":{"border_is_show":"1","border_color":"#E3E3E3","border_style":"solid","format":"none","is_error":"0","error_text":"","border_radius":{"radius":4,"radius_top_left":4,"radius_top_right":4,"radius_bottom_left":4,"radius_bottom_right":4},"border_size":{"padding":1,"padding_top":1,"padding_right":1,"padding_bottom":1,"padding_left":1},"help_is_show":"0","help_explain":""}}}],"overall_config":{"type_value":"default","custom_size_type":"A3","custom_width":842,"custom_height":1191,"is_style_settings":"1","style_settings":{"computer":{"background_type":"img","background_color":"#933B3B","background_image":[{"id":3107,"category_id":492,"title":"1750408910778775.jpeg","original":"龚福祥-身份证-正面（新）的小于2M.jpeg","size":"954.56KB","ext":".jpeg","type":"image","url":"\/static\/upload\/images\/plugins_allinpay\/merchant\/1\/2025\/06\/20\/1750408910778775.jpeg","hash":"4fb3757e1b4974bd3e275ff7682fba0370ba2c47e9ba26042703914d7564d5ee","add_time":"2025-06-20 16:41:50","category_name":"plugins_allinpay-merchant-1","type_name":"图片"}],"heading_type":"color","heading_color":"#C643E0","heading_image":[{"id":3021,"category_id":403,"title":"1739586550127228.jpg","original":"QQ20250215-102718.jpg","size":"27.88KB","ext":".jpg","type":"image","url":"\/static\/upload\/images\/plugins_allocation\/2025\/02\/15\/1739586550127228.jpg","hash":"4058905c9cf160d28772cbacb9d4b2fbe9bf616155f7b1cd33f76b4f415be6fd","add_time":"2025-02-15 10:29:10","category_name":"plugins_allocation","type_name":"图片"}],"is_show_heading_title":"1","heading_title_location":"center","heading_title_size":25,"heading_title_font_weight":"bold","heading_title_color":"#000000","submit_color":"#C643E0","flex_direction":"row","filed_title_width":88,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default","input_width":554},"mobile":{"background_type":"color","background_color":"#F8F8F8","background_image":[],"heading_type":"color","heading_color":"#C1EBFF","heading_image":[{"id":3072,"category_id":475,"title":"1747033016498889.png","original":"vs-icon-3.png","size":"17.67KB","ext":".png","type":"image","url":"\/static\/upload\/images\/plugins_goodscompare\/2025\/05\/12\/1747033016498889.png","hash":"747834aa43050e59c2095adcb2bb185b6c3bfe84298cc8bd7f3fca0bc1d9b4e5","add_time":"2025-05-12 14:56:56","category_name":"plugins_goodscompare","type_name":"图片"}],"is_show_heading_title":"0","heading_title_location":"flex-start","heading_title_size":14,"heading_title_font_weight":"400","heading_title_color":"#000000","submit_color":"#2A94FF","flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default","input_width":354}},"is_front_end_cache":"1","is_show_submit":"1","submit_title":"提交99","is_show_save_draft":"1","save_draft_title":"保存草稿","is_layout_settings":"0","layout_settings":{"computer":{"flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default"},"mobile":{"flex_direction":"column","filed_title_width":100,"filed_title_justification":"flex-start","filed_title_size_type":"small","input_width_type":"default"}}}},
             };
         },
 
@@ -1456,37 +1433,20 @@
                 }
             },
 
-            // 优惠券开启弹层
-            popup_coupon_event(e) {
+            // 聚合优惠数据开启弹层
+            popup_discount_event(e) {
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
                 this.setData({
-                    popup_coupon_status: true,
+                    popup_discount_status: true,
                 });
             },
 
-            // 优惠券弹层关闭
-            popup_coupon_close_event(e) {
+            // 聚合优惠数据弹层关闭
+            popup_discount_close_event(e) {
                 this.setData({
-                    popup_coupon_status: false,
-                });
-            },
-
-            // 满减满折开启弹层
-            popup_fullreduce_event(e) {
-                if (!app.globalData.is_single_page_check()) {
-                    return false;
-                }
-                this.setData({
-                    popup_fullreduce_status: true,
-                });
-            },
-
-            // 满减满折弹层关闭
-            popup_fullreduce_close_event(e) {
-                this.setData({
-                    popup_fullreduce_status: false,
+                    popup_discount_status: false,
                 });
             },
 

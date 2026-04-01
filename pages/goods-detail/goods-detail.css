@@ -430,32 +430,6 @@
 .not-received-coupon .divider-l::before {
     background: #fff;
 }
-.plugins-coupon-container-view .item-title {
-    min-width: 70rpx;
-}
-.plugins-coupon-container-view .item:not(:last-child) {
-    margin-right: 10rpx;
-}
-.plugins-coupon-container {
-    max-height: 50vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-top: 20rpx;
-}
-.plugins-coupon-container .v-left {
-    padding: 20rpx 10rpx 20rpx 20rpx;
-}
-.plugins-coupon-container .item:not(:last-child) {
-    margin-bottom: 20rpx;
-}
-.plugins-coupon-container .item,
-.plugins-coupon-container .v-right,
-.plugins-coupon-container .v-right .circle {
-    height: 175rpx;
-}
-.plugins-coupon-container .v-left .base .price {
-    font-size: 46rpx;
-}
 
 /**
  * 标签 - 插件

@@ -8,7 +8,7 @@
         </view>
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" lower-threshold="60">
             <!-- 优惠劵列表 -->
-            <view v-if="data_list != null" class="plugins-coupon-container padding-top-main">
+            <view v-if="data_list != null" class="plugins-coupon-container padding-main">
                 <!-- 未使用 -->
                 <block v-if="(data_list.not_use || null) != null && data_list.not_use.length > 0 && nav_tabs_value == 'not_use'">
                     <block v-for="(item, index) in data_list.not_use" :key="index">

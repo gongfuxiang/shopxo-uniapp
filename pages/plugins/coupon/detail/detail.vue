@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data_base || null) != null" class="ht bg-white">
             <view class="plugins-coupon-container">
-                <view class="coupon-content padding-top-main page-bottom-fixed">
+                <view class="coupon-content padding-main page-bottom-fixed">
                     <!-- 优惠劵列表 -->
                     <block v-if="(data || null) != null">
                         <component-coupon-card :propData="data" :propStatusType="data.status_type" :propStatusOperableName="data.status_operable_name" propIndex="0" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>

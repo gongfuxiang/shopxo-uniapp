@@ -161,6 +161,15 @@ button:before {
 .max-h {
     max-height: 100%;
 }
+.max-h-8h {
+    max-height: 80vh;
+}
+.max-h-7h {
+    max-height: 70vh;
+}
+.max-h-6h {
+    max-height: 60vh;
+}
 .min-w {
     min-width: 100%;
 }
