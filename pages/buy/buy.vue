@@ -154,10 +154,24 @@
                         <!-- 扩展数据展示 -->
                         <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-lg">
                             <view v-for="(item, index2) in group.order_base.extension_data" :key="index2">
-                                <view class="item oh padding-vertical-xs padding-main">
+                                <view v-if="index2 <= 4 || group.order_base.extension_data_max_show" class="item oh padding-vertical-xs padding-horizontal-sm">
                                     <text class="cr-base fl">{{ item.name }}</text>
                                     <text class="text-tips fr">{{ item.tips }}</text>
                                 </view>
+                            </view>
+                            <view v-if="group.order_base.extension_data.length > 5" class="padding-sm cr-blue tr" :data-index="index" @tap="extension_data_max_show_event">
+                                <block v-if="group.order_base.extension_data_max_show">
+                                    <text class="va-m">{{$t('common.retract')}}{{$t('common.all')}}</text>
+                                    <view class="dis-inline-block margin-left-sm">
+                                        <iconfont name="icon-arrow-top" size="28rpx" propClass="cr-blue"></iconfont>
+                                    </view>
+                                </block>
+                                <block v-else>
+                                    <text class="va-m">{{$t('common.expand')}}{{$t('common.all')}}({{group.order_base.extension_data.length}})</text>
+                                    <view class="dis-inline-block margin-left-sm">
+                                        <iconfont name="icon-arrow-bottom" size="28rpx" propClass="cr-blue"></iconfont>
+                                    </view>
+                                </block>
                             </view>
                         </view>
                         <!-- 小计 -->
@@ -829,6 +843,17 @@
                 data['plugins_coin_payment_id'] = this.plugins_coin_payment_id;
 
                 return data;
+            },
+
+            // 扩展数据最大显示状态事件
+            extension_data_max_show_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var temp = this.goods_list;
+                var extension_data_max_show = temp[index]['order_base']['extension_data_max_show'] || false;
+                temp[index]['order_base']['extension_data_max_show'] = !extension_data_max_show;
+                this.setData({
+                    goods_list: temp,
+                });
             },
 
             // 用户留言输入事件
