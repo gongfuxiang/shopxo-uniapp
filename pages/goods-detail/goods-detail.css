@@ -503,3 +503,11 @@
 .plugins-goodsservice-container .item .right {
     width: calc(100% - 90rpx);
 }
+
+/**
+ * 满送插件 - 聚合优惠弹层
+ */
+.plugins-fullgive-popup .goods-img  {
+    width: 120rpx;
+    height: 120rpx;
+}

@@ -168,7 +168,8 @@
                 <!-- 聚合优惠信数据 -->
                 <view v-if="
                     ((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0) ||
-                    ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null)
+                    ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null) ||
+                    ((plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0)
                 " class="padding-main bg-white text-size-xs flex-row jc-sb align-c br-t-f9">
                     <view class="flex-row align-c flex-1 flex-width" @tap="popup_discount_event">
                         <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
@@ -184,7 +185,15 @@
                             <!-- 满减满折 -->
                             <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-fr-' + index + '-' + index2">
+                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                    </block>
+                                </block>
+                            </block>
+                            <!-- 满送 -->
+                            <block v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null">
+                                <block v-for="(item, index) in plugins_fullgive_data.data" :key="index">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-fg-' + index + '-' + index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
@@ -577,10 +586,57 @@
                                 <view class="padding-bottom-main">
                                     <view class="text-size-sm">{{ item.name }}</view>
                                     <view class="margin-top-sm">
-                                        <block v-for="(item2, index2) in item.rule_lines" :key="index2">
+                                        <block v-for="(item2, index2) in item.rule_lines" :key="'popup-fr-' + index + '-' + index2">
                                             <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
                                         </block>
                                     </view>
+                                </view>
+                            </block>
+                        </view>
+                        <!-- 满送 -->
+                        <view v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0" class="plugins-fullgive-popup spacing-mb">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullgive_data.title}}</view>
+                            <view class="cr-main padding-bottom-sm">{{ plugins_fullgive_data.msg }}</view>
+                            <block v-for="(act, index) in plugins_fullgive_data.data" :key="index">
+                                <view :class="index > 0 ? 'margin-top-xl' : ''">
+                                    <view class="text-size-sm padding-bottom-sm">{{ act.name }}</view>
+                                    <block v-if="(act.tier_detail_rows || null) != null && act.tier_detail_rows.length > 0">
+                                        <block v-for="(trow, ti) in act.tier_detail_rows" :key="'fg-tier-' + index + '-' + ti">
+                                            <view :class="ti > 0 ? 'margin-top-lg' : ''">
+                                                <view class="cr-grey text-size-xs margin-bottom-main">{{ trow.summary }}</view>
+                                                <view v-if="(trow.coupon_items || null) != null && trow.coupon_items.length > 0">
+                                                    <view class="text-size-xs cr-grey-9 margin-bottom-xs">{{ plugins_fullgive_data.const.gift_coupon_title }}</view>
+                                                    <view class="padding-sm br-f5 radius">
+                                                        <view v-for="(cp, ci) in trow.coupon_items" :key="'fg-cp-' + index + '-' + ti + '-' + ci" class="cr-base text-size-sm">{{ cp.name }}</view>
+                                                    </view>
+                                                </view>
+                                                <view v-if="(trow.gift_items || null) != null && trow.gift_items.length > 0">
+                                                    <view class="text-size-xs cr-grey-9 margin-bottom-xs margin-top-main">{{ plugins_fullgive_data.const.gift_goods_title }}</view>
+                                                    <view class="br-f5 radius">
+                                                        <view v-for="(git, gi) in trow.gift_items" :key="'fg-gift-' + index + '-' + ti + '-' + gi" :class="'padding-sm '+(gi > 0 ? 'br-t-f9' : '')">
+                                                            <view v-if="(git.goods || null) != null" class="wh-auto flex-row align-s oh" :data-value="git.goods.goods_url" @tap="url_event">
+                                                                <image class="radius margin-right-sm goods-img" :src="git.goods.images" mode="aspectFill" />
+                                                                <view class="flex-1 flex-width">
+                                                                    <view class="multi-text cr-base">{{ git.goods.title }}</view>
+                                                                    <view v-if="(git.give_num || 0) > 0" class="text-size-xs cr-grey-9 margin-top-xs">{{ plugins_fullgive_data.const.gift_give_num_label }}：{{ git.give_num }}</view>
+                                                                </view>
+                                                            </view>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </block>
+                                    </block>
+                                    <block v-else>
+                                        <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
+                                            <block v-for="(line, li) in act.rule_lines" :key="'fg-rule-' + index + '-' + li">
+                                                <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
+                                            </block>
+                                        </view>
+                                    </block>
+                                    <block v-if="(act.extra_describe_lines || null) != null && act.extra_describe_lines.length > 0">
+                                        <view v-for="(dline, di) in act.extra_describe_lines" :key="'fg-extra-' + index + '-' + di" class="text-size-xs cr-grey-9 margin-top-sm padding-top-xs">{{ dline }}</view>
+                                    </block>
                                 </view>
                             </block>
                         </view>
@@ -810,6 +866,8 @@
                 plugins_coupon_data: null,
                 // 满减满折插件
                 plugins_fullreduce_data: null,
+                // 满送插件
+                plugins_fullgive_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
@@ -1026,6 +1084,7 @@
                                 countdown_is_valid: countdown_is_valid,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
                                 plugins_fullreduce_data: data.plugins_fullreduce_data || null,
+                                plugins_fullgive_data: data.plugins_fullgive_data || null,
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
