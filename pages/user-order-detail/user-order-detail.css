@@ -37,6 +37,14 @@
 }
 
 /**
+* 扩展数据
+*/
+.extension-list .img-tips {
+    width: 40rpx;
+    height: 40rpx;
+}
+
+/**
  * 使用指南
  */
 .use-guide-switch-scroll .item {

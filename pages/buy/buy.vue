@@ -68,7 +68,7 @@
                     <view v-for="(group, index) in goods_list" :key="index" class="goods-group-list padding-main border-radius-main bg-white spacing-mb">
                         <!-- 仓库分组 -->
                         <view class="goods-group-hd oh br-b padding-bottom-main">
-                            <view class="fl cp" @tap="warehouse_group_event" :data-value="group.url || ''">
+                            <view class="fl cp" :data-value="group.url || ''" @tap="url_event">
                                 <image v-if="(group.icon || null) != null" class="goods-group-icon va-m margin-right-xs" :src="group.icon" mode="aspectFit"></image>
                                 <text class="goods-group-title va-m">{{ group.name }}</text>
                                 <text v-if="(group.alias || null) != null" class="goods-group-alias va-m round margin-left-sm text-size-xs">{{ group.alias }}</text>
@@ -156,7 +156,10 @@
                             <view v-for="(item, index2) in group.order_base.extension_data" :key="index2">
                                 <view v-if="index2 <= 4 || group.order_base.extension_data_max_show" class="item oh padding-vertical-xs padding-horizontal-sm">
                                     <text class="cr-base fl">{{ item.name }}</text>
-                                    <text class="text-tips fr">{{ item.tips }}</text>
+                                    <view class="fr" :data-value="item.url || ''" @tap="url_event">
+                                        <image v-if="(item.images || null) != null" :src="item.images" mode="aspectFit" class="img-tips radius br-f5 margin-right-xs va-m"></image>
+                                        <text class="text-tips va-m">{{ item.tips }}</text>
+                                    </view>
                                 </view>
                             </view>
                             <view v-if="group.order_base.extension_data.length > 5" class="padding-sm cr-blue tr" :data-index="index" @tap="extension_data_max_show_event">
@@ -1247,8 +1250,8 @@
                 this.init();
             },
 
-            // 仓库事件
-            warehouse_group_event(e) {
+            // url事件
+            url_event(e) {
                 app.globalData.url_event(e);
             },
 

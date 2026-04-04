@@ -310,13 +310,17 @@
                 <!-- 扩展数据 -->
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.ct34n5')}}</view>
-                    <view class="panel-content oh">
+                    <view class="panel-content oh extension-list">
                         <uni-table :emptyText="$t('common.no_data')">
                             <block v-for="(item, index) in extension_data" :key="index">
                                 <uni-tr>
                                     <uni-td>
                                         <text>{{item.name}}</text>
-                                        <text v-if="(item.tips || null) != null">：{{item.tips}}</text>
+                                        <view v-if="(item.images || null) != null || (item.tips || null) != null" class="dis-inline-block" :data-value="item.url || ''" @tap="url_event">
+                                            <text>：</text>
+                                            <image v-if="(item.images || null) != null" :src="item.images" mode="aspectFit" class="img-tips radius br-f5 margin-right-xs va-m"></image>
+                                            <text v-if="(item.tips || null) != null" class="text-tips va-m">{{ item.tips }}</text>
+                                        </view>
                                     </uni-td>
                                 </uni-tr>
                             </block>

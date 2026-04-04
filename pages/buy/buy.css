@@ -92,6 +92,10 @@
 .extension-list .item:not(:last-child) {
     border-bottom: 1px dashed #ffe2cf;
 }
+.extension-list .item .img-tips {
+    width: 40rpx;
+    height: 40rpx;
+}
 .extension-list .item .text-tips {
     color: #ff8f44;
 }
