@@ -12,7 +12,10 @@
                         </view>
                         <view class="flex-row jc-sb align-c margin-top-main">
                             <view>{{item.msg}}</view>
-                            <view class="cr-main text-size fw-b" :class="item.type == 1 ? 'cr-green' : 'cr-red'">{{item.type == 1 ? '+' : '-'}} {{item.operation_integral}}</view>
+                            <view>
+                                <text class="text-size-xs cr-grey va-m margin-right-sm">{{item.integral_type_text}}</text>
+                                <text class="text-size fw-b va-m" :class="item.operation_type == 1 ? 'cr-green' : 'cr-red'">{{item.operation_type == 1 ? '+' : '-'}}{{item.operation_integral}}</text>
+                            </view>
                         </view>
                     </view>
                 </view>
