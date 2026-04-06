@@ -169,7 +169,8 @@
                 <view v-if="
                     ((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0) ||
                     ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null) ||
-                    ((plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0)
+                    ((plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0) ||
+                    ((plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0)
                 " class="padding-main bg-white text-size-xs flex-row jc-sb align-c br-t-f9">
                     <view class="flex-row align-c flex-1 flex-width" @tap="popup_discount_event">
                         <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
@@ -194,6 +195,14 @@
                             <block v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_fullgive_data.data" :key="index">
                                     <block v-for="(item2, index2) in item.rule_lines" :key="'strip-fg-' + index + '-' + index2">
+                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                    </block>
+                                </block>
+                            </block>
+                            <!-- N件N优惠 -->
+                            <block v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null">
+                                <block v-for="(item, index) in plugins_npiecendis_data.data" :key="'npcd-strip-' + index">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-npcd-' + index + '-' + index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
@@ -598,7 +607,7 @@
                             <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullgive_data.title}}</view>
                             <view class="cr-main padding-bottom-sm">{{ plugins_fullgive_data.msg }}</view>
                             <block v-for="(act, index) in plugins_fullgive_data.data" :key="index">
-                                <view :class="index > 0 ? 'margin-top-xl' : ''">
+                                <view :class="'padding-bottom '+ (index > 0 ? 'margin-top-xl' : '')">
                                     <view class="text-size-sm padding-bottom-sm">{{ act.name }}</view>
                                     <block v-if="(act.tier_detail_rows || null) != null && act.tier_detail_rows.length > 0">
                                         <block v-for="(trow, ti) in act.tier_detail_rows" :key="'fg-tier-' + index + '-' + ti">
@@ -637,6 +646,24 @@
                                     <block v-if="(act.extra_describe_lines || null) != null && act.extra_describe_lines.length > 0">
                                         <view v-for="(dline, di) in act.extra_describe_lines" :key="'fg-extra-' + index + '-' + di" class="text-size-xs cr-grey-9 margin-top-sm padding-top-xs">{{ dline }}</view>
                                     </block>
+                                </view>
+                            </block>
+                        </view>
+                        <!-- N件N优惠 -->
+                        <view v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0" class="plugins-npiecendis-popup spacing-mb">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_npiecendis_data.title}}</view>
+                            <view v-if="(plugins_npiecendis_data.msg || null) != null && plugins_npiecendis_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_npiecendis_data.msg }}</view>
+                            <block v-for="(act, index) in plugins_npiecendis_data.data" :key="'npcd-popup-' + index">
+                                <view :class="index > 0 ? 'margin-top-xl' : ''">
+                                    <view class="padding-bottom-xs">
+                                        <text class="text-size-sm fw-b">{{ act.name }}</text>
+                                        <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
+                                    </view>
+                                    <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
+                                        <block v-for="(line, li) in act.rule_lines" :key="'npcd-rule-' + index + '-' + li">
+                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
+                                        </block>
+                                    </view>
                                 </view>
                             </block>
                         </view>
@@ -868,6 +895,8 @@
                 plugins_fullreduce_data: null,
                 // 满送插件
                 plugins_fullgive_data: null,
+                // N件N优惠插件
+                plugins_npiecendis_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
@@ -1085,6 +1114,7 @@
                                 plugins_coupon_data: data.plugins_coupon_data || null,
                                 plugins_fullreduce_data: data.plugins_fullreduce_data || null,
                                 plugins_fullgive_data: data.plugins_fullgive_data || null,
+                                plugins_npiecendis_data: data.plugins_npiecendis_data || null,
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
