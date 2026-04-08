@@ -170,7 +170,8 @@
                     ((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0) ||
                     ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null) ||
                     ((plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0) ||
-                    ((plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0)
+                    ((plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0) ||
+                    ((plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null && plugins_newpersongift_data.data.length > 0)
                 " class="padding-main bg-white text-size-xs flex-row jc-sb align-c br-t-f9">
                     <view class="flex-row align-c flex-1 flex-width" @tap="popup_discount_event">
                         <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
@@ -203,6 +204,14 @@
                             <block v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_npiecendis_data.data" :key="'npcd-strip-' + index">
                                     <block v-for="(item2, index2) in item.rule_lines" :key="'strip-npcd-' + index + '-' + index2">
+                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                    </block>
+                                </block>
+                            </block>
+                            <!-- 新人礼包 -->
+                            <block v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null">
+                                <block v-for="(item, index) in plugins_newpersongift_data.data" :key="'npg-strip-' + index">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-npg-' + index + '-' + index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
@@ -589,7 +598,7 @@
                             </block>
                         </view>
                         <!-- 满减满折 -->
-                        <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
+                        <view v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null" class="plugins-fullreduce-container spacing-mb">
                             <view class="fw-b tc text-size-lg padding-bottom">{{plugins_fullreduce_data.title}}</view>
                             <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
                                 <view class="padding-bottom-main">
@@ -654,7 +663,7 @@
                             <view class="fw-b tc text-size-lg padding-bottom">{{plugins_npiecendis_data.title}}</view>
                             <view v-if="(plugins_npiecendis_data.msg || null) != null && plugins_npiecendis_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_npiecendis_data.msg }}</view>
                             <block v-for="(act, index) in plugins_npiecendis_data.data" :key="'npcd-popup-' + index">
-                                <view :class="index > 0 ? 'margin-top-xl' : ''">
+                                <view :class="'padding-bottom '+(index > 0 ? 'margin-top-xl' : '')">
                                     <view class="padding-bottom-xs">
                                         <text class="text-size-sm fw-b">{{ act.name }}</text>
                                         <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
@@ -666,6 +675,36 @@
                                     </view>
                                 </view>
                             </block>
+                        </view>
+                        <!-- 新人礼包 -->
+                        <view v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null && plugins_newpersongift_data.data.length > 0" class="plugins-newpersongift-popup spacing-mb">
+                            <view class="fw-b tc text-size-lg padding-bottom">{{plugins_newpersongift_data.title}}</view>
+                            <view v-if="(plugins_newpersongift_data.user_tip || null) != null && plugins_newpersongift_data.user_tip != ''" class="padding-bottom-sm">
+                                <view class="flex-row align-c">
+                                    <view class="dis-inline-block va-m">
+                                        <iconfont name="icon-sigh" size="30rpx" propClass="cr-red"></iconfont>
+                                    </view>
+                                    <text class="text-size-xs cr-red margin-left-xs va-m">{{ plugins_newpersongift_data.user_tip }}</text>
+                                </view>
+                            </view>
+                            <view v-else-if="(plugins_newpersongift_data.msg || null) != null && plugins_newpersongift_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_newpersongift_data.msg }}</view>
+                            <block v-for="(act, index) in plugins_newpersongift_data.data" :key="'npg-popup-' + index">
+                                <view class="padding-bottom">
+                                    <view class="padding-bottom-xs">
+                                        <text class="text-size-sm fw-b">{{ act.name }}</text>
+                                        <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
+                                    </view>
+                                    <view v-if="((act.rule_lines || null) != null && act.rule_lines.length > 0) || ((act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0)" class="margin-top-sm">
+                                        <block v-for="(line, li) in act.rule_lines" :key="'npg-rule-' + index + '-' + li">
+                                            <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
+                                        </block>
+                                        <text v-if="(act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0" class="text-size-xs cr-grey-9 single-text">{{ act.rule_lines_grey.join(' ') }}</text>
+                                    </view>
+                                </view>
+                            </block>
+                            <view v-if="(plugins_newpersongift_data.rules_html || null) != null && plugins_newpersongift_data.rules_html != ''" class="padding-bottom">
+                                <mp-html :content="plugins_newpersongift_data.rules_html" />
+                            </view>
                         </view>
                     </scroll-view>
                 </view>
@@ -897,6 +936,8 @@
                 plugins_fullgive_data: null,
                 // N件N优惠插件
                 plugins_npiecendis_data: null,
+                // 新人礼包插件
+                plugins_newpersongift_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
@@ -1115,6 +1156,7 @@
                                 plugins_fullreduce_data: data.plugins_fullreduce_data || null,
                                 plugins_fullgive_data: data.plugins_fullgive_data || null,
                                 plugins_npiecendis_data: data.plugins_npiecendis_data || null,
+                                plugins_newpersongift_data: data.plugins_newpersongift_data || null,
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
