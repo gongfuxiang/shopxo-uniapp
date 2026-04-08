@@ -37,8 +37,6 @@
                 "permissions" : [
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CAMERA\"/>",
@@ -50,12 +48,16 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>"
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>"
                 ],
                 "targetSdkVersion" : 30,
                 "minSdkVersion" : 23,
-                "excludePermissions" : [],
+                "excludePermissions" : [
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>"
+                ],
                 "permissionPhoneState" : {
                     "request" : "none",
                     "prompt" : "为保证您正常、安全地使用，需要获取设备识别码（部分手机提示为获取手机号码）使用权限，请允许。"
