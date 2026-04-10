@@ -3323,11 +3323,17 @@
             // 设置设备信息
             this.globalData.set_system_info();
 
-            // 参数处理+缓存
-            this.globalData.set_launch_cache_info(params);
-
             // 场景值
             this.globalData.set_scene_data(params);
+
+            // 参数处理+缓存
+            let temp_params = this.globalData.set_launch_cache_info(params) || {};
+
+            // 指定多语言设置
+            if((temp_params.lang || null) != null) {
+                uni.setLocale(temp_params.lang);
+                i18n.locale = temp_params.lang;
+            }
         },
 
         // 从前台进入后台
