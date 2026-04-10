@@ -29,7 +29,7 @@
                     <view class="padding-top-xxxl padding-bottom-xxxl tc cr-red">{{ $t('goods-buy.goods-buy.ufdm25') }}</view>
                 </block>
                 <block v-else>
-                    <view class="goods-spec-choice-content">
+                    <scroll-view :scroll-y="true" class="goods-spec-choice-content">
                         <!-- 商品规格 -->
                         <view v-if="goods_spec_choose.length > 0" class="goods-spec-choose">
                             <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-top-xxl padding-bottom-xxl">
@@ -54,7 +54,7 @@
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1">+</view>
                             </view>
                         </view>
-                    </view>
+                    </scroll-view>
                     <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                         <view :class="'flex-row jc-sa gap-20 buy-nav-btn-number-' + (opt_button.length || 0)">
                             <block v-for="(item, index) in opt_button" :key="index">
@@ -918,8 +918,6 @@
     }
     .goods-spec-choice-content {
         max-height: 50vh;
-        overflow-y: scroll;
-        overflow-x: hidden;
         margin-top: 20rpx;
     }
     .goods-spec-choice-container .item .spec .spec-btn {

@@ -47,6 +47,14 @@
                 // 1.新增一个对象，按照当前格式新增
                 // 2.去lang里面各个文件去新增语言翻译
                 default_language: 'zh',
+                // 默认语言对照表
+                default_language_list: {
+                    'zh-Hans': 'zh',
+                    'zh-Hant': 'cht',
+                    'en-US': 'en',
+                    'es': 'spa',
+                    'fra': 'fr',
+                },
 
                 // 系统tabbar
                 system_tabbar: [
@@ -3021,14 +3029,8 @@
                 // 当前系统语言、默认中文
                 let value = uni.getLocale() || this.data.default_language;
                 // 语言标识转换和后端一致
-                let arr = {
-                    'zh-Hans': 'zh',
-                    'zh-Hant': 'cht',
-                    'en-US': 'en',
-                    'es': 'spa',
-                    'fra': 'fr',
-                };
-                return ((arr[value] || null) == null) ? value : arr[value];
+                let list = this.data.default_language_list;
+                return ((list[value] || null) == null) ? value : list[value];
             },
 
             // 选择用户地理位置
@@ -3331,8 +3333,16 @@
 
             // 指定多语言设置
             if((temp_params.lang || null) != null) {
-                uni.setLocale(temp_params.lang);
-                i18n.locale = temp_params.lang;
+                let lang = temp_params.lang;
+                let list = this.globalData.data.default_language_list;
+                if((list[lang] || null) == null) {
+                    list = Object.fromEntries(Object.entries(list).map(([key, value]) => [value, key]));
+                    if((list[lang] || null) != null) {
+                        lang = list[lang];
+                    }
+                }
+                uni.setLocale(lang);
+                i18n.locale = lang;
             }
         },
 
