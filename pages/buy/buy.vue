@@ -107,7 +107,7 @@
                                 </view>
                                 <!-- 订单商品表单 -->
                                 <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
-                                    <component-form-input-base ref="component_form_input" :propBackData="item.goods_id" :propConfig="item.plugins_ordergoodsform_data.config" :propFormInputId="item.plugins_ordergoodsform_data.id" ></component-form-input-base>
+                                    <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
                                 </view>
                             </view>
                         </view>
@@ -940,10 +940,10 @@
                 }
 
                 // 订单商品表单插件数据验证处理
-                var component_form_input = this.$refs.component_form_input || [];
-                if (component_form_input.length > 0) {
-                    for (var i in component_form_input) {
-                        var res = component_form_input[i].on_submit_event();
+                var form_input_base = this.$refs.form_input_base || [];
+                if (form_input_base.length > 0) {
+                    for (var i in form_input_base) {
+                        var res = form_input_base[i].on_submit_event();
                         if(res.status == 'error') {
                             app.globalData.showToast(res.message);
                             return false;
