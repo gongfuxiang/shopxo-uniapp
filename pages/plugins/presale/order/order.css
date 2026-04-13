@@ -1,0 +1,19 @@
+/*
+* 商品信息
+*/
+.goods-cover {
+    width: 120rpx;
+    height: 120rpx;
+}
+.goods-base {
+    width: calc(100% - 140rpx);
+}
+
+/*
+* 操作按钮
+*/
+.item-operation .btn {
+    padding: 0 48rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+}

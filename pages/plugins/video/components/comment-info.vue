@@ -1,5 +1,5 @@
 <template> 
-    <view class="flex-row align-s wh-auto ht-auto"> 
+    <view class="flex-row align-s">
         <image class="comment-avatar" :src="propComment.user.avatar" mode="aspectFill"></image>
         <view class="comment-info flex-col jc-c" style="margin-left: 20rpx;" @tap="comment_reply">
             <view class="flex-row jc-sb">
@@ -212,6 +212,10 @@
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
+    // 换行
+    word-break: break-all;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .comment-time {
@@ -300,5 +304,6 @@
 .comment-images {
     width: 80rpx;
     height: 80rpx;
+    border-radius: 8rpx;
 }
 </style>

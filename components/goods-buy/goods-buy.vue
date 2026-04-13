@@ -29,7 +29,7 @@
                     <view class="padding-top-xxxl padding-bottom-xxxl tc cr-red">{{ $t('goods-buy.goods-buy.ufdm25') }}</view>
                 </block>
                 <block v-else>
-                    <view class="goods-spec-choice-content">
+                    <scroll-view :scroll-y="true" class="goods-spec-choice-content">
                         <!-- 商品规格 -->
                         <view v-if="goods_spec_choose.length > 0" class="goods-spec-choose">
                             <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-top-xxl padding-bottom-xxl">
@@ -54,17 +54,17 @@
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1">+</view>
                             </view>
                         </view>
-                    </view>
+                    </scroll-view>
                     <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                         <view :class="'flex-row jc-sa gap-20 buy-nav-btn-number-' + (opt_button.length || 0)">
                             <block v-for="(item, index) in opt_button" :key="index">
                                 <view v-if="(item.name || null) != null && (item.type || null) != null" class="item">
-                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" :data-business="item.business || ''" :data-buylink="item.buylink || ''" hover-class="none">{{ item.name }}</button>
+                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :disabled="spec_confirm_btn_disabled_status" :data-value="item.value" :data-type="item.type" :data-business="item.business || ''" :data-buylink="item.buylink || ''" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
                         </view>
                     </view>
-                    <button v-else class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">{{ $t('index.index.7w75zb') }}</button>
+                    <button v-else class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" :disabled="spec_confirm_btn_disabled_status" hover-class="none">{{ $t('index.index.7w75zb') }}</button>
                 </block>
             </view>
         </component-popup>
@@ -98,6 +98,8 @@
                 is_direct_cart: 0,
                 is_success_tips: 1,
                 goods_cover_class: '',
+                is_exist_many_spec: false,
+                spec_confirm_btn_disabled_status: true,
                 // 选中规格临时定时变量
                 spec_selected_timer: null,
                 spec_selected_timerout: null,
@@ -141,9 +143,11 @@
                 var status = true;
                 // 商品可选规格
                 var goods_spec_choose = (goods.specifications || null) != null ? goods.specifications.choose || [] : [];
+                // 是否存在多规格
+                var is_exist_many_spec = parseInt(goods.is_exist_many_spec || 0) == 1 && goods_spec_choose.length > 0;
                 // 无规格是否直接操作
                 var is_direct_cart = 0;
-                if ((params.is_direct_cart || 0) == 1 && parseInt(goods.is_exist_many_spec || 0) == 0 && goods_spec_choose.length == 0) {
+                if ((params.is_direct_cart || 0) == 1 && !is_exist_many_spec) {
                     status = false;
                     is_direct_cart = 1;
                 }
@@ -190,6 +194,8 @@
                     is_direct_cart: is_direct_cart,
                     is_success_tips: is_success_tips,
                     goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
+                    is_exist_many_spec: is_exist_many_spec,
+                    spec_confirm_btn_disabled_status: is_exist_many_spec
                 });
                 // 封面仅首次初始化
                 if((this.goods_spec_base_images || null) == null) {
@@ -199,8 +205,8 @@
                 }
 
                 // 初始化不能选择规格处理
-                var is_init = (params.is_init === undefined) ? 1 : params.is_init;
-                this.spec_handle_dont(null, is_init);
+                var is_init = (params.is_init === undefined || parseInt(params.is_init) == 1);
+                this.spec_handle_dont(is_init ? 0 : null);
 
                 // 获取规格详情
                 this.get_spec_detail();
@@ -536,6 +542,7 @@
                         goods_spec_base_buy_min_number: 0,
                         goods_spec_base_buy_max_number: 0,
                         buy_number: buy_number,
+                        spec_confirm_btn_disabled_status: this.is_exist_many_spec,
                     });
                     // 释放-调用父级
                     this.$emit("BackReleaseEvent");
@@ -571,19 +578,25 @@
                 var buy_number = parseInt(this.buy_number);
                 var spec_buy_min_number = parseInt(spec_base.buy_min_number || 1);
                 var spec_buy_max_number = parseInt(spec_base.buy_max_number || 0);
+                var spec_inventory = parseInt(spec_base.inventory || 0);
                 if (spec_buy_min_number > 0 && buy_number < spec_buy_min_number) {
                     buy_number = spec_buy_min_number;
                 }
                 if (spec_buy_max_number > 0 && buy_number > spec_buy_max_number) {
                     buy_number = spec_buy_max_number;
                 }
+                if(buy_number > spec_inventory) {
+                    buy_number = spec_inventory;
+                }
+                var btn_disabled_status = this.is_exist_many_spec ? (buy_number <= 0 || (buy_number > 0 && buy_number < spec_buy_min_number)) : false;
                 var upd_data = {
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price || 0,
-                    goods_spec_base_inventory: parseInt(spec_base.inventory || 0),
+                    goods_spec_base_inventory: spec_inventory,
                     goods_spec_base_buy_min_number: spec_buy_min_number,
                     goods_spec_base_buy_max_number: spec_buy_max_number,
                     buy_number: buy_number,
+                    spec_confirm_btn_disabled_status: btn_disabled_status,
                 };
                 if((spec_base.inventory_unit || null) != null) {
                     upd_data['goods_spec_base_inventory_unit'] = spec_base.inventory_unit;
@@ -623,7 +636,7 @@
             },
 
             // 不能选择规格处理
-            spec_handle_dont(key, is_init = 0) {
+            spec_handle_dont(key = null) {
                 var temp_spec = this.goods_spec_choose || [];
                 if (temp_spec.length <= 0) {
                     return false;
@@ -638,10 +651,6 @@
                                 temp_spec[i]['value'][k]['is_dont'] = 'spec-dont-choose';
                                 temp_spec[i]['value'][k]['is_disabled'] = '';
                                 temp_spec[i]['value'][k]['is_active'] = '';
-                            } else {
-                                if (is_init == 1) {
-                                    temp_spec[i]['value'][k]['is_active'] = '';
-                                }
                             }
 
                             // 当只有一个规格的时候
@@ -681,58 +690,64 @@
                 var spec_buy_max_number = parseInt(this.goods_spec_base_buy_max_number || 0);
                 var inventory = parseInt(this.goods_spec_base_inventory || 0);
                 var inventory_unit = this.goods_spec_base_inventory_unit;
+                var min = spec_buy_min_number > 0 ? spec_buy_min_number : buy_min_number;
+                var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
 
                 // 最小起购数量
-                var min = spec_buy_min_number > 0 ? spec_buy_min_number : buy_min_number;
                 if (min > 0 && number < min) {
-                    number = min;
+                    number = (min > max) ? max : min;
                     app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + min + inventory_unit);
+                    return false;
                 }
 
                 // 最大购买数量
-                var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
                 if (max > 0 && number > max) {
                     number = max;
                     app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
+                    return false;
                 }
 
                 // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
                     app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
-                }
-
-                this.setData({ buy_number: number });
-
-                // 存在规格的时候是否已完全选择规格
-                var spec = this.goods_selected_spec();
-                var sku_count = this.goods_spec_choose.length;
-                var active_count = spec.length;
-                if (sku_count > 0 && active_count < sku_count) {
                     return false;
                 }
 
-                // 获取数据
-                var data = this.params;
-                data['id'] = this.goods.id;
-                data['spec'] = spec;
-                data['stock'] = this.buy_number;
-                uni.request({
-                    url: app.globalData.get_request_url('stock', 'goods'),
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data.code == 0) {
-                            this.goods_spec_detail_back_handle(res.data.data);
-                        } else {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
+                // 数量是否改变
+                if(this.buy_number != number) {
+                    this.setData({ buy_number: number });
+
+                    // 存在规格的时候是否已完全选择规格
+                    var spec = this.goods_selected_spec();
+                    var sku_count = this.goods_spec_choose.length;
+                    var active_count = spec.length;
+                    if (sku_count > 0 && active_count < sku_count) {
+                        return false;
+                    }
+
+                    // 获取数据
+                    var data = this.params;
+                    data['id'] = this.goods.id;
+                    data['spec'] = spec;
+                    data['stock'] = this.buy_number;
+                    uni.request({
+                        url: app.globalData.get_request_url('stock', 'goods'),
+                        method: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: (res) => {
+                            if (res.data.code == 0) {
+                                this.goods_spec_detail_back_handle(res.data.data);
+                            } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
 
             // 详情图片查看
@@ -903,8 +918,6 @@
     }
     .goods-spec-choice-content {
         max-height: 50vh;
-        overflow-y: scroll;
-        overflow-x: hidden;
         margin-top: 20rpx;
     }
     .goods-spec-choice-container .item .spec .spec-btn {

@@ -90,7 +90,7 @@
                     let new_style = this.propValue.style || {};
                     let nav_content = new_content.nav_content || [];
                     let page = app.globalData.current_page() || null;
-                    let active_index = this.propFooterActiveIndex;
+                    let active_index = false;
                     if (page != null) {
                         // 角标链接定义
                         let badge_arr = {
@@ -111,6 +111,22 @@
                                 }
                             }
                         }
+                        // 完整的地址么有匹配到，如果是底部菜单则去掉参数再重新匹配
+                        if(active_index === false && app.globalData.is_tabbar_pages('/'+page)) {
+                            var temp = page.split('?');
+                            for (var i in nav_content) {
+                                if ((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null) {
+                                    // 选中索引
+                                    if (nav_content[i]['link']['page'] == '/' + temp[0]) {
+                                        active_index = i;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // 未匹配到选择菜单则默认属性的选择索引
+                    if(active_index === false) {
+                        active_index = this.propFooterActiveIndex;
                     }
                     this.setData({
                         nav_content: nav_content,
@@ -133,8 +149,8 @@
 
                     // #ifndef H5
                     // 底部菜单距离底部的安全距离，减去20、默认的安全距离太高了
-                    var safe_areaInsets = uni.getSystemInfoSync().safeAreaInsets || {};
-                    var bottom = parseInt(safe_areaInsets.bottom || 0);
+                    var safe_area_insets = app.globalData.get_system_info('safeAreaInsets') || {};
+                    var bottom = parseInt(safe_area_insets.bottom || 0);
                     if (bottom > 0) {
                         bottom -= 24;
                     }

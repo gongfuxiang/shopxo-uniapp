@@ -39,7 +39,7 @@
                     var btn_width = this.propBtnWidth;
                     // 未指定购物车对象则读取tabbar数据自动计算购物车位置
                     if((cart || null) == null || (cart[0] || null) == null) {
-                        var info = uni.getSystemInfoSync();
+                        var info = app.globalData.get_system_info();
                         // 当前页面
                         var page = app.globalData.current_page().split('?');
                         switch(page[0]) {                        

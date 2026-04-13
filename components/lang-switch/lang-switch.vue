@@ -90,9 +90,16 @@
                 this.$emit('popup_sub_language_event', language_list[this.language_key]);
             },
             // 多语言切换
-            language_change(key) {
-                uni.setLocale(key);
-                this.$i18n.locale = key;
+            language_change(lang) {
+                let list = app.globalData.data.default_language_list;
+                if((list[lang] || null) == null) {
+                    list = Object.fromEntries(Object.entries(list).map(([key, value]) => [value, key]));
+                    if((list[lang] || null) != null) {
+                        lang = list[lang];
+                    }
+                }
+                uni.setLocale(lang);
+                this.$i18n.locale = lang;
             },
         }
     };

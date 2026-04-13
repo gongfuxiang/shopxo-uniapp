@@ -94,7 +94,7 @@
                             </view>
                         </view>
                         <view class="flex-1 key-num sub" @tap="key_up_event('sub')">
-                            <button type="default" class="flex-col jc-c ht-auto wh-auto radius-0 bg-red cr-white" :disabled="form_submit_loading">{{$t('order.order.1i873j')}}</button>
+                            <button type="default" class="flex-col jc-c ht-auto wh-auto radius-0 bg-red cr-white" :disabled="form_submit_loading">{{$t('common.pay')}}</button>
                         </view>
                     </view>
                 </view>

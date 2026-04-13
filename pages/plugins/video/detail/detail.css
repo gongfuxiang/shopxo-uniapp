@@ -101,6 +101,7 @@
 .product-card .product-image {
     width: 100rpx;
     height: 100rpx;
+    border-radius: 8rpx;
 }
 .product-card .product-name {
     font-weight: 500;
@@ -270,16 +271,25 @@
     gap: 40rpx;
 }
 .comment-input-container {
-    display: flex;
     padding: 20rpx;
     border-top: 2rpx solid #eee;
+    box-sizing: border-box;
+}
+
+.pt-8 {
+    padding-top: 16rpx;
+}
+.pt-4 {
+    padding-top: 8rpx;
 }
 
 .comment-input {
     flex: 1;
     font-size: 28rpx;
-    height: 50rpx;
-    padding: 16rpx;
+    min-height: 40rpx;
+    margin: 16rpx;
+    max-height: 400rpx;
+    color: #000;
     box-sizing: content-box;
 }
 
@@ -305,6 +315,7 @@
 .comment-input-img {
     width: 50rpx;
     height: 50rpx;
+    border-radius: 8rpx;
 }
 
 /* 新的举报弹窗样式 */
@@ -389,4 +400,5 @@
     padding: 10rpx;
     border-radius: 16rpx;
     color: #fff;
+    box-sizing: border-box;
 }

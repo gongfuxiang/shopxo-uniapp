@@ -49,12 +49,10 @@
         computed: {
             // 跳过样式
             skip_position_style() {
-                const {
-                    statusBarHeight
-                } = uni.getSystemInfoSync();
+                const status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
                 if (!this.propHasNavbar) {
                     return this.obj_to_style({
-                        'top': `${statusBarHeight*2 + 88 + 30}rpx`,
+                        'top': `${status_bar_height*2 + 88 + 30}rpx`,
                     });
                 }
                 return this.obj_to_style({

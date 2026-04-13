@@ -6,6 +6,48 @@
   "description": "1. diy, form, 小程序仅base64, TIF，（web端也可以使用这个方式）；2. web端 Base64, WOFF2, WOFF, TEF, SVG, EOT",
   "glyphs": [
     {
+      "icon_id": "2700122",
+      "name": "感叹号-空心",
+      "font_class": "sigh-o",
+      "unicode": "e72b",
+      "unicode_decimal": 59179
+    },
+    {
+      "icon_id": "11372776",
+      "name": "感叹号",
+      "font_class": "sigh",
+      "unicode": "e8c6",
+      "unicode_decimal": 59590
+    },
+    {
+      "icon_id": "47199306",
+      "name": "点击",
+      "font_class": "hand-click",
+      "unicode": "101d1",
+      "unicode_decimal": 66001
+    },
+    {
+      "icon_id": "16534420",
+      "name": "分享-圆形",
+      "font_class": "share-circle",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "40047917",
+      "name": "进销存更多",
+      "font_class": "more",
+      "unicode": "e76f",
+      "unicode_decimal": 59247
+    },
+    {
+      "icon_id": "15872071",
+      "name": "没有数据",
+      "font_class": "no-data",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
       "icon_id": "39482322",
       "name": "医生",
       "font_class": "doctor",
@@ -487,13 +529,6 @@
       "font_class": "copy-square",
       "unicode": "e839",
       "unicode_decimal": 59449
-    },
-    {
-      "icon_id": "39479058",
-      "name": "感叹号",
-      "font_class": "sigh-o",
-      "unicode": "e83a",
-      "unicode_decimal": 59450
     },
     {
       "icon_id": "31617637",

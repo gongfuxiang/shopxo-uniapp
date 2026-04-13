@@ -4,6 +4,7 @@
         <view v-if="propIsTerse" class="terse-content margin-top cp">
             <block v-if="data != null && data_field.length > 0">
                 <block v-for="(item, index) in data_field" :key="index">
+                    <!-- <view>{{item.is_hide}}</view> -->
                     <view v-if="(item.is_hide || 0) == 0" class="item margin-top-xs" :class="propClass">
                         <text class="cr-grey margin-right-xl">{{ item.name }}</text>
                         <block v-if="item.type == 'images'">
@@ -24,7 +25,7 @@
                         </view>
                     </view>
                 </block>
-                <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
+                <view v-if="show_max > 0 && show_max < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
                     <text class="cr-grey-c margin-right-sm">{{ $t('common.view_more') }}</text>
                     <iconfont :name="'icon-arrow-' + (more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                 </view>
@@ -60,7 +61,7 @@
                                 </view>
                             </view>
                         </block>
-                        <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
+                        <view v-if="show_max > 0 && show_max < data_field.length" @tap.stop="item_more_event" class="margin-top-sm tc">
                             <text class="cr-grey-c margin-right-sm">{{ $t('common.view_more') }}</text>
                             <iconfont :name="'icon-arrow-' + (more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                         </view>
@@ -81,6 +82,7 @@
                 data: null,
                 data_field: [],
                 more_status: false,
+                show_max: 0,
             };
         },
         components: {
@@ -149,6 +151,7 @@
         created: function (e) {
             this.setData({
                 data: this.propData,
+                show_max: parseInt(this.propIsItemShowMax || 0),
             });
             this.data_field_handle(this.propDataField);
         },
@@ -162,7 +165,7 @@
                     var index = 0;
                     for (var i in data) {
                         if ((exclude.length == 0 && appoint.length > 0 && appoint.indexOf(data[i]['field']) != -1) || (appoint.length == 0 && (exclude.length == 0 || exclude.indexOf(data[i]['field']) == -1))) {
-                            data[i]['is_hide'] = (data[i]['is_hide'] || 0) == 0 ? (index >= this.propIsItemShowMax && this.propIsItemShowMax > 0 ? 1 : 0) : 0;
+                            data[i]['is_hide'] = this.more_status ? 0 : (parseInt(data[i]['is_hide'] || 0) == 0 ? ((this.show_max > 0 && index >= this.show_max) ? 1 : 0) : 1);
                             temp_data.push(data[i]);
                             index++;
                         }
@@ -185,10 +188,10 @@
 
             // 数据项更多事件
             item_more_event(e) {
-                this.data_field_handle(this.data_field);
                 this.setData({
                     more_status: !this.more_status,
                 });
+                this.data_field_handle(this.data_field);
             }
         }
     };

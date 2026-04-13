@@ -161,6 +161,15 @@ button:before {
 .max-h {
     max-height: 100%;
 }
+.max-h-8h {
+    max-height: 80vh;
+}
+.max-h-7h {
+    max-height: 70vh;
+}
+.max-h-6h {
+    max-height: 60vh;
+}
 .min-w {
     min-width: 100%;
 }
@@ -651,7 +660,6 @@ button[disabled].bg-grey {
     background-color: #ececec !important;
     color: #ababab !important;
 }
-
 /**
  * 表单
  */
@@ -995,6 +1003,19 @@ button[disabled].bg-grey {
  */
 .last-next-data .item {
     width: calc(100% - 120rpx);
+}
+
+/**
+ * 文本横向滚动
+ */
+.text-srcoll {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.text-srcoll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 /**

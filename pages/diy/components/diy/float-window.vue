@@ -76,7 +76,7 @@
                 }
                 const { float_style, float_style_color, display_location, offset_number_percentage } = this.propValue.style;
                 // 获取当前手机的宽度和高度
-                const { windowWidth, windowHeight } = uni.getSystemInfoSync();
+                const { windowWidth, windowHeight } = app.globalData.get_system_info();
                 // 计算出距离左边的距离
                 let x = display_location == 'left' ? 10 : windowWidth - 60;
                 // 计算出距离顶部的距离

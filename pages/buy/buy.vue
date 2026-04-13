@@ -68,7 +68,7 @@
                     <view v-for="(group, index) in goods_list" :key="index" class="goods-group-list padding-main border-radius-main bg-white spacing-mb">
                         <!-- 仓库分组 -->
                         <view class="goods-group-hd oh br-b padding-bottom-main">
-                            <view class="fl cp" @tap="warehouse_group_event" :data-value="group.url || ''">
+                            <view class="fl cp" :data-value="group.url || ''" @tap="url_event">
                                 <image v-if="(group.icon || null) != null" class="goods-group-icon va-m margin-right-xs" :src="group.icon" mode="aspectFit"></image>
                                 <text class="goods-group-title va-m">{{ group.name }}</text>
                                 <text v-if="(group.alias || null) != null" class="goods-group-alias va-m round margin-left-sm text-size-xs">{{ group.alias }}</text>
@@ -107,7 +107,7 @@
                                 </view>
                                 <!-- 订单商品表单 -->
                                 <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
-                                    <component-form-input-base ref="component_form_input" :propBackData="item.goods_id" :propConfig="item.plugins_ordergoodsform_data.config" :propFormInputId="item.plugins_ordergoodsform_data.id" ></component-form-input-base>
+                                    <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
                                 </view>
                             </view>
                         </view>
@@ -154,10 +154,27 @@
                         <!-- 扩展数据展示 -->
                         <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-lg">
                             <view v-for="(item, index2) in group.order_base.extension_data" :key="index2">
-                                <view class="item oh padding-vertical-xs padding-main">
+                                <view v-if="index2 <= 4 || group.order_base.extension_data_max_show" class="item oh padding-vertical-xs padding-horizontal-sm">
                                     <text class="cr-base fl">{{ item.name }}</text>
-                                    <text class="text-tips fr">{{ item.tips }}</text>
+                                    <view class="fr" :data-value="item.url || ''" @tap="url_event">
+                                        <image v-if="(item.images || null) != null" :src="item.images" mode="aspectFit" class="img-tips radius br-f5 margin-right-xs va-m"></image>
+                                        <text class="text-tips va-m">{{ item.tips }}</text>
+                                    </view>
                                 </view>
+                            </view>
+                            <view v-if="group.order_base.extension_data.length > 5" class="padding-sm cr-blue tr" :data-index="index" @tap="extension_data_max_show_event">
+                                <block v-if="group.order_base.extension_data_max_show">
+                                    <text class="va-m">{{$t('common.retract')}}{{$t('common.all')}}</text>
+                                    <view class="dis-inline-block margin-left-sm">
+                                        <iconfont name="icon-arrow-top" size="28rpx" propClass="cr-blue"></iconfont>
+                                    </view>
+                                </block>
+                                <block v-else>
+                                    <text class="va-m">{{$t('common.expand')}}{{$t('common.all')}}({{group.order_base.extension_data.length}})</text>
+                                    <view class="dis-inline-block margin-left-sm">
+                                        <iconfont name="icon-arrow-bottom" size="28rpx" propClass="cr-blue"></iconfont>
+                                    </view>
+                                </block>
                             </view>
                         </view>
                         <!-- 小计 -->
@@ -831,6 +848,17 @@
                 return data;
             },
 
+            // 扩展数据最大显示状态事件
+            extension_data_max_show_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var temp = this.goods_list;
+                var extension_data_max_show = temp[index]['order_base']['extension_data_max_show'] || false;
+                temp[index]['order_base']['extension_data_max_show'] = !extension_data_max_show;
+                this.setData({
+                    goods_list: temp,
+                });
+            },
+
             // 用户留言输入事件
             bind_user_note_event(e) {
                 this.setData({
@@ -912,10 +940,10 @@
                 }
 
                 // 订单商品表单插件数据验证处理
-                var component_form_input = this.$refs.component_form_input || [];
-                if (component_form_input.length > 0) {
-                    for (var i in component_form_input) {
-                        var res = component_form_input[i].on_submit_event();
+                var form_input_base = this.$refs.form_input_base || [];
+                if (form_input_base.length > 0) {
+                    for (var i in form_input_base) {
+                        var res = form_input_base[i].on_submit_event();
                         if(res.status == 'error') {
                             app.globalData.showToast(res.message);
                             return false;
@@ -1222,8 +1250,8 @@
                 this.init();
             },
 
-            // 仓库事件
-            warehouse_group_event(e) {
+            // url事件
+            url_event(e) {
                 app.globalData.url_event(e);
             },
 

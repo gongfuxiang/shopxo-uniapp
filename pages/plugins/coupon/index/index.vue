@@ -9,7 +9,7 @@
                 <view class="plugins-coupon-container">
                     <view class="coupon-content bg-white pr page-bottom-fixed">
                         <!-- 优惠劵列表 -->
-                        <view v-if="data_list.length > 0" class="flex-col">
+                        <view v-if="data_list.length > 0" class="padding-horizontal-main flex-col">
                             <block v-for="(item, index) in data_list" :key="index">
                                 <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_back_event"></component-coupon-card>
                             </block>

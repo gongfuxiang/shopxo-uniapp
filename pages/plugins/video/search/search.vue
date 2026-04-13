@@ -19,7 +19,7 @@
                 <!-- 导航栏 -->
                 <view class="nav-tabs flex-row align-s jc-sb gap-10"> 
                     <view class="tabs-scroll-content">
-                        <view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(currentTab == index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
+                        <view v-for="(tab, index) in category_list" :key="index" class="tab-item" :class="(current_index == index) ? 'active' : ''" :data-index="index" @click="switch_tab">{{ tab.name }}</view>
                     </view>
                     <view class="nav-tabs-filter" @click="toggle_filter_popup">
                         <iconfont name="icon-filter" size="32rpx"></iconfont>
@@ -126,9 +126,8 @@ export default {
 			top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
 			// #endif
 			search_keywords: '',
-			currentTab: 0,
+			current_index: 0,
 			recommend_videos: [],
-			isLoadingMore: false,
 			params: null,
 			filter_popup_status: false,
 			filter_popup_top_style: '',
@@ -144,6 +143,7 @@ export default {
 				duration: 'default',
 			},
 			is_more_loading: false,
+            data_base: {},
 			header_padding_left: '',
 			category_list: [],
 			page: 0,
@@ -156,6 +156,8 @@ export default {
 			data_list_loding_msg: '',
 			search_history: [],
             cache_key: 'cache_plugins_video_search_history_key',
+            // 自定义分享信息
+            share_info: {},
 		};
 	},
     onLoad(params) {
@@ -164,9 +166,11 @@ export default {
 
         // 设置参数
         params = app.globalData.launch_params_handle(params);
+        var tabsindex = parseInt(params.tabsindex || 0);
         this.setData({
+            params: params,
+            current_index: isNaN(tabsindex) ? 0 : tabsindex,
         	search_keywords: params.keywords || '',
-        	params: params,
         });
     },
     
@@ -237,9 +241,13 @@ export default {
 								item.list = new_data.search_duration_list;
 							}
 						});
+                        var category_list = new_data.category_list || [];
+                        var category_data = category_list[this.current_index] || null;
 						this.setData({
-							category_list: new_data.category_list,
-							search_cid: new_data?.category_list[0]?.id || '',
+                            data_base: new_data.base || {},
+							category_list: category_list,
+                            current_index: (category_data == null) ? 0 : this.current_index,
+							search_cid: (category_data == null) ? '' : category_data.id,
 							data_tabs_loding_status: 0,
 							popup_list: this.popup_list
 						});
@@ -312,7 +320,7 @@ export default {
 		switch_tab(e) {
 			const index = e?.currentTarget?.dataset?.index || 0;
 			this.setData({
-				currentTab: index,
+				current_index: index,
 				search_cid: this.category_list[index]?.id || '',
 				page: 0,
 				page_total: 1,
@@ -323,8 +331,11 @@ export default {
 			this.load_recommend_videos();
 		},
 
-        // 记载视频
+        // 加载视频
 		load_recommend_videos() {
+            // 基础自定义分享
+            this.share_info_handle();
+
 			// 加载推荐视频数据的逻辑
 			const { time = '', duration = '', sort = ''} = this.filter_params;
 			const new_page = this.page + 1;
@@ -414,7 +425,23 @@ export default {
 			this.close_filter_popup();
 			// 重新初始化数据
 			this.load_recommend_videos();
-		}
+		},
+
+        // 分享设置处理
+        share_info_handle() {
+            this.setData({
+                share_info: {
+                    title: this.data_base.seo_title || this.data_base.application_name,
+                    desc: this.data_base.seo_desc,
+                    path: '/pages/plugins/video/search/search',
+                    query: 'tabsindex=' + this.current_index + '&keywords=' + this.search_keywords,
+                    img: this.data_base.header_logo || '',
+                },
+            });
+
+            // 分享菜单处理
+            app.globalData.page_share_handle(this.share_info);
+        }
 	}
 };
 </script>

@@ -86,11 +86,15 @@
 * 扩展数据
 */
 .extension-list {
-    background-color: #ffffeb;
-    border: 1px solid #ffe2cf;
+    background-color: #fffff4;
+    border: 1px solid #ffeadc;
 }
 .extension-list .item:not(:last-child) {
     border-bottom: 1px dashed #ffe2cf;
+}
+.extension-list .item .img-tips {
+    width: 40rpx;
+    height: 40rpx;
 }
 .extension-list .item .text-tips {
     color: #ff8f44;

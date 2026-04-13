@@ -201,7 +201,7 @@
         -moz-border-radius: 8rpx;
         border-radius: 8rpx;
         color: #fff;
-        min-width: 40rpx;
+        min-width: 46rpx;
         text-align: center;
     }
     .countdown .ds {

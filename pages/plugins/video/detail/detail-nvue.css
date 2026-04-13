@@ -232,10 +232,10 @@
 
 .comment-input {
     flex: 1;
+    height: 40rpx;
     font-size: 28rpx;
-    height: 82rpx;
-    padding: 16rpx;
-    box-sizing: border-box;
+    margin: 16rpx;
+    max-height: 400rpx;
 }
 
 .comment-input-content {
@@ -245,8 +245,48 @@
     font-size: 28rpx;
 }
 
+.product-image {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 8rpx;
+}
+
+.comment-send-button {
+    color: #fff;
+    font-size: 26rpx;
+    padding: 14rpx 34rpx;
+}
+
+.border-0 {
+    border: 0;
+}
 .pr-16 {
     padding-right: 16rpx;
+}
+
+.pt-8 {
+    padding-top: 16rpx;
+}
+.pt-4 {
+    padding-top: 8rpx;
+}
+.mr-10 {
+    margin-right: 20rpx;
+}
+.ml-10 {
+    margin-left: 20rpx;
+}
+.mt-10 {
+    margin-top: 20rpx;
+}
+.mb-10 {
+    margin-bottom: 20rpx;
+}
+.pr-10 {
+    padding-right: 20rpx;
+}
+.pt-10 {
+    padding-top: 20rpx;
 }
 .comment-input-img-container {
     padding: 10rpx 16rpx 16rpx 16rpx;
@@ -255,6 +295,7 @@
 .comment-input-img {
     width: 100rpx;
     height: 100rpx;
+    border-radius: 8rpx;
 }
 .form-img-icon {
     position: absolute;
@@ -378,4 +419,5 @@
     padding: 10rpx;
     border-radius: 16rpx;
     color: #fff;
+    box-sizing: border-box;
 }

@@ -18,7 +18,7 @@
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </block>
-                <view v-if="is_back_btn && pay_status != 0" class="margin-top-xxxxl padding-top-xxxxl tc">
+                <view v-if="is_back_btn && data_list_loding_status != 1" class="margin-top-xxxxl padding-top-xxxxl tc">
                     <button class="bg-white br-main cr-main round text-size-sm padding-horizontal-xxxxl" size="mini" hover-class="none" open-type="launchApp" app-parameter="wechat">{{pay_back_app_text}}</button>
                 </view>
             </view>
@@ -101,7 +101,7 @@
         },
 
         methods: {
-            // // 初始化
+            // 初始化
             get_data() {
                 var self = this;
                 var action = 'login';

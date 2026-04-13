@@ -15,7 +15,7 @@
         components: {},
         props: {},
         mounted() {
-        	this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight + 'px';
+        	this.statusBarHeight = app.globalData.get_system_info('statusBarHeight') + 'px';
         },
         methods: {}
     };

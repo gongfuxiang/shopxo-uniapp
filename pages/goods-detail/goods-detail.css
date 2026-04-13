@@ -156,15 +156,6 @@
 .goods-base-content .goods-title-content .goods-title {
     font-size: 30rpx;
     line-height: 40rpx;
-    font-weight: bold;
-    width: calc(100% - 200rpx);
-}
-.goods-base-content image {
-    width: 40rpx;
-    height: 40rpx;
-}
-.goods-base-content .collect {
-    width: 76rpx;
 }
 
 /**
@@ -212,11 +203,7 @@
     position: relative;
     height: 100%;
 }
-.goods-base-right-opt image {
-    width: 40rpx;
-    height: 40rpx;
-}
-.goods-base-right-opt .collect {
+.goods-base-right-opt .favor {
     width: 76rpx;
 }
 .price-content .price-icon {
@@ -246,22 +233,10 @@
 /**
  * 价格信息与倒计时（限时秒杀，预售）
  */
-.countdown-content {
-    width: 38%;
-}
-.countdown-content .time-title {
-    font-size: 38rpx;
-    margin-bottom: 10rpx;
-}
 .goods-base-price-countdown {
-    background-color: #e84742 !important;
-}
-.goods-base-price-countdown .price-content {
     background-color: #f9534e;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width: 60%;
-    min-height: 164rpx;
 }
 .goods-base-price-countdown .price-content .price-icon {
     border-color: #fff;
@@ -275,14 +250,8 @@
     color: #fff !important;
 }
 .goods-base-price-countdown .price-content .original-price,
-.goods-base-price-countdown .price-content .unit{
+.goods-base-price-countdown .price-content .unit {
     color: #ffcece !important;
-}
-.price-content .price-icon.countdown-drift {
-    position: absolute;
-    right: 20rpx;
-    bottom: 20rpx;
-    margin-right: 0;
 }
 
 /*
@@ -416,9 +385,6 @@
 /*
 * 优惠劵 - 插件
 */
-.coupon-padding {
-    padding: 2rpx;
-}
 .mini-coupon {
     position: relative;
     display: inline-block;
@@ -448,15 +414,6 @@
 .mini-coupon-br::after {
     border: 1px solid #FE5500;
 }
-.coupon-srcoll {
-    white-space: nowrap;
-    overflow-x: auto;
-}
-.coupon-srcoll::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
-}
 .received-coupon {
     background: #FFEBE0;
     border: 2rpx solid #FE5500;
@@ -472,32 +429,6 @@
 }
 .not-received-coupon .divider-l::before {
     background: #fff;
-}
-.plugins-coupon-container-view .item-title {
-    min-width: 70rpx;
-}
-.plugins-coupon-container-view .item:not(:last-child) {
-    margin-right: 10rpx;
-}
-.plugins-coupon-container {
-    max-height: 50vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-top: 20rpx;
-}
-.plugins-coupon-container .v-left {
-    padding: 20rpx 10rpx 20rpx 20rpx;
-}
-.plugins-coupon-container .item:not(:last-child) {
-    margin-bottom: 20rpx;
-}
-.plugins-coupon-container .item,
-.plugins-coupon-container .v-right,
-.plugins-coupon-container .v-right .circle {
-    height: 175rpx;
-}
-.plugins-coupon-container .v-left .base .price {
-    font-size: 46rpx;
 }
 
 /**
@@ -571,4 +502,12 @@
 }
 .plugins-goodsservice-container .item .right {
     width: calc(100% - 90rpx);
+}
+
+/**
+ * 满送插件 - 聚合优惠弹层
+ */
+.plugins-fullgive-popup .goods-img  {
+    width: 120rpx;
+    height: 120rpx;
 }

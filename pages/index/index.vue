@@ -153,6 +153,17 @@
                                     <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                                 </view>
 
+                                <!-- 预售 - 插件 -->
+                                <view v-if="pv.plugins == 'presale' && (plugins_presale_data || null) != null && (plugins_presale_data.data || null) != null && plugins_presale_data.data.length > 0" class="plugins-presale-data border-radius-main spacing-mb bg-white" :style="'background-image: url(' + plugins_presale_data.presale_config.home_bg + ');'">
+                                    <view class="flex-row jc-sb align-c padding-top-main padding-horizontal-main">
+                                        <view class="flex-1">
+                                            <image class="dis-inline-block va-m icon" :src="plugins_presale_data.presale_config.home_title_icon" mode="widthFix"></image>
+                                        </view>
+                                        <text data-value="/pages/plugins/presale/index/index" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{ $t('common.more') }}</text>
+                                    </view>
+                                    <component-goods-list :propData="{ style_type: 2, goods_list: plugins_presale_data.data }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propPriceField="deposit_price" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
+                                </view>
+
                                 <!-- 活动配置-楼层顶部 - 插件 -->
                                 <view v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
                                     <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-activity-list>
@@ -392,6 +403,8 @@
                 plugins_sort_list: [],
                 // 限时秒杀插件
                 plugins_seckill_data: null,
+                // 预售插件
+                plugins_presale_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 // 活动配置插件
@@ -570,6 +583,7 @@
                                 data_list_loding_status: data_list == null || data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
+                                plugins_presale_data: data.plugins_presale_data || null,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                 plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,

@@ -6,7 +6,7 @@
                     <view class="padding-main oh">
                         <!-- 用户中心公告 -->
                         <view v-if="(data_base.user_auth_tips || null) != null" class="padding-bottom">
-                            <uni-notice-bar class="padding-0 margin-0" show-get-more show-icon scrollable :text="data_base.user_auth_tips" background-color="transparent" @click="popup_show_event" />
+                            <uni-notice-bar class="padding-0 margin-0" show-get-more show-icon scrollable :text="data_base.user_auth_tips.join('')" background-color="transparent" @click="popup_show_event" />
                         </view>
                         <view v-if="(data_base || null) != null" class="data-list">
                             <block v-for="(item, index) in data_base.user_auth_data" :key="index">

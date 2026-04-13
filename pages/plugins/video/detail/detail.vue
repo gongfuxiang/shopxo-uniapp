@@ -64,7 +64,7 @@
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c gap-10">
                                             <iconfont name="icon-cart-have" color="#F5C366" size="30rpx"></iconfont>
-                                            <text class="size-14 cr-f">{{$t('common.buy')}} {{$t('common.goods')}}</text>
+                                            <text class="size-14 cr-f">{{$t('common.buy')}}{{$t('common.goods')}}</text>
                                         </view>
                                         <iconfont name="icon-angle-right" color="#fff" size="30rpx"></iconfont>
                                     </view>
@@ -112,7 +112,7 @@
                                             </template>
                                             <template v-else>
                                                 <template v-if="comment_item.show_sub_comment_loading">
-                                                    <loading-component></loading-component>
+                                                    <component-loading></component-loading>
                                                 </template>
                                                 <view v-else class="sub-comment-more flex-row align-c gap-10">
                                                     <template v-if="comment_item.page != null && comment_item.page < comment_item.page_total">
@@ -140,24 +140,46 @@
                 </view>
                 
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
-                    <view class="comment-input-content flex-col jc-c">
-                        <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
+                    <view class="flex-col align-c gap-4">
+                        <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10 wh-auto">
                             <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                             <view data-type="image" @tap="comment_data_delete">
                                 <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
                             </view>
                         </view>
-                        <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                            <input :value="comment_input_value" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" @confirm="send_comment" />
-                            <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
-                                <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
-                            </component-upload>
-                        </view>
-                        <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
-                            <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                                <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
-                                <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                        <view class="flex-row align-s gap-10 wh-auto ht-auto">
+                            <view class="flex-1 comment-input-content flex-col jc-c">
+                                <view class="flex-row align-s gap-10 wh-auto ht-auto pr-16 box-border-box">
+                                    <!-- #ifdef H5 -->
+                                    <textarea :value="comment_input_value" class="comment-input wh-auto cr-black" placeholder-class="cr-grey" auto-height :show-confirm-bar="false" :maxlength="500" :adjust-position="false" :placeholder="input_placeholder" @focus="add_comment" @input="comment_input_event" />
+                                    <!-- #endif -->
+                                    <!-- #ifndef H5 -->
+                                    <view :class="'comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')" @tap="add_comment">{{ isEmpty(comment_input_value) ? input_placeholder : comment_input_value }}</view>
+                                    <!-- #endif -->
+                                    <view class="pt-8">
+                                        <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @call-back="upload_images_event">
+                                            <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
+                                        </component-upload>
+                                    </view>
+                                </view>
+
+                                <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
+                                    <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
+                                        <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
+                                        <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                                    </view>
+                                </view>
                             </view>
+                            <!-- #ifdef H5 -->
+                            <view class="pt-4 flex-row align-c">
+                                <button :disabled="isEmpty(comment_input_value)" size="mini" type="default" class="bg-main margin-0 cr-white" @tap="send_comment">{{$t('common.send')}}</button>
+                            </view>
+                            <!-- #endif -->
+                            <!-- #ifndef H5 -->
+                            <view v-if="!isEmpty(comment_input_value)" class="pt-4 flex-row align-c">
+                                <button size="mini" type="default" class="margin-0 bg-main cr-white" @tap="send_comment">{{$t('common.send')}}</button>
+                            </view>
+                            <!-- #endif -->
                         </view>
                     </view>
                 </view>
@@ -205,24 +227,30 @@
         </component-popup>
         <!-- 添加评论弹出框 -->
         <view v-if="is_add_comment" class="keyboard-input br-top-shadow" :style="'width:100%;bottom:' + listener_height + 'px;'">
-            <view class="comment-input-content flex-col jc-c">
-                <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
-                    <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
-                    <view data-type="image" @tap="comment_data_delete">
-                        <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
+            <view class="flex-col gap-10">
+                <view class="comment-input-content flex-col jc-c">
+                    <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
+                        <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
+                        <view data-type="image" @tap="comment_data_delete">
+                            <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
+                        </view>
+                    </view>
+                    <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
+                        <textarea ref="commentInput" :value="comment_input_value" :focus="is_add_comment" class="comment-input wh-auto cr-black" placeholder-class="cr-grey" auto-height :show-confirm-bar="false" :maxlength="500" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
+                    </view>
+                    <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
+                        <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
+                            <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
+                            <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
+                        </view>
                     </view>
                 </view>
-                <view class="flex-row align-c gap-10 wh-auto ht-auto pr-16 box-border-box">
-                    <input ref="commentInput" :value="comment_input_value" :focus="is_add_comment" class="comment-input" type="text" confirm-type="send" :adjust-position="false" :auto-blur="true" :placeholder="input_placeholder" @input="comment_input_event" @blur="() => is_add_comment = false" @confirm="send_comment" />
-                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
+                <view class="flex-row align-c jc-sb wh-auto">
+                    <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus propFailChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
                         <iconfont name="icon-layout-module-single-images" size="40rpx" color="#999"></iconfont>
                     </component-upload>
-                </view>
-                <view v-if="form_images_list.length > 0" class="pr w h comment-input-img-container">
-                    <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
-                        <iconfont name="icon-close" size="10" color="#000" class="comment-input-img-close" :data-index="index" @tap="comment_input_img_close"></iconfont>
-                        <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="wh-auto ht-auto"></image>
-                    </view>
+
+                    <button :disabled="isEmpty(comment_input_value)" size="mini" type="primary" class="margin-0 bg-main cr-white" @tap="send_comment">{{$t('common.send')}}</button>
                 </view>
             </view>
         </view>
@@ -371,7 +399,6 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-            console.log(this.is_manual_pause);
             // 视频播放
             if (!this.is_manual_pause && this.create_video_contexts[this.current_index]) {
                 this.video_play_event(this.create_video_contexts[this.current_index]);
@@ -836,12 +863,20 @@
                     if (move_distance > 0) {
                         // 向下滑动，切换到上一个
                         if (this.current_video_index <= 0) {
-                            app.globalData.showToast('已经是第一个视频了');
+                            setTimeout(() => {
+                                if (!this.show_comment_modal) {
+                                    app.globalData.showToast('已经是第一个视频了');
+                                } 
+                            }, 0);
                         }
                     } else {
                         // 向上滑动，切换到下一个
                         if (this.current_video_index >= this.video_data_list.length - 1) {
-                            app.globalData.showToast('已经是最后一个视频了');
+                            setTimeout(() => {
+                                if (!this.show_comment_modal) {
+                                    app.globalData.showToast('已经是最后一个视频了');
+                                } 
+                            }, 0);
                         }
                     }
                     
@@ -1157,7 +1192,9 @@
             // 评论
             send_comment() {
                 let comment_text = this.comment_input_value;
-                if (!comment_text.trim()) return;
+                if (!comment_text.trim()) {
+                    app.globalData.showToast('请填写评论内容');
+                };
 
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id
                 let new_video_comments_id = 0;
@@ -1181,6 +1218,11 @@
                     success: res => {
                         const data = res.data;
                         if (data.code == 0) {
+                            // 关闭输入框
+                            this.is_add_comment = false;
+                            //关闭键盘
+                            uni.hideKeyboard();
+
                             const new_data = data.data;
                             // 没有回复时的评论
                             if (new_video_comments_id == 0) {
@@ -1191,14 +1233,9 @@
                                     page: 0,
                                     sub_comments: [],
                                 })
-                                this.video_data_list.forEach(item => {
-                                    if (item.id == this.current_video_id) {
-                                        item.comments_count++;
-                                    }
-                                })
+                                
                                 this.setData({
-                                    video_data_list: this.video_data_list,
-                                    comment_scroll_top: 0 + Math.random() // 添加主评论时滚动到最顶部
+                                    comment_scroll_top: Date.now(), // 添加主评论时滚动到最顶部
                                 })
                             } else {
                                 this.active_comments.forEach(item => {
@@ -1215,9 +1252,18 @@
                                     }
                                 })
                             }
+                            // 更新视频数据
+                            const videoItem = this.video_data_list.find(item => item.id == this.current_video_id);
+                            if (videoItem) {
+                                videoItem.comments_list = this.active_comments;
+                                if (new_video_comments_id == 0) {
+                                    videoItem.comments_count++;
+                                }
+                            }
                             // 清空输入框, 更新数据内容
                             this.setData({
                                 active_comments: this.active_comments,
+                                video_data_list: this.video_data_list,
                                 form_images_list: [],
                                 comment_input_value: '',
                                 comments_reply_data: {},
@@ -1602,12 +1648,12 @@
                         // 保留当前评论
                         filteredComments.push(comment);
                     }
-                    // 删除之后更新评论数据
-                    this.video_data_list.forEach(item => {
-                        if (item.id == this.current_video_id) {
-                            item.comments_count = filteredComments.length;
-                        }
-                    })
+                    // 更新视频数据
+                    const videoItem = this.video_data_list.find(item => item.id == this.current_video_id);
+                    if (videoItem) {
+                        videoItem.comments_list = filteredComments;
+                        videoItem.comments_count = filteredComments.length;
+                    }
                     // 更新数据
                     this.setData({
                         active_comments: filteredComments,

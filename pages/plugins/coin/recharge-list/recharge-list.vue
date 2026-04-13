@@ -47,7 +47,7 @@
                             </view>
                             <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
                                 <button type="default" class="recharge-del-btn round" :data-id="item.id" @tap="recharge_del_event">{{$t('common.del')}}</button>
-                                <button type="default" class="recharge-apy-btn round" :data-id="item.id" @tap="recharge_pay_event">{{$t('order.order.1i873j')}}</button>
+                                <button type="default" class="recharge-apy-btn round" :data-id="item.id" @tap="recharge_pay_event">{{$t('common.pay')}}</button>
                             </div>
                         </view>
                         <!-- 结尾 -->
