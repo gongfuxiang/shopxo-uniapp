@@ -1,36 +1,16 @@
 <template>
-    <view v-if="!isEmpty(list) || !isEmpty(sckill_list)" :style="style_container">
+    <view v-if="!isEmpty(list) || !isEmpty(presale_list)" :style="style_container">
         <view :style="style_img_container">
             <view class="flex-col gap-10">
-                <view v-if="form.head_state == '1'" class="oh" :style="seckill_head_style">
-                    <view class="seckill-head flex-row align-c jc-sb gap-10" :style="seckill_head_img_style">
+                <view v-if="form.head_state == '1'" class="oh" :style="presale_head_style">
+                    <view class="presale-head flex-row align-c jc-sb" :style="presale_head_img_style">
                         <view :class="['flex-1 flex-row align-c', { 'gap-10': form.theme != '1' }]">
-                            <view class="seckill-title">
+                            <view class="presale-title">
                                 <image-empty v-if="form.title_type == 'image'" :propImageSrc="form.title_src[0]" propImgFit="heightFix" propErrorStyle="width:42rpx; height: 20rpx;"></image-empty>
                                 <text v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 'bold' }">{{ form.title_text }}</text>
                             </view>
-                            <view v-if="form.theme == '1'" class="padding-horizontal-sm cr-white">|</view>
-                            <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
-                                <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</text>
-                                <view class="flex-row gap-3 jc-c align-c" :style="form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : ''">
-                                    <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
-                                    <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
-                                        <template v-if="form.theme == '4'">
-                                            <view class="text-size-xs flex-row jc-c align-c" :style="'min-width:50rpx;color:' + new_style.countdown_color">{{ item.value }}</view>
-                                            <text v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</text>
-                                        </template>
-                                        <template v-else>
-                                            <view class="time-config text-size-xs flex-row jc-c align-c" :style="time_bg + 'min-width:50rpx;color:' + new_style.countdown_color">{{ item.value }}</view>
-                                            <text v-if="[0, 1].includes(index)" class="colon" :style="icon_time_check">:</text>
-                                        </template>
-                                    </view>
-                                </view>
-                            </view>
-                            <view v-else class="flex-row align-c gap-4">
-                                <text class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</text>
-                            </view>
                         </view>
-                        <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
+                        <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/presale/index/index'" @tap="url_event">
                             <text :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</text>
                             <iconfont name="icon-arrow-right" :color="new_style.head_button_color" propContainerDisplay="flex"></iconfont>
                         </view>
@@ -40,7 +20,7 @@
                     <view class="oh" :style="shop_img_container">
                         <template v-if="form.shop_style_type != '3'">
                             <view class="flex-row flex-wrap wh-auto ht-auto" :style="{ gap: content_outer_spacing }">
-                                <view v-for="(item, index) in sckill_list" :key="index"  :style="layout_style + layout_type_style + content_radius" :data-value="item.goods_url" @tap="url_event">
+                                <view v-for="(item, index) in presale_list" :key="index"  :style="layout_style + layout_type_style + content_radius" :data-value="item.goods_url" @tap="url_event">
                                     <view :class="layout_type" :style="layout_img_style">
                                         <template v-if="!isEmpty(item)">
                                             <view class="oh pr">
@@ -52,6 +32,8 @@
                                                 </view>
                                                 <!-- 角标 -->
                                                 <subscriptIndex :propValue="propValue"></subscriptIndex>
+                                                <!-- 预售标签 -->
+                                                <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || '预售' }}</view>
                                             </view>
                                         </template>
                                         <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb oh" :style="content_style">
@@ -61,21 +43,25 @@
                                                     <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
                                                     <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
                                                 </view>
-                                                <!-- 进度条 -->
-                                                <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
-                                                        <view class="re flex-1">
-                                                            <view class="slide-bottom" :style="`background: ${new_style.progress_bg_color}`"></view>
-                                                            <view class="slide-top" :style="` width: 51%; ${slide_active_color}`">
-                                                                <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
-                                                            </view>
+                                                <!-- 预售进度条 -->
+                                                <view v-if="form.is_show_progress == '1' && !isEmpty(item.presale_progress)" class="flex-row align-c gap-6">
+                                                    <view class="re flex-1">
+                                                        <view class="slide-bottom" :style="`background: ${new_style.progress_bg_color}`"></view>
+                                                        <view class="slide-top" :style="` width: ${item.presale_progress}%; ${slide_active_color}`">
+                                                            <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><iconfont name="icon-presale" :color="new_style.progress_button_icon_color" size="9"></iconfont></view>
                                                         </view>
-                                                        <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</text>
-                                                    </view> -->
+                                                    </view>
+                                                    <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已订{{ item.presale_progress }}%</text>
+                                                </view>
+                                                <!-- 预售时间信息 -->
+                                                <view v-if="form.is_show_presale_time == '1' && !isEmpty(item.presale_time_text)" class="text-size-xss" :style="{ color: new_style.presale_time_color }">
+                                                    {{ item.presale_time_text }}
+                                                </view>
                                             </view>
                                             <view class="flex-row align-e gap-10 jc-sb">
                                                 <view class="flex-col gap-5">
                                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.seckill_pirce_title ?  form.seckill_pirce_title : ''}}</text>
+                                                        <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : '预售价' }}</text>
                                                         <text :style="price_symbol">{{ item.show_price_symbol }}</text>
                                                         <text :style="price_style">{{ item.min_price }}</text>
                                                         <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
@@ -87,6 +73,10 @@
                                                                 {{ item.show_original_price_unit }}
                                                             </template>
                                                         </text>
+                                                    </view>
+                                                    <!-- 定金信息 -->
+                                                    <view v-if="form.is_show_deposit == '1' && !isEmpty(item.deposit_price)" class="text-size-xss" :style="{ color: new_style.deposit_color }">
+                                                        {{ item.show_deposit_symbol }}{{ item.deposit_price }}
                                                     </view>
                                                 </view>
                                                 <view v-if="form.is_shop_show == '1'">
@@ -120,6 +110,8 @@
                                                             </view>
                                                             <!-- 角标 -->
                                                             <subscriptIndex :propValue="propValue"></subscriptIndex>
+                                                            <!-- 预售标签 -->
+                                                            <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || '预售' }}</view>
                                                         </view>
                                                     </template>
                                                     <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
@@ -129,21 +121,25 @@
                                                                 <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
                                                                 <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
                                                             </view>
-                                                            <!-- 进度条 -->
-                                                            <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
-                                                            <view class="re flex-1">
-                                                                <view class="slide-bottom" :style="{ 'background': new_style.progress_bg_color }"></view>
-                                                                <view class="slide-top" :style="'width: 51%;' + slide_active_color ">
-                                                                    <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
+                                                            <!-- 预售进度条 -->
+                                                            <view v-if="form.is_show_progress == '1' && !isEmpty(item.presale_progress)" class="flex-row align-c gap-6">
+                                                                <view class="re flex-1">
+                                                                    <view class="slide-bottom" :style="{ 'background': new_style.progress_bg_color }"></view>
+                                                                    <view class="slide-top" :style="'width: ' + item.presale_progress + '%;' + slide_active_color ">
+                                                                        <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><iconfont name="icon-presale" :color="new_style.progress_button_icon_color" size="9"></iconfont></view>
+                                                                    </view>
                                                                 </view>
+                                                                <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已订{{ item.presale_progress }}%</text>
                                                             </view>
-                                                            <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已抢51%</text>
-                                                        </view> -->
+                                                            <!-- 预售时间信息 -->
+                                                            <view v-if="form.is_show_presale_time == '1' && !isEmpty(item.presale_time_text)" class="text-size-xss" :style="{ color: new_style.presale_time_color }">
+                                                                {{ item.presale_time_text }}
+                                                            </view>
                                                         </view>
                                                         <view class="flex-row align-e gap-10 jc-sb">
                                                             <view class="flex-col gap-5">
                                                                 <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                                    <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.seckill_pirce_title ? form.seckill_pirce_title : ''}}</text>
+                                                                    <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : '预售价' }}</text>
                                                                     <text :style="price_symbol">{{ item.show_price_symbol }}</text>
                                                                     <text :style="price_style">{{ item.min_price }}</text>
                                                                     <text v-if="is_show('price_unit')" :style="price_unit">{{ item.show_price_unit }}</text>
@@ -155,6 +151,10 @@
                                                                             {{ item.show_original_price_unit }}
                                                                         </template>
                                                                     </text>
+                                                                </view>
+                                                                <!-- 定金信息 -->
+                                                                <view v-if="form.is_show_deposit == '1' && !isEmpty(item.deposit_price)" class="text-size-xss" :style="{ color: new_style.deposit_color }">
+                                                                    {{ item.show_deposit_symbol }}{{ item.deposit_price }}
                                                                 </view>
                                                             </view>
                                                             <view v-if="form.is_shop_show == '1'">
@@ -214,9 +214,8 @@
             return {
                 form: {},
                 new_style: {},
-                time_bg: '',
                 slide_active_color: '',
-                seckill_head_style: '',
+                presale_head_style: '',
                 style_container: '',
                 style_img_container: '',
                 time_config: [
@@ -224,7 +223,7 @@
                     { key: 'minute', value: '00' },
                     { key: 'second', value: '00' },
                 ],
-                seckill_time: {},
+                presale_time: {},
                 // 商品间距
                 content_outer_spacing: '',
                 content_outer_spacing_magin: '',
@@ -244,8 +243,6 @@
                 content_img_radius: '',
                 //角标设置
                 corner_marker: '',
-                // 定时器
-                intervalId: null,
                 // 数据存储
                 list: [],
                 // 一屏显示的数量
@@ -261,13 +258,12 @@
                 shop_container: '',
                 shop_img_container: '',
                 // 商品列表
-                sckill_list: [],
+                presale_list: [],
+                // 预售标签样式
+                presale_tag_style: '',
             };
         },
         computed: {
-            icon_time_check() {
-                return `${this.time_bg};line-height: 1;background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;`;
-            },
             // 按钮渐变色处理
             button_gradient() {
                 return gradient_handle(this.new_style.shop_button_color, '180deg');
@@ -282,40 +278,12 @@
         created() {
             this.init();
         },
-        beforeDestroy() {
-            // 如果有定时任务执行，在离开的时候清空掉定时任务
-            if (!isEmpty(this.intervalId)) {
-                clearInterval(this.intervalId);
-            }
-        },
         methods: {
             isEmpty,
             init() {
                 const new_form = this.propValue.content;
                 const new_style = this.propValue.style;
-                const data = new_form.data;
-                let new_list = [];
-                if (data && !isEmpty(data.current) && !isEmpty(data.current.time)) {
-                    if (!isEmpty(data.current.goods)) {
-                        new_list = data.current.goods;
-                    }
-                    const { status = '1', time_first_text = '已结束' } = data?.current?.time || {};
-                    this.setData({
-                        seckill_time: {
-                            time_end_number: Number(data.current.time_end_number + '000'),
-                            time_start_number: Number(data.current.time_start_number + '000'),
-                            status: status,
-                            time_first_text: time_first_text,
-                        },
-                    });
-                    // 先执行一次倒计时，后续的等待倒计时执行
-                    setTimeout(() => {
-                        this.updateCountdown();
-                    }, 0);
-                    this.setData({
-                        intervalId: setInterval(this.updateCountdown, 1000),
-                    });
-                }
+                const new_list = new_form.data;
                 // 默认数据
                 const product_style_list = [
                     { name: '单列', value: '1', width: 110, height: 120 },
@@ -354,10 +322,9 @@
                 this.setData({
                     form: this.propValue.content,
                     new_style: this.propValue.style,
-                    time_bg: this.get_time_bg(new_style),
                     slide_active_color: this.get_slide_active_color(new_style),
-                    seckill_head_style: this.get_seckill_head_style(new_style, '1'),
-                    seckill_head_img_style: this.get_seckill_head_style(new_style, '2'),
+                    presale_head_style: this.get_presale_head_style(new_style, '1'),
+                    presale_head_img_style: this.get_presale_head_style(new_style, '2'),
                     style_container: common_styles_computer(new_style.common_style) + 'box-sizing: border-box;',
                     style_img_container: common_img_computer(new_style.common_style, this.propIndex),
                     content_outer_spacing: new_style.content_outer_spacing + 'px',
@@ -383,9 +350,15 @@
                     list: get_swiper_list(new_list, new_form.carousel_col, new_style.rolling_fashion),
                     shop_container: this.get_shop_container(new_style),
                     shop_img_container: this.get_shop_img_container(new_style),
-                    sckill_list: new_list,
+                    presale_list: new_list,
                     img_size: img_style,
+                    presale_tag_style: this.get_presale_tag_style(new_style),
                 });
+            },
+            // 预售标签样式
+            get_presale_tag_style(new_style) {
+                const { presale_tag_bg_color, presale_tag_text_color, presale_tag_radius } = new_style;
+                return `background: ${presale_tag_bg_color || '#FF6B6B'}; color: ${presale_tag_text_color || '#FFFFFF'}; border-radius: ${(presale_tag_radius || 4) * 2}rpx;`;
             },
             // 商品内容区域显示
             get_shop_container(new_style){
@@ -400,75 +373,25 @@
                 const back = { background_img: shop_content_background_img, background_img_style: shop_content_background_img_style };
                 return padding_computer(shop_content_padding) + background_computer(back);
             },
-            get_time_bg(new_style) {
-                const { countdown_bg_color_list, countdown_direction } = new_style;
-                // 渐变
-                const gradient = { color_list: countdown_bg_color_list, direction: countdown_direction };
-                return gradient_computer(gradient);
-            },
             get_slide_active_color(new_style) {
                 const { progress_actived_color_list, progress_actived_direction } = new_style;
                 // 渐变
                 const gradient = { color_list: progress_actived_color_list, direction: progress_actived_direction };
                 return gradient_computer(gradient);
             },
-            get_seckill_head_style(new_style, num) {
-                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, seckill_head_padding, seckill_head_radius, seckill_head_margin = old_margin, seckill_head_style = old_border_and_box_shadow } = new_style;
+            get_presale_head_style(new_style, num) {
+                const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, presale_head_padding, presale_head_radius, presale_head_margin = old_margin, presale_head_style = old_border_and_box_shadow } = new_style;
                 // 渐变
                 const gradient = { color_list: header_background_color_list, direction: header_background_direction };
                 // 背景图
                 const back = { background_img: header_background_img, background_img_style: header_background_img_style };
                 if (num == '1') {
-                    return gradient_computer(gradient) + radius_computer(seckill_head_radius) + margin_computer(seckill_head_margin) + border_computer(seckill_head_style) + box_shadow_computer(seckill_head_style);
+                    return gradient_computer(gradient) + radius_computer(presale_head_radius) + margin_computer(presale_head_margin) + border_computer(presale_head_style) + box_shadow_computer(presale_head_style);
                 } else {
-                    // 秒杀头部内间距设置， 没有的时候默认15px
-                    const padding = !isEmpty(seckill_head_padding) ? seckill_head_padding : { padding: 0, padding_top: 15, padding_bottom: 15, padding_left: 13, padding_right: 13};
+                    // 预售头部内间距设置， 没有的时候默认15px
+                    const padding = !isEmpty(presale_head_padding) ? presale_head_padding : { padding: 0, padding_top: 15, padding_bottom: 15, padding_left: 13, padding_right: 13};
                     return background_computer(back) + padding_computer(padding) + 'box-sizing: border-box;';
                 }
-            },
-            updateCountdown() {
-                let time_end_number = this.seckill_time.time_end_number;
-                if (this.seckill_time.status === 0) {
-                    time_end_number = this.seckill_time.time_start_number;
-                }
-                // 先获取秒杀结束时间和当前时间的差值
-                const distance = time_end_number - new Date().getTime();
-                // 如果倒计时结束，显示结束信息
-                if (distance <= 1000) {
-                    clearInterval(this.intervalId);
-                    // 如果是待开始状态，则显示开始倒计时，并且在结束的时候根据结束时候再执行一个定时器
-                    if (this.seckill_time.status === 0) {
-                        this.setData({
-                            seckill_time: {
-                                time_end_number: this.seckill_time.time_end_number,
-                                time_start_number: this.seckill_time.time_start_number,
-                                status: 1,
-                                time_first_text: '距结束',
-                            },
-                        });
-                        // 先执行一次倒计时，后续的等待倒计时执行
-                        setTimeout(() => {
-                            this.updateCountdown();
-                        }, 0);
-                        this.setData({
-                            intervalId: setInterval(this.updateCountdown, 1000),
-                        });
-                    }
-                    return;
-                }
-                // 计算时间
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                this.time_config.forEach((item) => {
-                    if (item.key == 'hour') {
-                        item.value = hours < 10 ? '0' + hours : hours.toString();
-                    } else if (item.key == 'minute') {
-                        item.value = minutes < 10 ? '0' + minutes : minutes.toString();
-                    } else if (item.key == 'second') {
-                        item.value = seconds < 10 ? '0' + seconds : seconds.toString();
-                    }
-                });
             },
             get_content_style(new_style, form) {
                 const spacing_value = new_style.content_spacing;
@@ -524,16 +447,16 @@
                 return this.form.is_show.includes(index);
             },
             get_corner_marker(new_style) {
-                const { seckill_subscript_location, shop_img_radius, seckill_subscript_bg_color, seckill_subscript_text_color } = new_style;
-                let location = `background: ${seckill_subscript_bg_color};color: ${seckill_subscript_text_color};`;
+                const { presale_subscript_location, shop_img_radius, presale_subscript_bg_color, presale_subscript_text_color } = new_style;
+                let location = `background: ${presale_subscript_bg_color};color: ${presale_subscript_text_color};`;
                 // 圆角根据图片的圆角来计算 对角线是同样的圆角
-                if (seckill_subscript_location == 'top-left') {
+                if (presale_subscript_location == 'top-left') {
                     location += `top: 0;left: 0;border-radius: ${shop_img_radius.radius_top_left * 2}rpx 0 ${shop_img_radius.radius_top_left * 2}rpx 0;`;
-                } else if (seckill_subscript_location == 'top-right') {
+                } else if (presale_subscript_location == 'top-right') {
                     location += `top: 0;right: 0;border-radius: 0 ${shop_img_radius.radius_top_right * 2}rpx 0 ${shop_img_radius.radius_top_right * 2}rpx;`;
-                } else if (seckill_subscript_location == 'bottom-left') {
+                } else if (presale_subscript_location == 'bottom-left') {
                     location += `bottom: 0;left: 0;border-radius: 0 ${shop_img_radius.radius_bottom_left * 2}rpx 0 ${shop_img_radius.radius_bottom_left * 2}rpx;`;
-                } else if (seckill_subscript_location == 'bottom-right') {
+                } else if (presale_subscript_location == 'bottom-right') {
                     location += `bottom: 0;right: 0;border-radius: ${shop_img_radius.radius_bottom_right * 2}rpx 0 ${shop_img_radius.radius_bottom_right * 2}rpx 0;`;
                 }
                 return location;
@@ -547,13 +470,13 @@
 </script>
 
 <style scoped lang="scss">
-    .seckill-head {
+    .presale-head {
         padding: 30rpx 26rpx;
         width: 100%;
         height: 102rpx;
         border-radius: 16rpx 16rpx 0 0;
         box-sizing: border-box;
-        .seckill-title {
+        .presale-title {
             width: auto;
             height: 42rpx;
         }
@@ -564,9 +487,17 @@
             border-radius: 8rpx;
         }
     }
-    .seckill-head-icon {
+    .presale-head-icon {
         width: 32rpx;
         height: 32rpx;
+    }
+    .presale-tag {
+        position: absolute;
+        top: 10rpx;
+        left: 10rpx;
+        padding: 4rpx 12rpx;
+        font-size: 20rpx;
+        z-index: 1;
     }
     .colon {
         position: relative;
@@ -579,7 +510,7 @@
     .slide-bottom {
         height: 20rpx;
         border-radius: 10rpx;
-        background: red;
+        background: #e0e0e0;
     }
     .slide-top {
         position: absolute;
