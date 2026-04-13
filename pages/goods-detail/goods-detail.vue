@@ -304,7 +304,7 @@
 
                 <!-- 订单商品表单插件 -->
                 <view v-if="(plugins_ordergoodsform_data || null) != null" class="bg-white padding-sm border-radius-main spacing-mb">
-                    <component-form-input-base ref="form_input_base" :propConfig="plugins_ordergoodsform_data.config" :propBackData="goods.id" :propFormInputId="plugins_ordergoodsform_data.id" @onDataEvent="order_goods_form_back_data_event"></component-form-input-base>
+                    <component-form-input-base ref="form_input_base" :propConfig="plugins_ordergoodsform_data.config" :propBackData="goods.id" :propFormInputId="plugins_ordergoodsform_data.id"></component-form-input-base>
                 </view>
             </view>
 
@@ -1017,6 +1017,12 @@
         },
 
         onShow() {
+            // 监听数据
+            var self = this;
+            uni.$on('onDataEvent', function(e) {
+                self.form_input_data_change_event(e);
+            });
+
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
@@ -1039,6 +1045,7 @@
 
         // 页面销毁时执行
         onUnload: function () {
+            uni.$off('onDataEvent');
             clearInterval(this.plugins_salerecords_timer);
         },
 
@@ -1770,7 +1777,7 @@
             },
 
             // 表单改变事件
-            order_goods_form_back_data_event(e) {
+            form_input_data_change_event(e) {
                 uni.request({
                     url: app.globalData.get_request_url('save', 'goods', 'ordergoodsform'),
                     method: 'POST',
