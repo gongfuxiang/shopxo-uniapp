@@ -40,7 +40,7 @@
                                         <component-diy-hot-zone v-else-if="item.key == 'hot-zone'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-hot-zone>
                                         <!-- 插件 -->
                                         <component-diy-seckill v-else-if="item.key == 'seckill'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-seckill>
-                                        <component-diy-presale v-else-if="item.key == 'plugins-presale'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-presale>
+                                        <component-diy-plugins-presale v-else-if="item.key == 'plugins-presale'" :propOuterContainerPadding="outer_container_padding" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-presale>
                                         <component-diy-coupon v-else-if="item.key == 'coupon'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-coupon>
                                         <component-diy-realstore v-else-if="item.key == 'realstore'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-realstore>
                                         <component-diy-blog-list v-else-if="item.key == 'blog'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-blog-list>
@@ -153,8 +153,8 @@
     import componentDiyCustom from '@/pages/diy/components/diy/custom';
     import componentDiyImgMagic from '@/pages/diy/components/diy/img-magic';
     import componentDiySeckill from '@/pages/diy/components/diy/seckill';
-            import componentDiyPresale from '@/pages/diy/components/diy/presale';
-            import componentDiyRealstore from '@/pages/diy/components/diy/realstore';
+    import componentDiyPluginsPresale from '@/pages/diy/components/diy/plugins-presale';
+    import componentDiyRealstore from '@/pages/diy/components/diy/realstore';
     import componentDiyShop from '@/pages/diy/components/diy/shop';
     import componentDiyBinding from '@/pages/diy/components/diy/binding';
     import componentDiyAsk from '@/pages/diy/components/diy/ask';
@@ -230,7 +230,7 @@
             componentDiyImgMagic,
             componentDiySeckill,
             componentDiyPresale,
-            componentDiyRealstore,
+            componentDiyPluginsRealstore,
             componentDiyShop,
             componentDiyBinding,
             componentDiyAsk,
