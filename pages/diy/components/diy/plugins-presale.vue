@@ -59,7 +59,7 @@
                                                 </view>
                                             </view>
                                             <view class="flex-row align-e gap-10 jc-sb">
-                                                <view class="flex-col gap-5">
+                                                <view class="flex-1 flex-col gap-5">
                                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
                                                         <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : '预售价' }}</text>
                                                         <text :style="price_symbol">{{ item.show_price_symbol }}</text>
@@ -137,7 +137,7 @@
                                                             </view>
                                                         </view>
                                                         <view class="flex-row align-e gap-10 jc-sb">
-                                                            <view class="flex-col gap-5">
+                                                            <view class="flex-1 flex-col gap-5">
                                                                 <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
                                                                     <text v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">{{ form.presale_price_title ? form.presale_price_title : '预售价' }}</text>
                                                                     <text :style="price_symbol">{{ item.show_price_symbol }}</text>
