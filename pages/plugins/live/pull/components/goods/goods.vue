@@ -127,7 +127,7 @@ export default {
         /**
          * 直播间ID
          */
-        propLiveRoomId: {
+        propLiveId: {
             type: Number,
             default: 0
         },
@@ -256,7 +256,7 @@ export default {
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url('index','roomgoods','live'),
+                url: app.globalData.get_request_url('index','livegoods','live'),
                 method: 'POST',
                 data: {},
                 dataType: 'json',
@@ -267,7 +267,7 @@ export default {
                     if (new_data.code == 0) {
                         this.good_list = new_data.data;
                         // 遍历获取讲解id
-                        const explain_data = new_data.data.filter(item => item.live_room_goods_is_explain == 1);
+                        const explain_data = new_data.data.filter(item => item.live_goods_is_explain == 1);
                         if (explain_data.length > 0) {
                             this.explanation_id = explain_data[0].id;
                         }

@@ -283,7 +283,7 @@
                 // 心跳定时任务
                 ping_timer: null,
                 // 获取直播间数据定时任务
-                pull_live_room_info_timer: null,
+                pull_live_info_timer: null,
                 // 心跳间隔时间
                 ping_interval: 30,
                 // 当前观看直播用户id
@@ -309,8 +309,8 @@
                 // 是否展示讲解商品信息
                 is_show_explain_goods: true,
                 goods_hide_timer: null, // 讲解商品信息隐藏定时器
-                live_room_info_timing_interval_time: 30, // 获取直播间数据定时任务时间间隔
-                live_room_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
+                live_info_timing_interval_time: 30, // 获取直播间数据定时任务时间间隔
+                live_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
             }
         },
         watch: {
@@ -333,9 +333,9 @@
                 handler(new_value) {
                     if (new_value != null) {
                         // 直播间信息定时任务时间间隔
-                        this.live_room_info_timing_interval_time = new_value.live_room_info_timing_interval_time;
+                        this.live_info_timing_interval_time = new_value.live_info_timing_interval_time;
                         // 讲解商品信息自动关闭时间
-                        this.live_room_goods_explain_auto_close_time = new_value.live_room_goods_explain_auto_close_time;
+                        this.live_goods_explain_auto_close_time = new_value.live_goods_explain_auto_close_time;
                     }
                 },
                 immediate: true,
@@ -600,7 +600,7 @@
                         // 启动心跳
                         this.socket_ping_handle();
                         // 启动直播间数据定时任务
-                        this.socket_room_info_handle();
+                        this.socket_live_info_handle();
                         break;
             
                     // 初始化失败
@@ -653,7 +653,7 @@
                             }
                         }, 300);
                         break;
-                    case 'live-room-info': // 获取直播间数据
+                    case 'live-info': // 获取直播间数据
                         // this.$emit('liveStatus', data.content);
                         this.live_init(data.data);
                         break;
@@ -672,9 +672,9 @@
                 // 更新在线用户头像
                 this.online_user = data.online_user;
                 // 更新直播间头像
-                this.live_avatar = data.room_info.cover;
+                this.live_avatar = data.live_info.cover;
                 // 更新直播间数据
-                const new_value = data.room_info;
+                const new_value = data.live_info;
                 this.live_data = new_value;
                 // 直播间点赞数
                 this.like_count = new_value.like_count;
@@ -696,7 +696,7 @@
                     // 定时关闭讲解商品
                     this.explain_goods_timer = setTimeout(() => {
                         this.is_show_explain_goods = false;
-                    }, this.live_room_goods_explain_auto_close_time * 1000);
+                    }, this.live_goods_explain_auto_close_time * 1000);
                 } else {
                     this.is_show_explain_goods = false;
                 }
@@ -736,21 +736,21 @@
             /**
              * WebSocket获取直播间数据
              */
-            socket_room_info_handle() { 
+            socket_live_info_handle() { 
                 // 清除已有的定时任务
-                if (this.pull_live_room_info_timer != null) {
-                    clearInterval(this.pull_live_room_info_timer);
-                    this.pull_live_room_info_timer = null;
+                if (this.pull_live_info_timer != null) {
+                    clearInterval(this.pull_live_info_timer);
+                    this.pull_live_info_timer = null;
                 }
                 console.log('立即获取直播间数据');
                 // 立即发送获取直播间数据消息
-                this.socket_send('live-room-info');
+                this.socket_send('live-info');
                 
                 // 每30秒发送一次获取直播间数据消息
-                this.pull_live_room_info_timer = setInterval(() => {
+                this.pull_live_info_timer = setInterval(() => {
                     console.log('定时获取直播间数据');
-                    this.socket_send('live-room-info');
-                }, this.live_room_info_timing_interval_time * 1000);
+                    this.socket_send('live-info');
+                }, this.live_info_timing_interval_time * 1000);
             },
             
             /**
@@ -883,7 +883,7 @@
                 this.like_timer = setTimeout(() => {
                     // 显示临时点赞数量加上原有数量
                     this.like_count = this.like_count + this.casual_like_count;
-                    this.socket_send('live-room-like', this.casual_like_count);
+                    this.socket_send('live-like', this.casual_like_count);
                     // 完成之后重置临时点赞数量
                     this.casual_like_count = 0;
                 }, 2000);
