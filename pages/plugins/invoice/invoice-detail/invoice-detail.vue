@@ -101,7 +101,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                detail: data.data,
+                                detail: data.data || null,
                                 field_list: data.field_list || [],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

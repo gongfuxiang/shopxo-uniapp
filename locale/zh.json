@@ -336,6 +336,8 @@
         "plugins-givegift-gift": "我的送礼",
         "plugins-givegift-gift-detail": "送礼详情",
         "plugins-givegift-code": "礼品链接",
+        "plugins-lottery-grid": "幸运抽奖",
+        "plugins-lottery-record": "中奖记录",
         "plugins-orderresources-orderannex": "订单资源",
         "plugins-hospital-patient": "就诊人添加/编辑",
         "plugins-hospital-patient-list": "就诊人列表",

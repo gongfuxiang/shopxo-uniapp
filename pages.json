@@ -2225,6 +2225,25 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/lottery",
+            "pages": [
+                {
+                    "path": "grid/grid",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "record/record",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {

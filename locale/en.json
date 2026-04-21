@@ -338,6 +338,8 @@
         "plugins-givegift-gift": "My gift",
         "plugins-givegift-gift-detail": "gift details",
         "plugins-givegift-code": "Gift Link",
+        "plugins-lottery-grid": "Lucky Draw",
+        "plugins-lottery-record": "Winning Records",
         "plugins-orderresources-orderannex": "Order Resources",
         "plugins-hospital-patient": "Add/Edit Patient",
         "plugins-hospital-patient-list": "Patient List",
