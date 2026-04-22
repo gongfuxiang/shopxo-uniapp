@@ -1,5 +1,6 @@
 <template>
-    <view :class="theme_view">
+    <!-- 3 业务正常等：不展示空态/错误（用 v-show 保留单根节点） -->
+    <view v-show="Number(propStatus) !== 3" :class="theme_view">
         <!-- 是否有网络 -->
         <view v-if="network_type_value == 'none' && not_network_await_status == 0" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
             <view class="cr-base text-size">{{$t('no-data.no-data.1u202v')}}</view>

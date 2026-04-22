@@ -1,8 +1,9 @@
 <template>
     <view class="lottery-grid-page">
+        <block v-if="lotteryPageOk">
         <view v-if="lotteryGrid" class="lottery-top-bar">
             <view class="lottery-top-left lottery-top-asset-panel">
-                <text class="lottery-asset-text">账户余额：{{ lotteryGrid.user_wallet_money || '0.00' }}，可用积分：{{ lotteryGrid.user_integral || '0' }}</text>
+                <text class="lottery-asset-text">{{ lotteryGridBarText }}</text>
             </view>
             <view v-if="Array.isArray(lotteryGrid.grid_rules_text) && lotteryGrid.grid_rules_text.length > 0" class="lottery-rules-btn" @tap="rulesPopupVisible = true">?</view>
         </view>
@@ -66,14 +67,29 @@
                 </view>
             </view>
         </view>
+        </block>
+
+        <component-no-data
+            v-else
+            :propStatus="data_list_loding_status"
+            :propMsg="data_list_loding_msg"
+            propLoadingLogoTop="35vh"
+        ></component-no-data>
+
+        <!-- 公共 -->
+        <component-common ref="common"></component-common>
     </view>
 </template>
 
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
+    import componentNoData from '@/components/no-data/no-data';
     import componentLotteryGrid from '@/pages/plugins/lottery/components/lottery-grid/lottery-grid';
     export default {
         components: {
+            componentCommon,
+            componentNoData,
             componentLotteryGrid,
         },
         data() {
@@ -103,9 +119,29 @@
                 share_info: {},
                 /** 最近中奖跑马灯（接口 marquee_list） */
                 marqueeList: [],
+                /** 1 加载中；2 网络/请求 fail；0 业务类提示；3 正常不展示 no-data */
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
             };
         },
         computed: {
+            /** 活动可用且已拉到配置时才展示九宫格 */
+            lotteryPageOk() {
+                const g = this.lotteryGrid;
+                return !!(g && g.enable !== false);
+            },
+            /** 后端拼接：余额、积分、（可选）今日可抽次数 */
+            lotteryGridBarText() {
+                const g = this.lotteryGrid;
+                if (!g) {
+                    return '';
+                }
+                const s = String(g.grid_user_assets_bar_text || '').trim();
+                if (s) {
+                    return s;
+                }
+                return '余额：' + (g.user_wallet_money || '0.00') + '，积分：' + (g.user_integral || '0');
+            },
             /**
              * 弹窗确认按钮文案（多语言）
              * @returns {string}
@@ -146,6 +182,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
 
             // 分享菜单处理
             app.globalData.page_share_handle(this.share_info);
@@ -225,13 +266,22 @@
                             this.lastDrawResult = data;
                             this.sjNum = parseInt(data.grid_index || 0);
                             this.drawTrigger = this.drawTrigger + 1;
-                            if (this.lotteryGrid && (data.user_wallet_money !== undefined || data.user_integral !== undefined)) {
-                                this.lotteryGrid = Object.assign({}, this.lotteryGrid, {
+                            if (this.lotteryGrid) {
+                                const patch = {
                                     user_wallet_money:
                                         data.user_wallet_money !== undefined ? data.user_wallet_money : this.lotteryGrid.user_wallet_money,
                                     user_integral:
                                         data.user_integral !== undefined ? data.user_integral : this.lotteryGrid.user_integral,
+                                };
+                                if (data.grid_user_assets_bar_text !== undefined && data.grid_user_assets_bar_text !== null) {
+                                    patch.grid_user_assets_bar_text = data.grid_user_assets_bar_text;
+                                }
+                                ['grid_user_daily_draw_limit', 'grid_user_daily_draw_used_today', 'grid_user_daily_draw_remaining_today'].forEach((k) => {
+                                    if (data[k] !== undefined && data[k] !== null) {
+                                        patch[k] = data[k];
+                                    }
                                 });
+                                this.lotteryGrid = Object.assign({}, this.lotteryGrid, patch);
                             }
                         } else {
                             // 错误提示
@@ -261,6 +311,14 @@
                             const grid = data.lottery_grid || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
                             this.lotteryGrid = grid;
+                            if (grid.enable === false) {
+                                const tip = String(grid.error_tips || '').trim() || '活动暂不可用';
+                                this.data_list_loding_status = 0;
+                                this.data_list_loding_msg = tip;
+                            } else {
+                                this.data_list_loding_status = 3;
+                                this.data_list_loding_msg = '';
+                            }
                             this.resultSuccessImage = grid.result_success_image || '';
                             this.resultFailImage = grid.result_fail_image || '';
                             this.resultFailTitle = grid.result_fail_title || '谢谢参与';
@@ -293,15 +351,23 @@
                             });
                         } else {
                             this.marqueeList = [];
-                            // 错误提示
-                            app.globalData.showToast(res.data.msg || '加载失败');
+                            this.lotteryGrid = null;
+                            this.AwardList = [];
+                            const errMsg = String(res.data.msg || '').trim() || '加载失败';
+                            this.data_list_loding_status = 0;
+                            this.data_list_loding_msg = errMsg;
+                            app.globalData.showToast(errMsg);
                         }
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        // 错误提示
-                        app.globalData.showToast(this.$t ? this.$t('common.internet_error_tips') : '网络异常');
+                        this.lotteryGrid = null;
+                        this.AwardList = [];
+                        const errMsg = this.$t ? this.$t('common.internet_error_tips') : '网络异常';
+                        this.data_list_loding_status = 2;
+                        this.data_list_loding_msg = errMsg;
+                        app.globalData.showToast(errMsg);
                     },
                 });
             },
@@ -362,7 +428,7 @@
         min-width: 0;
     }
     .lottery-top-asset-panel {
-        max-width: 72%;
+        max-width: 80%;
         padding: 14rpx 20rpx;
         border-radius: 16rpx;
         background: rgba(0, 0, 0, 0.52);
@@ -506,7 +572,7 @@
     .lottery-result-confirm {
         display: inline-block;
         width: auto !important;
-        min-width: 100px;
+        min-width: 200rpx;
         position: absolute;
         left: 50%;
         bottom: 48rpx;
