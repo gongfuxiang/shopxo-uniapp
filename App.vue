@@ -808,13 +808,17 @@
                 var status = parseInt(self.get_config('config.common_app_is_weixin_force_user_base', 0));
                 if(status == 1) {
                     var obj = self.get_page_object();
-                    if((obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null && (obj.$vm.$refs.common.$refs || null) != null && (obj.$vm.$refs.common.$refs.user_base || null) != null) {
-                        var user_base = obj.$vm.$refs.common.$refs.user_base;
-                        var res = user_base.form_write_field_check_data(data, true);
-                        if(res.popup_status) {
-                            user_base.user_base_open(object, method, params);
+                    if((obj.$vm || null) != null && (obj.$vm.$refs || null) != null && (obj.$vm.$refs.common || null) != null && (obj.$vm.$refs.common.$refs || null) != null) {
+                        if((obj.$vm.$refs.common.$refs.modal_business || null) != null && (obj.$vm.$refs.common.$refs.modal_business.$refs || null) != null) {
+                            if((obj.$vm.$refs.common.$refs.modal_business.$refs.user_base || null) != null) {
+                                var user_base = obj.$vm.$refs.common.$refs.modal_business.$refs.user_base;
+                                var res = user_base.form_write_field_check_data(data, true);
+                                if(res.popup_status) {
+                                    user_base.user_base_open(object, method, params);
+                                }
+                                return res.popup_status;
+                            }
                         }
-                        return res.popup_status;
                     }
                 }
                 return false;
@@ -2700,8 +2704,20 @@
                                     if (typeof pv.object === 'object' && (pv.method || null) != null) {
                                         pv.object[pv.method]({ ...(pv.params || {}), ...{ loading: 1 } });
                                     }
+                                    // 重新调用页面common
+                                    var obj = self.get_page_object();
+                                    if((obj.$vm || null) != null && (obj.$vm.$refs || null) != null) {
+                                        setTimeout(function() {
+                                            if((obj.$vm.$refs.common || null) != null) {
+                                                obj.$vm.$refs.common.init();
+                                            }
+                                            if((obj.$vm.$refs.common_footer || null) != null) {
+                                                obj.$vm.$refs.common_footer.init();
+                                            }
+                                        }, 500);
+                                    }
                                 }
-                            },
+                            }
                         });
                     }, 500);
                     this.data.network_type_page_record_timer = temp_network;
