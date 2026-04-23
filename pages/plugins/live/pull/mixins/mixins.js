@@ -104,6 +104,8 @@ export default {
                 },
                 dataType: 'json',
                 success: (res) => {
+                    // 隐藏加载提示
+                    uni.hideLoading();    
                     const new_data = res.data;
                     // 显示直播内容
                     this.is_loading = false;
