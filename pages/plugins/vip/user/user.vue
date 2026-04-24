@@ -46,7 +46,7 @@
                             </view>
                             <!-- 已开通会员 -->
                             <view class="pa vip-btn flex-row align-c">
-                                <view v-if="(data_base.is_enable_member_code || 0) == 1" class="dis-inline-block cp pr padding-right-main" data-value="/pages/plugins/membershiplevelvip/member-code/member-code" @tap="url_event">
+                                <view v-if="(data_base.is_enable_member_code || 0) == 1" class="dis-inline-block cp pr padding-right-main" data-value="/pages/plugins/vip/member-code/member-code" @tap="url_event">
                                     <iconfont name="icon-qrcode" size="44rpx" color="#fff"></iconfont>
                                 </view>
                                 <block v-if="(user_vip || null) != null">
@@ -54,7 +54,7 @@
                                     <block v-if="(user_vip.is_permanent || 0) !== 1">
                                         <!-- 会员已过期或未开通 -->
                                         <block v-if="(user_vip.surplus_time_number || 0) == 0">
-                                            <button v-if="(data_base.is_user_buy || null) == 1" data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
+                                            <button v-if="(data_base.is_user_buy || null) == 1" data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                 <text>{{$t('user.user.n4orgk')}}</text>
                                                 <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx"></iconfont></view>
                                             </button>
@@ -67,7 +67,7 @@
                                                 </block>
                                                 <block v-else>
                                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.65cc6z')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
+                                                        <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.65cc6z')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
                                                     </block>
                                                 </block>
                                             </block>
@@ -77,7 +77,7 @@
                                 <!-- 未开通会员 -->
                                 <block v-else>
                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
+                                        <button data-value="/pages/plugins/vip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                             <text>{{$t('user.user.n4orgk')}}</text>
                                             <view class="dis-inline-block margin-left-sm"><iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></view>
                                         </button>
@@ -240,7 +240,7 @@
             // 获取数据
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'vip', 'membershiplevelvip'),
+                    url: app.globalData.get_request_url('index', 'vip', 'vip'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -316,7 +316,7 @@
                                 title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
-                                url: app.globalData.get_request_url('renew', 'buy', 'membershiplevelvip'),
+                                url: app.globalData.get_request_url('renew', 'buy', 'vip'),
                                 method: 'POST',
                                 data: {},
                                 dataType: 'json',
@@ -327,7 +327,7 @@
                                     });
                                     if (res.data.code == 0) {
                                         uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
-                                        app.globalData.url_open('/pages/plugins/membershiplevelvip/order/order', true);
+                                        app.globalData.url_open('/pages/plugins/vip/order/order', true);
                                     } else {
                                         if (app.globalData.is_login_check(res.data, self, 'uservip_renew_event')) {
                                             app.globalData.showToast(res.data.msg);

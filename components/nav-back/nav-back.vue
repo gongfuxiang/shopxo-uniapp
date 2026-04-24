@@ -63,6 +63,11 @@
                 type: Boolean,
                 default: true,
             },
+            // 是否透明处理
+            propIsOpacity: {
+                type: Boolean,
+                default: true,
+            },
         },
         data() {
             return {
@@ -84,13 +89,15 @@
             });
         },
         mounted() {
-            var self = this;
-            uni.$on('onPageScroll', function (e) {
-                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
-                self.setData({
-                    opacity: top,
+            if(this.propIsOpacity) {
+                var self = this;
+                uni.$on('onPageScroll', function (e) {
+                    var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
+                    self.setData({
+                        opacity: top,
+                    });
                 });
-            });
+            }
         },
         methods: {
             // 返回事件
