@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <block v-if="(data_base || null) != null">
-            <component-nav-back :propName="data_base.application_name || $t('index.index.p4872s')"></component-nav-back>
+            <component-nav-back :propIsOpacity="false"></component-nav-back>
             <view class="pr">
                 <view class="pa top-0 bg-img wh-auto">
                     <image class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
