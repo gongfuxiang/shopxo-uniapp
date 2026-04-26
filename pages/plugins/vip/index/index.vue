@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back></component-nav-back>
+        <component-nav-back :propIsOpacity="false"></component-nav-back>
         <view v-if="(data_base || null) != null" class="bg-white">
             <view class="pr wh-auto oh">
                 <image :src="default_images_data.default_bg_images_app || vip_static + 'bg.png'" mode="widthFix" class="vip-bg"></image>
