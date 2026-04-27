@@ -34,9 +34,9 @@
                     <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
                     <!-- 订单状态（0待支付，1付定金，2付尾款，3已取消，4已关闭） -->
                     <view v-if="item.is_buy == 1 || item.is_aftersale == 1 || item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
-                        <button v-if="item.is_buy == 1"class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.last_pay')}}</button>
-                        <button v-if="item.is_aftersale == 1"class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="aftersale_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.refund')}}</button>
-                        <button v-if="item.status == 0"class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="item.is_buy == 1" class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.last_pay')}}</button>
+                        <button v-if="item.is_aftersale == 1" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="aftersale_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.refund')}}</button>
+                        <button v-if="item.status == 0" class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.status == 3 || item.status == 4" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
                 </view>
