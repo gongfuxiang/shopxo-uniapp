@@ -117,7 +117,7 @@
                                 </view>
                                 <view class="pa right-0 bottom-0 z-i">
                                     <text v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="cr-blue bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</text>
-                                    <view class="dis-inline-block margin-left" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
+                                    <view v-if="common_is_order_show_goods_snapshot == 1" class="dis-inline-block margin-left" @tap.stop="popup_order_item_goods_info_event" :data-index="index">
                                         <text class="margin-right-xs">{{$t('user-order-detail.user-order-detail.7f8p26')}}</text>
                                         <iconfont name="icon-arrow-down" color="#999" propClass="va-m"></iconfont>
                                     </view>
@@ -497,6 +497,9 @@
                 is_show_payment_popup: false,
                 // 智能工具箱（限定仅可选择下单支付方式）
                 is_order_pay_only_can_buy_payment: 0,
+                // 订单是否展示商品快照
+                common_is_order_show_goods_snapshot: 0,
+                // 支付方式
                 original_payment_list: [],
             };
         },
@@ -550,6 +553,7 @@
                 if ((status || false) == true) {
                     this.setData({
                         is_order_pay_only_can_buy_payment: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_order_pay_only_can_buy_payment', 0)),
+                        common_is_order_show_goods_snapshot: parseInt(app.globalData.get_config('config.common_is_order_show_goods_snapshot', 0)),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
