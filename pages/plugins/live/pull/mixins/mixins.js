@@ -116,7 +116,7 @@ export default {
                         // 直播间点赞图标
                         this.like_show_imgs = new_data.data.like_icon_list || [];
                         // 获取直播间视频信息
-                        this.live_video_src = new_data.data.live_info.pull_url + '.m3u8' || '';
+                        this.live_video_src = (new_data.data.live_info.pull_url + '.m3u8' || '').replace(/[\x00-\x1F\x7F]/g, '');
                         // 直播间状态 (0离线, 1在线, 2离开, 3封禁）
                         this.live_status = new_data.data.live_info.status || 0;
                         // 直播间配置
