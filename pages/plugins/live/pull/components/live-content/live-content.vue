@@ -311,6 +311,7 @@
                 goods_hide_timer: null, // 讲解商品信息隐藏定时器
                 live_info_timing_interval_time: 30, // 获取直播间数据定时任务时间间隔
                 live_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
+                live_websocket_url: '' // websocket地址
             }
         },
         watch: {
@@ -336,6 +337,24 @@
                         this.live_info_timing_interval_time = new_value.live_info_timing_interval_time;
                         // 讲解商品信息自动关闭时间
                         this.live_goods_explain_auto_close_time = new_value.live_goods_explain_auto_close_time;
+                        // socket 地址更新
+                        if (!isEmpty(new_value.socket_connect)) {
+                            const { host, port, is_wss } = new_value.socket_connect; 
+                            const protocol = is_wss == 1 ? 'wss' : 'ws';
+                            // 记录临时socket连接地址
+                            const url = `${protocol}://${host}:${port}`;
+                            
+                            if (url != this.live_websocket_url) {
+                                // 关闭当前socket连接
+                                if (this.task != null) {
+                                    this.socket_close();
+                                }
+                                // 设置新的socket连接地址
+                                this.live_websocket_url = url;
+                                // 连接socket
+                                this.socket_connect();
+                            }
+                        }
                     }
                 },
                 immediate: true,
@@ -351,7 +370,7 @@
             // 滚动到评论区底部
             this.scroll_to_lower();
             // 获取用户信息
-            this.init_user_info();
+            // this.init_user_info();
             // 创建监听事件
             this.bind_keyboard_listener();
         },
@@ -514,7 +533,7 @@
                 }
 
                 this.task = uni.connectSocket({
-                    url: "wss://new.shopxo.vip:9502",
+                    url: this.live_websocket_url,
                     header: {
                         "content-type": "application/json",
                     },
