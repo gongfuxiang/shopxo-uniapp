@@ -155,8 +155,8 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <u-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="添加商品" :propCloseable="true">
-           <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight"></component-goods>
+        <u-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="购买商品" :propCloseable="true">
+           <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight" :propLiveId="live_data.id"></component-goods>
         </u-popup>
         <!-- 分享弹窗 -->
         <u-share-popup ref="share" class="pointer-events-auto"></u-share-popup>
@@ -232,34 +232,7 @@
                 //#endregion
                 
                 //#region 评论区
-                bulletins: [
-                    {
-                        id: '1',
-                        type: 'message',
-                        text: 'xxx提倡绿色直播，严禁未成年人直播或打赏，严禁涉政、涉恐、涉黄、聚集闹事、返现等内容，平台将会24小时巡查。请勿参与直播间非官方奖励活动/游戏，切勿私下交易，以防受骗。'
-                    }, 
-                    {
-                        id: '2',
-                        type: 'user',
-                        user_avatar: '/static/images/common/user.png',
-                        user_name: '陌生网友',
-                        text: '你好'
-                    },
-                    {
-                        id: '3',
-                        type: 'user',
-                        user_avatar: '/static/images/common/user.png',
-                        user_name: '陌生网友',
-                        text: '21245445454545454545545445452124544545454545454554544545'
-                    },
-                    {
-                        id: '9',
-                        type: 'go',
-                        user_avatar: '/static/images/common/user.png',
-                        user_name: '陌生网友',
-                        text: '228'
-                    }
-                ],
+                bulletins: [],
                 scroll_top: 0,
                 // 滚动条的高度
                 scoll_height: 600,
@@ -311,7 +284,8 @@
                 goods_hide_timer: null, // 讲解商品信息隐藏定时器
                 live_info_timing_interval_time: 30, // 获取直播间数据定时任务时间间隔
                 live_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
-                live_websocket_url: '' // websocket地址
+                live_websocket_url: '', // websocket地址
+                live_tips: '', // 直播提示语
             }
         },
         watch: {
@@ -337,6 +311,8 @@
                         this.live_info_timing_interval_time = new_value.live_info_timing_interval_time;
                         // 讲解商品信息自动关闭时间
                         this.live_goods_explain_auto_close_time = new_value.live_goods_explain_auto_close_time;
+                        // 直播提示语
+                        this.live_tips = new_value?.live_tips || '';
                         // socket 地址更新
                         if (!isEmpty(new_value.socket_connect)) {
                             const { host, port, is_wss } = new_value.socket_connect; 
@@ -616,6 +592,11 @@
                     // 初始化成功
                     case 'init-success' :
                         this.live_user_id = data.data.live_user_id;
+                        // 初始化提示语
+                        const message_bulletin_index = this.bulletins.findIndex(item => item.type == 'message');
+                        if (message_bulletin_index > -1) {
+                            this.bulletins.push(this.live_tips);
+                        }
                         // 启动心跳
                         this.socket_ping_handle();
                         // 启动直播间数据定时任务
@@ -673,6 +654,7 @@
                         }, 300);
                         break;
                     case 'live-info': // 获取直播间数据
+                        console.log(data);
                         // this.$emit('liveStatus', data.content);
                         this.live_init(data.data);
                         break;
@@ -680,20 +662,21 @@
             },
             // 初始化直播间数据
             live_init(data) { 
+                if (isEmpty(data)) return;
                 // 更新讲解商品信息
                 const goods = data.explain_goods;
                 // 讲解商品信息更新,讲解商品不为空，并且讲解商品id不一致，需要更新讲解商品信息
-                if ((!isEmpty(goods) && !isEmpty(this.explain_goods) && this.explain_goods.id !== goods.id) || isEmpty(this.explain_goods)) {
+                if ((!isEmpty(goods) && !isEmpty(this.explain_goods) && this.explain_goods.id !== goods.id) || (isEmpty(this.explain_goods) && !isEmpty(goods))) {
                     this.explain_goods = data.explain_goods;
                     this.is_show_explain_goods = true;
                     this.explain_goods_close('auto');
                 }
                 // 更新在线用户头像
                 this.online_user = data.online_user;
-                // 更新直播间头像
-                this.live_avatar = data.live_info.cover;
                 // 更新直播间数据
                 const new_value = data.live_info;
+                // 更新直播间头像
+                this.live_avatar = new_value.cover;
                 this.live_data = new_value;
                 // 直播间点赞数
                 this.like_count = new_value.like_count;

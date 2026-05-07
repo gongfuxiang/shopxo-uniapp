@@ -256,9 +256,11 @@ export default {
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url('index','livegoods','live'),
+                url: app.globalData.get_request_url('index','index','goodsdata'),
                 method: 'POST',
-                data: {},
+                data: {
+                    live_id: this.propLiveId,    
+                },
                 dataType: 'json',
                 success: (res) => { 
                     uni.hideLoading();

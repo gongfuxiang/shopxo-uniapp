@@ -35,6 +35,7 @@ export default {
             live_reconnect_interval_time: 1, // 直播间重连间隔时间
             live_like_count: 0, // 点赞次数
             live_like_click_timer: null,
+            live_id: '',
         }
     },
 
@@ -78,7 +79,10 @@ export default {
         // 分享菜单处理
         app.globalData.page_share_handle();
     },
-
+    onLoad(params) {
+        // 获取传入的id参数
+        this.live_id = params.id || '';
+    },
     /**
      * 组件挂载完成后执行
      */
@@ -100,7 +104,7 @@ export default {
                 url: app.globalData.get_request_url('detail', 'index', 'live'),
                 method: 'POST',
                 data: {
-                    live_id: 1
+                    live_id: this.live_id
                 },
                 dataType: 'json',
                 success: (res) => {
