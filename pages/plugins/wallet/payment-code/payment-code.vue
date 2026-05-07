@@ -21,10 +21,10 @@
                 <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }}{{$t('payment-code.payment-code.b74qxe')}}</view>
 
                 <!-- 导航 -->
-                <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
+                <view v-if="(plugins_vip || null) != null" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <view class="bg-white br-grey-d round oh">
-                            <button type="default" class="btn bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.26bu38')}}</button>
+                            <button type="default" class="btn bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/vip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.26bu38')}}</button>
                             <button type="default" class="btn bg-main cr-white round text-size fr br-0" size="mini">{{$t('member-code.member-code.x58gqu')}}</button>
                         </view>
                     </view>
@@ -56,7 +56,7 @@
                 bottom_fixed_style: '',
                 is_to_login: 0,
                 screen_brightness_value: 0,
-                plugins_membershiplevelvip: null,
+                plugins_vip: null,
                 scheduled_timer: null,
                 scheduled_value: 0,
                 payment_code: '',
@@ -122,7 +122,7 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        plugins_membershiplevelvip: app.globalData.get_config('plugins_base.membershiplevelvip', null),
+                        plugins_vip: app.globalData.get_config('plugins_base.vip', null),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');

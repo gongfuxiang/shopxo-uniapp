@@ -3230,7 +3230,7 @@
                         'pages/plugins/points/index/index',
                         'pages/plugins/coupon/index/index',
                         'pages/plugins/signin/detail/detail',
-                        'pages/plugins/membershiplevelvip/index/index',
+                        'pages/plugins/vip/index/index',
                         'pages/plugins/ask/index/index',
                         'pages/cashier/cashier',
                         'pages/plugins/video/index/index',

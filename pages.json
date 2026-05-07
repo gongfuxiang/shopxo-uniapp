@@ -767,7 +767,7 @@
             ]
         },
         {
-            "root": "pages/plugins/membershiplevelvip",
+            "root": "pages/plugins/vip",
             "pages": [
                 {
                     "path": "index/index",

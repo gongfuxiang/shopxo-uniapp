@@ -49,7 +49,7 @@
                         </block>
                     </block>
                 </view>
-                <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
+                <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/vip/order/order" @tap="url_event">
                     <view> <iconfont name="icon-order-round" propClass="margin-right-sm" color="#666"></iconfont>{{$t('buy.buy.ntm2z5')}}</view>
                     <iconfont name="icon-arrow-right" size="24rpx" color="#666"></iconfont>
                 </view>
@@ -116,9 +116,9 @@
                 is_show_payment_popup: false,
                 pay_price: 0,
                 // 支付失败跳转的页面
-                to_fail_page: '/pages/plugins/membershiplevelvip/order/order',
+                to_fail_page: '/pages/plugins/vip/order/order',
                 // 现金--跳转指定页面
-                to_appoint_page: '/pages/plugins/membershiplevelvip/order/order',
+                to_appoint_page: '/pages/plugins/vip/order/order',
             };
         },
         components: {
@@ -154,8 +154,8 @@
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
                     this.setData({
-                        pay_url: app.globalData.get_request_url('pay', 'buy', 'membershiplevelvip'),
-                        qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'membershiplevelvip'),
+                        pay_url: app.globalData.get_request_url('pay', 'buy', 'vip'),
+                        qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'vip'),
                     });
                     // 获取数据
                     this.get_data_list();
@@ -174,7 +174,7 @@
                     });
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'buy', 'membershiplevelvip'),
+                    url: app.globalData.get_request_url('index', 'buy', 'vip'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -256,7 +256,7 @@
                     title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
-                    url: app.globalData.get_request_url('create', 'buy', 'membershiplevelvip'),
+                    url: app.globalData.get_request_url('create', 'buy', 'vip'),
                     method: 'POST',
                     data: {
                         opening: item['id'] + '-' + rules['number'],

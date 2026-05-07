@@ -24,7 +24,7 @@
                         </view>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>
+                        <button v-if="item.status == 0 || item.status == 1" class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>
                         <block v-if="item.status == 0">
                             <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.total_price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
                             <button class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
@@ -32,8 +32,9 @@
                         <block v-if="item.status == 1">
                             <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/givegift/code/code?oid='+item.id" hover-class="none">{{$t('common.gift')}}</button>
                             <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/givegift/receive/receive?key='+item.key" hover-class="none">{{$t('common.link')}}</button>
+                            <button v-if="item.is_aftersale == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="aftersale_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.refund')}}</button>
                         </block>
-                        <button v-if="item.status == 2" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                        <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
                 </view>
             </view>
@@ -451,6 +452,54 @@
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 2;
                                         temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
+                                        this.setData({
+                                            data_list: temp_data_list,
+                                        });
+                                        app.globalData.showToast(res.data.msg, 'success');
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
+
+            // 申请退款
+            aftersale_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.refund_audit_confirm_tips'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.no'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            // 参数
+                            var id = e.currentTarget.dataset.value;
+                            var index = e.currentTarget.dataset.index;
+                            // 加载loding
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('aftersale', 'gift', 'givegift'),
+                                method: 'POST',
+                                data: {
+                                    id: id,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        var temp_data_list = this.data_list;
+                                        temp_data_list[index]['is_aftersale'] = 0;
+                                        temp_data_list[index]['aftersale_status'] = 1;
+                                        temp_data_list[index]['aftersale_status_name'] = this.$t('common.wait')+this.$t('common.aftersale');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });

@@ -14,7 +14,7 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
-                    <view :data-value="'/pages/plugins/membershiplevelvip/order-detail/order-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                    <view :data-value="'/pages/plugins/vip/order-detail/order-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
                         <view v-for="(fv, fi) in content_list" :key="fi">
                             <view class="single-text margin-top-xs">
                                 <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
@@ -182,8 +182,8 @@
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
                     this.setData({
-                        pay_url: app.globalData.get_request_url('pay', 'buy', 'membershiplevelvip'),
-                        qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'membershiplevelvip'),
+                        pay_url: app.globalData.get_request_url('pay', 'buy', 'vip'),
+                        qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'vip'),
                     });
                     // 获取数据
                     this.get_data_list();
@@ -221,7 +221,7 @@
                 var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'order', 'membershiplevelvip'),
+                    url: app.globalData.get_request_url('index', 'order', 'vip'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
@@ -371,7 +371,7 @@
                                 title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
-                                url: app.globalData.get_request_url('cancel', 'order', 'membershiplevelvip'),
+                                url: app.globalData.get_request_url('cancel', 'order', 'vip'),
                                 method: 'POST',
                                 data: {
                                     id: id,
@@ -418,7 +418,7 @@
                                 title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
-                                url: app.globalData.get_request_url('delete', 'order', 'membershiplevelvip'),
+                                url: app.globalData.get_request_url('delete', 'order', 'vip'),
                                 method: 'POST',
                                 data: {
                                     id: id,

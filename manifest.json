@@ -29,8 +29,7 @@
             "Geolocation" : {},
             "Share" : {},
             "VideoPlayer" : {},
-            "Camera" : {},
-            "LivePusher" : {}
+            "Camera" : {}
         },
         "distribute" : {
             "android" : {
@@ -58,10 +57,43 @@
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>",
-                    "<uses-permission android:name=\"android.permission.ACTION_BOOT_COMPLETED\"/>",
-                    "<uses-permission android:name=\"android.permission.BOOT_COMPLETED\"/>",
-                    "<uses-permission android:name=\"android.permission.RECEIVE_COMPLETED\"/>"
+                    "<uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\" />"
                 ],
+                "manifest" : {
+                    "xmlns:tools" : "http://schemas.android.com/tools",
+                    "application" : {
+                        "receiver" : [
+                            {
+                                "android:name" : "androidx.work.impl.background.systemalarm.RescheduleReceiver",
+                                "tools:node" : "remove"
+                            },
+                            {
+                                "android:name" : "androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver",
+                                "tools:node" : "remove"
+                            }
+                        ],
+                        "provider" : [
+                            {
+                                "android:name" : "androidx.startup.InitializationProvider",
+                                "android:authorities" : "${applicationId}.androidx-startup",
+                                "android:exported" : false,
+                                "tools:node" : "merge",
+                                "meta-data" : [
+                                    {
+                                        "android:name" : "androidx.work.WorkManagerInitializer",
+                                        "tools:node" : "remove"
+                                    }
+                                ]
+                            }
+                        ],
+                        "meta-data" : [
+                            {
+                                "android:name" : "androidx.work.DisableDefaultConfiguration",
+                                "android:value" : "true"
+                            }
+                        ]
+                    }
+                },
                 "permissionPhoneState" : {
                     "request" : "none",
                     "prompt" : "为保证您正常、安全地使用，需要获取设备识别码（部分手机提示为获取手机号码）使用权限，请允许。"

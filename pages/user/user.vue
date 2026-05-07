@@ -44,24 +44,24 @@
                         </block>
                     </view>
                     <!-- 会员码 付款码 -->
-                    <view v-if="(payment_page_url || null) !== null || (membership_page_url || null) !== null" class="qrcode padding-horizontal-main pr oh">
-                        <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
-                            <view v-if="(membership_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="membership_page_url" @tap="url_event">
-                                <view class="item pr top-lg dis-inline-block"> <image class="icon" :src="static_url + 'membership-code.png'" mode="widthFix"></image> </view>{{ $t('member-code.member-code.26bu38') }}</view
+                    <view v-if="(payment_page_url || null) !== null || (vip_page_url || null) !== null" class="qrcode padding-horizontal-main pr oh">
+                        <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
+                            <view v-if="(vip_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="vip_page_url" @tap="url_event">
+                                <view class="item pr top-lg dis-inline-block"> <image class="icon" :src="static_url + 'vip-code.png'" mode="widthFix"></image> </view>{{ $t('member-code.member-code.26bu38') }}</view
                             >
-                            <view v-if="(payment_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
+                            <view v-if="(payment_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'payment-code.png'" mode="widthFix"></image>
                                 </view>
                                 <text>{{ $t('user.user.91h03v') }}</text>
                             </view>
                         </view>
-                        <iconfont v-if="(payment_page_url || null) == null || (membership_page_url || null) == null" name="icon-arrow-right" propClass="iconfont pa" color="#FEF6CF"></iconfont>
+                        <iconfont v-if="(payment_page_url || null) == null || (vip_page_url || null) == null" name="icon-arrow-right" propClass="iconfont pa" color="#FEF6CF"></iconfont>
                     </view>
                 </view>
 
                 <!-- 中间导航 -->
-                <view :class="'user-bottom padding-horizontal-main ' + ((payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow' : '')">
+                <view :class="'user-bottom padding-horizontal-main ' + ((payment_page_url || null) !== null || (vip_page_url || null) !== null ? 'box-shadow' : '')">
                     <!-- 主要的订单+副导航 -->
                     <block v-if="(main_navigation_data || null) != null && main_navigation_data.length > 0">
                         <block v-for="(item, index) in main_navigation_data" :key="index">
@@ -199,7 +199,7 @@
                 common_app_is_online_service: 0,
                 common_app_is_head_vice_nav: 0,
                 // 会员码地址
-                membership_page_url: null,
+                vip_page_url: null,
                 // 付款码地址
                 payment_page_url: null,
                 // 用户中心菜单展示模式
@@ -294,20 +294,20 @@
             init_config(status) {
                 if ((status || false) == true) {
                     // 会员码及付款码入口
-                    var membership_page_url = null;
+                    var vip_page_url = null;
                     var payment_page_url = null;
                     if (app.globalData.get_config('plugins_base.wallet.data.is_enable_payment_code') == 1) {
                         payment_page_url = '/pages/plugins/wallet/payment-code/payment-code';
                     }
-                    if (app.globalData.get_config('plugins_base.membershiplevelvip.data.is_enable_member_code') == 1) {
-                        membership_page_url = '/pages/plugins/membershiplevelvip/member-code/member-code';
+                    if (app.globalData.get_config('plugins_base.vip.data.is_enable_member_code') == 1) {
+                        vip_page_url = '/pages/plugins/vip/member-code/member-code';
                     }
                     this.setData({
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         common_user_center_notice: app.globalData.get_config('config.common_user_center_notice'),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_is_head_vice_nav: app.globalData.get_config('config.common_app_is_head_vice_nav'),
-                        membership_page_url: membership_page_url,
+                        vip_page_url: vip_page_url,
                         payment_page_url: payment_page_url,
                     });
                 }
