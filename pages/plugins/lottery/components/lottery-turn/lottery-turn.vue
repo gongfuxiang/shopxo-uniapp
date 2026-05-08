@@ -12,7 +12,11 @@
 
             <view class="lottery-turn-machine-wrap">
                 <view class="lottery-turn-rim">
-                    <view class="lottery-turn-rim-lights" aria-hidden="true"></view>
+                    <view
+                        class="lottery-turn-rim-lights"
+                        :class="{ 'lottery-turn-rim-lights--spinning': rimLightsSpinning }"
+                        aria-hidden="true"
+                    ></view>
                     <view class="lottery-turn-wheel-ring">
                         <!-- 指针朝下指向扇区（与 PC welfare 一致） -->
                         <view class="lottery-turn-pointer" aria-hidden="true"></view>
@@ -118,6 +122,8 @@
                 accRotate: 0,
                 /** 盘面 transform 过渡，动画结束后清空 */
                 diskTransition: '',
+                /** 旋转过程中外圈灯条色相动画开关 */
+                rimLightsSpinning: false,
             };
         },
         computed: {
@@ -166,10 +172,12 @@
                 const delta = fullSpins + alignDelta;
                 const next = cur + delta;
                 const spinMs = 5200;
+                this.rimLightsSpinning = true;
                 this.diskTransition = 'transform ' + spinMs + 'ms cubic-bezier(0.18, 0.75, 0.22, 1)';
                 this.accRotate = next;
                 const self = this;
                 setTimeout(() => {
+                    self.rimLightsSpinning = false;
                     self.$emit('spinDone');
                 }, spinMs + 100);
             },
@@ -272,6 +280,34 @@
         opacity: 0.55;
         background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.95) 0deg 3deg, transparent 3deg 11deg);
         mix-blend-mode: overlay;
+    }
+
+    /*
+     * 抽奖旋转期间：横杠用有色条（白条 hue-rotate 几乎不变色），整圈平滑色相循环 + 略提高对比。
+     * 叠色用 screen 让彩灯感更明显；外圈不旋转。
+     */
+    .lottery-turn-rim-lights--spinning {
+        opacity: 0.96;
+        mix-blend-mode: screen;
+        background: repeating-conic-gradient(
+            from 0deg,
+            hsla(330, 100%, 58%, 0.96) 0deg 4deg,
+            transparent 4deg 12deg
+        );
+        will-change: filter;
+        -webkit-animation: lottery-turn-rim-lights-hue-cycle 1.05s linear infinite;
+        animation: lottery-turn-rim-lights-hue-cycle 1.05s linear infinite;
+    }
+
+    @keyframes lottery-turn-rim-lights-hue-cycle {
+        0% {
+            -webkit-filter: hue-rotate(0deg) saturate(2.35) brightness(1.14) contrast(1.22);
+            filter: hue-rotate(0deg) saturate(2.35) brightness(1.14) contrast(1.22);
+        }
+        100% {
+            -webkit-filter: hue-rotate(360deg) saturate(2.35) brightness(1.14) contrast(1.22);
+            filter: hue-rotate(360deg) saturate(2.35) brightness(1.14) contrast(1.22);
+        }
     }
 
     .lottery-turn-wheel-ring {
