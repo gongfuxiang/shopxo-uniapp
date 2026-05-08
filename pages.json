@@ -2165,27 +2165,6 @@
                     }
                 },
                 {
-                    "path": "push/push",
-                    "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
-                        "titlePenetrate": "YES",
-                        // #endif
-                        "disableScroll": true,
-                        "enablePullDownRefresh": false,
-                        "navigationBarTitleText": "",
-                        "app-plus": {
-                            "bounce": {
-                                "top": "none",
-                                "bottom": "none"
-                            }
-                        }
-                    }
-                },
-                {
                     "path": "detail/detail",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
