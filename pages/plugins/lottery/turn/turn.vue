@@ -235,17 +235,23 @@
                 return String(t.turn_chances_display != null ? t.turn_chances_display : '');
             },
         },
-        /** 进入页：全局 onload 钩子后拉取转盘配置 */
         onLoad(params) {
+            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 获取数据
             this.getPageData();
         },
-        /** 每次显示：公共组件 on_show、刷新分享参数 */
         onShow() {
+            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+
+            // 分享菜单处理
             app.globalData.page_share_handle(this.share_info);
         },
         methods: {
