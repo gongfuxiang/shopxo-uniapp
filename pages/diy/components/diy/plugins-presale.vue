@@ -43,16 +43,6 @@
                                                     <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
                                                     <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
                                                 </view>
-                                                <!-- 预售进度条 -->
-                                                <view v-if="form.is_show_progress == '1' && !isEmpty(item.presale_progress)" class="flex-row align-c gap-6">
-                                                    <view class="re flex-1">
-                                                        <view class="slide-bottom" :style="`background: ${new_style.progress_bg_color}`"></view>
-                                                        <view class="slide-top" :style="` width: ${item.presale_progress}%; ${slide_active_color}`">
-                                                            <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><iconfont name="icon-presale" :color="new_style.progress_button_icon_color" size="9"></iconfont></view>
-                                                        </view>
-                                                    </view>
-                                                    <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已订{{ item.presale_progress }}%</text>
-                                                </view>
                                                 <!-- 预售时间信息 -->
                                                 <view v-if="form.is_show_presale_time == '1' && !isEmpty(item.presale_time_text)" class="text-size-xss" :style="{ color: new_style.presale_time_color }">
                                                     {{ item.presale_time_text }}
@@ -120,16 +110,6 @@
                                                             <view v-if="is_show('title') || is_show('simple_desc')" class="flex-col" :style="{'gap': new_style.title_simple_desc_spacing * 2 + 'rpx'  }">
                                                                 <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
                                                                 <view v-if="is_show('simple_desc')" class="text-line-1" :style="simple_desc">{{ item.simple_desc }}</view>
-                                                            </view>
-                                                            <!-- 预售进度条 -->
-                                                            <view v-if="form.is_show_progress == '1' && !isEmpty(item.presale_progress)" class="flex-row align-c gap-6">
-                                                                <view class="re flex-1">
-                                                                    <view class="slide-bottom" :style="{ 'background': new_style.progress_bg_color }"></view>
-                                                                    <view class="slide-top" :style="'width: ' + item.presale_progress + '%;' + slide_active_color ">
-                                                                        <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><iconfont name="icon-presale" :color="new_style.progress_button_icon_color" size="9"></iconfont></view>
-                                                                    </view>
-                                                                </view>
-                                                                <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已订{{ item.presale_progress }}%</text>
                                                             </view>
                                                             <!-- 预售时间信息 -->
                                                             <view v-if="form.is_show_presale_time == '1' && !isEmpty(item.presale_time_text)" class="text-size-xss" :style="{ color: new_style.presale_time_color }">
