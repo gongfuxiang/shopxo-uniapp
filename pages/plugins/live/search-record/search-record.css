@@ -1,0 +1,182 @@
+.search-record-container {
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+}
+
+.header-top {
+	position: sticky;
+	top: 0;
+	background: #fff;
+	z-index: 9;
+    padding-left: 24rpx;
+	box-sizing: border-box;
+}
+
+/* #ifdef MP-WEIXIN | APP-PLUS */
+.tabs-scroll ::v-deep ::-webkit-scrollbar {
+	width: 0rpx!important;
+	height: 0rpx!important;
+	background-color: transparent;
+}
+/* #endif */
+/* 搜索历史 */
+.search-history {
+	padding: 20rpx 40rpx 24rpx 40rpx;
+    gap: 40rpx;
+    border-bottom: 2rpx solid #EDEDED;
+}
+
+.search-history .search-history-title {
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #666666;
+	line-height: 40rpx;
+	gap: 20rpx;
+}
+.search-history .more-history-btn {
+    font-weight: 400;
+    font-size: 28rpx;
+    color: #999999;
+    line-height: 40rpx;
+	margin-top: 20rpx;
+}
+
+/* 热门搜索 */
+.hot-tabs {
+	display: flex;
+	margin-bottom: 20rpx;
+}
+
+.hot-tabs .tabs-scroll-content {
+	display: flex;
+	align-items: center;
+	gap: 40rpx;
+}
+
+.hot-tab-item {
+	flex: 1;
+    position: relative;
+	text-align: center;
+	font-size: 28rpx;
+	color: #666;
+	padding-bottom: 16rpx;
+}
+
+.hot-tab-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background-color: #333;
+    transition: width 0.6s ease;
+    border-radius: 8rpx;
+}
+
+.hot-tab-item.active::after {
+    width: 52rpx;
+}
+
+.hot-tab-item.active {
+    color: #333;
+}
+
+.hot-item {
+	padding: 16rpx 0 16rpx 20rpx;
+	box-sizing: border-box;
+	background: linear-gradient( 90deg, #F4F4F4 0%, #FFFFFF 100%);
+	border-radius: 8px;
+}
+
+.hot-hotness {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #999999;
+	line-height: 34rpx;
+}
+
+.hot-item-top {
+	background: linear-gradient( 90deg, #FFF5E9 0%, #FFFFFF 100%);
+	border-radius: 8px;
+}
+
+.hot-num {
+	width: 40rpx;
+	height: 40rpx;
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #999999;
+	line-height: 40rpx;
+}
+
+
+/* 修改六边形样式 */
+.hexagon-top {
+    position: relative;
+    width: 40rpx;
+    height: 20rpx !important;
+    border-radius: 2rpx;
+}
+
+.hexagon-top::before,
+.hexagon-top::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 20rpx solid transparent;
+    border-right: 20rpx solid transparent;
+}
+
+.hexagon-top::before {
+    bottom: 100%;
+    border-bottom: 10rpx solid #E93633;
+}
+
+.hexagon-top::after {
+    top: 100%;
+    border-top: 10rpx solid #E93633;
+}
+
+.hexagon-top span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+	font-weight: 500;
+	font-size: 20rpx;
+	line-height: 28rpx;
+}
+
+.hexagon-top-1 {
+    background: #E93633;
+}
+
+.hexagon-top-2 {
+    background: #F5C242;
+}
+
+.hexagon-top-2::before {
+    border-bottom: 10rpx solid #F5C242;
+}
+
+.hexagon-top-2::after {
+    border-top: 10rpx solid #F5C242;
+}
+
+.hexagon-top-3 {
+    background: #F19F58;
+}
+
+.hexagon-top-3::before {
+    border-bottom: 10rpx solid #F19F58;
+}
+
+.hexagon-top-3::after {
+    border-top: 10rpx solid #F19F58;
+}

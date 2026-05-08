@@ -7,7 +7,7 @@
                     <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                     <!-- #ifndef MP-ALIPAY -->
                     <view class="cp" @tap="handle_back">
-                        <iconfont name="icon-arrow-left " size="36rpx" color="#333" class="mr-10"></iconfont>
+                        <iconfont name="icon-arrow-left " size="36rpx" color="#333"></iconfont>
                     </view>
                     <!-- #endif -->
                     <view class="wh-auto ht-auto" :style="header_padding_left">

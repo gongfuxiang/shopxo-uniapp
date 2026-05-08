@@ -256,7 +256,7 @@ export default {
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url('index','index','goodsdata'),
+                url: app.globalData.get_request_url('goodsdata','index','live'),
                 method: 'POST',
                 data: {
                     live_id: this.propLiveId,    
@@ -599,7 +599,7 @@ export default {
 .goods-item {
     background: #fff;
     margin: 4rpx 2px 16rpx 2px;
-    padding: 30rpx 40rpx;
+    padding: 20rpx 30rpx;
     border-radius: 20rpx;
     box-shadow: 2px 2px 4px 2px #0000000d;
     .goods-item-image-container {

@@ -1,0 +1,285 @@
+.header-top {
+	position: sticky;
+	top: 0;
+	background: #fff;
+	z-index: 9;
+}
+.header-search {
+	padding-left: 24rpx;
+	box-sizing: border-box;
+}
+/* 状态 Tab + 排序弹窗入口（仅 live_status_tab_list 为 Tab，排序在弹窗） */
+.status-filter-row {
+	width: 100%;
+	padding: 10rpx 0 16rpx 0;
+	padding-left: 24rpx;
+	box-sizing: border-box;
+}
+.status-filter-row .status-tabs-scroll {
+	width: 0;
+	flex: 1;
+	min-width: 0;
+	padding: 0 8rpx 0 0;
+	box-sizing: border-box;
+}
+.status-tabs-placeholder {
+	min-height: 40rpx;
+}
+.status-filter-row .nav-tabs-filter {
+	flex-shrink: 0;
+	padding: 4rpx 24rpx 4rpx 8rpx;
+	box-sizing: border-box;
+}
+
+/* 直播状态 Tab（文档 live_status_tab_list） */
+.status-tabs-scroll {
+	width: 100%;
+	box-sizing: border-box;
+}
+.status-tabs-scroll-content {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 32rpx;
+}
+.status-tab-item {
+	position: relative;
+	flex-shrink: 0;
+	white-space: nowrap;
+	padding-bottom: 12rpx;
+	font-weight: 500;
+	font-size: 26rpx;
+	color: #888;
+	line-height: 36rpx;
+}
+.status-tab-item.active {
+	color: #333;
+}
+.status-tab-item::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 3px;
+	background-color: #333;
+	transition: width 0.25s ease;
+	border-radius: 6rpx;
+}
+.status-tab-item.active::after {
+	width: 40rpx;
+}
+
+/* 排序依据弹窗（与 pages/plugins/video/search 一致，仅保留排序） */
+.filter-group {
+	margin-bottom: 40rpx;
+}
+.filter-title {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	margin-bottom: 24rpx;
+}
+.filter-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20rpx;
+}
+.filter-option {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	padding: 10rpx 32rpx;
+	background-color: #e8e8e8;
+	border-radius: 4rpx;
+}
+.filter-option.active {
+	background-color: #333;
+	color: #fff;
+}
+.nav-list-more {
+	padding: 20rpx 40rpx;
+	max-height: 70vh;
+}
+::v-deep .popup .popup-content {
+	z-index: 8 !important;
+}
+::v-deep .popup .popup-mask {
+	z-index: 8 !important;
+}
+
+/* #ifdef MP-WEIXIN | APP-PLUS */
+.tabs-scroll ::v-deep ::-webkit-scrollbar {
+	width: 0rpx!important;
+	height: 0rpx!important;
+	background-color: transparent;
+}
+/* #endif */
+/* 推荐直播间列表 */
+.recommend-lives .live-grid {
+	column-count: 2;
+	column-gap: 20rpx;
+	column-fill: balance;
+}
+
+.recommend-lives .live-card-item {
+	break-inside: avoid;
+	padding-bottom: 20rpx;
+}
+
+.recommend-lives .live-card {
+	overflow: hidden;
+	background-color: #fff;
+	box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+	border-radius: 8rpx;
+	width: 100%;
+}
+
+.recommend-lives .live-cover {
+	position: relative;
+	width: 100%;
+}
+
+.recommend-lives .live-thumbnail {
+	width: 100%;
+	height: 200rpx;
+	object-fit: cover;
+}
+
+/* 直播状态标签 */
+.live-status-tag {
+	position: absolute;
+	top: 10rpx;
+	left: 10rpx;
+	padding: 4rpx 12rpx;
+	border-radius: 4rpx;
+	font-size: 22rpx;
+	color: #fff;
+	background-color: #999;
+	display: flex;
+	align-items: center;
+	gap: 6rpx;
+}
+
+.live-status-tag.status-1 {
+	background-color: #E93633;
+}
+
+.live-status-tag.status-2 {
+	background-color: #F5C242;
+}
+
+.live-status-tag.status-3 {
+	background-color: #666;
+}
+
+.live-status-dot {
+	width: 12rpx;
+	height: 12rpx;
+	background-color: #fff;
+	border-radius: 50%;
+	animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
+}
+
+/* 观看人数 */
+.live-view-count {
+	position: absolute;
+	bottom: 10rpx;
+	right: 10rpx;
+	padding: 4rpx 12rpx;
+	border-radius: 4rpx;
+	font-size: 22rpx;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	gap: 6rpx;
+}
+
+.recommend-lives .live-info {
+	padding: 20rpx;
+	padding-top: 10rpx;
+	gap: 20rpx;
+}
+
+.recommend-lives .live-title {
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #333333;
+	line-height: 40rpx;
+}
+
+.recommend-lives .live-anchor,
+.recommend-lives .live-likes {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #999999;
+	line-height: 34rpx;
+}
+
+.live-anchor .anchor-avatar {
+	width: 40rpx;
+	height: 40rpx;
+	border-radius: 50%;
+}
+
+.live-anchor .anchor-name {
+	max-width: 150rpx;
+}
+
+/* 筛选条件弹窗样式 */
+.filter-group {
+	margin-bottom: 40rpx;
+}
+
+.filter-title {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	margin-bottom: 24rpx;
+}
+
+.filter-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20rpx;
+}
+
+.filter-option {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 34rpx;
+	padding: 10rpx 32rpx;
+	background-color: #e8e8e8;
+	border-radius: 4rpx;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.filter-option:hover {
+	background-color: #e0e0e0;
+}
+.filter-option.active {
+	background-color: #333;
+    color: #fff;
+}
+.nav-list-more {
+	padding: 20rpx 40rpx;
+    max-height: 70vh;
+}
+::v-deep .popup .popup-content {
+	z-index: 8 !important;
+}
+::v-deep .popup .popup-mask { 
+	z-index: 8 !important;
+}

@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view + ' flex-row pr'" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
         <view class="flex-1 pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
-            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'https://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo.m3u8'" @loadedmetadata="loadedmetadata" @ended="ended"></component-live-video>
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src" @loadedmetadata="loadedmetadata" @ended="ended"></component-live-video>
             <!-- 简化版点赞效果组件 -->
             <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></component-full-screen-like-effect>
         </view>
@@ -53,41 +53,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    .live-bg {
-        background-image: linear-gradient(to bottom,#ba623c,#14766a);
-    }
-    .live-pause {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 9;
-        background-image: linear-gradient(to bottom, #330066, #000000);
-    }
-    .live-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 9;
-        width: 100%;
-        height: 100%;
-        background: transparent;
-    }
-    .live-ended {
-        // 添加渐变背景色
-        background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-        width: 100%;
-        height: 100%;
-        .live-ended-text {
-            color:#fff;
-            font-size:16px;
-        }
-    }
-    .live-ended-button {
-        border-radius: 6px;
-        border-color: #fff;
-    }
+    @import './detail-nvue.css';
 </style>

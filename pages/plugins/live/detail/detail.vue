@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view + ' pr'">
         <view class="pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
-            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src || 'https://live-pull.shopxo.vip/68f764013572f9240ca7ce6c/live1.m3u8'" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedAutoPlayError="muted_auto_play_error" @mutedTap="muted_tap"></component-live-video>
+            <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedAutoPlayError="muted_auto_play_error" @mutedTap="muted_tap"></component-live-video>
             <!-- 简化版点赞效果组件 -->
             <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
@@ -92,88 +92,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    .live-bg {
-        background-image: linear-gradient(to bottom,#ba623c,#14766a);
-        width: 100%;
-        height: 100vh;
-    }
-    .live-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 9;
-        width: 100%;
-        height: 100%;
-    }
-    .live-pause {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 8;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to bottom, #330066, #000000);
-    }
-    .live-muted {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 11;
-        width: 100%;
-        height: 100%;
-        .live-muted-tips {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20rpx;
-            padding: 15rpx 20rpx;
-            font-size: 32rpx;
-            color: #fff;
-        }
-        .live-muted-text {
-            color: rgba(210,27,70,1);
-            padding-bottom: 4rpx;
-            font-size:16px;
-        }
-        .live-muted-text:hover {
-            color: rgba(210,27,70,1);
-            border-bottom: 1px solid rgba(210,27,70,1);
-        }
-    }
-    .live-play {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 11;
-        width: 100%;
-        height: 100%;
-        .component-icon-play {
-            height: 160rpx;
-            width: 160rpx;
-            font-size: 160rpx !important;
-            color: inherit !important;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-    .live-ended {
-        background: linear-gradient(to bottom,#AD18F9,#05DFC7);
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-        width: 100%;
-        height: 100%;
-        .live-ended-text {
-            color:#fff;
-            font-size:16px;
-        }
-    }
-    .live-ended-button {
-        border-radius: 6px;
-        border-color: #fff;
-    }
+    @import './detail.css';
 </style>

@@ -1,33 +1,74 @@
 <template>
     <!-- #ifdef APP-NVUE -->
     <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" :style="'width:' + propWindowWidth + 'px;height:' + propWindowHeight + 'px;'">
+        <view class="header-top" :style="top_content_style + menu_button_info + 'width:' + propWindowWidth + 'px;'">
     <!-- #endif -->
     <!-- #ifndef APP-NVUE -->
     <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" style="width: 100%;height: 100vh;">
+        <view class="header-top" :style="top_content_style + menu_button_info">
     <!-- #endif -->
-        <!-- 顶部主播信息 -->
-        <view class="flex-row align-c jc-sb" :style="header_style">
-            <view class="top-header flex-row align-c pointer-events-auto">
-                <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
-                <view class="ml-10 flex-col">
-                    <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
-                    <text class="level">{{ like_count }}本场点赞</text>
+        <!-- 顶部返回和搜索 -->
+            <view id="search-height" class="flex-row align-c">
+                <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
+                <!-- #ifndef MP-ALIPAY -->
+                <view class="cp" @tap="handle_back">
+                    <iconfont name="icon-arrow-left" size="36rpx" color="#fff"></iconfont>
+                </view>
+                <!-- #endif -->
+                <view class="wh-auto ht-auto" :style="header_padding_left">
+                    <component-search propIsDisabled @disabledSearch="handle_search" />
                 </view>
             </view>
-            <view class="flex-row align-c pointer-events-auto">
-                <view class="flex-row align-c pr" style="direction: rtl;">
-                    <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
-                        <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
+            <!-- #ifndef MP -->
+            <view class="flex-row align-c jc-sb mt-10 mr-10">
+                <view class="top-header flex-row align-c pointer-events-auto">
+                    <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
+                    <view class="ml-10 flex-col">
+                        <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
+                        <text class="level">{{ like_count }}本场点赞</text>
                     </view>
                 </view>
-                <view class="ml-5 people-number flex-row align-c jc-c">
-                    <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
-                </view>
-                <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
-                    <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
+                <view class="flex-row align-c pointer-events-auto">
+                    <view class="flex-row align-c pr" style="direction: rtl;">
+                        <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                            <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
+                        </view>
+                    </view>
+                    <view class="ml-5 people-number flex-row align-c jc-c">
+                        <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
+                    </view>
+                    <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
+                        <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
+                    </view>
                 </view>
             </view>
+            <!-- #endif -->
         </view>
+        <!-- #ifdef MP -->
+            <!-- 顶部主播信息 -->
+            <view class="flex-row align-c jc-sb" :style="header_style">
+                <view class="top-header flex-row align-c pointer-events-auto">
+                    <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
+                    <view class="ml-10 flex-col">
+                        <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
+                        <text class="level">{{ like_count }}本场点赞</text>
+                    </view>
+                </view>
+                <view class="flex-row align-c pointer-events-auto">
+                    <view class="flex-row align-c pr" style="direction: rtl;">
+                        <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                            <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
+                        </view>
+                    </view>
+                    <view class="ml-5 people-number flex-row align-c jc-c">
+                        <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
+                    </view>
+                    <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
+                        <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
+                    </view>
+                </view>
+            </view>
+        <!-- #endif -->
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
                 <view class="pr">
@@ -164,15 +205,22 @@
 </template>
 
 <script>
-    import componentGoods from "@/pages/plugins/live/pull/components/goods/goods.vue";
-    import componentLikeButton from "@/pages/plugins/live/pull/components/like-button/like-button";
+    import componentGoods from "@/pages/plugins/live/detail/components/goods/goods.vue";
+    import componentLikeButton from "@/pages/plugins/live/detail/components/like-button/like-button";
+    import componentSearch from "@/pages/plugins/live/components/search.vue";
     import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO || H5
+    bar_height = 0;
+    // #endif
     export default {
         name: 'LiveContent',
         components: {
             componentGoods,
             componentLikeButton,
+            componentSearch,
         },
         /**
          * 直播内容组件属性
@@ -212,6 +260,16 @@
             return {
                 application_client_type: app.globalData.application_client_type(),
                 application_client_brand: app.globalData.application_client_brand(),
+                // 5,7,0 是误差，， 10 是下边距，66是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:10px;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:10px;',
+                // #endif
+                // #ifdef APP
+                top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:10px;',
+                // #endif
                 goods_popup_status: false,
                 // 点赞计数
                 like_count: 0,
@@ -286,6 +344,10 @@
                 live_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
                 live_websocket_url: '', // websocket地址
                 live_tips: '', // 直播提示语
+                //#region 顶部返回和搜索
+                menu_button_info: '',
+                header_padding_left: '',
+                //#endregion
             }
         },
         watch: {
@@ -340,7 +402,7 @@
         /**
          * 组件挂载后执行初始化操作
          */
-        mounted() {
+        onShow() {
             // 初始化窗口信息和滚动条高度
             this.init_window_info();
             // 滚动到评论区底部
@@ -381,8 +443,30 @@
                 }
                 //#endif
                 //#ifdef APP
-                this.header_style = 'padding-top: 88rpx;'
+                this.header_style = 'padding-top: 88rpx;';
                 //#endif
+                
+                // 小程序下，获取小程序胶囊的宽度
+                let menu_button_info = 'max-width:100%';
+                // #ifndef MP-TOUTIAO
+                    // #ifdef MP
+                    // 判断是否有胶囊
+                    const is_current_single_page = app.globalData.is_current_single_page();
+                    // 如果有胶囊的时候，做处理
+                    if (is_current_single_page == 0) {
+                        const custom = uni.getMenuButtonBoundingClientRect();
+                        menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
+                    }
+                    // #endif
+                // #endif
+                this.menu_button_info = menu_button_info;
+                
+                // 支付宝小程序头部左侧padding
+                let padding_left = '';
+                // #ifdef MP-ALIPAY
+                padding_left = 'padding-left: 20rpx;';
+                // #endif
+                this.header_padding_left = padding_left;
                 
                 //#ifdef APP-NVUE
                 this.scoll_height = app.globalData.rpx_to_px(600);
@@ -404,6 +488,23 @@
              */
             live_back() {
                 this.$emit('liveBack');
+            },
+
+            /**
+             * 返回上一页
+             */
+            handle_back() {
+                app.globalData.page_back_prev_event();
+            },
+
+            /**
+             * 搜索点击事件
+             */
+            handle_search() {
+                // 跳转到搜索页面
+                uni.navigateTo({
+                    url: '/pages/plugins/live/search/search'
+                });
             },
             
             //#region 评论区
@@ -594,8 +695,12 @@
                         this.live_user_id = data.data.live_user_id;
                         // 初始化提示语
                         const message_bulletin_index = this.bulletins.findIndex(item => item.type == 'message');
-                        if (message_bulletin_index > -1) {
-                            this.bulletins.push(this.live_tips);
+                        if (message_bulletin_index == -1) {
+                            this.bulletins.push({
+                                id: Math.random(),
+                                type: 'message',
+                                text: this.live_tips,
+                            });
                         }
                         // 启动心跳
                         this.socket_ping_handle();
@@ -1154,4 +1259,19 @@
         }
     }
 /* #endif */
+
+/* 顶部返回和搜索栏样式 */
+.header-top {
+    padding-left: 12px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+}
+.header-top ::v-deep .search-bar {
+    background: rgba(255,255,255,0.5);
+    border-color: transparent;
+}
 </style>

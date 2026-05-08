@@ -105,7 +105,7 @@ export default {
 }
 .search-iconfont-container {
     padding: 16rpx 30rpx;
-    // padding-right: 20rpx;
+    padding-right: 20rpx;
 }
 input {
     flex: 1;

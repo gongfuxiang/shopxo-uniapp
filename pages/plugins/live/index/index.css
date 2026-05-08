@@ -1,0 +1,188 @@
+.top-search {
+	position: sticky;
+	top: 0;
+	z-index: 9;
+}
+/* 导航栏 */
+.nav-tabs {
+	position: sticky;
+	width: 100%;
+	padding: 10rpx 16rpx 20rpx 24rpx;
+	z-index: 9;
+	background: transparent; /* 默认透明背景 */
+	transition: background-color 0.3s ease; /* 添加背景色过渡动画 */
+}
+	
+.nav-tabs .tabs-scroll-content {
+	display: flex;
+	align-items: center;
+	gap: 48rpx;
+}
+.nav-tabs .tab-item {
+	position: relative;
+	white-space: nowrap;
+	padding-bottom: 16rpx;
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #666666;
+	line-height: 40rpx;
+}
+
+.nav-tabs .tab-item.active {
+	color: #333333;
+}
+	
+.nav-tabs .tab-item::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 4px;
+	background-color: #333;
+	transition: width 0.6s linear;
+	border-radius: 8rpx;
+}
+
+.nav-tabs .tab-item.active::after {
+	width: 52rpx;
+}
+
+.nav-tabs .tab-item.active {
+	color: #333;
+}
+
+/* #ifdef MP-WEIXIN | APP-PLUS */
+.tabs-scroll ::v-deep ::-webkit-scrollbar {
+	width: 0rpx!important;
+	height: 0rpx!important;
+	background-color: transparent;
+}
+
+/* #endif */
+/* 推荐直播间列表 */
+.recommend-lives {
+	padding: 10rpx 24rpx 24rpx 24rpx;
+}
+
+.recommend-lives .live-grid {
+	column-count: 2;
+	column-gap: 20rpx;
+	column-fill: balance;
+}
+
+.recommend-lives .live-card-item {
+	break-inside: avoid;
+	padding-bottom: 20rpx;
+}
+
+.recommend-lives .live-card {
+	overflow: hidden;
+	background-color: #fff;
+	box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+	border-radius: 8rpx;
+	width: 100%;
+}
+
+.recommend-lives .live-cover {
+	position: relative;
+	width: 100%;
+}
+
+.recommend-lives .live-thumbnail {
+	width: 100%;
+	height: 200rpx;
+	object-fit: cover;
+}
+
+/* 直播状态标签 */
+.live-status-tag {
+	position: absolute;
+	top: 10rpx;
+	left: 10rpx;
+	padding: 4rpx 12rpx;
+	border-radius: 4rpx;
+	font-size: 22rpx;
+	color: #fff;
+	background-color: #999;
+	display: flex;
+	align-items: center;
+	gap: 6rpx;
+}
+
+.live-status-tag.status-1 {
+	background-color: #E93633;
+}
+
+.live-status-tag.status-2 {
+	background-color: #F5C242;
+}
+
+.live-status-tag.status-3 {
+	background-color: #666;
+}
+
+.live-status-dot {
+	width: 12rpx;
+	height: 12rpx;
+	background-color: #fff;
+	border-radius: 50%;
+	animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
+}
+
+/* 观看人数 */
+.live-view-count {
+	position: absolute;
+	bottom: 10rpx;
+	right: 10rpx;
+	padding: 4rpx 12rpx;
+	border-radius: 4rpx;
+	font-size: 22rpx;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	gap: 6rpx;
+}
+
+.recommend-lives .live-info {
+	padding: 20rpx;
+	padding-top: 10rpx;
+	gap: 20rpx;
+}
+
+.recommend-lives .live-title {
+	font-weight: 500;
+	font-size: 28rpx;
+	color: #333333;
+	line-height: 40rpx;
+}
+
+.recommend-lives .live-anchor,
+.recommend-lives .live-likes {
+	font-weight: 400;
+	font-size: 24rpx;
+	color: #999999;
+	line-height: 34rpx;
+}
+
+.live-anchor .anchor-avatar {
+	width: 40rpx;
+	height: 40rpx;
+	border-radius: 50%;
+}
+
+.live-anchor .anchor-name {
+	max-width: 150rpx;
+}
+
+.tabs-scroll-image {
+	width: 40rpx;
+	height: 40rpx;
+}

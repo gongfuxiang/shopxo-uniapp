@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import H5HlsVideo from '@/pages/plugins/live/pull/components/h5-hls-video/h5-hls-video.vue';
+    import H5HlsVideo from '@/pages/plugins/live/detail/components/h5-hls-video/h5-hls-video.vue';
     import { isEmpty } from '@/common/js/common/common.js';
     
     /**
@@ -27,11 +27,11 @@
             /**
              * 视频源地址
              * @type {String}
-             * @default 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'
+             * @default ''
              */
             propSrc:{
                 type: String,
-                default: 'http://live-pull-all.shopxo.vip/68f764013572f9240ca7ce6c/shopxo122.m3u8'
+                default: ''
             }
         },
         watch: {

@@ -81,10 +81,10 @@
 </template>
 
 <script>
-import componentSearch from '@/pages/plugins/video/components/search.vue';
-import componentLoading from '@/pages/plugins/video/components/loading.vue';
+import componentSearch from '@/pages/plugins/live/components/search.vue';
+import componentLoading from '@/pages/plugins/live/components/loading.vue';
 import componentNoData from '@/components/no-data/no-data';
-import { video_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
+import { live_get_top_left_padding, isEmpty } from '@/common/js/common/common.js';
 import componentCommon from '@/components/common/common';
 const app = getApp();
 var system = app.globalData.get_system_info(null, null, true);
@@ -121,7 +121,7 @@ export default {
 			header_padding_left: '',
 			data_loding_status: 1,
 			data_loding_msg: '',
-            cache_key: 'cache_plugins_video_search_history_key',
+            cache_key: 'cache_plugins_live_search_history_key',
 		};
 	},
 	onLoad(params) {
@@ -168,7 +168,7 @@ export default {
 
 			let padding_left = '';
 			// #ifdef MP-ALIPAY
-				padding_left = video_get_top_left_padding();
+				padding_left = live_get_top_left_padding();
 			// #endif
 			this.setData({
 				header_padding_left: padding_left,
@@ -190,7 +190,7 @@ export default {
         // 初始化数据
 		init_data() {
 			uni.request({
-				url: app.globalData.get_request_url("searchrecord", "index", "video"),
+				url: app.globalData.get_request_url("searchrecord", "index", "live"),
 				method: 'POST',
 				dataType: 'json',
 				success: res => {
@@ -242,7 +242,7 @@ export default {
 			}
 			this.search_keywords = value;
 			// 跳转到搜索页
-			app.globalData.url_open(`/pages/plugins/video/search/search?keywords=${this.search_keywords}`, false);
+			app.globalData.url_open(`/pages/plugins/live/search/search?keywords=${this.search_keywords}`, false);
 		},
 
         // 历史搜索事件
