@@ -2,7 +2,11 @@
     <view class="page-width-max lottery-grid-outer">
         <view class="lottery-grid-canvas">
             <view class="lottery-grid-bg">
-                <image :src="nImg" mode="aspectFill" class="lottery-bg-img"></image>
+                <image v-if="nImg" :src="nImg" mode="aspectFill" class="lottery-bg-img"></image>
+            </view>
+            <!-- 标题图叠在背景之上，pointer-events:none 避免挡住九宫格点击 -->
+            <view v-if="heroTitleImg" class="lottery-hero-title-overlay">
+                <image class="lottery-hero-title-img" :src="heroTitleImg" mode="widthFix" />
             </view>
             <view class="luck-list">
                 <view
@@ -35,6 +39,11 @@
         props: {
             // 背景图
             nImg: String,
+            /** 标题图片（叠在背景上层，优先 App 端图由父组件传入） */
+            heroTitleImg: {
+                type: String,
+                default: '',
+            },
             // 列表
             AwardList: {
                 type: Array,
@@ -178,6 +187,28 @@
         width: 100%;
         aspect-ratio: 750 / 1338;
         overflow: hidden;
+        z-index: 1;
+    }
+
+    .lottery-hero-title-overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 14% 8% 0;
+        box-sizing: border-box;
+        pointer-events: none;
+    }
+
+    .lottery-hero-title-img {
+        width: 72%;
+        max-width: 480rpx;
+        height: auto;
+        display: block;
     }
 
     .lottery-bg-img {
@@ -189,6 +220,7 @@
     /* 九宫格：宽高比、位置、间距按底图槽位微调（与背景图对齐） */
     .luck-list {
         position: absolute;
+        z-index: 3;
         left: 50%;
         top: 32%;
         -webkit-transform: translateX(-50%);

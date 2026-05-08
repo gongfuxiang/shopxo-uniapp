@@ -497,9 +497,8 @@
                 is_show_payment_popup: false,
                 // 智能工具箱（限定仅可选择下单支付方式）
                 is_order_pay_only_can_buy_payment: 0,
-                // 订单是否展示商品快照
+                // 订单是否展示商品快照（与站点配置 common_is_order_show_goods_snapshot 一致）
                 common_is_order_show_goods_snapshot: 0,
-                // 支付方式
                 original_payment_list: [],
             };
         },

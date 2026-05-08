@@ -1,76 +1,100 @@
 <template>
-    <view class="lottery-grid-page">
+    <view class="lottery-turn-page" :class="{ 'lottery-turn-page--loaded': lotteryPageOk }">
         <block v-if="lotteryPageOk">
-        <view v-if="lotteryGrid" class="lottery-top-bar">
-            <view class="lottery-top-left lottery-top-asset-panel">
-                <text class="lottery-asset-text">{{ lotteryGridBarText }}</text>
-            </view>
-            <view v-if="Array.isArray(lotteryGrid.grid_rules_text) && lotteryGrid.grid_rules_text.length > 0" class="lottery-rules-btn" @tap="rulesPopupVisible = true">?</view>
-        </view>
-
-        <component-lottery-grid
-            :nImg="nImg"
-            :heroTitleImg="heroTitleImageUrl"
-            :AwardList="AwardList"
-            :sjNum="sjNum"
-            :drawTrigger="drawTrigger"
-            @beforeDraw="beforeDraw"
-            @updateMoney="updateMoney"
-        ></component-lottery-grid>
-
-        <!-- H5 宽屏：与九宫格组件一致限制最大宽度并居中，避免底部条铺满 PC 浏览器 -->
-        <view class="page-width-max lottery-bottom-fixed-cluster">
-            <!-- 与 PC 一致：底部横向跑马灯（最近中奖） -->
-            <view v-if="marqueeList.length > 0" class="lottery-marquee-wrap">
-                <view class="lottery-marquee-inner">
-                    <view class="lottery-marquee-row">
-                        <block v-for="rep in marqueeDuplicateRuns" :key="rep">
-                            <text v-for="(mv, mi) in marqueeList" :key="mi" class="lottery-marquee-item">
-                                <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
-                                <text>抽中{{ mv.reward_name || '-' }} </text>
-                                <text class="lottery-marquee-em">刚刚</text>
-                            </text>
-                        </block>
+            <view class="lottery-turn-page-inner">
+                <view v-if="lotteryTurn" class="lottery-top-bar">
+                    <view class="lottery-top-left lottery-top-asset-panel">
+                        <text class="lottery-asset-text">{{ lotteryTurnBarText }}</text>
+                    </view>
+                    <view
+                        v-if="Array.isArray(lotteryTurn.turn_rules_text) && lotteryTurn.turn_rules_text.length > 0"
+                        class="lottery-rules-btn"
+                        @tap="rulesPopupVisible = true"
+                    >
+                        ?
                     </view>
                 </view>
-            </view>
 
-            <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
-        </view>
-
-        <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
-            <view class="lottery-rules-dialog" @tap.stop>
-                <view class="lottery-rules-title">抽奖规则</view>
-                <scroll-view :scroll-y="true" class="lottery-rules-scroll">
-                    <text class="lottery-rules-text">{{ rulesDisplayText }}</text>
-                </scroll-view>
-                <button type="default" class="lottery-rules-confirm round bg-blue cr-white text-size" @tap="rulesPopupVisible = false">{{ confirmBtnText }}</button>
-            </view>
-        </view>
-
-        <!-- 与 PC 端 lottery-grid-result-modal 一致：成功/未中奖 -->
-        <view v-if="resultModalVisible" class="lottery-result-mask">
-            <view class="lottery-result-dialog" @tap.stop>
-                <view
-                    class="lottery-result-bd"
-                    :style="resultModalBgStyle"
+                <component-lottery-turn
+                    :nImg="nImg"
+                    :heroTitleImg="heroTitleImageUrl"
+                    :sectors="sectorsList"
+                    :sectorDeg="sectorDegNum"
+                    :ringCount="ringCountNum"
+                    :chancesText="chancesDisplayText"
+                    :hubCapLabel="hubCapLabelText"
+                    :spinRingIndex="spinRingIndex"
+                    :drawTrigger="drawTrigger"
+                    @spinDone="onSpinDone"
                 >
-                    <view class="lottery-result-inner">
-                        <text class="lottery-result-title">{{ resultModalTitle }}</text>
-                        <view v-if="resultModalShowPrizeIcon" class="lottery-result-prize-wrap radius">
-                            <image
-                                class="lottery-result-prize-icon"
-                                :src="resultModalPrizeIcon"
-                                :alt="resultModalPrizeName"
-                                mode="aspectFit"
-                            />
+                    <template slot="footer-draw">
+                        <view class="lottery-turn-footer-draw">
+                            <button type="default" class="lottery-turn-draw-btn" :disabled="isDrawing" @tap="beforeDraw">
+                                <image
+                                    v-if="lotteryTurn && lotteryTurn.draw_start_image"
+                                    class="lottery-turn-draw-btn-img"
+                                    :src="lotteryTurn.draw_start_image"
+                                    mode="aspectFit"
+                                />
+                                <text v-else class="lottery-turn-draw-btn-txt">{{ drawNowText }}</text>
+                                <text v-if="lotteryTurn && lotteryTurn.draw_price_tips" class="lottery-turn-draw-sub">{{ lotteryTurn.draw_price_tips }}</text>
+                            </button>
                         </view>
-                        <text class="lottery-result-desc">{{ resultModalDesc }}</text>
-                        <button type="default" class="lottery-result-confirm round" @tap="closeResultModal">{{ confirmBtnText }}</button>
+                    </template>
+                </component-lottery-turn>
+            </view>
+
+            <view class="page-width-max lottery-bottom-fixed-cluster">
+                <view v-if="marqueeList.length > 0" class="lottery-marquee-wrap">
+                    <view class="lottery-marquee-inner">
+                        <view class="lottery-marquee-row">
+                            <block v-for="rep in marqueeDuplicateRuns" :key="rep">
+                                <text
+                                    v-for="(mv, mi) in marqueeList"
+                                    :key="mi"
+                                    class="lottery-marquee-item"
+                                >
+                                    <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
+                                    <text>抽中{{ mv.reward_name || '-' }} </text>
+                                    <text class="lottery-marquee-em">刚刚</text>
+                                </text>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+
+                <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
+            </view>
+
+            <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
+                <view class="lottery-rules-dialog" @tap.stop>
+                    <view class="lottery-rules-title">抽奖规则</view>
+                    <scroll-view :scroll-y="true" class="lottery-rules-scroll">
+                        <text class="lottery-rules-text">{{ rulesDisplayText }}</text>
+                    </scroll-view>
+                    <button type="default" class="lottery-rules-confirm round bg-red cr-white text-size" @tap="rulesPopupVisible = false">{{ confirmBtnText }}</button>
+                </view>
+            </view>
+
+            <view v-if="resultModalVisible" class="lottery-result-mask">
+                <view class="lottery-result-dialog" @tap.stop>
+                    <view class="lottery-result-bd" :style="resultModalBgStyle">
+                        <view class="lottery-result-inner">
+                            <text class="lottery-result-title">{{ resultModalTitle }}</text>
+                            <view v-if="resultModalShowPrizeIcon" class="lottery-result-prize-wrap radius">
+                                <image
+                                    class="lottery-result-prize-icon"
+                                    :src="resultModalPrizeIcon"
+                                    :alt="resultModalPrizeName"
+                                    mode="aspectFit"
+                                />
+                            </view>
+                            <text class="lottery-result-desc">{{ resultModalDesc }}</text>
+                            <button type="default" class="lottery-result-confirm round" @tap="closeResultModal">{{ confirmBtnText }}</button>
+                        </view>
                     </view>
                 </view>
             </view>
-        </view>
         </block>
 
         <component-no-data
@@ -80,7 +104,6 @@
             propLoadingLogoTop="35vh"
         ></component-no-data>
 
-        <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -89,22 +112,21 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
-    import componentLotteryGrid from '@/pages/plugins/lottery/components/lottery-grid/lottery-grid';
+    import componentLotteryTurn from '@/pages/plugins/lottery/components/lottery-turn/lottery-turn';
+
     export default {
         components: {
             componentCommon,
             componentNoData,
-            componentLotteryGrid,
+            componentLotteryTurn,
         },
         data() {
             return {
                 nImg: '',
-                // 中奖的索引，也就是AwardList数组的索引，sjNum不能等于4，4是立即抽奖
-                sjNum: 0,
+                spinRingIndex: -1,
                 drawTrigger: 0,
                 isDrawing: false,
-                lotteryGrid: null,
-                AwardList: [],
+                lotteryTurn: null,
                 lastDrawResult: null,
                 resultSuccessImage: '',
                 resultFailImage: '',
@@ -119,46 +141,45 @@
                 resultModalPrizeName: '',
                 resultModalBgStyle: {},
                 rulesPopupVisible: false,
-                // 自定义分享信息
                 share_info: {},
-                /** 最近中奖跑马灯（接口 marquee_list） */
                 marqueeList: [],
-                /** 1 加载中；2 网络/请求 fail；0 业务类提示；3 正常不展示 no-data */
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
             };
         },
         computed: {
-            /** 活动可用且已拉到配置时才展示九宫格 */
+            /** 接口返回活动启用时可渲染转盘主区域 */
             lotteryPageOk() {
-                const g = this.lotteryGrid;
-                return !!(g && g.enable !== false);
+                const t = this.lotteryTurn;
+                return !!(t && t.enable !== false);
             },
-            /** 后端拼接：余额、积分、（可选）今日可抽次数 */
-            lotteryGridBarText() {
-                const g = this.lotteryGrid;
-                if (!g) {
+            /** 顶部左侧资产条：优先后台文案，否则余额+积分 */
+            lotteryTurnBarText() {
+                const t = this.lotteryTurn;
+                if (!t) {
                     return '';
                 }
-                const s = String(g.grid_user_assets_bar_text || '').trim();
+                const s = String(t.turn_user_assets_bar_text || '').trim();
                 if (s) {
                     return s;
                 }
-                return '余额：' + (g.user_wallet_money || '0.00') + '，积分：' + (g.user_integral || '0');
+                return '余额：' + (t.user_wallet_money || '0.00') + '，积分：' + (t.user_integral || '0');
             },
-            /**
-             * 弹窗确认按钮文案（多语言）
-             * @returns {string}
-             */
+            /** 弹窗类按钮「确认」文案（多语言） */
             confirmBtnText() {
                 return this.$t ? this.$t('common.confirm') : '确认';
             },
-            /**
-             * 规则说明多行合并为展示用文本
-             * @returns {string}
-             */
+            /** 底部主按钮默认「立即抽奖」 */
+            drawNowText() {
+                return this.$t ? this.$t('pages.plugins-lottery-turn-draw') : '立即抽奖';
+            },
+            /** 转盘中心次数旁说明，如「可用次数」 */
+            hubCapLabelText() {
+                return this.$t ? this.$t('pages.plugins-lottery-turn-chances-label') : '可用次数';
+            },
+            /** 规则弹窗：turn_rules_text 数组合并为一段文本 */
             rulesDisplayText() {
-                const lines = (this.lotteryGrid && this.lotteryGrid.grid_rules_text) || [];
+                const lines = (this.lotteryTurn && this.lotteryTurn.turn_rules_text) || [];
                 if (!Array.isArray(lines)) {
                     return '';
                 }
@@ -171,54 +192,73 @@
                 }
                 return out.join('\n');
             },
-            /** 跑马灯双份内容，与 PC 动画 translateX(-50%) 配合 */
+            /** 跑马灯无缝滚动：两份相同的 DOM 拼接 */
             marqueeDuplicateRuns() {
                 return [0, 1];
             },
-            /** 九宫格标题图 URL（手机端图优先，与后台 Web/App 配置一致） */
+            /** 标题图：优先 App 端图，否则 PC 端图 */
             heroTitleImageUrl() {
-                const g = this.lotteryGrid;
-                if (!g) {
+                const t = this.lotteryTurn;
+                if (!t) {
                     return '';
                 }
-                const app = String(g.banner_title_image_app || '').trim();
-                const web = String(g.banner_title_image || '').trim();
-                return app || web || '';
+                const appImg = String(t.banner_title_image_app || '').trim();
+                const web = String(t.banner_title_image || '').trim();
+                return appImg || web || '';
+            },
+            /** 扇区列表，传给 lottery-turn 绘制盘面 */
+            sectorsList() {
+                const t = this.lotteryTurn;
+                if (!t || !Array.isArray(t.sectors)) {
+                    return [];
+                }
+                return t.sectors;
+            },
+            /** 每扇区角度，来自后台 sector_deg */
+            sectorDegNum() {
+                const t = this.lotteryTurn;
+                const v = t ? parseFloat(t.sector_deg) : 0;
+                return isNaN(v) ? 0 : v;
+            },
+            /** 扇区总数 ring_count，用于盘面分段 */
+            ringCountNum() {
+                const t = this.lotteryTurn;
+                const v = t ? parseInt(t.ring_count, 10) : 0;
+                return isNaN(v) ? 0 : v;
+            },
+            /** 中心圆数字：剩余次数等展示字符串 */
+            chancesDisplayText() {
+                const t = this.lotteryTurn;
+                if (!t) {
+                    return '';
+                }
+                return String(t.turn_chances_display != null ? t.turn_chances_display : '');
             },
         },
+        /** 进入页：全局 onload 钩子后拉取转盘配置 */
         onLoad(params) {
-            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
-
-            // 获取数据
             this.getPageData();
         },
+        /** 每次显示：公共组件 on_show、刷新分享参数 */
         onShow() {
-            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
-            // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
-
-            // 分享菜单处理
             app.globalData.page_share_handle(this.share_info);
         },
         methods: {
-            // 链接跳转（节点需配置 data-value）
+            /** 底部「中奖记录」等 data-value 链接跳转 */
             urlEvent(e) {
                 app.globalData.url_event(e);
             },
-            /**
-             * 转盘结束回调：打开结果弹窗（与 PC grid.js openResultModal 一致）
-             */
-            updateMoney() {
+            /** 子组件转盘动画结束：结束抽奖态并打开结果弹窗 */
+            onSpinDone() {
+                this.isDrawing = false;
                 this.openResultModal();
             },
-            /**
-             * 根据最近一次抽奖结果展示成功/未中奖弹窗
-             */
+            /** 根据 lastDrawResult 填充中奖/未中奖弹窗文案与背景图 */
             openResultModal() {
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
@@ -240,142 +280,128 @@
                 }
                 this.resultModalVisible = true;
             },
-            /**
-             * 关闭结果弹窗并刷新页面数据
-             */
+            /** 关闭结果弹窗并刷新页面数据（次数等） */
             closeResultModal() {
                 this.resultModalVisible = false;
                 this.lastDrawResult = null;
-                // 获取数据
                 this.getPageData();
             },
-            /**
-             * 点击「立即抽奖」前校验：防重复、登录态
-             */
+            /** 点击立即抽奖前：防重复、登录校验 */
             beforeDraw() {
                 if (this.isDrawing) {
                     return;
                 }
-                // 校验是否登录
                 if (app.globalData.get_user_info(this, 'beforeDraw') == false) {
                     return;
                 }
                 this.drawAction();
             },
-            /**
-             * 请求服务端抽奖接口，成功后驱动子组件转盘
-             */
+            /** 请求 lottery/draw 接口，成功后递增 drawTrigger 驱动子组件旋转 */
             drawAction() {
                 this.isDrawing = true;
                 uni.request({
-                    // 获取请求地址、参数处理
-                    url: app.globalData.get_request_url('draw', 'grid', 'lottery'),
+                    url: app.globalData.get_request_url('draw', 'turn', 'lottery'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        this.isDrawing = false;
                         if (res.data.code == 0) {
                             const data = res.data.data || {};
                             this.lastDrawResult = data;
-                            this.sjNum = parseInt(data.grid_index || 0);
+                            this.spinRingIndex = parseInt(data.ring_index || 0, 10);
+                            if (isNaN(this.spinRingIndex)) {
+                                this.spinRingIndex = 0;
+                            }
                             this.drawTrigger = this.drawTrigger + 1;
-                            if (this.lotteryGrid) {
+                            if (this.lotteryTurn) {
                                 const patch = {
                                     user_wallet_money:
-                                        data.user_wallet_money !== undefined ? data.user_wallet_money : this.lotteryGrid.user_wallet_money,
-                                    user_integral:
-                                        data.user_integral !== undefined ? data.user_integral : this.lotteryGrid.user_integral,
+                                        data.user_wallet_money !== undefined ? data.user_wallet_money : this.lotteryTurn.user_wallet_money,
+                                    user_integral: data.user_integral !== undefined ? data.user_integral : this.lotteryTurn.user_integral,
                                 };
-                                if (data.grid_user_assets_bar_text !== undefined && data.grid_user_assets_bar_text !== null) {
-                                    patch.grid_user_assets_bar_text = data.grid_user_assets_bar_text;
+                                if (data.turn_user_assets_bar_text !== undefined && data.turn_user_assets_bar_text !== null) {
+                                    patch.turn_user_assets_bar_text = data.turn_user_assets_bar_text;
                                 }
-                                ['grid_user_daily_draw_limit', 'grid_user_daily_draw_used_today', 'grid_user_daily_draw_remaining_today'].forEach((k) => {
+                                ['turn_user_daily_draw_limit', 'turn_user_daily_draw_used_today', 'turn_user_daily_draw_remaining_today'].forEach((k) => {
                                     if (data[k] !== undefined && data[k] !== null) {
                                         patch[k] = data[k];
                                     }
                                 });
-                                this.lotteryGrid = Object.assign({}, this.lotteryGrid, patch);
+                                if (data.turn_chances_display !== undefined && data.turn_chances_display !== null) {
+                                    patch.turn_chances_display = data.turn_chances_display;
+                                }
+                                this.lotteryTurn = Object.assign({}, this.lotteryTurn, patch);
                             }
                         } else {
-                            // 错误提示
+                            this.isDrawing = false;
                             app.globalData.showToast(res.data.msg || '抽奖失败');
                         }
                     },
                     fail: () => {
                         this.isDrawing = false;
-                        // 错误提示
                         app.globalData.showToast(this.$t ? this.$t('common.internet_error_tips') : '网络异常');
                     },
                 });
             },
-            /**
-             * 拉取九宫格活动配置与奖品列表
-             */
+            /** 请求 lottery/index 拉取活动配置、跑马灯、背景图与分享信息 */
             getPageData() {
                 uni.request({
-                    // 获取请求地址、参数处理
-                    url: app.globalData.get_request_url('index', 'grid', 'lottery'),
+                    url: app.globalData.get_request_url('index', 'turn', 'lottery'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
                             const data = res.data.data || {};
-                            const grid = data.lottery_grid || {};
+                            const turn = data.lottery_turn || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
-                            this.lotteryGrid = grid;
-                            if (grid.enable === false) {
-                                const tip = String(grid.error_tips || '').trim() || '活动暂不可用';
+                            this.lotteryTurn = turn;
+                            if (turn.enable === false) {
+                                const tip = String(turn.error_tips || '').trim() || '活动暂不可用';
                                 this.data_list_loding_status = 0;
                                 this.data_list_loding_msg = tip;
                             } else {
                                 this.data_list_loding_status = 3;
                                 this.data_list_loding_msg = '';
                             }
-                            this.resultSuccessImage = grid.result_success_image || '';
-                            this.resultFailImage = grid.result_fail_image || '';
-                            this.resultFailTitle = grid.result_fail_title || '谢谢参与';
-                            this.resultFailDesc = grid.result_fail_desc || '再努力努力肯定就会中哦！';
-                            this.resultSuccessTitle = grid.result_success_title || '恭喜您获得';
-                            this.nImg = grid.index_bg_app || '';
-                            this.AwardList = this.gridCellsToAwardList(grid);
-                            // 分享：与后台「抽奖页主标题 / 抽奖页描述」一致；配图优先标题手机端图
-                            const defaultTitle = this.$t ? this.$t('pages.plugins-lottery-grid') : '幸运抽奖';
-                            const shareTitle = String(grid.banner_title || '').trim() || defaultTitle;
-                            let shareDesc = String(grid.banner_subtitle || '').trim();
+                            this.resultSuccessImage = turn.result_success_image || '';
+                            this.resultFailImage = turn.result_fail_image || '';
+                            this.resultFailTitle = turn.result_fail_title || '谢谢参与';
+                            this.resultFailDesc = turn.result_fail_desc || '再努力努力肯定就会中哦！';
+                            this.resultSuccessTitle = turn.result_success_title || '恭喜您获得';
+                            this.nImg = turn.index_bg_app || '';
+                            const defaultTitle = this.$t ? this.$t('pages.plugins-lottery-turn') : '转盘抽奖';
+                            const shareTitle = String(turn.banner_title || '').trim() || defaultTitle;
+                            let shareDesc = String(turn.banner_subtitle || '').trim();
                             if (!shareDesc) {
                                 shareDesc = shareTitle;
                             }
                             const shareImg =
-                                String(grid.banner_title_image_app || '').trim() ||
-                                String(grid.banner_title_image || '').trim() ||
-                                String(grid.index_bg_app || '').trim() ||
+                                String(turn.banner_title_image_app || '').trim() ||
+                                String(turn.banner_title_image || '').trim() ||
+                                String(turn.index_bg_app || '').trim() ||
                                 '';
                             this.setData({
                                 share_info: {
                                     title: shareTitle,
                                     desc: shareDesc,
-                                    path: '/pages/plugins/lottery/grid/grid',
+                                    path: '/pages/plugins/lottery/turn/turn',
                                     query: '',
                                     img: shareImg,
                                 },
                             });
                         } else {
                             this.marqueeList = [];
-                            this.lotteryGrid = null;
-                            this.AwardList = [];
+                            this.lotteryTurn = null;
                             const errMsg = String(res.data.msg || '').trim() || '加载失败';
                             this.data_list_loding_status = 0;
                             this.data_list_loding_msg = errMsg;
                             app.globalData.showToast(errMsg);
                         }
-                        // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        this.lotteryGrid = null;
-                        this.AwardList = [];
+                        this.lotteryTurn = null;
                         const errMsg = this.$t ? this.$t('common.internet_error_tips') : '网络异常';
                         this.data_list_loding_status = 2;
                         this.data_list_loding_msg = errMsg;
@@ -383,45 +409,26 @@
                     },
                 });
             },
-            /**
-             * 将接口 cells 转为九宫格组件所需 AwardList（含中间抽奖按钮格）
-             * @param {object} grid lottery_grid 数据
-             * @returns {Array<{image: string, name: string, index_num: number}>}
-             */
-            gridCellsToAwardList(grid) {
-                const list = new Array(9).fill(null).map((_, i) => ({ image: '', name: '', index_num: i }));
-                const cells = Array.isArray(grid.cells) ? grid.cells : [];
-                for (let i = 0; i < cells.length; i++) {
-                    const cell = cells[i] || {};
-                    const gi = parseInt(cell.grid_index || 0);
-                    if (gi < 0 || gi > 8) {
-                        continue;
-                    }
-                    if (cell.type === 'btn') {
-                        list[gi] = {
-                            image: grid.draw_start_image || '',
-                            name: grid.draw_price_tips || '立即抽奖',
-                            index_num: gi,
-                        };
-                    } else {
-                        const slot = cell.slot || {};
-                        list[gi] = {
-                            image: slot.icon || '',
-                            name: slot.name || '',
-                            index_num: gi,
-                        };
-                    }
-                }
-                return list;
-            },
         },
     };
 </script>
 
 <style>
-    .lottery-grid-page {
+    .lottery-turn-page {
         position: relative;
-        min-height: 100vh;
+        box-sizing: border-box;
+        /* 含底部安全区，否则渐变常见在 Home Indicator 上方「断开」露全局灰底 */
+        min-height: calc(100vh + constant(safe-area-inset-bottom));
+        min-height: calc(100vh + env(safe-area-inset-bottom));
+    }
+
+    /* 与九宫格页一致：加载中不铺主题渐变，避免闪一整屏红底 */
+    .lottery-turn-page--loaded {
+        background: linear-gradient(180deg, #1f080c 0%, #3a1018 34%, #6a1826 68%, #9c2838 100%);
+        background-color: #9c2838;
+    }
+    .lottery-turn-page-inner {
+        box-sizing: border-box;
     }
     .lottery-top-bar {
         position: absolute;
@@ -468,6 +475,61 @@
         font-weight: 700;
         box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
     }
+
+    .lottery-turn-footer-draw {
+        position: relative;
+        z-index: 12;
+        /* 与转盘拉开距离；底部为固定跑马灯/安全区留白（替代原先 page-inner 260rpx 造成的空白滚动） */
+        padding: 80rpx 32rpx 120rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media screen and (max-height: 700px) {
+        .lottery-turn-footer-draw {
+            padding-top: 48rpx;
+            padding-bottom: 96rpx;
+        }
+    }
+    .lottery-turn-draw-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6rpx;
+        min-width: 260rpx;
+        max-width: min(560rpx, 92vw);
+        padding: 14rpx 40rpx 16rpx;
+        line-height: 1.25;
+        height: auto;
+        min-height: 0;
+        border-radius: 96rpx;
+        background: linear-gradient(180deg, #fff8e1 0%, #ffd54f 45%, #ffb300 100%);
+        border: 4rpx solid rgba(255, 255, 255, 0.65);
+        box-shadow: 0 12rpx 28rpx rgba(0, 0, 0, 0.35);
+    }
+    .lottery-turn-draw-btn::after {
+        border: none;
+    }
+    .lottery-turn-draw-btn-img {
+        max-width: min(320rpx, 72vw);
+        max-height: 56rpx;
+        vertical-align: middle;
+    }
+    .lottery-turn-draw-btn-txt {
+        font-size: 32rpx;
+        font-weight: 700;
+        color: #b71c1c;
+        line-height: 1.25;
+    }
+    .lottery-turn-draw-sub {
+        margin-top: 0;
+        font-size: 22rpx;
+        line-height: 1.3;
+        color: rgba(183, 28, 28, 0.85);
+    }
+
     .lottery-rules-mask {
         position: fixed;
         left: 0;
@@ -513,7 +575,6 @@
         width: 100%;
     }
 
-    /* 与 PC .lottery-result-modal 视觉对齐（rpx 适配） */
     .lottery-result-mask {
         position: fixed;
         left: 0;
@@ -600,7 +661,7 @@
     .lottery-result-confirm::after {
         border: none;
     }
-    /* 底部跑马灯 + 中奖记录入口：与九宫格子组件同属 page-width-max 列宽（H5 PC） */
+
     .lottery-bottom-fixed-cluster {
         position: fixed;
         left: 0;
@@ -616,7 +677,6 @@
         pointer-events: auto;
     }
 
-    /* 与 PC .lottery-marquee 一致：底部深色条 + 横向循环 */
     .lottery-marquee-wrap {
         position: relative;
         width: 100%;
@@ -632,7 +692,7 @@
     .lottery-marquee-inner {
         display: inline-block;
         white-space: nowrap;
-        animation: lottery-marquee-app 42s linear infinite;
+        animation: lottery-marquee-turn-app 42s linear infinite;
     }
     .lottery-marquee-row {
         display: inline-flex;
@@ -652,7 +712,7 @@
         color: #ff5252;
         font-style: normal;
     }
-    @keyframes lottery-marquee-app {
+    @keyframes lottery-marquee-turn-app {
         0% {
             transform: translateX(0);
         }
