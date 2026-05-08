@@ -5,7 +5,7 @@
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
                         <text class="text-size-sm fw-b single-text">{{ item.reward_name || '-' }}</text>
-                        <text class="fr text-size-xs" :class="record_status_class(item)">{{ item.status_name || '-' }}</text>
+                        <text class="fr text-size-xs" :class="Number(item.status || 0) === 1 ? 'cr-green' : 'cr-red'">{{ item.status_name || '-' }}</text>
                     </view>
                     <view
                         v-if="item.reward_type === 'goods' && (item.lottery_goods_thumb || item.lottery_goods_title) && (item.lottery_goods_url || '').trim()"
@@ -246,19 +246,6 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
-            },
-
-            /**
-             * 奖励发放状态颜色
-             * @param {object} item 列表行
-             * @returns {string}
-             */
-            record_status_class(item) {
-                const status = parseInt((item || {}).status || 0, 10);
-                if (status === 1) {
-                    return 'cr-green';
-                }
-                return 'cr-red';
             },
 
             /**

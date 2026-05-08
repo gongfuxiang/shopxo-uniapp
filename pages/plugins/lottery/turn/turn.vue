@@ -48,10 +48,10 @@
                 <view v-if="marqueeList.length > 0" class="lottery-marquee-wrap">
                     <view class="lottery-marquee-inner">
                         <view class="lottery-marquee-row">
-                            <block v-for="rep in marqueeDuplicateRuns" :key="'marquee-rep-' + rep">
+                            <block v-for="rep in marqueeDuplicateRuns" :key="rep">
                                 <text
                                     v-for="(mv, mi) in marqueeList"
-                                    :key="rep + '-' + mi + '-' + (mv.add_time || mi)"
+                                    :key="mi"
                                     class="lottery-marquee-item"
                                 >
                                     <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>

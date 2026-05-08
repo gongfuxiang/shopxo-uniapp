@@ -23,7 +23,7 @@
                         <view class="lottery-turn-wheel-disk" :style="diskCombinedStyle">
                             <view
                                 v-for="(sv, si) in sectors"
-                                :key="'sec-' + si + '-' + (sv.ring_index != null ? sv.ring_index : si)"
+                                :key="si"
                                 class="lottery-turn-sector-arm"
                                 :style="{ '--mid': (sv.label_rotate_deg || 0) + 'deg' }"
                             >

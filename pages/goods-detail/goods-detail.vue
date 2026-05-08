@@ -187,7 +187,7 @@
                             <!-- 满减满折 -->
                             <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-fr-' + index + '-' + index2">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
@@ -195,23 +195,23 @@
                             <!-- 满送 -->
                             <block v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_fullgive_data.data" :key="index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-fg-' + index + '-' + index2">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
                             </block>
                             <!-- N件N优惠 -->
                             <block v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null">
-                                <block v-for="(item, index) in plugins_npiecendis_data.data" :key="'npcd-strip-' + index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-npcd-' + index + '-' + index2">
+                                <block v-for="(item, index) in plugins_npiecendis_data.data" :key="index">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
                             </block>
                             <!-- 新人礼包 -->
                             <block v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null">
-                                <block v-for="(item, index) in plugins_newpersongift_data.data" :key="'npg-strip-' + index">
-                                    <block v-for="(item2, index2) in item.rule_lines" :key="'strip-npg-' + index + '-' + index2">
+                                <block v-for="(item, index) in plugins_newpersongift_data.data" :key="index">
+                                    <block v-for="(item2, index2) in item.rule_lines" :key="index2">
                                         <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
@@ -604,7 +604,7 @@
                                 <view class="padding-bottom-main">
                                     <view class="text-size-sm">{{ item.name }}</view>
                                     <view class="margin-top-sm">
-                                        <block v-for="(item2, index2) in item.rule_lines" :key="'popup-fr-' + index + '-' + index2">
+                                        <block v-for="(item2, index2) in item.rule_lines" :key="index2">
                                             <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{item2}}</view>
                                         </block>
                                     </view>
@@ -619,19 +619,19 @@
                                 <view :class="'padding-bottom '+ (index > 0 ? 'margin-top-xl' : '')">
                                     <view class="text-size-sm padding-bottom-sm">{{ act.name }}</view>
                                     <block v-if="(act.tier_detail_rows || null) != null && act.tier_detail_rows.length > 0">
-                                        <block v-for="(trow, ti) in act.tier_detail_rows" :key="'fg-tier-' + index + '-' + ti">
+                                        <block v-for="(trow, ti) in act.tier_detail_rows" :key="ti">
                                             <view :class="ti > 0 ? 'margin-top-lg' : ''">
                                                 <view class="cr-grey text-size-xs margin-bottom-main">{{ trow.summary }}</view>
                                                 <view v-if="(trow.coupon_items || null) != null && trow.coupon_items.length > 0">
                                                     <view class="text-size-xs cr-grey-9 margin-bottom-xs">{{ plugins_fullgive_data.const.gift_coupon_title }}</view>
                                                     <view class="padding-sm br-f5 radius">
-                                                        <view v-for="(cp, ci) in trow.coupon_items" :key="'fg-cp-' + index + '-' + ti + '-' + ci" class="cr-base text-size-sm">{{ cp.name }}</view>
+                                                        <view v-for="(cp, ci) in trow.coupon_items" :key="ci" class="cr-base text-size-sm">{{ cp.name }}</view>
                                                     </view>
                                                 </view>
                                                 <view v-if="(trow.gift_items || null) != null && trow.gift_items.length > 0">
                                                     <view class="text-size-xs cr-grey-9 margin-bottom-xs margin-top-main">{{ plugins_fullgive_data.const.gift_goods_title }}</view>
                                                     <view class="br-f5 radius">
-                                                        <view v-for="(git, gi) in trow.gift_items" :key="'fg-gift-' + index + '-' + ti + '-' + gi" :class="'padding-sm '+(gi > 0 ? 'br-t-f9' : '')">
+                                                        <view v-for="(git, gi) in trow.gift_items" :key="gi" :class="'padding-sm '+(gi > 0 ? 'br-t-f9' : '')">
                                                             <view v-if="(git.goods || null) != null" class="wh-auto flex-row align-s oh" :data-value="git.goods.goods_url" @tap="url_event">
                                                                 <image class="radius margin-right-sm goods-img" :src="git.goods.images" mode="aspectFill" />
                                                                 <view class="flex-1 flex-width">
@@ -647,13 +647,13 @@
                                     </block>
                                     <block v-else>
                                         <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
-                                            <block v-for="(line, li) in act.rule_lines" :key="'fg-rule-' + index + '-' + li">
+                                            <block v-for="(line, li) in act.rule_lines" :key="li">
                                                 <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
                                             </block>
                                         </view>
                                     </block>
                                     <block v-if="(act.extra_describe_lines || null) != null && act.extra_describe_lines.length > 0">
-                                        <view v-for="(dline, di) in act.extra_describe_lines" :key="'fg-extra-' + index + '-' + di" class="text-size-xs cr-grey-9 margin-top-sm padding-top-xs">{{ dline }}</view>
+                                        <view v-for="(dline, di) in act.extra_describe_lines" :key="di" class="text-size-xs cr-grey-9 margin-top-sm padding-top-xs">{{ dline }}</view>
                                     </block>
                                 </view>
                             </block>
@@ -662,14 +662,14 @@
                         <view v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0" class="plugins-npiecendis-popup spacing-mb">
                             <view class="fw-b tc text-size-lg padding-bottom">{{plugins_npiecendis_data.title}}</view>
                             <view v-if="(plugins_npiecendis_data.msg || null) != null && plugins_npiecendis_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_npiecendis_data.msg }}</view>
-                            <block v-for="(act, index) in plugins_npiecendis_data.data" :key="'npcd-popup-' + index">
+                            <block v-for="(act, index) in plugins_npiecendis_data.data" :key="index">
                                 <view :class="'padding-bottom '+(index > 0 ? 'margin-top-xl' : '')">
                                     <view class="padding-bottom-xs">
                                         <text class="text-size-sm fw-b">{{ act.name }}</text>
                                         <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
                                     </view>
                                     <view v-if="(act.rule_lines || null) != null && act.rule_lines.length > 0" class="margin-top-sm">
-                                        <block v-for="(line, li) in act.rule_lines" :key="'npcd-rule-' + index + '-' + li">
+                                        <block v-for="(line, li) in act.rule_lines" :key="li">
                                             <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
                                         </block>
                                     </view>
@@ -688,14 +688,14 @@
                                 </view>
                             </view>
                             <view v-else-if="(plugins_newpersongift_data.msg || null) != null && plugins_newpersongift_data.msg != ''" class="cr-main padding-bottom-sm">{{ plugins_newpersongift_data.msg }}</view>
-                            <block v-for="(act, index) in plugins_newpersongift_data.data" :key="'npg-popup-' + index">
+                            <block v-for="(act, index) in plugins_newpersongift_data.data" :key="index">
                                 <view class="padding-bottom">
                                     <view class="padding-bottom-xs">
                                         <text class="text-size-sm fw-b">{{ act.name }}</text>
                                         <text v-if="(act.activity_type_name || null) != null && act.activity_type_name != ''" class="text-size-xs cr-grey-9 margin-left-sm">{{ act.activity_type_name }}</text>
                                     </view>
                                     <view v-if="((act.rule_lines || null) != null && act.rule_lines.length > 0) || ((act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0)" class="margin-top-sm">
-                                        <block v-for="(line, li) in act.rule_lines" :key="'npg-rule-' + index + '-' + li">
+                                        <block v-for="(line, li) in act.rule_lines" :key="li">
                                             <view class="dis-inline-block br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm margin-bottom-sm">{{ line }}</view>
                                         </block>
                                         <text v-if="(act.rule_lines_grey || null) != null && act.rule_lines_grey.length > 0" class="text-size-xs cr-grey-9 single-text">{{ act.rule_lines_grey.join(' ') }}</text>
