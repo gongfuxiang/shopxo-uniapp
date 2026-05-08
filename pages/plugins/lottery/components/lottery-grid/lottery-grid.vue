@@ -2,7 +2,7 @@
     <view class="page-width-max lottery-grid-outer">
         <view class="lottery-grid-canvas">
             <view class="lottery-grid-bg">
-                <image :src="nImg" mode="aspectFill" class="lottery-bg-img"></image>
+                <image v-if="nImg" :src="nImg" mode="aspectFill" class="lottery-bg-img"></image>
             </view>
             <!-- 标题图叠在背景之上，pointer-events:none 避免挡住九宫格点击 -->
             <view v-if="heroTitleImg" class="lottery-hero-title-overlay">

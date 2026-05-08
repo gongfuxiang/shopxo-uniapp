@@ -2232,7 +2232,16 @@
                 {
                     "path": "grid/grid",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        "enablePullDownRefresh": false,
+                        "disableScroll": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "turn/turn",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "disableScroll": true,
                         "navigationBarTitleText": ""
                     }
                 },
