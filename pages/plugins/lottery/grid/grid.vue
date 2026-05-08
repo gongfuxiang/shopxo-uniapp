@@ -10,6 +10,7 @@
 
         <component-lottery-grid
             :nImg="nImg"
+            :heroTitleImg="heroTitleImageUrl"
             :AwardList="AwardList"
             :sjNum="sjNum"
             :drawTrigger="drawTrigger"
@@ -17,22 +18,25 @@
             @updateMoney="updateMoney"
         ></component-lottery-grid>
 
-        <!-- 与 PC 一致：底部横向跑马灯（最近中奖） -->
-        <view v-if="marqueeList.length > 0" class="lottery-marquee-wrap">
-            <view class="lottery-marquee-inner">
-                <view class="lottery-marquee-row">
-                    <block v-for="rep in marqueeDuplicateRuns" :key="'marquee-rep-' + rep">
-                        <text v-for="(mv, mi) in marqueeList" :key="rep + '-' + mi + '-' + (mv.add_time || mi)" class="lottery-marquee-item">
-                            <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
-                            <text>抽中{{ mv.reward_name || '-' }} </text>
-                            <text class="lottery-marquee-em">刚刚</text>
-                        </text>
-                    </block>
+        <!-- H5 宽屏：与九宫格组件一致限制最大宽度并居中，避免底部条铺满 PC 浏览器 -->
+        <view class="page-width-max lottery-bottom-fixed-cluster">
+            <!-- 与 PC 一致：底部横向跑马灯（最近中奖） -->
+            <view v-if="marqueeList.length > 0" class="lottery-marquee-wrap">
+                <view class="lottery-marquee-inner">
+                    <view class="lottery-marquee-row">
+                        <block v-for="rep in marqueeDuplicateRuns" :key="'marquee-rep-' + rep">
+                            <text v-for="(mv, mi) in marqueeList" :key="rep + '-' + mi + '-' + (mv.add_time || mi)" class="lottery-marquee-item">
+                                <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
+                                <text>抽中{{ mv.reward_name || '-' }} </text>
+                                <text class="lottery-marquee-em">刚刚</text>
+                            </text>
+                        </block>
+                    </view>
                 </view>
             </view>
-        </view>
 
-        <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
+            <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
+        </view>
 
         <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
             <view class="lottery-rules-dialog" @tap.stop>
@@ -170,6 +174,16 @@
             /** 跑马灯双份内容，与 PC 动画 translateX(-50%) 配合 */
             marqueeDuplicateRuns() {
                 return [0, 1];
+            },
+            /** 九宫格标题图 URL（手机端图优先，与后台 Web/App 配置一致） */
+            heroTitleImageUrl() {
+                const g = this.lotteryGrid;
+                if (!g) {
+                    return '';
+                }
+                const app = String(g.banner_title_image_app || '').trim();
+                const web = String(g.banner_title_image || '').trim();
+                return app || web || '';
             },
         },
         onLoad(params) {
@@ -326,20 +340,18 @@
                             this.resultSuccessTitle = grid.result_success_title || '恭喜您获得';
                             this.nImg = grid.index_bg_app || '';
                             this.AwardList = this.gridCellsToAwardList(grid);
-                            // 基础自定义分享
+                            // 分享：与后台「抽奖页主标题 / 抽奖页描述」一致；配图优先标题手机端图
                             const defaultTitle = this.$t ? this.$t('pages.plugins-lottery-grid') : '幸运抽奖';
                             const shareTitle = String(grid.banner_title || '').trim() || defaultTitle;
                             let shareDesc = String(grid.banner_subtitle || '').trim();
                             if (!shareDesc) {
-                                shareDesc = String(grid.draw_price_tips || '').trim();
-                            }
-                            if (!shareDesc && grid.enable === false) {
-                                shareDesc = String(grid.error_tips || '').trim();
-                            }
-                            if (!shareDesc) {
                                 shareDesc = shareTitle;
                             }
-                            const shareImg = String(grid.banner_title_image || '').trim() || String(grid.index_bg_app || '').trim() || '';
+                            const shareImg =
+                                String(grid.banner_title_image_app || '').trim() ||
+                                String(grid.banner_title_image || '').trim() ||
+                                String(grid.index_bg_app || '').trim() ||
+                                '';
                             this.setData({
                                 share_info: {
                                     title: shareTitle,
@@ -588,12 +600,26 @@
     .lottery-result-confirm::after {
         border: none;
     }
-    /* 与 PC .lottery-marquee 一致：底部深色条 + 横向循环 */
-    .lottery-marquee-wrap {
+    /* 底部跑马灯 + 中奖记录入口：与九宫格子组件同属 page-width-max 列宽（H5 PC） */
+    .lottery-bottom-fixed-cluster {
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
+        z-index: 45;
+        width: 100%;
+        box-sizing: border-box;
+        pointer-events: none;
+    }
+    .lottery-bottom-fixed-cluster .lottery-marquee-wrap,
+    .lottery-bottom-fixed-cluster .lottery-record-entry {
+        pointer-events: auto;
+    }
+
+    /* 与 PC .lottery-marquee 一致：底部深色条 + 横向循环 */
+    .lottery-marquee-wrap {
+        position: relative;
+        width: 100%;
         z-index: 45;
         height: 72rpx;
         line-height: 72rpx;
@@ -636,7 +662,7 @@
     }
 
     .lottery-record-entry {
-        position: fixed;
+        position: absolute;
         right: 22rpx;
         bottom: 120rpx;
         z-index: 50;
