@@ -1,5 +1,5 @@
 <template>
-    <view class="lottery-turn-page" :class="{ 'lottery-turn-page--loaded': lotteryPageOk }">
+    <view class="lottery-turn-page" :class="{ 'lottery-turn-page-loaded': lotteryPageOk }">
         <block v-if="lotteryPageOk">
             <view class="lottery-turn-page-inner">
                 <view v-if="lotteryTurn" class="lottery-top-bar">
@@ -429,7 +429,7 @@
     }
 
     /* 与九宫格页一致：加载中不铺主题渐变，避免闪一整屏红底 */
-    .lottery-turn-page--loaded {
+    .lottery-turn-page-loaded {
         background: linear-gradient(180deg, #1f080c 0%, #3a1018 34%, #6a1826 68%, #9c2838 100%);
         background-color: #9c2838;
     }
