@@ -21,11 +21,14 @@
                     :sectors="sectorsList"
                     :sectorDeg="sectorDegNum"
                     :ringCount="ringCountNum"
-                    :chancesText="chancesDisplayText"
-                    :hubCapLabel="hubCapLabelText"
+                    :chancesText="hubCenterMainText"
+                    :hubCapLabel="hubCenterCapLabel"
+                    :hubDrawCta="hubCenterDrawCta"
+                    :hubBusy="isDrawing"
                     :spinRingIndex="spinRingIndex"
                     :drawTrigger="drawTrigger"
                     @spinDone="onSpinDone"
+                    @hubDraw="beforeDraw"
                 >
                     <template slot="footer-draw">
                         <view class="lottery-turn-footer-draw">
@@ -226,13 +229,36 @@
                 const v = t ? parseInt(t.ring_count, 10) : 0;
                 return isNaN(v) ? 0 : v;
             },
-            /** 中心圆数字：剩余次数等展示字符串 */
-            chancesDisplayText() {
+            /** 是否配置了每日抽奖次数上限（>0 显示数字 + 「可用次数」） */
+            turnDailyLimitGt0() {
+                const t = this.lotteryTurn;
+                if (!t || t.turn_user_daily_draw_limit === undefined || t.turn_user_daily_draw_limit === null || t.turn_user_daily_draw_limit === '') {
+                    return false;
+                }
+                const lim = parseInt(t.turn_user_daily_draw_limit, 10);
+                return !isNaN(lim) && lim > 0;
+            },
+            /** 中心圆主文案：有限次为剩余次数，未限制时为「立即抽奖」 */
+            hubCenterMainText() {
                 const t = this.lotteryTurn;
                 if (!t) {
                     return '';
                 }
+                if (!this.turnDailyLimitGt0) {
+                    return this.drawNowText;
+                }
                 return String(t.turn_chances_display != null ? t.turn_chances_display : '');
+            },
+            /** 中心圆副文案：仅有限次时显示「可用次数」 */
+            hubCenterCapLabel() {
+                if (!this.turnDailyLimitGt0) {
+                    return '';
+                }
+                return this.hubCapLabelText;
+            },
+            /** 中心圆是否为「立即抽奖」模式（样式略缩小字号） */
+            hubCenterDrawCta() {
+                return !this.turnDailyLimitGt0 && !!this.lotteryTurn;
             },
         },
         onLoad(params) {
@@ -333,7 +359,21 @@
                                         patch[k] = data[k];
                                     }
                                 });
-                                if (data.turn_chances_display !== undefined && data.turn_chances_display !== null) {
+                                /* 仅在有每日上限时同步次数文案；未限制则中心圆始终用 hubCenterMainText 显示「立即抽奖」 */
+                                let limAfter = this.lotteryTurn ? parseInt(this.lotteryTurn.turn_user_daily_draw_limit, 10) : NaN;
+                                if (
+                                    data.turn_user_daily_draw_limit !== undefined &&
+                                    data.turn_user_daily_draw_limit !== null &&
+                                    String(data.turn_user_daily_draw_limit).trim() !== ''
+                                ) {
+                                    limAfter = parseInt(data.turn_user_daily_draw_limit, 10);
+                                }
+                                if (
+                                    !isNaN(limAfter) &&
+                                    limAfter > 0 &&
+                                    data.turn_chances_display !== undefined &&
+                                    data.turn_chances_display !== null
+                                ) {
                                     patch.turn_chances_display = data.turn_chances_display;
                                 }
                                 this.lotteryTurn = Object.assign({}, this.lotteryTurn, patch);

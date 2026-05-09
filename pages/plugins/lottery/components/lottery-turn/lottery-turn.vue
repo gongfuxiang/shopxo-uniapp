@@ -31,9 +31,13 @@
                                 <text class="lottery-turn-sector-text">{{ sv.name || '' }}</text>
                             </view>
                         </view>
-                        <view class="lottery-turn-hub lottery-turn-hub--count">
-                            <text class="lottery-turn-hub-num">{{ chancesText }}</text>
-                            <text class="lottery-turn-hub-cap">{{ hubCapLabel }}</text>
+                        <view
+                            class="lottery-turn-hub lottery-turn-hub--count"
+                            :class="{ 'lottery-turn-hub-draw-busy': hubBusy }"
+                            @tap.stop="onHubDrawTap"
+                        >
+                            <text class="lottery-turn-hub-num" :class="{ 'lottery-turn-hub-draw-cta': hubDrawCta }">{{ chancesText }}</text>
+                            <text v-if="hubCapShow" class="lottery-turn-hub-cap">{{ hubCapLabel }}</text>
                         </view>
                     </view>
                 </view>
@@ -100,10 +104,20 @@
                 type: String,
                 default: '',
             },
-            /** 中心圆次数下方说明文案，如「可用次数」 */
+            /** 中心圆次数下方说明文案，如「可用次数」；无每日上限时父页传空串则不展示 */
             hubCapLabel: {
                 type: String,
                 default: '可用次数',
+            },
+            /** 中心圆为「立即抽奖」文案时略缩小字号（与 PC welfare 一致） */
+            hubDrawCta: {
+                type: Boolean,
+                default: false,
+            },
+            /** 抽奖进行中：中心圆禁用点击并弱化显示 */
+            hubBusy: {
+                type: Boolean,
+                default: false,
             },
             /** 抽奖接口返回的中奖项 ring_index，配合 drawTrigger 触发旋转 */
             spinRingIndex: {
@@ -127,6 +141,9 @@
             };
         },
         computed: {
+            hubCapShow() {
+                return !!(this.hubCapLabel && String(this.hubCapLabel).trim());
+            },
             /** 盘面 conic-gradient + 旋转角度，绑定到 .lottery-turn-wheel-disk */
             diskCombinedStyle() {
                 const n = this.ringCount > 0 ? this.ringCount : (Array.isArray(this.sectors) ? this.sectors.length : 0);
@@ -147,6 +164,13 @@
             },
         },
         methods: {
+            /** 点击中心圆抽奖（与底部按钮共用父页 beforeDraw） */
+            onHubDrawTap() {
+                if (this.hubBusy) {
+                    return;
+                }
+                this.$emit('hubDraw');
+            },
             /**
              * 与 PC turn.js spinToRing：指针固定朝上，盘面旋转使扇区中心对齐 0°
              */
@@ -419,6 +443,10 @@
         border: 6rpx solid rgba(255, 240, 200, 0.55);
     }
 
+    .lottery-turn-hub-draw-busy {
+        opacity: 0.88;
+    }
+
     /* 仅缩小文案字号，中心球尺寸保持原样 */
     .lottery-turn-hub-num {
         font-size: 40rpx;
@@ -426,6 +454,16 @@
         line-height: 1;
         color: #ffffff;
         font-variant-numeric: tabular-nums;
+    }
+
+    .lottery-turn-hub-num.lottery-turn-hub-draw-cta {
+        font-size: 18rpx;
+        font-weight: 700;
+        line-height: 1.22;
+        text-align: center;
+        padding: 0 8rpx;
+        font-variant-numeric: normal;
+        letter-spacing: 0;
     }
 
     .lottery-turn-hub-cap {
