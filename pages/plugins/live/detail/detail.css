@@ -28,22 +28,22 @@
     z-index: 11;
     width: 100%;
     height: 100%;
-    .live-muted-tips {
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 20rpx;
-        padding: 15rpx 20rpx;
-        font-size: 32rpx;
-        color: #fff;
-    }
-    .live-muted-text {
-        color: rgba(210,27,70,1);
-        padding-bottom: 4rpx;
-        font-size:16px;
-    }
-    .live-muted-text:hover {
-        color: rgba(210,27,70,1);
-        border-bottom: 1px solid rgba(210,27,70,1);
-    }
+}
+.live-muted .live-muted-tips {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20rpx;
+    padding: 15rpx 20rpx;
+    font-size: 32rpx;
+    color: #fff;
+}
+.live-muted .live-muted-text {
+    color: rgba(210,27,70,1);
+    padding-bottom: 4rpx;
+    font-size: 16px;
+}
+.live-muted .live-muted-text:hover {
+    color: rgba(210,27,70,1);
+    border-bottom: 1px solid rgba(210,27,70,1);
 }
 .live-play {
     position: absolute;
@@ -53,17 +53,17 @@
     z-index: 11;
     width: 100%;
     height: 100%;
-    .component-icon-play {
-        height: 160rpx;
-        width: 160rpx;
-        font-size: 160rpx !important;
-        color: inherit !important;
-        background: #fff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+}
+.live-play .component-icon-play {
+    height: 160rpx;
+    width: 160rpx;
+    font-size: 160rpx !important;
+    color: inherit !important;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .live-ended {
     background: linear-gradient(to bottom,#AD18F9,#05DFC7);
@@ -73,10 +73,10 @@
     z-index: 10;
     width: 100%;
     height: 100%;
-    .live-ended-text {
-        color:#fff;
-        font-size:16px;
-    }
+}
+.live-ended .live-ended-text {
+    color: #fff;
+    font-size: 16px;
 }
 .live-ended-button {
     border-radius: 6px;

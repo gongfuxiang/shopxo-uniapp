@@ -11,11 +11,11 @@
             <view id="search-height" class="flex-row align-c">
                 <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                 <!-- #ifndef MP-ALIPAY -->
-                <view class="cp" @tap="handle_back">
+                <view class="cp pointer-events-auto" @tap="handle_back">
                     <iconfont name="icon-arrow-left" size="36rpx" color="#fff"></iconfont>
                 </view>
                 <!-- #endif -->
-                <view class="wh-auto ht-auto" :style="header_padding_left">
+                <view class="wh-auto ht-auto pointer-events-auto" :style="header_padding_left">
                     <component-search propIsDisabled @disabledSearch="handle_search" />
                 </view>
             </view>
@@ -432,35 +432,23 @@
             init_window_info() {
                 // 菜单按钮位置信息, uniappx中没有这个方法，但是能使用
                 this.header_style = 'padding-top: 20rpx;';
-                // 设置有胶囊的时候头部显示的位置
+                // 小程序下，获取小程序胶囊的宽度
+                this.menu_button_info = 'max-width:100%';
                 // #ifdef MP
                 // 判断是否有胶囊
-                const is_page = app.globalData.is_current_single_page();
+                const is_current_single_page = app.globalData.is_current_single_page();
                 // 如果有胶囊的时候，做处理
-                if (is_page == 0) {
+                if (is_current_single_page == 0) {
                     const custom = uni.getMenuButtonBoundingClientRect();
+                    console.log(custom);
+                    
+                    this.menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
                     this.header_style = `padding-top: ${custom.top + custom.height}px;`;
                 }
-                //#endif
+                // #endif
                 //#ifdef APP
                 this.header_style = 'padding-top: 88rpx;';
                 //#endif
-                
-                // 小程序下，获取小程序胶囊的宽度
-                let menu_button_info = 'max-width:100%';
-                // #ifndef MP-TOUTIAO
-                    // #ifdef MP
-                    // 判断是否有胶囊
-                    const is_current_single_page = app.globalData.is_current_single_page();
-                    // 如果有胶囊的时候，做处理
-                    if (is_current_single_page == 0) {
-                        const custom = uni.getMenuButtonBoundingClientRect();
-                        menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
-                    }
-                    // #endif
-                // #endif
-                this.menu_button_info = menu_button_info;
-                
                 // 支付宝小程序头部左侧padding
                 let padding_left = '';
                 // #ifdef MP-ALIPAY

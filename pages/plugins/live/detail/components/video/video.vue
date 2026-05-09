@@ -37,14 +37,27 @@
         watch: {
             propSrc: {
                 handler(newVal, oldVal) {
+                    console.log('video.vue propSrc changed:', newVal, oldVal);
                     if (newVal != oldVal) {
                         this.video_src = newVal;
+                        // #ifdef H5
+                        // 如果视频地址变化，强制重新创建 h5-hls-video 组件
+                        if (newVal) {
+                            console.log('video.vue: reloading h5-hls-video component');
+                            this.video_player_show = false;
+                            this.$nextTick(() => {
+                                console.log('video.vue: setting video_player_show to true');
+                                this.video_player_show = true;
+                            });
+                        }
+                        // #endif
                     }
                 },
                 immediate: true
             }
         },
         data() {
+            console.log('video.vue data() called');
             return {
                 windowWidth: 0,
                 windowHeight: 0,
@@ -55,6 +68,7 @@
             }
         },
         created() {
+            console.log('video.vue created, propSrc:', this.propSrc);
             // 获取窗口信息，用于设置视频尺寸
             const data = uni.getWindowInfo();
             this.windowWidth = data.windowWidth;
@@ -113,16 +127,27 @@
                 // 只有组件显示时才触发这个事件
                 if (this.video_player_show) {
                     // #ifdef H5
-                    // 非初次加载错误的, 直播结束
-                    if (e.type != 'otherError' || e.details != 'internalException') {
+                    console.log('video error triggered:', e);
+                    console.log('error type:', e?.type);
+                    console.log('error details:', e?.details);
+                    // 所有错误都触发 ended，除了特定的内部异常
+                    if (e?.type === 'otherError' && e?.details === 'internalException') {
+                        console.log('internalException ignored');
+                    } else if (e?.type === 'nativeVideoError') {
+                        // 原生视频错误（hlsjs 不支持时）
+                        console.log('nativeVideoError, emit ended');
+                        this.$emit('ended');
+                    } else {
                         // 3次切片报错之后，认为直播结束
-                        if (e.details == 'levelLoadError') {
+                        if (e?.details === 'levelLoadError') {
                             this.error_msg_count++;
+                            console.log('levelLoadError count:', this.error_msg_count);
                             if (this.error_msg_count > 2) {
                                 this.error_msg_count = 0;
                                 this.$emit('ended');
                             }
                         } else {
+                            console.log('emit ended for error:', e?.type, e?.details);
                             this.$emit('ended');
                         }
                     }

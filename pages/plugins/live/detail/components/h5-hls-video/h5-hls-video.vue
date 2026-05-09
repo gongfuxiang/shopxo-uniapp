@@ -88,9 +88,7 @@
                  */
                 handler(val) {
                     if (!val) return
-                    setTimeout(() => {
-                        this.videoSrc = val
-                    }, 0)
+                    this.videoSrc = val
                 },
                 immediate: true
             }
