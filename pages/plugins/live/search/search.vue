@@ -22,7 +22,7 @@
                         <view class="status-tabs-scroll-content">
                             <view
                                 v-for="(item, index) in live_status_tab_list"
-                                :key="'s'+index"
+                                :key="index"
                                 class="status-tab-item"
                                 :class="{ active: current_status_index === index }"
                                 :data-index="index"
@@ -51,10 +51,6 @@
                                         <text v-if="item.status == 1" class="live-status-dot"></text>
                                         {{ item.status_name }}
                                     </view>
-                                    <view v-if="item.online_count > 0" class="live-view-count">
-                                        <iconfont name="icon-eye" size="20rpx" color="#fff"></iconfont>
-                                        <text>{{ item.online_count }}</text>
-                                    </view>
                                 </view>
                                 <view class="live-info flex-col jc-c"> 
                                     <view class="live-title text-line-2">{{ item.title }}</view>
@@ -63,8 +59,8 @@
                                             <text class="anchor-name text-line-1">{{ item.seller_name }}</text>
                                         </view>
                                         <view class="live-likes flex-row align-c gap-4">
-                                            <iconfont name="icon-like" size="24rpx" color="#999"></iconfont>
-                                            <text>{{ item.like_count }}</text>
+                                            <iconfont name="icon-eye" size="20rpx" color="#fff"></iconfont>
+										    <text>{{ item.online_count || 0 }}</text>
                                         </view>
                                     </view>
                                 </view>

@@ -67,10 +67,21 @@ export default {
         // 初始化
         this.init();
 
-        // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
-        if (this.$refs.liveContent) {
-            this.$refs.liveContent.socket_connect();
-        }
+        setTimeout(() => {
+            // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
+            if (this.$refs.liveContent) {
+                const content = this.$refs.liveContent;
+                // 链接socket
+                content.socket_connect();
+                // 初始化头部信息
+                content.init_window_info();  
+                // 滚动到消息底部
+                content.scroll_to_lower();
+                // 绑定键盘事件
+                content.bind_keyboard_listener();
+            }
+        }, 500);
+
         // 页面显示时，重新加载视频
         if (this.$refs.liveVideo) {
             this.$refs.liveVideo.reload_video();
@@ -183,6 +194,7 @@ export default {
          * 标记直播结束或者直播暂停
          */
         ended() {
+            debugger;
             // 隐藏加载提示
             uni.hideLoading();            
             // 如果加载定时器存在，则清除

@@ -1,6 +1,6 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @error="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
     <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
@@ -39,6 +39,15 @@
                 handler(newVal, oldVal) {
                     if (newVal != oldVal) {
                         this.video_src = newVal;
+                        // #ifdef H5
+                        // 如果视频地址变化，强制重新创建 h5-hls-video 组件
+                        if (newVal) {
+                            this.video_player_show = false;
+                            this.$nextTick(() => {
+                                this.video_player_show = true;
+                            });
+                        }
+                        // #endif
                     }
                 },
                 immediate: true
@@ -55,6 +64,7 @@
             }
         },
         created() {
+            console.log('video.vue created, propSrc:', this.propSrc);
             // 获取窗口信息，用于设置视频尺寸
             const data = uni.getWindowInfo();
             this.windowWidth = data.windowWidth;
@@ -113,16 +123,27 @@
                 // 只有组件显示时才触发这个事件
                 if (this.video_player_show) {
                     // #ifdef H5
-                    // 非初次加载错误的, 直播结束
-                    if (e.type != 'otherError' || e.details != 'internalException') {
+                    console.log('video error triggered:', e);
+                    console.log('error type:', e?.type);
+                    console.log('error details:', e?.details);
+                    // 所有错误都触发 ended，除了特定的内部异常
+                    if (e?.type === 'otherError' && e?.details === 'internalException') {
+                        console.log('internalException ignored');
+                    } else if (e?.type === 'nativeVideoError') {
+                        // 原生视频错误（hlsjs 不支持时）
+                        console.log('nativeVideoError, emit ended');
+                        this.$emit('ended');
+                    } else {
                         // 3次切片报错之后，认为直播结束
-                        if (e.details == 'levelLoadError') {
+                        if (e?.details === 'levelLoadError') {
                             this.error_msg_count++;
+                            console.log('levelLoadError count:', this.error_msg_count);
                             if (this.error_msg_count > 2) {
                                 this.error_msg_count = 0;
                                 this.$emit('ended');
                             }
                         } else {
+                            console.log('emit ended for error:', e?.type, e?.details);
                             this.$emit('ended');
                         }
                     }
