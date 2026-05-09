@@ -338,6 +338,8 @@
         "plugins-givegift-code": "礼品链接",
         "plugins-lottery-grid": "幸运抽奖",
         "plugins-lottery-turn": "转盘抽奖",
+        "plugins-lottery-egg": "砸金蛋",
+        "plugins-lottery-egg-chances-label": "今日可抽",
         "plugins-lottery-turn-draw": "立即抽奖",
         "plugins-lottery-turn-chances-label": "可用次数",
         "plugins-lottery-record": "中奖记录",

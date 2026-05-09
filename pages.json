@@ -2119,21 +2119,7 @@
             "root": "pages/plugins/live",
             "pages": [
                 {
-                    "path": "index/index",
-                    "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "always",
-                        "titlePenetrate": "YES",
-                        // #endif
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
-                    }
-                },
-                {
-                    "path": "search/search",
+                    "path": "push/push",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
@@ -2142,30 +2128,19 @@
                         "transparentTitle": "auto",
                         "titlePenetrate": "YES",
                         // #endif
-                        "enablePullDownRefresh": false,
-                        // 禁止页面下拉
                         "disableScroll": true,
-                        "navigationBarTitleText": ""
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "",
+                        "app-plus": {
+                            "bounce": {
+                                "top": "none",
+                                "bottom": "none"
+                            }
+                        }
                     }
                 },
                 {
-                    "path": "search-record/search-record",
-                    "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
-                        "titlePenetrate": "YES",
-                        // #endif
-                        "enablePullDownRefresh": false,
-                        // 禁止页面下拉
-                        "disableScroll": true,
-                        "navigationBarTitleText": ""
-                    }
-                },
-                {
-                    "path": "detail/detail",
+                    "path": "pull/pull",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
@@ -2257,13 +2232,20 @@
                 {
                     "path": "grid/grid",
                     "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "turn/turn",
+                    "style": {
                         "enablePullDownRefresh": false,
                         "disableScroll": true,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
-                    "path": "turn/turn",
+                    "path": "egg/egg",
                     "style": {
                         "enablePullDownRefresh": false,
                         "disableScroll": true,

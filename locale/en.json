@@ -340,6 +340,8 @@
         "plugins-givegift-code": "Gift Link",
         "plugins-lottery-grid": "Lucky Draw",
         "plugins-lottery-turn": "Wheel Lottery",
+        "plugins-lottery-egg": "Golden Egg",
+        "plugins-lottery-egg-chances-label": "Chances today",
         "plugins-lottery-turn-draw": "Spin Now",
         "plugins-lottery-turn-chances-label": "Chances",
         "plugins-lottery-record": "Winning Records",
