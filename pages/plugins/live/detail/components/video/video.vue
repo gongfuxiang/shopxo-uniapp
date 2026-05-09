@@ -1,6 +1,6 @@
 <template>
     <!-- #ifdef H5 -->
-    <h5-hls-video v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
+    <h5-hls-video v-if="video_player_show" :propSrc="video_src" propAutoplay :propMuted="muted" class="video-size" @hlsError="error" @error="error" @ended="ended" @loadedmetadata="loadedmetadata" @autoPlaySuccess="auto_play_success" @autoPlayError="auto_play_error"></h5-hls-video>
     <!-- #endif -->
     <!-- #ifdef MP -->
     <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
@@ -37,16 +37,13 @@
         watch: {
             propSrc: {
                 handler(newVal, oldVal) {
-                    console.log('video.vue propSrc changed:', newVal, oldVal);
                     if (newVal != oldVal) {
                         this.video_src = newVal;
                         // #ifdef H5
                         // 如果视频地址变化，强制重新创建 h5-hls-video 组件
                         if (newVal) {
-                            console.log('video.vue: reloading h5-hls-video component');
                             this.video_player_show = false;
                             this.$nextTick(() => {
-                                console.log('video.vue: setting video_player_show to true');
                                 this.video_player_show = true;
                             });
                         }
@@ -57,7 +54,6 @@
             }
         },
         data() {
-            console.log('video.vue data() called');
             return {
                 windowWidth: 0,
                 windowHeight: 0,

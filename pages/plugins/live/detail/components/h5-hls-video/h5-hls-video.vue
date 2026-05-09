@@ -234,7 +234,9 @@
                 videoEl: null,
                 hlsPlayer: null,
                 renderProps: {},
-                autoplayRejected: false // 标记自动播放是否被拒绝
+                autoplayRejected: false, // 标记自动播放是否被拒绝
+                /** 防止 initHlsPlayer 延迟回调与新一轮初始化交错 */
+                _hlsSetupSeq: 0
             }
         },
         /**
@@ -314,12 +316,17 @@
                     } else {
                         // 对于MP4等普通格式或者苹果设备上的HLS流
                         videoEl.src = src
-                        // 添加错误处理
-                        videoEl.addEventListener('error', (e) => {
-                            console.error('Video error:', e)
+                        // 添加错误处理（DOM Event 不可序列化）
+                        videoEl.addEventListener('error', () => {
+                            const mediaErr = videoEl.error
                             this.$ownerInstance.callMethod('eventEmit', {
                                 event: 'error',
-                                data: e
+                                data: {
+                                    type: 'nativeVideoError',
+                                    details: mediaErr
+                                        ? { code: mediaErr.code, message: mediaErr.message || '' }
+                                        : null
+                                }
                             })
                         })
                     }
@@ -359,46 +366,96 @@
                     }
                 },
                 /**
+                 * 将 Hls.js ERROR 回调数据整理为可序列化对象（renderjs → 逻辑层 callMethod 需 JSON 友好，否则会丢事件）
+                 * @param {Object} data - Hls 错误数据
+                 * @returns {Object} 纯数据负载
+                 */
+                serializeHlsErrorPayload(data) {
+                    if (!data) {
+                        return {}
+                    }
+                    let errorMessage = ''
+                    const rawErr = data.error
+                    if (rawErr) {
+                        errorMessage =
+                            typeof rawErr === 'string'
+                                ? rawErr
+                                : rawErr.message || String(rawErr)
+                    }
+                    const resp = data.response
+                    return {
+                        type: data.type,
+                        details: data.details,
+                        fatal: !!data.fatal,
+                        url: data.url || '',
+                        errorMessage,
+                        responseCode: resp && resp.code != null ? resp.code : null,
+                        responseText:
+                            resp && typeof resp.text === 'string'
+                                ? resp.text.slice(0, 500)
+                                : ''
+                    }
+                },
+                /**
                  * 初始化HLS播放器
                  * @param {String} src - HLS流地址
                  */
                 // 播放视频流
                 initHlsPlayer(src) {
+                    // 同一标签页内 uni 路由跳转有时早于视图层完全就绪，偶发首次 isSupported() 为 false；延后两帧再判一次
+                    this._hlsSetupSeq = (this._hlsSetupSeq || 0) + 1
+                    const seq = this._hlsSetupSeq
+                    const setup = () => {
+                        if (seq !== this._hlsSetupSeq || !this.videoEl || !src) {
+                            return
+                        }
+                        if (hlsjs.isSupported()) {
+                            this.hlsPlayer = new hlsjs({
+                                manifestLoadingTimeOut: 60000, // 设置播放列表加载超时时间（毫秒）
+                                fragLoadingTimeOut: 60000, // 设置片段加载超时时间（毫秒）
+                                maxLiveSyncPlaybackRate: 1, // 最大追赶播放速率（1.05倍速）
+                                lowLatencyMode: true, // 启用低延迟模式
+                                debug: false // 启用调试日志
+                            })
+                            // 须先于 loadSource 注册事件，避免清单瞬间失败时漏掉 ERROR
+                            this.hlsPlayer.on(hlsjs.Events.ERROR, (event, data) => {
+                                const payload = this.serializeHlsErrorPayload(data)
+                                this.$ownerInstance.callMethod('eventEmit', {
+                                    event: 'hlsError',
+                                    data: payload
+                                })
+                                // 如果HLS播放失败，尝试直接播放源地址作为降级方案
+                                if (this.videoEl && data.fatal) {
+                                    this.videoEl.src = src
+                                }
+                            })
+                            this.hlsPlayer.on(hlsjs.Events.MANIFEST_PARSED, () => {
+                                // hls 视频流加载完成
+                                this.$ownerInstance.callMethod('eventEmit', {
+                                    event: 'hlsManifestParsed'
+                                })
+
+                                // HLS流加载完成后尝试自动播放
+                                if (this.renderProps.autoplay) {
+                                    this.attemptAutoPlay(this.videoEl, this.renderProps.muted)
+                                }
+                            })
+                            this.hlsPlayer.loadSource(src)
+                            this.hlsPlayer.attachMedia(this.videoEl)
+                        } else {
+                            // 浏览器不支持hls.js，直接使用原生播放
+                            this.videoEl.src = src
+                        }
+                    }
+
                     if (hlsjs.isSupported()) {
-                        this.hlsPlayer = new hlsjs({
-                            manifestLoadingTimeOut: 60000, // 设置播放列表加载超时时间（毫秒）
-                            fragLoadingTimeOut: 60000,    // 设置片段加载超时时间（毫秒）
-                            maxLiveSyncPlaybackRate: 1, // 最大追赶播放速率（1.05倍速）
-                            lowLatencyMode: true, // 启用低延迟模式
-                            debug: false // 启用调试日志
-                        })
-                        this.hlsPlayer.loadSource(src)
-                        this.hlsPlayer.attachMedia(this.videoEl)
-                        this.hlsPlayer.on(hlsjs.Events.MANIFEST_PARSED, () => {
-                            // hls 视频流加载完成
-                            this.$ownerInstance.callMethod('eventEmit', {
-                                event: 'hlsManifestParsed'
-                            })
-                            
-                            // HLS流加载完成后尝试自动播放
-                            if (this.renderProps.autoplay) {
-                                this.attemptAutoPlay(this.videoEl, this.renderProps.muted);
-                            }
-                        })
-                        this.hlsPlayer.on(hlsjs.Events.ERROR, (event, data) => {
-                            // hls 视频加载错误
-                            this.$ownerInstance.callMethod('eventEmit', {
-                                event: 'hlsError',
-                                data
-                            })
-                            // 如果HLS播放失败，尝试直接播放源地址作为降级方案
-                            if (this.videoEl && data.fatal) {
-                                this.videoEl.src = src
-                            }
-                        })
+                        setup()
                     } else {
-                        // 浏览器不支持hls.js，直接使用原生播放
-                        this.videoEl.src = src
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                setup()
+                            })
+                        })
                     }
                 },
                 /**
@@ -448,11 +505,18 @@
                     }
                     this.videoEl.removeEventListener('canplay', canPlayHandler)
                     this.videoEl.addEventListener('canplay', canPlayHandler)
-                    // 加载失败事件监听
-                    const errorHandler = (e) => {
+                    // 加载失败事件监听（DOM Event 不可序列化，需转成纯对象再交给逻辑层）
+                    const errorHandler = () => {
+                        const ve = this.videoEl
+                        const mediaErr = ve && ve.error
                         this.$ownerInstance.callMethod('eventEmit', {
                             event: 'error',
-                            data: e
+                            data: {
+                                type: 'nativeVideoError',
+                                details: mediaErr
+                                    ? { code: mediaErr.code, message: mediaErr.message || '' }
+                                    : null
+                            }
                         })
                     }
                     this.videoEl.removeEventListener('error', errorHandler)
@@ -564,8 +628,8 @@
                         if (this.videoEl) {
                             try {
                                 this.videoEl[eventType]()
-                            } catch (e) {
-                                console.error(`Error executing ${eventType}:`, e)
+                            } catch {
+                                // ignore
                             }
                         }
                     }
