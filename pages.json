@@ -2118,48 +2118,48 @@
         {
             "root": "pages/plugins/live",
             "pages": [
-                {
-                    "path": "push/push",
-                    "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
-                        "titlePenetrate": "YES",
-                        // #endif
-                        "disableScroll": true,
-                        "enablePullDownRefresh": false,
-                        "navigationBarTitleText": "",
-                        "app-plus": {
-                            "bounce": {
-                                "top": "none",
-                                "bottom": "none"
-                            }
-                        }
-                    }
-                },
-                {
-                    "path": "pull/pull",
-                    "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
-                        "titlePenetrate": "YES",
-                        // #endif
-                        "disableScroll": true,
-                        "enablePullDownRefresh": false,
-                        "navigationBarTitleText": "",
-                        "app-plus": {
-                            "bounce": {
-                                "top": "none",
-                                "bottom": "none"
-                            }
-                        }
-                    }
-                }
+                // {
+                //     "path": "push/push",
+                //     "style": {
+                //         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                //         "navigationStyle": "custom",
+                //         // #endif
+                //         // #ifdef MP-ALIPAY
+                //         "transparentTitle": "auto",
+                //         "titlePenetrate": "YES",
+                //         // #endif
+                //         "disableScroll": true,
+                //         "enablePullDownRefresh": false,
+                //         "navigationBarTitleText": "",
+                //         "app-plus": {
+                //             "bounce": {
+                //                 "top": "none",
+                //                 "bottom": "none"
+                //             }
+                //         }
+                //     }
+                // },
+                // {
+                //     "path": "pull/pull",
+                //     "style": {
+                //         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                //         "navigationStyle": "custom",
+                //         // #endif
+                //         // #ifdef MP-ALIPAY
+                //         "transparentTitle": "auto",
+                //         "titlePenetrate": "YES",
+                //         // #endif
+                //         "disableScroll": true,
+                //         "enablePullDownRefresh": false,
+                //         "navigationBarTitleText": "",
+                //         "app-plus": {
+                //             "bounce": {
+                //                 "top": "none",
+                //                 "bottom": "none"
+                //             }
+                //         }
+                //     }
+                // }
             ]
         },
         {

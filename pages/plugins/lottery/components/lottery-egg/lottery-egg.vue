@@ -12,10 +12,14 @@
             </view>
 
             <view class="lottery-egg-machine-wrap">
-                <view
-                    class="lottery-egg-frame"
-                    :style="frameBgStyle"
-                >
+                <view class="lottery-egg-frame">
+                    <!-- 初次修复「看不见机台」：不用 CSS background-image，用 image 铺满（与当时一致） -->
+                    <image
+                        v-if="frameImageUrl"
+                        class="lottery-egg-frame-bg-img"
+                        :src="frameImageUrl"
+                        mode="aspectFit"
+                    />
                     <view class="lottery-egg-frame-lights" aria-hidden="true">
                         <view v-for="d in frameLightDots" :key="d" class="lottery-egg-frame-lights-dot" />
                     </view>
@@ -35,30 +39,31 @@
                                     @tap="onCellTap(idx, cell)"
                                 >
                                     <view class="lottery-egg-pedestal" />
+                                    <!-- 小程序原生 image 对 v-show/display 支持不稳，易同时画出闭合+裂开图；改用 v-if 互斥 -->
                                     <block v-if="cell.active">
                                         <image
-                                            v-show="!brokenState[idx]"
+                                            v-if="!brokenState[idx]"
                                             :src="shellClose"
                                             class="lottery-egg-shell lottery-egg-shell-closed"
                                             mode="aspectFit"
                                         />
                                         <image
-                                            v-show="brokenState[idx]"
+                                            v-if="brokenState[idx]"
                                             :src="shellOpen"
                                             class="lottery-egg-shell lottery-egg-shell-open"
                                             mode="aspectFit"
                                         />
                                     </block>
                                     <view v-else class="lottery-egg-placeholder" />
+                                    <!-- 锤子挂在当前蛋格内定位：避免舞台级 boundingClientRect 在微信里与参照盒不一致导致飞到角落 -->
+                                    <view
+                                        v-if="hammerAtCell === idx && hammerImage"
+                                        class="lottery-egg-hammer lottery-egg-hammer-in-cell"
+                                        :class="{ 'is-strike': hammerStriking }"
+                                    >
+                                        <image class="lottery-egg-hammer-img" :src="hammerImage" mode="aspectFit" />
+                                    </view>
                                 </view>
-                            </view>
-
-                            <view
-                                class="lottery-egg-hammer"
-                                :class="{ 'is-strike': hammerStriking }"
-                                :style="hammerStyle"
-                            >
-                                <image v-if="hammerImage" class="lottery-egg-hammer-img" :src="hammerImage" mode="aspectFit" />
                             </view>
                         </view>
                     </view>
@@ -152,12 +157,8 @@
             return {
                 /** 机台顶部彩灯数量（与 PC 9 盏一致） */
                 frameLightDots: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                /** 锤子 absolute 定位（px 或 %，由 positionHammer 写入） */
-                hammerStyle: {
-                    opacity: '0',
-                    left: '0',
-                    top: '0',
-                },
+                /** 当前播放敲击动画的蛋格索引；-1 表示不展示锤子 */
+                hammerAtCell: -1,
                 /** 敲击动画 CSS class 开关 */
                 hammerStriking: false,
                 strikeTimer: null,
@@ -165,10 +166,9 @@
             };
         },
         computed: {
-            /** 机台框背景：egg_machine_frame_image */
-            frameBgStyle() {
-                const u = String(this.frameImage || '').trim();
-                return u ? { backgroundImage: 'url("' + u + '")' } : {};
+            /** 金蛋容器框底图 URL（template 用 image 渲染，避免小程序背景不显示） */
+            frameImageUrl() {
+                return String(this.frameImage || '').trim();
             },
             /** 固定 6 格，缺省补 inactive 占位 */
             normalizedCells() {
@@ -227,73 +227,18 @@
                 const a = this.brokenEggIndexes || [];
                 return a.indexOf(idx) !== -1;
             },
-            /**
-             * 百分比在小程序里相对参照盒易错位；退化时用格子行列估算
-             */
-            fallbackPositionHammer(idx) {
-                const col = idx % 3;
-                const row = Math.floor(idx / 3);
-                const cellW = 100 / 3;
-                const left = col * cellW + cellW * 0.70 - 10;
-                const top = row * 50 + 8;
-                this.hammerStyle = {
-                    left: Math.max(0, Math.min(88, left)) + '%',
-                    top: Math.max(0, Math.min(80, top)) + '%',
-                    opacity: '1',
-                };
-            },
-            /**
-             * 与 PC egg.js strikeEggCell 一致：用蛋格与舞台实测像素差定位（boundingClientRect）
-             * left = cell 相对舞台左偏移 + cw*0.70 - hammer宽*0.45
-             * top = cell 相对舞台上偏移 - ch*k（k 略小则锤整体略下移）
-             */
-            positionHammer(idx, done) {
-                const self = this;
-                const finish = typeof done === 'function' ? done : function () {};
-                const runQuery = () => {
-                    const q = uni.createSelectorQuery().in(self);
-                    q.select('#lottery-egg-stage').boundingClientRect();
-                    q.select('#lottery-egg-cell-' + idx).boundingClientRect();
-                    q.exec((res) => {
-                        const stage = res && res[0];
-                        const cell = res && res[1];
-                        if (!stage || !cell || stage.width === undefined || cell.width === undefined || cell.width <= 0) {
-                            self.fallbackPositionHammer(idx);
-                            finish();
-                            return;
-                        }
-                        let hw = 56;
-                        if (typeof uni !== 'undefined' && typeof uni.upx2px === 'function') {
-                            hw = uni.upx2px(112);
-                        }
-                        const cw = cell.width;
-                        const ch = cell.height;
-                        const leftPx = cell.left - stage.left + cw * 0.70 - hw * 0.45;
-                        /* PC 为 ch*0.12；这里加大系数使锤头明显落在蛋身偏上，避免像在砸底座 */
-                        const topPx = cell.top - stage.top - ch * 0.26;
-                        self.hammerStyle = {
-                            left: leftPx + 'px',
-                            top: topPx + 'px',
-                            opacity: '1',
-                        };
-                        finish();
-                    });
-                };
-                this.$nextTick(() => {
-                    setTimeout(runQuery, 30);
-                });
-            },
-            /** 定位锤子后延时播放敲击动画，结束向父页 emit strikeDone */
+            /** 锤子落在蛋格内（CSS），再延时播放敲击动画，结束 emit strikeDone */
             playStrike(idx) {
                 const self = this;
                 this.clearStrikeTimers();
                 this.hammerStriking = false;
-                this.positionHammer(idx, () => {
+                this.hammerAtCell = typeof idx === 'number' ? idx : -1;
+                this.$nextTick(() => {
                     self.strikeTimer = setTimeout(() => {
                         self.hammerStriking = true;
                         self.strikeClearTimer = setTimeout(() => {
                             self.hammerStriking = false;
-                            self.hammerStyle = Object.assign({}, self.hammerStyle, { opacity: '0' });
+                            self.hammerAtCell = -1;
                             self.$emit('strikeDone');
                         }, 480);
                     }, 400);
@@ -360,7 +305,7 @@
     .lottery-hero-title-frame {
         width: 92%;
         max-width: 620rpx;
-        height: 220rpx;
+        height: 156rpx;
         margin-left: auto;
         margin-right: auto;
         display: flex;
@@ -371,7 +316,7 @@
     .lottery-hero-title-img {
         display: block;
         width: 100%;
-        height: 220rpx;
+        height: 156rpx;
     }
 
     /* 略小于屏宽，容器背景图整体缩小一档（仍可 contain 完整展示） */
@@ -385,7 +330,7 @@
         box-sizing: border-box;
     }
 
-    /* 与 PC egg.css .lottery-egg-machine-frame 一致：完整展示容器底图（contain + 750/1087） */
+    /* 与 PC 比例一致；min-height 兜底部分小程序不支持 aspect-ratio 时高度坍缩 */
     .lottery-egg-frame {
         position: relative;
         z-index: 1;
@@ -396,11 +341,19 @@
         overflow: visible;
         border-radius: 0;
         aspect-ratio: 750 / 1087;
-        background-size: contain;
-        background-position: center bottom;
-        background-repeat: no-repeat;
-        background-color: transparent;
+        min-height: 360rpx;
         box-shadow: none;
+    }
+
+    .lottery-egg-frame-bg-img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        display: block;
     }
 
     /* 与 PC egg.css：顶部彩灯槽 + 交错闪烁 */
@@ -498,6 +451,7 @@
         display: block;
         box-sizing: border-box;
         min-height: 0;
+        overflow: visible;
     }
 
     .lottery-egg-stage {
@@ -507,6 +461,7 @@
         min-height: 0;
         margin: 0 auto;
         box-sizing: border-box;
+        overflow: visible;
     }
 
     .lottery-egg-grid {
@@ -566,29 +521,31 @@
         z-index: 3;
     }
 
-    .lottery-egg-cell.is-broken .lottery-egg-shell-closed {
-        display: none !important;
-    }
-
     .lottery-egg-placeholder {
         height: 120rpx;
         width: 100%;
     }
 
-    .lottery-egg-hammer {
+    /*
+     * 锤子在蛋格内绝对定位。勿用 top:%：flex 格子里包含块高度在微信里易导致百分比不生效，改 top 看起来像「没反应」。
+     * 用 bottom:rpx 从格底往上量，蛋、底座贴在底部，锤子在蛋斜上方。
+     */
+    .lottery-egg-hammer-in-cell {
         position: absolute;
-        z-index: 20;
+        z-index: 36;
         width: 112rpx;
         height: 112rpx;
+        left: 62%;
+        margin-left: -46rpx;
+        top: auto;
+        bottom: 132rpx;
         pointer-events: none;
-        opacity: 0;
     }
 
     .lottery-egg-hammer-img {
         width: 100%;
         height: 100%;
         display: block;
-        /* 旋转支点略上移，落点更靠近蛋体上半部（配合 positionHammer 的 top） */
         transform-origin: 72% 68%;
     }
 

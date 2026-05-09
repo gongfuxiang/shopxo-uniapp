@@ -74,18 +74,30 @@
 
             <view v-if="resultModalVisible" class="lottery-result-mask">
                 <view class="lottery-result-dialog" @tap.stop>
-                    <view class="lottery-result-bd" :style="resultModalBgStyle">
-                        <view class="lottery-result-inner">
-                            <text class="lottery-result-title">{{ resultModalTitle }}</text>
-                            <view v-if="resultModalShowPrizeIcon" class="lottery-result-prize-wrap radius">
-                                <image
-                                    class="lottery-result-prize-icon"
-                                    :src="resultModalPrizeIcon"
-                                    :alt="resultModalPrizeName"
-                                    mode="aspectFit"
-                                />
-                            </view>
-                            <text class="lottery-result-desc">{{ resultModalDesc }}</text>
+                    <!-- 小程序里 background-image 易不显示；aspectFill 铺满裁切，避免 aspectFit 缩在中间像在盒子里没铺开 -->
+                    <view class="lottery-result-bd">
+                        <image
+                            v-if="resultModalBgUrl"
+                            class="lottery-result-bd-bg-img"
+                            :src="resultModalBgUrl"
+                            mode="aspectFill"
+                        />
+                        <!-- 中间区域可滚动 + 底部按钮固定在弹窗底（不依赖 inner 下边距，避免内容多时按钮被顶出） -->
+                        <view class="lottery-result-layer">
+                            <scroll-view scroll-y enable-flex class="lottery-result-scroll" :show-scrollbar="false">
+                                <view class="lottery-result-scroll-inner">
+                                    <text class="lottery-result-title">{{ resultModalTitle }}</text>
+                                    <view v-if="resultModalShowPrizeIcon" class="lottery-result-prize-wrap radius">
+                                        <image
+                                            class="lottery-result-prize-icon"
+                                            :src="resultModalPrizeIcon"
+                                            :alt="resultModalPrizeName"
+                                            mode="aspectFit"
+                                        />
+                                    </view>
+                                    <text class="lottery-result-desc">{{ resultModalDesc }}</text>
+                                </view>
+                            </scroll-view>
                             <button type="default" class="lottery-result-confirm round" @tap="closeResultModal">{{ confirmBtnText }}</button>
                         </view>
                     </view>
@@ -149,7 +161,8 @@
                 resultModalShowPrizeIcon: false,
                 resultModalPrizeIcon: '',
                 resultModalPrizeName: '',
-                resultModalBgStyle: {},
+                /** 结果弹窗背景图 URL（不用 CSS background，小程序用 image 显示） */
+                resultModalBgUrl: '',
                 rulesPopupVisible: false,
                 /** 分享给好友/朋友圈用的标题、路径、配图 */
                 share_info: {},
@@ -304,7 +317,7 @@
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
                 const bgUrl = isNone ? this.resultFailImage : this.resultSuccessImage;
-                this.resultModalBgStyle = bgUrl ? { backgroundImage: 'url("' + bgUrl + '")' } : {};
+                this.resultModalBgUrl = bgUrl ? String(bgUrl).trim() : '';
                 if (isNone) {
                     this.resultModalTitle = this.resultFailTitle || '谢谢参与';
                     this.resultModalShowPrizeIcon = false;
@@ -324,6 +337,7 @@
             /** 关闭结果弹窗并刷新首页数据（次数、资产） */
             closeResultModal() {
                 this.resultModalVisible = false;
+                this.resultModalBgUrl = '';
                 this.lastDrawResult = null;
                 this.pendingEggIndex = -1;
                 this.strikeTargetIndex = -1;
@@ -614,20 +628,48 @@
     }
 
     .lottery-result-bd {
-        background-size: contain;
-        background-position: center top;
-        background-repeat: no-repeat;
         width: 100%;
         height: 800rpx;
-        padding-top: 420rpx;
         box-sizing: border-box;
         position: relative;
         overflow: hidden;
     }
 
-    .lottery-result-inner {
+    .lottery-result-bd-bg-img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        display: block;
+    }
+
+    /* 与背景图文案区对齐：从约 420rpx 起到底部为操作区；底部按钮固定，中间 scroll */
+    .lottery-result-layer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 420rpx;
+        bottom: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0 32rpx;
+        box-sizing: border-box;
+    }
+
+    .lottery-result-scroll {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        height: 0;
+    }
+
+    .lottery-result-scroll-inner {
         text-align: center;
-        padding: 0 32rpx 220rpx;
+        padding-bottom: 16rpx;
         box-sizing: border-box;
     }
 
@@ -664,19 +706,16 @@
         text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.45);
         margin-top: 10rpx;
         line-height: 1.4;
-        max-height: 80rpx;
-        overflow: hidden;
+        word-break: break-word;
     }
 
     .lottery-result-confirm {
+        flex-shrink: 0;
+        align-self: center;
         display: inline-block;
         width: auto !important;
         min-width: 200rpx;
-        position: absolute;
-        left: 50%;
-        bottom: 48rpx;
-        transform: translateX(-50%);
-        margin: 0;
+        margin: 20rpx 0 40rpx;
         padding: 12rpx 36rpx;
         font-size: 28rpx;
         line-height: 1.3;

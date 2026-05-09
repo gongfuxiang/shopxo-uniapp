@@ -20,7 +20,16 @@
                     <view class="lottery-turn-wheel-ring">
                         <!-- 指针朝下指向扇区（与 PC welfare 一致） -->
                         <view class="lottery-turn-pointer" aria-hidden="true"></view>
-                        <view class="lottery-turn-wheel-disk" :style="diskCombinedStyle">
+                        <!-- 小程序里 style 对象合并 transform 偶发无效，用字符串内联 -->
+                        <view class="lottery-turn-wheel-disk" :style="diskRotateInlineStyle">
+                            <view class="lottery-turn-wheel-pie" aria-hidden="true">
+                                <image
+                                    v-if="wheelPieSvgDataUrl"
+                                    class="lottery-turn-wheel-pie-img"
+                                    :src="wheelPieSvgDataUrl"
+                                    mode="aspectFill"
+                                />
+                            </view>
                             <view
                                 v-for="(sv, si) in sectors"
                                 :key="si"
@@ -49,29 +58,6 @@
 </template>
 
 <script>
-    /**
-     * 转盘盘面配色与后台 DrawService::TurnWheelConicGradientCss 一致
-     * @param {number} n 扇区数
-     * @returns {string}
-     */
-    function turnWheelConicGradientCss(n) {
-        n = Math.max(0, parseInt(n, 10) || 0);
-        if (n <= 0) {
-            return 'linear-gradient(135deg, #ffffff 0%, #ffe4ec 100%)';
-        }
-        const per = 360 / n;
-        const parts = [];
-        for (let i = 0; i < n; i++) {
-            const h = ((360.0 * i) / n + 14.0) % 360;
-            const lightness = 74 + (i % 2) * 11;
-            const c = 'hsl(' + (h < 0 ? h + 360 : h) + ', 82%, ' + lightness + '%)';
-            const a = +(i * per).toFixed(4);
-            const b = +((i + 1) * per).toFixed(4);
-            parts.push(c + ' ' + a + 'deg ' + b + 'deg');
-        }
-        return 'conic-gradient(' + parts.join(', ') + ')';
-    }
-
     export default {
         props: {
             /** 活动页背景图 URL（aspectFill） */
@@ -119,57 +105,151 @@
                 type: Boolean,
                 default: false,
             },
-            /** 抽奖接口返回的中奖项 ring_index，配合 drawTrigger 触发旋转 */
-            spinRingIndex: {
-                type: Number,
-                default: -1,
-            },
-            /** 父页抽奖成功后递增，变更时触发旋转动画 */
-            drawTrigger: {
-                type: Number,
-                default: 0,
-            },
         },
         data() {
             return {
                 /** 盘面累计旋转角度（度） */
                 accRotate: 0,
-                /** 盘面 transform 过渡，动画结束后清空 */
-                diskTransition: '',
+                /** requestAnimationFrame 旋转动画 id（便于取消） */
+                spinRafId: null,
                 /** 旋转过程中外圈灯条色相动画开关 */
                 rimLightsSpinning: false,
             };
+        },
+        beforeDestroy() {
+            this.cancelSpinAnimation();
         },
         computed: {
             hubCapShow() {
                 return !!(this.hubCapLabel && String(this.hubCapLabel).trim());
             },
-            /** 盘面 conic-gradient + 旋转角度，绑定到 .lottery-turn-wheel-disk */
-            diskCombinedStyle() {
-                const n = this.ringCount > 0 ? this.ringCount : (Array.isArray(this.sectors) ? this.sectors.length : 0);
-                const bg = turnWheelConicGradientCss(n);
-                return {
-                    backgroundImage: bg,
-                    transform: 'rotate(' + this.accRotate + 'deg)',
-                    transition: this.diskTransition,
-                };
-            },
-        },
-        watch: {
-            /** 父页抽奖成功后递增 drawTrigger，此处触发 runSpin 播放旋转动画 */
-            drawTrigger(val, oldVal) {
-                if (val !== oldVal && val > 0 && this.spinRingIndex >= 0) {
-                    this.runSpin(this.spinRingIndex);
+            /** 扇区配色：SVG data URI，供 image src */
+            wheelPieSvgDataUrl() {
+                const n = this.getWheelSectorCount();
+                let svg;
+                if (n <= 1) {
+                    svg =
+                        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="' +
+                        this.turnSliceHsl(0, Math.max(1, n)) +
+                        '"/></svg>';
+                } else {
+                    const parts = [];
+                    for (let i = 0; i < n; i++) {
+                        parts.push(
+                            '<path d="' +
+                                this.svgSectorPathD(i, n) +
+                                '" fill="' +
+                                this.turnSliceHsl(i, n) +
+                                '"/>',
+                        );
+                    }
+                    svg =
+                        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+                        parts.join('') +
+                        '</svg>';
                 }
+                return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+            },
+            diskRotateInlineStyle() {
+                const d = Number(this.accRotate) || 0;
+                return (
+                    'transform:rotate(' +
+                    d +
+                    'deg) translateZ(0);-webkit-transform:rotate(' +
+                    d +
+                    'deg) translateZ(0)'
+                );
             },
         },
         methods: {
+            /** 有效扇区数（与盘面逻辑一致） */
+            getWheelSectorCount() {
+                const raw =
+                    this.ringCount > 0
+                        ? this.ringCount
+                        : Array.isArray(this.sectors)
+                          ? this.sectors.length
+                          : 0;
+                return Math.max(1, Math.min(36, parseInt(raw, 10) || 1));
+            },
+            /** 扇形 path，viewBox 0..100，圆心 50,50 半径 50；角度与原先 canvas 扇区一致 */
+            svgSectorPathD(i, n) {
+                const r = 50;
+                const cx = 50;
+                const cy = 50;
+                const a0 = -Math.PI / 2 + (i / n) * 2 * Math.PI;
+                const a1 = -Math.PI / 2 + ((i + 1) / n) * 2 * Math.PI;
+                const x0 = cx + r * Math.cos(a0);
+                const y0 = cy + r * Math.sin(a0);
+                const x1 = cx + r * Math.cos(a1);
+                const y1 = cy + r * Math.sin(a1);
+                let delta = a1 - a0;
+                while (delta <= 0) {
+                    delta += 2 * Math.PI;
+                }
+                while (delta > 2 * Math.PI) {
+                    delta -= 2 * Math.PI;
+                }
+                const large = delta > Math.PI ? 1 : 0;
+                return (
+                    'M ' +
+                    cx +
+                    ' ' +
+                    cy +
+                    ' L ' +
+                    x0 +
+                    ' ' +
+                    y0 +
+                    ' A ' +
+                    r +
+                    ' ' +
+                    r +
+                    ' 0 ' +
+                    large +
+                    ' 1 ' +
+                    x1 +
+                    ' ' +
+                    y1 +
+                    ' Z'
+                );
+            },
+            turnSliceHsl(i, n) {
+                const h = ((360.0 * i) / n + 14.0) % 360;
+                const lightness = 74 + (i % 2) * 11;
+                return 'hsl(' + (h < 0 ? h + 360 : h) + ', 82%, ' + lightness + '%)';
+            },
             /** 点击中心圆抽奖（与底部按钮共用父页 beforeDraw） */
             onHubDrawTap() {
                 if (this.hubBusy) {
                     return;
                 }
                 this.$emit('hubDraw');
+            },
+            cancelSpinAnimation() {
+                const id = this.spinRafId;
+                if (id != null) {
+                    if (typeof uni !== 'undefined' && uni.cancelAnimationFrame) {
+                        uni.cancelAnimationFrame(id);
+                    } else if (typeof cancelAnimationFrame === 'function') {
+                        cancelAnimationFrame(id);
+                    } else {
+                        clearTimeout(id);
+                    }
+                    this.spinRafId = null;
+                }
+            },
+            requestSpinFrame(cb) {
+                if (typeof uni !== 'undefined' && uni.requestAnimationFrame) {
+                    return uni.requestAnimationFrame(cb);
+                }
+                if (typeof requestAnimationFrame === 'function') {
+                    return requestAnimationFrame(cb);
+                }
+                return setTimeout(cb, 16);
+            },
+            /** ease-out cubic，接近原 cubic-bezier(0.18, 0.75, 0.22, 1) 收尾感 */
+            easeSpinOut(t) {
+                return 1 - Math.pow(1 - t, 3);
             },
             /**
              * 与 PC turn.js spinToRing：指针固定朝上，盘面旋转使扇区中心对齐 0°
@@ -196,14 +276,30 @@
                 const delta = fullSpins + alignDelta;
                 const next = cur + delta;
                 const spinMs = 5200;
+                this.cancelSpinAnimation();
+                this.runSpinWithRaf(cur, next, spinMs);
+            },
+            runSpinWithRaf(start, end, spinMs) {
                 this.rimLightsSpinning = true;
-                this.diskTransition = 'transform ' + spinMs + 'ms cubic-bezier(0.18, 0.75, 0.22, 1)';
-                this.accRotate = next;
                 const self = this;
-                setTimeout(() => {
-                    self.rimLightsSpinning = false;
-                    self.$emit('spinDone');
-                }, spinMs + 100);
+                const usePerf = typeof performance !== 'undefined' && typeof performance.now === 'function';
+                const tStart = usePerf ? performance.now() : Date.now();
+
+                function tick() {
+                    const now = usePerf ? performance.now() : Date.now();
+                    const elapsed = now - tStart;
+                    const p = Math.min(1, elapsed / spinMs);
+                    self.accRotate = start + (end - start) * self.easeSpinOut(p);
+                    if (p < 1) {
+                        self.spinRafId = self.requestSpinFrame(tick);
+                    } else {
+                        self.accRotate = end;
+                        self.spinRafId = null;
+                        self.rimLightsSpinning = false;
+                        self.$emit('spinDone');
+                    }
+                }
+                this.spinRafId = this.requestSpinFrame(tick);
             },
         },
     };
@@ -365,11 +461,34 @@
         bottom: 4%;
         border-radius: 50%;
         z-index: 2;
-        transform-origin: center center;
+        transform-origin: 50% 50%;
+        overflow: visible;
         box-shadow:
             inset 0 0 0 8rpx rgba(255, 255, 255, 0.65),
             inset 0 0 24rpx rgba(233, 30, 99, 0.08),
             0 16rpx 56rpx rgba(0, 0, 0, 0.35);
+    }
+
+    .lottery-turn-wheel-pie {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .lottery-turn-wheel-pie-img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        pointer-events: none;
     }
 
     .lottery-turn-sector-arm {
@@ -382,6 +501,7 @@
         transform-origin: bottom center;
         transform: rotate(var(--mid, 0deg));
         pointer-events: none;
+        z-index: 4;
     }
 
     .lottery-turn-sector-icon {
