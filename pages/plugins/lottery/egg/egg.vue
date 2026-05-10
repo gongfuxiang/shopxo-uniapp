@@ -74,16 +74,20 @@
 
             <view v-if="resultModalVisible" class="lottery-result-mask">
                 <view class="lottery-result-dialog" @tap.stop>
-                    <!-- 小程序里 background-image 易不显示；aspectFill 铺满裁切，避免 aspectFit 缩在中间像在盒子里没铺开 -->
-                    <view class="lottery-result-bd">
-                        <image
-                            v-if="resultModalBgUrl"
-                            class="lottery-result-bd-bg-img"
-                            :src="resultModalBgUrl"
-                            mode="aspectFill"
-                        />
-                        <!-- 中间区域可滚动 + 底部按钮固定在弹窗底（不依赖 inner 下边距，避免内容多时按钮被顶出） -->
-                        <view class="lottery-result-layer">
+                    <view
+                        class="lottery-result-card"
+                        :class="resultModalIsNone ? 'lottery-result-card--fail' : 'lottery-result-card--win'"
+                    >
+                        <!-- 顶部：后台返回的 success.png / fail.png -->
+                        <view class="lottery-result-hero">
+                            <image
+                                v-if="resultModalHeroSrc"
+                                class="lottery-result-hero-img"
+                                :src="resultModalHeroSrc"
+                                mode="widthFix"
+                            />
+                        </view>
+                        <view class="lottery-result-card-main">
                             <scroll-view scroll-y enable-flex class="lottery-result-scroll" :show-scrollbar="false">
                                 <view class="lottery-result-scroll-inner">
                                     <text class="lottery-result-title">{{ resultModalTitle }}</text>
@@ -161,8 +165,6 @@
                 resultModalShowPrizeIcon: false,
                 resultModalPrizeIcon: '',
                 resultModalPrizeName: '',
-                /** 结果弹窗背景图 URL（不用 CSS background，小程序用 image 显示） */
-                resultModalBgUrl: '',
                 rulesPopupVisible: false,
                 /** 分享给好友/朋友圈用的标题、路径、配图 */
                 share_info: {},
@@ -171,6 +173,11 @@
                 /** 1 加载中；2 网络失败；0 业务提示；3 正常（对应 no-data 组件） */
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                /**
+                 * 每日有抽奖次数上限时，接口返回后暂存「剩余次数 / 顶栏文案」等，
+                 * 等锤子动画结束再写入 lotteryEgg（与 PC 一致，避免动画中途数字先变）
+                 */
+                pendingEggChancePatch: null,
             };
         },
         computed: {
@@ -265,6 +272,17 @@
             eggChancesCapLabel() {
                 return this.$t ? this.$t('pages.plugins-lottery-egg-chances-label') : '今日可抽';
             },
+            /** 是否未中奖（用于弹窗样式） */
+            resultModalIsNone() {
+                return (this.lastDrawResult || {}).reward_type === 'none';
+            },
+            /** 弹窗顶部状态图：与后台 result_success_image / result_fail_image 一致 */
+            resultModalHeroSrc() {
+                const d = this.lastDrawResult || {};
+                const isNone = d.reward_type === 'none';
+                const u = isNone ? this.resultFailImage : this.resultSuccessImage;
+                return u ? String(u).trim() : '';
+            },
         },
         onLoad(params) {
             // 调用公共事件方法
@@ -305,6 +323,10 @@
             /** 子组件锤子动画结束：标记砸开、弹出结果 */
             onStrikeDone() {
                 this.isDrawing = false;
+                if (this.pendingEggChancePatch && this.lotteryEgg) {
+                    this.lotteryEgg = Object.assign({}, this.lotteryEgg, this.pendingEggChancePatch);
+                }
+                this.pendingEggChancePatch = null;
                 if (this.pendingEggIndex >= 0) {
                     if (this.brokenEggIndexes.indexOf(this.pendingEggIndex) === -1) {
                         this.brokenEggIndexes = this.brokenEggIndexes.concat([this.pendingEggIndex]);
@@ -316,8 +338,6 @@
             openResultModal() {
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
-                const bgUrl = isNone ? this.resultFailImage : this.resultSuccessImage;
-                this.resultModalBgUrl = bgUrl ? String(bgUrl).trim() : '';
                 if (isNone) {
                     this.resultModalTitle = this.resultFailTitle || '谢谢参与';
                     this.resultModalShowPrizeIcon = false;
@@ -337,10 +357,10 @@
             /** 关闭结果弹窗并刷新首页数据（次数、资产） */
             closeResultModal() {
                 this.resultModalVisible = false;
-                this.resultModalBgUrl = '';
                 this.lastDrawResult = null;
                 this.pendingEggIndex = -1;
                 this.strikeTargetIndex = -1;
+                this.pendingEggChancePatch = null;
                 this.getPageData();
             },
             /** 抽奖返回后同步 egg_chances_display（有限次用剩余次数，否则 ∞） */
@@ -387,6 +407,26 @@
                                     }
                                 });
                                 this.patchEggChancesDisplay(patch, data);
+
+                                let lim = parseInt(data.egg_user_daily_draw_limit, 10);
+                                if (isNaN(lim)) {
+                                    lim = parseInt(this.lotteryEgg.egg_user_daily_draw_limit, 10);
+                                }
+                                const deferChances = !isNaN(lim) && lim > 0;
+                                let pendingChancePatch = null;
+                                if (deferChances) {
+                                    pendingChancePatch = {};
+                                    ['egg_user_assets_bar_text', 'egg_chances_display', 'egg_user_daily_draw_remaining_today', 'egg_user_daily_draw_used_today'].forEach((k) => {
+                                        if (patch[k] !== undefined) {
+                                            pendingChancePatch[k] = patch[k];
+                                            delete patch[k];
+                                        }
+                                    });
+                                    if (Object.keys(pendingChancePatch).length === 0) {
+                                        pendingChancePatch = null;
+                                    }
+                                }
+                                this.pendingEggChancePatch = pendingChancePatch;
                                 this.lotteryEgg = Object.assign({}, this.lotteryEgg, patch);
                             }
                             this.strikeTargetIndex = this.pendingEggIndex;
@@ -624,39 +664,71 @@
 
     .lottery-result-dialog {
         width: 100%;
-        max-width: 640rpx;
+        max-width: 620rpx;
     }
 
-    .lottery-result-bd {
-        width: 100%;
-        height: 800rpx;
-        box-sizing: border-box;
+    /* 酒红系偏亮，避免过重发黑；顶部装饰条用伪元素贴合圆角，避免 border-top 与圆角错位产生灰边感 */
+    .lottery-result-card {
         position: relative;
+        width: 100%;
+        max-height: 82vh;
+        box-sizing: border-box;
+        border-radius: 28rpx;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(165deg, #fb564d 0%, #fb564d 32%, #ff8e88 68%, #ff8f89 100%);
+        box-shadow: 0 16rpx 48rpx rgba(60, 20, 30, 0.35), inset 0 1rpx 0 rgba(255, 255, 255, 0.18);
+        border: 1rpx solid rgba(255, 213, 79, 0.35);
     }
 
-    .lottery-result-bd-bg-img {
+    .lottery-result-card--win::before,
+    .lottery-result-card--fail::before {
+        content: '';
         position: absolute;
         left: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
+        right: 0;
+        height: 6rpx;
+        border-radius: 28rpx 28rpx 0 0;
+        z-index: 2;
         pointer-events: none;
-        display: block;
     }
 
-    /* 与背景图文案区对齐：从约 420rpx 起到底部为操作区；底部按钮固定，中间 scroll */
-    .lottery-result-layer {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 420rpx;
-        bottom: 0;
-        z-index: 1;
+    .lottery-result-card--win::before {
+        background: linear-gradient(90deg, #ffe082 0%, #ffd54f 50%, #ffb300 100%);
+    }
+
+    .lottery-result-card--fail::before {
+        background: rgba(255, 255, 255, 0.55);
+    }
+
+    .lottery-result-hero {
+        flex-shrink: 0;
+        width: 100%;
+        padding: 28rpx 32rpx 20rpx;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* 顶图约为原先一半宽度展示 */
+    .lottery-result-hero-img {
+        display: block;
+        width: 50%;
+        max-width: 260rpx;
+        margin: 0 auto;
+    }
+
+    .lottery-result-card-main {
+        flex: 1;
+        min-height: 0;
         display: flex;
         flex-direction: column;
-        padding: 0 32rpx;
+        padding: 8rpx 32rpx 0;
+        padding-bottom: calc(52rpx + constant(safe-area-inset-bottom));
+        padding-bottom: calc(52rpx + env(safe-area-inset-bottom));
         box-sizing: border-box;
     }
 
@@ -664,28 +736,28 @@
         flex: 1;
         min-height: 0;
         width: 100%;
-        height: 0;
+        max-height: 360rpx;
     }
 
     .lottery-result-scroll-inner {
         text-align: center;
-        padding-bottom: 16rpx;
+        padding: 12rpx 0 20rpx;
         box-sizing: border-box;
     }
 
     .lottery-result-title {
         display: block;
-        font-size: 40rpx;
+        font-size: 38rpx;
         font-weight: 700;
-        color: #fff;
-        text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.45);
+        color: #fff8e1;
+        text-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.5);
         line-height: 1.35;
-        margin-bottom: 20rpx;
+        margin-bottom: 16rpx;
     }
 
     .lottery-result-prize-wrap {
-        width: 320rpx;
-        height: 110rpx;
+        width: 300rpx;
+        height: 100rpx;
         margin: 0 auto;
         overflow: hidden;
         display: flex;
@@ -702,26 +774,27 @@
     .lottery-result-desc {
         display: block;
         font-size: 28rpx;
-        color: rgba(255, 255, 255, 0.92);
-        text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.45);
-        margin-top: 10rpx;
-        line-height: 1.4;
+        color: rgba(255, 245, 230, 0.95);
+        text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.4);
+        margin-top: 12rpx;
+        line-height: 1.5;
         word-break: break-word;
     }
 
     .lottery-result-confirm {
         flex-shrink: 0;
         align-self: center;
-        display: inline-block;
-        width: auto !important;
-        min-width: 200rpx;
-        margin: 20rpx 0 40rpx;
-        padding: 12rpx 36rpx;
-        font-size: 28rpx;
-        line-height: 1.3;
-        color: #fff;
-        background: transparent;
-        border: 2rpx solid #fff;
+        margin-top: 20rpx;
+        margin-bottom: 8rpx;
+        padding: 22rpx 72rpx;
+        font-size: 30rpx;
+        font-weight: 600;
+        line-height: 1.25;
+        color: #4a2c00 !important;
+        border: none;
+        border-radius: 999rpx;
+        background: linear-gradient(180deg, #ffe082 0%, #ffd54f 45%, #ffb300 100%);
+        box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.28);
     }
 
     .lottery-result-confirm::after {

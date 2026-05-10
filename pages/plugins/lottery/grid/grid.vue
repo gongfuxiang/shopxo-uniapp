@@ -134,6 +134,8 @@
                 /** 1 加载中；2 网络/请求 fail；0 业务类提示；3 正常不展示 no-data */
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                /** 有每日次数上限时，draw 返回后暂存次数相关字段，九宫格跑马灯停格后再写入（与 PC 一致） */
+                pendingGridChancePatch: null,
             };
         },
         computed: {
@@ -222,6 +224,10 @@
              * 转盘结束回调：打开结果弹窗（与 PC grid.js openResultModal 一致）
              */
             updateMoney() {
+                if (this.pendingGridChancePatch && this.lotteryGrid) {
+                    this.lotteryGrid = Object.assign({}, this.lotteryGrid, this.pendingGridChancePatch);
+                }
+                this.pendingGridChancePatch = null;
                 this.openResultModal();
             },
             /**
@@ -255,6 +261,7 @@
                 this.resultModalVisible = false;
                 this.resultModalBgUrl = '';
                 this.lastDrawResult = null;
+                this.pendingGridChancePatch = null;
                 // 获取数据
                 this.getPageData();
             },
@@ -304,6 +311,26 @@
                                         patch[k] = data[k];
                                     }
                                 });
+
+                                let lim = parseInt(data.grid_user_daily_draw_limit, 10);
+                                if (isNaN(lim)) {
+                                    lim = parseInt(this.lotteryGrid.grid_user_daily_draw_limit, 10);
+                                }
+                                const deferChances = !isNaN(lim) && lim > 0;
+                                let pendingChancePatch = null;
+                                if (deferChances) {
+                                    pendingChancePatch = {};
+                                    ['grid_user_assets_bar_text', 'grid_user_daily_draw_remaining_today', 'grid_user_daily_draw_used_today'].forEach((k) => {
+                                        if (patch[k] !== undefined) {
+                                            pendingChancePatch[k] = patch[k];
+                                            delete patch[k];
+                                        }
+                                    });
+                                    if (Object.keys(pendingChancePatch).length === 0) {
+                                        pendingChancePatch = null;
+                                    }
+                                }
+                                this.pendingGridChancePatch = pendingChancePatch;
                                 this.lotteryGrid = Object.assign({}, this.lotteryGrid, patch);
                             }
                         } else {

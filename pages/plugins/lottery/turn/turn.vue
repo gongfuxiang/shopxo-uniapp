@@ -80,14 +80,19 @@
 
             <view v-if="resultModalVisible" class="lottery-result-mask">
                 <view class="lottery-result-dialog" @tap.stop>
-                    <view class="lottery-result-bd">
-                        <image
-                            v-if="resultModalBgUrl"
-                            class="lottery-result-bd-bg-img"
-                            :src="resultModalBgUrl"
-                            mode="aspectFill"
-                        />
-                        <view class="lottery-result-layer">
+                    <view
+                        class="lottery-result-card"
+                        :class="resultModalIsNone ? 'lottery-result-card--fail' : 'lottery-result-card--win'"
+                    >
+                        <view class="lottery-result-hero">
+                            <image
+                                v-if="resultModalHeroSrc"
+                                class="lottery-result-hero-img"
+                                :src="resultModalHeroSrc"
+                                mode="widthFix"
+                            />
+                        </view>
+                        <view class="lottery-result-card-main">
                             <scroll-view scroll-y enable-flex class="lottery-result-scroll" :show-scrollbar="false">
                                 <view class="lottery-result-scroll-inner">
                                     <text class="lottery-result-title">{{ resultModalTitle }}</text>
@@ -149,12 +154,13 @@
                 resultModalShowPrizeIcon: false,
                 resultModalPrizeIcon: '',
                 resultModalPrizeName: '',
-                resultModalBgUrl: '',
                 rulesPopupVisible: false,
                 share_info: {},
                 marqueeList: [],
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                /** 有每日次数上限时，draw 返回后暂存次数相关字段，转盘停转后再写入（与 PC 一致） */
+                pendingTurnChancePatch: null,
             };
         },
         computed: {
@@ -267,6 +273,17 @@
             hubCenterDrawCta() {
                 return !this.turnDailyLimitGt0 && !!this.lotteryTurn;
             },
+            /** 是否未中奖（与砸金蛋页一致，用于弹窗 win/fail 样式） */
+            resultModalIsNone() {
+                return (this.lastDrawResult || {}).reward_type === 'none';
+            },
+            /** 弹窗顶部状态图：后台 result_success_image / result_fail_image */
+            resultModalHeroSrc() {
+                const d = this.lastDrawResult || {};
+                const isNone = d.reward_type === 'none';
+                const u = isNone ? this.resultFailImage : this.resultSuccessImage;
+                return u ? String(u).trim() : '';
+            },
         },
         onLoad(params) {
             // 调用公共事件方法
@@ -295,14 +312,16 @@
             /** 子组件转盘动画结束：结束抽奖态并打开结果弹窗 */
             onSpinDone() {
                 this.isDrawing = false;
+                if (this.pendingTurnChancePatch && this.lotteryTurn) {
+                    this.lotteryTurn = Object.assign({}, this.lotteryTurn, this.pendingTurnChancePatch);
+                }
+                this.pendingTurnChancePatch = null;
                 this.openResultModal();
             },
             /** 根据 lastDrawResult 填充中奖/未中奖弹窗 */
             openResultModal() {
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
-                const bgRemoteRaw = isNone ? this.resultFailImage : this.resultSuccessImage;
-                const bgRemote = bgRemoteRaw ? String(bgRemoteRaw).trim() : '';
 
                 if (isNone) {
                     this.resultModalTitle = this.resultFailTitle || '谢谢参与';
@@ -319,14 +338,13 @@
                     this.resultModalDesc = d.name || '';
                 }
 
-                this.resultModalBgUrl = bgRemote;
                 this.resultModalVisible = true;
             },
             /** 关闭结果弹窗并刷新页面数据（次数等） */
             closeResultModal() {
                 this.resultModalVisible = false;
-                this.resultModalBgUrl = '';
                 this.lastDrawResult = null;
+                this.pendingTurnChancePatch = null;
                 this.getPageData();
             },
             /** 点击立即抽奖前：防重复、登录校验 */
@@ -378,14 +396,47 @@
                                 ) {
                                     limAfter = parseInt(data.turn_user_daily_draw_limit, 10);
                                 }
-                                if (
-                                    !isNaN(limAfter) &&
-                                    limAfter > 0 &&
-                                    data.turn_chances_display !== undefined &&
-                                    data.turn_chances_display !== null
-                                ) {
-                                    patch.turn_chances_display = data.turn_chances_display;
+                                /**
+                                 * 中心圆数字 turn_chances_display：首页接口有，draw 接口历史上未带，
+                                 * 仅用接口字段会导致 pending 里没有次数，转停合并后数字仍旧，只能关弹窗 getPageData 才变。
+                                 * 与首页 TurnPublicSlots / 砸金蛋 patchEggChancesDisplay 一致：有限次用剩余次数推导。
+                                 */
+                                if (!isNaN(limAfter) && limAfter > 0) {
+                                    if (
+                                        data.turn_chances_display !== undefined &&
+                                        data.turn_chances_display !== null &&
+                                        String(data.turn_chances_display).trim() !== ''
+                                    ) {
+                                        patch.turn_chances_display = data.turn_chances_display;
+                                    } else if (
+                                        data.turn_user_daily_draw_remaining_today !== undefined &&
+                                        data.turn_user_daily_draw_remaining_today !== null
+                                    ) {
+                                        patch.turn_chances_display = String(
+                                            Math.max(0, parseInt(data.turn_user_daily_draw_remaining_today, 10)),
+                                        );
+                                    }
                                 }
+
+                                let limDefer = parseInt(data.turn_user_daily_draw_limit, 10);
+                                if (isNaN(limDefer)) {
+                                    limDefer = parseInt(this.lotteryTurn.turn_user_daily_draw_limit, 10);
+                                }
+                                const deferChances = !isNaN(limDefer) && limDefer > 0;
+                                let pendingChancePatch = null;
+                                if (deferChances) {
+                                    pendingChancePatch = {};
+                                    ['turn_user_assets_bar_text', 'turn_chances_display', 'turn_user_daily_draw_remaining_today', 'turn_user_daily_draw_used_today'].forEach((k) => {
+                                        if (patch[k] !== undefined) {
+                                            pendingChancePatch[k] = patch[k];
+                                            delete patch[k];
+                                        }
+                                    });
+                                    if (Object.keys(pendingChancePatch).length === 0) {
+                                        pendingChancePatch = null;
+                                    }
+                                }
+                                this.pendingTurnChancePatch = pendingChancePatch;
                                 this.lotteryTurn = Object.assign({}, this.lotteryTurn, patch);
                             }
                             const ri = ringIndex;
@@ -654,94 +705,138 @@
     }
     .lottery-result-dialog {
         width: 100%;
-        max-width: 640rpx;
+        max-width: 620rpx;
     }
-    .lottery-result-bd {
-        width: 100%;
-        height: 800rpx;
-        box-sizing: border-box;
+
+    /* 与砸金蛋页同一套：珊瑚渐变卡片 + 顶图 success/fail */
+    .lottery-result-card {
         position: relative;
+        width: 100%;
+        max-height: 82vh;
+        box-sizing: border-box;
+        border-radius: 28rpx;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(165deg, #fb564d 0%, #fb564d 32%, #ff8e88 68%, #ff8f89 100%);
+        box-shadow: 0 16rpx 48rpx rgba(60, 20, 30, 0.35), inset 0 1rpx 0 rgba(255, 255, 255, 0.18);
+        border: 1rpx solid rgba(255, 213, 79, 0.35);
     }
-    .lottery-result-bd-bg-img {
+
+    .lottery-result-card--win::before,
+    .lottery-result-card--fail::before {
+        content: '';
         position: absolute;
         left: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        pointer-events: none;
-        display: block;
-    }
-    .lottery-result-layer {
-        position: absolute;
-        left: 0;
         right: 0;
-        top: 420rpx;
-        bottom: 0;
-        z-index: 1;
+        height: 6rpx;
+        border-radius: 28rpx 28rpx 0 0;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .lottery-result-card--win::before {
+        background: linear-gradient(90deg, #ffe082 0%, #ffd54f 50%, #ffb300 100%);
+    }
+
+    .lottery-result-card--fail::before {
+        background: rgba(255, 255, 255, 0.55);
+    }
+
+    .lottery-result-hero {
+        flex-shrink: 0;
+        width: 100%;
+        padding: 28rpx 32rpx 20rpx;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .lottery-result-hero-img {
+        display: block;
+        width: 50%;
+        max-width: 260rpx;
+        margin: 0 auto;
+    }
+
+    .lottery-result-card-main {
+        flex: 1;
+        min-height: 0;
         display: flex;
         flex-direction: column;
-        padding: 0 32rpx;
+        padding: 8rpx 32rpx 0;
+        padding-bottom: calc(52rpx + constant(safe-area-inset-bottom));
+        padding-bottom: calc(52rpx + env(safe-area-inset-bottom));
         box-sizing: border-box;
     }
+
     .lottery-result-scroll {
         flex: 1;
         min-height: 0;
         width: 100%;
-        height: 0;
+        max-height: 360rpx;
     }
+
     .lottery-result-scroll-inner {
         text-align: center;
-        padding-bottom: 16rpx;
+        padding: 12rpx 0 20rpx;
         box-sizing: border-box;
     }
+
     .lottery-result-title {
         display: block;
-        font-size: 40rpx;
+        font-size: 38rpx;
         font-weight: 700;
-        color: #fff;
-        text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.45);
+        color: #fff8e1;
+        text-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.5);
         line-height: 1.35;
-        margin-bottom: 20rpx;
+        margin-bottom: 16rpx;
     }
+
     .lottery-result-prize-wrap {
-        width: 320rpx;
-        height: 110rpx;
+        width: 300rpx;
+        height: 100rpx;
         margin: 0 auto;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
     }
+
     .lottery-result-prize-icon {
         display: block;
         width: 100%;
         height: 100%;
     }
+
     .lottery-result-desc {
         display: block;
         font-size: 28rpx;
-        color: rgba(255, 255, 255, 0.92);
-        text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.45);
-        margin-top: 10rpx;
-        line-height: 1.4;
+        color: rgba(255, 245, 230, 0.95);
+        text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.4);
+        margin-top: 12rpx;
+        line-height: 1.5;
         word-break: break-word;
     }
+
     .lottery-result-confirm {
         flex-shrink: 0;
         align-self: center;
-        display: inline-block;
-        width: auto !important;
-        min-width: 200rpx;
-        margin: 20rpx 0 40rpx;
-        padding: 12rpx 36rpx;
-        font-size: 28rpx;
-        line-height: 1.3;
-        color: #fff;
-        background: transparent;
-        border: 2rpx solid #fff;
+        margin-top: 20rpx;
+        margin-bottom: 8rpx;
+        padding: 22rpx 72rpx;
+        font-size: 30rpx;
+        font-weight: 600;
+        line-height: 1.25;
+        color: #4a2c00 !important;
+        border: none;
+        border-radius: 999rpx;
+        background: linear-gradient(180deg, #ffe082 0%, #ffd54f 45%, #ffb300 100%);
+        box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.28);
     }
+
     .lottery-result-confirm::after {
         border: none;
     }
