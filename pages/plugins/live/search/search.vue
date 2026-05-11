@@ -48,7 +48,11 @@
                                     <image class="live-thumbnail" :src="item.cover" mode="aspectFill"></image>
                                     <!-- 直播状态标签 -->
                                     <view class="live-status-tag" :class="'status-' + item.status">
-                                        <text v-if="item.status == 1" class="live-status-dot"></text>
+                                        <view v-if="item.status == 1" class="live-status-dots">
+                                            <text class="dot"></text>
+                                            <text class="dot"></text>
+                                            <text class="dot"></text>
+                                        </view>
                                         {{ item.status_name }}
                                     </view>
                                 </view>

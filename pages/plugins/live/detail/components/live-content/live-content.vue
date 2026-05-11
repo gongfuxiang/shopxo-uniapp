@@ -11,7 +11,7 @@
             <view id="search-height" class="flex-row align-c">
                 <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                 <!-- #ifndef MP-ALIPAY -->
-                <view class="cp pointer-events-auto" @tap="handle_back">
+                <view class="cp pointer-events-auto" @tap="live_back">
                     <iconfont name="icon-arrow-left" size="36rpx" color="#fff"></iconfont>
                 </view>
                 <!-- #endif -->
@@ -37,9 +37,9 @@
                     <view class="ml-5 people-number flex-row align-c jc-c">
                         <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
                     </view>
-                    <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
+                    <!-- <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
                         <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
-                    </view>
+                    </view> -->
                 </view>
             </view>
             <!-- #endif -->
@@ -63,9 +63,9 @@
                     <view class="ml-5 people-number flex-row align-c jc-c">
                         <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
                     </view>
-                    <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
+                    <!-- <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
                         <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
-                    </view>
+                    </view> -->
                 </view>
             </view>
         <!-- #endif -->
@@ -424,7 +424,6 @@
         },
         methods: {
             isEmpty,
-            //#region 头部样式和页面宽度处理
             /**
              * 初始化窗口信息
              * 获取屏幕宽高，并根据不同平台设置头部样式
@@ -468,7 +467,6 @@
                 this.nvueAnimation = uni.requireNativePlugin('animation');
                 //#endif
             },
-            //#endregion
             
             /**
              * 退出直播
@@ -476,13 +474,6 @@
              */
             live_back() {
                 this.$emit('liveBack');
-            },
-
-            /**
-             * 返回上一页
-             */
-            handle_back() {
-                app.globalData.page_back_prev_event();
             },
 
             /**
