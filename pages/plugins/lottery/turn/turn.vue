@@ -65,7 +65,7 @@
                     </view>
                 </view>
 
-                <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
+                <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">{{ recordEntryMenuName }}</view>
             </view>
 
             <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
@@ -159,8 +159,10 @@
                 marqueeList: [],
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                /** 有每日次数上限时，draw 返回后暂存次数相关字段，转盘停转后再写入（与 PC 一致） */
+                /** 有每日次数上限时，draw 返回后暂存次数相关字段，转盘停转后再合并到页面数据 */
                 pendingTurnChancePatch: null,
+                /** 底部跳转中奖记录文案（接口 lottery_user_center_record_menu_name） */
+                recordEntryMenuName: '我的中奖',
             };
         },
         computed: {
@@ -273,7 +275,7 @@
             hubCenterDrawCta() {
                 return !this.turnDailyLimitGt0 && !!this.lotteryTurn;
             },
-            /** 是否未中奖（与砸金蛋页一致，用于弹窗 win/fail 样式） */
+            /** 是否未中奖（用于弹窗 win/fail 样式） */
             resultModalIsNone() {
                 return (this.lastDrawResult || {}).reward_type === 'none';
             },
@@ -397,9 +399,8 @@
                                     limAfter = parseInt(data.turn_user_daily_draw_limit, 10);
                                 }
                                 /**
-                                 * 中心圆数字 turn_chances_display：首页接口有，draw 接口历史上未带，
-                                 * 仅用接口字段会导致 pending 里没有次数，转停合并后数字仍旧，只能关弹窗 getPageData 才变。
-                                 * 与首页 TurnPublicSlots / 砸金蛋 patchEggChancesDisplay 一致：有限次用剩余次数推导。
+                                 * 中心圆数字 turn_chances_display：draw 未返回时可用今日剩余次数推导，
+                                 * 否则 pending 缺少该字段，停转后数字不刷新。
                                  */
                                 if (!isNaN(limAfter) && limAfter > 0) {
                                     if (
@@ -469,6 +470,8 @@
                             const data = res.data.data || {};
                             const turn = data.lottery_turn || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
+                            this.recordEntryMenuName =
+                                String(data.lottery_user_center_record_menu_name || '').trim() || '我的中奖';
                             this.lotteryTurn = turn;
                             if (turn.enable === false) {
                                 const tip = String(turn.error_tips || '').trim() || '活动暂不可用';
@@ -536,7 +539,7 @@
         min-height: calc(100vh + env(safe-area-inset-bottom));
     }
 
-    /* 与九宫格页一致：加载中不铺主题渐变，避免闪一整屏红底 */
+    /* 加载完成后再铺主题渐变，避免加载态闪一整屏红底 */
     .lottery-turn-page-loaded {
         background: linear-gradient(180deg, #1f080c 0%, #3a1018 34%, #6a1826 68%, #9c2838 100%);
         background-color: #9c2838;
@@ -593,7 +596,7 @@
     .lottery-turn-footer-draw {
         position: relative;
         z-index: 12;
-        /* 与转盘拉开距离；底部为固定跑马灯/安全区留白（替代原先 page-inner 260rpx 造成的空白滚动） */
+        /* 底部按钮区上留白，并预留跑马灯与安全区（替代原先 page-inner 260rpx 造成的空白滚动） */
         padding: 80rpx 32rpx 120rpx;
         display: flex;
         justify-content: center;

@@ -18,7 +18,7 @@
                         aria-hidden="true"
                     ></view>
                     <view class="lottery-turn-wheel-ring">
-                        <!-- 指针朝下指向扇区（与 PC welfare 一致） -->
+                        <!-- 指针朝下指向扇区 -->
                         <view class="lottery-turn-pointer" aria-hidden="true"></view>
                         <!-- 小程序里 style 对象合并 transform 偶发无效，用字符串内联 -->
                         <view class="lottery-turn-wheel-disk" :style="diskRotateInlineStyle">
@@ -75,7 +75,7 @@
                 type: Array,
                 default: () => [],
             },
-            /** 每扇区角度，与后台 sector_deg 一致 */
+            /** 每扇区角度（后台 sector_deg） */
             sectorDeg: {
                 type: Number,
                 default: 0,
@@ -95,7 +95,7 @@
                 type: String,
                 default: '可用次数',
             },
-            /** 中心圆为「立即抽奖」文案时略缩小字号（与 PC welfare 一致） */
+            /** 中心圆为「立即抽奖」文案时略缩小字号 */
             hubDrawCta: {
                 type: Boolean,
                 default: false,
@@ -162,7 +162,7 @@
             },
         },
         methods: {
-            /** 有效扇区数（与盘面逻辑一致） */
+            /** 有效扇区数 */
             getWheelSectorCount() {
                 const raw =
                     this.ringCount > 0
@@ -172,7 +172,7 @@
                           : 0;
                 return Math.max(1, Math.min(36, parseInt(raw, 10) || 1));
             },
-            /** 扇形 path，viewBox 0..100，圆心 50,50 半径 50；角度与原先 canvas 扇区一致 */
+            /** 扇形 path，viewBox 0..100，圆心 50,50 半径 50 */
             svgSectorPathD(i, n) {
                 const r = 50;
                 const cx = 50;
@@ -252,7 +252,7 @@
                 return 1 - Math.pow(1 - t, 3);
             },
             /**
-             * 与 PC turn.js spinToRing：指针固定朝上，盘面旋转使扇区中心对齐 0°
+             * 指针固定朝上，盘面旋转使目标扇区中心对齐 0°
              */
             runSpin(ringIndex) {
                 const n =
@@ -343,7 +343,7 @@
     .lottery-hero-title-overlay {
         position: relative;
         z-index: 2;
-        /* 与 PC lottery-turn-welfare-hero 类似：为状态栏 / 自定义顶栏留白，避免标题贴顶 */
+        /* 为状态栏 / 自定义顶栏留白，避免标题贴顶 */
         padding-top: calc(120rpx + constant(safe-area-inset-top));
         padding-top: calc(120rpx + env(safe-area-inset-top));
         padding-left: 24rpx;

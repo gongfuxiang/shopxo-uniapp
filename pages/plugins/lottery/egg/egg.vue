@@ -59,7 +59,7 @@
                     </view>
                 </view>
 
-                <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
+                <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">{{ recordEntryMenuName }}</view>
             </view>
 
             <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
@@ -175,9 +175,11 @@
                 data_list_loding_msg: '',
                 /**
                  * 每日有抽奖次数上限时，接口返回后暂存「剩余次数 / 顶栏文案」等，
-                 * 等锤子动画结束再写入 lotteryEgg（与 PC 一致，避免动画中途数字先变）
+                 * 等锤子动画结束再写入 lotteryEgg，避免动画中途数字先变
                  */
                 pendingEggChancePatch: null,
+                /** 底部跳转中奖记录文案（接口 lottery_user_center_record_menu_name） */
+                recordEntryMenuName: '我的中奖',
             };
         },
         computed: {
@@ -276,7 +278,7 @@
             resultModalIsNone() {
                 return (this.lastDrawResult || {}).reward_type === 'none';
             },
-            /** 弹窗顶部状态图：与后台 result_success_image / result_fail_image 一致 */
+            /** 弹窗顶部状态图：成功/失败各用 result_success_image、result_fail_image */
             resultModalHeroSrc() {
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
@@ -456,6 +458,8 @@
                             const data = res.data.data || {};
                             const egg = data.lottery_egg || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
+                            this.recordEntryMenuName =
+                                String(data.lottery_user_center_record_menu_name || '').trim() || '我的中奖';
                             this.lotteryEgg = egg;
                             if (egg.enable === false) {
                                 const tip = String(egg.error_tips || '').trim() || '活动暂不可用';

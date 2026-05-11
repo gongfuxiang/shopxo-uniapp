@@ -18,9 +18,9 @@
             @updateMoney="updateMoney"
         ></component-lottery-grid>
 
-        <!-- H5 宽屏：与九宫格组件一致限制最大宽度并居中，避免底部条铺满 PC 浏览器 -->
+        <!-- H5 宽屏：限制最大宽度并居中，避免底部条铺满浏览器 -->
         <view class="page-width-max lottery-bottom-fixed-cluster">
-            <!-- 与 PC 一致：底部横向跑马灯（最近中奖） -->
+            <!-- 底部横向跑马灯（最近中奖） -->
             <view v-if="marqueeList.length > 0" class="lottery-marquee-wrap">
                 <view class="lottery-marquee-inner">
                     <view class="lottery-marquee-row">
@@ -35,7 +35,7 @@
                 </view>
             </view>
 
-            <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">中奖记录</view>
+            <view class="lottery-record-entry" data-value="/pages/plugins/lottery/record/record" @tap="urlEvent">{{ recordEntryMenuName }}</view>
         </view>
 
         <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
@@ -48,7 +48,7 @@
             </view>
         </view>
 
-        <!-- 与 PC 端 lottery-grid-result-modal 一致；与砸金蛋弹窗同构：image 背景 + 可滚内容 + 底栏确认 -->
+        <!-- 结果弹窗：image 背景 + 可滚内容 + 底栏确认 -->
         <view v-if="resultModalVisible" class="lottery-result-mask">
             <view class="lottery-result-dialog" @tap.stop>
                 <view class="lottery-result-bd">
@@ -134,8 +134,10 @@
                 /** 1 加载中；2 网络/请求 fail；0 业务类提示；3 正常不展示 no-data */
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                /** 有每日次数上限时，draw 返回后暂存次数相关字段，九宫格跑马灯停格后再写入（与 PC 一致） */
+                /** 有每日次数上限时，draw 返回后暂存次数相关字段，跑马灯停格后再合并到页面数据 */
                 pendingGridChancePatch: null,
+                /** 底部跳转中奖记录文案（接口 lottery_user_center_record_menu_name） */
+                recordEntryMenuName: '我的中奖',
             };
         },
         computed: {
@@ -181,11 +183,11 @@
                 }
                 return out.join('\n');
             },
-            /** 跑马灯双份内容，与 PC 动画 translateX(-50%) 配合 */
+            /** 跑马灯双份内容，配合 translateX(-50%) 无缝循环 */
             marqueeDuplicateRuns() {
                 return [0, 1];
             },
-            /** 九宫格标题图 URL（手机端图优先，与后台 Web/App 配置一致） */
+            /** 九宫格标题图 URL（手机端图优先，否则 Web 端图） */
             heroTitleImageUrl() {
                 const g = this.lotteryGrid;
                 if (!g) {
@@ -221,7 +223,7 @@
                 app.globalData.url_event(e);
             },
             /**
-             * 转盘结束回调：打开结果弹窗（与 PC grid.js openResultModal 一致）
+             * 跑马灯停格后合并次数并打开结果弹窗
              */
             updateMoney() {
                 if (this.pendingGridChancePatch && this.lotteryGrid) {
@@ -360,6 +362,8 @@
                             const data = res.data.data || {};
                             const grid = data.lottery_grid || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
+                            this.recordEntryMenuName =
+                                String(data.lottery_user_center_record_menu_name || '').trim() || '我的中奖';
                             this.lotteryGrid = grid;
                             if (grid.enable === false) {
                                 const tip = String(grid.error_tips || '').trim() || '活动暂不可用';
@@ -376,7 +380,7 @@
                             this.resultSuccessTitle = grid.result_success_title || '恭喜您获得';
                             this.nImg = grid.index_bg_app || '';
                             this.AwardList = this.gridCellsToAwardList(grid);
-                            // 分享：与后台「抽奖页主标题 / 抽奖页描述」一致；配图优先标题手机端图
+                            // 分享标题/描述取自 banner_*；配图优先标题手机端图
                             const defaultTitle = this.$t ? this.$t('pages.plugins-lottery-grid') : '幸运抽奖';
                             const shareTitle = String(grid.banner_title || '').trim() || defaultTitle;
                             let shareDesc = String(grid.banner_subtitle || '').trim();
@@ -549,7 +553,7 @@
         width: 100%;
     }
 
-    /* 与 PC .lottery-result-modal 视觉对齐（rpx 适配） */
+    /* 结果弹窗遮罩与卡片（rpx 适配） */
     .lottery-result-mask {
         position: fixed;
         left: 0;
@@ -657,7 +661,7 @@
     .lottery-result-confirm::after {
         border: none;
     }
-    /* 底部跑马灯 + 中奖记录入口：与九宫格子组件同属 page-width-max 列宽（H5 PC） */
+    /* 底部跑马灯 + 中奖记录入口与上方九宫格同列宽（H5 宽屏） */
     .lottery-bottom-fixed-cluster {
         position: fixed;
         left: 0;
@@ -673,7 +677,7 @@
         pointer-events: auto;
     }
 
-    /* 与 PC .lottery-marquee 一致：底部深色条 + 横向循环 */
+    /* 底部深色条 + 横向循环跑马灯 */
     .lottery-marquee-wrap {
         position: relative;
         width: 100%;

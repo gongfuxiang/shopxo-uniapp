@@ -13,7 +13,7 @@
 
             <view class="lottery-egg-machine-wrap">
                 <view class="lottery-egg-frame">
-                    <!-- 初次修复「看不见机台」：不用 CSS background-image，用 image 铺满（与当时一致） -->
+                    <!-- 机台框用 image 铺满，不用 CSS background-image（小程序可见性） -->
                     <image
                         v-if="frameImageUrl"
                         class="lottery-egg-frame-bg-img"
@@ -83,7 +83,7 @@
 <script>
     /**
      * 砸金蛋画布（机台框 + 6 格蛋 + 锤子动画）
-     * 与 PC 前台交互一致：点击蛋 → 父页 draw → strikeGen 驱动敲击动画 → strikeDone
+     * 点击蛋 → 父页 draw → strikeGen 驱动敲击动画 → strikeDone
      */
     export default {
         props: {
@@ -122,7 +122,7 @@
                 type: String,
                 default: '',
             },
-            /** 今日剩余次数或 ∞（与后台 egg_chances_display 一致） */
+            /** 今日剩余次数或 ∞（接口 egg_chances_display） */
             chancesDisplay: {
                 type: String,
                 default: '',
@@ -155,7 +155,7 @@
         },
         data() {
             return {
-                /** 机台顶部彩灯数量（与 PC 9 盏一致） */
+                /** 机台顶部彩灯数量（9 盏） */
                 frameLightDots: [1, 2, 3, 4, 5, 6, 7, 8, 9],
                 /** 当前播放敲击动画的蛋格索引；-1 表示不展示锤子 */
                 hammerAtCell: -1,
@@ -330,7 +330,7 @@
         box-sizing: border-box;
     }
 
-    /* 与 PC 比例一致；min-height 兜底部分小程序不支持 aspect-ratio 时高度坍缩 */
+    /* aspect-ratio + min-height：不支持 aspect-ratio 时兜底高度 */
     .lottery-egg-frame {
         position: relative;
         z-index: 1;
@@ -356,7 +356,7 @@
         display: block;
     }
 
-    /* 与 PC egg.css：顶部彩灯槽 + 交错闪烁 */
+    /* 顶部彩灯槽 + 交错闪烁 */
     .lottery-egg-frame-lights {
         position: absolute;
         left: 50%;
@@ -440,7 +440,7 @@
         }
     }
 
-    /* 与 PC：蛋格区域落在背景图镂空区内（百分比随框缩放） */
+    /* 蛋格区域百分比定位，随框缩放落在背景镂空区 */
     .lottery-egg-machine-inner {
         position: absolute;
         left: 9%;
@@ -570,7 +570,7 @@
         line-height: 1.4;
     }
 
-    /* 贴在机台框底部，与 PC .lottery-egg-hub-in-frame 一致 */
+    /* 贴在机台框底部 */
     .lottery-egg-hub-in-frame {
         position: absolute;
         left: 50%;
