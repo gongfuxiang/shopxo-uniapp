@@ -59,7 +59,7 @@
                                 <!-- 商品信息区域 -->
                                 <view class="ml-10 flex-1 flex-col jc-sb goods-item-popup-content">
                                     <text class="goods-item-title text-line-2">{{ item.title }}</text>
-                                    <view class="flex-1 mt-10">
+                                    <view class="flex-1 mt-10 flex-col jc-sb">
                                         <view class="flex-1 flex-row align-c jc-sb">
                                             <view class="flex-row align-c">
                                                 <text class="mr-5 size-14 cr-9">{{ item.show_price_symbol}}</text>
@@ -599,7 +599,7 @@ export default {
 .goods-item {
     background: #fff;
     margin: 4rpx 2px 16rpx 2px;
-    padding: 20rpx 30rpx;
+    padding: 20rpx;
     border-radius: 20rpx;
     box-shadow: 2px 2px 4px 2px #0000000d;
     .goods-item-image-container {
