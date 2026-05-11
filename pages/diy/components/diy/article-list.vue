@@ -305,7 +305,7 @@
                     const temp_carousel_col = new_content.carousel_col || '1';
                     // 计算间隔的空间。(gap * gap数量) / 模块数量
                     let gap = temp_carousel_col !== '0' ? ((new_style.article_spacing * temp_carousel_col - 1) + (margin_width * temp_carousel_col)) / temp_carousel_col : '0';
-                    const multicolumn_columns_width = new_style.rolling_fashion == 'translation' ? `margin-right: ${ new_style.article_spacing + article_margin.margin_right }px;width:100%;` : `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${(gap * 2) / (Number(temp_carousel_col) + 1)}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${(gap * 2) / (Number(temp_carousel_col) + 1)}rpx);`;
+                    const multicolumn_columns_width = new_style.rolling_fashion == 'translation' ? `margin-right: ${ new_style.article_spacing + article_margin.margin_right }px;width:100%;` : `width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);min-width:calc(${100 / (Number(temp_carousel_col) + 1)}% - ${gap * 2}rpx);`;
                     const { name_bg_color_list = [], name_bg_direction = '180deg', name_bg_radius, name_bg_padding, name_bg_margin } = new_style;
                     const data = {
                         color_list: name_bg_color_list,
