@@ -6,11 +6,7 @@
     <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video v-if="video_player_show" ref="video" :src="video_src" autoplay :is-live="true" :play-strategy="0" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @loadeddata="loadeddata" @loadstart="loadstart" @play="loadedmetadata" @error="error" @ended="ended"
-			@waiting="waiting"
-			@canplay="canplay"
-			@timeupdate="timeupdate"
-    ></video>
+    <video v-if="video_player_show" ref="video" :src="video_src" autoplay :is-live="true" :play-strategy="0" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @loadeddata="loadeddata" @loadstart="loadstart" @play="loadedmetadata" @error="error" @ended="ended" @waiting="waiting"></video>
     <!-- #endif -->
 </template>
 

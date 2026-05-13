@@ -21,7 +21,7 @@
             <!-- 直播间结束的显示 -->
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
                 <view class="flex-col align-c">
-                    <text class="live-ended-text cr-f">直播已结束{{ live_video_src }}</text>
+                    <text class="live-ended-text cr-f">直播已结束</text>
                     <button plain size="mini" class="mt-10 live-ended-button" @tap="live_back">
                         <text class="cr-f pa-5">退出直播间</text>
                     </button>
