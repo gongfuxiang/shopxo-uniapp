@@ -123,6 +123,84 @@
 	background-color: #666;
 }
 
+/* 三个竖条随机高度动画 - 类似商品页讲解中效果 */
+.live-status-dots {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-end;
+	height: 16rpx;
+	gap: 4rpx;
+}
+
+.live-status-dots .dot {
+	width: 4rpx;
+	background-color: #fff;
+	border-radius: 2rpx;
+	transform-origin: bottom;
+}
+
+/* 第一个条 - 使用不同的动画 */
+.live-status-dots .dot:nth-child(1) {
+	animation: bar1-random 1.1s infinite ease-in-out both;
+}
+
+/* 第二个条 - 使用不同的动画 */
+.live-status-dots .dot:nth-child(2) {
+	animation: bar2-random 1.4s infinite ease-in-out both;
+}
+
+/* 第三个条 - 使用不同的动画 */
+.live-status-dots .dot:nth-child(3) {
+	animation: bar3-random 1.2s infinite ease-in-out both;
+}
+
+/* 条1的随机高度变化 - 最大高度不超过16rpx */
+@keyframes bar1-random {
+	0% { height: 4rpx; }
+	10% { height: 8rpx; }
+	20% { height: 6rpx; }
+	30% { height: 12rpx; }
+	40% { height: 10rpx; }
+	50% { height: 14rpx; }
+	60% { height: 8rpx; }
+	70% { height: 12rpx; }
+	80% { height: 6rpx; }
+	90% { height: 10rpx; }
+	100% { height: 4rpx; }
+}
+
+/* 条2的随机高度变化 - 最大高度不超过16rpx */
+@keyframes bar2-random {
+	0% { height: 6rpx; }
+	10% { height: 10rpx; }
+	20% { height: 8rpx; }
+	30% { height: 14rpx; }
+	40% { height: 6rpx; }
+	50% { height: 12rpx; }
+	60% { height: 10rpx; }
+	70% { height: 8rpx; }
+	80% { height: 12rpx; }
+	90% { height: 6rpx; }
+	100% { height: 6rpx; }
+}
+
+/* 条3的随机高度变化 - 最大高度不超过16rpx */
+@keyframes bar3-random {
+	0% { height: 8rpx; }
+	10% { height: 6rpx; }
+	20% { height: 12rpx; }
+	30% { height: 10rpx; }
+	40% { height: 14rpx; }
+	50% { height: 6rpx; }
+	60% { height: 10rpx; }
+	70% { height: 8rpx; }
+	80% { height: 10rpx; }
+	90% { height: 12rpx; }
+	100% { height: 8rpx; }
+}
+
+/* 保留旧的样式兼容 */
 .live-status-dot {
 	width: 12rpx;
 	height: 12rpx;

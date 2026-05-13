@@ -287,7 +287,7 @@
                 } else if (this.article_theme == '1') {
                     this.setData({
                         img_size: img_style,
-                        article_style: `width: calc(50% - ${new_style.article_spacing + (margin_width * 2) / 2}px);` + this.content_radius + all_style,
+                        article_style: `width: calc(50% - ${(new_style.article_spacing + (margin_width * 2)) / 2}px);` + this.content_radius + all_style,
                         article_img_style: background_computer(article_data)
                     });
                 } else if (this.article_theme == '2') {
