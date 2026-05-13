@@ -1,35 +1,31 @@
 <template>
     <view :class="theme_view">
-        <block v-if="(integral_to_balance || null) != null">
-            <view class="page-bottom-fixed">
-                <view class="form-container padding-main oh">
-                    <!-- 功能未开或暂不可兑换 -->
-                    <view v-if="(integral_to_balance.is_enable_feature || 0) != 1 || (integral_to_balance.can_exchange || 0) != 1" class="bg-white border-radius-main padding-main">
-                        <view class="text-size cr-base">{{ (integral_to_balance.display_message || '') != '' ? integral_to_balance.display_message : integral_to_balance.text_popup_fallback_tip }}</view>
+        <view v-if="(integral_to_balance || null) != null" class="padding-main">
+            <!-- 功能未开或暂不可兑换 -->
+            <block v-if="(integral_to_balance.is_enable_feature || 0) != 1 || (integral_to_balance.can_exchange || 0) != 1">
+                <component-no-data :propStatus="0" :propMsg="(integral_to_balance.display_message || '') != '' ? integral_to_balance.display_message : integral_to_balance.text_popup_fallback_tip"></component-no-data>
+            </block>
+            <!-- 兑换表单 -->
+            <view v-else class="form-container page-bottom-fixed">
+                    <view class="bg-white border-radius-main padding-main">
+                        <view class="text-size-sm cr-base margin-bottom-xs">{{ integral_to_balance.text_popup_line_integral }}</view>
+                        <view class="text-size-sm cr-base margin-bottom-xs">{{ integral_to_balance.text_popup_line_ratio }}</view>
+                        <view class="text-size-sm cr-base">{{ integral_to_balance.text_popup_line_estimate_all }}</view>
                     </view>
-                    <!-- 兑换表单 -->
-                    <view v-else class="oh">
-                        <view class="bg-white border-radius-main padding-main">
-                            <view class="text-size-sm cr-base margin-bottom-xs">{{ integral_to_balance.text_popup_line_integral }}</view>
-                            <view class="text-size-sm cr-base margin-bottom-xs">{{ integral_to_balance.text_popup_line_ratio }}</view>
-                            <view class="text-size-sm cr-base">{{ integral_to_balance.text_popup_line_estimate_all }}</view>
+                    <view class="bg-white border-radius-main padding-main margin-top-main">
+                        <view class="form-gorup">
+                            <view class="margin-bottom-xs">{{ integral_to_balance.text_label_exchange_integral }}<text class="form-group-tips-must">*</text></view>
+                            <input type="number" :value="integral_input" placeholder-class="cr-grey" class="cr-base bg-grey-f9 padding-horizontal-main border-radius-sm" :placeholder="integral_to_balance.text_placeholder_integral_input" @input="integral_input_event" />
+                            <view class="text-size-sm cr-grey margin-top-sm">{{ integral_to_balance.text_preview_convertible_balance }}<text class="cr-base fw-b">{{ integral_to_balance.currency_symbol }}{{ preview_money }}</text></view>
                         </view>
-                        <view class="bg-white border-radius-main padding-main margin-top-main">
-                            <view class="form-gorup">
-                                <view class="margin-bottom-xs">{{ integral_to_balance.text_label_exchange_integral }}<text class="form-group-tips-must">*</text></view>
-                                <input type="number" :value="integral_input" placeholder-class="cr-grey" class="cr-base bg-grey-f9 padding-horizontal-main border-radius-sm" :placeholder="integral_to_balance.text_placeholder_integral_input" @input="integral_input_event" />
-                                <view class="text-size-sm cr-grey margin-top-sm">{{ integral_to_balance.text_preview_convertible_balance }}<text class="cr-base fw-b">{{ integral_to_balance.currency_symbol }}{{ preview_money }}</text></view>
-                            </view>
-                        </view>
-                        <view class="bottom-fixed" :style="bottom_fixed_style">
-                            <view class="bottom-line-exclude">
-                                <button type="default" class="item bg-main br-main cr-white round text-size" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading" @tap="submit_event">{{ integral_to_balance.text_btn_submit_exchange }}</button>
-                            </view>
+                    </view>
+                    <view class="bottom-fixed" :style="bottom_fixed_style">
+                        <view class="bottom-line-exclude">
+                            <button type="default" class="item bg-main br-main cr-white round text-size" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading" @tap="submit_event">{{ integral_to_balance.text_btn_submit_exchange }}</button>
                         </view>
                     </view>
                 </view>
-            </view>
-        </block>
+        </view>
         <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
