@@ -1,3 +1,15 @@
+.integral-header-icon {
+    width: 80rpx;
+    height: 80rpx;
+}
+
+.integral-header-divider {
+    width: 2rpx;
+    align-self: stretch;
+    background-color: #eee;
+    margin: 24rpx 0;
+}
+
 .points-integral .list {
     border-bottom: 2rpx solid #eee;
     padding: 30rpx 0;
@@ -5,4 +17,8 @@
 
 .points-integral .list:last-of-type {
     border: 0;
+}
+
+.scroll-box {
+    height: calc(100vh - 190rpx);
 }
