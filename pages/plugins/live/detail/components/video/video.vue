@@ -6,7 +6,11 @@
     <live-player :src="video_src" autoplay :muted="muted" class="video-size" @statechange="statechange" @error="error" />
     <!-- #endif -->
     <!-- #ifdef APP -->
-    <video v-if="video_player_show" :src="video_src" autoplay :is-video="true" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @play="loadedmetadata" @error="error" @ended="ended"></video>
+    <video v-if="video_player_show" ref="video" :src="video_src" autoplay :is-live="true" :play-strategy="0" :controls="false" :muted="muted" object-fit="contain" :style="{'width': windowWidth + 'px', 'height': windowHeight + 'px', 'background-color': 'transparent'}" @loadeddata="loadeddata" @loadstart="loadstart" @play="loadedmetadata" @error="error" @ended="ended"
+			@waiting="waiting"
+			@canplay="canplay"
+			@timeupdate="timeupdate"
+    ></video>
     <!-- #endif -->
 </template>
 
@@ -37,11 +41,11 @@
         watch: {
             propSrc: {
                 handler(newVal, oldVal) {
-                    if (newVal != oldVal) {
+                    if (newVal != oldVal && newVal != '') {
                         this.video_src = newVal;
-                        // #ifdef H5
+                        // #ifndef MP
                         // 如果视频地址变化，强制重新创建 h5-hls-video 组件
-                        if (newVal) {
+                        if (newVal != '' && newVal != null) {
                             this.video_player_show = false;
                             this.$nextTick(() => {
                                 this.video_player_show = true;
@@ -50,6 +54,7 @@
                         // #endif
                     }
                 },
+                deep: true,
                 immediate: true
             }
         },
@@ -64,7 +69,6 @@
             }
         },
         created() {
-            console.log('video.vue created, propSrc:', this.propSrc);
             // 获取窗口信息，用于设置视频尺寸
             const data = uni.getWindowInfo();
             this.windowWidth = data.windowWidth;
@@ -102,6 +106,10 @@
                 }, 100);
                 // #endif
             },
+            waiting(e) {
+                console.log('waiting', e);
+                this.$refs.video.play();
+            },
             // 视频元数据加载完成处理函数, 不太准确，有的时候是直播的中间区域状态加载完了，但是视频还没有开始播放
             loadedmetadata() {
                 this.$emit('loadedmetadata');
@@ -123,9 +131,6 @@
                 // 只有组件显示时才触发这个事件
                 if (this.video_player_show) {
                     // #ifdef H5
-                    console.log('video error triggered:', e);
-                    console.log('error type:', e?.type);
-                    console.log('error details:', e?.details);
                     // 所有错误都触发 ended，除了特定的内部异常
                     if (e?.type === 'otherError' && e?.details === 'internalException') {
                         console.log('internalException ignored');

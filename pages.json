@@ -2138,15 +2138,19 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                         "navigationStyle": "custom",
                         // #endif
-                        
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
                         "titlePenetrate": "YES",
                         // #endif
-                        "enablePullDownRefresh": false,
-                        // 禁止页面下拉
                         "disableScroll": true,
-                        "navigationBarTitleText": ""
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "",
+                        "app-plus": {
+                            "bounce": {
+                                "top": "none",
+                                "bottom": "none"
+                            }
+                        }
                     }
                 },
                 {

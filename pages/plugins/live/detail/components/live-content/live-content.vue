@@ -1,7 +1,7 @@
 <template>
     <!-- #ifdef APP-NVUE -->
     <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" :style="'width:' + propWindowWidth + 'px;height:' + propWindowHeight + 'px;'">
-        <view class="header-top" :style="top_content_style + menu_button_info + 'width:' + propWindowWidth + 'px;'">
+        <view class="header-top pointer-events-auto" :style="top_content_style + menu_button_info + 'width:' + propWindowWidth + 'px;'">
     <!-- #endif -->
     <!-- #ifndef APP-NVUE -->
     <view class="flex-col jc-sb pr pa-10 box-border-box bottom-line-exclude-bottom" style="width: 100%;height: 100vh;">
@@ -11,11 +11,16 @@
             <view id="search-height" class="flex-row align-c">
                 <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                 <!-- #ifndef MP-ALIPAY -->
-                <view class="cp pointer-events-auto" @tap="live_back">
-                    <iconfont name="icon-arrow-left" size="36rpx" color="#fff"></iconfont>
+                <view class="cp pointer-events-auto" @tap="handle_back">
+                    <u-icon propName="arrow-left" propSize="36rpx" propColor="#bbb" class="mr-10"></u-icon>
                 </view>
                 <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
                 <view class="wh-auto ht-auto pointer-events-auto" :style="header_padding_left">
+                <!-- #endif -->
+                <!-- #ifdef APP-NVUE -->
+                <view class="flex-1 pointer-events-auto" :style="header_padding_left">
+                <!-- #endif -->
                     <component-search propIsDisabled @disabledSearch="handle_search" />
                 </view>
             </view>
@@ -37,9 +42,6 @@
                     <view class="ml-5 people-number flex-row align-c jc-c">
                         <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
                     </view>
-                    <!-- <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
-                        <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
-                    </view> -->
                 </view>
             </view>
             <!-- #endif -->
@@ -71,7 +73,7 @@
         <!-- #endif -->
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
-                <view class="pr">
+                <view class="pr socket-height">
                     <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
@@ -146,8 +148,8 @@
                         </view>
                     </view>
                     <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
-                        <view class="pr" style="width: 198rpx;height: 198rpx;">
-                            <image :src="explain_goods.images" class="explain-goods-image" style="width: 198rpx;height: 198rpx;"  mode="aspectFill"></image>
+                        <view class="pr oh flex-row align-c" style="width: 196rpx;height: 196rpx;">
+                            <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;" mode="aspectFill"></image>
                             <view class="explain-subscript flex-row align-c jc-sb">
                                 <view class="explain-progress">
                                     <text class="size-12 cr-f">讲解中</text>
@@ -167,7 +169,12 @@
                 <view class="flex-row align-c mt-5 pointer-events-auto pr">
                     <template v-if="is_socket_success">
                         <view class="flex-1 bottom-actions-input">
-                            <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                            <!-- #ifdef APP-NVUE -->
+                            <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:14px" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                            <!-- #endif -->
+                            <!-- #ifndef APP-NVUE -->
+                            <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:28rpx" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                            <!-- #endif -->
                         </view>
                     </template>
                     <template v-else>
@@ -192,7 +199,12 @@
         <!-- 添加评论 -->
         <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + propWindowWidth + 'px;bottom:' + listener_height + 'px;'">
             <view class="keyboard-input-border" style="padding: 16rpx 22rpx;border: 2rpx solid #ddd;border-radius: 50rpx;">
-                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
+                <!-- #ifdef APP-NVUE -->
+                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" placeholder-style="font-size:14px" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" placeholder-style="font-size:28rpx" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
+                <!-- #endif -->
             </view>
         </view>
         <!-- 商品弹出框 -->
@@ -432,7 +444,7 @@
                 // 菜单按钮位置信息, uniappx中没有这个方法，但是能使用
                 this.header_style = 'padding-top: 20rpx;';
                 // 小程序下，获取小程序胶囊的宽度
-                this.menu_button_info = 'max-width:100%';
+                this.menu_button_info = 'max-width:100%;';
                 // #ifdef MP
                 // 判断是否有胶囊
                 const is_current_single_page = app.globalData.is_current_single_page();
@@ -738,7 +750,6 @@
                         }, 300);
                         break;
                     case 'live-info': // 获取直播间数据
-                        console.log(data);
                         // this.$emit('liveStatus', data.content);
                         this.live_init(data.data);
                         break;
@@ -1241,16 +1252,20 @@
 
 /* 顶部返回和搜索栏样式 */
 .header-top {
-    padding-left: 12px;
+    padding: 0 20rpx;
     box-sizing: border-box;
+    z-index: 3;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 100;
     width: 100%;
 }
 .header-top ::v-deep .search-bar {
     background: rgba(255,255,255,0.5);
     border-color: transparent;
+}
+.socket-height {
+    min-height: 350rpx;
+    overflow: hidden;
 }
 </style>
