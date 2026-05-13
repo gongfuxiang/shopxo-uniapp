@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back></component-nav-back>
+        <component-nav-back :propIsOpacity="false"></component-nav-back>
         <view v-if="(data || null) != null" class="signin-container">
             <view class="pr oh">
                 <image :src="data.bg_images || signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
