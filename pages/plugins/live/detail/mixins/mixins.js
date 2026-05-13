@@ -15,7 +15,7 @@ export default {
             is_live_ended: false,
             live_config: {}, // 直播间配置
             live_data: {}, // 直播间数据
-            live_video_src: 'https://live-pull.shopxo.vip/68f764013572f9240ca7ce6c/14babd4f3e7d2bcdf708fc160d9fa682.m3u8',
+            live_video_src: '',
             is_loading: true,
             like_show_imgs: [
                 'https://new.shopxo.vip/static/plugins/live/images/like/like1.png',
