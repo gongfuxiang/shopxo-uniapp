@@ -163,10 +163,6 @@ export default {
                     this.liveContentTimer = setInterval(() => {
                         if (this.$refs.liveContent) {
                             const content = this.$refs.liveContent;
-                            //#ifndef H5  
-                                // 链接socket
-                                content.socket_connect();
-                            //#endif
                             // 初始化头部信息
                             content.init_window_info();
                             // 滚动到消息底部
