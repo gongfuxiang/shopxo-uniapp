@@ -182,7 +182,6 @@ export default {
                 return `width:${ this.propWindowWidth }px;height: ${ this.propWindowHeight }px;`;
             } else {
                 console.log(this.propWindowHeight);
-                
                 // 如果是弹出框模式的就不全屏显示
                 return `width:${ this.propWindowWidth }px;height: ${ this.propWindowHeight - 300}px;`;
             }

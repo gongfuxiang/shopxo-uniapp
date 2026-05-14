@@ -73,7 +73,7 @@
         <!-- #endif -->
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
-                <view class="pr socket-height">
+                <view class="pr">
                     <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
@@ -147,22 +147,23 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
-                        <view class="pr oh flex-row align-c" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;">
-                            <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;" mode="aspectFill"></image>
-                            <view class="explain-subscript flex-row align-c jc-sb">
-                                <view class="explain-progress">
-                                    <text class="size-12 cr-f">讲解中</text>
-                                </view>
-                                <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
-                                    <u-icon propName="close-line" propSize="18rpx" propColor="#fff"></u-icon>
-                                </view>
+                </view>
+                <!-- 讲解中商品 -->
+                <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
+                    <view class="pr oh flex-row align-c" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;">
+                        <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;" mode="aspectFill"></image>
+                        <view class="explain-subscript flex-row align-c jc-sb">
+                            <view class="explain-progress">
+                                <text class="size-12 cr-f">讲解中</text>
+                            </view>
+                            <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
+                                <u-icon propName="close-line" propSize="18rpx" propColor="#fff"></u-icon>
                             </view>
                         </view>
-                        <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
-                            <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.title }}</text>
-                            <text class="explain-goods-price cr-red mt-10 size-12">{{ currency_symbol }}{{ explain_goods.price }}</text>
-                        </view>
+                    </view>
+                    <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
+                        <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.title }}</text>
+                        <text class="explain-goods-price cr-red mt-10 size-12">{{ currency_symbol }}{{ explain_goods.price }}</text>
                     </view>
                 </view>
                 <!-- 底部交互区域 -->
@@ -218,7 +219,7 @@
 
 <script>
     import componentGoods from "@/pages/plugins/live/detail/components/goods/goods.vue";
-    import componentLikeButton from "@/pages/plugins/live/detail/components/like-button/like-button";
+    import componentLikeButton from "@/pages/plugins/live/detail/components/like-button/like-button.vue";
     import componentSearch from "@/pages/plugins/live/components/search.vue";
     import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
@@ -309,7 +310,6 @@
                 //#ifdef APP-NVUE
                 domModule: null,
                 //#endif
-                bulletin_index: null,
                 // 列表滚动事件
                 // 判断列表是否滚动了，如果滚动了，就认为他不是在底部，就要显示有多少条信息
                 is_first_scroll: true,
@@ -509,8 +509,8 @@
                     this.scroll_top = this.scoll_height + num;
                     //#endif
                     //#ifdef APP-NVUE
-                    if (this.bulletin_index && this.bulletin_index.length > 0) {
-                        this.domModule.scrollToElement((this.bulletin_index[this.bulletins.length - 1]), {
+                    if (this.$refs.bulletin_index && this.$refs.bulletin_index.length > 0) {
+                        this.domModule.scrollToElement((this.$refs.bulletin_index[this.bulletins.length - 1]), {
                             offset: this.scoll_height + num,  // 偏移量，可根据需要调整
                             animated: true  // 是否带动画
                         });
@@ -1218,7 +1218,7 @@
     box-sizing: border-box;
     position: absolute;
     right: 0;
-    bottom: 20rpx;
+    bottom: 100rpx;
     border-radius: 20rpx;
     overflow: hidden;
     .explain-subscript {
@@ -1265,7 +1265,7 @@
     border-color: transparent;
 }
 .socket-height {
-    min-height: 350rpx;
-    overflow: hidden;
+    // min-height: 350rpx;
+    // overflow: hidden;
 }
 </style>
