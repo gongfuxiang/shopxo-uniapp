@@ -21,7 +21,7 @@
                             </view>
                         </view>
                         <view @tap="price_change">
-                            <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" size="44rpx"></iconfont>
+                            <iconfont :name="is_price_show ? 'icon-eye-close' : 'icon-eye-half'" size="44rpx"></iconfont>
                         </view>
                     </view>
                     <view class="flex-row jc-sb">

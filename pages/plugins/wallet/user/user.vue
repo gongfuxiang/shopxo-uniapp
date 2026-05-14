@@ -10,47 +10,55 @@
                             <image :src="(default_images_data.default_center_head_bg_images_app || wallet_static_url + 'head-bg.png')" mode="widthFix" class="pa bg-img wh-auto" :class="status_bar_height > 0 ? 'top-0' : 'wallet-bg'" />
                             <view class="pr padding-top-main">
                                 <!-- 钱包信息 -->
-                                <view class="padding-top-xxxl oh margin-top-main">
-                                    <view class="wallet-head padding-horizontal-xxxl">
-                                        <!-- 用户中心公告 -->
-                                        <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0">
-                                            <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
+                                <view class="wallet-head padding-horizontal-xxxl margin-top-main">
+                                    <view class="content oh cr-white pr filter-blur">
+                                        <view class="pa content-padding-1 oh filter-blur-child">
+                                            <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
                                         </view>
-                                        <view class="content oh cr-white pr filter-blur">
-                                            <view class="pa content-padding-1 oh filter-blur-child">
-                                                <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
+                                        <view class="pr z-i flex-row jc-c align-s">
+                                            <view class="flex-1 flex-width">
+                                                <view>{{$t('frequencycard-list.frequencycard-list.954ewh')}}</view>
+                                                <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                             </view>
-                                            <view class="pr z-i flex-row jc-c align-s">
-                                                <view class="flex-1 flex-width">
-                                                    <view>{{$t('frequencycard-list.frequencycard-list.954ewh')}}</view>
-                                                    <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
+                                            <view class="flex-row">
+                                                <view @tap="price_change">
+                                                    <iconfont :name="is_price_show ? 'icon-eye-close' : 'icon-eye-half'" size="44rpx"></iconfont>
                                                 </view>
-                                                <view class="flex-row">
-                                                    <view @tap="price_change">
-                                                        <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-eye-half'" size="44rpx"></iconfont>
-                                                    </view>
-                                                    <view v-if="(data_base.is_enable_payment_code || 0) == 1" class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
-                                                        <iconfont name="icon-qrcode" size="44rpx"></iconfont>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                            <view class="pr z-i flex-row jc-c align-c">
-                                                <view class="flex-1 flex-width flex-row jc-sb align-c margin-top-main">
-                                                    <view class="flex-1">
-                                                        <view class="tetx-size-xs">{{$t('user.user.mgx9x4')}}</view>
-                                                        <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
-                                                    </view>
-                                                    <view class="flex-1">
-                                                        <view class="tetx-size-xs">{{$t('user.user.424v6n')}}</view>
-                                                        <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
-                                                    </view>
-                                                </view>
-                                                <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
-                                                    <iconfont name="icon-transfer" size="28rpx" propClass="transfer-icon"></iconfont>
-                                                    <text class="margin-left-xs">{{$t('user.user.29f6n5')}}</text>
+                                                <view v-if="(data_base.is_enable_payment_code || 0) == 1" class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
+                                                    <iconfont name="icon-qrcode" size="44rpx"></iconfont>
                                                 </view>
                                             </view>
                                         </view>
+                                        <view class="pr z-i flex-row jc-c align-c">
+                                            <view class="flex-1 flex-width flex-row jc-sb align-c margin-top-main">
+                                                <view class="flex-1">
+                                                    <view class="tetx-size-xs">{{$t('user.user.mgx9x4')}}</view>
+                                                    <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
+                                                </view>
+                                                <view class="flex-1">
+                                                    <view class="tetx-size-xs">{{$t('user.user.424v6n')}}</view>
+                                                    <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
+                                                </view>
+                                            </view>
+                                            <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
+                                                <iconfont name="icon-transfer" size="28rpx" propClass="transfer-icon"></iconfont>
+                                                <text class="margin-left-xs">{{$t('user.user.29f6n5')}}</text>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                                <!-- 用户中心公告 -->
+                                <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main margin-top-main">
+                                    <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" />
+                                </view>
+                                <!-- 积分兑换余额 -->
+                                <view v-if="(integral_to_balance || null) != null && (integral_to_balance.is_enable_feature || 0) == 1" class="padding-horizontal-main margin-top-main">
+                                    <view class="flex-row align-c gap-10">
+                                        <view class="flex-1 flex-width text-size-sm cr-base">
+                                            <text>{{ integral_to_balance.text_entry_intro_before }}</text><text class="fw-b">{{ integral_to_balance.currency_symbol }}{{ integral_to_balance.integral_to_balance_estimate }}</text><text>{{ integral_to_balance.text_entry_intro_after }}</text>
+                                            <text v-if="(integral_to_balance.can_exchange || 0) != 1 && (integral_to_balance.display_message || '') != ''" class="text-size-xs cr-grey margin-left-sm">{{ integral_to_balance.display_message }}</text>
+                                        </view>
+                                        <button v-if="(integral_to_balance.can_exchange || 0) == 1" type="default" size="mini" class="bg-main br-main cr-white round text-size-xs flex-shrink" hover-class="none" data-value="/pages/plugins/wallet/integral-to-balance/integral-to-balance" @tap="url_event">{{ integral_to_balance.text_btn_exchange }}</button>
                                     </view>
                                 </view>
                                 <view class="padding-main padding-top-xxxl">
@@ -146,6 +154,7 @@
                 propPullDownRefresh: false,
                 scroll_lower_bool: false,
                 payment_page_url: null,
+                integral_to_balance: null,
             };
         },
 
@@ -197,6 +206,14 @@
 
             // 分享菜单处理
             app.globalData.page_share_handle();
+
+            // 从积分兑换页返回后刷新钱包数据
+            if (app.globalData.wallet_integral_to_balance_refresh == 1) {
+                app.globalData.wallet_integral_to_balance_refresh = 0;
+                if ((this.data_base || null) != null) {
+                    this.get_data();
+                }
+            }
         },
 
         // 下拉刷新
@@ -230,6 +247,7 @@
                                 user_wallet: data.user_wallet || null,
                                 nav_list: data.nav_list || [],
                                 default_images_data: data.default_images_data || {},
+                                integral_to_balance: data.integral_to_balance || null,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,

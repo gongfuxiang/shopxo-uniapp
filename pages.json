@@ -1087,6 +1087,13 @@
                     }
                 },
                 {
+                    "path": "integral-to-balance/integral-to-balance",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "payment-code/payment-code",
                     "style": {
                         "enablePullDownRefresh": false,

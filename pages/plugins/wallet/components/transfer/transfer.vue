@@ -21,7 +21,7 @@
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" propLoadingLogoTop="85%"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" propLoadingLogoTop="60vh"></component-no-data>
         </view>
 
         <!-- 结尾 -->
