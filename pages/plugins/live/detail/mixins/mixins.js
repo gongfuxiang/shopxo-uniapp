@@ -67,21 +67,6 @@ export default {
         // 初始化
         this.init();
 
-        setTimeout(() => {
-            // 页面显示时，连接直播间socket, 避免用户切换到其他页面，再切换回来时，socket连接断开
-            if (this.$refs.liveContent) {
-                const content = this.$refs.liveContent;
-                // 链接socket
-                content.socket_connect();
-                // 初始化头部信息
-                content.init_window_info();  
-                // 滚动到消息底部
-                content.scroll_to_lower();
-                // 绑定键盘事件
-                content.bind_keyboard_listener();
-            }
-        }, 500);
-
         // 页面显示时，重新加载视频
         if (this.$refs.liveVideo) {
             this.$refs.liveVideo.reload_video();
@@ -93,6 +78,16 @@ export default {
     onLoad(params) {
         // 获取传入的id参数
         this.live_id = params.id || '';
+    },
+    /**
+     * 页面隐藏时执行
+     * 清理定时任务，避免内存泄漏
+     */
+    onHide() {
+        if (this.liveContentTimer) {
+            clearInterval(this.liveContentTimer);
+            this.liveContentTimer = null;
+        }
     },
     /**
      * 组件挂载完成后执行
@@ -163,6 +158,23 @@ export default {
                         // 隐藏加载提示
                         uni.hideLoading();
                     }
+                    // 确保每次重新显示都触发组件中的初始化方法
+                    this.liveContentTimer = setInterval(() => {
+                        if (this.$refs.liveContent) {
+                            const content = this.$refs.liveContent;
+                            // 链接socket
+                            content.socket_connect();
+                            // 初始化头部信息
+                            content.init_window_info();
+                            // 滚动到消息底部
+                            content.scroll_to_lower();
+                            // 绑定键盘事件
+                            content.bind_keyboard_listener();
+                            // 执行成功后取消定时任务
+                            clearInterval(this.liveContentTimer);
+                            this.liveContentTimer = null;
+                        }
+                    }, 200);
                 },
                 fail: (err) => {
                     // 隐藏加载提示
