@@ -18,14 +18,14 @@
     background: transparent;
 }
 .live-ended {
-    /* 添加渐变背景色 */
-    background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
     position: absolute;
     top: 0;
     left: 0;
     z-index: 10;
     width: 100%;
     height: 100%;
+    /* 添加渐变背景色 */
+    background-image: linear-gradient(to bottom,#AD18F9,#05DFC7);
 }
 .live-ended .live-ended-text {
     color: #fff;
