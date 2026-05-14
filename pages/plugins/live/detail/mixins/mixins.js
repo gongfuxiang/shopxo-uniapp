@@ -158,23 +158,25 @@ export default {
                         // 隐藏加载提示
                         uni.hideLoading();
                     }
-                    // 确保每次重新显示都触发组件中的初始化方法
-                    this.liveContentTimer = setInterval(() => {
-                        if (this.$refs.liveContent) {
-                            const content = this.$refs.liveContent;
-                            // 链接socket
-                            content.socket_connect();
-                            // 初始化头部信息
-                            content.init_window_info();
-                            // 滚动到消息底部
-                            content.scroll_to_lower();
-                            // 绑定键盘事件
-                            content.bind_keyboard_listener();
-                            // 执行成功后取消定时任务
-                            clearInterval(this.liveContentTimer);
-                            this.liveContentTimer = null;
-                        }
-                    }, 200);
+                    //#ifndef H5  
+                        // 确保每次重新显示都触发组件中的初始化方法
+                        this.liveContentTimer = setInterval(() => {
+                            if (this.$refs.liveContent) {
+                                const content = this.$refs.liveContent;
+                                // 链接socket
+                                content.socket_connect();
+                                // 初始化头部信息
+                                content.init_window_info();
+                                // 滚动到消息底部
+                                content.scroll_to_lower();
+                                // 绑定键盘事件
+                                content.bind_keyboard_listener();
+                                // 执行成功后取消定时任务
+                                clearInterval(this.liveContentTimer);
+                                this.liveContentTimer = null;
+                            }
+                        }, 200);
+                    //#endif
                 },
                 fail: (err) => {
                     // 隐藏加载提示

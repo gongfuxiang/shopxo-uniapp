@@ -149,7 +149,7 @@
                     </view>
                     <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
                         <view class="pr oh flex-row align-c" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;">
-                            <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;" mode="aspectFill"></image>
+                            <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;" mode="aspectFill"></image>
                             <view class="explain-subscript flex-row align-c jc-sb">
                                 <view class="explain-progress">
                                     <text class="size-12 cr-f">讲解中</text>
