@@ -1264,8 +1264,4 @@
     background: rgba(255,255,255,0.5);
     border-color: transparent;
 }
-.socket-height {
-    // min-height: 350rpx;
-    // overflow: hidden;
-}
 </style>
