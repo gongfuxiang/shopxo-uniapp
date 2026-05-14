@@ -484,7 +484,7 @@
              * 退出直播
              * 触发父组件的liveBack事件
              */
-            live_back() {
+            handle_back() {
                 this.$emit('liveBack');
             },
 
