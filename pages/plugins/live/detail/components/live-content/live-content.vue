@@ -411,19 +411,19 @@
                 deep: true
             },
         },
-        /**
-         * 组件挂载后执行初始化操作
-         */
-        onShow() {
-            // 初始化窗口信息和滚动条高度
-            this.init_window_info();
-            // 滚动到评论区底部
-            this.scroll_to_lower();
-            // 获取用户信息
-            // this.init_user_info();
-            // 创建监听事件
-            this.bind_keyboard_listener();
-        },
+        // /**
+        //  * 组件挂载后执行初始化操作
+        //  */
+        // onShow() {
+        //     // 初始化窗口信息和滚动条高度
+        //     this.init_window_info();
+        //     // 滚动到评论区底部
+        //     this.scroll_to_lower();
+        //     // 获取用户信息
+        //     // this.init_user_info();
+        //     // 创建监听事件
+        //     this.bind_keyboard_listener();
+        // },
         /**
          * 组件销毁前清理资源
          */
