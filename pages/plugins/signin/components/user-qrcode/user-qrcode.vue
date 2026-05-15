@@ -6,16 +6,16 @@
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
                             <text class="cr-grey-9">{{ item.add_time }}</text>
-                            <text>{{ item.is_enable_name }}</text>
+                            <text class="cr-black">{{ item.is_enable_name }}</text>
                         </view>
                         <view :data-value="'/pages/plugins/signin/user-qrcode-detail/user-qrcode-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
-                            <view v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey-9 margin-right-xl">{{ fv.name }}:</text>
-                                    <text class="cr-base">{{ item[fv.field] }}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                </view>
-                            </view>
+                            <component-panel-content
+                                :propData="item"
+                                :propDataField="field_list"
+                                propIsItemShowMax="8"
+                                propExcludeField="id,add_time,is_enable_name"
+                                :propIsTerse="true"
+                            ></component-panel-content>
                         </view>
                         <view class="item-operation tr margin-top-main">
                             <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/detail/detail?id='+item.id" @tap="url_event">{{ $t('detail.detail.y2217b') }}</button>
@@ -44,6 +44,7 @@
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentPanelContent from '@/components/panel-content/panel-content';
 
     export default {
         props: {
@@ -64,19 +65,17 @@
                 data_is_loading: 0,
                 data_base: null,
                 data_list: [],
+                field_list: [],
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
-                content_list: [
-                    { name: this.$t('user-qrcode-detail.user-qrcode-detail.mjfygy'), field: 'reward_master', unit: this.$t('index.index.t26j9z') },
-                    { name: this.$t('user-qrcode-detail.user-qrcode-detail.pb2e32'), field: 'reward_invitee', unit: this.$t('index.index.t26j9z') },
-                ],
             };
         },
 
         components: {
             componentNoData,
             componentBottomLine,
+            componentPanelContent,
         },
         created() {
             this.init();
@@ -114,9 +113,8 @@
                 }
             },
 
-            // 获取数据
+            // 获取数据（与发票列表一致：field_list + data_list 来自动态表单）
             get_data_list(is_mandatory) {
-                // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
                         uni.stopPullDownRefresh();
@@ -124,7 +122,6 @@
                     }
                 }
 
-                // 是否加载中
                 if (this.data_is_loading == 1) {
                     return false;
                 }
@@ -133,14 +130,12 @@
                     data_list_loding_status: 1,
                 });
 
-                // 加载loding
-                if(this.data_page > 1) {
+                if (this.data_page > 1) {
                     uni.showLoading({
                         title: this.$t('common.loading_in_text'),
                     });
                 }
 
-                // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'userqrcode', 'signin'),
                     method: 'POST',
@@ -149,49 +144,39 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            if (data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data_base: data.base || null,
-                                    data_list: temp_data_list,
-                                    data_total: data.total,
-                                    data_page_total: data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0,
-                                });
+                            var rows = data.data_list || data.data || [];
+                            var page_total = data.page_total != null ? data.page_total : 0;
+                            var total = data.data_total != null ? data.data_total : data.total != null ? data.total : 0;
 
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            if (this.data_page <= 1) {
+                                var temp_data_list = rows;
                             } else {
-                                this.setData({
-                                    data_base: data.base || null,
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
-                                if (this.data_page <= 1) {
-                                    this.setData({
-                                        data_list: [],
-                                        data_bottom_line_status: false,
-                                    });
+                                var temp_data_list = this.data_list || [];
+                                for (var i in rows) {
+                                    temp_data_list.push(rows[i]);
                                 }
                             }
+
+                            this.setData({
+                                field_list: data.field_list || [],
+                                data_base: data.base || null,
+                                data_list: temp_data_list,
+                                data_total: total,
+                                data_page_total: page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+
+                            this.setData({
+                                data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -203,7 +188,7 @@
                         }
                     },
                     fail: () => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
@@ -216,10 +201,9 @@
                 });
             },
 
-            // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
         },
     };
 </script>

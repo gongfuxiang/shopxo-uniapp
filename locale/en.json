@@ -1377,7 +1377,10 @@
 			"pb2e32": "Invitee rewards",
 			"do23j6": "Contact Name",
 			"5k2ibd": "Contact phone number",
-			"911a61": "Contact address"
+			"911a61": "Contact address",
+			"share_block": "Promotion",
+			"specified_time_incomplete_tip": "(Incomplete: no extra reward at check-in)",
+			"share_link_label": "Share link"
 		}
 	},
 	"user-qrcode-saveinfo": {

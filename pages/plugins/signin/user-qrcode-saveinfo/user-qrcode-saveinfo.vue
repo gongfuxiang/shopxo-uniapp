@@ -4,16 +4,18 @@
             <view v-if="data_base != null">
                 <form @submit="form_submit" class="form-container">
                     <view class="padding-main oh">
-                        <view class="padding-main border-radius-main bg-white spacing-mb">
-                            <view>
-                                <text class="cr-base margin-right-sm">{{$t('user-qrcode-detail.user-qrcode-detail.mjfygy')}}</text>
-                                <text class="cr-main fw-b">{{ data.reward_master || data_base.reward_master }}</text>
-                                <text class="cr-grey margin-left-sm">{{$t('index.index.t26j9z')}}</text>
-                            </view>
-                            <view class="margin-top-sm">
-                                <text class="cr-base margin-right-sm">{{$t('user-qrcode-detail.user-qrcode-detail.pb2e32')}}</text>
-                                <text class="cr-main fw-b">{{ data.reward_invitee || data_base.reward_invitee }}</text>
-                                <text class="cr-grey margin-left-sm">{{$t('index.index.t26j9z')}}</text>
+                        <!-- 签到奖励说明（与 PC 同源：接口 reward_display.lines） -->
+                        <view
+                            v-if="(reward_display || null) != null && (reward_display.lines || null) != null && reward_display.lines.length > 0"
+                            class="padding-main border-radius-main bg-grey-f9 spacing-mb"
+                        >
+                            <view
+                                v-for="(line, idx) in reward_display.lines"
+                                :key="idx"
+                                class="cr-base text-size-sm"
+                                :class="idx < reward_display.lines.length - 1 ? 'spacing-mb-10' : ''"
+                            >
+                                {{ line }}
                             </view>
                         </view>
 
@@ -69,6 +71,7 @@
                 bottom_fixed_style: '',
                 data_base: null,
                 data: null,
+                reward_display: null,
             };
         },
 
@@ -128,9 +131,16 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var row = data.data;
+                            if (row == null || (Array.isArray(row) && row.length === 0)) {
+                                row = {};
+                            } else if (Array.isArray(row)) {
+                                row = row[0] || {};
+                            }
                             self.setData({
                                 data_base: data.base || null,
-                                data: data.data || null,
+                                data: row,
+                                reward_display: data.reward_display || null,
                                 data_list_loding_status: 0,
                             });
                         } else {

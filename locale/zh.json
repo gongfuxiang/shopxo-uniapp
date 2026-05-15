@@ -1366,7 +1366,10 @@
 			"pb2e32": "受邀人奖励",
 			"do23j6": "联系人姓名",
 			"5k2ibd": "联系人电话",
-			"911a61": "联系人地址"
+			"911a61": "联系人地址",
+			"share_block": "推广",
+			"specified_time_incomplete_tip": "（未填全，签到时不计额外奖励）",
+			"share_link_label": "分享链接"
 		}
 	},
 	"user-qrcode-saveinfo": {

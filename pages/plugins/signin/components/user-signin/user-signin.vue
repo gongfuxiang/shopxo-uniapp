@@ -4,16 +4,21 @@
             <view class="data-list">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                        <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view class="single-text margin-top-xs" :class="fi === 0 ? 'fw-b cr-black' : 'cr-grey-9'">
-                                <text class="margin-right-sm">{{ fv.name }}</text>
-                                <text>{{ item[fv.field] }}</text>
-                                <text v-if="(fv.unit || null) != null">{{ fv.unit }}</text>
-                            </view>
-                        </block>
+                        <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
+                            <text class="cr-grey-9">{{ item.add_time }}</text>
+                        </view>
+                        <view class="content margin-top">
+                            <component-panel-content
+                                :propData="item"
+                                :propDataField="field_list"
+                                propIsItemShowMax="8"
+                                propExcludeField="add_time"
+                                :propIsTerse="true"
+                            ></component-panel-content>
+                        </view>
                     </view>
                 </view>
-                <view wx:else>
+                <view v-else>
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                 </view>
@@ -28,6 +33,7 @@
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentPanelContent from '@/components/panel-content/panel-content';
 
     export default {
         props: {
@@ -38,12 +44,13 @@
             propScrollLower: {
                 type: Boolean,
                 default: false,
-            }
+            },
         },
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
+                field_list: [],
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
@@ -51,22 +58,18 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 data_base: null,
-                content_list: [
-                    { name: this.$t('user-coming-list.user-coming-list.xkwnl8'), field: 'integral' },
-                    { name: this.$t('user-coming-list.user-coming-list.sq4379'), field: 'add_time' },
-                ],
             };
         },
 
         components: {
             componentNoData,
             componentBottomLine,
+            componentPanelContent,
         },
         created() {
             this.init();
         },
         mounted() {
-            // 分享菜单处理
             app.globalData.page_share_handle();
         },
         watch: {
@@ -98,9 +101,7 @@
                 }
             },
 
-            // 获取数据
             get_data_list(is_mandatory) {
-                // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
                         uni.stopPullDownRefresh();
@@ -108,7 +109,6 @@
                     }
                 }
 
-                // 是否加载中
                 if (this.data_is_loading == 1) {
                     return false;
                 }
@@ -117,14 +117,12 @@
                     data_list_loding_status: 1,
                 });
 
-                // 加载loding
-                if(this.data_page > 1) {
+                if (this.data_page > 1) {
                     uni.showLoading({
                         title: this.$t('common.loading_in_text'),
                     });
                 }
 
-                // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'usersignin', 'signin'),
                     method: 'POST',
@@ -133,48 +131,39 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            if (data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data_base: data.base || null,
-                                    data_list: temp_data_list,
-                                    data_total: data.total,
-                                    data_page_total: data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0,
-                                });
+                            var rows = data.data_list || data.data || [];
+                            var page_total = data.page_total != null ? data.page_total : 0;
+                            var total = data.data_total != null ? data.data_total : data.total != null ? data.total : 0;
 
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            if (this.data_page <= 1) {
+                                var temp_data_list = rows;
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
-                                if (this.data_page <= 1) {
-                                    this.setData({
-                                        data_list: [],
-                                        data_bottom_line_status: false,
-                                    });
+                                var temp_data_list = this.data_list || [];
+                                for (var i in rows) {
+                                    temp_data_list.push(rows[i]);
                                 }
                             }
+
+                            this.setData({
+                                field_list: data.field_list || [],
+                                data_base: data.base || null,
+                                data_list: temp_data_list,
+                                data_total: total,
+                                data_page_total: page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+
+                            this.setData({
+                                data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -186,7 +175,7 @@
                         }
                     },
                     fail: () => {
-                        if(this.data_page > 1) {
+                        if (this.data_page > 1) {
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
