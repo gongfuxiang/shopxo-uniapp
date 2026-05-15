@@ -4,17 +4,11 @@
             <view v-if="data_base != null">
                 <form @submit="form_submit" class="form-container">
                     <view class="padding-main oh">
-                        <!-- 签到奖励说明（与 PC 同源：接口 reward_display.lines） -->
                         <view
                             v-if="(reward_display || null) != null && (reward_display.lines || null) != null && reward_display.lines.length > 0"
-                            class="padding-main border-radius-main bg-grey-f9 spacing-mb"
+                            class="padding-main border-radius-main bg-white spacing-mb"
                         >
-                            <view
-                                v-for="(line, idx) in reward_display.lines"
-                                :key="idx"
-                                class="cr-base text-size-sm"
-                                :class="idx < reward_display.lines.length - 1 ? 'spacing-mb-10' : ''"
-                            >
+                            <view v-for="(line, idx) in reward_display.lines" :key="idx" class="cr-yellow text-size-sm">
                                 {{ line }}
                             </view>
                         </view>
