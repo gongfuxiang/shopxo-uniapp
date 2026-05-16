@@ -46,6 +46,7 @@
         "compare": "Compare",
 		"search": "Search",
 		"num": "quantity",
+		"total": "Total",
         "list": "List",
 		"order": "order form",
 		"service": "service",
@@ -267,6 +268,7 @@
 		"plugins-signin-user-qrcode-saveinfo": "Sign in code editing",
 		"plugins-signin-user-coming-list": "User check-in",
 		"plugins-points-index": "Points Mall",
+		"plugins-points-search": "Exchange goods search",
 		"plugins-points-scan": "Scan the QR code to claim points",
 		"plugins-brand-index": "brand",
 		"plugins-shop-index": "All stores",
@@ -464,7 +466,6 @@
 			"346376": "Shipping Services",
 			"7lp6gw": "View Location",
 			"7f8p26": "Product Information",
-			"423rmr": "common",
 			"41ty94": "Total pieces",
 			"xcj552": "element",
 			"7xtnjt": "Unconfigured data",
@@ -690,6 +691,16 @@
             "4eerty": "origin",
 			"6n8316": "brand",
 			"v6e5b7": "attribute"
+		}
+	},
+	"points": {
+		"search": {
+			"title": "Exchange goods search",
+			"placeholder": "Search redeemable goods",
+			"keywords_label": "Keywords",
+			"all_goods": "All redeemable goods",
+			"goods_unit": "items",
+			"clear_where": "Clear search"
 		}
 	},
 	"index": {

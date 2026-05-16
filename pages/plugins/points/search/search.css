@@ -1,0 +1,25 @@
+/**
+ * 积分兑换搜索
+ */
+.search-toolbar .search-back,
+.search-toolbar .search-integral {
+    display: flex;
+    align-items: center;
+}
+.search-toolbar .search-integral {
+    color: #DF7B0E;
+}
+.search-summary {
+    border-bottom: 1px solid #f0f0f0;
+}
+.search-summary .summary-text {
+    flex: 1;
+    padding-right: 20rpx;
+}
+.search-summary .clear-search {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.scroll-box {
+    height: calc(100vh - 180rpx - 60rpx);
+}

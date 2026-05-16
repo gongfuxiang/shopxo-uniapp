@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data || null) != null && (data_base || null) != null">
             <view class="flex-row jc-sb align-c">
-                <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="fw-b">{{$t('user-order-detail.user-order-detail.423rmr')}}{{ data.comments_count || 0 }}{{$t('goods-list.goods-list.8y3cc7')}}</view>
+                <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="fw-b">{{$t('common.total')}}{{ data.comments_count || 0 }}{{$t('goods-list.goods-list.8y3cc7')}}</view>
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tr ask-comments-bottom-container cr-base">
                     <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block cr-base" :data-value="'/pages/plugins/ask/comments/comments?id=' + data.id" @tap="url_event">
