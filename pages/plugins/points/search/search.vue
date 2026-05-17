@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data_base || null) != null">
             <!-- 顶栏：返回积分商城 + 我的积分 -->
-            <view class="search-toolbar padding-horizontal-main padding-top-main padding-bottom-sm bg-white">
+            <view class="search-toolbar padding-horizontal-main padding-vertical-sm bg-white">
                 <view class="flex-row jc-sb align-c margin-bottom-sm">
                     <view class="search-back cr-base" @tap="points_home_event">
                         <iconfont name="icon-home" size="28rpx" color="#666" propClass="margin-right-xs"></iconfont>
