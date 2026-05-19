@@ -43,6 +43,42 @@
                             </view>
                         </block>
                     </view>
+                    <!-- 超级会员-开通提示 -->
+                    <view v-if="(plugins_vip_user_center_open_tips_data || null) != null" class="plugins-vip-user-center-open-tips padding-horizontal-main">
+                        <view class="plugins-vip-user-center-open-tips-inner border-radius-main flex-row jc-sb align-c">
+                            <!-- 未开通/未登录 -->
+                            <block v-if="(plugins_vip_user_center_open_tips_data.show_type || 'open') == 'open'">
+                                <view class="tips-content flex-row align-c flex-1 flex-width margin-right-sm">
+                                    <iconfont name="icon-admin-store-vip" color="#f3d9b1" size="32rpx" propClass="tips-icon"></iconfont>
+                                    <text class="tips-text single-text flex-1 flex-width">{{ plugins_vip_user_center_open_tips_data.tips_text }}</text>
+                                </view>
+                                <text class="tips-btn round cp" :data-value="(plugins_vip_user_center_open_tips_data.is_login || 0) == 1 ? plugins_vip_user_center_open_tips_data.buy_url : plugins_vip_user_center_open_tips_data.login_url" @tap.stop="url_event">{{ plugins_vip_user_center_open_tips_data.btn_text }}</text>
+                            </block>
+                            <!-- 已开通会员 -->
+                            <block v-else>
+                                <view class="tips-content flex-row align-c flex-1 flex-width margin-right-sm">
+                                    <image v-if="(plugins_vip_user_center_open_tips_data.user_vip.icon || null) != null" class="vip-level-icon radius" :src="plugins_vip_user_center_open_tips_data.user_vip.icon" mode="widthFix"></image>
+                                    <iconfont v-else name="icon-admin-store-vip" color="#f3d9b1" size="32rpx" propClass="tips-icon"></iconfont>
+                                    <view class="flex-1 flex-width oh">
+                                        <view class="tips-text single-text">{{ plugins_vip_user_center_open_tips_data.user_vip.level_name }}</view>
+                                        <view v-if="(plugins_vip_user_center_open_tips_data.user_vip.user_vip_model || null) == 'pay'" class="tips-expire text-size-xss cr-grey-9 single-text">
+                                            <block v-if="(plugins_vip_user_center_open_tips_data.user_vip.is_permanent || 0) == 1">
+                                                <text>{{ plugins_vip_user_center_open_tips_data.user_vip.permanent_value }}{{ plugins_vip_user_center_open_tips_data.user_vip.permanent_unit }}</text>
+                                            </block>
+                                            <block v-else-if="(plugins_vip_user_center_open_tips_data.user_vip.surplus_time_number || 0) > 0">
+                                                <text>{{ plugins_vip_user_center_open_tips_data.user_vip.surplus_time_number }}{{ plugins_vip_user_center_open_tips_data.user_vip.surplus_time_unit }}</text>
+                                                <text v-if="(plugins_vip_user_center_open_tips_data.user_vip.expire_time || null) != null" class="margin-left-xs">| {{ plugins_vip_user_center_open_tips_data.user_vip.expire_time }}</text>
+                                            </block>
+                                            <block v-else>
+                                                <text>{{$t('user.user.528t26')}}</text>
+                                            </block>
+                                        </view>
+                                    </view>
+                                </view>
+                                <text v-if="(plugins_vip_user_center_open_tips_data.vip_btn || null) != null && (plugins_vip_user_center_open_tips_data.vip_btn.show || 0) == 1" class="tips-btn round cp" :data-value="plugins_vip_user_center_open_tips_data.vip_btn.url" @tap.stop="vip_tips_btn_event">{{ plugins_vip_user_center_open_tips_data.vip_btn.btn_text }}</text>
+                            </block>
+                        </view>
+                    </view>
                     <!-- 会员码 付款码 -->
                     <view v-if="(payment_page_url || null) !== null || (vip_page_url || null) !== null" class="qrcode padding-horizontal-main pr oh">
                         <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (vip_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
@@ -202,6 +238,10 @@
                 vip_page_url: null,
                 // 付款码地址
                 payment_page_url: null,
+                // 超级会员开通提示
+                plugins_vip_user_center_open_tips_data: null,
+                // 会员续费按钮状态
+                vip_submit_disabled_status: false,
                 // 用户中心菜单展示模式
                 nav_show_model_type: app.globalData.data.user_center_nav_show_model_type,
             };
@@ -448,6 +488,7 @@
                                 head_nav_list: temp_head_nav_list,
                                 navigation: temp_navigation,
                                 main_navigation_data: main_navigation_data,
+                                plugins_vip_user_center_open_tips_data: data.plugins_vip_user_center_open_tips_data || null,
                             };
 
                             // 用户基础信息处理
@@ -532,6 +573,67 @@
                 } else {
                     app.globalData.url_event(e);
                 }
+            },
+
+            // 已开通会员提示按钮（开通/续费/连续开通，逻辑与会员中心页一致）
+            vip_tips_btn_event(e) {
+                var btn = (this.plugins_vip_user_center_open_tips_data || null) != null ? this.plugins_vip_user_center_open_tips_data.vip_btn : null;
+                if ((btn || null) == null || (btn.show || 0) != 1) {
+                    return;
+                }
+                if ((btn.action || '') == 'renew') {
+                    this.uservip_renew_event(e);
+                    return;
+                }
+                app.globalData.url_event(e);
+            },
+
+            // 连续开通会员（超级会员提示）
+            uservip_renew_event(e) {
+                var self = this;
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('user.user.95s1ez'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            self.setData({
+                                vip_submit_disabled_status: true,
+                            });
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('renew', 'buy', 'vip'),
+                                method: 'POST',
+                                data: {},
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    self.setData({
+                                        vip_submit_disabled_status: false,
+                                    });
+                                    if (res.data.code == 0) {
+                                        uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
+                                        app.globalData.url_open('/pages/plugins/vip/order/order', true);
+                                    } else {
+                                        if (app.globalData.is_login_check(res.data, self, 'uservip_renew_event')) {
+                                            app.globalData.showToast(res.data.msg);
+                                        }
+                                    }
+                                },
+                                fail: () => {
+                                    self.setData({
+                                        vip_submit_disabled_status: false,
+                                    });
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
             },
 
             // 是否登录
