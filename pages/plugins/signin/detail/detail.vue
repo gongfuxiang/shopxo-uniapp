@@ -109,7 +109,7 @@
                         <view class="coming-item tc pr">
                             <image :src="data.success_icon || signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
                             <view class="title">{{$t('detail.detail.6qk085')}}</view>
-                            <view class="desc">{{$t('detail.detail.ndp2k3')}}<text>{{ coming_integral }}</text>{{$t('index.index.t26j9z')}}</view>
+                            <view class="desc">{{$t('detail.detail.ndp2k3')}}<text>{{ coming_reward_type == 1 ? (currency_symbol || '') : '' }}{{ coming_integral }}</text>{{ coming_reward_type == 1 ? $t('user.user.67p34x') : $t('index.index.t26j9z') }}</view>
                             <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">{{$t('detail.detail.7itw5w')}}</view>
                             <view class="close-sub pa cr-white" @tap="coming_success_close_event">
                                 <iconfont name="icon-close-round" size="60rpx"></iconfont>
@@ -157,6 +157,8 @@
                 is_already_coming: 0,
                 is_success_tips: 0,
                 coming_integral: 0,
+                // 0=积分 1=钱包余额（与后端 reward_type 一致）
+                coming_reward_type: 0,
                 // 自定义分享信息
                 share_info: {},
                 // 周数
@@ -357,10 +359,19 @@
                         success: (res) => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
+                                // 后端成功时多为扁平结构 { code, msg, reward, reward_type }；旧版可能为 { code, data: { reward, reward_type } }
+                                var d = res.data;
+                                var payload =
+                                    d.data != null && typeof d.data === 'object' && !Array.isArray(d.data) && d.data.reward !== undefined
+                                        ? d.data
+                                        : d;
+                                var reward = payload.reward !== undefined ? payload.reward : 0;
+                                var reward_type = payload.reward_type !== undefined ? parseInt(payload.reward_type, 10) || 0 : 0;
                                 this.setData({
                                     is_already_coming: 1,
                                     is_success_tips: 1,
-                                    coming_integral: res.data.data,
+                                    coming_integral: reward,
+                                    coming_reward_type: reward_type,
                                 });
                                 this.get_data();
                             } else {

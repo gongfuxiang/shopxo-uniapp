@@ -172,7 +172,7 @@
 }
 
 .coming-content .close-sub {
-    bottom: -150rpx;
+    bottom: -100rpx;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -180,18 +180,16 @@
 /**
 * 媒体查询
 */
+/* #ifdef H5 */
 @media only screen and (min-width:960px) {
     .signin-btn .content {
-        /* #ifdef H5 */
         font-size: 64rpx;
         border-radius: 128rpx;
         padding: 24rpx 168rpx;
-        /* #endif */
     }
 
     .signin-btn {
-        /* #ifdef H5 */
         margin: -240rpx;
-        /* #endif */
     }
 }
+/* #endif */

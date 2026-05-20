@@ -19,7 +19,7 @@
                                             <!-- 付费购买 -->
                                             <block v-if="(user_vip.user_vip_model || null) == 'pay'">
                                                 <view v-if="(user_vip || null) != null" class="single-text vip-badge round bg-black pr text-size-xss">
-                                                    <image v-if="(user_vip.icon || null) != null" class="level-icon pa" :src="user_vip.icon" mode="widthFix"></image>
+                                                    <image v-if="(user_vip.icon || null) != null" class="level-icon pa radius" :src="user_vip.icon" mode="widthFix"></image>
                                                     <text v-if="(user_vip.name || null) != null">{{ user_vip.level_name }}</text>
                                                     <!-- 判断会员永久 -->
                                                     <block v-if="(user_vip.is_permanent || 0) == 1">
@@ -36,7 +36,7 @@
                                             </block>
                                             <block v-else>
                                                 <view v-if="(user_vip || null) != null" class="single-text vip-badge round bg-black pr text-size-xss">
-                                                    <image v-if="(user_vip.icon || null) != null" class="level-icon pa" :src="user_vip.icon" mode="widthFix"></image>
+                                                    <image v-if="(user_vip.icon || null) != null" class="level-icon pa border-radius-sm" :src="user_vip.icon" mode="widthFix"></image>
                                                     <text v-if="(user_vip.name || null) != null">{{ user_vip.level_name }}</text>
                                                 </view>
                                             </block>

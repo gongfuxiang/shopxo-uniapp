@@ -1276,6 +1276,13 @@
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "search/search",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         },

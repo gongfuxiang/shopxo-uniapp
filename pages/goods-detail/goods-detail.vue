@@ -223,6 +223,17 @@
                         </view>
                     </view>
                 </view>
+
+                <!-- 超级会员-开通提示 -->
+                <view v-if="(plugins_vip_goods_detail_open_tips_data || null) != null" class="plugins-vip-goods-detail-open-tips padding-horizontal-main padding-top-main">
+                    <view class="plugins-vip-goods-detail-open-tips-inner border-radius-main flex-row jc-sb align-c cp" :data-value="plugins_vip_goods_detail_open_tips_data.panel_url" data-login="0" @tap="url_event">
+                        <view class="tips-content flex-row align-c flex-1 flex-width margin-right-sm">
+                            <iconfont name="icon-admin-store-vip" color="#f3d9b1" size="32rpx" propClass="tips-icon"></iconfont>
+                            <text class="tips-text single-text flex-1 flex-width">{{ plugins_vip_goods_detail_open_tips_data.tips_text }}</text>
+                        </view>
+                        <text class="tips-btn round cp" :data-value="(plugins_vip_goods_detail_open_tips_data.is_login || 0) == 1 ? plugins_vip_goods_detail_open_tips_data.buy_url : plugins_vip_goods_detail_open_tips_data.login_url" @tap.stop="url_event">{{ plugins_vip_goods_detail_open_tips_data.btn_text }}</text>
+                    </view>
+                </view>
             </view>
 
             <view class="padding-horizontal-main">
@@ -968,6 +979,8 @@
                 plugins_categorylimit_data: null,
                 // 订单商品表单插件
                 plugins_ordergoodsform_data: null,
+                // 超级会员开通提示
+                plugins_vip_goods_detail_open_tips_data: null,
             };
         },
 
@@ -1176,6 +1189,7 @@
                                 plugins_ask_data: data.plugins_ask_data || null,
                                 plugins_categorylimit_data: data.plugins_categorylimit_data || null,
                                 plugins_ordergoodsform_data: data.plugins_ordergoodsform_data || null,
+                                plugins_vip_goods_detail_open_tips_data: data.plugins_vip_goods_detail_open_tips_data || null,
                             };
                             this.setData(upd_data);
 
