@@ -234,6 +234,21 @@
                         <text class="tips-btn round cp" :data-value="(plugins_vip_goods_detail_open_tips_data.is_login || 0) == 1 ? plugins_vip_goods_detail_open_tips_data.buy_url : plugins_vip_goods_detail_open_tips_data.login_url" @tap.stop="url_event">{{ plugins_vip_goods_detail_open_tips_data.btn_text }}</text>
                     </view>
                 </view>
+                <!-- 分销-推广返佣提示 -->
+                <view v-if="(plugins_distribution_goods_detail_profit_tips_data || null) != null" class="plugins-distribution-goods-detail-profit-tips padding-horizontal-main padding-top-main">
+                    <view class="plugins-distribution-goods-detail-profit-tips-inner border-radius-main flex-row jc-sb align-c">
+                        <view class="tips-panel flex-row align-c flex-1 flex-width margin-right-sm cp" :data-value="plugins_distribution_goods_detail_profit_tips_data.panel_url" @tap="url_event">
+                            <view class="tips-icon-wrap flex-row align-c jc-c">
+                                <image class="tips-icon-level-img" :src="plugins_distribution_goods_detail_profit_tips_data.level_icon" mode="aspectFit" />
+                            </view>
+                            <view class="tips-content flex-row align-c flex-1 flex-width oh">
+                                <text class="tips-text single-text">{{ plugins_distribution_goods_detail_profit_tips_data.tips_text }}</text>
+                                <text class="tips-profit margin-left-xs">{{ plugins_distribution_goods_detail_profit_tips_data.currency_symbol }} {{ plugins_distribution_goods_detail_profit_tips_data.profit_price_text }}</text>
+                            </view>
+                        </view>
+                        <text class="tips-btn round cp" @tap.stop="popup_share_event">{{ plugins_distribution_goods_detail_profit_tips_data.btn_text }}</text>
+                    </view>
+                </view>
             </view>
 
             <view class="padding-horizontal-main">
@@ -981,6 +996,8 @@
                 plugins_ordergoodsform_data: null,
                 // 超级会员开通提示
                 plugins_vip_goods_detail_open_tips_data: null,
+                // 分销推广返佣提示
+                plugins_distribution_goods_detail_profit_tips_data: null,
             };
         },
 
@@ -1190,6 +1207,7 @@
                                 plugins_categorylimit_data: data.plugins_categorylimit_data || null,
                                 plugins_ordergoodsform_data: data.plugins_ordergoodsform_data || null,
                                 plugins_vip_goods_detail_open_tips_data: data.plugins_vip_goods_detail_open_tips_data || null,
+                                plugins_distribution_goods_detail_profit_tips_data: data.plugins_distribution_goods_detail_profit_tips_data || null,
                             };
                             this.setData(upd_data);
 
