@@ -859,6 +859,20 @@
             handle_swiper_touch_end(e) {
                 try {
                     const move_distance = this.swiper_current_y - this.swiper_start_y;
+                    
+                    // 如果滑动距离小于10px，不触发切换提示
+                    if (Math.abs(move_distance) < 10) {
+                        // 清理节流定时器
+                        if (this.swiper_move_throttle_timer) {
+                            clearTimeout(this.swiper_move_throttle_timer);
+                            this.swiper_move_throttle_timer = null;
+                        }
+                        // 重置拖拽状态
+                        this.swiper_start_y = 0;
+                        this.swiper_current_y = 0;
+                        return;
+                    }
+                    
                     // 只有滑动距离超过屏幕高度的 15% 才触发切换
                     if (move_distance > 0) {
                         // 向下滑动，切换到上一个
