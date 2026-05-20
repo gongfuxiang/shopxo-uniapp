@@ -36,6 +36,12 @@ export default {
             live_like_count: 0, // 点赞次数
             live_like_click_timer: null,
             live_id: '',
+            /** 直播功能配置已加载（拿到 config 后为 true） */
+            live_feature_ready: false,
+            is_live_chat_on: false,
+            is_live_goods_buy_on: false,
+            is_live_like_on: false,
+            need_live_socket: false,
         }
     },
 
@@ -97,6 +103,25 @@ export default {
     },
 
     methods: {
+        /** config 开关：1 / '1' / true 为开启，0 / '0' / false 为关闭 */
+        is_live_config_on(val) {
+            if (val === true || val === 1 || val === '1') {
+                return true;
+            }
+            if (val === false || val === 0 || val === '0') {
+                return false;
+            }
+            const n = Number(val);
+            return Number.isFinite(n) && n === 1;
+        },
+        apply_live_feature_config(config) {
+            const c = config || {};
+            this.is_live_chat_on = this.is_live_config_on(c.is_live_chat);
+            this.is_live_goods_buy_on = this.is_live_config_on(c.is_live_goods_buy);
+            this.is_live_like_on = this.is_live_config_on(c.is_live_like);
+            this.need_live_socket = this.is_live_chat_on || this.is_live_goods_buy_on || this.is_live_like_on;
+            this.live_feature_ready = true;
+        },
         /**
          * 初始化直播间数据
          * 请求服务器获取直播间详情信息
@@ -134,6 +159,7 @@ export default {
                         // 直播间配置
                         const config = new_data.data.config || {};
                         this.live_config = config;
+                        this.apply_live_feature_config(config);
                         // 直播间重连次数
                         this.live_reconnect_number = config.live_reconnect_number || 0;
                         this.live_reconnect_interval_time = config.live_reconnect_interval_time || 1;
@@ -280,6 +306,9 @@ export default {
                 // 双击
                 clearTimeout(this.live_like_click_timer);
                 this.live_like_count = 0;
+                if (!this.is_live_like_on) {
+                    return;
+                }
                 if (event.target.dataset.ignore) {
                     return;
                 }
@@ -307,6 +336,9 @@ export default {
          * @param {Event} event 触摸事件对象
          */
         handle_touch_end(event) {
+            if (!this.is_live_like_on) {
+                return;
+            }
             if (event.target.dataset.ignore) {
                 return;
             }

@@ -3,7 +3,7 @@
         <view class="flex-1 pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
             <component-live-video v-if="!is_live_ended && live_video_src != ''" ref="liveVideo" :propSrc="live_video_src" @loadedmetadata="loadedmetadata" @ended="ended"></component-live-video>
             <!-- 简化版点赞效果组件 -->
-            <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></component-full-screen-like-effect>
+            <component-full-screen-like-effect v-if="live_feature_ready && is_live_like_on" ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'"></component-full-screen-like-effect>
         </view>
         <template v-if="!is_loading">
             <!-- 主播暂时离开的提示信息-->

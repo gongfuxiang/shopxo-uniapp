@@ -62,30 +62,18 @@
                         </template>
                         <!-- 非全部显示：滚动或单行省略 -->
                         <template v-else>
-                            <view v-if="marquee_scroll_on" class="notice-marquee-host flex-1 flex-width oh notice-marquee-uni-wrap" :style="marquee_content_height">
-                                <!-- 用于测量文案真实宽度，speed = 宽度 / interval_time（与 DIY swiper 整段平移一致） -->
-                                <view
-                                    :id="marquee_measure_id"
-                                    class="notice-marquee-measure"
-                                    :style="marquee_body_text_style"
-                                >{{ marquee_display_text }}</view>
-                                <uni-notice-bar
-                                    v-if="marquee_notice_bar_ready"
-                                    :key="marquee_notice_bar_key"
-                                    :scrollable="true"
-                                    :show-icon="false"
-                                    :show-get-more="false"
-                                    :single="false"
-                                    :text="marquee_display_text"
-                                    :speed="marquee_notice_speed"
-                                    :color="marquee_notice_color"
-                                    :font-size="marquee_notice_font_px"
-                                    background-color="rgba(0,0,0,0)"
-                                    @click.stop="marquee_uni_click"
-                                />
+                            <view v-if="marquee_scroll_on && marquee_display_text" class="news-marquee-scroll flex-1 flex-width" :style="marquee_content_height" :data-value="marquee_link_page" @tap="url_event">
+                                <view class="news-marquee-scroll-box">
+                                    <text
+                                        :id="marquee_text_id"
+                                        class="news-marquee-scroll-text"
+                                        :class="{ 'news-marquee-scroll-text--run': marquee_scroll_running }"
+                                        :style="marquee_scroll_anim_style + marquee_body_text_style"
+                                    >{{ marquee_display_text }}</text>
+                                </view>
                             </view>
                             <view
-                                v-else
+                                v-else-if="marquee_display_text"
                                 class="news-marquee-static flex-1 flex-width"
                                 :style="marquee_content_height"
                                 :data-value="marquee_link_page"
@@ -146,15 +134,11 @@
 <script>
     const app = getApp();
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, radius_computer, padding_computer, isEmpty } from '@/common/js/common/common.js';
-    import uniNoticeBar from '@/uni_modules/uni-notice-bar/components/uni-notice-bar/uni-notice-bar.vue';
     /**
      * DIY 公告：notice_style = inherit | marquee | card
-     * 样式三滚动：测文案宽度后 speed = 宽度/interval_time，与 DIY swiper 在间隔时间内滚完全文一致
+     * 样式三滚动：单条文案从右侧滚入（与 uni-notice-bar 一致，非双份并排）
      */
     export default {
-        components: {
-            uniNoticeBar,
-        },
         props: {
             propValue: {
                 type: Object,
@@ -205,12 +189,9 @@
                 right_icon_container_style: '',
                 marquee_scroll_on: true,
                 marquee_display_text: '',
-                marquee_measure_id: 'notice-marquee-measure',
-                marquee_notice_bar_ready: false,
-                marquee_notice_speed: 100,
-                marquee_notice_bar_key: '',
-                marquee_notice_font_px: 14,
-                marquee_notice_color: '#333333',
+                marquee_text_id: 'notice-marquee-text',
+                marquee_scroll_anim_style: '',
+                marquee_scroll_running: false,
                 marquee_link_page: '',
                 marquee_body_text_style: '',
             };
@@ -231,14 +212,17 @@
             this.init();
         },
         methods: {
-            /** 样式三滚动间隔（秒）：仅读 content.interval_time */
-            get_marquee_interval_sec(content) {
-                const raw = content && content.interval_time;
+            /** 样式三滚动间隔（秒）：content.interval_time，无则读 style.interval_time，默认 3 */
+            get_marquee_interval_sec(content, style) {
+                const raw =
+                    content && content.interval_time !== undefined && content.interval_time !== null && content.interval_time !== ''
+                        ? content.interval_time
+                        : style && style.interval_time;
                 if (raw === undefined || raw === null || raw === '') {
-                    return 0;
+                    return 3;
                 }
                 const sec = Number(raw);
-                return Number.isFinite(sec) && sec > 0 ? sec : 0;
+                return Number.isFinite(sec) && sec > 0 ? sec : 3;
             },
             /**
              * 解析 propValue（content/style），算出模板所需字符串与样式三跑马灯参数，一次 setData。
@@ -295,8 +279,12 @@
                 const list_src = Array.isArray(new_content.notice_list) ? new_content.notice_list : [];
                 const new_notice_list = list_src.filter((item) => item.is_show == '1');
 
+                const container_h = Number(new_style.container_height) > 0 ? Number(new_style.container_height) : 44;
+                const news_sz = Number(new_style && new_style.news_size);
+                const news_base = Number.isFinite(news_sz) && news_sz > 0 ? news_sz : 12;
+
                 // ---------- 资讯标题字号（样式一/二在模板里拼 color；样式三静态行用 marquee_body_text_style） ----------
-                const content_title_style = `font-size: ${new_style.news_size * 2}rpx; font-weight: ${new_style.news_typeface};`;
+                const content_title_style = `font-size: ${news_base * 2}rpx; font-weight: ${new_style.news_typeface || 400};`;
 
                 // ---------- 样式三：is_full_display、marquee_scroll、图标位置、文案 ----------
                 const is_full_raw = new_content.is_full_display;
@@ -311,7 +299,11 @@
                 if (!marquee_display_text) {
                     marquee_display_text = '';
                 }
-                // 图标位置/外边距仅在「全部显示」开启时生效（与 DIY 配置面板一致）
+                const marquee_interval_sec = this.get_marquee_interval_sec(new_content, new_style);
+                const news_c = new_style && new_style.news_color;
+                const marquee_notice_color = news_c != null && news_c !== '' ? news_c : '#333333';
+                const marquee_body_text_style = content_title_style + 'color:' + marquee_notice_color + ';line-height:' + container_h * 2 + 'rpx;';
+                const marquee_text_id = 'notice-marquee-text-' + String(this.propKey);
                 let left_icon_container_style = '';
                 let right_icon_container_style = '';
                 if (is_marquee_full_display) {
@@ -340,8 +332,8 @@
                         new_style.right_icon_margin || legacy_margin || default_icon_margin
                     );
                 }
-                const marquee_content_height = is_marquee_full_display ? '' : 'height:' + new_style.container_height * 2 + 'rpx;';
-                const marquee_box_style = temp_container_background_style + (is_marquee_full_display ? 'height:auto;' : 'height:' + new_style.container_height * 2 + 'rpx;');
+                const marquee_content_height = is_marquee_full_display ? '' : 'height:' + container_h * 2 + 'rpx;';
+                const marquee_box_style = temp_container_background_style + (is_marquee_full_display ? 'height:auto;' : 'height:' + container_h * 2 + 'rpx;');
                 // 点击跳转：首条公告链接，无则用「更多」链接
                 let marquee_link_page = '';
                 if (new_notice_list[0] && new_notice_list[0].notice_link && new_notice_list[0].notice_link.page != null) {
@@ -350,43 +342,6 @@
                 if (marquee_link_page === '' && new_content.more_link && new_content.more_link.page != null) {
                     marquee_link_page = new_content.more_link.page;
                 }
-                const marquee_interval_sec = this.get_marquee_interval_sec(new_content);
-                const news_sz = Number(new_style && new_style.news_size);
-                const news_base = Number.isFinite(news_sz) && news_sz > 0 ? news_sz : 14;
-                const news_rpx = news_base * 2;
-                let marquee_notice_font_px = 14;
-                try {
-                    if (typeof uni !== 'undefined' && typeof uni.upx2px === 'function') {
-                        marquee_notice_font_px = Math.max(10, Math.round(uni.upx2px(news_rpx)));
-                    } else {
-                        throw new Error('no upx2px');
-                    }
-                } catch (e) {
-                    const w = (typeof uni !== 'undefined' && uni.getSystemInfoSync && uni.getSystemInfoSync().windowWidth) || 375;
-                    marquee_notice_font_px = Math.max(10, Math.round((news_rpx * w) / 750));
-                }
-                const news_c = new_style && new_style.news_color;
-                const marquee_notice_color = news_c != null && news_c !== '' ? news_c : '#333333';
-                const marquee_body_text_style = content_title_style + 'color:' + marquee_notice_color;
-                const marquee_measure_id = 'notice-marquee-measure-' + String(this.propKey);
-                // speed = 文案宽度 / interval_time（秒）；init 后按实测宽度再校正
-                let est_w = 0;
-                for (let i = 0; i < marquee_display_text.length; i++) {
-                    est_w += marquee_display_text.charCodeAt(i) > 127 ? marquee_notice_font_px : marquee_notice_font_px * 0.55;
-                }
-                est_w = Math.max(est_w, marquee_notice_font_px * 3);
-                const marquee_notice_speed =
-                    marquee_interval_sec > 0 ? Math.max(30, Math.ceil(est_w / marquee_interval_sec)) : 100;
-                const marquee_notice_bar_key =
-                    String(this.propKey) +
-                    '-ub-' +
-                    String(marquee_interval_sec) +
-                    '-' +
-                    String(marquee_notice_speed) +
-                    '-' +
-                    String(is_full_display) +
-                    '-' +
-                    String(marquee_display_text || '');
 
                 const form_content_out = { ...new_content };
                 if (form_content_out.is_full_display == null || form_content_out.is_full_display === undefined || form_content_out.is_full_display === '') {
@@ -397,7 +352,7 @@
                     // —— 通用 ——
                     form_content: form_content_out,
                     form_style: new_style,
-                    container_height: is_marquee_full_display ? '' : 'height:' + new_style.container_height * 2 + 'rpx',
+                    container_height: is_marquee_full_display ? '' : 'height:' + container_h * 2 + 'rpx',
                     container_background_style: temp_container_background_style,
                     container_background_img_style: temp_container_background_img_style,
                     img_style: `height: ${new_style.title_height * 2}rpx; width: ${new_style.title_width * 2}rpx`,
@@ -418,70 +373,53 @@
                     marquee_scroll_on,
                     marquee_interval_sec,
                     marquee_display_text,
-                    marquee_measure_id,
-                    marquee_notice_bar_ready: false,
-                    marquee_notice_speed,
-                    marquee_notice_bar_key,
-                    marquee_notice_font_px,
-                    marquee_notice_color,
+                    marquee_text_id,
+                    marquee_scroll_anim_style: '',
+                    marquee_scroll_running: false,
                     marquee_link_page,
                     marquee_body_text_style,
                 }, () => {
-                    this.sync_marquee_notice_speed();
+                    this.sync_marquee_scroll();
                 });
             },
-            /** 测量文案宽度：textWidth/speed = content.interval_time（秒） */
-            sync_marquee_notice_speed() {
+            /** 单条跑马灯：测容器/文案宽度，animation-duration = interval_time */
+            sync_marquee_scroll() {
                 const sec = Number(this.marquee_interval_sec);
                 if (!this.marquee_scroll_on || this.is_marquee_full_display || !this.marquee_display_text || !Number.isFinite(sec) || sec <= 0) {
                     return;
                 }
-                const next = () => {
+                const run = () => {
                     const query = uni.createSelectorQuery().in(this);
-                    query
-                        .select('#' + this.marquee_measure_id)
-                        .boundingClientRect((rect) => {
-                            if (!rect || !rect.width) {
-                                this.setData({ marquee_notice_bar_ready: true });
-                                return;
-                            }
-                            const speed = Math.max(30, Math.ceil(rect.width / sec));
-                            const key =
-                                String(this.propKey) +
-                                '-ub-' +
-                                String(sec) +
-                                '-' +
-                                String(speed) +
-                                '-' +
-                                String(this.form_content.is_full_display) +
-                                '-' +
-                                String(this.marquee_display_text || '');
-                            this.setData({
-                                marquee_notice_speed: speed,
-                                marquee_notice_bar_key: key,
-                                marquee_notice_bar_ready: true,
-                            });
-                        })
-                        .exec();
+                    query.select('.news-marquee-scroll-box').boundingClientRect();
+                    query.select('#' + this.marquee_text_id).boundingClientRect();
+                    query.exec((res) => {
+                        const box = res && res[0];
+                        const text = res && res[1];
+                        let anim_style = 'animation-duration:' + sec + 's;animation-delay:0s;';
+                        if (box && text && box.width && text.width) {
+                            const speed = Math.max(30, text.width / sec);
+                            const duration = text.width / speed;
+                            const delay = -(box.width / speed);
+                            anim_style = 'animation-duration:' + duration + 's;animation-delay:' + delay + 's;';
+                        }
+                        this.setData({
+                            marquee_scroll_anim_style: anim_style,
+                            marquee_scroll_running: true,
+                        });
+                    });
                 };
                 if (typeof this.$nextTick === 'function') {
-                    this.$nextTick(next);
+                    this.$nextTick(run);
                 } else {
-                    setTimeout(next, 50);
+                    setTimeout(run, 50);
                 }
+                // #ifdef MP-WEIXIN
+                setTimeout(run, 150);
+                // #endif
             },
             // 跳转链接
             url_event(e) {
                 app.globalData.url_event(e);
-            },
-            marquee_uni_click() {
-                const v = this.marquee_link_page;
-                if (v === '' || v == null) {
-                    return;
-                }
-                app.globalData.url_event({
-                    currentTarget: { dataset: { value: v } },
-                });
             },
         },
     };
@@ -528,7 +466,7 @@
     }
     .news-marquee-row {
         width: 100%;
-        align-items: stretch;
+        align-items: center;
     }
     .flex-width {
         min-width: 0;
@@ -549,34 +487,36 @@
         word-break: break-all;
         word-wrap: break-word;
     }
-    .notice-marquee-measure {
-        position: fixed;
-        left: -9999px;
-        top: 0;
-        white-space: nowrap;
-        pointer-events: none;
-        visibility: hidden;
-        z-index: -1;
-    }
-    .notice-marquee-uni-wrap {
+    .news-marquee-scroll {
         min-width: 0;
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
         align-self: center;
     }
-    .notice-marquee-uni-wrap ::v-deep .uni-noticebar {
+    .news-marquee-scroll-box {
         width: 100%;
-        padding: 0 !important;
-        margin: 0 !important;
-        margin-bottom: 0 !important;
-        box-sizing: border-box;
-        background-color: transparent !important;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
     }
-    .notice-marquee-uni-wrap ::v-deep .uni-noticebar__content-wrapper--scrollable {
-        flex: 1;
-        min-width: 0;
+    .news-marquee-scroll-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        height: 100%;
+        white-space: nowrap;
+        padding-left: 100%;
+        animation-name: notice-marquee-single;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-play-state: paused;
+    }
+    .news-marquee-scroll-text--run {
+        animation-play-state: running;
+    }
+    @keyframes notice-marquee-single {
+        100% {
+            transform: translate3d(-100%, 0, 0);
+        }
     }
     .news-marquee-static {
         min-width: 0;
