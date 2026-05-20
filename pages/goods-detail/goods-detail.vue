@@ -226,7 +226,7 @@
 
                 <!-- 超级会员-开通提示 -->
                 <view v-if="(plugins_vip_goods_detail_open_tips_data || null) != null" class="plugins-vip-goods-detail-open-tips padding-horizontal-main padding-top-main">
-                    <view class="plugins-vip-goods-detail-open-tips-inner border-radius-main flex-row jc-sb align-c">
+                    <view class="plugins-vip-goods-detail-open-tips-inner border-radius-main flex-row jc-sb align-c cp" :data-value="plugins_vip_goods_detail_open_tips_data.panel_url" data-login="0" @tap="url_event">
                         <view class="tips-content flex-row align-c flex-1 flex-width margin-right-sm">
                             <iconfont name="icon-admin-store-vip" color="#f3d9b1" size="32rpx" propClass="tips-icon"></iconfont>
                             <text class="tips-text single-text flex-1 flex-width">{{ plugins_vip_goods_detail_open_tips_data.tips_text }}</text>

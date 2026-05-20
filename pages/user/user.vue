@@ -45,7 +45,7 @@
                     </view>
                     <!-- 超级会员-开通提示 -->
                     <view v-if="(plugins_vip_user_center_open_tips_data || null) != null" class="plugins-vip-user-center-open-tips padding-horizontal-main">
-                        <view class="plugins-vip-user-center-open-tips-inner border-radius-main flex-row jc-sb align-c">
+                        <view class="plugins-vip-user-center-open-tips-inner border-radius-main flex-row jc-sb align-c cp" :data-value="plugins_vip_user_center_open_tips_data.panel_url" :data-login="(plugins_vip_user_center_open_tips_data.show_type || 'open') == 'open' ? 0 : 1" @tap="url_event">
                             <!-- 未开通/未登录 -->
                             <block v-if="(plugins_vip_user_center_open_tips_data.show_type || 'open') == 'open'">
                                 <view class="tips-content flex-row align-c flex-1 flex-width margin-right-sm">
