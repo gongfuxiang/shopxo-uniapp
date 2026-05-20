@@ -259,15 +259,14 @@
                 const gradient = gradient_handle(new_style.title_color_list, '90deg');
 
                 // ---------- 轮播间隔：DIY 填秒，存为 interval_time（毫秒）；样式一 swiper 使用 ----------
-                const time =
-                    (() => {
-                        const rawIv =
-                            new_content.interval_time !== undefined && new_content.interval_time !== null && new_content.interval_time !== ''
-                                ? new_content.interval_time
-                                : new_style.interval_time;
-                        const sec = Number(rawIv) > 0 ? Number(rawIv) : 3;
-                        return sec * 1000;
-                    })();
+                const time = (() => {
+                    const rawIv =
+                        new_content.interval_time !== undefined && new_content.interval_time !== null && new_content.interval_time !== ''
+                            ? new_content.interval_time
+                            : new_style.interval_time;
+                    const sec = Number(rawIv) > 0 ? Number(rawIv) : 3;
+                    return sec * 1000;
+                })();
                 const raw_duration = new_style.swiper_duration;
                 const swiper_duration =
                     raw_duration !== undefined && raw_duration !== null && raw_duration !== '' && !Number.isNaN(Number(raw_duration))
