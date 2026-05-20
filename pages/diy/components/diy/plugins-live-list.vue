@@ -5,39 +5,46 @@
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(plugins_live_theme)" class="flex-wrap" :class="plugins_live_theme_class" :style="plugins_live_theme !== '3' ? plugins_live_spacing : ''">
                     <view v-for="(item, index) in data_list" :key="index" class="item oh" :style="plugins_live_style" :data-value="live_item_url(item)" @tap="url_event">
-                        <view :class="plugins_live_theme == '0' ? 'flex-row oh' : 'flex-col oh h'" :style="plugins_live_img_style">
-                            <template v-if="plugins_live_theme !== '3'">
-                                <view class="oh pr flex-row">
-                                    <template v-if="item.new_cover && item.new_cover.length > 0">
-                                        <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
-                                    </template>
-                                    <template v-else>
-                                        <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
-                                    </template>
-                                    <view v-if="field_show.includes('3') && should_show_live_status(item.data)" class="live-status-tag" :class="'status-' + get_live_room_status(item.data)">
+                        <template v-if="plugins_live_theme == '3'">
+                            <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1 flex-row align-c" :style="content_padding">
+                                <view class="live-noimg-row flex-row align-c flex-1 flex-width">
+                                    <text v-if="field_show.includes('0')" class="title text-line-1 live-noimg-title" :style="plugins_live_name">{{ live_item_title(item) }}</text>
+                                    <view v-if="field_show.includes('3') && should_show_live_status(item.data)" class="live-status-tag live-status-tag--inline" :class="'status-' + get_live_room_status(item.data)">
                                         <view v-if="get_live_room_status(item.data) === 1" class="live-status-dots">
                                             <text class="dot"></text><text class="dot"></text><text class="dot"></text>
                                         </view>
                                         <text>{{ get_live_room_status_name(item.data) }}</text>
                                     </view>
                                 </view>
-                            </template>
-                            <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1" :class="plugins_live_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="plugins_live_theme !== '0' ? content_padding : ''">
-                                <template v-if="plugins_live_theme == '3'">
-                                    <view class="live-noimg-row flex-row align-c flex-1 flex-width">
-                                        <text v-if="field_show.includes('0')" class="title text-line-1 live-noimg-title" :style="plugins_live_name">{{ live_item_title(item) }}</text>
-                                        <view v-if="field_show.includes('3') && should_show_live_status(item.data)" class="live-status-tag live-status-tag--inline" :class="'status-' + get_live_room_status(item.data)">
-                                            <view v-if="get_live_room_status(item.data) === 1" class="live-status-dots">
-                                                <text class="dot"></text><text class="dot"></text><text class="dot"></text>
-                                            </view>
-                                            <text>{{ get_live_room_status_name(item.data) }}</text>
-                                        </view>
+                                <view class="flex-row jc-sb gap-8 margin-left">
+                                    <text class="text-line-1" :style="plugins_live_seller_name">{{ field_show.includes('1') ? live_seller_name(item) : '' }}</text>
+                                    <view v-show="field_show.includes('2')" class="flex-row align-c gap-3 live-page-view" :style="plugins_live_page_view">
+                                        <iconfont name="icon-eye" propContainerDisplay="flex" :size="plugins_live_page_view_icon_size"></iconfont>
+                                        <text>{{ live_viewer_count(item) }}</text>
                                     </view>
+                                </view>
+                            </view>
+                        </template>
+                        <view v-else :class="plugins_live_theme == '0' ? 'flex-row oh' : 'flex-col oh h'" :style="plugins_live_img_style">
+                            <view class="oh pr flex-row">
+                                <template v-if="item.new_cover && item.new_cover.length > 0">
+                                    <image :src="item.new_cover[0].url" class="img" :style="img_radius + img_size" mode="aspectFill" />
                                 </template>
-                                <view v-else class="flex-col">
+                                <template v-else>
+                                    <image :src="item.data.cover" class="img" :style="img_radius + img_size" mode="aspectFill" />
+                                </template>
+                                <view v-if="field_show.includes('3') && should_show_live_status(item.data)" class="live-status-tag" :class="'status-' + get_live_room_status(item.data)">
+                                    <view v-if="get_live_room_status(item.data) === 1" class="live-status-dots">
+                                        <text class="dot"></text><text class="dot"></text><text class="dot"></text>
+                                    </view>
+                                    <text>{{ get_live_room_status_name(item.data) }}</text>
+                                </view>
+                            </view>
+                            <view v-if="field_show.includes('0') || field_show.includes('1') || field_show.includes('2') || field_show.includes('3')" class="jc-sb flex-1 flex-col" :style="plugins_live_theme !== '0' ? content_padding : ''">
+                                <view class="flex-col">
                                     <text v-if="field_show.includes('0')" class="title text-line-2" :style="plugins_live_name">{{ live_item_title(item) }}</text>
                                 </view>
-                                <view class="flex-row jc-sb gap-8" :class="plugins_live_theme == '3' ? 'margin-left' : 'align-e margin-top'">
+                                <view class="flex-row jc-sb gap-8 align-e margin-top">
                                     <text class="text-line-1" :style="plugins_live_seller_name">{{ field_show.includes('1') ? live_seller_name(item) : '' }}</text>
                                     <view v-show="field_show.includes('2')" class="flex-row align-c gap-3 live-page-view" :style="plugins_live_page_view">
                                         <iconfont name="icon-eye" propContainerDisplay="flex" :size="plugins_live_page_view_icon_size"></iconfont>
@@ -245,6 +252,7 @@
             },
             // 直播主题样式
             apply_theme_styles(new_content, new_style) {
+                const theme = new_content.theme;
                 // 默认数据
                 const product_style_list = [
                     { name: '单列展示', value: '0', width: 110, height: 83 },
@@ -283,29 +291,35 @@
                 // 渐变效果
                 const all_style = gradient_handle(new_style?.plugins_live_color_list || [], new_style?.plugins_live_direction || '') + margin_computer(plugins_live_margin) + box_shadow_computer(new_style) + border_computer(new_style);
                 // 直播样式
-                if (this.plugins_live_theme == '0') {
+                if (theme == '0') {
                     this.setData({
+                        style: '',
                         img_size: img_style,
                         plugins_live_style: this.content_radius + all_style,
                         plugins_live_img_style: this.content_spacing + this.content_padding + background_computer(plugins_live_data),
                     });
-                } else if (this.plugins_live_theme == '1') {
+                } else if (theme == '1') {
                     this.setData({
+                        style: '',
                         img_size: img_style,
                         plugins_live_style: `width: calc(50% - ${(new_style.plugins_live_spacing + margin_width * 2) / 2}px);` + this.content_radius + all_style,
                         plugins_live_img_style: background_computer(plugins_live_data),
                     });
-                } else if (this.plugins_live_theme == '2') {
+                } else if (theme == '2') {
                     this.setData({
+                        style: '',
                         img_size: img_style,
                         plugins_live_style: this.content_radius + all_style,
                         plugins_live_img_style: background_computer(plugins_live_data),
                     });
-                } else if (this.plugins_live_theme == '3') {
+                } else if (theme == '3') {
+                    // 无图模式：外层仅背景+圆角；条目内 padding（与 DIY 两层一致，不再叠加 content_spacing）
                     this.setData({
-                        style: `padding: 0 ${new_style.content_spacing}px;background:#fff;` + this.content_radius,
+                        style: `background:#fff;` + this.content_radius,
+                        plugins_live_style: '',
+                        plugins_live_img_style: '',
                     });
-                } else if (this.plugins_live_theme == '4') {
+                } else if (theme == '4') {
                     const temp_carousel_col = new_content.carousel_col || '1';
                     // 计算间隔的空间。(gap * gap数量) / 模块数量
                     const gap_num = Number(temp_carousel_col) || 1;
@@ -317,6 +331,7 @@
                     // 每页显示的数量
                     const num = Number(temp_carousel_col) + 1;
                     this.setData({
+                        style: '',
                         // 滚动时间
                         interval_time: (new_style.interval_time || 3) * 1000,
                         // 是否滚动修改

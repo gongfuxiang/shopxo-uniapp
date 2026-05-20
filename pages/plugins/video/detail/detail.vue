@@ -1386,43 +1386,54 @@
                                 target.give_thumbs_count = new_data.count;
                                 target.is_give_thumbs = new_data.is_active;
                             };
-
-                            // 优化后的遍历逻辑
-                            for (let i = 0; i < this.video_data_list.length; i++) {
-                                const item = this.video_data_list[i];
-                                if (item.id == id) {
-                                    if (!isEmpty(comments_id)) {
-                                        // 安全检查comments数组是否存在
-                                        if (this.active_comments && Array.isArray(this.active_comments)) {
-                                            for (let j = 0; j < this.active_comments.length; j++) {
-                                                const comment = this.active_comments[j];
-                                                if (comment.id == comments_id) {
-                                                    updateThumbsStatus(comment, new_data);
-                                                    console.log(comment);
-                                                    break; // 处理完当前item后跳出循环
-                                                } else {
-                                                    // 安全检查sub_comments数组是否存在
-                                                    if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
-                                                        for (let k = 0; k < comment.sub_comments.length; k++) {
-                                                            const sub_comment = comment.sub_comments[k];
-                                                            
-                                                            if (sub_comment.id == comments_id) {
-                                                                updateThumbsStatus(sub_comment, new_data);
-                                                                break; // 处理完当前item后跳出循环
+                            if (!isEmpty(comments_id)) { 
+                                // 优化后的遍历逻辑
+                                for (let i = 0; i < this.video_data_list.length; i++) {
+                                    const item = this.video_data_list[i];
+                                    if (item.id == id) {
+                                        if (!isEmpty(comments_id)) {
+                                            // 安全检查comments数组是否存在
+                                            if (this.active_comments && Array.isArray(this.active_comments)) {
+                                                for (let j = 0; j < this.active_comments.length; j++) {
+                                                    const comment = this.active_comments[j];
+                                                    if (comment.id == comments_id) {
+                                                        updateThumbsStatus(comment, new_data);
+                                                        console.log(comment);
+                                                        break; // 处理完当前item后跳出循环
+                                                    } else {
+                                                        // 安全检查sub_comments数组是否存在
+                                                        if (comment.sub_comments && Array.isArray(comment.sub_comments)) {
+                                                            for (let k = 0; k < comment.sub_comments.length; k++) {
+                                                                const sub_comment = comment.sub_comments[k];
+                                                                
+                                                                if (sub_comment.id == comments_id) {
+                                                                    updateThumbsStatus(sub_comment, new_data);
+                                                                    break; // 处理完当前item后跳出循环
+                                                                }
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
+                                            this.video_data_list[i].comments_list = this.active_comments;
                                         }
-                                        this.video_data_list[i].comments_list = this.active_comments;
+                                        break; // 处理完当前item后跳出外层循环
                                     }
-                                    break; // 处理完当前item后跳出外层循环
                                 }
+                                this.setData({
+                                    video_data_list: this.video_data_list
+                                })
+                            } else {
+                                // 数据更新
+                                this.display_video_list.forEach(item => {
+                                    if (item.id == id) {
+                                        updateThumbsStatus(item, new_data);
+                                    }
+                                });
+                                this.setData({
+                                    display_video_list: this.display_video_list
+                                })
                             }
-                            this.setData({
-                                video_data_list: this.video_data_list
-                            })
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
