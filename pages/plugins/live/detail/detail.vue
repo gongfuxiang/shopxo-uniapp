@@ -3,7 +3,7 @@
         <view class="pr live-bg" @click="handle_click" @touchend="handle_touch_end" :data-ignore="false">
             <component-live-video v-if="!is_live_ended" ref="liveVideo" :propSrc="live_video_src" @ended="ended" @loadedmetadata="loadedmetadata" @mutedAutoPlaySuccess="muted_auto_play_success" @mutedAutoPlayError="muted_auto_play_error" @mutedTap="muted_tap"></component-live-video>
             <!-- 简化版点赞效果组件 -->
-            <component-full-screen-like-effect ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
+            <component-full-screen-like-effect v-if="live_feature_ready && is_live_like_on" ref="fullScreenLikeEffect" :propCustomImages="like_show_imgs"></component-full-screen-like-effect>
         </view>
         <template v-if="!is_loading"> 
             <view class="live-content pointer-events-none">

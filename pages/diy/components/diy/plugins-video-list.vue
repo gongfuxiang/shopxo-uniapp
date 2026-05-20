@@ -281,7 +281,7 @@
                     });
                 } else if (this.plugins_video_theme == '3') {
                     this.setData({
-                        style: `padding: 0 ${new_style.content_spacing}px;background:#fff;` + this.content_radius,
+                        style: `background:#fff;` + this.content_radius,
                     });
                 } else if (this.plugins_video_theme == '4') {
                     // 更新轮播图的key，确保更换时能重新更新轮播图

@@ -30,7 +30,7 @@
                     <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                     <view class="ml-10 flex-col">
                         <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
-                        <text class="level">{{ like_count }}本场点赞</text>
+                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}本场点赞</text>
                     </view>
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
@@ -53,7 +53,7 @@
                     <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                     <view class="ml-10 flex-col">
                         <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
-                        <text class="level">{{ like_count }}本场点赞</text>
+                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}本场点赞</text>
                     </view>
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
@@ -73,7 +73,7 @@
         <!-- #endif -->
         <view class="flex-1 bottom-line-exclude-bottom flex-row">
             <view class="flex-1 flex-col jc-e">
-                <view class="pr">
+                <view v-if="live_feature_ready && is_live_chat_on" class="pr">
                     <view class="bulletin-area pr pointer-events-auto" :style="'width:' + (propWindowWidth - 150) + 'px;'">
                         <!-- #ifdef APP-NVUE -->
                         <!-- nvue 使用 list进行列表渲染 -->
@@ -149,7 +149,7 @@
                     </view>
                 </view>
                 <!-- 讲解中商品 -->
-                <view v-if="!isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
+                <view v-if="live_feature_ready && is_live_goods_buy_on && !isEmpty(explain_goods) && is_show_explain_goods" class="explain-goods pointer-events-auto" :data-url="explain_goods.goods_url" @tap="explain_goods_tap">
                     <view class="pr oh flex-row align-c" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;">
                         <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;" mode="aspectFill"></image>
                         <view class="explain-subscript flex-row align-c jc-sb">
@@ -168,25 +168,28 @@
                 </view>
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5 pointer-events-auto pr">
-                    <template v-if="is_socket_success">
-                        <view class="flex-1 bottom-actions-input">
-                            <!-- #ifdef APP-NVUE -->
-                            <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:14px" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
-                            <!-- #endif -->
-                            <!-- #ifndef APP-NVUE -->
-                            <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:28rpx" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
-                            <!-- #endif -->
-                        </view>
+                    <template v-if="live_feature_ready && is_live_chat_on">
+                        <template v-if="is_socket_success">
+                            <view class="flex-1 bottom-actions-input">
+                                <!-- #ifdef APP-NVUE -->
+                                <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:14px" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                                <!-- #endif -->
+                                <!-- #ifndef APP-NVUE -->
+                                <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:28rpx" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                                <!-- #endif -->
+                            </view>
+                        </template>
+                        <template v-else-if="need_live_socket">
+                            <view class="flex-1">
+                                <button class="bottom-actions-button cr-f size-14" type="primary"  style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
+                            </view>
+                        </template>
                     </template>
-                    <template v-else>
-                        <view class="flex-1">
-                            <button class="bottom-actions-button cr-f size-14" type="primary"  style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
-                        </view>
-                    </template>
-                    <view class="bottom-actions-icon" @tap="add_goods">
+                    <view v-else-if="live_feature_ready && (is_live_goods_buy_on || is_live_like_on)" class="flex-1"></view>
+                    <view v-if="live_feature_ready && is_live_goods_buy_on" class="bottom-actions-icon" @tap="add_goods">
                         <u-icon propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></u-icon>
                     </view>
-                    <component-like-button ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
+                    <component-like-button v-if="live_feature_ready && is_live_like_on" ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
                         <view class="bottom-actions-icon">
                             <u-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></u-icon>
                         </view>
@@ -198,7 +201,7 @@
             </view>
         </view>
         <!-- 添加评论 -->
-        <view v-if="is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + propWindowWidth + 'px;bottom:' + listener_height + 'px;'">
+        <view v-if="live_feature_ready && is_live_chat_on && is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + propWindowWidth + 'px;bottom:' + listener_height + 'px;'">
             <view class="keyboard-input-border" style="padding: 16rpx 22rpx;border: 2rpx solid #ddd;border-radius: 50rpx;">
                 <!-- #ifdef APP-NVUE -->
                 <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" placeholder-style="font-size:14px" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
@@ -209,7 +212,7 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <u-popup ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="购买商品" :propCloseable="true">
+        <u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="购买商品" :propCloseable="true">
            <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight" :propLiveId="live_data.id"></component-goods>
         </u-popup>
         <!-- 分享弹窗 -->
@@ -356,6 +359,11 @@
                 live_goods_explain_auto_close_time: 10, // 讲解商品信息自动关闭时间
                 live_websocket_url: '', // websocket地址
                 live_tips: '', // 直播提示语
+                live_feature_ready: false,
+                is_live_chat_on: false,
+                is_live_goods_buy_on: false,
+                is_live_like_on: false,
+                need_live_socket: false,
                 //#region 顶部返回和搜索
                 menu_button_info: '',
                 header_padding_left: '',
@@ -380,28 +388,36 @@
              */
             propLiveConfig: {
                 handler(new_value) {
-                    if (new_value != null) {
+                    if (new_value != null && !isEmpty(new_value)) {
+                        this.apply_live_feature_config(new_value);
                         // 直播间信息定时任务时间间隔
                         this.live_info_timing_interval_time = new_value.live_info_timing_interval_time;
                         // 讲解商品信息自动关闭时间
                         this.live_goods_explain_auto_close_time = new_value.live_goods_explain_auto_close_time;
                         // 直播提示语
                         this.live_tips = new_value?.live_tips || '';
+                        // 三项都关闭时不连接 socket
+                        if (!this.need_live_socket) {
+                            if (this.task != null) {
+                                this.socket_close();
+                            }
+                            this.is_socket_success = false;
+                            this.is_socket_error = false;
+                            return;
+                        }
                         // socket 地址更新
                         if (!isEmpty(new_value.socket_connect)) {
-                            const { host, port, is_wss } = new_value.socket_connect; 
+                            const { host, port, is_wss } = new_value.socket_connect;
                             const protocol = is_wss == 1 ? 'wss' : 'ws';
-                            // 记录临时socket连接地址
                             const url = `${protocol}://${host}:${port}`;
-                            
+
                             if (url != this.live_websocket_url) {
-                                // 关闭当前socket连接
                                 if (this.task != null) {
                                     this.socket_close();
                                 }
-                                // 设置新的socket连接地址
                                 this.live_websocket_url = url;
-                                // 连接socket
+                                this.socket_connect();
+                            } else if (this.task == null) {
                                 this.socket_connect();
                             }
                         }
@@ -436,6 +452,25 @@
         },
         methods: {
             isEmpty,
+            /** config 开关：1 / '1' / true 为开启，0 / '0' / false 为关闭 */
+            is_live_config_on(val) {
+                if (val === true || val === 1 || val === '1') {
+                    return true;
+                }
+                if (val === false || val === 0 || val === '0') {
+                    return false;
+                }
+                const n = Number(val);
+                return Number.isFinite(n) && n === 1;
+            },
+            apply_live_feature_config(config) {
+                const c = config || {};
+                this.is_live_chat_on = this.is_live_config_on(c.is_live_chat);
+                this.is_live_goods_buy_on = this.is_live_config_on(c.is_live_goods_buy);
+                this.is_live_like_on = this.is_live_config_on(c.is_live_like);
+                this.need_live_socket = this.is_live_chat_on || this.is_live_goods_buy_on || this.is_live_like_on;
+                this.live_feature_ready = true;
+            },
             /**
              * 初始化窗口信息
              * 获取屏幕宽高，并根据不同平台设置头部样式
@@ -590,6 +625,9 @@
              * @param {Boolean} is_manual - 是否手动连接
              */
             socket_connect(is_manual = false) {
+                if (!this.need_live_socket) {
+                    return;
+                }
                 // 一开始就设置为false，避免连接失败时，页面显示错误
                 this.is_socket_error = false;
                 this.is_socket_success = false;
@@ -684,19 +722,20 @@
                     // 初始化成功
                     case 'init-success' :
                         this.live_user_id = data.data.live_user_id;
-                        // 初始化提示语
-                        const message_bulletin_index = this.bulletins.findIndex(item => item.type == 'message');
-                        if (message_bulletin_index == -1) {
-                            this.bulletins.push({
-                                id: Math.random(),
-                                type: 'message',
-                                text: this.live_tips,
-                            });
+                        if (this.is_live_chat_on) {
+                            const message_bulletin_index = this.bulletins.findIndex(item => item.type == 'message');
+                            if (message_bulletin_index == -1 && this.live_tips) {
+                                this.bulletins.push({
+                                    id: Math.random(),
+                                    type: 'message',
+                                    text: this.live_tips,
+                                });
+                            }
                         }
-                        // 启动心跳
                         this.socket_ping_handle();
-                        // 启动直播间数据定时任务
-                        this.socket_live_info_handle();
+                        if (this.is_live_goods_buy_on || this.is_live_like_on || this.is_live_chat_on) {
+                            this.socket_live_info_handle();
+                        }
                         break;
             
                     // 初始化失败
@@ -706,6 +745,9 @@
             
                     // 加入直播间提示
                     case 'join' :
+                        if (!this.is_live_chat_on) {
+                            break;
+                        }
                         // 如果最后前一条是进入直播间的提示，则更新用户昵称
                         if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
                             this.bulletins[this.bulletins.length - 1].user_name = data.content;
@@ -728,6 +770,9 @@
                         break;
                     // 消息
                     case 'message':
+                        if (!this.is_live_chat_on) {
+                            break;
+                        }
                         // 如果最后前一条是进入直播间的提示，则删除
                         if (this.bulletins.length > 0 && this.bulletins[this.bulletins.length - 1].type == 'go') {
                             this.bulletins.splice(this.bulletins.length - 1, 1);
@@ -758,23 +803,22 @@
             // 初始化直播间数据
             live_init(data) { 
                 if (isEmpty(data)) return;
-                // 更新讲解商品信息
                 const goods = data.explain_goods;
-                // 讲解商品信息更新,讲解商品不为空，并且讲解商品id不一致，需要更新讲解商品信息
-                if ((!isEmpty(goods) && !isEmpty(this.explain_goods) && this.explain_goods.id !== goods.id) || (isEmpty(this.explain_goods) && !isEmpty(goods))) {
+                if (this.is_live_goods_buy_on && ((!isEmpty(goods) && !isEmpty(this.explain_goods) && this.explain_goods.id !== goods.id) || (isEmpty(this.explain_goods) && !isEmpty(goods)))) {
                     this.explain_goods = data.explain_goods;
                     this.is_show_explain_goods = true;
                     this.explain_goods_close('auto');
+                } else if (!this.is_live_goods_buy_on) {
+                    this.explain_goods = {};
+                    this.is_show_explain_goods = false;
                 }
-                // 更新在线用户头像
                 this.online_user = data.online_user;
-                // 更新直播间数据
                 const new_value = data.live_info;
-                // 更新直播间头像
                 this.live_avatar = new_value.cover;
                 this.live_data = new_value;
-                // 直播间点赞数
-                this.like_count = new_value.like_count;
+                if (this.is_live_like_on) {
+                    this.like_count = new_value.like_count;
+                }
                 // 直播间状态更新
                 this.$emit('liveStatus', new_value.status);
             },
@@ -918,6 +962,9 @@
              * @param {Event} e - 输入确认事件对象
              */
             comment_input_confirm(e) {
+                if (!this.is_live_chat_on) {
+                    return;
+                }
                 const value = e.detail.value;
                 if (value != '') {
                     this.socket_send('message', e.detail.value);
@@ -932,6 +979,9 @@
              * 打开商品弹出框
              */
             add_goods() {
+                if (!this.is_live_goods_buy_on) {
+                    return;
+                }
                 this.$refs.popupGoodsRef.open();
             },
             //#endregion
@@ -945,7 +995,7 @@
                 const share_info = {
                     title: this.live_data.title,
                     desc: this.live_data.describe,
-                    path: "/pages/plugins/live/pull/pull",
+                    path: "/pages/plugins/live/detail/detail",
                     query: "id=" + this.live_data.id,
                     img: this.live_data.icon || "",
                 };
@@ -962,7 +1012,10 @@
              * @param {Event} e - 点击事件对象
              */
             like_click(e) {
-               this.$refs.likeButton.handleClick(e);
+                if (!this.is_live_like_on || !this.$refs.likeButton) {
+                    return;
+                }
+                this.$refs.likeButton.handleClick(e);
             },
             
             /**
@@ -970,6 +1023,9 @@
              * @param {Event} e - 点击事件对象
              */
             like_button_click(e) {
+                if (!this.is_live_like_on || !this.need_live_socket) {
+                    return;
+                }
                 // 临时存储点赞数量
                 this.casual_like_count++;
                 // 如果有点击，清除历史定时任务

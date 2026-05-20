@@ -112,8 +112,14 @@ export default {
 					if(e.state === 'end') {
 						this.touchType = null
 						
-						//上下
+						//上下滑动判断 - 添加最小滑动距离判断(小于10px不计入)
 						if(move==0&& this.distanceX==0&& Math.abs(e.deltaY)>this.startDistance){
+							// 如果滑动距离小于10px，不触发切换
+							if(Math.abs(e.deltaY) < 10) {
+								this.play_current_video_safely(this.index);
+								return;
+							}
+							
 							let newTime = new Date()
 							let quickMove = newTime.getTime() - this.oldTime.getTime() <= this.minTime ? true:false
 							
@@ -132,7 +138,14 @@ export default {
 							this.bindTiming(distance,e.deltaY,quickMove)
 						}
 					
+						//左右滑动判断 - 添加最小滑动距离判断(小于10px不计入)
 						if(move!=0&& move*this.distanceX<=0&& e.deltaX*this.distanceX<=0&& Math.abs(e.deltaX)>this.startDistance){
+							// 如果滑动距离小于10px，不触发切换
+							if(Math.abs(e.deltaX) < 10) {
+								this.play_current_video_safely(this.index);
+								return;
+							}
+							
 							const distance = this.distanceX + e.deltaX
 							
 							this.bindTimingX(distance,e.deltaX)
