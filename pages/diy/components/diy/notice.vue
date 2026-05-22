@@ -62,23 +62,12 @@
                         </template>
                         <!-- 非全部显示：滚动或单行省略 -->
                         <template v-else>
-                            <view v-if="marquee_scroll_on && marquee_display_text" class="news-marquee-scroll flex-1 flex-width" :style="marquee_content_height" :data-value="marquee_link_page" @tap="url_event">
+                            <view v-if="marquee_scroll_on && marquee_display_text" class="news-marquee-scroll flex-1 flex-width" :style="marquee_content_height" :data-value="marquee_link_page">
                                 <view class="news-marquee-scroll-box">
-                                    <text
-                                        :id="marquee_text_id"
-                                        class="news-marquee-scroll-text"
-                                        :class="{ 'news-marquee-scroll-text--run': marquee_scroll_running }"
-                                        :style="marquee_scroll_anim_style + marquee_body_text_style"
-                                    >{{ marquee_display_text }}</text>
+                                    <text :id="marquee_text_id" class="news-marquee-scroll-text" :class="{ 'news-marquee-scroll-text--run': marquee_scroll_running }" :style="marquee_scroll_anim_style + marquee_body_text_style">{{ marquee_display_text }}</text>
                                 </view>
                             </view>
-                            <view
-                                v-else-if="marquee_display_text"
-                                class="news-marquee-static flex-1 flex-width"
-                                :style="marquee_content_height"
-                                :data-value="marquee_link_page"
-                                @tap="url_event"
-                            >
+                            <view v-else-if="marquee_display_text" class="news-marquee-static flex-1 flex-width" :style="marquee_content_height" :data-value="marquee_link_page">
                                 <view class="news-marquee-static-text" :style="marquee_body_text_style">{{ marquee_display_text }}</view>
                             </view>
                         </template>

@@ -179,7 +179,7 @@
                                 <!-- #endif -->
                             </view>
                         </template>
-                        <template v-else-if="need_live_socket">
+                        <template v-else>
                             <view class="flex-1">
                                 <button class="bottom-actions-button cr-f size-14" type="primary"  style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
                             </view>
@@ -363,7 +363,6 @@
                 is_live_chat_on: false,
                 is_live_goods_buy_on: false,
                 is_live_like_on: false,
-                need_live_socket: false,
                 //#region 顶部返回和搜索
                 menu_button_info: '',
                 header_padding_left: '',
@@ -396,15 +395,6 @@
                         this.live_goods_explain_auto_close_time = new_value.live_goods_explain_auto_close_time;
                         // 直播提示语
                         this.live_tips = new_value?.live_tips || '';
-                        // 三项都关闭时不连接 socket
-                        if (!this.need_live_socket) {
-                            if (this.task != null) {
-                                this.socket_close();
-                            }
-                            this.is_socket_success = false;
-                            this.is_socket_error = false;
-                            return;
-                        }
                         // socket 地址更新
                         if (!isEmpty(new_value.socket_connect)) {
                             const { host, port, is_wss } = new_value.socket_connect;
@@ -468,7 +458,6 @@
                 this.is_live_chat_on = this.is_live_config_on(c.is_live_chat);
                 this.is_live_goods_buy_on = this.is_live_config_on(c.is_live_goods_buy);
                 this.is_live_like_on = this.is_live_config_on(c.is_live_like);
-                this.need_live_socket = this.is_live_chat_on || this.is_live_goods_buy_on || this.is_live_like_on;
                 this.live_feature_ready = true;
             },
             /**
@@ -625,9 +614,6 @@
              * @param {Boolean} is_manual - 是否手动连接
              */
             socket_connect(is_manual = false) {
-                if (!this.need_live_socket) {
-                    return;
-                }
                 // 一开始就设置为false，避免连接失败时，页面显示错误
                 this.is_socket_error = false;
                 this.is_socket_success = false;
@@ -1023,7 +1009,7 @@
              * @param {Event} e - 点击事件对象
              */
             like_button_click(e) {
-                if (!this.is_live_like_on || !this.need_live_socket) {
+                if (!this.is_live_like_on) {
                     return;
                 }
                 // 临时存储点赞数量
