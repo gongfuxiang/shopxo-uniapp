@@ -168,9 +168,9 @@
                 </view>
                 <!-- 底部交互区域 -->
                 <view class="flex-row align-c mt-5 pointer-events-auto pr">
-                    <template v-if="live_feature_ready && is_live_chat_on">
-                        <template v-if="is_socket_success">
-                            <view class="flex-1 bottom-actions-input">
+                    <template v-if="live_feature_ready">
+                        <view class="flex-1">
+                            <view v-if="is_live_chat_on && is_socket_success" class="bottom-actions-input">
                                 <!-- #ifdef APP-NVUE -->
                                 <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:14px" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                                 <!-- #endif -->
@@ -178,22 +178,21 @@
                                 <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:28rpx" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                                 <!-- #endif -->
                             </view>
-                        </template>
-                        <template v-else>
-                            <view class="flex-1">
-                                <button class="bottom-actions-button cr-f size-14" type="primary"  style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
+                            <view v-else-if="!is_socket_success" class="flex-1">
+                                <button class="bottom-actions-button cr-f size-14" type="primary" style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
                             </view>
-                        </template>
-                    </template>
-                    <view v-else-if="live_feature_ready && (is_live_goods_buy_on || is_live_like_on)" class="flex-1"></view>
-                    <view v-if="live_feature_ready && is_live_goods_buy_on" class="bottom-actions-icon" @tap="add_goods">
-                        <u-icon propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></u-icon>
-                    </view>
-                    <component-like-button v-if="live_feature_ready && is_live_like_on" ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
-                        <view class="bottom-actions-icon">
-                            <u-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></u-icon>
+                            <view v-else class="bottom-actions-input-placeholder"></view>
                         </view>
-                    </component-like-button>
+                        <view class="bottom-actions-icon" :class="!is_live_goods_buy_on ? 'bottom-actions-icon-placeholder' : ''" @tap="add_goods">
+                            <u-icon v-if="is_live_goods_buy_on" propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></u-icon>
+                        </view>
+                        <component-like-button v-if="is_live_like_on" ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
+                            <view class="bottom-actions-icon">
+                                <u-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></u-icon>
+                            </view>
+                        </component-like-button>
+                        <view v-else class="bottom-actions-icon bottom-actions-icon-placeholder"></view>
+                    </template>
                     <view class="bottom-actions-icon" @tap="share_event">
                         <u-icon propName="share-solid" propColor="#fff" propSize="32rpx"></u-icon>
                     </view>
@@ -347,6 +346,8 @@
                 listener_height: 0,
                 //#endregion
                 reconnect_count: 0,
+                is_socket_closing: false,
+                socket_reconnect_timer: null,
                 // socket连接错误
                 is_socket_error: false,
                 socket_error_content: '连接失败点击重试',
@@ -402,9 +403,7 @@
                             const url = `${protocol}://${host}:${port}`;
 
                             if (url != this.live_websocket_url) {
-                                if (this.task != null) {
-                                    this.socket_close();
-                                }
+                                this.socket_close();
                                 this.live_websocket_url = url;
                                 this.socket_connect();
                             } else if (this.task == null) {
@@ -475,8 +474,6 @@
                 // 如果有胶囊的时候，做处理
                 if (is_current_single_page == 0) {
                     const custom = uni.getMenuButtonBoundingClientRect();
-                    console.log(custom);
-                    
                     this.menu_button_info = `max-width:calc(100% - ${custom.width + 10}px);`;
                     this.header_style = `padding-top: ${custom.top + custom.height}px;`;
                 }
@@ -601,6 +598,31 @@
                 // 连接socket
                 this.socket_connect();
             },
+            clear_socket_reconnect_timer() {
+                if (this.socket_reconnect_timer != null) {
+                    clearTimeout(this.socket_reconnect_timer);
+                    this.socket_reconnect_timer = null;
+                }
+            },
+            schedule_socket_reconnect() {
+                if (this.socket_reconnect_timer != null) {
+                    return;
+                }
+                if ((this.reconnect_count + 1) >= 30) {
+                    this.is_socket_error = false;
+                    this.reconnect_count = 0;
+                    this.socket_error_content = '连接失败点击重试';
+                    return;
+                }
+                this.is_socket_error = true;
+                this.is_socket_success = false;
+                this.socket_error_content = `第${this.reconnect_count + 1}次连接失败`;
+                this.socket_reconnect_timer = setTimeout(() => {
+                    this.socket_reconnect_timer = null;
+                    this.reconnect_count++;
+                    this.socket_connect();
+                }, 2000);
+            },
             /**
              * 手动连接WebSocket
              */
@@ -614,10 +636,18 @@
              * @param {Boolean} is_manual - 是否手动连接
              */
             socket_connect(is_manual = false) {
-                // 一开始就设置为false，避免连接失败时，页面显示错误
+                this.clear_socket_reconnect_timer();
+                if (this.task != null) {
+                    this.is_socket_closing = true;
+                    this.task.close();
+                    this.task = null;
+                }
+                if (is_manual) {
+                    this.reconnect_count = 0;
+                }
+                this.is_socket_closing = false;
                 this.is_socket_error = false;
                 this.is_socket_success = false;
-                // 第一次连接时显示连接中...
                 if (this.reconnect_count == 0) {
                     this.socket_error_content = '连接中...';
                 } else {
@@ -632,43 +662,32 @@
                     complete: () => {}
                 });
             
-                // 连接打开事件
                 this.task.onOpen((res) => {
-                    // 连接成功后重置重连计数
                     this.reconnect_count = 0;
                     this.is_socket_success = true;
+                    this.is_socket_error = false;
                 });
                 
                 this.task.onMessage((res) => {
                     this.socket_message_back_handle(res);
                 });
                 this.task.onClose((res) => {
-                    this.is_socket_error = true;
-                    // 尝试重连，最多30次
-                    if ((this.reconnect_count + 1) < 30) {
-                        const _this = this;
-                        setTimeout(() => {
-                            _this.is_socket_error = true;
-                            _this.socket_error_content = `第${_this.reconnect_count + 1}次连接失败`;
-                            console.log(`聊天第${_this.reconnect_count + 1}次连接失败`);
-                            setTimeout(() => {
-                                // 增加重连计数
-                                _this.reconnect_count++;
-                                _this.socket_connect();
-                                console.log(`聊天第${_this.reconnect_count + 1}次连接`);
-                            }, 1000); // 逐步增加重连间隔，最大10秒
-                        }, 1000); // 逐步增加重连间隔，最大10秒
-                    } else {
+                    if (this.is_socket_closing) {
+                        this.is_socket_closing = false;
+                        return;
+                    }
+                    this.is_socket_success = false;
+                    this.schedule_socket_reconnect();
+                });
+                this.task.onError((res) => {
+                    this.is_socket_success = false;
+                    if ((this.reconnect_count + 1) >= 30) {
                         this.is_socket_error = false;
                         this.reconnect_count = 0;
                         this.socket_error_content = '连接失败点击重试';
+                    } else if (!this.is_socket_closing) {
+                        this.schedule_socket_reconnect();
                     }
-                });
-                this.task.onError((res) => {
-                    this.socket_close();
-                    this.is_socket_error = false;
-                    this.reconnect_count = 0;
-                    this.socket_error_content = `连接失败点击重试`;
                     if (is_manual) {
                         uni.showModal({
                             title: '提示',
@@ -678,8 +697,10 @@
                     }
                 });
             },
-            socket_close() { 
+            socket_close() {
+                this.clear_socket_reconnect_timer();
                 if (this.task != null) {
+                    this.is_socket_closing = true;
                     this.task.close();
                     this.task = null;
                 }
@@ -1189,6 +1210,15 @@
     align-items: center;
     justify-content: center;
     margin-left: 20rpx;
+}
+.bottom-actions-icon-placeholder {
+    visibility: hidden;
+    pointer-events: none;
+}
+.bottom-actions-input-placeholder {
+    min-height: 72rpx;
+    visibility: hidden;
+    pointer-events: none;
 }
 .keyboard-input {
     position: fixed;
