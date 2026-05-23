@@ -41,7 +41,6 @@ export default {
             is_live_chat_on: false,
             is_live_goods_buy_on: false,
             is_live_like_on: false,
-            need_live_socket: false,
         }
     },
 
@@ -119,7 +118,6 @@ export default {
             this.is_live_chat_on = this.is_live_config_on(c.is_live_chat);
             this.is_live_goods_buy_on = this.is_live_config_on(c.is_live_goods_buy);
             this.is_live_like_on = this.is_live_config_on(c.is_live_like);
-            this.need_live_socket = this.is_live_chat_on || this.is_live_goods_buy_on || this.is_live_like_on;
             this.live_feature_ready = true;
         },
         /**
