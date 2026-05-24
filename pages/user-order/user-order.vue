@@ -70,7 +70,8 @@
                                     (item.plugins_delivery_data || 0) +
                                     (item.plugins_ordergoodsform_data || 0) +
                                     (item.plugins_orderresources_data || 0) +
-                                    (item.plugins_is_orderfeed_button || 0)
+                                    (item.plugins_is_orderfeed_button || 0) +
+                                    (item.plugins_is_groupbuy_team_button || 0)
                                  > 0 ) ||
                                 (item.status == 2 && item.order_model != 2) ||
                                 ((item.plugins_express_data || 0) == 1 && (item.express_data || null) != null) ||
@@ -91,6 +92,7 @@
                             <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">{{$t('user-order.user-order.9l47b6')}}</button>
                             <button v-if="(item.plugins_orderresources_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderresources/orderannex/orderannex?oid=' + item.id" hover-class="none">{{$t('user-order.user-order.fyuikn')}}</button>
                             <button v-if="(item.plugins_is_orderfeed_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderfeed/form/form?oid=' + item.id" hover-class="none">{{$t('common.feed_text')}}</button>
+                            <button v-if="(item.plugins_is_groupbuy_team_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="item.plugins_groupbuy_team_url" hover-class="none">{{$t('pages.plugins-groupbuy-team')}}</button>
                             <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
                         </view>
                     </view>

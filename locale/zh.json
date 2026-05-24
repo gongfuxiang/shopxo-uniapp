@@ -365,7 +365,11 @@
         "plugins-orderfeed-form": "反馈数据",
         "plugins-presale-index": "预售",
         "plugins-presale-buy": "订单确认",
-        "plugins-presale-order": "预售订单"
+        "plugins-presale-order": "预售订单",
+        "plugins-groupbuy-index": "拼团",
+        "plugins-groupbuy-detail": "拼团详情",
+        "plugins-groupbuy-team": "参团",
+        "plugins-groupbuy-order": "我的拼团"
 	},
 	"login": {
 		"login": {
@@ -2036,5 +2040,10 @@
             "fsdf33": "请选择具体的类型",
             "98yyuf": "请输入您的精彩评论"
     	}
+    },
+    "plugins-groupbuy-order": {
+        "order": {
+            "gbo001": "请输入拼团单号"
+        }
     }
 }

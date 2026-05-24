@@ -2240,6 +2240,46 @@
             ]
         },
         {
+            "root": "pages/plugins/groupbuy",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "team/team",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "order/order",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/presale",
             "pages": [
                 {

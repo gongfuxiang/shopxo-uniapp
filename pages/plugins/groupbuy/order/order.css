@@ -1,0 +1,19 @@
+.goods-cover {
+    width: 140rpx;
+    height: 140rpx;
+}
+
+.groupbuy-order-nav.nav-base {
+    height: auto;
+    line-height: normal;
+    padding-bottom: 10rpx;
+}
+
+.groupbuy-order-nav .item {
+    display: inline-block;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0 28rpx;
+    white-space: nowrap;
+}
+

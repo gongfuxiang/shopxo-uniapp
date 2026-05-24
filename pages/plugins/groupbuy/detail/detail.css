@@ -1,0 +1,133 @@
+.goods-photo-swiper-wrap,
+.goods-photo-swiper-dot,
+.goods-photo-swiper {
+    height: 750rpx;
+}
+.goods-photo-swiper-wrap {
+    position: relative;
+}
+.goods-photo-image {
+    width: 100%;
+    height: 750rpx;
+}
+
+/* 相册下方拼团价/成团信息全宽；仅约 20px 压到相册上 */
+.groupbuy-detail-hero {
+    position: relative;
+}
+.groupbuy-detail-head-float {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-top: -40rpx;
+}
+.groupbuy-detail-hero-no-photo .groupbuy-detail-head-float {
+    margin-top: 0;
+}
+.groupbuy-detail-price-header {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+    padding: 32rpx 24rpx 56rpx;
+    box-sizing: border-box;
+    border-radius: 32rpx 32rpx 0 0;
+}
+.groupbuy-detail-info-card {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: -48rpx;
+    padding: 24rpx;
+    border-radius: 32rpx 32rpx 0 0;
+}
+.groupbuy-detail-price-value {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    line-height: 1.2;
+}
+.groupbuy-detail-original-price {
+    margin-left: 12rpx;
+    text-decoration: line-through;
+    opacity: 0.85;
+}
+.groupbuy-detail-team-tag {
+    flex-shrink: 0;
+    line-height: 1.4;
+    white-space: nowrap;
+    border-radius: 32rpx 0 32rpx 0;
+}
+.groupbuy-detail-status-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.groupbuy-detail-status-item {
+    flex: 1;
+    width: 0;
+    box-sizing: border-box;
+    position: relative;
+    white-space: nowrap;
+}
+.groupbuy-detail-status-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1rpx;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.groupbuy-detail-spec-row {
+    padding: 20rpx 24rpx;
+}
+.groupbuy-detail-spec-label {
+    flex-shrink: 0;
+}
+.groupbuy-detail-spec-value {
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-end;
+    margin-left: 24rpx;
+}
+.groupbuy-detail-spec-text {
+    max-width: 480rpx;
+    text-align: right;
+}
+.groupbuy-detail-spec-arrow {
+    flex-shrink: 0;
+    margin-left: 8rpx;
+}
+
+.goods-detail .groupbuy-detail-goods-title {
+    padding: 24rpx 24rpx 0;
+}
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+.groupbuy-detail-buy-nav-left {
+    flex-shrink: 0;
+    gap: 28rpx;
+    margin-right: 8rpx;
+}
+.groupbuy-detail-nav-item {
+    min-width: 72rpx;
+}
+.groupbuy-detail-nav-icon {
+    width: 40rpx;
+    height: 40rpx;
+    display: block;
+    margin: 0 auto;
+}
+.page-bottom-fixed {
+    padding-bottom: 120rpx;
+}

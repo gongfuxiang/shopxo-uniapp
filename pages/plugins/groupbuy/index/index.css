@@ -1,0 +1,75 @@
+.groupbuy-index-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-top: 16rpx;
+    padding-bottom: 24rpx;
+}
+
+/* 商品横排列表 */
+.groupbuy-goods-list {
+    margin-top: 0;
+}
+.groupbuy-goods-card {
+    position: relative;
+    padding: 24rpx;
+    box-sizing: border-box;
+}
+.groupbuy-goods-main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.groupbuy-goods-image-wrap {
+    flex-shrink: 0;
+    width: 200rpx;
+    height: 200rpx;
+    overflow: hidden;
+}
+.groupbuy-goods-image {
+    width: 200rpx;
+    height: 200rpx;
+    display: block;
+}
+.groupbuy-goods-body {
+    flex: 1;
+    min-width: 0;
+    margin-left: 24rpx;
+    box-sizing: border-box;
+}
+.groupbuy-goods-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 12rpx;
+    gap: 12rpx;
+}
+.groupbuy-tag {
+    display: inline-block;
+    line-height: 32rpx;
+}
+.groupbuy-goods-price-row {
+    margin-top: 16rpx;
+}
+.groupbuy-goods-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.groupbuy-current-price {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    line-height: 1.2;
+}
+.groupbuy-goods-btn {
+    position: absolute;
+    right: 24rpx;
+    bottom: 24rpx;
+    z-index: 2;
+    padding: 0 32rpx;
+    height: 56rpx;
+    line-height: 56rpx;
+    white-space: nowrap;
+}

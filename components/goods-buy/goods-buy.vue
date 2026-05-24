@@ -79,6 +79,8 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 params: {},
+                // init 传入的 data_params，合并到下单页 data
+                buy_data_params: {},
                 back_data: {},
                 popup_status: false,
                 goods_spec_base_price: 0,
@@ -100,6 +102,8 @@
                 goods_cover_class: '',
                 is_exist_many_spec: false,
                 spec_confirm_btn_disabled_status: true,
+                // 弹窗打开时的默认价格库存（未选完规格时恢复展示）
+                default_spec_display: null,
                 // 选中规格临时定时变量
                 spec_selected_timer: null,
                 spec_selected_timerout: null,
@@ -127,17 +131,68 @@
                 type: Number,
                 default: 100,
             },
+            // 插件名称（拼团等规格接口走插件）
+            propPluginsName: {
+                type: String,
+                default: '',
+            },
         },
 
         created: function () {},
 
         methods: {
+            // 合并下单页扩展参数（init 传入 data_params）
+            buy_data_extend_merge(data) {
+                var extend = this.buy_data_params || {};
+                var reserve_keys = { buy_type: 1, goods_data: 1 };
+                for (var key in extend) {
+                    if (reserve_keys[key] == 1) {
+                        continue;
+                    }
+                    if (extend[key] !== undefined && extend[key] !== null) {
+                        data[key] = extend[key];
+                    }
+                }
+                return data;
+            },
+
+            // 规格/库存接口请求参数（拼团插件 id 为拼团活动 id）
+            get_spec_request_data(extend) {
+                extend = extend || {};
+                var plugins = this.params.plugins_name || this.propPluginsName || '';
+                var data = {};
+                if (plugins == 'groupbuy') {
+                    data.id = parseInt(this.params.id || 0);
+                } else {
+                    data.id = this.goods.id;
+                }
+                for (var key in extend) {
+                    if (extend[key] !== undefined && extend[key] !== null) {
+                        data[key] = extend[key];
+                    }
+                }
+                return data;
+            },
+
+            // 规格接口地址
+            get_goods_spec_request_url(action) {
+                var plugins = this.params.plugins_name || this.propPluginsName || '';
+                if(plugins != '')
+                {
+                    return app.globalData.get_request_url(action, 'goods', plugins);
+                }
+                return app.globalData.get_request_url(action, 'goods');
+            },
+
             // 初始化
             init(goods = {}, params = {}, back_data = null) {
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
                 params = params || {};
+                var buy_data_params = params.data_params || {};
+                var init_params = Object.assign({}, params);
+                delete init_params.data_params;
 
                 // 状态默认开启弹窗
                 var status = true;
@@ -147,12 +202,12 @@
                 var is_exist_many_spec = parseInt(goods.is_exist_many_spec || 0) == 1 && goods_spec_choose.length > 0;
                 // 无规格是否直接操作
                 var is_direct_cart = 0;
-                if ((params.is_direct_cart || 0) == 1 && !is_exist_many_spec) {
+                if ((init_params.is_direct_cart || 0) == 1 && !is_exist_many_spec) {
                     status = false;
                     is_direct_cart = 1;
                 }
                 // 是否成功提示、默认提示
-                var is_success_tips = params.is_success_tips == undefined ? 1 : params.is_success_tips || 0;
+                var is_success_tips = init_params.is_success_tips == undefined ? 1 : init_params.is_success_tips || 0;
                 // 直接加购、并且用户已经存在购物车则依次+1
                 if (is_direct_cart == 1 && parseInt(goods.user_cart_count || 0) > 0) {
                     var buy_number = 1;
@@ -162,7 +217,7 @@
 
                 // 购买按钮处理，仅展示购买和购物车
                 var opt_button = [];
-                var buy_button = params.buy_button || null;
+                var buy_button = init_params.buy_button || null;
                 if (buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
                     var arr = ['buy', 'cart', 'show'];
                     for (var i in buy_button.data) {
@@ -175,12 +230,24 @@
                 // 商品封面尺寸类型
                 var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
 
+                // 默认价格库存快照（未选完多层规格时恢复）
+                var default_spec_display = {
+                    price: goods.price,
+                    original_price: goods.original_price || 0,
+                    inventory: goods.inventory,
+                    inventory_unit: goods.inventory_unit,
+                    show_price_unit: goods.show_price_unit,
+                    show_original_price_unit: goods.show_original_price_unit,
+                };
+
                 // 设置数据
                 this.setData({
                     popup_status: status,
-                    params: params || {},
+                    params: init_params || {},
+                    buy_data_params: buy_data_params,
                     back_data: back_data,
                     goods: goods || {},
+                    default_spec_display: default_spec_display,
                     goods_spec_choose: goods_spec_choose,
                     goods_spec_base_price: goods.price,
                     goods_spec_base_original_price: goods.original_price || 0,
@@ -189,7 +256,7 @@
                     goods_show_price_unit: goods.show_price_unit,
                     goods_show_original_price_unit: goods.show_original_price_unit,
                     buy_number: buy_number,
-                    buy_event_type: params.buy_event_type || 'cart',
+                    buy_event_type: init_params.buy_event_type || 'cart',
                     opt_button: opt_button,
                     is_direct_cart: is_direct_cart,
                     is_success_tips: is_success_tips,
@@ -205,7 +272,7 @@
                 }
 
                 // 初始化不能选择规格处理
-                var is_init = (params.is_init === undefined || parseInt(params.is_init) == 1);
+                var is_init = (init_params.is_init === undefined || parseInt(init_params.is_init) == 1);
                 this.spec_handle_dont(is_init ? 0 : null);
 
                 // 获取规格详情
@@ -248,126 +315,117 @@
                 }
             },
 
+            // 清除自动选规格定时器
+            clear_spec_selected_timer() {
+                clearInterval(this.spec_selected_timer);
+                clearTimeout(this.spec_selected_timerout);
+                this.setData({
+                    spec_selected_timer: null,
+                    spec_selected_timerout: null,
+                });
+            },
+
+            // 未选完规格时恢复默认价格库存
+            restore_default_spec_display() {
+                var display = this.default_spec_display || null;
+                var goods = this.goods || {};
+                if (display == null) {
+                    display = {
+                        price: goods.price,
+                        original_price: goods.original_price || 0,
+                        inventory: goods.inventory,
+                        inventory_unit: goods.inventory_unit,
+                        show_price_unit: goods.show_price_unit,
+                        show_original_price_unit: goods.show_original_price_unit,
+                    };
+                }
+                var buy_number = parseInt(this.buy_number);
+                var buy_min_number = parseInt(goods.buy_min_number || 1);
+                var buy_max_number = parseInt(goods.buy_max_number || 0);
+                if (buy_number < buy_min_number) {
+                    buy_number = buy_min_number;
+                }
+                if (buy_max_number > 0 && buy_number > buy_max_number) {
+                    buy_number = buy_max_number;
+                }
+                this.setData({
+                    goods_spec_base_price: display.price,
+                    goods_spec_base_original_price: display.original_price,
+                    goods_spec_base_inventory: display.inventory,
+                    goods_spec_base_inventory_unit: display.inventory_unit,
+                    goods_show_price_unit: display.show_price_unit,
+                    goods_show_original_price_unit: display.show_original_price_unit,
+                    goods_spec_base_buy_min_number: 0,
+                    goods_spec_base_buy_max_number: 0,
+                    buy_number: buy_number,
+                    spec_confirm_btn_disabled_status: this.is_exist_many_spec,
+                });
+                this.$emit('BackReleaseEvent');
+            },
+
+            // 自动选中下一层规格（无法继续时停止并恢复默认展示）
+            auto_select_spec_interval_handle(spec_choose, sku_count, match_name_callback) {
+                var self = this;
+                self.clear_spec_selected_timer();
+                var num = 0;
+                var timer = setInterval(function () {
+                    for (var i in spec_choose) {
+                        var active =
+                            spec_choose[i]['value']
+                                .map(function (v) {
+                                    return v.is_active;
+                                })
+                                .join('') || null;
+                        if (active == null) {
+                            self.spec_handle_dont(i);
+                            var status = false;
+                            for (var k in spec_choose[i]['value']) {
+                                if (!status && (spec_choose[i]['value'][k]['is_disabled'] || null) == null && (spec_choose[i]['value'][k]['is_dont'] || null) == null && match_name_callback(spec_choose, i, k)) {
+                                    self.goods_spec_choice_handle(i, k);
+                                    status = true;
+                                    num++;
+                                }
+                            }
+                            if (!status) {
+                                self.clear_spec_selected_timer();
+                                self.restore_default_spec_display();
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                    if (num >= sku_count) {
+                        self.clear_spec_selected_timer();
+                    }
+                }, 100);
+                var timerout = setTimeout(function () {
+                    self.clear_spec_selected_timer();
+                    self.restore_default_spec_display();
+                }, 20000);
+                self.setData({
+                    spec_selected_timer: timer,
+                    spec_selected_timerout: timerout,
+                });
+            },
+
             // 指定规格初始化
             appoint_selected_spec_handle(spec_choose, spec) {
                 spec = decodeURIComponent(spec).split('|');
                 if (spec.length == spec_choose.length) {
-                    // 选择处理
-                    var self = this;
-                    // 销毁之前的任务
-                    clearInterval(self.spec_selected_timer);
-                    clearInterval(self.spec_selected_timerout);
-                    // 必须存在购买和加入购物车任意一个、规格必须多个
                     var sku_count = app.globalData.get_length(spec_choose);
-                    // 先清除价格展示信息
-                    self.setData({
-                        goods_spec_base_price: '...',
-                        goods_spec_base_original_price: '...',
-                    });
-                    var num = 0;
-                    var timer = setInterval(function () {
-                        for (var i in spec_choose) {
-                            // 清除价格展示信息、避免获取价格类型赋值
-                            self.setData({
-                                goods_spec_base_price: '...',
-                                goods_spec_base_original_price: '...',
-                            });
-                            // 必须不存在已选择项
-                            var active =
-                                spec_choose[i]['value']
-                                    .map(function (v) {
-                                        return v.is_active;
-                                    })
-                                    .join('') || null;
-                            if (active == null) {
-                                // 不能选择规格处理
-                                self.spec_handle_dont(i);
-
-                                // 规格选择处理
-                                var temp_spec = spec[i];
-                                var status = false;
-                                for (var k in spec_choose[i]['value']) {
-                                    // 必须是可选和未选
-                                    if (!status && (spec_choose[i]['value'][k]['is_disabled'] || null) == null && (spec_choose[i]['value'][k]['is_dont'] || null) == null && temp_spec == spec_choose[i]['value'][k]['name']) {
-                                        self.goods_spec_choice_handle(i, k);
-                                        status = true;
-                                        num++;
-                                    }
-                                }
-                            }
-                        }
-                        if (num >= sku_count) {
-                            clearInterval(self.spec_selected_timer);
-                        }
-                    }, 100);
-                    var timerout = setTimeout(function () {
-                        clearInterval(self.spec_selected_timerout);
-                    }, 20000);
-                    self.setData({
-                        spec_selected_timer: timer,
-                        spec_selected_timerout: timerout,
+                    this.auto_select_spec_interval_handle(spec_choose, sku_count, function (spec_choose, i, k) {
+                        return spec[i] == spec_choose[i]['value'][k]['name'];
                     });
                 }
             },
 
             // 默认选中第一个规格 - 智能工具箱插件
             plugins_intellectstools_selected_spec_handle(spec_choose) {
-                // 选择处理
-                var self = this;
-                // 销毁之前的任务
-                clearInterval(self.spec_selected_timer);
-                clearInterval(self.spec_selected_timerout);
-                // 读取智能工具插件配置、是否开启
-                var config = self.plugins_intellectstools_config || null;
+                var config = this.plugins_intellectstools_config || null;
                 if (config != null && (config.is_goods_detail_selected_first_spec || 0) == 1) {
-                    // 必须存在购买和加入购物车任意一个、规格必须多个
                     var sku_count = app.globalData.get_length(spec_choose);
-                    // 先清除价格展示信息
-                    self.setData({
-                        goods_spec_base_price: '...',
-                        goods_spec_base_original_price: '...',
-                    });
-                    var num = 0;
-                    var timer = setInterval(function () {
-                        for (var i in spec_choose) {
-                            // 清除价格展示信息、避免获取价格类型赋值
-                            self.setData({
-                                goods_spec_base_price: '...',
-                                goods_spec_base_original_price: '...',
-                            });
-                            // 必须不存在已选择项
-                            var active =
-                                spec_choose[i]['value']
-                                    .map(function (v) {
-                                        return v.is_active;
-                                    })
-                                    .join('') || null;
-                            if (active == null) {
-                                // 不能选择规格处理
-                                self.spec_handle_dont(i);
-
-                                // 规格选择处理
-                                var status = false;
-                                for (var k in spec_choose[i]['value']) {
-                                    // 必须是可选和未选
-                                    if (!status && (spec_choose[i]['value'][k]['is_disabled'] || null) == null && (spec_choose[i]['value'][k]['is_dont'] || null) == null) {
-                                        self.goods_spec_choice_handle(i, k);
-                                        status = true;
-                                        num++;
-                                    }
-                                }
-                            }
-                        }
-                        if (num >= sku_count) {
-                            clearInterval(self.spec_selected_timer);
-                        }
-                    }, 100);
-                    var timerout = setTimeout(function () {
-                        clearInterval(self.spec_selected_timerout);
-                    }, 20000);
-                    self.setData({
-                        spec_selected_timer: timer,
-                        spec_selected_timerout: timerout,
+                    this.auto_select_spec_interval_handle(spec_choose, sku_count, function () {
+                        return true;
                     });
                 }
             },
@@ -448,11 +506,11 @@
                 }
 
                 // 获取数据
-                var data = this.params;
-                data['id'] = this.goods.id;
-                data['spec'] = JSON.stringify(spec);
+                var data = this.get_spec_request_data({
+                    spec: JSON.stringify(spec),
+                });
                 uni.request({
-                    url: app.globalData.get_request_url('spectype', 'goods'),
+                    url: this.get_goods_spec_request_url('spectype'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
@@ -485,6 +543,11 @@
                                 this.setData({
                                     goods_spec_choose: temp_spec,
                                 });
+                                // 下一层无可选规格时，保持弹窗顶部默认价格库存
+                                var selected_spec = this.goods_selected_spec();
+                                if (selected_spec.length > 0 && selected_spec.length < sku_count && spec_type.length <= 0) {
+                                    this.restore_default_spec_display();
+                                }
                             }
                         } else {
                             app.globalData.showToast(res.data.msg);
@@ -523,39 +586,17 @@
                 var sku_count = this.goods_spec_choose.length;
                 var active_count = spec.length;
                 if (spec.length <= 0 || active_count < sku_count) {
-                    var buy_number = parseInt(this.buy_number);
-                    var buy_min_number = parseInt(this.goods.buy_min_number || 1);
-                    var buy_max_number = parseInt(this.goods.buy_max_number || 0);
-                    if (buy_number < buy_min_number) {
-                        buy_number = buy_min_number;
-                    }
-                    if (buy_max_number > 0 && buy_number > buy_max_number) {
-                        buy_number = buy_max_number;
-                    }
-                    this.setData({
-                        goods_spec_base_price: this.goods.price,
-                        goods_spec_base_original_price: this.goods.original_price || 0,
-                        goods_spec_base_inventory: this.goods.inventory,
-                        goods_spec_base_inventory_unit: this.goods.inventory_unit,
-                        goods_show_price_unit: this.goods.show_price_unit,
-                        goods_show_original_price_unit: this.goods.show_original_price_unit,
-                        goods_spec_base_buy_min_number: 0,
-                        goods_spec_base_buy_max_number: 0,
-                        buy_number: buy_number,
-                        spec_confirm_btn_disabled_status: this.is_exist_many_spec,
-                    });
-                    // 释放-调用父级
-                    this.$emit("BackReleaseEvent");
+                    this.restore_default_spec_display();
                     return false;
                 }
 
                 // 获取数据
-                var data = this.params;
-                data['id'] = this.goods.id;
-                data['spec'] = JSON.stringify(spec);
-                data['stock'] = this.buy_number;
+                var data = this.get_spec_request_data({
+                    spec: JSON.stringify(spec),
+                    stock: this.buy_number,
+                });
                 uni.request({
-                    url: app.globalData.get_request_url('specdetail', 'goods'),
+                    url: this.get_goods_spec_request_url('specdetail'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
@@ -564,10 +605,12 @@
                             this.goods_spec_detail_back_handle(res.data.data);
                         } else {
                             app.globalData.showToast(res.data.msg);
+                            this.restore_default_spec_display();
                         }
                     },
                     fail: () => {
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        this.restore_default_spec_display();
                     },
                 });
             },
@@ -727,12 +770,12 @@
                     }
 
                     // 获取数据
-                    var data = this.params;
-                    data['id'] = this.goods.id;
-                    data['spec'] = spec;
-                    data['stock'] = this.buy_number;
+                    var data = this.get_spec_request_data({
+                        spec: spec,
+                        stock: this.buy_number,
+                    });
                     uni.request({
-                        url: app.globalData.get_request_url('stock', 'goods'),
+                        url: this.get_goods_spec_request_url('stock'),
                         method: 'POST',
                         data: data,
                         dataType: 'json',
@@ -803,29 +846,30 @@
                         // 购买
                         case 'buy':
                             // 进入订单确认页面
+                            var goods_item = {
+                                goods_id: this.goods.id,
+                                stock: this.buy_number,
+                                spec: spec,
+                            };
                             var data = {
                                 buy_type: 'goods',
                                 goods_data: encodeURIComponent(
                                     base64.encode(
                                         JSON.stringify([
-                                            {
-                                                goods_id: this.goods.id,
-                                                stock: this.buy_number,
-                                                spec: spec,
-                                            },
+                                            goods_item,
                                         ])
                                     )
                                 )
                             };
-                            // 转换数据
-                            var data_params = encodeURIComponent(base64.encode(JSON.stringify(data)));
+                            this.buy_data_extend_merge(data);
+                            var buy_query_data = encodeURIComponent(base64.encode(JSON.stringify(data)));
 
                             // 购买链接、默认系统购买页面
                             if(buylink == null) {
                                 buylink = '/pages/buy/buy';
                             }
                             // 进去订单确认页面
-                            app.globalData.url_open(buylink+'?data=' + data_params);
+                            app.globalData.url_open(buylink+'?data=' + buy_query_data);
 
                             // 关闭弹窗
                             this.popup_close_event();

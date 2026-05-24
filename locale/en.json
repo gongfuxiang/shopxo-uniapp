@@ -367,7 +367,11 @@
         "plugins-orderfeed-form": "Feed Data",
         "plugins-presale-index": "Presale",
         "plugins-presale-buy": "Order Confirmation",
-        "plugins-presale-order": "Presale order"
+        "plugins-presale-order": "Presale order",
+        "plugins-groupbuy-index": "Group buy",
+        "plugins-groupbuy-detail": "Group buy details",
+        "plugins-groupbuy-team": "Join group",
+        "plugins-groupbuy-order": "My group buy"
 	},
 	"login": {
 		"login": {
@@ -2053,5 +2057,10 @@
             "fsdf33": "Please choose a specific type",
             "98yyuf": "Please enter your wonderful comment"
     	}
+    },
+    "plugins-groupbuy-order": {
+        "order": {
+            "gbo001": "Enter group buy order no."
+        }
     }
 }

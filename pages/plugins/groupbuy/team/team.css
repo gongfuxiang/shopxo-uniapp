@@ -1,0 +1,142 @@
+.team-goods-image {
+    width: 180rpx;
+    height: 180rpx;
+}
+.groupbuy-tag {
+    display: inline-block;
+}
+.team-members .member-item {
+    width: 120rpx;
+    margin: 0 16rpx 20rpx;
+    position: relative;
+}
+.member-avatar {
+    width: 96rpx;
+    height: 96rpx;
+}
+.member-empty {
+    width: 96rpx;
+    height: 96rpx;
+    line-height: 96rpx;
+    text-align: center;
+    margin: 0 auto;
+}
+.leader-badge {
+    position: absolute;
+    top: 70rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+/* 拼团成功：喜庆背景（对齐 PC 参团页） */
+.team-status-panel-success {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #ffd4b8 0%, #ffe8d6 28%, #fff3eb 55%, #fffaf6 100%);
+}
+.team-status-panel-success::before,
+.team-status-panel-success::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.team-status-panel-success::before {
+    width: 200rpx;
+    height: 200rpx;
+    top: -70rpx;
+    right: -50rpx;
+    background: radial-gradient(circle, rgba(255, 152, 64, 0.45) 0%, rgba(255, 183, 77, 0) 70%);
+}
+.team-status-panel-success::after {
+    width: 160rpx;
+    height: 160rpx;
+    bottom: -50rpx;
+    left: -40rpx;
+    background: radial-gradient(circle, rgba(229, 77, 66, 0.18) 0%, rgba(229, 77, 66, 0) 70%);
+}
+.team-status-success {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+.team-success-visual {
+    margin-bottom: 16rpx;
+}
+.team-success-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 112rpx;
+    height: 112rpx;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7043 0%, #e54d42 55%, #d84315 100%);
+    box-shadow: 0 8rpx 24rpx rgba(229, 77, 66, 0.35);
+}
+.team-success-spark {
+    position: absolute;
+    border-radius: 50%;
+    background: #ffb74d;
+    opacity: 0.85;
+}
+.team-success-spark-1 {
+    width: 10rpx;
+    height: 10rpx;
+    top: 4rpx;
+    right: 8rpx;
+}
+.team-success-spark-2 {
+    width: 14rpx;
+    height: 14rpx;
+    bottom: 12rpx;
+    left: -4rpx;
+    background: #ffb74d;
+}
+.team-success-spark-3 {
+    width: 8rpx;
+    height: 8rpx;
+    top: 24rpx;
+    left: 16rpx;
+    background: #ff8a65;
+}
+.team-success-title {
+    margin-bottom: 8rpx;
+    font-size: 40rpx;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 2rpx;
+    color: #e54d42;
+}
+.team-success-desc {
+    margin-bottom: 16rpx;
+    line-height: 1.5;
+}
+.team-success-tags {
+    gap: 12rpx;
+}
+.team-success-tag {
+    display: inline-block;
+    padding: 4rpx 18rpx;
+    font-size: 24rpx;
+    line-height: 36rpx;
+    color: #e54d42;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 100rpx;
+}
+
+/* 拼团失败 */
+.team-status-fail {
+    width: 100%;
+}
+.team-fail-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 88rpx;
+    height: 88rpx;
+    margin-bottom: 12rpx;
+    border-radius: 50%;
+    background: #f5f5f5;
+}
