@@ -35,16 +35,19 @@
             </template>
             <!-- 样式三：marquee；is_full_display 全部显示 / marquee_scroll 横向滚动 -->
             <template v-else-if="form_content.notice_style == 'marquee'">
+                <!-- 全部显示：高度随内容；非全部显示：固定 container_height -->
                 <view
                     class="news-box news-box-marquee"
                     :class="{ 'news-box-marquee--full': is_marquee_full_display }"
                     :style="marquee_box_style"
                 >
+                    <!-- 全部显示时 news-marquee-row--full 使子项 stretch，配合图标容器 align-items 实现居上/居中/居下 -->
                     <view
                         class="news-marquee-row flex-row gap-8"
                         :class="{ 'news-marquee-row--full': is_marquee_full_display }"
                         :style="container_background_img_style"
                     >
+                        <!-- 左图标/标题：全部显示时用 left_icon_container_style（对齐+外边距），否则 align-c 垂直居中 -->
                         <view
                             class="flex-shrink-0 flex-row"
                             :class="{ 'align-c': !is_marquee_full_display }"
@@ -62,13 +65,13 @@
                                 <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '' }}</view>
                             </template>
                         </view>
-                        <!-- 全部显示：完整展示，超出换行，高度随内容 -->
+                        <!-- 全部显示：换行完整展示，不设 line-height -->
                         <template v-if="form_content.is_full_display === '1'">
                             <view class="news-marquee-full flex-1 flex-width">
                                 <view class="news-marquee-full-text" :style="marquee_full_text_style" :data-value="marquee_link_page" @tap="url_event">{{ marquee_display_text }}</view>
                             </view>
                         </template>
-                        <!-- 非全部显示：滚动或单行省略 -->
+                        <!-- 非全部显示：开启滚动=单条从右滚入；关闭滚动=单行省略 -->
                         <template v-else>
                             <view v-if="marquee_scroll_on && marquee_display_text" class="news-marquee-scroll flex-1 flex-width" :style="marquee_content_height" :data-value="marquee_link_page">
                                 <view class="news-marquee-scroll-box">
@@ -79,6 +82,7 @@
                                 <view class="news-marquee-static-text" :style="marquee_body_text_style">{{ marquee_display_text }}</view>
                             </view>
                         </template>
+                        <!-- 右侧更多：全部显示时合并 right_icon_container_style 与文字样式 -->
                         <view
                             v-if="form_content.is_right_button == '1'"
                             class="flex-row flex-shrink-0"
@@ -133,8 +137,9 @@
     const app = getApp();
     import { background_computer, common_styles_computer, common_img_computer, gradient_computer, gradient_handle, radius_computer, padding_computer, isEmpty } from '@/common/js/common/common.js';
     /**
-     * DIY 公告：notice_style = inherit | marquee | card
-     * 样式三滚动：单条文案从右侧滚入（与 uni-notice-bar 一致，非双份并排）
+     * DIY 公告组件
+     * notice_style：inherit 样式一 | card 样式二 | marquee 样式三
+     * 样式三：is_full_display 控制全部显示；marquee_scroll 控制横向滚动
      */
     export default {
         props: {
@@ -179,20 +184,33 @@
                 direction_type: 'vertical',
                 // 公告数据
                 notice_list: [],
-                /** 样式三（marquee）由 init / setData 维护 */
+                /** 样式三：是否全部显示（高度随内容、图标可配置对齐） */
                 is_marquee_full_display: false,
+                /** 样式三：外层容器内联样式（含固定/自适应高度） */
                 marquee_box_style: '',
+                /** 样式三：非全部显示时中间内容区固定高度 */
                 marquee_content_height: '',
+                /** 样式三全部显示：左图标容器样式（align-items + margin） */
                 left_icon_container_style: '',
+                /** 样式三全部显示：右按钮图标容器样式（align-items + margin） */
                 right_icon_container_style: '',
+                /** 样式三：是否开启横向滚动 */
                 marquee_scroll_on: true,
+                /** 样式三：展示文案（marquee_content 或首条公告标题） */
                 marquee_display_text: '',
+                /** 样式三滚动：文案节点 id，供 sync_marquee_scroll 测量宽度 */
                 marquee_text_id: 'notice-marquee-text',
+                /** 样式三滚动：animation-duration / delay 动态样式 */
                 marquee_scroll_anim_style: '',
+                /** 样式三滚动：动画是否运行 */
                 marquee_scroll_running: false,
+                /** 样式三：点击跳转链接 */
                 marquee_link_page: '',
+                /** 样式三：滚动/静态单行文案样式（含 line-height） */
                 marquee_body_text_style: '',
+                /** 样式三：全部显示文案样式（不含 line-height，便于多行换行） */
                 marquee_full_text_style: '',
+                /** 样式三：右侧更多按钮完整样式（全部显示含对齐与外边距） */
                 right_button_style: '',
             };
         },
@@ -302,18 +320,22 @@
                 const news_c = new_style && new_style.news_color;
                 const marquee_notice_color = news_c != null && news_c !== '' ? news_c : '#333333';
                 const marquee_text_base = content_title_style + 'color:' + marquee_notice_color + ';';
+                // 全部显示不加 line-height；滚动/静态单行需 line-height 与容器等高
                 const marquee_full_text_style = marquee_text_base;
                 const marquee_body_text_style = marquee_text_base + 'line-height:' + container_h * 2 + 'rpx;';
                 
                 const marquee_text_id = 'notice-marquee-text-' + String(this.propKey);
                 let left_icon_container_style = '';
                 let right_icon_container_style = '';
+                // 全部显示：行 stretch + 图标容器 align-items，实现 left/right_icon_position 与 margin
                 if (is_marquee_full_display) {
+                    /** 垂直对齐：top/center/bottom → flex-start/center/flex-end */
                     const get_icon_align = (position) => {
                         const alignMap = { top: 'flex-start', center: 'center', bottom: 'flex-end' };
                         return alignMap[position] || 'center';
                     };
                     const default_icon_margin = { padding: 0, padding_top: 0, padding_right: 0, padding_bottom: 0, padding_left: 0 };
+                    /** 构建图标容器样式：align-self:stretch 撑满行高后再对齐子元素 */
                     const build_icon_container_style = (position, margin) => {
                         const align = get_icon_align(position || 'center');
                         const m = margin || default_icon_margin;
@@ -334,6 +356,7 @@
                         new_style.right_icon_margin || legacy_margin || default_icon_margin
                     );
                 }
+                // 右侧更多：非全部显示仅颜色字号；全部显示叠加图标对齐与外边距
                 let right_button_style =
                     'color:' +
                     (new_style.right_button_color || '#999') +
@@ -395,7 +418,10 @@
                     this.sync_marquee_scroll();
                 });
             },
-            /** 单条跑马灯：测容器/文案宽度，animation-duration = interval_time */
+            /**
+             * 样式三滚动：测量容器与文案宽度，计算 animation-duration / delay
+             * 单条从右侧滚入，非双份文案并排
+             */
             sync_marquee_scroll() {
                 const sec = Number(this.marquee_interval_sec);
                 if (!this.marquee_scroll_on || this.is_marquee_full_display || !this.marquee_display_text || !Number.isFinite(sec) || sec <= 0) {
@@ -430,7 +456,7 @@
                 setTimeout(run, 150);
                 // #endif
             },
-            // 跳转链接
+            // 公告链接跳转
             url_event(e) {
                 app.globalData.url_event(e);
             },
@@ -468,11 +494,13 @@
         overflow-wrap: break-word;
         word-wrap: break-word;
     }
+    /* ---------- 样式三 marquee ---------- */
     .news-box-marquee {
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
+    /* 全部显示：容器高度随内容 */
     .news-box-marquee--full {
         height: auto;
         min-height: 0;
@@ -481,6 +509,7 @@
         width: 100%;
         align-items: center;
     }
+    /* 全部显示：子项 stretch，左/右图标才能在同高容器内居上/居中/居下 */
     .news-marquee-row--full {
         align-items: stretch;
     }
@@ -495,6 +524,7 @@
         align-items: center;
         align-self: center;
     }
+    /* 全部显示：多行换行 */
     .news-marquee-full-text {
         width: 100%;
         min-width: 0;
@@ -513,6 +543,7 @@
         overflow: hidden;
         position: relative;
     }
+    /* 横向滚动：单条 padding-left:100% 从右侧进入 */
     .news-marquee-scroll-text {
         position: absolute;
         top: 0;
@@ -541,6 +572,7 @@
         align-items: center;
         align-self: center;
     }
+    /* 关闭滚动：单行省略 */
     .news-marquee-static-text {
         width: 100%;
         min-width: 0;
