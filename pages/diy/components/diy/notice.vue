@@ -290,7 +290,7 @@
                 const marquee_interval_sec = this.get_marquee_interval_sec(new_content, new_style);
                 const news_c = new_style && new_style.news_color;
                 const marquee_notice_color = news_c != null && news_c !== '' ? news_c : '#333333';
-                const marquee_body_text_style = content_title_style + 'color:' + marquee_notice_color + ';line-height:' + container_h * 2 + 'rpx;';
+                const marquee_body_text_style = content_title_style + 'color:' + marquee_notice_color + ';';
                 const marquee_text_id = 'notice-marquee-text-' + String(this.propKey);
                 let left_icon_container_style = '';
                 let right_icon_container_style = '';
