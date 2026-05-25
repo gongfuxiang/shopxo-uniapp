@@ -65,7 +65,7 @@
                         <button v-if="user == null" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="login_event" hover-class="none">登录后参团</button>
                         <block v-else>
                             <button class="btn round bg-main cr-white text-size-md wh-auto margin-bottom-main" type="default" @tap="join_team_event" hover-class="none">立即参团</button>
-                            <button class="btn round bg-white br-main cr-main text-size-md wh-auto" type="default" open-type="share" hover-class="none">邀请好友参团</button>
+                            <button class="btn round bg-white br-main cr-main text-size-md wh-auto" type="default" hover-class="none" @tap="popup_share_event">邀请好友参团</button>
                             <view v-if="is_leader" class="tc margin-top-main">
                                 <text class="cr-grey text-size-xs" @tap="team_cancel_event">取消开团</text>
                             </view>
@@ -81,6 +81,8 @@
         <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+        <!-- 分享弹窗 -->
+        <component-share-popup ref="share"></component-share-popup>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -90,6 +92,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGroupbuyPlayRules from '../components/groupbuy-play-rules/groupbuy-play-rules';
+    import componentSharePopup from '@/components/share-popup/share-popup';
     export default {
         data() {
             return {
@@ -119,6 +122,7 @@
             componentNoData,
             componentBottomLine,
             componentGroupbuyPlayRules,
+            componentSharePopup,
         },
         onLoad(params) {
             // 调用公共事件方法
@@ -149,9 +153,19 @@
             clearInterval(this.countdown_timer);
         },
 
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
         // 分享
         onShareAppMessage() {
-            return this.share_info || {};
+            var share = app.globalData.share_content_handle(this.share_info || {});
+            return {
+                title: share.title,
+                path: share.path + share.query,
+                imageUrl: share.img,
+            };
         },
 
         methods: {
@@ -163,15 +177,20 @@
                     data: { id: this.params.id || 0 },
                     dataType: 'json',
                     success: (res) => {
+                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var result = res.data.data;
                             var team = result.team || {};
                             var user = result.user || null;
                             var is_leader = user != null && team.leader_user_id == user.id;
+                            var groupbuy = result.groupbuy || {};
+                            var goods = result.goods || {};
+                            var share_title = groupbuy.title || goods.title || '邀请你参团';
+                            var share_desc = '还差' + (team.remain_number || 0) + '人成团，快来一起拼团吧';
                             this.setData({
                                 team: team,
-                                groupbuy: result.groupbuy || {},
-                                goods: result.goods || {},
+                                groupbuy: groupbuy,
+                                goods: goods,
                                 members: result.members || [],
                                 empty_slots: result.empty_slots || [],
                                 groupbuy_config: result.groupbuy_config || {},
@@ -182,9 +201,11 @@
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 share_info: {
-                                    title: (result.groupbuy || {}).title || '邀请你参团',
-                                    path: team.share_url || ('/pages/plugins/groupbuy/team/team?id=' + team.id),
-                                    imageUrl: (result.goods || {}).images || '',
+                                    title: share_title,
+                                    desc: share_desc,
+                                    path: '/pages/plugins/groupbuy/team/team',
+                                    query: 'id=' + team.id,
+                                    img: goods.images || '',
                                 },
                             });
                             this.countdown_init(team.expire_time || 0);
@@ -199,6 +220,7 @@
                         }
                     },
                     fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
@@ -275,6 +297,19 @@
             // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 分享开启弹层
+            popup_share_event(e) {
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init({
+                        status: true,
+                        share_info: this.share_info,
+                    });
+                }
             },
         },
     };

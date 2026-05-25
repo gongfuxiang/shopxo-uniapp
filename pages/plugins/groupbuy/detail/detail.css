@@ -1,3 +1,14 @@
+.groupbuy-detail-share-fixed {
+    top: 20rpx;
+    right: 24rpx;
+    z-index: 10;
+}
+.groupbuy-detail-share-icon {
+    width: 64rpx;
+    height: 64rpx;
+    background: rgba(0, 0, 0, 0.35);
+}
+
 .goods-photo-swiper-wrap,
 .goods-photo-swiper-dot,
 .goods-photo-swiper {

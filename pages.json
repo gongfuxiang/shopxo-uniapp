@@ -2252,14 +2252,14 @@
                 {
                     "path": "detail/detail",
                     "style": {
-                        "enablePullDownRefresh": false,
+                        "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "team/team",
                     "style": {
-                        "enablePullDownRefresh": false,
+                        "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },

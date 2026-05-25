@@ -3,6 +3,11 @@
         <block v-if="data_list_loding_status == 3">
             <view class="page-bottom-fixed">
                 <view class="groupbuy-detail-hero spacing-mb" :class="photo_list.length <= 0 ? 'groupbuy-detail-hero-no-photo' : ''">
+                    <view class="groupbuy-detail-share-fixed pa" @tap="popup_share_event">
+                        <view class="groupbuy-detail-share-icon flex-row align-c jc-c round">
+                            <iconfont name="icon-share-circle" color="#ffffff" size="36rpx"></iconfont>
+                        </view>
+                    </view>
                     <view v-if="photo_list.length > 0" class="goods-photo-swiper-wrap">
                         <uni-swiper-dot class="goods-photo-swiper-dot" mode="dot" :dots-styles="photo_dots_styles" :info="photo_list" :current="photo_swiper_current">
                             <swiper class="goods-photo-swiper" circular :indicator-dots="false" @change="photo_swiper_change_event">
@@ -98,6 +103,8 @@
         <block v-else>
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+        <!-- 分享弹窗 -->
+        <component-share-popup ref="share"></component-share-popup>
         <component-common ref="common"></component-common>
     </view>
 </template>
@@ -108,6 +115,7 @@
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentGroupbuyPlayRules from '../components/groupbuy-play-rules/groupbuy-play-rules';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentSharePopup from '@/components/share-popup/share-popup';
     export default {
         data() {
             return {
@@ -161,6 +169,7 @@
             componentGoodsBuy,
             componentGroupbuyPlayRules,
             componentBottomLine,
+            componentSharePopup,
         },
         onLoad(params) {
             // 调用公共事件方法
@@ -187,6 +196,21 @@
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
+        // 分享
+        onShareAppMessage() {
+            var share = app.globalData.share_content_handle(this.share_info || {});
+            return {
+                title: share.title,
+                path: share.path + share.query,
+                imageUrl: share.img,
+            };
         },
 
         methods: {
@@ -234,6 +258,7 @@
                     data: data,
                     dataType: 'json',
                     success: (res) => {
+                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var result = res.data.data;
                             var goods = result.goods || {};
@@ -257,6 +282,16 @@
                             if (!show_original_price && (goods.original_price || null) != null && (groupbuy.min_groupbuy_price || null) != null) {
                                 show_original_price = parseFloat(goods.original_price) > parseFloat(groupbuy.min_groupbuy_price);
                             }
+                            var share_query = 'id=' + groupbuy.id;
+                            if (join_team_id > 0) {
+                                share_query += '&team_id=' + join_team_id;
+                            }
+                            var share_desc = (groupbuy.group_number || 0) + '人团';
+                            if (join_team_id > 0) {
+                                share_desc += '，邀请你一起参团';
+                            } else {
+                                share_desc += '，快来一起拼团吧';
+                            }
                             this.setData({
                                 goods: goods,
                                 groupbuy: groupbuy,
@@ -275,7 +310,9 @@
                                 data_bottom_line_status: true,
                                 share_info: {
                                     title: groupbuy.title || goods.title,
-                                    path: '/pages/plugins/groupbuy/detail/detail?id=' + groupbuy.id + (join_team_id > 0 ? '&team_id=' + join_team_id : ''),
+                                    desc: share_desc,
+                                    path: '/pages/plugins/groupbuy/detail/detail',
+                                    query: share_query,
                                     img: goods.images || '',
                                 },
                             });
@@ -290,6 +327,7 @@
                         }
                     },
                     fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
@@ -355,6 +393,19 @@
             // 链接事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 分享开启弹层
+            popup_share_event(e) {
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init({
+                        status: true,
+                        share_info: this.share_info,
+                    });
+                }
             },
         },
     };
