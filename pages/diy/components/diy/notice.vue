@@ -40,8 +40,16 @@
                     :class="{ 'news-box-marquee--full': is_marquee_full_display }"
                     :style="marquee_box_style"
                 >
-                    <view class="news-marquee-row flex-row gap-8" :style="container_background_img_style">
-                        <view class="flex-shrink-0 flex-row align-c" :style="is_marquee_full_display ? left_icon_container_style : ''">
+                    <view
+                        class="news-marquee-row flex-row gap-8"
+                        :class="{ 'news-marquee-row--full': is_marquee_full_display }"
+                        :style="container_background_img_style"
+                    >
+                        <view
+                            class="flex-shrink-0 flex-row"
+                            :class="{ 'align-c': !is_marquee_full_display }"
+                            :style="left_icon_container_style"
+                        >
                             <template v-if="form_content.title_type == 'img-icon'">
                                 <view v-if="form_content.img_src && form_content.img_src.length > 0">
                                     <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
@@ -57,7 +65,7 @@
                         <!-- 全部显示：完整展示，超出换行，高度随内容 -->
                         <template v-if="form_content.is_full_display === '1'">
                             <view class="news-marquee-full flex-1 flex-width">
-                                <view class="news-marquee-full-text" :style="marquee_body_text_style" :data-value="marquee_link_page" @tap="url_event">{{ marquee_display_text }}</view>
+                                <view class="news-marquee-full-text" :style="marquee_full_text_style" :data-value="marquee_link_page" @tap="url_event">{{ marquee_display_text }}</view>
                             </view>
                         </template>
                         <!-- 非全部显示：滚动或单行省略 -->
@@ -73,8 +81,9 @@
                         </template>
                         <view
                             v-if="form_content.is_right_button == '1'"
-                            class="flex-row align-c flex-shrink-0"
-                            :style="(is_marquee_full_display ? right_icon_container_style : '') + 'color: ' + form_style.right_button_color + ';font-size:' + form_style.right_button_size * 2 + 'rpx;'"
+                            class="flex-row flex-shrink-0"
+                            :class="{ 'align-c': !is_marquee_full_display }"
+                            :style="right_button_style"
                             :data-value="form_content.more_link.page"
                             @tap="url_event"
                         >
@@ -183,6 +192,8 @@
                 marquee_scroll_running: false,
                 marquee_link_page: '',
                 marquee_body_text_style: '',
+                marquee_full_text_style: '',
+                right_button_style: '',
             };
         },
         watch: {
@@ -290,7 +301,10 @@
                 const marquee_interval_sec = this.get_marquee_interval_sec(new_content, new_style);
                 const news_c = new_style && new_style.news_color;
                 const marquee_notice_color = news_c != null && news_c !== '' ? news_c : '#333333';
-                const marquee_body_text_style = content_title_style + 'color:' + marquee_notice_color + ';';
+                const marquee_text_base = content_title_style + 'color:' + marquee_notice_color + ';';
+                const marquee_full_text_style = marquee_text_base;
+                const marquee_body_text_style = marquee_text_base + 'line-height:' + container_h * 2 + 'rpx;';
+                
                 const marquee_text_id = 'notice-marquee-text-' + String(this.propKey);
                 let left_icon_container_style = '';
                 let right_icon_container_style = '';
@@ -307,7 +321,7 @@
                         const mr = Number(m.padding_right || 0) * 2;
                         const mb = Number(m.padding_bottom || 0) * 2;
                         const ml = Number(m.padding_left || 0) * 2;
-                        return `align-items: ${align}; margin-top: ${mt}rpx; margin-right: ${mr}rpx; margin-bottom: ${mb}rpx; margin-left: ${ml}rpx;`;
+                        return `display:flex;flex-direction:row;align-self:stretch;align-items:${align};margin-top:${mt}rpx;margin-right:${mr}rpx;margin-bottom:${mb}rpx;margin-left:${ml}rpx;`;
                     };
                     const legacy_position = new_style.icon_position;
                     const legacy_margin = new_style.icon_margin;
@@ -319,6 +333,15 @@
                         new_style.right_icon_position || legacy_position || 'center',
                         new_style.right_icon_margin || legacy_margin || default_icon_margin
                     );
+                }
+                let right_button_style =
+                    'color:' +
+                    (new_style.right_button_color || '#999') +
+                    ';font-size:' +
+                    (Number(new_style.right_button_size) > 0 ? Number(new_style.right_button_size) : 12) * 2 +
+                    'rpx;';
+                if (is_marquee_full_display) {
+                    right_button_style = right_icon_container_style + right_button_style;
                 }
                 const marquee_content_height = is_marquee_full_display ? '' : 'height:' + container_h * 2 + 'rpx;';
                 const marquee_box_style = temp_container_background_style + (is_marquee_full_display ? 'height:auto;' : 'height:' + container_h * 2 + 'rpx;');
@@ -366,6 +389,8 @@
                     marquee_scroll_running: false,
                     marquee_link_page,
                     marquee_body_text_style,
+                    marquee_full_text_style,
+                    right_button_style,
                 }, () => {
                     this.sync_marquee_scroll();
                 });
@@ -455,6 +480,9 @@
     .news-marquee-row {
         width: 100%;
         align-items: center;
+    }
+    .news-marquee-row--full {
+        align-items: stretch;
     }
     .flex-width {
         min-width: 0;
