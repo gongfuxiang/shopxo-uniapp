@@ -164,6 +164,15 @@
                                     <component-goods-list :propData="{ style_type: 2, goods_list: plugins_presale_data.data }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propPriceField="deposit_price" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                                 </view>
 
+                                <!-- 拼团 - 插件 -->
+                                <view v-if="pv.plugins == 'groupbuy' && (plugins_groupbuy_data || null) != null && (plugins_groupbuy_data.data || null) != null && plugins_groupbuy_data.data.length > 0" class="spacing-mb">
+                                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_groupbuy_data.groupbuy_config.home_title }}</text>
+                                        <text :data-value="plugins_groupbuy_data.groupbuy_config.home_url" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
+                                    </view>
+                                    <component-groupbuy-home-list :propData="plugins_groupbuy_data.data" :propCurrencySymbol="currency_symbol"></component-groupbuy-home-list>
+                                </view>
+
                                 <!-- 活动配置-楼层顶部 - 插件 -->
                                 <view v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
                                     <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-activity-list>
@@ -337,6 +346,7 @@
     import componentShopList from '@/pages/plugins/shop/components/shop-list/shop-list';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentBindingList from '@/pages/plugins/binding/components/binding-list/binding-list';
+    import componentGroupbuyHomeList from '@/pages/plugins/groupbuy/components/groupbuy-home-list/groupbuy-home-list';
     import componentMagicList from '@/pages/plugins/magic/components/magic-list/magic-list';
     import componentDiy from '@/pages/diy/components/diy/diy';
     import componentChoiceLocation from '@/components/choice-location/choice-location';
@@ -405,6 +415,8 @@
                 plugins_seckill_data: null,
                 // 预售插件
                 plugins_presale_data: null,
+                // 拼团插件
+                plugins_groupbuy_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 // 活动配置插件
@@ -447,6 +459,7 @@
             componentShopList,
             componentGoodsList,
             componentBindingList,
+            componentGroupbuyHomeList,
             componentMagicList,
             componentDiy,
             componentChoiceLocation,
@@ -584,6 +597,7 @@
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_presale_data: data.plugins_presale_data || null,
+                                plugins_groupbuy_data: data.plugins_groupbuy_data || null,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                 plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
