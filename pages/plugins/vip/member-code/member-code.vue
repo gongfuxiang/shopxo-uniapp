@@ -30,9 +30,6 @@
 
             <!-- 错误提示 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-            <view v-if="is_to_login == 1" class="margin-top-lg tc">
-                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">{{$t('member-code.member-code.yj6g3a')}}</button>
-            </view>
         </view>
 
         <!-- 公共 -->
@@ -51,7 +48,6 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 bottom_fixed_style: '',
-                is_to_login: 0,
                 screen_brightness_value: 0,
                 plugins_wallet: null,
                 user: null,
@@ -137,7 +133,6 @@
                         qrcode["code"] = user.number_code;
                         this.setData({
                             data_list_loding_status: 3,
-                            is_to_login: 0,
                             user: user,
                             barcode: barcode,
                             qrcode: qrcode,
@@ -154,14 +149,12 @@
                         this.setData({
                             data_list_loding_status: 0,
                             data_list_loding_msg: this.$t('member-code.member-code.kx4yk8'),
-                            is_to_login: 0,
                         });
                     }
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
                         data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
-                        is_to_login: 1,
                     });
                 }
             },
