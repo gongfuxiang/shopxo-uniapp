@@ -5,11 +5,11 @@
             <view v-if="play_flow_steps.length > 0" class="play-flow-steps flex-1">
                 <block v-for="(item, index) in play_flow_steps" :key="index">
                     <view class="play-flow-step tc" :class="item.step_class">
-                        <image v-if="(item.icon || null) != null" :src="item.icon" mode="aspectFill" class="play-step-icon radius margin-bottom-xs"></image>
-                        <view v-else class="play-step-icon play-step-icon-default bg-grey-f5 radius margin-bottom-xs">
-                            <iconfont name="icon-gift" size="40rpx" :color="item.icon_color"></iconfont>
+                        <image v-if="item.has_icon" :src="item.icon" mode="aspectFill" class="play-step-icon radius"></image>
+                        <view v-else class="play-step-icon play-step-icon-default bg-grey-f5 radius">
+                            <iconfont :name="item.icon_font" size="40rpx" :color="item.icon_color"></iconfont>
                         </view>
-                        <view :class="item.name_class">{{ item.name }}</view>
+                        <view class="margin-top-xs" :class="item.name_class">{{ item.name }}</view>
                     </view>
                     <view v-if="item.show_line" class="play-flow-line flex-row align-c" :class="item.line_class">
                         <view class="play-flow-line-bar"></view>
@@ -76,6 +76,7 @@
                 var list = this.play_list || [];
                 var current = parseInt(this.propPlayCurrentStep || 0);
                 var progress = current > 0;
+                var default_icon_font = ['icon-enable', 'icon-share', 'icon-inventroy-manage'];
                 var steps = [];
                 for (var i = 0; i < list.length; i++) {
                     var step = i + 1;
@@ -84,6 +85,7 @@
                     var line_class = '';
                     var line_icon_color = '#ccc';
                     var line_icon_style = '';
+                    var icon_active = false;
                     if (progress) {
                         if (step < current) {
                             step_class = 'is-done';
@@ -91,17 +93,29 @@
                             line_class = 'is-active';
                             line_icon_color = '#e54d42';
                             line_icon_style = 'font-weight:bold;';
+                            icon_active = true;
                         } else if (step == current) {
                             step_class = 'is-current';
                             name_class = 'text-size-xs step-name cr-main fw-b';
+                            icon_active = true;
                         }
                     }
+                    var icon = (list[i].icon || '').trim();
+                    var icon_font = (list[i].icon_font || '').trim();
+                    if (!icon_font) {
+                        icon_font = default_icon_font[i] || 'icon-enable';
+                    }
+                    if (icon_font.indexOf('icon-') !== 0) {
+                        icon_font = 'icon-' + icon_font;
+                    }
                     steps.push({
-                        icon: list[i].icon,
+                        icon: icon,
+                        has_icon: icon !== '',
+                        icon_font: icon_font,
                         name: list[i].name,
                         step_class: step_class,
                         name_class: name_class,
-                        icon_color: '#999',
+                        icon_color: icon_active ? '#e54d42' : '#999',
                         line_class: line_class,
                         line_icon_color: line_icon_color,
                         line_icon_style: line_icon_style,
