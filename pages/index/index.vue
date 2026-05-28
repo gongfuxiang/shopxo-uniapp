@@ -164,6 +164,15 @@
                                     <component-goods-list :propData="{ style_type: 2, goods_list: plugins_presale_data.data }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propPriceField="deposit_price" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                                 </view>
 
+                                <!-- 砍价 - 插件 -->
+                                <view v-if="pv.plugins == 'bargain' && (plugins_bargain_data || null) != null && (plugins_bargain_data.data || null) != null && plugins_bargain_data.data.length > 0" class="spacing-mb">
+                                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_bargain_data.bargain_config.home_title }}</text>
+                                        <text :data-value="plugins_bargain_data.bargain_config.home_url" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
+                                    </view>
+                                    <component-bargain-home-list :propData="plugins_bargain_data.data" :propCurrencySymbol="currency_symbol"></component-bargain-home-list>
+                                </view>
+
                                 <!-- 拼团 - 插件 -->
                                 <view v-if="pv.plugins == 'groupbuy' && (plugins_groupbuy_data || null) != null && (plugins_groupbuy_data.data || null) != null && plugins_groupbuy_data.data.length > 0" class="spacing-mb">
                                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
@@ -346,6 +355,7 @@
     import componentShopList from '@/pages/plugins/shop/components/shop-list/shop-list';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentBindingList from '@/pages/plugins/binding/components/binding-list/binding-list';
+    import componentBargainHomeList from '@/pages/plugins/bargain/components/bargain-home-list/bargain-home-list';
     import componentGroupbuyHomeList from '@/pages/plugins/groupbuy/components/groupbuy-home-list/groupbuy-home-list';
     import componentMagicList from '@/pages/plugins/magic/components/magic-list/magic-list';
     import componentDiy from '@/pages/diy/components/diy/diy';
@@ -416,6 +426,7 @@
                 // 预售插件
                 plugins_presale_data: null,
                 // 拼团插件
+                plugins_bargain_data: null,
                 plugins_groupbuy_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
@@ -459,6 +470,7 @@
             componentShopList,
             componentGoodsList,
             componentBindingList,
+            componentBargainHomeList,
             componentGroupbuyHomeList,
             componentMagicList,
             componentDiy,
@@ -597,6 +609,7 @@
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_presale_data: data.plugins_presale_data || null,
+                                plugins_bargain_data: data.plugins_bargain_data || null,
                                 plugins_groupbuy_data: data.plugins_groupbuy_data || null,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                 plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,

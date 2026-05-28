@@ -9,7 +9,7 @@
                         :propDefaultValue="search_keywords"
                         :propIsOnEvent="true"
                         :propIsRequired="false"
-                        :propPlaceholder="$t('plugins-groupbuy-order.order.gbo001')"
+                        :propPlaceholder="$t('plugins-bargain-order.order.gbo001')"
                         propIconColor="#ccc"
                         propPlaceholderClass="cr-grey-c"
                         propBgColor="#f6f6f6"
@@ -17,12 +17,12 @@
                 </view>
             </template>
         </component-nav-back>
-        <view class="groupbuy-order-header bg-white">
-            <view v-if="nav_status_list.length > 0" class="nav-base groupbuy-order-nav scroll-view-horizontal padding-horizontal-main">
-                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'groupbuy-nav-' + nav_status_index">
+        <view class="bargain-order-header bg-white">
+            <view v-if="nav_status_list.length > 0" class="nav-base bargain-order-nav scroll-view-horizontal padding-horizontal-main">
+                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'bargain-nav-' + nav_status_index">
                     <block v-for="(item, index) in nav_status_list" :key="index">
                         <view
-                            :id="'groupbuy-nav-' + index"
+                            :id="'bargain-nav-' + index"
                             :class="'item tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : 'cr-grey')"
                             :data-index="index"
                             @tap="nav_event"
@@ -31,7 +31,7 @@
                 </scroll-view>
             </view>
         </view>
-        <scroll-view :scroll-y="true" class="scroll-box-groupbuy-order" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box-bargain-order" :style="content_style" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
@@ -51,9 +51,11 @@
                         </view>
                     </block>
                     <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
-                    <view v-if="(item.team_url || null) != null || (item.system_order_url || null) != null || (item.is_operate_cancel || 0) == 1 || (item.is_operate_delete || 0) == 1" class="item-operation tr margin-top-main">
-                        <button v-if="(item.team_url || null) != null" class="btn round bg-main br-main cr-white text-size-md margin-bottom-sm" type="default" size="mini" :data-value="item.team_url" @tap="url_event" hover-class="none">参团</button>
+                    <view v-if="(item.team_url || null) != null || (item.system_order_url || null) != null || (item.is_operate_success_pay || 0) == 1 || (item.is_operate_team_cancel || 0) == 1 || (item.is_operate_cancel || 0) == 1 || (item.is_operate_delete || 0) == 1" class="item-operation tr margin-top-main">
+                        <button v-if="(item.team_url || null) != null" class="btn round bg-main br-main cr-white text-size-md margin-bottom-sm" type="default" size="mini" :data-value="item.team_url" @tap="url_event" hover-class="none">砍价</button>
+                        <button v-if="(item.is_operate_success_pay || 0) == 1" class="btn round bg-main br-main cr-white text-size-md margin-bottom-sm" type="default" size="mini" @tap="success_pay_event" :data-index="index" hover-class="none">立即支付</button>
                         <button v-if="(item.system_order_url || null) != null" class="btn round br-green cr-green bg-white text-size-md margin-bottom-sm" type="default" size="mini" :data-value="item.system_order_url" @tap="url_event" hover-class="none">订单</button>
+                        <button v-if="(item.is_operate_team_cancel || 0) == 1" class="btn round br-grey-9 bg-white text-size-md margin-bottom-sm" type="default" size="mini" @tap="team_cancel_event" :data-value="item.team_cancel_record_id" :data-id="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="(item.is_operate_cancel || 0) == 1" class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="(item.is_operate_delete || 0) == 1" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
@@ -71,6 +73,7 @@
 </template>
 <script>
     const app = getApp();
+    import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentSearch from '@/components/search/search';
@@ -100,7 +103,7 @@
                 params: {},
                 currency_symbol: app.globalData.currency_symbol(),
                 data_base: null,
-                groupbuy_config: {},
+                bargain_config: {},
                 data_list: [],
                 data_page_total: 0,
                 data_page: 1,
@@ -133,7 +136,7 @@
             this.setData({
                 params: params || {},
                 search_keywords: params.order_no || params.keywords || '',
-                nav_title: this.$t('pages.plugins-groupbuy-order'),
+                nav_title: this.$t('pages.plugins-bargain-order'),
                 content_style: 'height: calc(100vh - 80rpx - ' + (this.status_bar_height + (this.client_type == 'h5' ? 55 : 50)) + 'px);',
             });
 
@@ -204,7 +207,7 @@
             // 获取基础数据
             get_data_base() {
                 uni.request({
-                    url: app.globalData.get_request_url('init', 'order', 'groupbuy'),
+                    url: app.globalData.get_request_url('init', 'order', 'bargain'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -226,7 +229,7 @@
                             var self = this;
                             this.setData({
                                 data_base: data.data_base || null,
-                                groupbuy_config: data.groupbuy_config || {},
+                                bargain_config: data.bargain_config || {},
                                 nav_status_list: nav_list,
                                 nav_status_index: nav_status_index,
                                 data_page: 1,
@@ -293,7 +296,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'order', 'groupbuy'),
+                    url: app.globalData.get_request_url('index', 'order', 'bargain'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
@@ -359,6 +362,22 @@
                 this.get_data_list(1);
             },
 
+            // 砍价成功下单（与帮砍页、PC 订单列表一致）
+            success_pay_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var item = (this.data_list || [])[index] || {};
+                if ((item.success_pay_goods_data || '') == '') {
+                    return;
+                }
+                var data = {
+                    buy_type: 'goods',
+                    goods_data: item.success_pay_goods_data,
+                    bargain_id: item.success_pay_bargain_id || item.bargain_id || 0,
+                    record_id: item.success_pay_record_id || item.record_id || 0,
+                    is_bargain_success_pay: 1,
+                };
+                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
+            },
             // 取消成功后拉取订单详情替换当前项
             order_item_replace_by_detail(order_id, index, success_msg) {
                 var self = this;
@@ -370,7 +389,7 @@
                     return;
                 }
                 uni.request({
-                    url: app.globalData.get_request_url('detail', 'order', 'groupbuy'),
+                    url: app.globalData.get_request_url('detail', 'order', 'bargain'),
                     method: 'POST',
                     data: { id: order_id },
                     dataType: 'json',
@@ -410,6 +429,39 @@
                     },
                 });
             },
+            // 取消发起砍价
+            team_cancel_event(e) {
+                uni.showModal({
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('common.cancel_confirm_tips'),
+                    success: (result) => {
+                        if (result.confirm) {
+                            var record_id = e.currentTarget.dataset.value;
+                            var index = e.currentTarget.dataset.index;
+                            uni.showLoading({ title: this.$t('common.processing_in_text') });
+                            uni.request({
+                                url: app.globalData.get_request_url('teamcancel', 'index', 'bargain'),
+                                method: 'POST',
+                                data: { record_id: record_id },
+                                dataType: 'json',
+                                success: (res) => {
+                                    if (res.data.code == 0) {
+                                        var order_id = e.currentTarget.dataset.id || ((this.data_list[index] || {}).id || 0);
+                                        this.order_item_replace_by_detail(order_id, index, res.data.msg);
+                                    } else {
+                                        uni.hideLoading();
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
+                    },
+                });
+            },
             // 取消
             cancel_event(e) {
                 uni.showModal({
@@ -421,7 +473,7 @@
                             var index = e.currentTarget.dataset.index;
                             uni.showLoading({ title: this.$t('common.processing_in_text') });
                             uni.request({
-                                url: app.globalData.get_request_url('cancel', 'order', 'groupbuy'),
+                                url: app.globalData.get_request_url('cancel', 'order', 'bargain'),
                                 method: 'POST',
                                 data: { ids: value },
                                 dataType: 'json',
@@ -453,7 +505,7 @@
                             var index = e.currentTarget.dataset.index;
                             uni.showLoading({ title: this.$t('common.processing_in_text') });
                             uni.request({
-                                url: app.globalData.get_request_url('delete', 'order', 'groupbuy'),
+                                url: app.globalData.get_request_url('delete', 'order', 'bargain'),
                                 method: 'POST',
                                 data: { ids: value },
                                 dataType: 'json',

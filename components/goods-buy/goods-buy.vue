@@ -156,16 +156,12 @@
                 return data;
             },
 
-            // 规格/库存接口请求参数（拼团插件 id 为拼团活动 id）
+            // 规格/库存接口请求参数（插件活动页 init 覆盖 goods.id 为活动 id）
             get_spec_request_data(extend) {
                 extend = extend || {};
-                var plugins = this.params.plugins_name || this.propPluginsName || '';
-                var data = {};
-                if (plugins == 'groupbuy') {
-                    data.id = parseInt(this.params.id || 0);
-                } else {
-                    data.id = this.goods.id;
-                }
+                var data = {
+                    id: parseInt((this.goods || {}).id || 0),
+                };
                 for (var key in extend) {
                     if (extend[key] !== undefined && extend[key] !== null) {
                         data[key] = extend[key];
@@ -219,7 +215,7 @@
                 var opt_button = [];
                 var buy_button = init_params.buy_button || null;
                 if (buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
-                    var arr = ['buy', 'cart', 'show'];
+                    var arr = ['buy', 'cart', 'show', 'back'];
                     for (var i in buy_button.data) {
                         if (arr.indexOf(buy_button.data[i]['type']) != -1) {
                             opt_button.push(buy_button.data[i]);
@@ -483,7 +479,7 @@
 
                     // 规格选择回调
                     this.$emit('SpecChoiceEvent', {
-                        goods_id: this.goods.id,
+                        goods_id: this.goods.goods_id || this.goods.id,
                         spec: this.choice_spec_data(),
                         goods_spec_choose: this.goods_spec_choose,
                     });
@@ -847,7 +843,7 @@
                         case 'buy':
                             // 进入订单确认页面
                             var goods_item = {
-                                goods_id: this.goods.id,
+                                goods_id: this.goods.goods_id || this.goods.id,
                                 stock: this.buy_number,
                                 spec: spec,
                             };
@@ -880,6 +876,18 @@
                             this.goods_cart_event(spec);
                             break;
 
+                        // 事件回调
+                        case 'back':
+                            this.$emit('BackConfirmEvent', {
+                                spec: spec,
+                                buy_number: this.buy_number,
+                                goods_id: this.goods.goods_id || this.goods.id,
+                                goods: this.goods,
+                                goods_spec_choose: this.goods_spec_choose,
+                                back_data: this.back_data,
+                            });
+                            break;
+
                         default:
                             app.globalData.showToast(this.$t('goods-buy.goods-buy.4maexq') + type + ')');
                     }
@@ -889,7 +897,7 @@
             // 加入购物车事件
             goods_cart_event(spec) {
                 var data = this.params;
-                data['goods_id'] = this.goods.id;
+                data['goods_id'] = this.goods.goods_id || this.goods.id;
                 data['spec'] = JSON.stringify(spec);
                 data['stock'] = this.buy_number;
                 uni.request({
@@ -907,7 +915,7 @@
 
                             // 调用父级
                             this.$emit('CartSuccessEvent', {
-                                goods_id: this.goods.id,
+                                goods_id: this.goods.goods_id || this.goods.id,
                                 spec: spec,
                                 stock: this.buy_number,
                                 cart_number: cart_number,
