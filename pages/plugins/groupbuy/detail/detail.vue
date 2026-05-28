@@ -77,7 +77,7 @@
 
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-                <view class="bottom-nav page-width-max bg-white bottom-line-exclude">
+                <view class="bottom-nav bg-white bottom-line-exclude">
                     <view class="flex-row align-c padding-horizontal-main padding-vertical-sm gap-10">
                         <view v-if="detail_buy_nav.length > 0" class="groupbuy-detail-buy-nav-left flex-row align-c">
                             <block v-for="(nav, nav_index) in detail_buy_nav" :key="nav_index">
