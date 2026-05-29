@@ -3,7 +3,7 @@
         <view class="page-bottom-fixed">
             <form v-if="check_status == 1" @submit="form_submit" class="form-container">
                 <view class="padding-main oh">
-                    <view class="form-gorup">
+                    <view class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.qg404q')}}<text class="form-group-tips-must">*</text></view>
                         <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.cash-create.cymbdz') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.cash-create.27ky42') + can_cash_max_money" @input="cash_money_event" />
                         <view class="text-size-xs">
@@ -31,7 +31,7 @@
                         </view>
                     </view>
 
-                    <view class="form-gorup">
+                    <view class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.yu2raf')}}<text class="form-group-tips-must">*</text></view>
                         <radio-group name="cash_type" @change="cash_type_event">
                             <block v-for="(item, index) in user_cash_type_list" :key="index">
@@ -42,22 +42,28 @@
                         </radio-group>
                     </view>
 
-                    <view v-if="cash_type_0_status" class="form-gorup">
+                    <view v-if="cash_type_0_status" class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.5mmir5')}}<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.u2rnlw')" />
                         <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.14n20v')}}</view>
                     </view>
 
-                    <view v-if="cash_type_0_status || cash_type_2_status" class="form-gorup">
+                    <view v-if="cash_type_0_status || cash_type_2_status" class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.36756z')}}<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_accounts" :value="default_data.bank_accounts || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.s72t44')" />
                         <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.748r3i')}}</view>
                     </view>
 
-                    <view class="form-gorup">
+                    <view class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.1xtff6')}}<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_username" :value="default_data.bank_username || ''" placeholder-class="cr-grey" class="cr-base" maxlength="30" :placeholder="$t('cash-create.cash-create.f4605e')" />
                         <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.445m7n')}}</view>
+                    </view>
+
+                    <view v-if="cash_desc_list.length > 0" class="cash-desc-alert margin-top-main">
+                        <block v-for="(item, index) in cash_desc_list" :key="index">
+                            <view v-if="item" class="cash-desc-line">{{ item }}</view>
+                        </block>
                     </view>
 
                     <view class="bottom-fixed" :style="bottom_fixed_style">
@@ -115,6 +121,18 @@
         components: {
             componentCommon,
             componentNoData,
+        },
+
+        computed: {
+            cash_desc_list() {
+                var list = ((this.data_base || null) != null && (this.data_base.cash_desc || null) != null) ? this.data_base.cash_desc : [];
+                if (!Array.isArray(list)) {
+                    return [];
+                }
+                return list.filter(function(item) {
+                    return item;
+                });
+            },
         },
 
         onLoad(params) {
