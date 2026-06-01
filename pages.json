@@ -19,6 +19,8 @@
                     "component-binding-list": "/pages/plugins/binding/components/binding-list/binding-list",
                     "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list",
                     "component-shop-list": "/pages/plugins/shop/components/shop-list/shop-list",
+                    "component-bargain-home-list": "/pages/plugins/bargain/components/bargain-home-list/bargain-home-list",
+                    "component-groupbuy-home-list": "/pages/plugins/groupbuy/components/groupbuy-home-list/groupbuy-home-list",
                     "component-blog-list": "/pages/plugins/blog/components/blog-list/blog-list",
                     "component-activity-list": "/pages/plugins/activity/components/activity-list/activity-list",
                     "component-magic-list": "/pages/plugins/magic/components/magic-list/magic-list"
@@ -30,6 +32,8 @@
                     "component-binding-list": "view",
                     "component-realstore-list": "view",
                     "component-shop-list": "view",
+                    "component-bargain-home-list": "view",
+                    "component-groupbuy-home-list": "view",
                     "component-blog-list": "view",
                     "component-activity-list": "view",
                     "component-magic-list": "view"
@@ -2232,6 +2236,39 @@
                 },
                 {
                     "path": "user/user",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/bargain",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "team/team",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

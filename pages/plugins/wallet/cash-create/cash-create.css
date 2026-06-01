@@ -4,3 +4,21 @@
 .overdue {
     padding-top: 30%;
 }
+
+/*
+ * 提现说明
+ */
+.cash-desc-alert {
+    padding: 24rpx;
+    border-radius: 12rpx;
+    background-color: #fff8e6;
+    border: 1rpx solid #fbd7a6;
+}
+.cash-desc-alert .cash-desc-line {
+    color: #856404;
+    font-size: 24rpx;
+    line-height: 1.6;
+}
+.cash-desc-alert .cash-desc-line + .cash-desc-line {
+    margin-top: 8rpx;
+}

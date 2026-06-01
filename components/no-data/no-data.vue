@@ -66,8 +66,9 @@
             <view v-else-if="propStatus == 2" class="no-data-box tc flex-col align-c">
                 <image class="image" :src="static_dir + 'error.png'" mode="widthFix"></image>
                 <text class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</text>
-                <view v-if="propBackBtn" class="margin-top-xxxl tc">
-                    <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
+                <view v-if="propBackBtn || is_login_required == 1" class="margin-top-xxxl tc flex-row jc-c align-c">
+                    <button v-if="propBackBtn" type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
+                    <button v-if="is_login_required == 1" type="default" size="mini" :class="login_btn_class" @tap="login_event">{{$t('member-code.member-code.yj6g3a')}}</button>
                 </view>
             </view>
 
@@ -75,6 +76,9 @@
             <view v-else-if="propStatus == 0" class="no-data-box tc flex-col align-c">
                 <image class="image" :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
                 <text class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</text>
+                <view v-if="is_login_required == 1" class="margin-top-xxxl tc">
+                    <button type="default" size="mini" class="bg-main br-main cr-white round" @tap="login_event">{{$t('member-code.member-code.yj6g3a')}}</button>
+                </view>
             </view>
         </view>
     </view>
@@ -99,6 +103,8 @@
                 title: app.globalData.get_application_title(),
                 network_type_value: '',
                 not_network_await_status: 0,
+                is_login_required: 0,
+                login_btn_class: 'bg-main br-main cr-white round',
 
                 // 骨架屏配置
                 // 商品分类内容-左侧
@@ -154,9 +160,19 @@
                 default: false,
             }
         },
+        // 属性值改变监听
+        watch: {
+            propMsg() {
+                this.login_required_handle();
+            },
+            propBackBtn() {
+                this.login_required_handle();
+            },
+        },
         // 页面被展示
         created: function () {
             self = this;
+            this.login_required_handle();
             uni.getNetworkType({
                 success: function (res) {
                     // 当前网络
@@ -182,6 +198,39 @@
         },
         // #endif
         methods: {
+            // 根据提示文案更新是否展示登录按钮（登录失效、请重新登录、请先登录等）
+            login_required_handle() {
+                var msg = this.propMsg;
+                var flag = 0;
+                if ((msg || null) != null && msg !== '') {
+                    var text = String(msg);
+                    var keywords = ['登录失效', '请重新登录', '重新登录', '请先登录', '未登录', '请登录'];
+                    for (var i = 0; i < keywords.length; i++) {
+                        if (text.indexOf(keywords[i]) !== -1) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if (flag == 0) {
+                        var lower = text.toLowerCase();
+                        var en_keywords = ['please log in', 'log in first', 'login expired', 'please login', 'log in again', 'not logged in'];
+                        for (var j = 0; j < en_keywords.length; j++) {
+                            if (lower.indexOf(en_keywords[j]) !== -1) {
+                                flag = 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+                this.is_login_required = flag;
+                this.login_btn_class = 'bg-main br-main cr-white round' + (this.propBackBtn ? ' margin-left-lg' : '');
+            },
+
+            // 跳转登录页
+            login_event() {
+                app.globalData.url_open('/pages/login/login');
+            },
+
             // 定时任务
             countdown(self) {
                 // 销毁之前的任务

@@ -3,26 +3,24 @@
         <view v-if="data_base != null" class="padding-main">
             <view v-if="is_can_cash == 1">
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
-                    <view class="bg-white border-radius-main">
-                        <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('cash-auth.cash-auth.b39a25')}}<text class="form-group-tips-must">*</text></view>
-                            <view class="section">
-                                <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
-                                    <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
-                                        <view v-if="check_account_value == null">{{$t('cash-auth.cash-auth.582q6x')}}</view>
-                                        <view v-else>{{ check_account_list[check_account_value]['msg'] }}</view>
-                                    </view>
-                                </picker>
-                            </view>
+                    <view class="form-gorup margin-bottom radius-md">
+                        <view class="form-gorup-title">{{$t('cash-auth.cash-auth.b39a25')}}<text class="form-group-tips-must">*</text></view>
+                        <view class="section">
+                            <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
+                                <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
+                                    <view v-if="check_account_value == null">{{$t('cash-auth.cash-auth.582q6x')}}</view>
+                                    <view v-else>{{ check_account_list[check_account_value]['msg'] }}</view>
+                                </view>
+                            </picker>
                         </view>
+                    </view>
 
-                        <view class="form-gorup pr">
-                            <view class="form-gorup-title">{{$t('cash-auth.cash-auth.d318op')}}<text class="form-group-tips-must">*</text></view>
-                            <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-auth.cash-auth.2hc312')" maxlength="4" />
-                            <button :class="'bg-grey br-grey cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">
-                                {{ verify_submit_text }}
-                            </button>
-                        </view>
+                    <view class="form-gorup margin-bottom radius-md pr">
+                        <view class="form-gorup-title">{{$t('cash-auth.cash-auth.d318op')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-auth.cash-auth.2hc312')" maxlength="4" />
+                        <button :class="'bg-grey br-grey cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">
+                            {{ verify_submit_text }}
+                        </button>
                     </view>
 
                     <view class="form-gorup form-gorup-submit margin-top-main">

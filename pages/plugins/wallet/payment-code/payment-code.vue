@@ -33,9 +33,6 @@
 
             <!-- 错误提示 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-            <view v-if="is_to_login == 1" class="margin-top-lg tc">
-                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">{{$t('member-code.member-code.yj6g3a')}}</button>
-            </view>
         </view>
 
         <!-- 公共 -->
@@ -54,7 +51,6 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 bottom_fixed_style: '',
-                is_to_login: 0,
                 screen_brightness_value: 0,
                 plugins_vip: null,
                 scheduled_timer: null,
@@ -146,7 +142,6 @@
                     this.setData({
                         data_list_loding_status: 0,
                         data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
-                        is_to_login: 1,
                     });
                 }
             },
@@ -179,7 +174,6 @@
                             qrcode['code'] = res.data.data.code;
                             this.setData({
                                 data_list_loding_status: 3,
-                                is_to_login: 0,
                                 barcode: barcode,
                                 qrcode: qrcode,
                                 payment_code: res.data.data.code,
@@ -190,7 +184,6 @@
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
-                                is_to_login: 0,
                             });
                         }
                     },
@@ -198,7 +191,6 @@
                         this.setData({
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
-                            is_to_login: 0,
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },

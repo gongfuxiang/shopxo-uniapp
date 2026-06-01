@@ -368,6 +368,10 @@
         "plugins-presale-index": "Presale",
         "plugins-presale-buy": "Order Confirmation",
         "plugins-presale-order": "Presale order",
+        "plugins-bargain-index": "Bargain",
+        "plugins-bargain-detail": "Bargain details",
+        "plugins-bargain-team": "Help cut",
+        "plugins-bargain-order": "My bargain",
         "plugins-groupbuy-index": "Group buy",
         "plugins-groupbuy-detail": "Group buy details",
         "plugins-groupbuy-team": "Join group",
@@ -2057,6 +2061,11 @@
             "fsdf33": "Please choose a specific type",
             "98yyuf": "Please enter your wonderful comment"
     	}
+    },
+    "plugins-bargain-order": {
+        "order": {
+            "gbo001": "Enter bargain order no."
+        }
     },
     "plugins-groupbuy-order": {
         "order": {

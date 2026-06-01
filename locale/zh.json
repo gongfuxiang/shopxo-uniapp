@@ -366,6 +366,10 @@
         "plugins-presale-index": "预售",
         "plugins-presale-buy": "订单确认",
         "plugins-presale-order": "预售订单",
+        "plugins-bargain-index": "砍价",
+        "plugins-bargain-detail": "砍价详情",
+        "plugins-bargain-team": "帮砍",
+        "plugins-bargain-order": "我的砍价",
         "plugins-groupbuy-index": "拼团",
         "plugins-groupbuy-detail": "拼团详情",
         "plugins-groupbuy-team": "参团",
@@ -2040,6 +2044,11 @@
             "fsdf33": "请选择具体的类型",
             "98yyuf": "请输入您的精彩评论"
     	}
+    },
+    "plugins-bargain-order": {
+        "order": {
+            "gbo001": "请输入砍价单号"
+        }
     },
     "plugins-groupbuy-order": {
         "order": {

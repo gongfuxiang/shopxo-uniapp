@@ -20,7 +20,25 @@
                 <view class="border-radius-main padding-main spacing-mb team-status-panel" :class="team.status == 1 ? 'team-status-panel-success' : 'bg-white'">
                     <block v-if="team.status == 0">
                         <view class="tc fw-b text-size-md">拼团中，还差 <text class="cr-red">{{ team.remain_number }}</text> 人</view>
-                        <view v-if="countdown_text != ''" class="tc cr-grey text-size-xs margin-top-sm">剩余 {{ countdown_text }} 结束</view>
+                        <view v-if="countdown_show" class="tc margin-top-sm flex-row align-c jc-c flex-wrap gap-10">
+                            <text class="cr-grey text-size-xs">剩余</text>
+                            <component-countdown
+                                :key="countdown_key"
+                                :propHour="countdown_hour"
+                                :propMinute="countdown_minute"
+                                :propSecond="countdown_second"
+                                propTimeBackgroundColor="#e54d42"
+                                propTimeColor="#ffffff"
+                                propDsColor="#666666"
+                                :propTimeSize="24"
+                                :propDsSize="24"
+                                :propTimePadding="6"
+                                propHourDs=" : "
+                                propMinuteDs=" : "
+                                propSecondDs=""
+                            ></component-countdown>
+                            <text class="cr-grey text-size-xs">结束</text>
+                        </view>
                     </block>
                     <block v-else-if="team.status == 1">
                         <view class="team-status-success tc">
@@ -93,6 +111,7 @@
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGroupbuyPlayRules from '../components/groupbuy-play-rules/groupbuy-play-rules';
     import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentCountdown from '@/components/countdown/countdown';
     export default {
         data() {
             return {
@@ -112,8 +131,11 @@
                 user: null,
                 is_leader: false,
                 play_current_step: 2,
-                countdown_text: '',
-                countdown_timer: null,
+                countdown_show: false,
+                countdown_hour: '00',
+                countdown_minute: '00',
+                countdown_second: '00',
+                countdown_key: '',
                 share_info: {},
             };
         },
@@ -123,6 +145,7 @@
             componentBottomLine,
             componentGroupbuyPlayRules,
             componentSharePopup,
+            componentCountdown,
         },
         onLoad(params) {
             // 调用公共事件方法
@@ -146,11 +169,6 @@
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
-        },
-
-        // 页面卸载
-        onUnload() {
-            clearInterval(this.countdown_timer);
         },
 
         // 下拉刷新
@@ -187,6 +205,7 @@
                             var goods = result.goods || {};
                             var share_title = groupbuy.title || goods.title || '邀请你参团';
                             var share_desc = '还差' + (team.remain_number || 0) + '人成团，快来一起拼团吧';
+                            var countdown_time = this.parse_countdown_time(team);
                             this.setData({
                                 team: team,
                                 groupbuy: groupbuy,
@@ -198,6 +217,11 @@
                                 user: user,
                                 is_leader: is_leader,
                                 play_current_step: result.play_current_step || 2,
+                                countdown_show: countdown_time.show,
+                                countdown_hour: countdown_time.hour,
+                                countdown_minute: countdown_time.minute,
+                                countdown_second: countdown_time.second,
+                                countdown_key: 'team-countdown-' + (team.id || 0) + '-' + countdown_time.hour + countdown_time.minute + countdown_time.second,
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 share_info: {
@@ -208,7 +232,6 @@
                                     img: goods.images || '',
                                 },
                             });
-                            this.countdown_init(team.expire_time || 0);
                             // 分享菜单处理
                             app.globalData.page_share_handle(this.share_info);
                         } else {
@@ -230,26 +253,30 @@
                 });
             },
 
-            // 倒计时初始化
-            countdown_init(expire_time) {
-                clearInterval(this.countdown_timer);
+            parse_countdown_time(team) {
+                team = team || {};
+                var expire_time = parseInt(team.expire_time || 0);
                 if (expire_time <= 0) {
-                    return false;
+                    return { show: false, hour: '00', minute: '00', second: '00' };
                 }
-                var update = () => {
-                    var left = parseInt(expire_time) - parseInt(Date.now() / 1000);
-                    if (left <= 0) {
-                        this.setData({ countdown_text: '00:00:00' });
-                        clearInterval(this.countdown_timer);
-                        return false;
-                    }
-                    var h = String(Math.floor(left / 3600)).padStart(2, '0');
-                    var m = String(Math.floor((left % 3600) / 60)).padStart(2, '0');
-                    var s = String(left % 60).padStart(2, '0');
-                    this.setData({ countdown_text: h + ':' + m + ':' + s });
+                var left = expire_time - parseInt(Date.now() / 1000);
+                if (left <= 0) {
+                    return { show: false, hour: '00', minute: '00', second: '00' };
+                }
+                if ((team.countdown_h || null) != null && expire_time > parseInt(Date.now() / 1000)) {
+                    return {
+                        show: true,
+                        hour: team.countdown_h || '00',
+                        minute: team.countdown_m || '00',
+                        second: team.countdown_s || '00',
+                    };
+                }
+                return {
+                    show: true,
+                    hour: String(Math.floor(left / 3600)).padStart(2, '0'),
+                    minute: String(Math.floor((left % 3600) / 60)).padStart(2, '0'),
+                    second: String(left % 60).padStart(2, '0'),
                 };
-                update();
-                this.countdown_timer = setInterval(update, 1000);
             },
 
             // 登录

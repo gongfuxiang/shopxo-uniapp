@@ -1,35 +1,37 @@
 <template>
-    <view v-if="is_show" class="groupbuy-play-flow border-radius-main bg-white padding-main spacing-mb">
-        <view class="play-flow-title text-wrapper title-left-border cr-black text-size-md fw-b">拼团玩法</view>
-        <view class="groupbuy-play-steps-row flex-row align-stretch">
-            <view v-if="play_flow_steps.length > 0" class="play-flow-steps flex-1">
-                <block v-for="(item, index) in play_flow_steps" :key="index">
-                    <view class="play-flow-step tc" :class="item.step_class">
-                        <image v-if="item.has_icon" :src="item.icon" mode="aspectFill" class="play-step-icon radius"></image>
-                        <view v-else class="play-step-icon play-step-icon-default bg-grey-f5 radius">
-                            <iconfont :name="item.icon_font" size="40rpx" :color="item.icon_color"></iconfont>
+    <view v-if="is_show" class="bargain-play-flow-wrap">
+        <view v-if="play_list.length > 0" class="bargain-index-play-flow border-radius-main bg-white padding-main spacing-mb">
+            <component-bargain-dot-title propTitle="砍价玩法"></component-bargain-dot-title>
+            <view class="bargain-play-steps-row flex-row align-stretch">
+                <view v-if="play_flow_steps.length > 0" class="play-flow-steps flex-1">
+                    <block v-for="(item, index) in play_flow_steps" :key="index">
+                        <view class="play-flow-step tc" :class="item.step_class">
+                            <image v-if="item.has_icon" :src="item.icon" mode="aspectFill" class="play-step-icon radius"></image>
+                            <view v-else class="play-step-icon play-step-icon-default bg-grey-f5 radius">
+                                <iconfont :name="item.icon_font" size="40rpx" :color="item.icon_color"></iconfont>
+                            </view>
+                            <view class="margin-top-xs" :class="item.name_class">{{ item.name }}</view>
                         </view>
-                        <view class="margin-top-xs" :class="item.name_class">{{ item.name }}</view>
-                    </view>
-                    <view v-if="item.show_line" class="play-flow-line flex-row align-c" :class="item.line_class">
-                        <view class="play-flow-line-bar"></view>
-                        <iconfont name="icon-angle-right" size="28rpx" :color="item.line_icon_color" :propStyle="item.line_icon_style"></iconfont>
-                    </view>
-                </block>
-            </view>
-            <view v-if="play_side_nav.length > 0" class="groupbuy-play-side-nav">
-                <button
-                    v-for="(nav, nav_index) in play_side_nav"
-                    :key="nav_index"
-                    class="groupbuy-play-side-nav-btn round bg-white br-grey cr-grey text-size-xs"
-                    type="default"
-                    :data-value="nav.url"
-                    @tap="side_nav_event"
-                    hover-class="none">{{ nav.name }}</button>
+                        <view v-if="item.show_line" class="play-flow-line flex-row align-c" :class="item.line_class">
+                            <view class="play-flow-line-bar"></view>
+                            <iconfont name="icon-angle-right" size="28rpx" :color="item.line_icon_color" :propStyle="item.line_icon_style"></iconfont>
+                        </view>
+                    </block>
+                </view>
+                <view v-if="play_side_nav.length > 0" class="bargain-play-side-nav">
+                    <button
+                        v-for="(nav, nav_index) in play_side_nav"
+                        :key="nav_index"
+                        class="bargain-play-side-nav-btn round bg-white br-grey cr-grey text-size-xs"
+                        type="default"
+                        :data-value="nav.url"
+                        @tap="side_nav_event"
+                        hover-class="none">{{ nav.name }}</button>
+                </view>
             </view>
         </view>
-        <view v-if="content_notice.length > 0" class="groupbuy-play-rules">
-            <view class="play-rules-title text-wrapper title-left-border cr-black text-size-sm fw-b">拼团规则</view>
+        <view v-if="content_notice.length > 0" class="bargain-index-play-rules border-radius-main bg-white padding-main spacing-mb">
+            <component-bargain-dot-title propTitle="砍价规则" propTextClass="text-size-sm"></component-bargain-dot-title>
             <view class="play-rules-list">
                 <view v-for="(rule, rindex) in content_notice" :key="rindex" v-if="rule" class="play-rules-item cr-grey text-size-xs">{{ rule }}</view>
             </view>
@@ -37,13 +39,16 @@
     </view>
 </template>
 <script>
+    import componentBargainDotTitle from '../bargain-dot-title/bargain-dot-title';
     export default {
+        components: {
+            componentBargainDotTitle,
+        },
         props: {
             propConfig: {
                 type: Object,
                 default: () => ({}),
             },
-            // 大于 0 时启用拼团进度高亮（参团页）
             propPlayCurrentStep: {
                 type: Number,
                 default: 0,
@@ -57,26 +62,22 @@
             play_side_nav() {
                 return (this.propPlaySideNav || null) != null && this.propPlaySideNav.length > 0 ? this.propPlaySideNav : [];
             },
-            // 玩法步骤列表
             play_list() {
                 var config = this.propConfig || {};
                 return (config.play_list || null) != null && config.play_list.length > 0 ? config.play_list : [];
             },
-            // 拼团规则列表
             content_notice() {
                 var config = this.propConfig || {};
                 return (config.content_notice || null) != null && config.content_notice.length > 0 ? config.content_notice : [];
             },
-            // 是否显示组件
             is_show() {
                 return this.play_list.length > 0 || this.content_notice.length > 0;
             },
-            // 玩法流程展示数据（含进度高亮）
             play_flow_steps() {
                 var list = this.play_list || [];
                 var current = parseInt(this.propPlayCurrentStep || 0);
                 var progress = current > 0;
-                var default_icon_font = ['icon-enable', 'icon-share', 'icon-inventroy-manage'];
+                var default_icon_font = ['icon-enable', 'icon-share', 'icon-cart'];
                 var steps = [];
                 for (var i = 0; i < list.length; i++) {
                     var step = i + 1;
@@ -136,10 +137,13 @@
     };
 </script>
 <style scoped>
-.groupbuy-play-steps-row {
+.bargain-play-flow-wrap {
+    display: block;
+}
+.bargain-play-steps-row {
     gap: 20rpx;
 }
-.groupbuy-play-side-nav {
+.bargain-play-side-nav {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -147,20 +151,12 @@
     gap: 16rpx;
     width: 160rpx;
 }
-.groupbuy-play-side-nav-btn {
+.bargain-play-side-nav-btn {
     width: 100%;
     margin: 0;
     padding: 0 8rpx;
     line-height: 56rpx;
     height: 56rpx;
-}
-.play-flow-title {
-    display: inline-block;
-    margin-bottom: 16rpx;
-}
-.play-rules-title {
-    display: inline-block;
-    margin-bottom: 16rpx;
 }
 .play-flow-steps {
     display: flex;
@@ -168,7 +164,6 @@
     align-items: flex-start;
     justify-content: center;
     flex-wrap: nowrap;
-    margin-bottom: 16rpx;
 }
 .play-flow-step {
     flex-shrink: 0;
@@ -205,11 +200,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.groupbuy-play-steps-row + .groupbuy-play-rules {
-    margin-top: 32rpx;
-    padding-top: 24rpx;
-    border-top: 1rpx solid #f0f0f0;
 }
 .play-rules-item {
     line-height: 1.6;
