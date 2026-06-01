@@ -1462,7 +1462,11 @@
 			"c7h4mu": "Please fill in the name of the account holder",
 			"724kn8": "Withdrawals cannot be lower than",
 			"duo0ts": "Withdrawal cannot be greater than",
-            "678iu2": "Estimated handling fee"
+            "678iu2": "Estimated handling fee",
+			"8fm3k1": "Maximum withdrawal amount",
+			"m9x2p1": " minimum",
+			"p4k8n2": ", ",
+			"3xk8m2": "Single withdrawal cannot exceed "
 		}
 	},
 	"payment-code": {

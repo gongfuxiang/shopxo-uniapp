@@ -5,11 +5,10 @@
                 <view class="padding-main oh">
                     <view class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.qg404q')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.cash-create.cymbdz') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.cash-create.27ky42') + can_cash_max_money" @input="cash_money_event" />
+                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.cash-create.cymbdz') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.cash-create.27ky42') + cash_input_max_money_value" @input="cash_money_event" />
                         <view class="text-size-xs">
-                            <view v-if="(data_base || null) != null && data_base.cash_minimum_amount > 0">
-                                <text>{{$t('cash-auth.cash-auth.27b4w5')}}</text>
-                                <text class="cr-red fw-b margin-left-sm">{{ data_base.cash_minimum_amount }}</text>
+                            <view v-if="cash_limit_tips_status" class="cr-red margin-bottom-xs">
+                                <text>{{ cash_limit_tips_text }}</text>
                             </view>
                             <view>
                                 <text>{{$t('cash-create.cash-create.iaw845')}}</text>
@@ -111,6 +110,7 @@
                 default_data: {},
                 check_status: null,
                 can_cash_max_money: 0.00,
+                cash_input_max_money: 0.00,
                 cash_commission_value: 0.00,
                 user_cash_type_list: [],
                 cash_type_0_status: false,
@@ -132,6 +132,44 @@
                 return list.filter(function(item) {
                     return item;
                 });
+            },
+            cash_minimum_limit() {
+                var base = this.data_base || null;
+                if (base == null) {
+                    return 0;
+                }
+                return parseFloat(base.cash_minimum_amount || 0) || 0;
+            },
+            cash_maximum_limit() {
+                var base = this.data_base || null;
+                if (base == null) {
+                    return 0;
+                }
+                var val = base.cash_maximum_amount;
+                if (val === '' || val === null || val === undefined) {
+                    return 0;
+                }
+                return parseFloat(val) || 0;
+            },
+            cash_limit_tips_status() {
+                return this.cash_minimum_limit > 0 || this.cash_maximum_limit > 0;
+            },
+            cash_limit_tips_text() {
+                var tips = [];
+                if (this.cash_minimum_limit > 0) {
+                    tips.push(this.$t('cash-auth.cash-auth.27b4w5') + ' ' + this.cash_minimum_limit + this.$t('cash-create.cash-create.m9x2p1'));
+                }
+                if (this.cash_maximum_limit > 0) {
+                    tips.push(this.$t('cash-create.cash-create.8fm3k1') + ' ' + this.cash_maximum_limit);
+                }
+                return tips.join(this.$t('cash-create.cash-create.p4k8n2'));
+            },
+            cash_input_max_money_value() {
+                var val = parseFloat(this.cash_input_max_money);
+                if (!isNaN(val) && val >= 0) {
+                    return val;
+                }
+                return parseFloat(this.can_cash_max_money) || 0;
             },
         },
 
@@ -200,6 +238,7 @@
                                 default_data: data.default_data || {},
                                 user_wallet: data.user_wallet || {},
                                 can_cash_max_money: parseFloat(data.can_cash_max_money) || 0.0,
+                                cash_input_max_money: parseFloat(data.cash_input_max_money) || 0.0,
                                 user_cash_type_list: data.user_cash_type_list || []
                             });
                             // 默认选中处理
@@ -288,12 +327,16 @@
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {
                     // 提现金额不能小于最低金额、不能大于最大可提现金额
-                    if (parseFloat(this.data_base.cash_minimum_amount || 0) > 0 && parseFloat(form_data.money) < parseFloat(this.data_base.cash_minimum_amount)) {
-                        app.globalData.showToast(this.$t('cash-create.cash-create.724kn8') + this.data_base.cash_minimum_amount);
+                    if (this.cash_minimum_limit > 0 && parseFloat(form_data.money) < this.cash_minimum_limit) {
+                        app.globalData.showToast(this.$t('cash-create.cash-create.724kn8') + this.cash_minimum_limit);
                         return false;
                     }
-                    if (parseFloat(form_data.money) > this.can_cash_max_money) {
-                        app.globalData.showToast(this.$t('cash-create.cash-create.duo0ts') + this.can_cash_max_money);
+                    if (this.cash_maximum_limit > 0 && parseFloat(form_data.money) > this.cash_maximum_limit) {
+                        app.globalData.showToast(this.$t('cash-create.cash-create.3xk8m2') + this.cash_maximum_limit);
+                        return false;
+                    }
+                    if (parseFloat(form_data.money) > this.cash_input_max_money_value) {
+                        app.globalData.showToast(this.$t('cash-create.cash-create.duo0ts') + this.cash_input_max_money_value);
                         return false;
                     }
 
