@@ -51,6 +51,8 @@
                                         <component-diy-plugins-live-tabs v-else-if="item.key == 'plugins-live-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-plugins-live-tabs>
                                         <component-diy-plugins-groupbuy-list v-else-if="item.key == 'plugins-groupbuy'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-groupbuy-list>
                                         <component-diy-plugins-groupbuy-tabs v-else-if="item.key == 'plugins-groupbuy-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-plugins-groupbuy-tabs>
+                                        <component-diy-plugins-bargain-list v-else-if="item.key == 'plugins-bargain'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-plugins-bargain-list>
+                                        <component-diy-plugins-bargain-tabs v-else-if="item.key == 'plugins-bargain-tabs'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data" :propTop="get_diy_prop_top(item.com_data)" :propScrollTop="scroll_top" :propCustomNavHeight="get_diy_custom_nav_height(item.com_data)" :propIsTabsUseSafeDistance="getPropIsTabsUseSafeDistance"></component-diy-plugins-bargain-tabs>
                                         <component-diy-shop v-else-if="item.key == 'shop'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-shop>
                                         <component-diy-binding v-else-if="item.key == 'binding'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-binding>
                                         <component-diy-ask v-else-if="item.key == 'ask'" :propIndex="get_prop_index(item)" :propKey="item.id + index" :propValue="item.com_data"></component-diy-ask>
@@ -146,6 +148,8 @@
     import componentDiyPluginsLiveTabs from '@/pages/diy/components/diy/plugins-live-tabs';
     import componentDiyPluginsGroupbuyList from '@/pages/diy/components/diy/plugins-groupbuy-list';
     import componentDiyPluginsGroupbuyTabs from '@/pages/diy/components/diy/plugins-groupbuy-tabs';
+    import componentDiyPluginsBargainList from '@/pages/diy/components/diy/plugins-bargain-list';
+    import componentDiyPluginsBargainTabs from '@/pages/diy/components/diy/plugins-bargain-tabs';
     import componentDiyHotZone from '@/pages/diy/components/diy/hot-zone';
     import componentDiyCoupon from '@/pages/diy/components/diy/coupon';
     import componentDiyFloatWindow from '@/pages/diy/components/diy/float-window';
@@ -227,6 +231,8 @@
             componentDiyPluginsLiveTabs,
             componentDiyPluginsGroupbuyList,
             componentDiyPluginsGroupbuyTabs,
+            componentDiyPluginsBargainList,
+            componentDiyPluginsBargainTabs,
             componentDiyHotZone,
             componentDiyCoupon,
             componentDiyAuxiliaryLine,

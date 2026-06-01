@@ -7,11 +7,11 @@
                         <view :class="layout_type" :style="layout_img_style">
                             <block v-if="theme == '6'">
                                 <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
-                                    <view class="groupbuy-noimg-row flex-row align-c flex-1 oh">
-                                        <view v-if="is_show('title')" :class="[text_line, 'groupbuy-noimg-title']" :style="title_style">{{ item.title }}</view>
-                                        <view v-if="is_show_groupbuy_tags" class="flex-row align-c groupbuy-tags-row flex-shrink">
-                                            <view v-if="is_show('groupbuy_people_num') && !isEmpty(groupbuy_people_text(item))" class="border-radius-sm padding-horizontal-xs groupbuy-people-tag" :style="groupbuy_people_tag_style">{{ groupbuy_people_text(item) }}</view>
-                                            <text v-if="is_show('groupbuy_hot') && !isEmpty(groupbuy_success_text(item))" class="groupbuy-hot-text" :style="groupbuy_hot_text_style">{{ groupbuy_success_text(item) }}</text>
+                                    <view class="bargain-noimg-row flex-row align-c flex-1 oh">
+                                        <view v-if="is_show('title')" :class="[text_line, 'bargain-noimg-title']" :style="title_style">{{ item.title }}</view>
+                                        <view v-if="is_show_bargain_tags" class="flex-row align-c bargain-tags-row flex-shrink">
+                                            <view v-if="is_show('bargain_success_tag_text') && !isEmpty(get_bargain_success_tag_text(item))" class="border-radius-sm padding-horizontal-xs bargain-success-tag" :style="bargain_success_tag_style">{{ get_bargain_success_tag_text(item) }}</view>
+                                            <text v-if="is_show('bargain_success_text') && !isEmpty(get_bargain_success_text(item))" class="bargain-hot-text" :style="bargain_success_text_style">{{ get_bargain_success_text(item) }}</text>
                                         </view>
                                     </view>
                                     <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num flex-row align-c nowrap flex-shrink" :style="'color:' + new_style.shop_price_color">
@@ -34,15 +34,15 @@
                                         <subscriptIndex :propValue="propValue"></subscriptIndex>
                                     </view>
                                 </block>
-                                <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || is_show_groupbuy_tags || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
+                                <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || is_show_bargain_tags || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                     <view class="flex-col gap-10 top-title">
                                         <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{ gap: new_style.title_simple_desc_spacing * 2 + 'rpx' }">
                                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                                             <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" :class="form.simple_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="simple_desc">{{ item.simple_desc }}</view>
                                         </view>
-                                        <view v-if="is_show_groupbuy_tags" class="flex-row align-c groupbuy-tags-row">
-                                            <view v-if="is_show('groupbuy_people_num') && !isEmpty(groupbuy_people_text(item))" class="border-radius-sm padding-horizontal-xs groupbuy-people-tag" :style="groupbuy_people_tag_style">{{ groupbuy_people_text(item) }}</view>
-                                            <text v-if="is_show('groupbuy_hot') && !isEmpty(groupbuy_success_text(item))" class="groupbuy-hot-text" :style="groupbuy_hot_text_style">{{ groupbuy_success_text(item) }}</text>
+                                        <view v-if="is_show_bargain_tags" class="flex-row align-c bargain-tags-row">
+                                            <view v-if="is_show('bargain_success_tag_text') && !isEmpty(get_bargain_success_tag_text(item))" class="border-radius-sm padding-horizontal-xs bargain-success-tag" :style="bargain_success_tag_style">{{ get_bargain_success_tag_text(item) }}</view>
+                                            <text v-if="is_show('bargain_success_text') && !isEmpty(get_bargain_success_text(item))" class="bargain-hot-text" :style="bargain_success_text_style">{{ get_bargain_success_text(item) }}</text>
                                         </view>
                                     </view>
                                     <view class="flex-row align-c jc-sb gap-8 oh">
@@ -94,15 +94,15 @@
                                                     <subscriptIndex :propValue="propValue"></subscriptIndex>
                                                 </view>
                                             </block>
-                                            <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show_groupbuy_tags || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
+                                            <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show_bargain_tags || is_show('original_price') || form.is_shop_show == '1'" class="flex-col flex-1 jc-sb content gap-10" :style="content_style">
                                                 <view class="flex-col gap-10 top-title">
                                                     <view v-if="is_show('title') || (['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc'))" class="flex-col" :style="{ gap: new_style.title_simple_desc_spacing * 2 + 'rpx' }">
                                                         <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                                                         <view v-if="['0', '1', '2', '3', '5'].includes(theme) && is_show('simple_desc')" :class="form.simple_desc_row == '2' ? 'text-line-2' : 'text-line-1'" :style="simple_desc">{{ item.simple_desc }}</view>
                                                     </view>
-                                                    <view v-if="is_show_groupbuy_tags" class="flex-row align-c groupbuy-tags-row">
-                                                        <view v-if="is_show('groupbuy_people_num') && !isEmpty(groupbuy_people_text(item))" class="border-radius-sm padding-horizontal-xs groupbuy-people-tag" :style="groupbuy_people_tag_style">{{ groupbuy_people_text(item) }}</view>
-                                                        <text v-if="is_show('groupbuy_hot') && !isEmpty(groupbuy_success_text(item))" class="groupbuy-hot-text" :style="groupbuy_hot_text_style">{{ groupbuy_success_text(item) }}</text>
+                                                    <view v-if="is_show_bargain_tags" class="flex-row align-c bargain-tags-row">
+                                                        <view v-if="is_show('bargain_success_tag_text') && !isEmpty(get_bargain_success_tag_text(item))" class="border-radius-sm padding-horizontal-xs bargain-success-tag" :style="bargain_success_tag_style">{{ get_bargain_success_tag_text(item) }}</view>
+                                                        <text v-if="is_show('bargain_success_text') && !isEmpty(get_bargain_success_text(item))" class="bargain-hot-text" :style="bargain_success_text_style">{{ get_bargain_success_text(item) }}</text>
                                                     </view>
                                                 </view>
                                                 <view class="flex-row align-c jc-sb gap-8 oh">
@@ -228,9 +228,9 @@
                 // 图片大小
                 img_size: '',
                 new_scale: 1,
-                is_show_groupbuy_tags: false,
-                groupbuy_people_tag_style: '',
-                groupbuy_hot_text_style: '',
+                is_show_bargain_tags: false,
+                bargain_success_tag_style: '',
+                bargain_success_text_style: '',
             };
         },
         watch: {
@@ -257,12 +257,12 @@
                     } else {
                         new_list = this.propNewList;
                     }
-                    const is_show_arr = new_form.is_show || [];
-                    const groupbuy_people_color = new_style.shop_groupbuy_people_color || '#EA3323';
-                    const groupbuy_people_border = new_style.shop_groupbuy_people_border_color || groupbuy_people_color;
-                    const groupbuy_people_size = new_style.shop_groupbuy_people_size || 9;
-                    const groupbuy_hot_color = new_style.shop_groupbuy_hot_color || '#999999';
-                    const groupbuy_hot_size = new_style.shop_groupbuy_hot_size || 10;
+                    const is_show_arr = this.migrate_bargain_is_show(new_form.is_show || []);
+                    const bargain_tag_color = new_style.shop_bargain_success_tag_color || new_style.shop_cutprice_people_color || '#EA3323';
+                    const bargain_tag_border = new_style.shop_bargain_success_tag_border_color || new_style.shop_cutprice_people_border_color || bargain_tag_color;
+                    const bargain_tag_size = new_style.shop_bargain_success_tag_size || new_style.shop_cutprice_people_size || 9;
+                    const bargain_text_color = new_style.shop_bargain_success_text_color || new_style.shop_cutprice_hot_color || '#999999';
+                    const bargain_text_size = new_style.shop_bargain_success_text_size || new_style.shop_cutprice_hot_size || 10;
                     // 最外层不同风格下的显示
                     const flex = ['0', '2', '6'].includes(new_form.theme) ? 'flex-col ' : 'flex-row ';
                     const wrap = new_form.theme == '5' ? '' : 'flex-wrap ';
@@ -307,7 +307,7 @@
                         }
                     }
                     this.setData({
-                        form: new_form,
+                        form: { ...new_form, is_show: is_show_arr },
                         new_style: new_style,
                         outer_class: flex + wrap + background + 'oh',
                         list: new_list,
@@ -340,9 +340,9 @@
                         shop_content_list: get_swiper_list(new_list, new_form.carousel_col, new_style.rolling_fashion),
                         slides_per_group: new_style.rolling_fashion == 'translation' ? new_form.carousel_col : 1,
                         img_size: img_style,
-                        is_show_groupbuy_tags: is_show_arr.includes('groupbuy_people_num') || is_show_arr.includes('groupbuy_hot'),
-                        groupbuy_people_tag_style: `background: transparent; color: ${groupbuy_people_color}; border: 1rpx solid ${groupbuy_people_border}; font-size: ${groupbuy_people_size * 2}rpx; line-height: ${(groupbuy_people_size + 4) * 2}rpx;`,
-                        groupbuy_hot_text_style: `color: ${groupbuy_hot_color}; font-size: ${groupbuy_hot_size * 2}rpx; line-height: ${groupbuy_hot_size * 2}rpx;`,
+                        is_show_bargain_tags: is_show_arr.includes('bargain_success_tag_text') || is_show_arr.includes('bargain_success_text'),
+                        bargain_success_tag_style: `background: transparent; color: ${bargain_tag_color}; border: 1rpx solid ${bargain_tag_border}; font-size: ${bargain_tag_size * 2}rpx; line-height: ${(bargain_tag_size + 4) * 2}rpx;`,
+                        bargain_success_text_style: `color: ${bargain_text_color}; font-size: ${bargain_text_size * 2}rpx; line-height: ${bargain_text_size * 2}rpx;`,
                     });
                     if (this.propIsUseAuto && new_form.data_type == '1' && new_list.length === 0) {
                         this.get_auto_data_list(new_form, new_style);
@@ -381,25 +381,30 @@
             get_item_cover(item) {
                 return item.cover || item.images || '';
             },
-            groupbuy_people_text(item) {
-                const num = item.buy_number != null && item.buy_number !== '' ? item.buy_number : item.group_number;
-                if (num !== undefined && num !== null && num !== '') {
-                    return `${num}人团`;
-                }
-                return '';
+            migrate_bargain_is_show(is_show) {
+                const map = {
+                    cutprice_people_num: 'bargain_success_tag_text',
+                    cutprice_hot: 'bargain_success_text',
+                    groupbuy_people_num: 'bargain_success_tag_text',
+                    groupbuy_hot: 'bargain_success_text',
+                };
+                return [...new Set((is_show || []).map((key) => map[key] || key))];
             },
-            groupbuy_success_text(item) {
-                return item.groupbuy_success_text || '';
+            get_bargain_success_tag_text(item) {
+                return item.bargain_success_tag_text || '';
+            },
+            get_bargain_success_text(item) {
+                return item.bargain_success_text || '';
             },
             get_auto_data_list(new_form, new_style) {
                 uni.request({
-                    url: app.globalData.get_request_url('autogroupbuylist', 'diygroupbuy', 'groupbuy'),
+                    url: app.globalData.get_request_url('autobargainlist', 'diybargain', 'bargain'),
                     method: 'POST',
                     data: {
-                        groupby_keywords: new_form.keywords || '',
-                        groupby_order_by_type: new_form.order_by_type ?? 0,
-                        groupby_order_by_rule: new_form.order_by_rule ?? 0,
-                        groupby_number: new_form.number,
+                        bargain_keywords: new_form.keywords || '',
+                        bargain_order_by_type: new_form.order_by_type ?? 0,
+                        bargain_order_by_rule: new_form.order_by_rule ?? 0,
+                        bargain_number: new_form.number,
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -532,23 +537,23 @@
     .br-b-e {
         border-bottom: 2rpx solid #eee;
     }
-    .groupbuy-noimg-row {
+    .bargain-noimg-row {
         gap: 20rpx;
         min-width: 0;
     }
-    .groupbuy-noimg-title {
+    .bargain-noimg-title {
         flex: 0 1 auto;
         min-width: 0;
         text-align: left;
     }
-    .groupbuy-tags-row {
+    .bargain-tags-row {
         flex-wrap: nowrap;
         gap: 20rpx;
     }
-    .groupbuy-people-tag {
+    .bargain-success-tag {
         flex-shrink: 0;
     }
-    .groupbuy-hot-text {
+    .bargain-hot-text {
         flex-shrink: 0;
         white-space: nowrap;
     }

@@ -1,11 +1,11 @@
 <template>
-    <view class="plugins-groupbuy-tabs" :class="'plugins-groupbuy-tabs-' + propKey" :style="style_container">
+    <view class="plugins-bargain-tabs" :class="'plugins-bargain-tabs-' + propKey" :style="style_container">
         <view :style="style_img_container">
-            <component-diy-modules-tabs-view :propKey="propKey" :propValue="plugins_groupbuy_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></component-diy-modules-tabs-view>
+            <component-diy-modules-tabs-view :propKey="propKey" :propValue="plugins_bargain_tabs" :propIsTop="top_up == '1'" :propTop="sticky_top" :propStyle="tabs_style" :propsTabsContainer="tabs_container" :propsTabsImgContainer="tabs_img_container" :propCustomNavHeight="propIsTabsUseSafeDistance ? (propCustomNavHeight * 2 + 'rpx') : '0rpx'" :propTabsSlidingFixedBg="tabs_sliding_fixed_bg" :propTabsBackground="tabs_background" @onTabsTap="tabs_click_event"></component-diy-modules-tabs-view>
             <view :style="shop_margin_top">
                 <view :style="shop_container">
                     <view :style="shop_img_container">
-                        <component-diy-plugins-groupbuy-list :propKey="diy_key" :propDiyIndex="propDiyIndex" :propValue="plugins_groupbuy_tabs" :propIsCommonStyle="false"></component-diy-plugins-groupbuy-list>
+                        <component-diy-plugins-bargain-list :propKey="diy_key" :propDiyIndex="propDiyIndex" :propValue="plugins_bargain_tabs" :propIsCommonStyle="false"></component-diy-plugins-bargain-list>
                     </view>
                 </view>
             </view>
@@ -17,7 +17,7 @@
     const app = getApp();
     import { common_styles_computer, common_img_computer, padding_computer, margin_computer, background_computer, gradient_computer, isEmpty, old_border_and_box_shadow, old_margin, old_radius, old_padding, border_computer, box_shadow_computer, radius_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/pages/diy/components/diy/modules/tabs-view';
-    import componentDiyPluginsGroupbuyList from '@/pages/diy/components/diy/plugins-groupbuy-list';
+    import componentDiyPluginsBargainList from '@/pages/diy/components/diy/plugins-bargain-list';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -26,7 +26,7 @@
     export default {
         components: {
             componentDiyModulesTabsView,
-            componentDiyPluginsGroupbuyList,
+            componentDiyPluginsBargainList,
         },
         props: {
             propValue: {
@@ -72,7 +72,7 @@
             return {
                 style_container: '',
                 style_img_container: '',
-                plugins_groupbuy_tabs: {},
+                plugins_bargain_tabs: {},
                 // 是否滑动置顶
                 top_up: '0',
                 tabs_top: 0,
@@ -198,7 +198,7 @@
                 this.setData({
                     top_up: new_content.tabs_top_up,
                     sticky_top: this.propTop + (new_style?.tabs_margin?.margin_top || 0),
-                    plugins_groupbuy_tabs: new_data,
+                    plugins_bargain_tabs: new_data,
                     style_container: common_styles_computer(common_style) + (new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
                     style_img_container: common_img_computer(common_style, this.propIndex) + radius_computer(common_style) +(new_content.tabs_top_up == '1' ? 'overflow: unset;' : ''),
                     tabs_style: new_tabs_style,
@@ -226,15 +226,15 @@
                 new_data.content.tabs_active_index = index;
                 this.setData({
                     tabs_index: index,
-                    plugins_groupbuy_tabs: new_data,
+                    plugins_bargain_tabs: new_data,
                     diy_key: Math.random(),
                 });
             },
-            // 获取拼团距离顶部的距离
+            // 获取砍价距离顶部的距离
             getTop() {
                 const query = uni.createSelectorQuery().in(this);
                 query
-                    .select('.plugins-groupbuy-tabs-' + this.propKey)
+                    .select('.plugins-bargain-tabs-' + this.propKey)
                     .boundingClientRect((res) => {
                         if ((res || null) != null) {
                             let new_data = typeof this.propValue == 'string' ? JSON.parse(JSON.stringify(this.propValue)) : this.propValue;
