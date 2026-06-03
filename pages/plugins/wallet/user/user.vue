@@ -10,7 +10,7 @@
                             <image :src="(default_images_data.default_center_head_bg_images_app || wallet_static_url + 'head-bg.png')" mode="widthFix" class="pa bg-img wh-auto" :class="status_bar_height > 0 ? 'top-0' : 'wallet-bg'" />
                             <view class="pr padding-top-main">
                                 <!-- 钱包信息 -->
-                                <view class="wallet-head padding-horizontal-xxxl margin-top-main">
+                                <view class="wallet-head padding-horizontal-xxxl margin-top-xxxl">
                                     <view class="content oh cr-white pr filter-blur">
                                         <view class="pa content-padding-1 oh filter-blur-child">
                                             <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
