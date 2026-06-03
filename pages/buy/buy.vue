@@ -627,7 +627,6 @@
                                 var default_payment_id = parseInt(data.default_payment_id || 0);
                                 if(this.payment_list.length > 0 && default_payment_id > 0) {
                                     var temp_payment_ids = this.payment_list.map(function(item){return parseInt(item.id);});
-                                    console.log(temp_payment_ids)
                                     if(temp_payment_ids.indexOf(default_payment_id) != -1) {
                                         this.setData({
                                             payment_id: default_payment_id
