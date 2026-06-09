@@ -6,11 +6,11 @@
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
                         <u-icon propName="list-setup" propSize="36rpx" propColor="#999"></u-icon>
-                        <text class="mt-5 size-12 cr-9">订单</text>
+                        <text class="mt-5 size-12 cr-9">{{ $t('common.order') }}</text>
                     </view>
                     <view class="flex-col ml-10" @tap="goods_cart">
                         <u-icon propName="cart-solid" propSize="36rpx" propColor="#999"></u-icon>
-                        <text class="mt-5 size-12 cr-9">购物车</text>
+                        <text class="mt-5 size-12 cr-9">{{ $t('common.cart') }}</text>
                     </view>
                 </view>
             </view>
@@ -53,7 +53,7 @@
                                             <view :ref="(el) => { if(item.id == explanation_id) bar3Ref[index] = el }" class="music-bar nvue-bar"></view>
                                         </view>
                                         <!-- #endif -->
-                                        <text class="size-12 cr-f">讲解中</text>
+                                        <text class="size-12 cr-f">{{ $t('common.explaining') }}</text>
                                     </view>
                                 </view>
                                 <!-- 商品信息区域 -->
@@ -69,11 +69,11 @@
                                         </view>
                                         <view class="flex-row align-c mt-10 jc-sb">
                                             <view class="flex-row align-c">
-                                                <text class="mr-5 size-14 cr-9">库存</text>
+                                                <text class="mr-5 size-14 cr-9">{{ $t('common.stock') }}</text>
                                                 <text class="goods-item-inventory size-14 cr-9">{{ item.inventory }}</text>
                                             </view>
                                             <!-- 购买按钮 -->
-                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" :data-url="item.goods_url" @tap="goods_detail"><text class="size-14 cr-f">购买</text></button>
+                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" :data-url="item.goods_url" @tap="goods_detail"><text class="size-14 cr-f">{{ $t('common.buy') }}</text></button>
                                         </view>
                                     </view>
                                 </view>
@@ -96,7 +96,7 @@
         <block v-else>
             <!-- 无商品时的提示 -->
             <view class="flex-1 flex-col align-c">
-                <text class="tip-title">暂无商品</text>
+                <text class="tip-title">{{ $t('common.no_goods') }}</text>
             </view>
         </block>
     </view>
@@ -251,7 +251,7 @@ export default {
                 this.is_loading = false;
             }
             uni.showLoading({
-                title: '加载中...',
+                title: this.$t('common.loading_in_text'),
                 mask: true
             });
             uni.request({

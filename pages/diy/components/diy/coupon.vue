@@ -11,7 +11,7 @@
                                 <view class="price" :style="'color:' + theme_style.price_color">
                                     <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                     <text class="number">{{ item.discount_value }}</text>
-                                    <text v-if="item.type == '1'" class="symbol">折</text>
+                                    <text v-if="item.type == '1'" class="symbol">{{ $t('common.discount_unit') }}</text>
                                 </view>
                             </view>
                             <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
@@ -25,7 +25,7 @@
                                 <view class="price" :style="'color:' + theme_style.price_color">
                                     <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                     <text class="number">{{ item.discount_value }}</text>
-                                    <text v-if="item.type == '1'" class="symbol">折</text>
+                                    <text v-if="item.type == '1'" class="symbol">{{ $t('common.discount_unit') }}</text>
                                 </view>
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 <view class="desc text-line-1" :style="'color:' + theme_style.desc_color">{{ item.desc }}</view>
@@ -42,13 +42,13 @@
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                         <text class="number">{{ item.discount_value }}</text>
-                                        <text v-if="item.type == '1'" class="symbol self-e">折</text>
+                                        <text v-if="item.type == '1'" class="symbol self-e">{{ $t('common.discount_unit') }}</text>
                                     </view>
                                 </view>
                                 <view class="text padding-left-xs padding-right-sm">
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                     <view class="desc text-line-1" :style="'color:' + theme_style.desc_color">{{ item.use_limit_type_name }}</view>
-                                    <view v-if="item.limit_send_count && item.limit_send_count > 0" class="limit text-line-1" :style="'color:' + theme_style.limit_send_count">(限领{{ item.limit_send_count }}张)</view>
+                                    <view v-if="item.limit_send_count && item.limit_send_count > 0" class="limit text-line-1" :style="'color:' + theme_style.limit_send_count">({{ $t('common.claim_limit', [item.limit_send_count]) }})</view>
                                 </view>
                             </view>
                             <view class="right" :class="item.status_operable_name.length > 3 ? ' long-name' : ' short-name'">
@@ -74,7 +74,7 @@
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                         <text class="number">{{ item.discount_value }}</text>
-                                        <text v-if="item.type == '1'" class="symbol">折</text>
+                                        <text v-if="item.type == '1'" class="symbol">{{ $t('common.discount_unit') }}</text>
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>
@@ -86,7 +86,7 @@
                                 <view class="title text-line-1" :style="'color:' + theme_style.content_title_color">{{ content_title }}</view>
                                 <view class="desc text-line-1" :style="'color:' + theme_style.content_desc_color">{{ content_desc }}</view>
                                 <view class="coupon-btn" :class="data_list.filter((item) => item.status_type == 0).length > 0 ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" @tap="receive_all_event">
-                                    {{ data_list.filter((item) => item.status_type == 0).length > 0 ? '立即领取' : '不可领取' }}
+                                    {{ data_list.filter((item) => item.status_type == 0).length > 0 ? this.$t('common.claim_now') : this.$t('common.cannot_claim') }}
                                 </view>
                             </view>
                         </view>
@@ -99,7 +99,7 @@
                                 <view class="price" :style="'color:' + theme_style.price_color">
                                     <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                     <text class="number">{{ item.discount_value }}</text>
-                                    <text v-if="item.type == '1'" class="symbol">折</text>
+                                    <text v-if="item.type == '1'" class="symbol">{{ $t('common.discount_unit') }}</text>
                                 </view>
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                             </view>
@@ -118,7 +118,7 @@
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                         <text class="number">{{ item.discount_value }}</text>
-                                        <text v-if="item.type == '1'" class="symbol">折</text>
+                                        <text v-if="item.type == '1'" class="symbol">{{ $t('common.discount_unit') }}</text>
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>
@@ -139,7 +139,7 @@
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <text v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</text>
                                         <text class="number">{{ item.discount_value }}</text>
-                                        <text v-if="item.type == '1'" class="symbol">折</text>
+                                        <text v-if="item.type == '1'" class="symbol">{{ $t('common.discount_unit') }}</text>
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>

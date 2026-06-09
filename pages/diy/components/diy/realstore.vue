@@ -49,7 +49,7 @@
                                                     <imgOrIconOrText :propValue="propValue" propType="location" />
                                                     <text v-if="form.is_location_title_show == '1'" class="text-line-2 flex-1" :style="location_style">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                                                 </view>
-                                                <text v-if="!isEmpty(item.distance) && theme != '1' && form.is_location_distance_show == '1'" :style="distance_style">距您{{ item.distance || '0km' }}</text>
+                                                <text v-if="!isEmpty(item.distance) && theme != '1' && form.is_location_distance_show == '1'" :style="distance_style">{{ $t('common.distance_from_you') }}{{ item.distance || '0km' }}</text>
                                             </view>
                                             <view v-if="!['0', '2'].includes(theme) && item.lat != 0 && item.lng != 0" :data-index="index" @tap.stop="address_map_event" >
                                                 <imgOrIconOrText :propValue="propValue" propType="navigation" />
@@ -65,7 +65,7 @@
                                         <imgOrIconOrText :propValue="propValue" propType="location" />
                                         <text v-if="form.is_location_title_show == '1'" class="text-line-2 flex-1" :style="location_style">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                                     </view>
-                                    <text v-if="form.is_location_distance_show == '1' && !isEmpty(item.distance)" :style="distance_style">距您{{ item.distance || '' }}</text>
+                                    <text v-if="form.is_location_distance_show == '1' && !isEmpty(item.distance)" :style="distance_style">{{ $t('common.distance_from_you') }}{{ item.distance || '' }}</text>
                                 </view>
                             </template>
                         </view>
@@ -211,10 +211,10 @@
                     const wrap = new_form.theme == '3' ? '' : 'flex-wrap ';
                     // 默认数据
                     const realstore_style_list = [
-                        { name: '单列展示', value: '0', width: 50, height: 50 },
-                        { name: '两列展示（纵向）', value: '1', width:180, height: 180 },
-                        { name: '大图展示', value: '2', width:0, height: 180 },
-                        { name: '左右滑动展示', value: '3', width:0, height: 0 },
+                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 50, height: 50 },
+                        { name: this.$t('diy.diy.two_column_vertical'), value: '1', width:180, height: 180 },
+                        { name: this.$t('diy.diy.large_image_display'), value: '2', width:0, height: 180 },
+                        { name: this.$t('diy.diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
                     ];
                     const scale = sys_width / 390;
                     let img_style = ``;

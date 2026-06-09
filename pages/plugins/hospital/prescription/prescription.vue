@@ -20,7 +20,7 @@
                     <view class="bg-white border-radius-main oh spacing-mt">
                         <view class="padding-main">
                             <view>
-                                <text class="fw-b va-m">用药人</text>
+                                <text class="fw-b va-m">{{ $t('hospital.hospital.medicine_user') }}</text>
                                 <view v-if="(patient_tips || null) != null" class="dis-inline-block va-m margin-left-sm" @tap="popup_patient_tips_event">
                                     <iconfont name="icon-sigh-o" size="28rpx" color="#999"></iconfont>
                                 </view>
@@ -41,25 +41,25 @@
                                 <view class="pa top-0 right-0">
                                     <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
                                         <iconfont name="icon-transfer" size="28rpx" :color="theme_color"></iconfont>
-                                        <text class="margin-left-xs">切换用药人</text>
+                                        <text class="margin-left-xs">{{ $t('hospital.hospital.switch_patient') }}</text>
                                     </button>
                                 </view>
                             </view>
                             <view v-else class="tc padding-vertical-xxl">
                                 <button type="default" size="mini" class="cr-main br-main bg-white round text-size-sm" hover-class="none" data-value="/pages/plugins/hospital/patient-list/patient-list?is_choice=1" @tap="url_event">
                                     <iconfont name="icon-user-group" size="28rpx" :color="theme_color"></iconfont>
-                                    <text class="margin-left-xs">选择用药人</text>
+                                    <text class="margin-left-xs">{{ $t('hospital.hospital.select_patient') }}</text>
                                 </button>
                             </view>
                         </view>
                         <view class="form-gorup br-t-f5">
-                            <view class="form-gorup-title">主诉<text class="form-group-tips">例如: 感冒, 胃炎, 头疼, 肚子疼</text></view>
-                            <input type="text" name="ill_desc" maxlength="230" placeholder-class="cr-grey-9" class="cr-base" placeholder="主诉格式1～230个字符" />
+                            <view class="form-gorup-title">{{ $t('hospital.hospital.chief_complaint') }}<text class="form-group-tips">{{ $t('hospital.hospital.chief_complaint_example') }}</text></view>
+                            <input type="text" name="ill_desc" maxlength="230" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('hospital.hospital.chief_complaint_length')" />
                         </view>
                     </view>
                     <view class="bottom-fixed" :style="bottom_fixed_style">
                         <view class="bottom-line-exclude">
-                            <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">免费问诊开方</button>
+                            <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{ $t('hospital.hospital.free_consult') }}</button>
                         </view>
                     </view>
                 </form>
@@ -271,7 +271,7 @@
                 form_data['id'] = ((this.patient_data || null) == null) ? 0 : (this.patient_data.id || 0);
                 // 数据校验
                 var validation = [
-                    { fields: 'id', msg: '请选择就诊人' },
+                    { fields: 'id', msg: this.$t('hospital.hospital.please_select_patient') },
                 ];
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {

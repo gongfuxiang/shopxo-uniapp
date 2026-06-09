@@ -9,7 +9,7 @@
             </label>
         </radio-group>
         <template v-if="!isEmpty(option_value) && form_value == option_value">
-            <input :value="other_value" class="uni-input" :style="propStyle"  type="text" placeholder="请输入其他内容" placeholder-style="color: gray;" @blur="data_other_check" @input="input_other_value_event" />
+            <input :value="other_value" class="uni-input" :style="propStyle"  type="text" :placeholder="$t('common.please_input_other')" placeholder-style="color: gray;" @blur="data_other_check" @input="input_other_value_event" />
         </template>
     </view>
 </template>

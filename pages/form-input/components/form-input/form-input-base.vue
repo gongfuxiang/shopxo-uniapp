@@ -660,7 +660,7 @@ export default {
                             message = `${data.com_data.title}「${data.com_data.common_config.error_text}」`;
                         } else {
                             // 如果是内部问题，让用户自己检查子表单内的填写
-                            message = `请检查${data.com_data.title}内的填写`;
+                            message = this.$t('common.please_check_section_fill', [data.com_data.title]);
                         }
                     } else {
                         message = `${data.com_data.title}「${data.com_data.common_config.error_text}」`;
@@ -677,7 +677,7 @@ export default {
                     return this.submit_data_parameter_handle();
                 }
             } catch (error) {
-                return { forminput_id: this.propFormInputId, back_data: this.propBackData, status: 'error', submit_data: {}, message: '数据错误'};
+                return { forminput_id: this.propFormInputId, back_data: this.propBackData, status: 'error', submit_data: {}, message: this.$t('common.data_error')};
             }
         },
         /*
@@ -737,7 +737,7 @@ export default {
                 });
                 return { forminput_id: forminput_id, back_data: back_data, status: 'success', submit_data: submit_data, message: ''};
             } catch (error) {
-                return { forminput_id: forminput_id, back_data: back_data, status: 'error', submit_data: {}, message: '数据错误'};
+                return { forminput_id: forminput_id, back_data: back_data, status: 'error', submit_data: {}, message: this.$t('common.data_error')};
             }
         },
         /*
@@ -785,7 +785,7 @@ export default {
             // 子表单整体必填验证
             if (com_data.is_required === '1' && com_data.data_list.length <= 0) {
                 com_data.common_config.is_error = '1';
-                com_data.common_config.error_text = '请填写至少一条记录';
+                com_data.common_config.error_text = this.$t('common.please_fill_one_record');
             } else {
                 com_data.common_config.is_error = '0';
                 com_data.common_config.error_text = '';
@@ -868,7 +868,7 @@ export default {
         */
         handle_phone_validation(com_data) {
             if (com_data.is_sms_verification === '1' && !isEmpty(com_data.form_value) && isEmpty(com_data.form_value_code)) {
-                return { is_error: '1', error_text: '短信验证码不能为空' };
+                return { is_error: '1', error_text: this.$t('common.sms_code_required') };
             }
             com_data.common_config.format = com_data.is_telephone === '1' ? 'telephone-number' : 'phone-number';
             return get_format_checks(com_data, com_data.form_value, true);
@@ -928,7 +928,7 @@ export default {
                             const error_data = com_data.data_list.some((item) => item.data_list.some((list_item) => list_item.com_data.common_config.is_error === '1'))
                             if (error_data) {
                                 // 如果是内部问题，让用户自己检查子表单内的填写
-                                message = `请检查${com_data.title}内的填写`;
+                                message = this.$t('common.please_check_section_fill', [com_data.title]);
                             } else {
                                 message = '';
                             }

@@ -7,7 +7,7 @@
             </view>
             <view v-if="propDirection == 'row' && com_data.is_sms_verification == '1'" class="verify-submi-border"></view>
             <view v-if="com_data.is_sms_verification == '1'" class="flex-row gap-10">
-                <input :value="form_value_code" class="uni-input flex-1" :style="com_data.common_style + propStyle" type="text" placeholder="请输入验证码" placeholder-style="color: gray;" @blur="data_code_check" @input="input_code_value_event" />
+                <input :value="form_value_code" class="uni-input flex-1" :style="com_data.common_style + propStyle" type="text" :placeholder="$t('common.please_input_verify_code')" placeholder-style="color: gray;" @blur="data_code_check" @input="input_code_value_event" />
                 <button :class="'uni-button flex-row align-c' + (verify_submit_disabled ? 'verify_disabled' : '')" :style="propStyle + 'height:auto;'" type="default" :disabled="verify_submit_disabled" @click="verify_send_event">{{ verify_submit_text }}</button>
             </view>
         </view>
@@ -34,7 +34,8 @@
 </template>
 
 <script>
-    import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
+    import i18n from '@/locale/index.js';
+import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
     import componentPopup from '@/components/popup/popup';
     const app = getApp();
     export default {
@@ -73,7 +74,7 @@
         },
         data() {
             return {
-                placeholder: '请输入内容...',
+                placeholder: i18n.t('common.please_input_content_ellipsis'),
                 form_value: '',
                 form_value_code: '',
                 com_data: {},
@@ -141,7 +142,7 @@
                 if (this.com_data.is_required == '1' && isEmpty(this.form_value_code)) {
                     // 是否报错显示
                     is_error = '1';
-                    error_text = '短信验证码不能为空';
+                    error_text = this.$t('common.sms_code_required');
                 }
                 this.$emit('dataCodeCheck', { is_error, error_text, value: this.form_value_code, id: this.propDataId });
             },

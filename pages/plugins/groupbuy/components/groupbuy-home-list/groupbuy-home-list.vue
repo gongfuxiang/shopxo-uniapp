@@ -8,7 +8,7 @@
                         <view class="padding-horizontal-sm padding-top-sm padding-bottom-main">
                             <view class="multi-text text-size-xs cr-black">{{ item.groupbuy_title || item.title }}</view>
                             <view class="groupbuy-home-meta margin-top-xs flex-row align-c">
-                                <text class="groupbuy-tag br-main cr-main bg-white text-size-xss radius padding-horizontal-xs">{{ item.group_number }}人团</text>
+                                <text class="groupbuy-tag br-main cr-main bg-white text-size-xss radius padding-horizontal-xs">{{ item.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}</text>
                                 <text v-if="(item.groupbuy_success_text || null) != null" class="groupbuy-success-text cr-main text-size-xss single-text flex-1 flex-width margin-left-xs">{{ item.groupbuy_success_text }}</text>
                             </view>
                             <view class="margin-top-xs cr-main fw-b">

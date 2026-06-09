@@ -143,7 +143,7 @@
                                  <!-- 底部展开收起按钮区域 -->
                                 <view :style="bottom_button_style" :data-index="match_index" @tap.stop="item_more_goods_event">
                                     <view class="flex-row align-c jc-sb" :style="bottom_button_img_style">
-                                        <view :style="button_style">{{ match_item.is_home_show_goods ? '收起' : '展开'}}{{ match_item.type_name }}商品</view>
+                                        <view :style="button_style">{{ match_item.is_home_show_goods ? this.$t('common.retract') : this.$t('common.expand') }}{{ match_item.type_name }}{{ $t('common.goods') }}</view>
                                         <iconfont :name="match_item.is_home_show_goods ? 'icon-arrow-top' : 'icon-arrow-bottom'" :color="new_style.bottom_button_icon_color" :size="new_style.bottom_button_icon_size + ''"></iconfont>
                                     </view>
                                 </view>
@@ -268,8 +268,8 @@
                     const wrap = new_form.theme == '3' ? '' : 'flex-wrap ';
                     // 默认数据
                     const data_style_list = [
-                        { name: '单列展示', value: '0', width: 128, height: 128 },
-                        { name: '大图展示', value: '1', width: 0, height: 221 },
+                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 128, height: 128 },
+                        { name: this.$t('diy.diy.large_image_display'), value: '1', width: 0, height: 221 },
                     ];
                     const scale = sys_width / 390;
                     // 主图大小的控制
@@ -285,10 +285,10 @@
                     }
                     // 商品图片大小的控制
                     const goods_style_list = [
-                        { name: '单列展示', value: '0', width: 50, height: 50 },
-                        { name: '两列展示（纵向）', value: '1', width: 0, height: 156 },
-                        { name: '两列展示（横向）', value: '2', width:50, height: 50 },
-                        { name: '左右滑动展示', value: '3', width:0, height: 0 },
+                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 50, height: 50 },
+                        { name: this.$t('diy.diy.two_column_vertical'), value: '1', width: 0, height: 156 },
+                        { name: this.$t('diy.diy.two_column_horizontal_full'), value: '2', width:50, height: 50 },
+                        { name: this.$t('diy.diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
                     ]
                     const goods_list = goods_style_list.filter(item => item.value == new_form.theme);
                     let goods_img_style = '';

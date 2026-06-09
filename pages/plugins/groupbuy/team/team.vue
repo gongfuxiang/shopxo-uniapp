@@ -8,7 +8,7 @@
                         <view class="flex-1 flex-width">
                             <view class="single-text fw-b">{{ groupbuy.title || goods.title }}</view>
                             <view class="margin-top-xs">
-                                <text class="groupbuy-tag cr-white bg-main text-size-xs radius padding-horizontal-sm">{{ groupbuy.group_number }}人团</text>
+                                <text class="groupbuy-tag cr-white bg-main text-size-xs radius padding-horizontal-sm">{{ groupbuy.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}</text>
                             </view>
                             <view class="margin-top-sm">
                                 <text class="cr-main fw-b">{{ currency_symbol }}{{ groupbuy.groupbuy_price_text || groupbuy.min_groupbuy_price }}</text>
@@ -19,9 +19,9 @@
 
                 <view class="border-radius-main padding-main spacing-mb team-status-panel" :class="team.status == 1 ? 'team-status-panel-success' : 'bg-white'">
                     <block v-if="team.status == 0">
-                        <view class="tc fw-b text-size-md">拼团中，还差 <text class="cr-red">{{ team.remain_number }}</text> 人</view>
+                        <view class="tc fw-b text-size-md">{{ $t('groupbuy.groupbuy.grouping_need') }}<text class="cr-red">{{ team.remain_number }}</text>{{ $t('common.person_unit') }}</view>
                         <view v-if="countdown_show" class="tc margin-top-sm flex-row align-c jc-c flex-wrap gap-10">
-                            <text class="cr-grey text-size-xs">剩余</text>
+                            <text class="cr-grey text-size-xs">{{ $t('common.remain') }}</text>
                             <component-countdown
                                 :key="countdown_key"
                                 :propHour="countdown_hour"
@@ -37,7 +37,7 @@
                                 propMinuteDs=" : "
                                 propSecondDs=""
                             ></component-countdown>
-                            <text class="cr-grey text-size-xs">结束</text>
+                            <text class="cr-grey text-size-xs">{{ $t('common.end') }}</text>
                         </view>
                     </block>
                     <block v-else-if="team.status == 1">
@@ -50,11 +50,11 @@
                                     <iconfont name="icon-checked-smooth" size="56rpx" color="#ffffff"></iconfont>
                                 </view>
                             </view>
-                            <view class="team-success-title">拼团成功</view>
-                            <view class="team-success-desc cr-grey text-size-sm">恭喜！本团已满员，拼团圆满成团啦~</view>
+                            <view class="team-success-title">{{ $t('groupbuy.groupbuy.group_success') }}</view>
+                            <view class="team-success-desc cr-grey text-size-sm">{{ $t('groupbuy.groupbuy.group_full_success') }}</view>
                             <view class="team-success-tags flex-row jc-c flex-wrap">
-                                <text class="team-success-tag">满员成团</text>
-                                <text class="team-success-tag">{{ groupbuy.group_number }}人团</text>
+                                <text class="team-success-tag">{{ $t('groupbuy.groupbuy.full_group') }}</text>
+                                <text class="team-success-tag">{{ groupbuy.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}</text>
                             </view>
                         </view>
                     </block>
@@ -63,15 +63,15 @@
                             <view class="team-fail-icon-wrap">
                                 <iconfont name="icon-sigh" size="48rpx" color="#999999"></iconfont>
                             </view>
-                            <view class="fw-b text-size-lg cr-red">拼团失败</view>
-                            <view class="cr-grey text-size-xs margin-top-sm">很遗憾，本次拼团未成团</view>
+                            <view class="fw-b text-size-lg cr-red">{{ $t('groupbuy.groupbuy.group_fail') }}</view>
+                            <view class="cr-grey text-size-xs margin-top-sm">{{ $t('groupbuy.groupbuy.group_fail_tips') }}</view>
                         </view>
                     </block>
 
                     <view class="team-members flex-row flex-wrap jc-c margin-top-main">
                         <view v-for="(item, index) in members" :key="item.user_id" class="member-item tc">
                             <image :src="item.avatar" mode="aspectFill" class="member-avatar radius"></image>
-                            <view v-if="item.is_team_leader == 1" class="leader-badge bg-main cr-white text-size-xss radius padding-horizontal-xs">团长</view>
+                            <view v-if="item.is_team_leader == 1" class="leader-badge bg-main cr-white text-size-xss radius padding-horizontal-xs">{{ $t('groupbuy.groupbuy.team_leader') }}</view>
                             <view class="text-size-xs cr-grey margin-top-xs single-text">{{ item.user_name_view }}</view>
                         </view>
                         <view v-for="(item, index) in empty_slots" :key="item.slot_key" class="member-item tc">
@@ -80,12 +80,12 @@
                     </view>
 
                     <view v-if="team.status == 0" class="margin-top-main">
-                        <button v-if="user == null" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="login_event" hover-class="none">登录后参团</button>
+                        <button v-if="user == null" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="login_event" hover-class="none">{{ $t('groupbuy.groupbuy.login_to_join') }}</button>
                         <block v-else>
-                            <button class="btn round bg-main cr-white text-size-md wh-auto margin-bottom-main" type="default" @tap="join_team_event" hover-class="none">立即参团</button>
-                            <button class="btn round bg-white br-main cr-main text-size-md wh-auto" type="default" hover-class="none" @tap="popup_share_event">邀请好友参团</button>
+                            <button class="btn round bg-main cr-white text-size-md wh-auto margin-bottom-main" type="default" @tap="join_team_event" hover-class="none">{{ $t('groupbuy.groupbuy.join_now') }}</button>
+                            <button class="btn round bg-white br-main cr-main text-size-md wh-auto" type="default" hover-class="none" @tap="popup_share_event">{{ $t('groupbuy.groupbuy.invite_friends') }}</button>
                             <view v-if="is_leader" class="tc margin-top-main">
-                                <text class="cr-grey text-size-xs" @tap="team_cancel_event">取消开团</text>
+                                <text class="cr-grey text-size-xs" @tap="team_cancel_event">{{ $t('groupbuy.groupbuy.cancel_open') }}</text>
                             </view>
                         </block>
                     </view>
@@ -203,8 +203,8 @@
                             var is_leader = user != null && team.leader_user_id == user.id;
                             var groupbuy = result.groupbuy || {};
                             var goods = result.goods || {};
-                            var share_title = groupbuy.title || goods.title || '邀请你参团';
-                            var share_desc = '还差' + (team.remain_number || 0) + '人成团，快来一起拼团吧';
+                            var share_title = groupbuy.title || goods.title || this.$t('groupbuy.groupbuy.invite_you');
+                            var share_desc = this.$t('common.still_need') + (team.remain_number || 0) + this.$t('groupbuy.groupbuy.people_group_invite');
                             var countdown_time = this.parse_countdown_time(team);
                             var empty_slots_raw = result.empty_slots || [];
                             var empty_slots = [];
@@ -298,7 +298,7 @@
             team_cancel_event() {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
-                    content: '确定要取消当前拼团吗？',
+                    content: this.$t('groupbuy.groupbuy.confirm_cancel'),
                     success: (result) => {
                         if (result.confirm) {
                             uni.showLoading({ title: this.$t('common.processing_in_text') });

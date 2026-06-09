@@ -14,12 +14,12 @@
                                     <view class="flex-row">
                                         <view v-if="is_show('reply_status')" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
                                             <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                {{ item.is_reply == 0 ? '未回' : '已回'}}
+                                                {{ item.is_reply == 0 ? this.$t('diy.diy.not_reply') : this.$t('diy.diy.replied')}}
                                             </view>
                                         </view>
                                     </view>
                                     <span v-if="is_show('time')" :style="time_style">{{ item.add_time_date }}</span>
-                                    <span v-if="is_show('page_view')" :style="page_view_style">共有{{ item.access_count }}浏览</span>
+                                    <span v-if="is_show('page_view')" :style="page_view_style">{{ $t('common.total_views_prefix') }}{{ item.access_count }}{{ $t('common.total_views_suffix') }}</span>
                                 </view>
                             </view>
                         </template>
@@ -33,7 +33,7 @@
                                     <view class="flex-row">
                                         <view v-if="is_show('reply_status')" class="flex-row" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
                                             <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                {{ item.is_reply == 0 ? '未回' : '已回'}}
+                                                {{ item.is_reply == 0 ? this.$t('diy.diy.not_reply') : this.$t('diy.diy.replied')}}
                                             </view>
                                         </view>
                                     </view>
@@ -57,7 +57,7 @@
                                                 <view class="flex-row">
                                                     <view v-if="is_show('reply_status')" class="flex-row" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
                                                         <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                            {{ item.is_reply == 0 ? '未回' : '已回'}}
+                                                            {{ item.is_reply == 0 ? this.$t('diy.diy.not_reply') : this.$t('diy.diy.replied')}}
                                                         </view>
                                                     </view>
                                                 </view>
@@ -173,10 +173,10 @@
                     const wrap = new_form.theme == '2' ? '' : 'flex-wrap ';
                     // 默认数据
                     const ask_style_list = [
-                        { name: '单列展示', value: '0', width: 50, height: 50 },
-                        { name: '两列展示（纵向）', value: '1', width:180, height: 180 },
-                        { name: '大图展示', value: '2', width:0, height: 180 },
-                        { name: '左右滑动展示', value: '3', width:0, height: 0 },
+                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 50, height: 50 },
+                        { name: this.$t('diy.diy.two_column_vertical'), value: '1', width:180, height: 180 },
+                        { name: this.$t('diy.diy.large_image_display'), value: '2', width:0, height: 180 },
+                        { name: this.$t('diy.diy.horizontal_slide_display'), value: '3', width:0, height: 0 },
                     ];
                     const scale = sys_width / 390;
                     let img_style = ``;

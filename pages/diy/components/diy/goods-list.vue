@@ -58,7 +58,7 @@
                                         <view class="flex-row jc-sb align-e">
                                             <view>
                                                 <view v-if="show_content" class="flex-row align-c text-size-xss">
-                                                    <view v-if="is_show('sales_count') && !isEmpty(item.sales_count)" class="pr-5" :style="sold_number_style">已售{{ item.sales_count || 0 }}件</view>
+                                                    <view v-if="is_show('sales_count') && !isEmpty(item.sales_count)" class="pr-5" :style="sold_number_style">{{ $t('common.sold_prefix') }}{{ item.sales_count || 0 }}{{ $t('common.goods_unit') }}</view>
                                                     <!-- <view v-if="is_show('sales_count')" :class="['pr-5', {'br-r-e': is_show('sales_count') && is_show('4')}]" :style="sold_number_style>已售{{ item.sales_count }}件</view> -->
                                                     <!-- <view v-if="is_show('4')" class="pl-5" :style="score_style">评分0</view> -->
                                                 </view>
@@ -311,13 +311,13 @@
                     const button_gradient = gradient_handle(new_style.shop_button_color, '180deg');
                     // 默认数据
                     const product_style_list = [
-                        { name: '单列展示', value: '0', width: 110, height: 120 },
-                        { name: '大图展示', value: '2', width: 166, height: 166 },
-                        { name: '无图模式', value: '6', width: 0, height: 0 },
-                        { name: '两列展示(纵向)', value: '1', width: 180, height: 180 },
-                        { name: '两列展示(横向)', value: '4', width: 70, height: 70 },
-                        { name: '三列展示', value: '3', width: 116, height: 114 },
-                        { name: '左右滑动展示', value: '5', width: 0, height: 0 },
+                        { name: this.$t('diy.diy.single_column_display'), value: '0', width: 110, height: 120 },
+                        { name: this.$t('diy.diy.large_image_display'), value: '2', width: 166, height: 166 },
+                        { name: this.$t('diy.diy.no_image_mode'), value: '6', width: 0, height: 0 },
+                        { name: this.$t('diy.diy.two_column_vertical_alt'), value: '1', width: 180, height: 180 },
+                        { name: this.$t('diy.diy.two_column_horizontal'), value: '4', width: 70, height: 70 },
+                        { name: this.$t('diy.diy.three_column'), value: '3', width: 116, height: 114 },
+                        { name: this.$t('diy.diy.horizontal_slide_display'), value: '5', width: 0, height: 0 },
                     ];
                     const scale = sys_width / 390;
                     let img_style = ``;

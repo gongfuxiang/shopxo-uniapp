@@ -204,7 +204,7 @@
                 var flag = 0;
                 if ((msg || null) != null && msg !== '') {
                     var text = String(msg);
-                    var keywords = ['登录失效', '请重新登录', '重新登录', '请先登录', '未登录', '请登录'];
+                    var keywords = ['登录失效', this.$t('common.please_relogin'), '重新登录', '请先登录', '未登录', '请登录'];
                     for (var i = 0; i < keywords.length; i++) {
                         if (text.indexOf(keywords[i]) !== -1) {
                             flag = 1;

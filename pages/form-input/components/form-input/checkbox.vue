@@ -15,15 +15,15 @@
         </checkbox-group>
         <view v-if="com_data.is_add_option == '1'" class="add-option flex-row gap-10 align-c" @tap="add_option">
             <iconfont name="icon-add-wide" size="14" color="#2a94ff"/>
-            <view class="size-14 cr-blue">添加选项</view>
+            <view class="size-14 cr-blue">{{ $t('common.add_option') }}</view>
         </view>
         <!-- 选项弹出框 -->
         <uni-popup ref="inputDialog" type="dialog" class="forminput-popup" >
-            <uni-popup-dialog ref="inputClose" mode="input" title="输入内容" :value="dialog_value" before-close placeholder="请输入内容" @close="dialog_input_close" @confirm="dialog_input_confirm"></uni-popup-dialog>
+            <uni-popup-dialog ref="inputClose" mode="input" :title="$t('common.input_content')" :value="dialog_value" before-close :placeholder="$t('common.please_input_content')" @close="dialog_input_close" @confirm="dialog_input_confirm"></uni-popup-dialog>
         </uni-popup>
         <!-- 失败提示 -->
         <uni-popup ref="message" type="message" class="forminput-popup">
-            <uni-popup-message type="error" message="选项名称不能为空" :duration="2000"></uni-popup-message>
+            <uni-popup-message type="error" :message="$t('common.option_name_required')" :duration="2000"></uni-popup-message>
         </uni-popup>
     </view>
 </template>

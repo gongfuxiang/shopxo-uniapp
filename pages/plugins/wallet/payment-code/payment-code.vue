@@ -15,7 +15,7 @@
                 </view>
 
                 <!-- 提示信息 -->
-                <view class="cr-grey tc margin-top-xxxl">{{$t('member-code.member-code.oc4x18')}}</view>
+                <view class="cr-grey tc margin-top-xxxl padding-horizontal-sm">{{$t('member-code.member-code.oc4x18')}}</view>
 
                 <!-- 倒计时 -->
                 <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }}{{$t('payment-code.payment-code.b74qxe')}}</view>

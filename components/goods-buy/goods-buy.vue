@@ -161,6 +161,7 @@
                 extend = extend || {};
                 var data = {
                     id: parseInt((this.goods || {}).id || 0),
+                    is_lang: 0,
                 };
                 for (var key in extend) {
                     if (extend[key] !== undefined && extend[key] !== null) {

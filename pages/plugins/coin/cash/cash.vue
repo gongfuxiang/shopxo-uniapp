@@ -57,9 +57,9 @@
                         </view>
                         <!-- <view class="padding-main bg-white radius-md">
                             <view class="padding-vertical-sm border-radius-sm flex-row align-c">
-                                <text class="text-size fw-b">支付密码</text>
+                                <text class="text-size fw-b">{{ $t('common.pay_password') }}</text>
                                 <view class="padding-left-lg">
-                                    <input type="digit" name="coin" :value="pay_pwd" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
+                                    <input type="digit" name="coin" :value="pay_pwd" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.please_input_pay_pwd')" />
                                 </view>
                             </view>
                         </view> -->

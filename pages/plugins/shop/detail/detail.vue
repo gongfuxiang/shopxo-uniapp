@@ -42,7 +42,7 @@
                     <view v-if="(data || null) != null && data.length > 0" class="wh-auto">
                         <view class="padding-main">
                             <component-goods-list :propData="{ style_type: 1, goods_list: data }" :propCurrencySymbol="currency_symbol"></component-goods-list>
-                            <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">查看更多商品 >></button>
+                            <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">{{ $t('diy.diy.view_more_goods') }}</button>
                         </view>
 
                         <!-- 结尾 -->

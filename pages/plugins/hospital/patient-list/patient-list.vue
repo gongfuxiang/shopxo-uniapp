@@ -36,7 +36,7 @@
         </view>
         <view class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
-                <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/hospital/patient/patient" @tap="url_event">添加就诊人</button>
+                <button class="item bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/hospital/patient/patient" @tap="url_event">{{ $t('hospital.hospital.add_patient') }}</button>
             </view>
         </view>
 

@@ -41,9 +41,9 @@
                 </view>
                 <!-- <view class="padding-main bg-white radius-md">
                     <view class="padding-vertical-sm border-radius-sm flex-row align-c">
-                        <text class="text-size fw-b">转账密码</text>
+                        <text class="text-size fw-b">{{ $t('common.transfer_password') }}</text>
                         <view class="padding-left-lg">
-                            <input type="password" name="pay_pwd" :value="pay_pwd" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" @input="pwd_num_change" />
+                            <input type="password" name="pay_pwd" :value="pay_pwd" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.please_input_pay_pwd')" @input="pwd_num_change" />
                         </view>
                     </view>
                 </view> -->

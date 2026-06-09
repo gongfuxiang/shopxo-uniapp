@@ -17,7 +17,7 @@
                 <!-- 历史搜索关键字 -->
                 <view v-if="history_keywords.length > 0" class="history-keywords margin-bottom-xxxl">
                     <view class="margin-bottom flex-row jc-sb align-c">
-                        <text class="text-size-sm fw-b">历史搜索</text>
+                        <text class="text-size-sm fw-b">{{ $t('common.history_search') }}</text>
                         <view class="dis-inline-block" @tap="history_delete_event">
                             <iconfont name="icon-delete" size="30rpx" color="#999"></iconfont>
                         </view>
@@ -30,7 +30,7 @@
                 </view>
                 <!-- 推荐搜索关键字 -->
                 <view v-if="recommend_keywords.length > 0" class="recommend-keywords margin-bottom-xxxl">
-                    <view class="text-size-sm fw-b margin-bottom">热门搜索</view>
+                    <view class="text-size-sm fw-b margin-bottom">{{ $t('common.hot_search') }}</view>
                     <view class="oh">
                         <block v-for="(item, index) in recommend_keywords" :key="index">
                             <view class="dis-inline-block bg-grey-e cr-base round padding-vertical-xs padding-horizontal-lg margin-right margin-bottom" :data-value="item" @tap="keywords_event">{{item}}</view>

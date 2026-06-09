@@ -27,7 +27,7 @@
                                 </view>
                             </view>
                             <view v-else class="flex-row align-c gap-4">
-                                <text class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</text>
+                                <text class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ $t('common.ended') }}</text>
                             </view>
                         </view>
                         <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
@@ -69,7 +69,7 @@
                                                                 <view class="slide-top-icon round" :style="`background: ${new_style.progress_button_color}`"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
                                                             </view>
                                                         </view>
-                                                        <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</text>
+                                                        <text class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">{{ $t('diy.diy.seckill_grabbed_demo') }}</text>
                                                     </view> -->
                                             </view>
                                             <view class="flex-row align-e gap-10 jc-sb">
@@ -137,7 +137,7 @@
                                                                     <view class="slide-top-icon round" :style="{ 'background': new_style.progress_button_color}"><icon name="a-miaosha" :color="new_style.progress_button_icon_color" size="9"></icon></view>
                                                                 </view>
                                                             </view>
-                                                            <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">已抢51%</text>
+                                                            <text class="text-size-xss" :style="{ 'color': new_style.progress_text_color }">{{ $t('diy.diy.seckill_grabbed_demo') }}</text>
                                                         </view> -->
                                                         </view>
                                                         <view class="flex-row align-e gap-10 jc-sb">
@@ -299,7 +299,7 @@
                     if (!isEmpty(data.current.goods)) {
                         new_list = data.current.goods;
                     }
-                    const { status = '1', time_first_text = '已结束' } = data?.current?.time || {};
+                    const { status = '1', time_first_text = this.$t('common.ended') } = data?.current?.time || {};
                     this.setData({
                         seckill_time: {
                             time_end_number: Number(data.current.time_end_number + '000'),
@@ -318,9 +318,9 @@
                 }
                 // 默认数据
                 const product_style_list = [
-                    { name: '单列', value: '1', width: 110, height: 120 },
-                    { name: '双列', value: '2', width: 180, height: 180 },
-                    { name: '横向滑动', value: '3', width: 0, height: 0 },
+                    { name: this.$t('diy.diy.single_column'), value: '1', width: 110, height: 120 },
+                    { name: this.$t('diy.diy.double_column'), value: '2', width: 180, height: 180 },
+                    { name: this.$t('diy.diy.horizontal_slide'), value: '3', width: 0, height: 0 },
                 ];
                 const scale = sys_width / 390;
                 let img_style = ``;
@@ -443,7 +443,7 @@
                                 time_end_number: this.seckill_time.time_end_number,
                                 time_start_number: this.seckill_time.time_start_number,
                                 status: 1,
-                                time_first_text: '距结束',
+                                time_first_text: this.$t('diy.diy.time_to_end'),
                             },
                         });
                         // 先执行一次倒计时，后续的等待倒计时执行

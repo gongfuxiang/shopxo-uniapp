@@ -49,8 +49,8 @@
                         </view>
                     </view>
                     <!-- <view class="padding-main bg-white radius-md margin-bottom-xxxxl flex-row align-c">
-                        <text class="padding-right">支付密码</text>
-                        <input type="password" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
+                        <text class="padding-right">{{ $t('common.pay_password') }}</text>
+                        <input type="password" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.please_input_pay_pwd')" />
                     </view> -->
                     <view class="padding-main radius-md margin-bottom-main">
                         <button type="default" class="convert-btn cr-white round" @tap="convert_submit">{{$t('convert.convert.4kcix6')}}</button>

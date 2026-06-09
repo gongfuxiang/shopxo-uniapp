@@ -15,7 +15,7 @@
                             </view>
                         </template>
                         <template v-else>
-                            <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
+                            <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || this.$t('common.notice') }}</view>
                         </template>
                         <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
                             <swiper-item v-for="(item, index) in notice_list" :key="index">

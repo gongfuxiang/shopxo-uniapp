@@ -1,15 +1,15 @@
 <template>
     <view :class="theme_view">
         <block v-if="data_list_loding_status != 1 && data.length != 0">
-            <component-panel-content :propData="data" :propDataField="field_list" propExcludeField="content" propTitle="详情"></component-panel-content>
+            <component-panel-content :propData="data" :propDataField="field_list" propExcludeField="content" :propTitle="$t('common.detail_text')"></component-panel-content>
 
-            <component-panel-content propTitle="提问内容">
+            <component-panel-content :propTitle="$t('ask.ask.question_content')">
                 <view class="item br-b-f5 oh padding-vertical-main">
                     <mp-html :content="data.content"></mp-html>
                 </view>
             </component-panel-content>
 
-            <component-panel-content propTitle="回复内容">
+            <component-panel-content :propTitle="$t('ask.ask.reply_content')">
                 <view class="item br-b-f5 oh padding-vertical-main">
                     <mp-html :content="data.reply"></mp-html>
                 </view>

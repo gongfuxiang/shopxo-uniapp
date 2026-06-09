@@ -13,7 +13,7 @@
                     <button class="title_btn" @tap="add_item">
                         <iconfont name="icon-add" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
                     </button>    
-                    <button v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ?  '全部收起' : '全部展开' }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
+                    <button v-if="!isEmpty(data_list) && mobile.arrange == 'direction'" class="title_btn flex-row align-c gap-10" :data-value="is_all_away" @tap="expand_all">{{ is_all_away ? this.$t('common.collapse_all') : this.$t('common.expand_all') }}<iconfont :name="is_all_away ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></button>
                 </view>
             </view>
             <view v-if="data_list.length > 0" class="overflow-auto" :style="'height:' + custom_height">
@@ -23,9 +23,9 @@
                         <view class="subform-title-btns flex-row align-c jc-sb">
                             <span class="subform-number">{{ index + 1 }}</span>
                             <view class="flex-row align-c gap-10">
-                                <view class="cr-blue size-12" :data-index="index" @tap="more_click">更多</view>
-                                <view class="cr-blue size-12" :data-index="index" @tap="delete_click">删除</view>
-                                <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? '收起' : '展开' }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
+                                <view class="cr-blue size-12" :data-index="index" @tap="more_click">{{ $t('common.more') }}</view>
+                                <view class="cr-blue size-12" :data-index="index" @tap="delete_click">{{ $t('common.del') }}</view>
+                                <view class="cr-blue size-12 flex-row align-c gap-5" :data-index="index" @tap="expand_or_collapse">{{ item.is_expand ? this.$t('common.retract') : this.$t('common.expand') }}<iconfont :name="item.is_expand ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#2196F3" propContainerDisplay="flex"></iconfont></view>
                             </view>
                         </view>
                         <view>
@@ -33,11 +33,11 @@
                                 <view :class="'flex-row align-c jc-s gap-5 expand-title text-line-1 nowrap' + (is_error(item.data_list) ? ' required-error' : '')">
                                     <template v-if="!isEmpty(show_list(item.data_list))">
                                         <view v-for="(briefing_item, briefing_index) in show_list(item.data_list)" :key="briefing_index" class="flex-row align-c gap-5">
-                                            <view :class="data_conversion(briefing_item) == 'empty_conversion' ? 'empty' : ''">{{ data_conversion(briefing_item) == 'empty_conversion' ? '暂无内容' : data_conversion(briefing_item) }}</view><span v-if="briefing_index < show_list(item.data_list).length - 1" class="empty">|</span>
+                                            <view :class="data_conversion(briefing_item) == 'empty_conversion' ? 'empty' : ''">{{ data_conversion(briefing_item) == 'empty_conversion' ? this.$t('common.no_content_yet') : data_conversion(briefing_item) }}</view><span v-if="briefing_index < show_list(item.data_list).length - 1" class="empty">|</span>
                                         </view>
                                     </template>
                                     <template v-else>
-                                        暂无数据
+                                        {{ $t('common.no_data') }}
                                     </template>
                                 </view>
                             </template>
@@ -66,7 +66,7 @@
                     </view>
                     <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue radius" :style="( data_list.length > 0 ? 'border-top: 2rpx solid #ccc;' : '')" @tap="add_item">
                         <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
-                        添加记录
+                        {{ $t('common.add_record') }}
                     </view>
                 </view>
                 <view v-else>
@@ -129,12 +129,12 @@
                     </view>
                     <view class="direction-bottom flex-row align-c jc-c gap-10 cr-blue radius" style="border: 2rpx solid #ccc;" @tap="add_item">
                         <iconfont name="icon-add" size="32rpx" color="#2196F3" propContainerDisplay="flex"></iconfont>
-                        添加记录
+                        {{ $t('common.add_record') }}
                     </view>
                 </view>
             </view>
             <template v-else>
-                <view class="subform-data">暂无可用字段</view>
+                <view class="subform-data">{{ $t('common.no_available_field') }}</view>
             </template>
         </view>
         <!-- 表格详情 -->
@@ -165,33 +165,33 @@
                     />
                 </view>
                 <view class="flex-row align-c jc-sb subform-row-switch">
-                    <button class="flex-row align-c gap-5 subform-row-switch-item" :disabled="table_more_index == 0" :data-index="table_more_index - 1" @tap="previous_or_next"><iconfont name="icon-arrow-left" size="28rpx" />上一条</button>
-                    <button class="flex-row align-c gap-5 subform-row-switch-item" :disabled="table_more_index >= data_list.length - 1" :data-index="table_more_index + 1" @tap="previous_or_next">下一条<iconfont name="icon-arrow-right" size="28rpx" /></button>
+                    <button class="flex-row align-c gap-5 subform-row-switch-item" :disabled="table_more_index == 0" :data-index="table_more_index - 1" @tap="previous_or_next"><iconfont name="icon-arrow-left" size="28rpx" />{{ $t('common.prev_item') }}</button>
+                    <button class="flex-row align-c gap-5 subform-row-switch-item" :disabled="table_more_index >= data_list.length - 1" :data-index="table_more_index + 1" @tap="previous_or_next">{{ $t('common.next_item') }}<iconfont name="icon-arrow-right" size="28rpx" /></button>
                 </view>
                 <view class="subform-row-footer flex-row align-c gap-10">
                     <view class="save_del flex-col jc-c align-c" :data-index="table_more_index" @tap="delete_click">
-                        <iconfont name="icon-del" size="30rpx" color="#eb5050" propContainerDisplay="flex"></iconfont>删除
+                        <iconfont name="icon-del" size="30rpx" color="#eb5050" propContainerDisplay="flex"></iconfont>{{ $t('common.del') }}
                     </view>
                     <view class="save_more flex-col jc-c align-c" :data-index="table_more_index" @tap="more_click">
-                        <iconfont name="icon-more-four-pieces" size="30rpx" color="#666" propContainerDisplay="flex"></iconfont>更多
+                        <iconfont name="icon-more-four-pieces" size="30rpx" color="#666" propContainerDisplay="flex"></iconfont>{{ $t('common.more') }}
                     </view>
-                    <button class="flex-1 submit_title flex-row align-c jc-c"  type="default" @tap="quick_table_more_event">完成</button>
+                    <button class="flex-1 submit_title flex-row align-c jc-c"  type="default" @tap="quick_table_more_event">{{ $t('common.complete') }}</button>
                 </view>
             </view>
         </uni-popup>
         <!-- 删除提示弹出框 -->
         <uni-popup ref="deletePopup" type="dialog" class="forminput-popup" @maskClick="delete_close">
-            <uni-popup-dialog cancelText="取消" confirmText="确定" title="" content="是否确认删除这条数据" @confirm="delete_confirm" @close="delete_close"></uni-popup-dialog>
+            <uni-popup-dialog :cancelText="$t('common.cancel')" :confirmText="$t('common.ok_text')" title="" :content="$t('common.confirm_delete_record')" @confirm="delete_confirm" @close="delete_close"></uni-popup-dialog>
         </uni-popup>
         <!-- 更多弹窗 -->
         <uni-popup ref="morePopup" type="bottom" class="popup-bottom forminput-popup" background-color="#fff" :animation="true" @maskClick="quick_close_event">
             <view class="bg-white action-sheet">
-                <view class="action-sheet-item" data-value="copy" @tap="copy">复制到下一行</view>
-                <view class="action-sheet-item" data-value="copy_last" @tap="copy">复制到最后一行</view>
-                <view class="action-sheet-item" data-value="insert_up" @tap="copy">向上插入记录</view>
-                <view class="action-sheet-item" data-value="insert_down" @tap="copy" >向下插入记录</view>
+                <view class="action-sheet-item" data-value="copy" @tap="copy">{{ $t('common.copy_to_next_row') }}</view>
+                <view class="action-sheet-item" data-value="copy_last" @tap="copy">{{ $t('common.copy_to_last_row') }}</view>
+                <view class="action-sheet-item" data-value="insert_up" @tap="copy">{{ $t('common.insert_up') }}</view>
+                <view class="action-sheet-item" data-value="insert_down" @tap="copy">{{ $t('common.insert_down') }}</view>
                 <view class="action-sheet-segment"></view>
-                <view class="action-sheet-item" @tap="quick_close_event">取消</view>
+                <view class="action-sheet-item" @tap="quick_close_event">{{ $t('common.cancel') }}</view>
             </view>
         </uni-popup>
         <!-- 表格报错提示 -->
@@ -303,11 +303,11 @@
                             // 如果当前行有错误
                             if (err_list && err_list.common_config && err_list.common_config.is_error == '1') {
                                 const key_type = ['select-multi', 'checkbox', 'radio-btns', 'select', 'address', 'date', 'upload-img', 'upload-video', 'upload-attachments', 'date-group'];
-                                const name = key_type.includes(line_error[0].key) || ['select-multi', 'checkbox', 'radio-btns', 'select'].includes(err_list.type) ? '选择' : '填写';
-                                if (err_list.common_config.error_text == '此项为必填项') {
-                                    return `请${name}「${err_list.title}」`;
+                                const name = key_type.includes(line_error[0].key) || ['select-multi', 'checkbox', 'radio-btns', 'select'].includes(err_list.type) ? this.$t('common.select') : this.$t('common.fill');
+                                if (err_list.common_config.error_text == this.$t('common.required_field')) {
+                                    return this.$t('common.please_action_field', [name, err_list.title]);
                                 } else {
-                                    return `请正确${name}「${err_list.title}」`;
+                                    return this.$t('common.please_correct_action_field', [name, err_list.title]);
                                 }
                             }
                         } else {

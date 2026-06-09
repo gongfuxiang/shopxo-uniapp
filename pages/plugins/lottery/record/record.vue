@@ -33,7 +33,7 @@
                         v-if="item.reward_type === 'coupon' && (item.lottery_coupon_name || item.reward_name)"
                         class="coupon-row oh br-b padding-vertical-main"
                     >
-                        <text class="text-size-xs cr-grey">优惠券</text>
+                        <text class="text-size-xs cr-grey">{{ $t('common.coupon') }}</text>
                         <text class="text-size-sm cr-blue margin-left-sm">{{ item.lottery_coupon_name || item.reward_name || '-' }}</text>
                     </view>
                     <view class="margin-top">
@@ -45,9 +45,9 @@
                         ></component-panel-content>
                     </view>
                     <view v-if="item.reward_type === 'goods' && parseInt(item.order_id || 0) > 0" class="use-data br-t margin-top-sm padding-top-sm">
-                        <view class="text-size-xs cr-grey">使用数据</view>
+                        <view class="text-size-xs cr-grey">{{ $t('common.use_data') }}</view>
                         <view class="text-size-xs margin-top-xs use-order-row">
-                            <text class="cr-grey">订单号：</text>
+                            <text class="cr-grey">{{ $t('common.order_no_label') }}</text>
                             <text
                                 v-if="(item.lottery_order_detail_url || '').trim()"
                                 class="cr-blue cp"
@@ -56,7 +56,7 @@
                             >{{ item.lottery_order_no || item.order_id }}</text>
                             <text v-else class="cr-base">{{ item.lottery_order_no || item.order_id }}</text>
                             <text class="fr">
-                                <text class="cr-grey">订单ID：</text>
+                                <text class="cr-grey">{{ $t('common.order_id_label') }}</text>
                                 <text
                                     v-if="(item.lottery_order_detail_url || '').trim()"
                                     class="cr-blue cp"
@@ -68,7 +68,7 @@
                         </view>
                     </view>
                     <view v-if="item.reward_type === 'goods' && parseInt(item.status || 0) === 0" class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button class="round bg-white cr-main br-main" type="default" size="mini" hover-class="none" @tap="free_buy_event(item)">下单</button>
+                        <button class="round bg-white cr-main br-main" type="default" size="mini" hover-class="none" @tap="free_buy_event(item)">{{ $t('common.place_order_text') }}</button>
                     </view>
                 </view>
             </view>

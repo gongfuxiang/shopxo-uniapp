@@ -13,7 +13,7 @@
             </view>
             <view v-if="propDirection == 'row' && address_type == 'detailed'" class="border-line"></view>
             <view v-if="address_type == 'detailed'" class="flex-row">
-                <textarea :value="address" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" placeholder="请输入详细地址" @input="input_value_event" @blur="input_value_blur" />
+                <textarea :value="address" class="uni-input flex-1 ht-auto" auto-height :style="com_data.common_style + propStyle + 'min-height:40rpx;' + (propDirection == 'row' ? '' : 'padding: 18rpx 22rpx;')" :placeholder="$t('common.please_input_address')" @input="input_value_event" @blur="input_value_blur" />
             </view>
         </view>
         <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @callBackEvent="region_event"></component-region-picker>
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-    import { get_format_checks, isEmpty, formatNumber } from '@/common/js/common/common.js';
+    import i18n from '@/locale/index.js';
+import { get_format_checks, isEmpty, formatNumber } from '@/common/js/common/common.js';
     import componentRegionPicker from '@/pages/common/components/region-picker/region-picker';
     const app = getApp();
     export default {
@@ -52,7 +53,7 @@
         },
         data() {
             return {
-                placeholder: '请选择内容...',
+                placeholder: i18n.t('common.please_select_content_ellipsis'),
                 address_type: '',
                 form_value: '',
                 address: '',

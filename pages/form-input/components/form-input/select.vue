@@ -20,7 +20,7 @@
                 </view>
             </view>
             <template v-if="!isEmpty(option_value) && form_value == option_value">
-                <input :value="other_value" class="uni-input" :style="propStyle + propCommonStyle" type="text" placeholder="请输入其他内容" placeholder-style="color: gray;" @blur="data_other_check" @input="input_other_value_event" />
+                <input :value="other_value" class="uni-input" :style="propStyle + propCommonStyle" type="text" :placeholder="$t('common.please_input_other')" placeholder-style="color: gray;" @blur="data_other_check" @input="input_other_value_event" />
             </template>
         </view>
         <!-- 弹窗 -->
@@ -28,13 +28,13 @@
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col gap-10">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb">
-                    <view class="text-size-sm cr-blue" @tap="quick_close_event">取消</view>
+                    <view class="text-size-sm cr-blue" @tap="quick_close_event">{{ $t('common.cancel') }}</view>
                 </view>
                 <!-- 内容区域的样式 -->
                 <view class="flex-1 flex-col gap-10">
                     <view class="flex-row popup-search align-c gap-10">
                         <iconfont name="icon-search" size="32rpx" color="#666" propContainerDisplay="flex"></iconfont>
-                        <input :value="popup_search_value" class="uni-input flex-1" type="text" placeholder="搜索(多个关键字用空格隔开)" @input="search_input" />
+                        <input :value="popup_search_value" class="uni-input flex-1" type="text" :placeholder="$t('common.search_keywords_multi')" @input="search_input" />
                     </view>
                     <template v-if="new_option_list.length > 0">
                         <view class="flex-col gap-10 mt-10 popup-list">
@@ -50,7 +50,7 @@
                     </template>
                     <template v-else>
                         <view class="flex-1 flex-row align-c jc-c">
-                            <view class="text-size-sm cr-grey">暂无数据</view>
+                            <view class="text-size-sm cr-grey">{{ $t('common.no_data') }}</view>
                         </view>
                     </template>
                 </view>
@@ -60,7 +60,8 @@
 </template>
 
 <script>
-    import { isEmpty, get_color_style, get_format_checks } from '@/common/js/common/common.js';
+    import i18n from '@/locale/index.js';
+import { isEmpty, get_color_style, get_format_checks } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -94,7 +95,7 @@
         },
         data() {
             return {
-                placeholder: '请输入内容...',
+                placeholder: i18n.t('common.please_input_content_ellipsis'),
                 form_value: '',
                 com_data: {},
                 popup_status: false,

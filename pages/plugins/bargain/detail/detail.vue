@@ -24,7 +24,7 @@
                             </view>
                             <view class="bargain-detail-price-main">
                                 <view class="bargain-detail-price-left">
-                                    <view class="cr-white text-size-xs">商品售价</view>
+                                    <view class="cr-white text-size-xs">{{ $t('bargain.bargain.goods_price') }}</view>
                                     <view class="bargain-detail-price-value cr-white fw-b margin-top-xs">
                                         <text class="text-size-xs">{{ currency_symbol }}</text>
                                         <text class="text-size-xl">{{ display_price }}</text>
@@ -37,15 +37,15 @@
                             <view class="multi-text text-size-md">{{ bargain.title || goods.title }}</view>
                             <view class="bargain-detail-status-bar margin-top-main">
                                 <view class="bargain-detail-status-item flex-row jc-c align-c">
-                                    <text class="bargain-detail-status-label text-size-xs cr-grey">帮砍</text>
-                                    <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.help_number_text || bargain.help_number }}人</text>
+                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.bargain.help_cut') }}</text>
+                                    <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.help_number_text || bargain.help_number }}{{ $t('common.person_unit') }}</text>
                                 </view>
                                 <view class="bargain-detail-status-item flex-row jc-c align-c">
-                                    <text class="bargain-detail-status-label text-size-xs cr-grey">参与数</text>
+                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.bargain.join_count') }}</text>
                                     <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.bargain_participant_count || 0 }}</text>
                                 </view>
                                 <view class="bargain-detail-status-item flex-row jc-c align-c">
-                                    <text class="bargain-detail-status-label text-size-xs cr-grey">发起次数</text>
+                                    <text class="bargain-detail-status-label text-size-xs cr-grey">{{ $t('bargain.bargain.launch_count') }}</text>
                                     <text class="bargain-detail-status-value text-size-sm cr-black margin-left-xs">{{ bargain.user_start_limit_text || 1 }}</text>
                                 </view>
                             </view>
@@ -55,9 +55,9 @@
 
                 <view class="padding-horizontal-main">
                     <view v-if="goods.is_exist_many_spec == 1" class="bargain-detail-spec-row border-radius-main bg-white spacing-mb flex-row jc-sb align-c" @tap="buy_open_event">
-                        <text class="bargain-detail-spec-label text-size-sm cr-black">规格</text>
+                        <text class="bargain-detail-spec-label text-size-sm cr-black">{{ $t('common.spec') }}</text>
                         <view class="bargain-detail-spec-value flex-row align-c">
-                            <text v-if="(spec_selected_text || null) == null || spec_selected_text == ''" class="bargain-detail-spec-text text-size-sm cr-grey single-text">请选择规格</text>
+                            <text v-if="(spec_selected_text || null) == null || spec_selected_text == ''" class="bargain-detail-spec-text text-size-sm cr-grey single-text">{{ $t('common.please_select_spec') }}</text>
                             <text v-else class="bargain-detail-spec-text text-size-sm cr-black single-text">{{ spec_selected_text }}</text>
                             <iconfont name="icon-arrow-right" color="#999" propClass="bargain-detail-spec-arrow"></iconfont>
                         </view>
@@ -67,7 +67,7 @@
 
                     <view class="goods-detail border-radius-main bg-white spacing-mb">
                         <view class="bargain-detail-goods-title padding-top-main padding-horizontal-main">
-                            <component-bargain-dot-title propTitle="商品详情" propTextClass="text-size-sm"></component-bargain-dot-title>
+                            <component-bargain-dot-title :propTitle="$t('common.goods_detail')" propTextClass="text-size-sm"></component-bargain-dot-title>
                         </view>
                         <view class="padding-main padding-top-0">
                             <mp-html v-if="(goods.content_web || null) != null" :content="goods.content_web" />
@@ -92,7 +92,7 @@
                                 </view>
                             </block>
                         </view>
-                        <button v-if="(goods.shop_goods_url || null) != null" class="btn round bg-white br-grey cr-grey text-size-sm flex-1" type="default" :data-value="goods.shop_goods_url" @tap="url_event" hover-class="none">单独购买</button>
+                        <button v-if="(goods.shop_goods_url || null) != null" class="btn round bg-white br-grey cr-grey text-size-sm flex-1" type="default" :data-value="goods.shop_goods_url" @tap="url_event" hover-class="none">{{ $t('common.buy_alone') }}</button>
                         <button class="btn round bg-main cr-white text-size-sm flex-1" type="default" :disabled="buy_disabled" @tap="buy_open_event" hover-class="none">{{ buy_button_text }}</button>
                     </view>
                 </view>
@@ -135,7 +135,7 @@
                 display_price: '0.00',
                 spec_selected_text: '',
                 buy_disabled: false,
-                buy_button_text: '参与砍价',
+                buy_button_text: this.$t('bargain.bargain.join_bargain'),
                 buy_button_type: 'start',
                 buy_record_url: '',
                 detail_buy_display_default: null,
@@ -263,12 +263,12 @@
                             }
                             var buy_display = result.detail_buy_display || {};
                             var inventory = parseInt(goods.inventory || 0);
-                            var buy_button_text = buy_display.buy_button_text || '参与砍价';
+                            var buy_button_text = buy_display.buy_button_text || this.$t('bargain.bargain.join_bargain');
                             var buy_button_type = buy_display.buy_button_type || 'start';
                             var buy_record_url = buy_display.buy_button_url || '';
                             var buy_disabled = buy_display.buy_disabled == 1;
                             if (inventory <= 0 && !buy_display.buy_button_text) {
-                                buy_button_text = '没库存了';
+                                buy_button_text = this.$t('common.no_stock');
                                 buy_disabled = true;
                             }
                             var show_original_price = buy_display.show_original_price == 1;
@@ -276,7 +276,7 @@
                             if (!show_original_price && (goods.min_original_price || goods.original_price) != null && sale_min > 0) {
                                 show_original_price = parseFloat(goods.min_original_price || goods.original_price) > sale_min;
                             }
-                            var share_desc = (bargain.help_number_text || bargain.help_number || 0) + '人帮砍，' + (bargain.bargain_success_text || '快来一起砍价吧');
+                            var share_desc = (bargain.help_number_text || bargain.help_number || 0) + this.$t('bargain.bargain.people_helped') + (bargain.bargain_success_text || this.$t('bargain.bargain.invite_bargain'));
                             this.setData({
                                 goods: goods,
                                 bargain: bargain,
@@ -348,7 +348,7 @@
                 var record = ((e || {}).back_data || {}).user_bargain_record || null;
                 if (record != null && (record.share_url || null) != null) {
                     this.setData({
-                        buy_button_text: '查看砍价',
+                        buy_button_text: this.$t('bargain.bargain.view_bargain'),
                         buy_button_type: 'record',
                         buy_record_url: record.share_url,
                         buy_disabled: false,
@@ -357,7 +357,7 @@
                 }
                 var def = this.detail_buy_display_default || {};
                 this.setData({
-                    buy_button_text: def.buy_button_text || '参与砍价',
+                    buy_button_text: def.buy_button_text || this.$t('bargain.bargain.join_bargain'),
                     buy_button_type: def.buy_button_type || 'start',
                     buy_record_url: def.buy_button_url || '',
                     buy_disabled: def.buy_disabled == 1,
@@ -384,7 +384,7 @@
                     buy_event_type: 'back',
                     is_success_tips: 0,
                     buy_button: {
-                        data: [{ type: 'back', name: this.buy_button_text || '参与砍价', color: 'main' }],
+                        data: [{ type: 'back', name: this.buy_button_text || this.$t('bargain.bargain.join_bargain'), color: 'main' }],
                     },
                 }
                 );

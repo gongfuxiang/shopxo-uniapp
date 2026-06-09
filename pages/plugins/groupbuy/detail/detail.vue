@@ -21,7 +21,7 @@
                         <view class="groupbuy-detail-price-header" :style="detail_header_bg_style">
                             <view class="groupbuy-detail-price-main flex-row jc-sb align-c">
                                 <view class="groupbuy-detail-price-left">
-                                    <view class="cr-white text-size-xs">拼团价</view>
+                                    <view class="cr-white text-size-xs">{{ $t('groupbuy.groupbuy.group_price') }}</view>
                                     <view class="groupbuy-detail-price-value cr-white fw-b margin-top-xs">
                                         <text class="text-size-xs">{{ currency_symbol }}</text>
                                         <text class="text-size-xl">{{ display_price }}</text>
@@ -29,7 +29,7 @@
                                     </view>
                                 </view>
                                 <view class="groupbuy-detail-team-tag bg-white cr-main text-size-xs padding-horizontal-main padding-vertical-xs">
-                                    {{ groupbuy.group_number }}人团
+                                    {{ groupbuy.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}
                                 </view>
                             </view>
                         </view>
@@ -37,15 +37,15 @@
                             <view class="multi-text text-size-md">{{ groupbuy.title || goods.title }}</view>
                             <view class="groupbuy-detail-status-bar margin-top-main">
                                 <view class="groupbuy-detail-status-item flex-row jc-c align-c">
-                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">成团</text>
-                                    <text class="groupbuy-detail-status-value text-size-sm cr-black margin-left-xs">{{ groupbuy.group_number }}人</text>
+                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('groupbuy.groupbuy.group_formed') }}</text>
+                                    <text class="groupbuy-detail-status-value text-size-sm cr-black margin-left-xs">{{ groupbuy.group_number }}{{ $t('common.person_unit') }}</text>
                                 </view>
                                 <view class="groupbuy-detail-status-item flex-row jc-c align-c">
-                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">成团数</text>
+                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('groupbuy.groupbuy.group_count') }}</text>
                                     <text class="groupbuy-detail-status-value text-size-sm cr-black margin-left-xs">{{ groupbuy.team_success_count || 0 }}</text>
                                 </view>
                                 <view class="groupbuy-detail-status-item flex-row jc-c align-c">
-                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">限购</text>
+                                    <text class="groupbuy-detail-status-label text-size-xs cr-grey">{{ $t('common.purchase_limit') }}</text>
                                     <text class="groupbuy-detail-status-value text-size-sm cr-black margin-left-xs">{{ limit_buy_display_text }}</text>
                                 </view>
                             </view>
@@ -55,9 +55,9 @@
 
                 <view class="padding-horizontal-main">
                     <view v-if="goods.is_exist_many_spec == 1" class="groupbuy-detail-spec-row border-radius-main bg-white spacing-mb flex-row jc-sb align-c" @tap="buy_open_event">
-                        <text class="groupbuy-detail-spec-label text-size-sm cr-black">规格</text>
+                        <text class="groupbuy-detail-spec-label text-size-sm cr-black">{{ $t('common.spec') }}</text>
                         <view class="groupbuy-detail-spec-value flex-row align-c">
-                            <text v-if="(spec_selected_text || null) == null || spec_selected_text == ''" class="groupbuy-detail-spec-text text-size-sm cr-grey single-text">请选择规格</text>
+                            <text v-if="(spec_selected_text || null) == null || spec_selected_text == ''" class="groupbuy-detail-spec-text text-size-sm cr-grey single-text">{{ $t('common.please_select_spec') }}</text>
                             <text v-else class="groupbuy-detail-spec-text text-size-sm cr-black single-text">{{ spec_selected_text }}</text>
                             <iconfont name="icon-arrow-right" color="#999" propClass="groupbuy-detail-spec-arrow"></iconfont>
                         </view>
@@ -67,7 +67,7 @@
 
                     <view class="goods-detail border-radius-main bg-white spacing-mb">
                         <view class="spacing-nav-title groupbuy-detail-goods-title">
-                            <text class="text-wrapper title-left-border text-size-xs">商品详情</text>
+                            <text class="text-wrapper title-left-border text-size-xs">{{ $t('common.goods_detail') }}</text>
                         </view>
                         <view class="padding-main">
                             <mp-html v-if="(goods.content_web || null) != null" :content="goods.content_web" />
@@ -92,7 +92,7 @@
                                 </view>
                             </block>
                         </view>
-                        <button v-if="(goods.shop_goods_url || null) != null" class="btn round bg-white br-grey cr-grey text-size-sm flex-1" type="default" :data-value="goods.shop_goods_url" @tap="url_event" hover-class="none">单独购买</button>
+                        <button v-if="(goods.shop_goods_url || null) != null" class="btn round bg-white br-grey cr-grey text-size-sm flex-1" type="default" :data-value="goods.shop_goods_url" @tap="url_event" hover-class="none">{{ $t('common.buy_alone') }}</button>
                         <button class="btn round bg-main cr-white text-size-sm flex-1" type="default" :disabled="buy_disabled" @tap="buy_open_event" hover-class="none">{{ buy_button_text }}</button>
                     </view>
                 </view>
@@ -135,7 +135,7 @@
                 display_price: '0.00',
                 spec_selected_text: '',
                 buy_disabled: false,
-                buy_button_text: '立即开团',
+                buy_button_text: this.$t('groupbuy.groupbuy.open_now'),
                 show_original_price: false,
                 share_info: {},
                 photo_swiper_current: 0,
@@ -160,7 +160,7 @@
                 if ((this.groupbuy || {}).user_limit_buy_number > 0) {
                     return parseInt(this.groupbuy.user_limit_buy_number);
                 }
-                return '不限';
+                return this.$t('common.unlimited');
             },
         },
         components: {
@@ -272,10 +272,10 @@
                             }
                             var buy_display = result.detail_buy_display || {};
                             var inventory = parseInt(goods.inventory || 0);
-                            var buy_button_text = buy_display.buy_button_text || (join_team_id > 0 ? '立即参团' : '立即开团');
+                            var buy_button_text = buy_display.buy_button_text || (join_team_id > 0 ? this.$t('groupbuy.groupbuy.join_now') : this.$t('groupbuy.groupbuy.open_now'));
                             var buy_disabled = buy_display.buy_disabled == 1;
                             if (inventory <= 0 && !buy_display.buy_button_text) {
-                                buy_button_text = '没库存了';
+                                buy_button_text = this.$t('common.no_stock');
                                 buy_disabled = true;
                             }
                             var show_original_price = buy_display.show_original_price == 1;
@@ -286,11 +286,11 @@
                             if (join_team_id > 0) {
                                 share_query += '&team_id=' + join_team_id;
                             }
-                            var share_desc = (groupbuy.group_number || 0) + '人团';
+                            var share_desc = (groupbuy.group_number || 0) + this.$t('groupbuy.groupbuy.people_team');
                             if (join_team_id > 0) {
-                                share_desc += '，邀请你一起参团';
+                                share_desc += this.$t('groupbuy.groupbuy.invite_join');
                             } else {
-                                share_desc += '，快来一起拼团吧';
+                                share_desc += this.$t('groupbuy.groupbuy.invite_group');
                             }
                             this.setData({
                                 goods: goods,
@@ -365,7 +365,7 @@
                 if (user == false) {
                     return false;
                 }
-                var buy_name = this.join_team_id > 0 ? '立即参团' : '立即开团';
+                var buy_name = this.join_team_id > 0 ? this.$t('groupbuy.groupbuy.join_now') : this.$t('groupbuy.groupbuy.open_now');
                 this.$refs.goods_buy.init(
                     Object.assign({}, this.goods, { goods_id: this.goods.id, id: this.groupbuy.id }),
                     {

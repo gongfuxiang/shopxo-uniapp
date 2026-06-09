@@ -98,7 +98,7 @@
                 if (index == 4) {
                     if (!this.noClick) {
                         uni.showToast({
-                            title: '请勿频繁点击',
+                            title: this.$t('common.no_frequent_click'),
                             icon: 'none',
                             position: 'bottom',
                         });

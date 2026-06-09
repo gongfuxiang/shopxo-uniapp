@@ -3,7 +3,7 @@
         <template v-if="propDirection == 'row'">
             <view class="flex-row gap-10 align-c" @tap="choose_user_location">
                 <view class="flex-1 flex-row align-c" :style="propStyle"> 
-                    <view v-if="isEmpty(form_value)" class="cr-gray">获取定位</view>
+                    <view v-if="isEmpty(form_value)" class="cr-gray">{{ $t('common.get_location') }}</view>
                     <view>{{ form_value.address }}</view>
                 </view>
                 <iconfont name="icon-latitude-location" size="32rpx" color="#666" propContainerDisplay="flex" ></iconfont>
@@ -14,7 +14,7 @@
             <view class="pc-disable flex-row align-c jc-c w h" :style="com_data.common_style + propStyle" @tap="choose_user_location">
                 <view class="flex-row align-c jc-c gap-10 pa-5">
                     <iconfont name="icon-latitude-location" size="32rpx" color="#666" propContainerDisplay="flex" ></iconfont>
-                    获取定位
+                    {{ $t('common.get_location') }}
                 </view>
             </view>
             <view v-if="!isEmpty(form_value)" class="flex-col gap-10 jc-c" :style="propStyle + 'height: 100%;'">
@@ -23,8 +23,8 @@
                     <view class="nowrap">{{ form_value.address }}</view>
                 </view>
                 <view v-if="com_data.is_longitude_and_latitude == '1'" class="flex-row align-c gap-10">
-                    <view>经度坐标：{{ form_value.lng }}</view>
-                    <view>纬度坐标：{{ form_value.lat }}</view>
+                    <view>{{ $t('common.longitude_coord') }}：{{ form_value.lng }}</view>
+                    <view>{{ $t('common.latitude_coord') }}：{{ form_value.lat }}</view>
                 </view>
             </view>
         </template>

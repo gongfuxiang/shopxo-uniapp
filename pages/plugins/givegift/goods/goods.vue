@@ -119,7 +119,7 @@
                 // 前往支付页面携带的参数
                 to_page_back: {
                     page: '/pages/plugins/givegift/gift/gift',
-                    title: '我的送礼'
+                    title: this.$t('givegift.givegift.my_gift')
                 },
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/givegift/gift/gift',

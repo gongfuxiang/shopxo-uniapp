@@ -58,7 +58,8 @@
 </template>
 
 <script>
-    export default {
+    import i18n from '@/locale/index.js';
+export default {
         props: {
             /** 活动页背景图 URL（aspectFill） */
             nImg: {
@@ -93,7 +94,7 @@
             /** 中心圆次数下方说明文案，如「可用次数」；无每日上限时父页传空串则不展示 */
             hubCapLabel: {
                 type: String,
-                default: '可用次数',
+                default: i18n.t('common.available_times'),
             },
             /** 中心圆为「立即抽奖」文案时略缩小字号 */
             hubDrawCta: {

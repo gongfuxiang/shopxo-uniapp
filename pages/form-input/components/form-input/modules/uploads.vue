@@ -37,7 +37,7 @@
                 </view>
             </view>
             <view v-if="(propData || null) == null || propData.length < propMaxNum" class="file flex-row align-c" :style="propBorderStyle" @tap="file_upload_event">
-                请选择文件，最多可以上传{{ propMaxNum }}个
+                {{ $t('common.select_file_upload_limit', [propMaxNum]) }}
             </view>
         </template>
         <!-- 视频预览 -->

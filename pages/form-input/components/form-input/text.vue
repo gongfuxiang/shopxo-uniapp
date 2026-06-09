@@ -1,7 +1,7 @@
 <template>
     <!-- 视频 -->
     <view :style="propStyle + 'height:100%;color:' + com_data.text_color + ';'">
-       {{ isEmpty(form_value) ? '没有内容' : form_value }}
+       {{ isEmpty(form_value) ? this.$t('common.no_content') : form_value }}
     </view>
 </template>
 

@@ -22,9 +22,9 @@
 
                 <view class="border-radius-main padding-main spacing-mb team-status-panel pr" :class="team.status == 1 || team.status == 2 ? 'team-status-panel-success' : 'bg-white'">
                     <block v-if="team.status == 0">
-                        <view class="tc fw-b text-size-md">砍价中，还差 <text class="cr-red">{{ team.remain_number }}</text> 人砍价成功</view>
+                        <view class="tc fw-b text-size-md">{{ $t('bargain.bargain.bargaining_need') }}<text class="cr-red">{{ team.remain_number }}</text>{{ $t('bargain.bargain.people_success') }}</view>
                         <view v-if="countdown_show" class="tc margin-top-sm flex-row align-c jc-c flex-wrap gap-10">
-                            <text class="cr-grey text-size-xs">剩余</text>
+                            <text class="cr-grey text-size-xs">{{ $t('common.remain') }}</text>
                             <component-countdown
                                 :key="countdown_key"
                                 :propHour="countdown_hour"
@@ -40,17 +40,17 @@
                                 propMinuteDs=" : "
                                 propSecondDs=""
                             ></component-countdown>
-                            <text class="cr-grey text-size-xs">结束</text>
+                            <text class="cr-grey text-size-xs">{{ $t('common.end') }}</text>
                         </view>
                         <view class="team-bargain-price-block margin-top-main">
                             <view class="team-bargain-current-row">
-                                <text class="team-bargain-label">当前价</text>
+                                <text class="team-bargain-label">{{ $t('bargain.bargain.current_price') }}</text>
                                 <text class="team-bargain-current-price">
                                     <text class="price-symbol">{{ currency_symbol }}</text>
                                     <text class="team-bargain-price-num">{{ team.current_price_text || team.display_current_price || team.current_price }}</text>
                                 </text>
                             </view>
-                            <view class="team-bargain-floor-row">底价 {{ currency_symbol }}{{ team.floor_price_text || team.floor_price }}</view>
+                            <view class="team-bargain-floor-row">{{ $t('bargain.bargain.floor_price') }} {{ currency_symbol }}{{ team.floor_price_text || team.floor_price }}</view>
                             <view class="team-bargain-progress-wrap">
                                 <view class="team-bargain-progress-row flex-row align-c">
                                     <view class="team-bargain-progress flex-1 flex-width" :style="'--progress:' + (team.progress_percent || 0) + '%;'">
@@ -59,8 +59,8 @@
                                     <text class="team-bargain-progress-percent cr-main fw-b">{{ progress_percent_show(team.progress_percent) }}%</text>
                                 </view>
                                 <view class="team-bargain-progress-meta text-size-xs cr-grey">
-                                    <text>已砍 {{ currency_symbol }}{{ team.cut_total_price_text || team.cut_total_price }}</text>
-                                    <text>还剩 {{ currency_symbol }}{{ team.remain_price_text || team.remain_price }}</text>
+                                    <text>{{ $t('bargain.bargain.already_cut') }} {{ currency_symbol }}{{ team.cut_total_price_text || team.cut_total_price }}</text>
+                                    <text>{{ $t('bargain.bargain.cut_remain') }} {{ currency_symbol }}{{ team.remain_price_text || team.remain_price }}</text>
                                 </view>
                             </view>
                         </view>
@@ -75,60 +75,60 @@
                                     <iconfont name="icon-check" size="50rpx" color="#ffffff"></iconfont>
                                 </view>
                             </view>
-                            <view class="team-success-title">砍价成功</view>
+                            <view class="team-success-title">{{ $t('bargain.bargain.bargain_success') }}</view>
                             <view class="team-success-desc">
-                                恭喜您砍价成功，快去支付吧！
-                                <text class="team-success-help-tag">{{ bargain.help_number || team.help_number || 0 }}人帮砍</text>
+                                {{ $t('bargain.bargain.success_go_pay') }}
+                                <text class="team-success-help-tag">{{ bargain.help_number || team.help_number || 0 }}{{ $t('bargain.bargain.people_help_cut_suffix') }}</text>
                             </view>
                             <view class="team-bargain-price-block team-success-price-block">
                                 <view class="team-bargain-current-row team-success-current-row">
-                                    <text class="team-bargain-label">当前</text>
+                                    <text class="team-bargain-label">{{ $t('common.current') }}</text>
                                     <text class="team-bargain-current-price">
                                         <text class="price-symbol">{{ currency_symbol }}</text>
                                         <text class="team-bargain-price-num">{{ team.pay_total_price_text || team.current_price_text || team.current_price }}</text>
                                     </text>
-                                    <text class="team-bargain-cut-done-badge">已砍 {{ currency_symbol }}{{ team.cut_total_price_text || team.cut_total_price }}</text>
+                                    <text class="team-bargain-cut-done-badge">{{ $t('bargain.bargain.already_cut') }} {{ currency_symbol }}{{ team.cut_total_price_text || team.cut_total_price }}</text>
                                 </view>
                                 <view v-if="parseInt(team.buy_number || 1) > 1" class="team-bargain-qty-row">
-                                    当前 {{ currency_symbol }}{{ team.current_price_text || team.current_price }} × {{ team.buy_number }}
+                                    {{ $t('common.current') }} {{ currency_symbol }}{{ team.current_price_text || team.current_price }} × {{ team.buy_number }}
                                 </view>
-                                <view v-if="(team.floor_price_text || team.floor_price || null) != null" class="team-bargain-floor-row team-success-floor-row">底价 {{ currency_symbol }}{{ team.floor_price_text || team.floor_price }}</view>
+                                <view v-if="(team.floor_price_text || team.floor_price || null) != null" class="team-bargain-floor-row team-success-floor-row">{{ $t('bargain.bargain.floor_price') }} {{ currency_symbol }}{{ team.floor_price_text || team.floor_price }}</view>
                             </view>
                         </view>
                     </block>
                     <block v-else-if="team.status == 3 || team.status == 4">
                         <view class="team-status-fail tc">
                             <iconfont name="icon-sigh" size="48rpx" color="#999999"></iconfont>
-                            <view class="fw-b text-size-lg cr-red margin-top-main">砍价失败</view>
-                            <view class="cr-grey text-size-xs margin-top-sm">很遗憾，本次砍价未成功</view>
+                            <view class="fw-b text-size-lg cr-red margin-top-main">{{ $t('bargain.bargain.bargain_fail') }}</view>
+                            <view class="cr-grey text-size-xs margin-top-sm">{{ $t('bargain.bargain.bargain_fail_tips') }}</view>
                         </view>
                     </block>
 
                     <view v-if="team.status == 0" class="team-action-row margin-top-main flex-row align-c jc-c flex-wrap gap-10">
                         <block v-if="user == null">
-                            <button class="btn round bg-main cr-white text-size-md" type="default" @tap="login_event" hover-class="none">登录后帮砍</button>
+                            <button class="btn round bg-main cr-white text-size-md" type="default" @tap="login_event" hover-class="none">{{ $t('bargain.bargain.login_to_help') }}</button>
                         </block>
                         <block v-else>
-                            <button v-if="help_action.can_help == 1" class="btn round bg-main cr-white text-size-md" type="default" @tap="help_cut_event" hover-class="none">立即帮砍</button>
-                            <button v-else-if="help_action.has_helped == 1" class="btn round bg-main cr-white text-size-md" type="default" disabled hover-class="none">已帮砍</button>
-                            <text v-else-if="help_action.is_owner == 1" class="cr-grey text-size-sm">请邀请帮砍</text>
-                            <text v-else class="cr-grey text-size-sm">{{ help_action.tips || '暂无法帮砍' }}</text>
-                            <button v-if="help_action.is_owner == 1 && (team_pay.can_pay == 1 || team_pay.has_system_order == 1)" class="btn round bg-main cr-white text-size-md" type="default" @tap="pay_event" hover-class="none">{{ team_pay.has_system_order == 1 ? '查看订单' : '立即支付' }}</button>
+                            <button v-if="help_action.can_help == 1" class="btn round bg-main cr-white text-size-md" type="default" @tap="help_cut_event" hover-class="none">{{ $t('bargain.bargain.help_now') }}</button>
+                            <button v-else-if="help_action.has_helped == 1" class="btn round bg-main cr-white text-size-md" type="default" disabled hover-class="none">{{ $t('bargain.bargain.already_helped') }}</button>
+                            <text v-else-if="help_action.is_owner == 1" class="cr-grey text-size-sm">{{ $t('bargain.bargain.invite_help') }}</text>
+                            <text v-else class="cr-grey text-size-sm">{{ help_action.tips || this.$t('bargain.bargain.cannot_help') }}</text>
+                            <button v-if="help_action.is_owner == 1 && (team_pay.can_pay == 1 || team_pay.has_system_order == 1)" class="btn round bg-main cr-white text-size-md" type="default" @tap="pay_event" hover-class="none">{{ team_pay.has_system_order == 1 ? $t('common.view_order') : $t('common.pay_now') }}</button>
                         </block>
-                        <button class="btn round bg-white br-main cr-main text-size-md" type="default" @tap="popup_share_event" hover-class="none">邀请帮砍</button>
+                        <button class="btn round bg-white br-main cr-main text-size-md" type="default" @tap="popup_share_event" hover-class="none">{{ $t('bargain.bargain.invite_help_cut') }}</button>
                     </view>
                     <view v-else-if="team.status == 1 || team.status == 2" class="team-action-row team-success-pay-row margin-top-main tc">
-                        <button v-if="user == null" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="login_event" hover-class="none">立即支付</button>
-                        <button v-else-if="team_pay.has_system_order == 1 || team.has_system_order == 1" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="pay_event" hover-class="none">查看订单</button>
-                        <button v-else-if="team_pay.can_pay == 1" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="pay_event" hover-class="none">立即支付</button>
+                        <button v-if="user == null" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="login_event" hover-class="none">{{ $t('common.pay_now') }}</button>
+                        <button v-else-if="team_pay.has_system_order == 1 || team.has_system_order == 1" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="pay_event" hover-class="none">{{ $t('common.view_order') }}</button>
+                        <button v-else-if="team_pay.can_pay == 1" class="btn round bg-main cr-white text-size-md wh-auto" type="default" @tap="pay_event" hover-class="none">{{ $t('common.pay_now') }}</button>
                     </view>
                     <view v-if="help_action.is_owner == 1 && (team.status == 0 || team.status == 1) && team_pay.has_system_order != 1 && team.has_system_order != 1" class="tc margin-top-main">
-                        <text class="cr-grey text-size-xs" @tap="team_cancel_event">取消发起砍价</text>
+                        <text class="cr-grey text-size-xs" @tap="team_cancel_event">{{ $t('bargain.bargain.cancel_launch') }}</text>
                     </view>
                 </view>
 
                 <view v-if="help_list.length > 0" class="border-radius-main bg-white padding-main spacing-mb">
-                    <component-bargain-dot-title propTitle="砍价记录" propTextClass="text-size-sm"></component-bargain-dot-title>
+                    <component-bargain-dot-title :propTitle="$t('bargain.bargain.bargain_record')" propTextClass="text-size-sm"></component-bargain-dot-title>
                     <view v-for="(item, index) in help_list" :key="index" class="flex-row align-c gap-10 margin-bottom-main">
                         <image :src="item.avatar" mode="aspectFill" class="help-avatar radius"></image>
                         <view class="flex-1 flex-width">
@@ -268,8 +268,8 @@
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
                                 share_info: {
-                                    title: bargain.title || goods.title || '邀请你帮砍',
-                                    desc: '还差' + (team.remain_number || 0) + '人帮砍，快来帮砍一刀吧',
+                                    title: bargain.title || goods.title || this.$t('bargain.bargain.invite_you_help'),
+                                    desc: this.$t('common.still_need') + (team.remain_number || 0) + this.$t('bargain.bargain.invite_help_one'),
                                     path: '/pages/plugins/bargain/team/team',
                                     query: 'id=' + team.id,
                                     img: goods.images || '',
@@ -325,7 +325,7 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg || '帮砍成功', 'success');
+                            app.globalData.showToast(res.data.msg || this.$t('bargain.bargain.help_success'), 'success');
                             this.get_data();
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'help_cut_event')) {

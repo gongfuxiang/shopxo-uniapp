@@ -458,7 +458,7 @@
                                 </block>
                             </view>
                             <view class="tc margin-top">
-                                <text class="cr-grey" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
+                                <text class="cr-grey" @tap="popup_params_event" data-value="detail">{{ $t('common.view_all_params') }}</text>
                             </view>
                         </view>
                         <block v-if="(common_is_goods_detail_content_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">

@@ -28,7 +28,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="bargain-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">去砍价</view>
+                            <view class="bargain-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">{{ $t('bargain.bargain.go_bargain') }}</view>
                         </view>
                     </view>
                 </block>
@@ -127,7 +127,7 @@
                             var data_list = data.data || [];
                             var slider_list = data.slider_list || [];
                             var data_base = data.data_base || null;
-                            var nav_title = '砍价';
+                            var nav_title = this.$t('bargain.bargain.bargain');
                             var share_img = '';
                             if (data_base != null) {
                                 nav_title = data_base.application_name || nav_title;

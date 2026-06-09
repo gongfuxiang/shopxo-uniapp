@@ -11,16 +11,16 @@
             </view>
             <view v-if="is_live_ended" class="live-ended flex-row align-c jc-c">
                 <view class="flex-col align-c">
-                    <text class="live-ended-text">直播已结束</text>
+                    <text class="live-ended-text">{{ $t('live.live.ended') }}</text>
                     <button plain size="mini" class="mt-10 live-ended-button" @tap.stop="live_back">
-                        <text class="cr-f pa-5">退出直播间</text>
+                        <text class="cr-f pa-5">{{ $t('live.live.exit_room') }}</text>
                     </button>
                 </view>
             </view>
             <!-- 静音提示 -->
             <view v-if="!is_live_ended && is_muted_auto_play_success && !live_be_right_back_error" class="live-muted flex-row align-c jc-c pointer-events-none">
                 <view class="live-muted-tips pointer-events-auto">
-                    因浏览器限制静音，<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">请点击打开声音</text>
+                    {{ $t('live.live.browser_mute_prefix') }}<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">{{ $t('live.live.click_unmute') }}</text>
                 </view>
             </view>
             <!-- 视频播放提示 -->
@@ -31,8 +31,8 @@
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
                 <view class="flex-1 flex-col align-c jc-c">
                     <u-icon propName="coffee" propSize="100rpx" propColor="#fff"></u-icon>
-                    <text class="text-size mt-5 cr-white">主播暂时离开</text>
-                    <text class="text-size-sm mt-5 cr-white">休息片刻，更多精彩马上到来</text>
+                    <text class="text-size mt-5 cr-white">{{ $t('live.live.host_away') }}</text>
+                    <text class="text-size-sm mt-5 cr-white">{{ $t('live.live.host_away_tips') }}</text>
                 </view>
             </view>
         </template>

@@ -60,7 +60,7 @@
                                 <view class="fr right tl pr">
                                     <view class="cr-base fw-b text-size-sm">{{ item.title }}</view>
                                     <view class="cr-grey text-size-xs margin-top-xs">{{ item.describe }}</view>
-                                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round pa top-xxxxl right-xxxxl" :data-index="index" @tap="data_list_choice_event">选择</button>
+                                    <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm round pa top-xxxxl right-xxxxl" :data-index="index" @tap="data_list_choice_event">{{ $t('common.select') }}</button>
                                 </view>
                             </view>
                         </block>

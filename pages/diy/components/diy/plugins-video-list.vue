@@ -217,11 +217,11 @@
                 });
                 // 默认数据
                 const product_style_list = [
-                    { name: '单列展示', value: '0', width:110, height: 83 },
-                    { name: '两列展示（纵向）', value: '1', width:180, height: 180 },
-                    { name: '大图展示', value: '2', width:0, height: 180 },
-                    { name: '无图模式', value: '3', width:0, height: 0 },
-                    { name: '左右滑动展示', value: '4', width:0, height: 0 },
+                    { name: this.$t('diy.diy.single_column_display'), value: '0', width:110, height: 83 },
+                    { name: this.$t('diy.diy.two_column_vertical'), value: '1', width:180, height: 180 },
+                    { name: this.$t('diy.diy.large_image_display'), value: '2', width:0, height: 180 },
+                    { name: this.$t('diy.diy.no_image_mode'), value: '3', width:0, height: 0 },
+                    { name: this.$t('diy.diy.horizontal_slide_display'), value: '4', width:0, height: 0 },
                 ];
                 const scale = sys_width / 390;
                 let img_style = ``;

@@ -57,7 +57,7 @@
         <!-- 选项卡更多弹窗 -->
         <componentPopup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="newPropTop" :propStyle="newPropStyle" @onclose="quick_close_event">
             <view :class="'padding-bottom-lg ' + (['toutiao', 'app', 'h5'].includes(platform) ? 'padding-top-lg' : 'padding-top')">
-                <view class="padding-left-main padding-bottom-main">全部选项卡</view>
+                <view class="padding-left-main padding-bottom-main">{{ $t('diy.diy.all_tabs') }}</view>
                 <view class="divider-b">
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">

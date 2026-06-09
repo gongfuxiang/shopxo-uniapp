@@ -1,7 +1,7 @@
 <template>
     <view v-if="is_show" class="bargain-play-flow-wrap">
         <view v-if="play_list.length > 0" class="bargain-index-play-flow border-radius-main bg-white padding-main spacing-mb">
-            <component-bargain-dot-title propTitle="砍价玩法"></component-bargain-dot-title>
+            <component-bargain-dot-title :propTitle="$t('bargain.bargain.play_rules')"></component-bargain-dot-title>
             <view class="bargain-play-steps-row flex-row align-stretch">
                 <view v-if="play_flow_steps.length > 0" class="play-flow-steps flex-1">
                     <block v-for="(item, index) in play_flow_steps" :key="index">
@@ -31,7 +31,7 @@
             </view>
         </view>
         <view v-if="content_notice.length > 0" class="bargain-index-play-rules border-radius-main bg-white padding-main spacing-mb">
-            <component-bargain-dot-title propTitle="砍价规则" propTextClass="text-size-sm"></component-bargain-dot-title>
+            <component-bargain-dot-title :propTitle="$t('bargain.bargain.rules')" propTextClass="text-size-sm"></component-bargain-dot-title>
             <view class="play-rules-list">
                 <view v-for="(rule, rindex) in content_notice" :key="rindex" v-if="rule" class="play-rules-item cr-grey text-size-xs">{{ rule }}</view>
             </view>

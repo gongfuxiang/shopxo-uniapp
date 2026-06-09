@@ -16,10 +16,10 @@
                 </template>
                 <template v-else>
                     <template v-if="index + 1 == new_selected">
-                        <span class="rate-divide-name nowrap" :data-index="index + 1" :style="'color:' + com_data.select_color" @tap="icon_click">{{ index + 1 }}分</span>
+                        <span class="rate-divide-name nowrap" :data-index="index + 1" :style="'color:' + com_data.select_color" @tap="icon_click">{{ index + 1 }}{{ $t('common.score_unit') }}</span>
                     </template>
                     <template v-else>
-                        <span class="rate-divide-name nowrap" :data-index="index + 1" @tap="icon_click">{{ index + 1 }}分</span>
+                        <span class="rate-divide-name nowrap" :data-index="index + 1" @tap="icon_click">{{ index + 1 }}{{ $t('common.score_unit') }}</span>
                     </template>
                 </template>
             </view>

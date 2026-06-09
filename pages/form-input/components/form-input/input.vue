@@ -6,7 +6,8 @@
 </template>
 
 <script>
-    import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
+    import i18n from '@/locale/index.js';
+import { get_format_checks, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -28,7 +29,7 @@
         },
         data() {
             return {
-                placeholder: '请输入内容...',
+                placeholder: i18n.t('common.please_input_content_ellipsis'),
                 form_value: '',
                 com_data: {},
                 max_length: '-1'

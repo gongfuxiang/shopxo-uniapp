@@ -14,7 +14,7 @@
                                 <view class="groupbuy-goods-body">
                                     <view class="multi-text cr-black">{{ item.groupbuy_title || item.title }}</view>
                                     <view class="groupbuy-goods-meta">
-                                        <text class="groupbuy-tag br-main cr-main bg-white text-size-xs radius padding-horizontal-sm">{{ item.group_number }}人团</text>
+                                        <text class="groupbuy-tag br-main cr-main bg-white text-size-xs radius padding-horizontal-sm">{{ item.group_number }}{{ $t('groupbuy.groupbuy.people_team') }}</text>
                                         <text class="groupbuy-success-text cr-main text-size-xs">{{ item.groupbuy_success_text }}</text>
                                     </view>
                                     <view class="groupbuy-goods-price-row">
@@ -28,7 +28,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="groupbuy-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">去拼团</view>
+                            <view class="groupbuy-goods-btn bg-main cr-white text-size-sm radius" :data-value="item.url" @tap="url_event">{{ $t('groupbuy.groupbuy.go_groupbuy') }}</view>
                         </view>
                     </view>
                 </block>
@@ -127,7 +127,7 @@
                             var data_list = data.data || [];
                             var slider_list = data.slider_list || [];
                             var data_base = data.data_base || null;
-                            var nav_title = '拼团';
+                            var nav_title = this.$t('groupbuy.groupbuy.groupbuy');
                             var share_img = '';
                             if (data_base != null) {
                                 nav_title = data_base.application_name || nav_title;

@@ -29,8 +29,8 @@
                 <view class="top-header flex-row align-c pointer-events-auto">
                     <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                     <view class="ml-10 flex-col">
-                        <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
-                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}本场点赞</text>
+                        <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : $t('common.live') }}</text>
+                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}{{ $t('live.live.like_this_session') }}</text>
                     </view>
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
@@ -52,8 +52,8 @@
                 <view class="top-header flex-row align-c pointer-events-auto">
                     <image :src="live_avatar" class="avatar" mode="aspectFill"></image>
                     <view class="ml-10 flex-col">
-                        <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : '直播' }}</text>
-                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}本场点赞</text>
+                        <text class="nickname text-line-1">{{ live_data && live_data.title ? live_data.title : $t('common.live') }}</text>
+                        <text v-if="live_feature_ready && is_live_like_on" class="level">{{ like_count }}{{ $t('live.live.like_this_session') }}</text>
                     </view>
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
@@ -102,7 +102,7 @@
                                 </template>
                                 <template v-else-if="item.type == 'go'">
                                     <text class="user-name cr-blue">{{ item.user_name }}</text>
-                                    <text class="user-name cr-d">来了</text>
+                                    <text class="user-name cr-d">{{ $t('common.came') }}</text>
                                 </template>
                                 <template v-else>
                                     <text class="flex-1 cr-blue text-line-100 size-14">{{ item.text }}</text>
@@ -123,7 +123,7 @@
                                 </template>
                                 <template v-else-if="item.type == 'go'">
                                     <text class="user-name cr-blue mb-3">{{ item.user_name }}</text>
-                                    <text class="user-name mb-3 cr-d">来了</text>
+                                    <text class="user-name mb-3 cr-d">{{ $t('common.came') }}</text>
                                 </template>
                                 <template v-else>
                                     <text class="flex-1 cr-blue text-line-100 mb-3 size-14">{{ item.text }}</text>
@@ -143,7 +143,7 @@
                         <!-- #endif -->
                         <view v-if="!is_scroll_to_lower && message_num > 0" class="bulletin-tips flex-row align-c jc-c" :style="'width:' + (propWindowWidth - 150) + 'px;'" @tap="message_num_event">
                             <view class="bulletin-tips-content flex-row align-c">
-                                <text class="cr-10 cr-red">{{ message_num }}条新消息</text>
+                                <text class="cr-10 cr-red">{{ message_num }}{{ $t('live.live.new_messages_suffix') }}</text>
                             </view>
                         </view>
                     </view>
@@ -154,7 +154,7 @@
                         <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;" mode="aspectFill"></image>
                         <view class="explain-subscript flex-row align-c jc-sb">
                             <view class="explain-progress">
-                                <text class="size-12 cr-f">讲解中</text>
+                                <text class="size-12 cr-f">{{ $t('common.explaining') }}</text>
                             </view>
                             <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
                                 <u-icon propName="close-line" propSize="18rpx" propColor="#fff"></u-icon>
@@ -172,10 +172,10 @@
                         <view class="flex-1">
                             <view v-if="is_live_chat_on && is_socket_success" class="bottom-actions-input">
                                 <!-- #ifdef APP-NVUE -->
-                                <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:14px" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                                <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" :placeholder="$t('common.say_something')" placeholder-style="font-size:14px" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                                 <!-- #endif -->
                                 <!-- #ifndef APP-NVUE -->
-                                <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" placeholder="说点什么" placeholder-style="font-size:28rpx" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
+                                <input :value="comment_value" type="text" confirm-type="done" :adjust-position="false" style="color: #fff;" :placeholder="$t('common.say_something')" placeholder-style="font-size:28rpx" @focus="add_comment" @input="(e) => comment_value = e.detail.value" @confirm="comment_input_confirm"  />
                                 <!-- #endif -->
                             </view>
                             <view v-else-if="!is_socket_success" class="flex-1">
@@ -203,15 +203,15 @@
         <view v-if="live_feature_ready && is_live_chat_on && is_add_comment" class="keyboard-input pointer-events-auto" :style="'width:' + propWindowWidth + 'px;bottom:' + listener_height + 'px;'">
             <view class="keyboard-input-border" style="padding: 16rpx 22rpx;border: 2rpx solid #ddd;border-radius: 50rpx;">
                 <!-- #ifdef APP-NVUE -->
-                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" placeholder-style="font-size:14px" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
+                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="$t('common.say_something')" placeholder-style="font-size:14px" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
                 <!-- #endif -->
                 <!-- #ifndef APP-NVUE -->
-                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" placeholder="说点什么" placeholder-style="font-size:28rpx" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
+                <input :value="comment_value" :focus="is_add_comment" type="text" confirm-type="done" :adjust-position="false" :auto-blur="true" :placeholder="$t('common.say_something')" placeholder-style="font-size:28rpx" @input="(e) => comment_value = e.detail.value" @blur="() => is_add_comment = false" @confirm="comment_input_confirm" />
                 <!-- #endif -->
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" propTitle="购买商品" :propCloseable="true">
+        <u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('live.live.buy_goods')" :propCloseable="true">
            <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight" :propLiveId="live_data.id"></component-goods>
         </u-popup>
         <!-- 分享弹窗 -->
@@ -350,7 +350,7 @@
                 socket_reconnect_timer: null,
                 // socket连接错误
                 is_socket_error: false,
-                socket_error_content: '连接失败点击重试',
+                socket_error_content: this.$t('live.live.connect_fail_retry'),
                 // socket连接成功
                 is_socket_success: false,
                 // 是否展示讲解商品信息
@@ -611,12 +611,12 @@
                 if ((this.reconnect_count + 1) >= 30) {
                     this.is_socket_error = false;
                     this.reconnect_count = 0;
-                    this.socket_error_content = '连接失败点击重试';
+                    this.socket_error_content = this.$t('live.live.connect_fail_retry');
                     return;
                 }
                 this.is_socket_error = true;
                 this.is_socket_success = false;
-                this.socket_error_content = `第${this.reconnect_count + 1}次连接失败`;
+                this.socket_error_content = this.$t('live.live.socket_connect_fail_nth', [this.reconnect_count + 1]);
                 this.socket_reconnect_timer = setTimeout(() => {
                     this.socket_reconnect_timer = null;
                     this.reconnect_count++;
@@ -649,9 +649,9 @@
                 this.is_socket_error = false;
                 this.is_socket_success = false;
                 if (this.reconnect_count == 0) {
-                    this.socket_error_content = '连接中...';
+                    this.socket_error_content = this.$t('common.connecting_in_text');
                 } else {
-                    this.socket_error_content = `第${this.reconnect_count + 1}次重连中...`;
+                    this.socket_error_content = this.$t('live.live.socket_reconnecting_nth', [this.reconnect_count + 1]);
                 }
 
                 this.task = uni.connectSocket({
@@ -684,13 +684,13 @@
                     if ((this.reconnect_count + 1) >= 30) {
                         this.is_socket_error = false;
                         this.reconnect_count = 0;
-                        this.socket_error_content = '连接失败点击重试';
+                        this.socket_error_content = this.$t('live.live.connect_fail_retry');
                     } else if (!this.is_socket_closing) {
                         this.schedule_socket_reconnect();
                     }
                     if (is_manual) {
                         uni.showModal({
-                            title: '提示',
+                            title: this.$t('common.tips'),
                             content: res.result,
                             showCancel: false,
                         });

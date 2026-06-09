@@ -32,7 +32,8 @@
 </template>
 
 <script>
-    const app = getApp();
+    import i18n from '@/locale/index.js';
+const app = getApp();
     import { common_styles_computer, common_img_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
@@ -57,10 +58,10 @@
                 style: '',
                 id_bool: true,
                 stats_list: [
-                    { id: 'order_count', name: '订单总数', value: '100', url: 'user-order' },
-                    { id: 'goods_favor_count', name: '商品收藏', value: '10', url: 'user-favor' },
-                    { id: 'goods_browse_count', name: '我的足迹', value: '1000', url: 'user-goods-browse' },
-                    { id: 'integral_number', name: '我的积分', value: '10000', url: 'user-integral' },
+                    { id: 'order_count', name: this.$t('diy.diy.order_total'), value: '100', url: 'user-order' },
+                    { id: 'goods_favor_count', name: this.$t('diy.diy.goods_favor'), value: '10', url: 'user-favor' },
+                    { id: 'goods_browse_count', name: this.$t('diy.diy.my_tracks'), value: '1000', url: 'user-goods-browse' },
+                    { id: 'integral_number', name: this.$t('diy.diy.my_integral'), value: '10000', url: 'user-integral' },
                 ],
                 config: ['order_count', 'goods_favor_count', 'goods_browse_count', 'integral_number'],
                 icon_setting: [
@@ -84,7 +85,7 @@
                 },
                 user: {
                     avatar: app.globalData.data.default_user_head_src,
-                    user_name_view: '用户名',
+                    user_name_view: i18n.t('common.username'),
                     number_code: '',
                 },
             };

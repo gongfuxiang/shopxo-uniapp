@@ -51,8 +51,8 @@
                                     class="lottery-marquee-item"
                                 >
                                     <text v-if="(mv.user_mask || '').toString().trim()">{{ mv.user_mask }}，</text>
-                                    <text>抽中{{ mv.reward_name || '-' }} </text>
-                                    <text class="lottery-marquee-em">刚刚</text>
+                                    <text>{{ $t('lottery.lottery.won_prefix') }}{{ mv.reward_name || '-' }} </text>
+                                    <text class="lottery-marquee-em">{{ $t('common.just_now') }}</text>
                                 </text>
                             </block>
                         </view>
@@ -64,7 +64,7 @@
 
             <view v-if="rulesPopupVisible" class="lottery-rules-mask" @tap="rulesPopupVisible = false">
                 <view class="lottery-rules-dialog" @tap.stop>
-                    <view class="lottery-rules-title">抽奖规则</view>
+                    <view class="lottery-rules-title">{{ $t('lottery.lottery.rules_title') }}</view>
                     <scroll-view :scroll-y="true" class="lottery-rules-scroll">
                         <text class="lottery-rules-text">{{ rulesDisplayText }}</text>
                     </scroll-view>
@@ -156,9 +156,9 @@
                 lastDrawResult: null,
                 resultSuccessImage: '',
                 resultFailImage: '',
-                resultFailTitle: '谢谢参与',
-                resultFailDesc: '再努力努力肯定就会中哦！',
-                resultSuccessTitle: '恭喜您获得',
+                resultFailTitle: this.$t('lottery.lottery.thanks_join'),
+                resultFailDesc: this.$t('lottery.lottery.try_again_tips'),
+                resultSuccessTitle: this.$t('lottery.lottery.congrats_get'),
                 resultModalVisible: false,
                 resultModalTitle: '',
                 resultModalDesc: '',
@@ -179,7 +179,7 @@
                  */
                 pendingEggChancePatch: null,
                 /** 底部跳转中奖记录文案（接口 lottery_user_center_record_menu_name） */
-                recordEntryMenuName: '我的中奖',
+                recordEntryMenuName: this.$t('lottery.lottery.my_prize'),
             };
         },
         computed: {
@@ -198,7 +198,7 @@
                 if (s) {
                     return s;
                 }
-                return '余额：' + (e.user_wallet_money || '0.00') + '，积分：' + (e.user_integral || '0');
+                return this.$t('lottery.lottery.balance_label') + (e.user_wallet_money || '0.00') + this.$t('lottery.lottery.integral_label') + (e.user_integral || '0');
             },
             /** 弹窗「确认」等多语言文案 */
             confirmBtnText() {
@@ -341,13 +341,13 @@
                 const d = this.lastDrawResult || {};
                 const isNone = d.reward_type === 'none';
                 if (isNone) {
-                    this.resultModalTitle = this.resultFailTitle || '谢谢参与';
+                    this.resultModalTitle = this.resultFailTitle || this.$t('lottery.lottery.thanks_join');
                     this.resultModalShowPrizeIcon = false;
                     this.resultModalPrizeIcon = '';
                     this.resultModalPrizeName = '';
-                    this.resultModalDesc = this.resultFailDesc || '再努力努力肯定就会中哦！';
+                    this.resultModalDesc = this.resultFailDesc || this.$t('lottery.lottery.try_again_tips');
                 } else {
-                    this.resultModalTitle = this.resultSuccessTitle || '恭喜您获得';
+                    this.resultModalTitle = this.resultSuccessTitle || this.$t('lottery.lottery.congrats_get');
                     const icon = d.icon || '';
                     this.resultModalShowPrizeIcon = !!icon;
                     this.resultModalPrizeIcon = icon;
@@ -436,7 +436,7 @@
                         } else {
                             this.isDrawing = false;
                             this.pendingEggIndex = -1;
-                            app.globalData.showToast(res.data.msg || '抽奖失败');
+                            app.globalData.showToast(res.data.msg || this.$t('lottery.lottery.draw_fail'));
                         }
                     },
                     fail: () => {
@@ -459,10 +459,10 @@
                             const egg = data.lottery_egg || {};
                             this.marqueeList = Array.isArray(data.marquee_list) ? data.marquee_list : [];
                             this.recordEntryMenuName =
-                                String(data.lottery_user_center_record_menu_name || '').trim() || '我的中奖';
+                                String(data.lottery_user_center_record_menu_name || '').trim() || this.$t('lottery.lottery.my_prize');
                             this.lotteryEgg = egg;
                             if (egg.enable === false) {
-                                const tip = String(egg.error_tips || '').trim() || '活动暂不可用';
+                                const tip = String(egg.error_tips || '').trim() || this.$t('lottery.lottery.activity_unavailable');
                                 this.data_list_loding_status = 0;
                                 this.data_list_loding_msg = tip;
                             } else {
@@ -471,9 +471,9 @@
                             }
                             this.resultSuccessImage = egg.result_success_image || '';
                             this.resultFailImage = egg.result_fail_image || '';
-                            this.resultFailTitle = egg.result_fail_title || '谢谢参与';
-                            this.resultFailDesc = egg.result_fail_desc || '再努力努力肯定就会中哦！';
-                            this.resultSuccessTitle = egg.result_success_title || '恭喜您获得';
+                            this.resultFailTitle = egg.result_fail_title || this.$t('lottery.lottery.thanks_join');
+                            this.resultFailDesc = egg.result_fail_desc || this.$t('lottery.lottery.try_again_tips');
+                            this.resultSuccessTitle = egg.result_success_title || this.$t('lottery.lottery.congrats_get');
                             this.nImg = egg.index_bg_app || '';
                             const defaultTitle = this.$t ? this.$t('pages.plugins-lottery-egg') : '砸金蛋';
                             const shareTitle = String(egg.banner_title || '').trim() || defaultTitle;
@@ -498,7 +498,7 @@
                         } else {
                             this.marqueeList = [];
                             this.lotteryEgg = null;
-                            const errMsg = String(res.data.msg || '').trim() || '加载失败';
+                            const errMsg = String(res.data.msg || '').trim() || this.$t('common.load_fail');
                             this.data_list_loding_status = 0;
                             this.data_list_loding_msg = errMsg;
                             app.globalData.showToast(errMsg);

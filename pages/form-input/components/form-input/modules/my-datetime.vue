@@ -4,9 +4,9 @@
 			<view class="popup-content">
 				<view >
 				  <view class="headBox padding-main">
-						<view @tap="close"><text class="text-size-sm">取消</text></view>
+						<view @tap="close"><text class="text-size-sm">{{ $t('common.cancel') }}</text></view>
 						<!-- <view class="uni-page-head-title" v-if="titleShow">{{timeTitle}}</view> -->
-						<view><text class="text-size-sm cr-blue" @tap="submit_event">确定</text></view>
+						<view><text class="text-size-sm cr-blue" @tap="submit_event">{{ $t('common.ok_text') }}</text></view>
 					</view>
 					<picker-view :indicator-style="indicatorStyle" :value="value" @change="bindChange">
 						<picker-view-column v-for="(arr, n) in dateTimeArr" :key="n">
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import i18n from '@/locale/index.js';
 	export default {
 		name: 'MyDatetime',
 		props: {
@@ -72,8 +73,8 @@
 				thirtyOne: days,
 				dateArr: [years, months, days ],
 				timeArr: [hourArr, minSecond, minSecond ],
-				dateUnitArr: [ '年', '月', '日', '时', '分', '秒'],
-				timeUnitArr: [ '时', '分', '秒'],
+				dateUnitArr: [ i18n.t('common.year'), i18n.t('common.month'), i18n.t('common.day'), i18n.t('common.hour'), i18n.t('common.minute'), i18n.t('common.second')],
+				timeUnitArr: [ i18n.t('common.hour'), i18n.t('common.minute'), i18n.t('common.second')],
 				obj: { 0: 'year', 1: 'month', 2: 'day', 3: 'hour', 4: 'minute', 5: 'second' },
 				years,
 				months,

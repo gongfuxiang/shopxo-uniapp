@@ -1,6 +1,6 @@
 <template>
     <view v-if="is_show" class="groupbuy-play-flow border-radius-main bg-white padding-main spacing-mb">
-        <view class="play-flow-title text-wrapper title-left-border cr-black text-size-md fw-b">拼团玩法</view>
+        <view class="play-flow-title text-wrapper title-left-border cr-black text-size-md fw-b">{{ $t('groupbuy.groupbuy.play_rules') }}</view>
         <view class="groupbuy-play-steps-row flex-row align-stretch">
             <view v-if="play_flow_steps.length > 0" class="play-flow-steps flex-1">
                 <block v-for="(item, index) in play_flow_steps" :key="index">
@@ -29,7 +29,7 @@
             </view>
         </view>
         <view v-if="content_notice.length > 0" class="groupbuy-play-rules">
-            <view class="play-rules-title text-wrapper title-left-border cr-black text-size-sm fw-b">拼团规则</view>
+            <view class="play-rules-title text-wrapper title-left-border cr-black text-size-sm fw-b">{{ $t('groupbuy.groupbuy.rules') }}</view>
             <view class="play-rules-list">
                 <view v-for="(rule, rindex) in content_notice" :key="rindex" v-if="rule" class="play-rules-item cr-grey text-size-xs">{{ rule }}</view>
             </view>

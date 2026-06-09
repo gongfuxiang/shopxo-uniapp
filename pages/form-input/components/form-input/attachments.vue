@@ -18,7 +18,7 @@
             </view>
         </template>
         <template v-else>
-            <view class="file-title" :style="propStyle + 'width:100%;height:100%'">暂无文件</view>
+            <view class="file-title" :style="propStyle + 'width:100%;height:100%'">{{ $t('common.no_file') }}</view>
         </template>
     </view>
 </template>
@@ -84,7 +84,7 @@
                 textarea.select();
                 try {
                     const successful = document.execCommand('copy');
-                    const msg = successful ? '成功复制！' : '复制失败';
+                    const msg = successful ? this.$t('common.copy_success_exclaim') : this.$t('common.copy_fail');
                     app.globalData.showToast(msg);
                 } catch (err) {
                     console.error('复制失败', err);

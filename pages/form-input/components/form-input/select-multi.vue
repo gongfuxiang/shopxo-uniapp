@@ -21,21 +21,21 @@
             <view class="padding-horizontal-main padding-top-main bg-white popup-content flex-col">
                 <!-- 头部的样式 -->
                 <view class="flex-row jc-sb margin-bottom">
-                    <view class="text-size-sm cr-blue" @tap.stop="quick_close_event">取消</view>
-                    <view class="text-size-sm cr-blue" @tap.stop="data_change">确定</view>
+                    <view class="text-size-sm cr-blue" @tap.stop="quick_close_event">{{ $t('common.cancel') }}</view>
+                    <view class="text-size-sm cr-blue" @tap.stop="data_change">{{ $t('common.ok_text') }}</view>
                 </view>
                 <!-- 内容区域的样式 -->
                 <view class="flex-1 flex-col gap-10">
                     <view class="flex-row popup-search align-c gap-10">
                         <iconfont name="icon-search" size="32rpx" color="#666" propContainerDisplay="flex"></iconfont>
-                        <input :value="popup_search_value" class="uni-input flex-1" type="text" placeholder="搜索(多个关键字用空格隔开)" @input="search_input" />
+                        <input :value="popup_search_value" class="uni-input flex-1" type="text" :placeholder="$t('common.search_keywords_multi')" @input="search_input" />
                     </view>
                     <template v-if="new_option_list.length > 0">
                         <view :class="'flex-col gap-10 mt-10 ' + ( com_data.is_add_option == '1' ? 'popup-add-list' : 'popup-list')">
                            <checkbox-group @change="data_all_change" class="flex-col gap-10">
                                 <label class="popup-checkbox flex-row align-c">
                                     <checkbox value="all" :checked="select_value == 'all'" class="flex-row align-c" style="transform:scale(0.8)" />
-                                    <view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">全选</view>
+                                    <view :style="color_style + 'padding-left:0rpx;padding-right:0rpx;'">{{ $t('common.select_all') }}</view>
                                 </label>
                             </checkbox-group>
                             <checkbox-group @change="data_checkbox_change" class="flex-col gap-10">
@@ -55,29 +55,30 @@
                     </template>
                     <template v-else>
                         <view class="flex-1 flex-row align-c jc-c">
-                            <view class="text-size-sm cr-grey">暂无数据</view>
+                            <view class="text-size-sm cr-grey">{{ $t('common.no_data') }}</view>
                         </view>
                     </template>
                 </view>
                 <view v-if="com_data.is_add_option == '1'" class="add-option flex-row gap-10 align-c" @tap="add_option">
                     <iconfont name="icon-add-wide" size="14" color="#2a94ff"/>
-                    <view class="size-14 cr-blue">添加选项</view>
+                    <view class="size-14 cr-blue">{{ $t('common.add_option') }}</view>
                 </view>
             </view>
         </uni-popup>
         <!-- 选项弹出框 -->
         <uni-popup ref="inputDialog" type="dialog" class="forminput-popup">
-            <uni-popup-dialog ref="inputClose" mode="input" title="输入内容" :value="dialog_value" before-close placeholder="请输入内容" @close="dialog_input_close" @confirm="dialog_input_confirm"></uni-popup-dialog>
+            <uni-popup-dialog ref="inputClose" mode="input" :title="$t('common.input_content')" :value="dialog_value" before-close :placeholder="$t('common.please_input_content')" @close="dialog_input_close" @confirm="dialog_input_confirm"></uni-popup-dialog>
         </uni-popup>
         <!-- 失败提示 -->
         <uni-popup ref="message" type="message" class="forminput-popup">
-            <uni-popup-message type="error" message="选项名称不能为空" :duration="2000"></uni-popup-message>
+            <uni-popup-message type="error" :message="$t('common.option_name_required')" :duration="2000"></uni-popup-message>
         </uni-popup>
     </view>
 </template>
 
 <script>
-    import { get_format_checks, isEmpty, get_color_style, color_change, get_math } from '@/common/js/common/common.js';
+    import i18n from '@/locale/index.js';
+import { get_format_checks, isEmpty, get_color_style, color_change, get_math } from '@/common/js/common/common.js';
     export default {
         props: {
             propValue: {
@@ -107,7 +108,7 @@
         },
         data() {
             return {
-                placeholder: '请输入内容...',
+                placeholder: i18n.t('common.please_input_content_ellipsis'),
                 form_value: '',
                 com_data: {},
                 popup_status: false,

@@ -15,7 +15,7 @@
                 </view>
 
                 <!-- 提示信息 -->
-                <view class="cr-grey tc margin-top-xxxl">{{$t('member-code.member-code.oc4x18')}}</view>
+                <view class="cr-grey tc margin-top-xxxl padding-horizontal-sm">{{$t('member-code.member-code.oc4x18')}}</view>
 
                 <!-- 导航 -->
                 <view v-if="(plugins_wallet || null) != null" class="bottom-fixed" :style="bottom_fixed_style">

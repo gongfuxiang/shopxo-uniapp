@@ -3,17 +3,17 @@
         <form v-if="data_list_loding_status == 3" @submit="formSubmit" class="form-container">
             <view class="padding-main oh page-bottom-fixed">
                 <view class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class=""> 标题 <text class="form-group-tips-must">*</text></view>
+                    <view class="">{{ $t('common.title') }} <text class="form-group-tips-must">*</text></view>
                     <view class="flex-row align-c flex-1 flex-width">
-                        <input type="text" name="title" :value="data.title" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr" placeholder="请输入标题" />
+                        <input type="text" name="title" :value="data.title" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr" :placeholder="$t('common.please_input_title')" />
                     </view>
                 </view>
                 <view class="form-gorup border-radius-main margin-bottom-main">
-                    <view class="margin-bottom-sm">提问内容 <text class="form-group-tips-must">*</text></view>
+                    <view class="margin-bottom-sm">{{ $t('ask.ask.question_content') }}<text class="form-group-tips-must">*</text></view>
                     <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                 </view>
                 <view class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class=""> 提问分类 </view>
+                    <view class="">{{ $t('ask.ask.question_category') }}</view>
                     <view class="flex-row jc-e align-c flex-1 flex-width">
                         <picker @change="select_change_event" :value="category_id_index" :range="ask_category_list" range-key="name" name="category_id" data-field="category_id" class="margin-right-sm wh-auto tr">
                             <view class="uni-input cr-base picker">
@@ -26,15 +26,15 @@
                     </view>
                 </view>
                 <view v-if="is_show_email_notice == 1" class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class=""> 回复邮件通知 </view>
+                    <view class="">{{ $t('ask.ask.email_notice') }}</view>
                     <view class="flex-row align-c flex-1 flex-width">
-                        <input type="text" name="email_notice" :value="data.email_notice" placeholder-class="cr-grey-9 tr" class="cr-base tr" placeholder="请输入邮件" />
+                        <input type="text" name="email_notice" :value="data.email_notice" placeholder-class="cr-grey-9 tr" class="cr-base tr" :placeholder="$t('common.please_input_email')" />
                     </view>
                 </view>
                 <view v-if="is_show_mobile_notice == 1" class="form-gorup border-radius-main oh flex-row jc-sb align-c margin-bottom-main">
-                    <view class="form-gorup-title"> 回复手机通知 </view>
+                    <view class="form-gorup-title">{{ $t('ask.ask.mobile_notice') }}</view>
                     <view class="flex-row align-c flex-1 flex-width">
-                        <input type="text" name="mobile_notice" :value="data.mobile_notice" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr" placeholder="请输入手机号" />
+                        <input type="text" name="mobile_notice" :value="data.mobile_notice" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr" :placeholder="$t('common.please_input_mobile')" />
                     </view>
                 </view>
                 <!-- 匿名发布 -->
