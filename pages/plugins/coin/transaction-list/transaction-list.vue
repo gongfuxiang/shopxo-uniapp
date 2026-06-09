@@ -3,7 +3,7 @@
         <view class="transaction">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('cash-list.cash-list.n74r94') }}</view>
+                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('common.account') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_operate_type_open_event">

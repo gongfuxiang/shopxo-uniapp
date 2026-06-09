@@ -114,8 +114,8 @@
                         <!-- 推荐文章 -->
                         <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
                             <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event">
-                                <text>{{ $t('index.index.t8bll8') }}</text
-                                ><text class="cr-red">{{ $t('index.index.t8bll9') }}</text>
+                                <text>{{ $t('common.latest') }}</text
+                                ><text class="cr-red">{{ $t('common.news') }}</text>
                             </view>
                             <view class="right-content fr va-m">
                                 <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">

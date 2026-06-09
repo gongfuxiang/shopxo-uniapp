@@ -908,7 +908,7 @@
              */
             socket_send(type = 'message', content = '') {
                 if(this.task === null) {
-                    app.globalData.showToast('socket连接失败！');
+                    app.globalData.showToast(this.$t('live-content.live-content.l001se'));
                     return false;
                 }
                 // 发送消息

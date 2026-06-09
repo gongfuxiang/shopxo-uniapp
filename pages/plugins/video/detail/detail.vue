@@ -879,7 +879,7 @@
                         if (this.current_video_index <= 0) {
                             setTimeout(() => {
                                 if (!this.show_comment_modal) {
-                                    app.globalData.showToast('已经是第一个视频了');
+                                    app.globalData.showToast(this.$t('video-detail.video-detail.v001fv'));
                                 } 
                             }, 0);
                         }
@@ -888,7 +888,7 @@
                         if (this.current_video_index >= this.video_data_list.length - 1) {
                             setTimeout(() => {
                                 if (!this.show_comment_modal) {
-                                    app.globalData.showToast('已经是最后一个视频了');
+                                    app.globalData.showToast(this.$t('video-detail.video-detail.v002lv'));
                                 } 
                             }, 0);
                         }
@@ -1207,7 +1207,7 @@
             send_comment() {
                 let comment_text = this.comment_input_value;
                 if (!comment_text.trim()) {
-                    app.globalData.showToast('请填写评论内容');
+                    app.globalData.showToast(this.$t('video-detail.video-detail.98yyuf'));
                 };
 
                 // video_id 视频id video_comments_id 父级评论id id 当前评论id

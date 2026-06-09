@@ -34,6 +34,78 @@
         "join": "Join",
         "join_success": "Join successful",
         "join_fail": "Join failed",
+        "submit_success": "Submitted successfully",
+        "submit_fail": "Submission failed",
+        "cancel_success": "Cancelled successfully",
+        "copy_success": "Copy successful",
+        "reduce": "Reduce",
+        "increase": "Increase",
+        "upload_image": "Upload image",
+        "switch_on": "On",
+        "switch_off": "Off",
+        "tips": "Tips",
+        "switch_text": "Switch",
+        "service_short": "Service",
+        "urge_text": "Urge",
+        "sub_order": "Sub-order",
+        "form": "Form",
+        "resource": "Resource",
+        "repurchase": "Repurchase",
+        "merge_payment": "Merge payment",
+        "pending_pickup": "Pending pickup",
+        "urge_success": "Urged successfully",
+        "add_cart": "Add to cart",
+        "direct_buy": "Buy now",
+        "mall": "Mall",
+        "store": "Store",
+        "go_stroll": "Go shopping",
+        "select_all": "Select all",
+        "discount": "Discount",
+        "view_detail": "View details",
+        "total_reduce": "Total discount",
+        "total_increase": "Total increase",
+        "consult_now": "Consult now",
+        "data_not_exist": "Data not found",
+        "add_favor": "Add to favorites",
+        "cancel_favor": "Remove from favorites",
+        "favor_success": "Added to favorites",
+        "favor_fail": "Failed to add to favorites",
+        "please_select_goods": "Please select products first",
+        "account": "Account",
+        "network": "Network",
+        "selected": "Selected",
+        "select": "Select",
+        "deduct": "Deduct",
+        "leave_message": "Leave a message",
+        "time": "Time",
+        "lifetime": "Lifetime",
+        "disagree": "Disagree",
+        "agree": "Agree",
+        "error_abnormal": "Abnormal error",
+        "go_settlement": "Checkout",
+        "stock": "Stock",
+        "favor": "Favorite",
+        "sale_price": "Sale price",
+        "selling_price": "Selling price",
+        "qa": "Q&A",
+        "origin": "Origin",
+        "brand": "Brand",
+        "attribute": "Attribute",
+        "goods_unit": "items",
+        "keywords": "Keywords",
+        "latest": "Latest",
+        "news": "News",
+        "all_items": "All",
+        "hot": "Hot",
+        "ok_text": "OK",
+        "receive_payment": "Receive payment",
+        "pay_success": "Payment successful",
+        "back_home": "Back to home",
+        "freeze": "Frozen",
+        "give": "Give",
+        "transfer": "Transfer",
+        "withdraw": "Withdraw",
+        "return_goods": "Return",
 		"edit": "Edit",
         "link": "Link",
         "gift": "Gift",
@@ -570,18 +642,13 @@
 			"2c3i88": "Do not use coupons",
 			"8vqfp3": "Do not use secondary cards",
 			"0pgsrm": "second",
-			"g2vt78": "Selected",
-			"inyxpx": "choice",
 			"l1c8q6": "Display type does not allow submission of orders",
 			"6rk813": "Please select a shipping address",
 			"wq7gnb": "Please select a pickup address",
 			"553mxo": "Please select a coupon",
-			"80y7sv": "Deduction",
-			"2rhko1": "Leave a message",
 			"718tux": "Enter my order",
 			"p7e91u": "Incorrect product info",
 			"4is2ak": "Enter store order",
-			"s7rr5s": "time",
 			"1fi842": "Select time",
 			"q8u066": "Please select a time",
             "df3raf": "My Name",
@@ -596,7 +663,6 @@
 			"g7dk3f": "Card type selection",
 			"0s1k23": "Active",
 			"ntm2z5": "All orders",
-			"b3dyo7": "lifelong",
 			"5lr84j": "Purchase duration not configured",
 			"5x86n3": "Member level not configured",
 			"bmueac": "Please select the duration of activation",
@@ -608,9 +674,7 @@
 			"w38e3v": "Dear user, in order to provide you with better service, we would like to offer you",
 			"hjn568": "Before using the mini program, you need to click on [Agree] and read the following agreement content to indicate that you fully understand, agree to, and understand the rules of the relevant agreement in this warm reminder. This includes providing a page display, product or service that better suits your needs in the location info you open, such as recommending products or related store and ranking info to you on the homepage.",
 			"iy7863": "Service User Agreement",
-			"jwi8n1": "Privacy Policy",
-			"062co8": "Disagree",
-			"60t34e": "agree"
+			"jwi8n1": "Privacy Policy"
 		}
 	},
 	"open-setting-location": {
@@ -628,11 +692,6 @@
 			"726k7y": "Enter product name to search for"
 		}
 	},
-	"error": {
-		"error": {
-			"u697ih": "Abnormal error"
-		}
-	},
 	"extraction-address": {
 		"extraction-address": {
 			"42v8tv": "Distance from you"
@@ -641,7 +700,6 @@
 	"goods-category": {
 		"goods-category": {
 			"ico62g": "Selected product",
-			"44f1ww": "Go settle",
 			"7e4m68": "No subcategory data",
 			"5pj8ip": "Please select the product first",
 			"x69aow": "All",
@@ -664,7 +722,6 @@
 	},
 	"goods-detail": {
 		"goods-detail": {
-			"1s79t4": "inventory",
 			"w3jma9": "coupon",
 			"u401fi": "specifications",
 			"317jp2": "Related stores",
@@ -673,7 +730,6 @@
 			"znz76d": "Evaluation",
 			"1rqkjt": "Positive review rate",
 			"6k7808": "I want to evaluate",
-			"k5u755": "Q&A",
 			"q8e577": "View all answers",
 			"7ulh8b": "Ask question",
 			"l7dzv2": "Product parameters",
@@ -682,9 +738,6 @@
 			"v2974w": "Guess you like it",
 			"35f378": "Suspend sales",
 			"6brk57": "Please select a specification",
-			"dco1sc": "Favor",
-			"bogx42": "price",
-			"3kdgjl": "Sales price",
 			"by7052": "Already ",
 			"tq1976": "The URL value is empty",
 			"uyghj2": "Copy value is empty",
@@ -695,19 +748,14 @@
 	"goods-search": {
 		"goods-search": {
 			"j8o278": "Filter out",
-			"t9nikq": "Piece of data",
-            "4eerty": "origin",
-			"6n8316": "brand",
-			"v6e5b7": "attribute"
+			"t9nikq": "Piece of data"
 		}
 	},
 	"points": {
 		"search": {
 			"title": "Exchange goods search",
 			"placeholder": "Search redeemable goods",
-			"keywords_label": "Keywords",
 			"all_goods": "All redeemable goods",
-			"goods_unit": "items",
 			"clear_where": "Clear search"
 		}
 	},
@@ -715,15 +763,11 @@
 		"index": {
 			"443683": "Ended",
 			"516559": "Activity rules",
-			"t8bll8": "",
-			"t8bll9": "News",
 			"s5r784": "Latest purchase",
 			"1c17n3": "Returned",
 			"75l3l2": "Unreturned",
 			"17vy72": "Missing tab data!",
 			"i78v36": "Returning to the store",
-			"6rsqp1": "All",
-			"pot64x": "Popular",
 			"8t4j95": "Recommended products",
 			"lk0i6c": "My coupon",
 			"tbo22p": "Join",
@@ -740,8 +784,6 @@
 			"c5273j": "Enter store name",
 			"1vf378": "Latest stores",
 			"1e582h": "Add notes",
-			"7w75zb": "confirm",
-			"6941e7": "Collection",
 			"t1o84g": "Please enter the consumption amount",
 			"872w3v": "We are about to start a robbery",
 			"399f6c": "Second price reduction",
@@ -760,8 +802,6 @@
 	},
 	"paytips": {
 		"paytips": {
-			"679rxu": "Payment successful",
-			"jifuu8": "Go back to the homepage",
 			"d8m853": "Processing",
 			"6y488i": "Payment failed",
 			"e732we": "Payment canceled",
@@ -951,10 +991,6 @@
 			"65cc6z": "Continuous activation",
 			"76dcx6": "Promote customers",
 			"95s1ez": "Are you sure to continue with the renewal based on the original duration and fees?",
-			"mgx9x4": "freeze",
-			"424v6n": "Gifts",
-			"29f6n5": "Transfer",
-			"8752a4": "Withdrawal",
 			"91h03v": "Payment code",
 			"2k0227": "Exit",
 			"3q4p8k": "Collection",
@@ -1345,7 +1381,10 @@
 	},
 	"orderallot-detail": {
 		"orderallot-detail": {
-			"81jvw1": "Order type"
+			"81jvw1": "Order type",
+			"9c3d7e": "Booking data",
+			"0f4g8h": "Staff:",
+			"1i5j9k": "Booking time:"
 		}
 	},
 	"orderallot-list": {
@@ -1591,20 +1630,6 @@
 			"wkfi45": "Please enter data"
 		}
 	},
-	"user-order": {
-		"user-order": {
-			"lp1v28": "Urge and urge",
-			"ht65c9": "Suborder",
-			"9l47b6": "form",
-            "fyuikn": "resources",
-			"3l2jr5": "buy-back",
-			"7571p2": "Merge payments",
-			"hp123x": "To be picked up",
-			"f5qqhu": "Successfully urged",
-			"a3c81d": "Add cart",
-			"5o756f": "Direct purchase"
-		}
-	},
 	"user-order-comments": {
 		"user-order-comments": {
 			"uboc44": "anonymous",
@@ -1625,7 +1650,6 @@
 	},
 	"user-orderaftersale": {
 		"user-orderaftersale": {
-			"10c251": "Returns",
 			"3wggcu": "To be confirmed",
 			"1kcn16": "To be returned",
 			"2kzi0t": "Pending review",
@@ -1690,30 +1714,14 @@
 	},
 	"cart": {
 		"cart": {
-			"v37ow8": "mall",
-			"09gl3g": "store",
-			"wb5465": "Go for a stroll",
-			"pxjwv8": "Select All",
-			"3kr74b": "on sale:",
-			"n76213": "Add:",
-			"4tbj4s": "detail",
 			"7gdej1": "Nearby stores",
 			"h63814": "No store info available",
 			"t41i4x": "Amount details",
 			"miti3i": "Items",
-			"9s0l57": "Co reduction",
-			"qh35gz": "Co addition",
 			"j8on74": "The cart is empty",
-			"31h34v": "Consult immediately",
 			"2wfu7o": "Please bind your phone number",
 			"3v6ulk": "After choosing for so long, do you really want to delete it?",
-			"8q2yej": "Please slide the data you want to operate on first",
-			"9g81jk": "Data does not exist",
-            "8tt78i": "Add to Favorites",
-            "87rfg3": "Cancel collection",
-			"346c25": "Collection successful",
-			"21051p": "Collection failed",
-			"3sy0mp": "Please select the product first"
+			"8q2yej": "Please slide the data you want to operate on first"
 		}
 	},
 	"copyright": {
@@ -1757,7 +1765,6 @@
 	},
 	"online-service": {
 		"online-service": {
-			"4l6k22": "Service"
 		}
 	},
 	"payment": {
@@ -1784,10 +1791,8 @@
 	"realstore-cart": {
 		"realstore-cart": {
 			"v437n6": "Do you have any purchased items?",
-			"6bmc34": "Switch",
 			"d1kk7x": "Please select the order type",
 			"2dc65q": "Please add the product first",
-			"50lf68": "Loading",
 			"b27ln3": "Add cart",
 			"47h2a0": "Request failed, please try again!",
 			"miv944": "start",
@@ -1795,7 +1800,22 @@
 			"8tzr7l": "Incorrect store info",
             "87tty2": "Choice store",
             "76rfgh": "Choose another store",
-            "r67uyg": "Enter store"
+            "r67uyg": "Enter store",
+            "3k8m2p": "Select staff and time slot",
+            "8r2w5t": "Select date",
+            "1h6y9u": "Select time slot",
+            "4f3x7v": "No available time slots for this date",
+            "2p5q8r": "Booked",
+            "6t1w4x": "Taken",
+            "9y3z7a": "Confirm and checkout",
+            "0b4c8d": "This time slot is occupied, please select again",
+            "1e5f9g": "This date is not available",
+            "2h6i0j": "Please select staff first",
+            "3k7l1m": "Please select date first",
+            "4n8o2p": "This time slot is occupied",
+            "5q9r3s": "Cart is empty",
+            "6t0u4v": "Please select staff, date and time slot for each quantity",
+            "7w1x5y": "Selected time slot is occupied, please select again"
 		}
 	},
 	"share-popup": {
@@ -1816,9 +1836,6 @@
 	},
 	"switch": {
 		"switch": {
-			"924s7v": "open",
-			"g142o6": "shut",
-			"447u86": "prompt",
 			"8w5ok6": "Are you sure you want to adjust it to {0}?"
 		}
 	},
@@ -1838,7 +1855,6 @@
 	},
 	"upload": {
 		"upload": {
-			"b33f08": "Upload"
 		}
 	},
 	"user-base": {
@@ -1872,8 +1888,6 @@
 	},
 	"wallet-log": {
 		"wallet-log": {
-			"9p865e": "reduce",
-			"1nm6c2": "increase"
 		}
 	},
 	"shopxo-uniapp": {
@@ -1891,7 +1905,6 @@
 			"v2j475": "Incorrect coordinates",
 			"3m1gbe": "Uuid cache failed",
 			"1244fe": "Unknown data",
-			"r5ts62": "Copy successful",
 			"r539kf": "Copy content is empty",
 			"qm8548": "The image address is empty",
 			"gbiac6": "Please open authorization",
@@ -1902,7 +1915,8 @@
 			"di6v5t": "Please obtain authorization first",
 			"nu5058": "Geographic location selection is not supported!",
 			"4v6q86": "No location selected",
-            "tghyu3": "current location"
+            "tghyu3": "current location",
+            "8z2a6b": "Staff booking failed to load, please try again later"
 		}
 	},
 	"password": {
@@ -1939,14 +1953,11 @@
 			"s7l616": "Account type",
 			"t66tu3": "Withdrawal type",
 			"311tt2": "Network type",
-			"n74r94": "account",
-			"2g251t": "network",
 			"8hrc73": "Are you sure to delete this withdrawal order"
 		}
 	},
 	"collection": {
 		"collection": {
-			"856g12": "copy",
 			"9p43lu": "Scan to initiate a transfer to the other party. Please verify your account carefully before confirming the transfer!"
 		}
 	},
@@ -2063,7 +2074,9 @@
     	"video-detail": {
             "rfsdfg": "Reason for reporting",
             "fsdf33": "Please choose a specific type",
-            "98yyuf": "Please enter your wonderful comment"
+            "98yyuf": "Please enter your wonderful comment",
+            "v001fv": "This is already the first video",
+            "v002lv": "This is already the last video"
     	}
     },
     "plugins-bargain-order": {
@@ -2074,6 +2087,17 @@
     "plugins-groupbuy-order": {
         "order": {
             "gbo001": "Enter group buy order no."
+        }
+    },
+    "hospital-patient": {
+        "hospital-patient": {
+            "h001ah": "Please fill in allergy history",
+            "h002dh": "Please fill in disease history"
+        }
+    },
+    "live-content": {
+        "live-content": {
+            "l001se": "Socket connection failed!"
         }
     }
 }

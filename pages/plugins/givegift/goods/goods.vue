@@ -22,7 +22,7 @@
                             </view>
                         </view>
                         <view v-if="(goods.show_inventory_status || 0) == 1" class="inventory text-size-xs margin-top">
-                            <text class="cr-grey">{{ $t('goods-detail.goods-detail.1s79t4') }}</text>
+                            <text class="cr-grey">{{ $t('common.stock') }}</text>
                             <text class="cr-base">{{ goods.inventory }}</text>
                             <text class="cr-grey">{{ goods.inventory_unit }}</text>
                         </view>

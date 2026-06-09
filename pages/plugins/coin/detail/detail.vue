@@ -246,13 +246,13 @@
                             var temp_coin_oprate_list = [];
                             if(parseInt(this.accounts.platform_data.is_enable_transfer || 0) == 1) {
                                 temp_coin_oprate_list.push({
-                                    name: this.$t('user.user.29f6n5'),
+                                    name: this.$t('common.transfer'),
                                     icon: 'icon-transfer-count',
                                     url: '/pages/plugins/coin/transfer/transfer?id=' + this.accounts.id,
                                 });
                             }
                             temp_coin_oprate_list.push({
-                                name: this.$t('index.index.6941e7'),
+                                name: this.$t('common.receive_payment'),
                                 icon: 'icon-collection',
                                 url: '/pages/plugins/coin/collection/collection?accounts_key=' + this.accounts.accounts_key,
                             });

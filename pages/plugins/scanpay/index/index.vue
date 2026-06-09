@@ -62,7 +62,7 @@
                             </view>
                             <view class="dialog-btn-group">
                                 <view class="dialog-btn cr-grey-9" @tap="input_dialog_colse">{{$t('common.cancel')}}</view>
-                                <view class="dialog-btn divider-l" @tap="input_dialog_open">{{$t('index.index.7w75zb')}}</view>
+                                <view class="dialog-btn divider-l" @tap="input_dialog_open">{{$t('common.ok_text')}}</view>
                             </view>
                         </view>
                     </uni-popup>
@@ -245,7 +245,7 @@
                             // 标题
                             if (data != null && (data.scanpay_info || null) != null) {
                                 uni.setNavigationBarTitle({
-                                    title: data.scanpay_info.name + this.$t('index.index.6941e7'),
+                                    title: data.scanpay_info.name + this.$t('common.receive_payment'),
                                 });
                             }
                         } else {

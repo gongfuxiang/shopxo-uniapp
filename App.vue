@@ -2005,7 +2005,7 @@
                         success(res) {
                             uni.getClipboardData({
                                 success(res) {
-                                    self.showToast(i18n.t('shopxo-uniapp.app.r5ts62'), 'success');
+                                    self.showToast(i18n.t('common.copy_success'), 'success');
                                 },
                             });
                         },
@@ -2612,7 +2612,7 @@
                     staff_booking_ref.staff_booking_init({
                         realstore_id: buy_data.realstore_id,
                         cart_list: buy_data.staff_booking_cart_list,
-                        popup_title: base.staff_booking_popup_title || '选择服务人员时段',
+                        popup_title: base.staff_booking_popup_title || i18n.t('realstore-cart.realstore-cart.3k8m2p'),
                     });
                     if(typeof callback === 'function') {
                         callback(true);
@@ -2654,7 +2654,7 @@
                     var self = this;
                     this.trigger_staff_booking(buy_data, pages, context_vm, function(success) {
                         if(!success) {
-                            self.showToast('员工预定加载失败，请稍后重试');
+                            self.showToast(i18n.t('shopxo-uniapp.app.8z2a6b'));
                         }
                     });
                     return true;

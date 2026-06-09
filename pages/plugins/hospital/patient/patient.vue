@@ -334,7 +334,7 @@
                 if(is_history_of_allergy == 1) {
                     var value = this.health.is_history_of_allergy_value || '';
                     if(value === '') {
-                        app.globalData.showToast('请填写过敏史');
+                        app.globalData.showToast(this.$t('hospital-patient.hospital-patient.h001ah'));
                         return false;
                     }
                     var msg = '过敏史:'+value;
@@ -354,7 +354,7 @@
                 if(is_history_of_sickness == 1) {
                     var value = this.health.is_history_of_sickness_value || '';
                     if(value === '') {
-                        app.globalData.showToast('请填写疾病史');
+                        app.globalData.showToast(this.$t('hospital-patient.hospital-patient.h002dh'));
                         return false;
                     }
                     var msg = '疾病史:'+value;

@@ -192,7 +192,7 @@
                                 </block>
                                 <view v-else class="dis-inline-block">
                                     <text class="va-m">{{ $t('buy.buy.33fugm') }}</text>
-                                    <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" @confirm="points_use_value_confirm_event" :placeholder="$t('buy.buy.80y7sv')" />
+                                    <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" @confirm="points_use_value_confirm_event" :placeholder="$t('common.deduct')" />
                                     <button type="default" size="mini" class="bg-grey-e cr-gray cr-base text-size-xs radius va-m margin-right-xs plugins-points-use-submit" @tap="points_use_value_confirm_event">{{ $t('common.confirm') }}</button>
                                     <text class="va-m">{{ $t('buy.buy.4di4i2') }}</text>
                                 </view>
@@ -213,8 +213,8 @@
                     <!-- 留言 -->
                     <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
                         <view class="content">
-                            <textarea v-if="user_note_status" class="textarea" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="230" :placeholder="$t('buy.buy.2rhko1')"></textarea>
-                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view ' + ((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || $t('buy.buy.2rhko1') }}</view>
+                            <textarea v-if="user_note_status" class="textarea" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="230" :placeholder="$t('common.leave_message')"></textarea>
+                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view ' + ((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || $t('common.leave_message') }}</view>
                         </view>
                         <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.note_fast_data || null) != null" class="plugins-intellectstools-data-note-fast margin-top-sm">
                             <text class="cr-grey margin-right-sm va-m text-size-xs">{{ $t('buy.buy.q7jq76') }}</text>
@@ -320,7 +320,7 @@
                                 </view>
                                 <view :class="'v-right bg-main fr ' + ((item.is_active || 0) == 1 ? '' : 'cp')" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
                                     <text class="circle"></text>
-                                    <text>{{ (item.is_active || 0) == 1 ? $t('buy.buy.g2vt78') : $t('buy.buy.inyxpx') }}</text>
+                                    <text>{{ (item.is_active || 0) == 1 ? $t('common.selected') : $t('common.select') }}</text>
                                 </view>
                             </view>
                         </block>
@@ -353,10 +353,10 @@
                                         <view class="margin-top-sm cr-grey single-text text-size-xs">{{ item.start_time }}{{ $t('buy.buy.70u2vy') }}{{ item.end_time }}</view>
                                     </view>
                                     <view v-if="(item.is_active || 0) == 1" class="v-right bg-main fr tc cr-white">
-                                        <text>{{ $t('buy.buy.g2vt78') }}</text>
+                                        <text>{{ $t('common.selected') }}</text>
                                     </view>
                                     <view v-else class="v-right bg-main fr tc cr-white cp" :data-index="index" :data-value="item.id" data-type="1" @tap="plugins_realstore_use_event">
-                                        <text>{{ $t('buy.buy.inyxpx') }}</text>
+                                        <text>{{ $t('common.select') }}</text>
                                     </view>
                                 </view>
                             </block>
@@ -660,7 +660,7 @@
                                     // 默认值
                                     value: data_dt.value || temp_dt.value || '',
                                     // 标题
-                                    title: temp_dt.title || this.$t('buy.buy.s7rr5s'),
+                                    title: temp_dt.title || this.$t('common.time'),
                                     // 占位文本及标题
                                     placeholder: temp_dt.placeholder || this.$t('buy.buy.1fi842'),
                                     // 天起始时间

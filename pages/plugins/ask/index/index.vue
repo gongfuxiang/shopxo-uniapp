@@ -180,7 +180,7 @@
                                     nav_list: res.data.data.search_tab_list || [],
                                     // 基础自定义分享
                                     share_info: {
-                                        title: data_base.seo_title || data_base.application_name || this.$t('goods-detail.goods-detail.k5u755'),
+                                        title: data_base.seo_title || data_base.application_name || this.$t('common.qa'),
                                         desc: data_base.seo_desc || '',
                                         path: '/pages/plugins/ask/index/index',
                                     },

@@ -199,7 +199,7 @@
                             success: (res) => {
                                 self.setData({
                                     pay_status: 1,
-                                    pay_msg: self.$t('paytips.paytips.679rxu'),
+                                    pay_msg: self.$t('common.pay_success'),
                                 });
                             },
                             fail: (res) => {
@@ -223,7 +223,7 @@
                 if(parseInt(e.currentTarget.dataset.type || 0) == 1) {
                     this.setData({
                         pay_status: 1,
-                        pay_msg: this.$t('paytips.paytips.679rxu'),
+                        pay_msg: this.$t('common.pay_success'),
                     });
                 } else {
                     this.setData({

@@ -54,7 +54,7 @@
                     </view>
                     <view v-if="item.status <= 2 || item.status == 4" class="item-operation tr br-t padding-vertical-main">
                         <button v-if="item.status != 3 && item.status != 5" class="br-yellow cr-yellow bg-white round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
-                        <button v-if="item.status == 1 && item.type == 1" class="br-green cr-green bg-white round" type="default" size="mini" @tap="delivery_event" :data-oid="item.order_id" :data-did="item.order_detail_id" :data-index="index" hover-class="none">{{$t('user-orderaftersale.user-orderaftersale.10c251')}}</button>
+                        <button v-if="item.status == 1 && item.type == 1" class="br-green cr-green bg-white round" type="default" size="mini" @tap="delivery_event" :data-oid="item.order_id" :data-did="item.order_detail_id" :data-index="index" hover-class="none">{{$t('common.return_goods')}}</button>
                     </view>
                 </view>
             </view>

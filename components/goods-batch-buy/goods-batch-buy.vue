@@ -89,7 +89,7 @@
                         <view class="confirm-submit pa wh-auto bottom-line-exclude bg-white padding-top-main br-t-f5">
                             <view class="oh padding-horizontal-main padding-bottom-main cr-grey">
                                 <text class="text-size-xs">
-                                    <text>{{$t('buy.buy.g2vt78')}}</text>
+                                    <text>{{$t('common.selected')}}</text>
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.kind }}</text>
                                     <text>{{$t('goods-batch-buy.goods-batch-buy.9ectyf')}}</text>
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.quantity }}</text>

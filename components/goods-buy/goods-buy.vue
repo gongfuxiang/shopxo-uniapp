@@ -19,7 +19,7 @@
                             <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods_show_original_price_unit }}</view>
                         </view>
                         <view v-if="(goods.show_inventory_status || 0) == 1" class="inventory text-size-xs margin-top">
-                            <text class="cr-grey">{{ $t('goods-detail.goods-detail.1s79t4') }}</text>
+                            <text class="cr-grey">{{ $t('common.stock') }}</text>
                             <text class="cr-base">{{ goods_spec_base_inventory }}</text>
                             <text class="cr-grey">{{ goods_spec_base_inventory_unit }}</text>
                         </view>
@@ -64,7 +64,7 @@
                             </block>
                         </view>
                     </view>
-                    <button v-else class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" :disabled="spec_confirm_btn_disabled_status" hover-class="none">{{ $t('index.index.7w75zb') }}</button>
+                    <button v-else class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" :disabled="spec_confirm_btn_disabled_status" hover-class="none">{{ $t('common.ok_text') }}</button>
                 </block>
             </view>
         </component-popup>

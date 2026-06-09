@@ -7,8 +7,8 @@
                     <template slot="right" class="flex-1 cart-right-title">
                         <view class="cart-top-nav tc auto">
                             <view class="cart-top-nav-content bg-grey-f7 round padding-xss cr-black">
-                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">{{ $t('cart.cart.v37ow8') }}</view>
-                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">{{ $t('cart.cart.09gl3g') }}</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">{{ $t('common.mall') }}</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">{{ $t('common.store') }}</view>
                             </view>
                         </view>
                     </template>
@@ -156,7 +156,7 @@
                                                 <iconfont :name="'icon-' + (is_selected_all ? 'selected-solid' : 'not-selected')" size="40rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
                                             </view>
                                             <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
-                                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
+                                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('common.select_all') }}</text>
                                         </view>
                                         <view class="price">
                                             <view class="flex-row jc-s flex-nowrap align-c">
@@ -169,21 +169,21 @@
                                             <block v-if="is_cart_show_discount == 1 && total_num > 0">
                                                 <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
                                                     <block v-if="preferential_price > 0">
-                                                        <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ currency_symbol }}{{ preferential_price }}</view>
+                                                        <view class="cr-base">{{ $t('common.discount') }}:{{ currency_symbol }}{{ preferential_price }}</view>
                                                     </block>
                                                     <block v-else>
                                                         <block v-if="increase_price > 0">
-                                                            <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ currency_symbol }}{{ increase_price }}</view>
+                                                            <view class="cr-base">{{ $t('common.increase') }}:{{ currency_symbol }}{{ increase_price }}</view>
                                                         </block>
                                                     </block>
-                                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
+                                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('common.view_detail') }}</view>
                                                 </view>
                                             </block>
                                         </view>
                                     </view>
                                     <view class="cart-nav-submit">
                                         <button class="nav-btn bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
-                                            {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
+                                            {{ $t('common.go_settlement') }}<block v-if="total_num > 0">({{ total_num }})</block>
                                         </button>
                                     </view>
                                 </view>
@@ -230,7 +230,7 @@
                                     </view>
                                 </scroll-view>
                                 <view v-if="data_list.length > 4" class="tc padding-top-sm" @tap="open_goods_list_event">
-                                    <text class="cr-grey-9 text-size-xs">{{ $t('buy.buy.g2vt78') }}{{ goods_count }}{{ $t('cart.cart.miti3i') }}</text>
+                                    <text class="cr-grey-9 text-size-xs">{{ $t('common.selected') }}{{ goods_count }}{{ $t('cart.cart.miti3i') }}</text>
                                     <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
                                 </view>
                             </view>
@@ -242,14 +242,14 @@
                                 </view>
                                 <block v-if="preferential_price > 0">
                                     <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                                        <view class="fw-b">{{ $t('cart.cart.9s0l57') }}</view>
+                                        <view class="fw-b">{{ $t('common.total_reduce') }}</view>
                                         <view class="cr-red"> {{ currency_symbol }}{{ preferential_price }}</view>
                                     </view>
                                 </block>
                                 <block v-else>
                                     <block v-if="increase_price > 0">
                                         <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                                            <view class="fw-b">{{ $t('cart.cart.qh35gz') }}</view>
+                                            <view class="fw-b">{{ $t('common.total_increase') }}</view>
                                             <view class="cr-red"> {{ currency_symbol }}{{ increase_price }}</view>
                                         </view>
                                     </block>
@@ -391,7 +391,7 @@
                 swipe_item_index: null,
                 swipe_options: [
                     {
-                        text: this.$t('goods-detail.goods-detail.dco1sc'),
+                        text: this.$t('common.favor'),
                         style: {
                             backgroundColor: '#1AAD19',
                         },
@@ -472,7 +472,7 @@
                 this.setData({
                     currency_symbol: app.globalData.get_config('currency_symbol'),
                     common_site_type: app.globalData.get_config('config.common_site_type'),
-                    common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text') || this.$t('cart.cart.31h34v'),
+                    common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text') || this.$t('common.consult_now'),
                     common_is_cart_show_guess_you_like: parseInt(app.globalData.get_config('config.common_is_cart_show_guess_you_like', 0)),
                     common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                     is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
@@ -496,7 +496,7 @@
                 if (user != false) {
                     this.setData({
                         user: user,
-                        no_cart_data_btn_text: this.$t('cart.cart.wb5465')
+                        no_cart_data_btn_text: this.$t('common.go_stroll')
                     });
 
                     // 获取数据
@@ -861,7 +861,7 @@
                     return false;
                 }
                 if ((temp_data_list[this.swipe_item_index] || null) == null) {
-                    app.globalData.showToast(this.$t('cart.cart.9g81jk'));
+                    app.globalData.showToast(this.$t('common.data_not_exist'));
                     return false;
                 }
 
@@ -903,7 +903,7 @@
                                 data_list_loding_status: temp_list.length == 0 ? 0 : this.data_list_loding_status,
                                 random_value: Math.random(),
                             });
-                            app.globalData.showToast(type == 'delete' ? this.$t('common.del_success') : this.$t('cart.cart.346c25'), 'success');
+                            app.globalData.showToast(type == 'delete' ? this.$t('common.del_success') : this.$t('common.favor_success'), 'success');
 
                             // 选择处理
                             this.cart_selected_calculate();
@@ -914,7 +914,7 @@
                             }
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(type == 'delete' ? this.$t('common.del_fail') : this.$t('cart.cart.21051p'));
+                                app.globalData.showToast(type == 'delete' ? this.$t('common.del_fail') : this.$t('common.favor_fail'));
                             } else {
                                 app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
@@ -1090,7 +1090,7 @@
                 // 结算参数
                 var buy_data = this.buy_cart_data_params();
                 if (buy_data === false) {
-                    app.globalData.showToast(this.$t('cart.cart.3sy0mp'));
+                    app.globalData.showToast(this.$t('common.please_select_goods'));
                     return false;
                 }
 

@@ -13,7 +13,7 @@
                                 <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
                                     <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                     <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
-                                        <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}({{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
+                                        <text class="va-m">{{$t('common.switch_text')}}({{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
                                         <view class="va-m dis-inline-block margin-left-xs">
                                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                         </view>
@@ -64,7 +64,7 @@
                             <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
                                 <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                 <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
-                                    <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
+                                    <text class="va-m">{{$t('common.switch_text')}}{{info.buy_use_type_list[buy_use_type_active_index]['name']}})</text>
                                     <view class="va-m dis-inline-block margin-left-xs">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                     </view>
@@ -172,7 +172,7 @@
 
                                 <view v-for="(unit, uindex) in staff_booking_get_goods_units(goods)" :key="uindex"
                                     :class="'plugins-realstore-staff-booking-unit-block ' + (staff_booking_get_goods_units(goods).length > 1 && uindex > 0 ? 'plugins-realstore-staff-booking-unit-block-multi margin-top padding-top br-t-dashed' : 'margin-top-sm')">
-                                    <view v-if="staff_booking_get_goods_units(goods).length > 1" class="plugins-realstore-staff-booking-unit-label text-size-xs cr-base margin-bottom-sm">数量{{ uindex + 1 }}</view>
+                                    <view v-if="staff_booking_get_goods_units(goods).length > 1" class="plugins-realstore-staff-booking-unit-label text-size-xs cr-base margin-bottom-sm">{{$t('common.num')}}{{ uindex + 1 }}</view>
 
                                     <scroll-view scroll-x="true" class="plugins-realstore-staff-booking-staff-scroll" :show-scrollbar="false" enable-flex="true">
                                         <view class="plugins-realstore-staff-booking-staff-scroll-inner">
@@ -189,7 +189,7 @@
                                     </scroll-view>
 
                                     <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0" class="margin-top-sm">
-                                        <view class="cr-grey text-size-xss margin-bottom-xs">选择日期</view>
+                                        <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.realstore-cart.8r2w5t')}}</view>
                                         <scroll-view scroll-x="true" class="scroll-view-horizontal plugins-realstore-staff-booking-unit-date-scroll" :show-scrollbar="false">
                                             <view v-for="(date_item, date_index) in staff_booking_ymd_list" :key="date_index"
                                                 :class="'plugins-realstore-staff-booking-date-item margin-right-sm radius text-size-sm br ' + ((date_item.day_label || '') != '' ? 'plugins-realstore-staff-booking-date-item-with-label ' : 'plugins-realstore-staff-booking-date-item-no-label ') + (staff_booking_get_booking_unit(gindex, uindex).ymd == date_item.ymd ? 'br-main bg-main-light cr-main' : (date_item.disabled == 1 ? 'bg-grey-disabled cr-grey' : 'bg-white br-grey cr-base cp'))"
@@ -208,9 +208,9 @@
                                     </view>
 
                                     <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0 && staff_booking_get_booking_unit(gindex, uindex).ymd > 0" class="plugins-realstore-staff-booking-period-list margin-top-sm">
-                                        <view class="cr-grey text-size-xss margin-bottom-xs">选择时段</view>
-                                        <view v-if="staff_booking_is_unit_periods_empty_loading(gindex, uindex)" class="cr-grey text-size-xs">加载中...</view>
-                                        <view v-else-if="staff_booking_get_unit_periods(gindex, uindex).length <= 0" class="cr-grey text-size-xs">该日期暂无可用时段</view>
+                                        <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.realstore-cart.1h6y9u')}}</view>
+                                        <view v-if="staff_booking_is_unit_periods_empty_loading(gindex, uindex)" class="cr-grey text-size-xs">{{$t('common.loading_in_text')}}</view>
+                                        <view v-else-if="staff_booking_get_unit_periods(gindex, uindex).length <= 0" class="cr-grey text-size-xs">{{$t('realstore-cart.realstore-cart.4f3x7v')}}</view>
                                         <view v-else class="plugins-realstore-staff-booking-period-wrap">
                                             <view v-for="(period, pindex) in staff_booking_get_unit_periods(gindex, uindex)" :key="pindex"
                                                 :class="'plugins-realstore-staff-booking-period-tag dis-inline-block margin-right-sm margin-bottom-sm padding-horizontal-sm padding-vertical-xs radius text-size-xs br ' + staff_booking_get_period_class(gindex, uindex, staff_booking_get_booking_unit(gindex, uindex).staff_id, period)"
@@ -218,7 +218,7 @@
                                                 :data-uindex="uindex"
                                                 :data-pindex="pindex"
                                                 @tap="staff_booking_goods_period_event">
-                                                {{ period.name || '' }}<text v-if="parseInt(period.is_available || 0) == 0" class="cr-grey">({{ parseInt(period.occupied_flag || 0) == 1 ? '已约' : '被约' }})</text>
+                                                {{ period.name || '' }}<text v-if="parseInt(period.is_available || 0) == 0" class="cr-grey">({{ parseInt(period.occupied_flag || 0) == 1 ? $t('realstore-cart.realstore-cart.2p5q8r') : $t('realstore-cart.realstore-cart.6t1w4x') }})</text>
                                             </view>
                                         </view>
                                     </view>
@@ -230,7 +230,7 @@
 
                 <view class="padding-main">
                     <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="radius bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
-                        确认并去结算
+                        {{$t('realstore-cart.realstore-cart.9y3z7a')}}
                     </button>
                 </view>
             </view>
@@ -263,7 +263,7 @@
                 // 结算按钮
                 settlement_btn_loading: true,
                 settlement_btn_status: false,
-                settlement_btn_text: this.$t('realstore-cart.realstore-cart.50lf68'),
+                settlement_btn_text: this.$t('common.loading_in_text'),
                 // 临时操作数据
                 temp_opt_data: null,
                 // 下单类型
@@ -280,13 +280,13 @@
                 realstore_goods_data_cart_status: false,
                 realstore_goods_data_cart_type: null,
                 realstore_goods_data_cart_value: null,
-                realstore_goods_data_cart_text: this.$t('realstore-cart.realstore-cart.50lf68'),
+                realstore_goods_data_cart_text: this.$t('common.loading_in_text'),
                 // 样式
                 realstore_cart_content_style: '',
                 // 员工预定
                 is_staff_booking: 0,
                 staff_booking_popup_status: false,
-                staff_booking_popup_title: '选择服务人员时段',
+                staff_booking_popup_title: this.$t('realstore-cart.realstore-cart.3k8m2p'),
                 staff_booking_realstore_id: 0,
                 staff_booking_ymd_list: [],
                 staff_booking_staff_list: [],
@@ -377,7 +377,7 @@
                                             if(cart_value != null) {
                                                 cart_status = true;
                                                 cart_type = 'show';
-                                                cart_text = this.$t('cart.cart.31h34v');
+                                                cart_text = this.$t('common.consult_now');
                                             }
                                         }
                                     } else {
@@ -496,7 +496,7 @@
             settlement_btn_handle() {
                 // 结算按钮状态处理
                 var btn_status = true;
-                var btn_text = this.$t('goods-category.goods-category.44f1ww');
+                var btn_text = this.$t('common.go_settlement');
                 if(this.info.status_info.status != 1) {
                     btn_status = false;
                     btn_text = this.info.status_info.msg;
@@ -1192,7 +1192,7 @@
             staff_booking_init(params) {
                 params = params || {};
                 var cart_list = params.cart_list || null;
-                var popup_title = params.popup_title || '选择服务人员时段';
+                var popup_title = params.popup_title || this.$t('realstore-cart.realstore-cart.3k8m2p');
                 var realstore_id = params.realstore_id || 0;
                 var booking_form = {};
                 if(cart_list != null) {
@@ -1304,7 +1304,7 @@
                             set_data.staff_booking_ymd_list = result.ymd_list || [];
                             set_data.staff_booking_staff_list = result.staff_list || [];
                             set_data.staff_booking_form = form;
-                            set_data.staff_booking_popup_title = result.popup_title || this.staff_booking_popup_title || '选择服务人员时段';
+                            set_data.staff_booking_popup_title = result.popup_title || this.staff_booking_popup_title || this.$t('realstore-cart.realstore-cart.3k8m2p');
                             set_data.staff_booking_init_loading_status = 3;
                         } else {
                             set_data.staff_booking_init_loading_msg = res.data.msg;
@@ -1365,7 +1365,7 @@
                                     item.booking_periods_id = 0;
                                     item.period_text = '';
                                     if(matched != null) {
-                                        app.globalData.showToast('该时段已被占用，请重新选择');
+                                        app.globalData.showToast(this.$t('realstore-cart.realstore-cart.0b4c8d'));
                                     }
                                 }
                             }
@@ -1446,7 +1446,7 @@
             // 选择/取消选择日期
             staff_booking_goods_ymd_event(e) {
                 if(parseInt(e.currentTarget.dataset.disabled || 0) == 1) {
-                    app.globalData.showToast('该日期不可选');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.1e5f9g'));
                     return false;
                 }
                 var gindex = e.currentTarget.dataset.gindex;
@@ -1455,7 +1455,7 @@
                 var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
                 var item = form[gindex][uindex];
                 if((item.staff_id || 0) == 0) {
-                    app.globalData.showToast('请先选择服务人员');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2h6i0j'));
                     return false;
                 }
                 if((item.ymd || 0) == ymd) {
@@ -1547,11 +1547,11 @@
                 var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
                 var item = form[gindex][uindex];
                 if((item.staff_id || 0) == 0) {
-                    app.globalData.showToast('请先选择服务人员');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2h6i0j'));
                     return false;
                 }
                 if((item.ymd || 0) == 0) {
-                    app.globalData.showToast('请先选择日期');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.3k7l1m'));
                     return false;
                 }
                 var periods = this.staff_booking_get_unit_periods(gindex, uindex);
@@ -1566,7 +1566,7 @@
                     return true;
                 }
                 if(!this.staff_booking_is_period_available(gindex, uindex, item.staff_id, period)) {
-                    app.globalData.showToast('该时段已被占用');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.4n8o2p'));
                     return false;
                 }
                 item.booking_periods_id = period.id;
@@ -1577,7 +1577,7 @@
             // 校验并提交员工预定
             staff_booking_submit_event() {
                 if((this.staff_booking_cart_list || null) == null || this.staff_booking_cart_list.length <= 0) {
-                    app.globalData.showToast('购物车商品为空');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.5q9r3s'));
                     return false;
                 }
                 var booking_data = [];
@@ -1586,7 +1586,7 @@
                     for(var ui in units) {
                         var item = units[ui];
                         if((item.staff_id || 0) == 0 || (item.ymd || 0) == 0 || (item.booking_periods_id || 0) == 0) {
-                            app.globalData.showToast('请为每个数量选择服务人员、日期和时段');
+                            app.globalData.showToast(this.$t('realstore-cart.realstore-cart.6t0u4v'));
                             return false;
                         }
                         var periods = this.staff_booking_get_unit_periods(gi, ui);
@@ -1598,7 +1598,7 @@
                             }
                         }
                         if(matched == null || !this.staff_booking_is_period_available(gi, ui, item.staff_id, matched)) {
-                            app.globalData.showToast('所选时段已被占用，请重新选择');
+                            app.globalData.showToast(this.$t('realstore-cart.realstore-cart.7w1x5y'));
                             return false;
                         }
                         booking_data.push({

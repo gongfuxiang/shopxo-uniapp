@@ -35,7 +35,7 @@
             <!-- 分类 -->
             <view class="padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.6rsqp1') }}{{ blog_main_name }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('common.all_items') }}{{ blog_main_name }}</text>
                     <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
             </view>
@@ -57,7 +57,7 @@
             <!-- 热门博文-滚动 -->
             <view v-if="hot_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.pot64x') }}{{ blog_main_name }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('common.hot') }}{{ blog_main_name }}</text>
                     <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
                 <view class="rolling-horizontal border-radius-main oh">

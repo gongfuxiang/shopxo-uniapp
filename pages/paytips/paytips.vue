@@ -3,14 +3,14 @@
         <view class="content tc">
             <image class="pay-icon dis-block" v-if="params.code == '9000'" mode="widthFix" :src="default_round_success_icon"></image>
             <image class="pay-icon dis-block" v-else mode="widthFix" :src="default_round_error_icon"></image>
-            <view class="text-size-lg cr-base">{{ params.msg || $t('paytips.paytips.679rxu') }}</view>
+            <view class="text-size-lg cr-base">{{ params.msg || $t('common.pay_success') }}</view>
         </view>
         <view class="btn-box tc">
             <view>
                 <button class="bg-main br-main cr-white round" type="default" hover-class="none" size="mini" @tap="back_event">{{$t('common.return')}}</button>
             </view>
             <view class="margin-top-lg">
-                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" data-redirect="1" :data-value="default_to_url" @tap="url_event">{{ params.title || $t('paytips.paytips.jifuu8') }}</button>
+                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" data-redirect="1" :data-value="default_to_url" @tap="url_event">{{ params.title || $t('common.back_home') }}</button>
             </view>
         </view>
 
@@ -53,7 +53,7 @@
             switch (params.code) {
                 // 支付成功
                 case '9000':
-                    msg = this.$t('paytips.paytips.679rxu');
+                    msg = this.$t('common.pay_success');
                     break;
                 // 正在处理中
                 case '8000':

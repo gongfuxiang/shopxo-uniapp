@@ -4,7 +4,7 @@
             <view class="tr">
                 <view class="fr padding-main" @tap="popup_data_event">
                     <iconfont name="icon-transfer" color="#2196F3" propClass="va-m"></iconfont>
-                    <text class="cr-blue text-size-sm margin-left-xs">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{data == null ? '' : '('+data.title+')'}}</text>
+                    <text class="cr-blue text-size-sm margin-left-xs">{{$t('common.switch_text')}}{{data == null ? '' : '('+data.title+')'}}</text>
                 </view>
             </view>
             <form @submit="form_submit" class="form-container">

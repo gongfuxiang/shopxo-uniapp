@@ -14,7 +14,7 @@
             </block>
             <view v-if="(form_images_list || null) == null || form_images_list.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
                 <iconfont name="icon-camera-solid" size="52rpx" color="#999"></iconfont>
-                <text class="text-size-xs cr-grey-9">{{$t('upload.upload.b33f08')}}</text>
+                <text class="text-size-xs cr-grey-9">{{$t('common.upload_image')}}</text>
             </view>
         </view>
     </view>

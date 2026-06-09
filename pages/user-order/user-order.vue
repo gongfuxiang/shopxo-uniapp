@@ -84,17 +84,17 @@
                             <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_data || null) != null" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                             <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                             <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/user-order-comments/user-order-comments?id='+item.id" hover-class="none">{{$t('common.comment')}}</button>
-                            <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br margin-bottom-main" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('user-order.user-order.lp1v28')}}</button>
+                            <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br margin-bottom-main" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.urge_text')}}</button>
                             <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red margin-bottom-main" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
-                            <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">{{$t('user-order.user-order.ht65c9')}}</button>
+                            <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">{{$t('common.sub_order')}}</button>
                             <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
                             <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
-                            <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">{{$t('user-order.user-order.9l47b6')}}</button>
-                            <button v-if="(item.plugins_orderresources_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderresources/orderannex/orderannex?oid=' + item.id" hover-class="none">{{$t('user-order.user-order.fyuikn')}}</button>
+                            <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">{{$t('common.form')}}</button>
+                            <button v-if="(item.plugins_orderresources_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderresources/orderannex/orderannex?oid=' + item.id" hover-class="none">{{$t('common.resource')}}</button>
                             <button v-if="(item.plugins_is_orderfeed_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/orderfeed/form/form?oid=' + item.id" hover-class="none">{{$t('common.feed_text')}}</button>
                             <button v-if="(item.plugins_is_bargain_team_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="item.plugins_bargain_record_url" hover-class="none">{{$t('pages.plugins-bargain-team')}}</button>
                             <button v-if="(item.plugins_is_groupbuy_team_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="item.plugins_groupbuy_team_url" hover-class="none">{{$t('pages.plugins-groupbuy-team')}}</button>
-                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
+                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('common.repurchase')}}</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -110,7 +110,7 @@
         <!-- 合并支付 -->
         <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed" :style="bottom_fixed_style">
             <view class="bottom-line-exclude">
-                <button class="item bg-main cr-white round text-size wh-auto" hover-class="none" @tap="pay_merge_event">{{$t('user-order.user-order.7571p2')}}</button>
+                <button class="item bg-main cr-white round text-size wh-auto" hover-class="none" @tap="pay_merge_event">{{$t('common.merge_payment')}}</button>
             </view>
         </view>
 
@@ -482,7 +482,7 @@
                             // 自提模式
                             case 2:
                                 temp_data_list[i]['status'] = 2;
-                                temp_data_list[i]['status_name'] = this.$t('user-order.user-order.hp123x');
+                                temp_data_list[i]['status_name'] = this.$t('common.pending_pickup');
                                 break;
                             // 虚拟模式
                             case 3:
@@ -682,7 +682,7 @@
 
             // 催催
             rush_event(e) {
-                app.globalData.showToast(this.$t('user-order.user-order.f5qqhu'), 'success');
+                app.globalData.showToast(this.$t('common.urge_success'), 'success');
             },
 
             // 导航事件
@@ -778,7 +778,7 @@
                         if(is_buy_again_buy == 1 && is_buy_again_cart == 1) {
                             var self = this;
                             uni.showActionSheet({
-                                itemList: [this.$t('user-order.user-order.a3c81d'), this.$t('user-order.user-order.5o756f')],
+                                itemList: [this.$t('common.add_cart'), this.$t('common.direct_buy')],
                                 success: function (res) {
                                     if(res.tapIndex == 0) {
                                         // 加入购物车

@@ -205,7 +205,7 @@ export default {
                             is_submit_disable: false
                         });
                         if (res.data.code == 0) {
-                            app.globalData.showToast('提交成功', 'success');
+                            app.globalData.showToast(this.$t('common.submit_success'), 'success');
                             if(!this.propIsDebug) {
                                 var pages = app.globalData.prev_page();
                                 if (pages) {
@@ -222,14 +222,14 @@ export default {
                                 }
                             }
                         } else {
-                            app.globalData.showToast('提交失败');
+                            app.globalData.showToast(this.$t('common.submit_fail'));
                         }
                     },
                     fail: (res) => {
                         this.setData({
                             is_submit_disable: false
                         });
-                        app.globalData.showToast('提交失败');
+                        app.globalData.showToast(this.$t('common.submit_fail'));
                     }
                 });
             }

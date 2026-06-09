@@ -59,7 +59,7 @@
 
                 <!-- 预约数据 -->
                 <view v-if="(detail.staff_booking_data || null) != null && detail.staff_booking_data.length > 0" class="staff-booking bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">预约数据</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('orderallot-detail.orderallot-detail.9c3d7e')}}</view>
                     <view v-for="(group, gindex) in detail.staff_booking_data" :key="gindex" :class="'staff-booking-item oh ' + (gindex + 1 >= detail.staff_booking_data.length ? 'padding-main padding-bottom-0' : 'br-b-dashed padding-main')">
                         <view class="flex-row">
                             <view v-if="(group.goods_url || null) != null && group.goods_url != ''" :data-value="group.goods_url" @tap="url_event" class="cp">
@@ -78,12 +78,12 @@
                         </view>
                         <view v-for="(booking, bindex) in group.bookings" :key="bindex" :class="bindex > 0 ? 'staff-booking-unit margin-top-sm padding-top-sm br-t-dashed' : 'margin-top-sm'">
                             <view v-if="(booking.staff_alias || null) != null && booking.staff_alias != ''" class="staff-booking-info-row">
-                                <text class="cr-grey">服务人员：</text>
+                                <text class="cr-grey">{{$t('orderallot-detail.orderallot-detail.0f4g8h')}}</text>
                                 <image v-if="(booking.staff_avatar || null) != null" class="staff-booking-staff-avatar radius margin-right-xs" :src="booking.staff_avatar" mode="aspectFill"></image>
                                 <text>{{ booking.staff_alias }}</text>
                             </view>
                             <view v-if="((booking.period_text || null) != null && booking.period_text != '') || ((booking.ymd_text || null) != null && booking.ymd_text != '')" class="staff-booking-info-row margin-top-xs">
-                                <text class="cr-grey">预约时间：</text>
+                                <text class="cr-grey">{{$t('orderallot-detail.orderallot-detail.1i5j9k')}}</text>
                                 <text v-if="(booking.ymd_text || null) != null && booking.ymd_text != ''">{{ booking.ymd_text }}</text>
                                 <text v-if="(booking.period_text || null) != null && booking.period_text != ''" :class="(booking.ymd_text || null) != null && booking.ymd_text != '' ? 'margin-left' : ''">{{ booking.period_text }}</text>
                             </view>

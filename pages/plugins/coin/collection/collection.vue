@@ -9,7 +9,7 @@
                         </view>
                         <view class="code br-c radius flex-row">
                             <view class="num flex-1 flex-width flex-row align-c text-size-md">{{ params.accounts_key }}</view>
-                            <view class="copy br-l-c text-size fw-b" :data-value="params.accounts_key" @tap.stop="text_copy_event">{{$t('collection.collection.856g12')}}</view>
+                            <view class="copy br-l-c text-size fw-b" :data-value="params.accounts_key" @tap.stop="text_copy_event">{{$t('common.copy')}}</view>
                         </view>
                     </view>
                     <view class="cr-grey-9 margin-top-xxl flex-row">

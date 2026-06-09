@@ -391,7 +391,7 @@
                                 if ((data.is_success || 0) == 1) {
                                     // 数据设置
                                     this.order_item_pay_success_handle(data, order_id, false);
-                                    app.globalData.showToast(this.$t('paytips.paytips.679rxu'), 'success');
+                                    app.globalData.showToast(this.$t('common.pay_success'), 'success');
                                     setTimeout(() => {
                                         this.to_success_page_event();
                                     }, 2000);

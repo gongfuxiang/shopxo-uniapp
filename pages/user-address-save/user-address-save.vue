@@ -86,7 +86,7 @@
                                     <view class="padding-top-lg label-edit-right">
                                         <view v-if="alias_eidt_bool" class="flex-row align-c alias-add pr">
                                             <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="input-alias cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.l6vjlm')" />
-                                            <button type="default" size="mini" class="btn round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">{{$t('index.index.7w75zb')}}</button>
+                                            <button type="default" size="mini" class="btn round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">{{$t('common.ok_text')}}</button>
                                         </view>
                                         <view v-else>
                                             <view v-if="alias_eidt_text">

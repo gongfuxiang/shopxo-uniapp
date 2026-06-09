@@ -6,26 +6,26 @@
                 <block v-if="is_chat == 1">
                     <view @tap="chat_event">
                         <image class="icon" :src="chat_icon" mode="scaleToFill"></image>
-                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('common.service_short')}}</text>
                     </view>
                 </block>
                 <block v-else>
                     <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-KUAISHOU -->
                     <button class="chat-btn" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                         <image class="icon" :src="chat_icon" mode="scaleToFill"></image>
-                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('common.service_short')}}</text>
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
                     <button class="chat-btn alipay-contact" open-type="contact">
                         <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="chat_icon" size="40rpx*40rpx" />
-                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('common.service_short')}}</text>
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <button class="chat-btn" type="default" @tap="call_event">
                         <image class="icon" :src="chat_icon" mode="scaleToFill"></image>
-                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('common.service_short')}}</text>
                     </button>
                     <!-- #endif -->
                 </block>

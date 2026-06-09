@@ -65,8 +65,8 @@
                 nav_status_index: 0,
                 nav_status_list: [
                     { name: this.$t('common.all'), value: '-1' },
-                    { name: this.$t('wallet-log.wallet-log.9p865e'), value: '0' },
-                    { name: this.$t('wallet-log.wallet-log.1nm6c2'), value: '1' },
+                    { name: this.$t('common.reduce'), value: '0' },
+                    { name: this.$t('common.increase'), value: '1' },
                 ],
                 content_list: [
                     { name: this.$t('invoice.invoice.l3832z'), field: 'business_type_name' },

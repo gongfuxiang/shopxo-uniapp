@@ -227,7 +227,7 @@
                                 </view>
                             </view>
                             <view v-if="is_service_info == 1" class="button-right">
-                                <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('cart.cart.31h34v')}}</button>
+                                <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('common.consult_now')}}</button>
                             </view>
                         </view>
                     </view>
@@ -388,7 +388,7 @@
                 ],
                 // 收藏信息
                 favor_info: {
-                    text: this.$t('goods-detail.goods-detail.dco1sc'),
+                    text: this.$t('common.favor'),
                     status: 0,
                     count: 0,
                 },
@@ -560,7 +560,7 @@
                                     favor_info: {
                                         count: this.info.favor_count || 0,
                                         status: status,
-                                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
+                                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('common.favor'),
                                     },
                                 });
 

@@ -23,7 +23,7 @@
                         </view>
                     </view>
                 </view>
-                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">{{$t('index.index.7w75zb')}}</button>
+                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">{{$t('common.ok_text')}}</button>
             </view>
         </component-popup>
     </view>

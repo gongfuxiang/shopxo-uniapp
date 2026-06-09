@@ -15,10 +15,10 @@
                         </view>
                     </view>
                     <view v-if="propCloseType == 'text' && propCloseable" class="flex-row jc-sb align-c w pa top-0 pa-14 z-i box-border-box" :style="propWidth">
-                        <text class="cr-info" @click="close">取消</text>
+                        <text class="cr-info" @click="close">{{$t('common.cancel')}}</text>
                         <view class="pr">
                             <text v-if="propIsCustomBtn" class="inline-block" :style="propCustomBtnStyle" @click="custom_change">{{ propCustomBtnText }}</text>
-                            <text class="cr-primary" @click="comfirm">确定</text>
+                            <text class="cr-primary" @click="comfirm">{{$t('common.confirm')}}</text>
                         </view>
                     </view>
                     <view class="uni-popup__wrapper radius-lg" :style="{ backgroundColor: bg, maxHeight: propHeight }" :class="[popupstyle]" @click="clear">
@@ -159,7 +159,7 @@
             },
             propCustomBtnText: {
                 type: String,
-                default: '自定义',
+                default: '',
             },
             propCustomBtnStyle: {
                 type: String,

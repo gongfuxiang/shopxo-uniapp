@@ -242,7 +242,7 @@
             item_event(e) {
                 var self = this;
                 wx.showActionSheet({
-                    itemList: [self.$t('cart.cart.8tt78i'), self.$t('common.del_record')],
+                    itemList: [self.$t('common.add_favor'), self.$t('common.del_record')],
                     success (res) {
                         var id = e.currentTarget.dataset.value;
                         var index = e.currentTarget.dataset.index;

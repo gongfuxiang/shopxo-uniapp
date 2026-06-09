@@ -2,10 +2,10 @@
     <view :class="'switch-container switch-container-size-' + propSize" :style="'background:' + propBgColor + ';border:1px solid ' + propBrColor + ';'">
         <view class="switch_view">
             <view :class="'switch-item ' + propCheckedClass + ' ' + (isSwitch ? 'checked_switch' : '')" :style="isSwitch ? `color:${propCheckedColor}` : ''" @click.prevent.stop="changeSwitch(true)" :animation="animationData2">
-                {{ propSwitchList[0] || this.$t('switch.switch.924s7v') }}
+                {{ propSwitchList[0] || this.$t('common.switch_on') }}
             </view>
             <view class="switch-item" :class="{ checked_switch: !isSwitch }" :style="!isSwitch ? `color:${propCheckedColor}` : ''" @click.prevent.stop="changeSwitch(false)" :animation="animationData3">
-                {{ propSwitchList[1] || this.$t('switch.switch.g142o6') }}
+                {{ propSwitchList[1] || this.$t('common.switch_off') }}
             </view>
         </view>
         <view class="disabled" v-if="propDisabled"></view>
@@ -91,7 +91,7 @@
                     let text = this.propSwitchList[index];
                     let self = this;
                     uni.showModal({
-                        title: self.$t('switch.switch.447u86'),
+                        title: self.$t('common.tips'),
                         content: self.$t('switch.switch.8w5ok6', [text]),
                         success: (res) => {
                             if (res.confirm) {

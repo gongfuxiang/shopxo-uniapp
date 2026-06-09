@@ -554,7 +554,7 @@
                         shop_content_list: new_data,
                     });
                 }
-                app.globalData.showToast('加入成功', 'success');
+                app.globalData.showToast(this.$t('common.join_success'), 'success');
             },
         },
     };

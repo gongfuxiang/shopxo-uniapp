@@ -368,7 +368,7 @@
                             dataType: 'json',
                             success: (r) => {
                                 if (r.data.code == 0) {
-                                    app.globalData.showToast('取消成功', 'success');
+                                    app.globalData.showToast(this.$t('common.cancel_success'), 'success');
                                     this.get_data();
                                 } else {
                                     app.globalData.showToast(r.data.msg);

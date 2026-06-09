@@ -5,7 +5,7 @@
                 <icon type="warn" size="16" color="#f00" class="va-m" />
                 <view class="cr-red va-m dis-inline-block margin-left-sm">
                     <block v-if="(params || null) != null && (params.msg || null) != null">{{params.msg}}</block>
-                    <block v-else>{{$t('error.error.u697ih')}}</block>
+                    <block v-else>{{$t('common.error_abnormal')}}</block>
                 </view>
             </view>
             <view class="margin-top-xxl">

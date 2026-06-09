@@ -32,17 +32,17 @@
                                         <view class="pr z-i flex-row jc-c align-c">
                                             <view class="flex-1 flex-width flex-row jc-sb align-c margin-top-main">
                                                 <view class="flex-1">
-                                                    <view class="tetx-size-xs">{{$t('user.user.mgx9x4')}}</view>
+                                                    <view class="tetx-size-xs">{{$t('common.freeze')}}</view>
                                                     <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
                                                 </view>
                                                 <view class="flex-1">
-                                                    <view class="tetx-size-xs">{{$t('user.user.424v6n')}}</view>
+                                                    <view class="tetx-size-xs">{{$t('common.give')}}</view>
                                                     <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
                                                 </view>
                                             </view>
                                             <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
                                                 <iconfont name="icon-transfer" size="28rpx" propClass="transfer-icon"></iconfont>
-                                                <text class="margin-left-xs">{{$t('user.user.29f6n5')}}</text>
+                                                <text class="margin-left-xs">{{$t('common.transfer')}}</text>
                                             </view>
                                         </view>
                                     </view>
@@ -96,7 +96,7 @@
                                 <view class="bottom-line-exclude">
                                     <view class="flex-row jc-sb align-c gap-10">
                                         <button v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="item round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event">{{$t('recharge.recharge.otwkjn')}}</button>
-                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event">{{$t('user.user.8752a4')}}</button>
+                                        <button v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event">{{$t('common.withdraw')}}</button>
                                     </view>
                                 </view>
                             </view>

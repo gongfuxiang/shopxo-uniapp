@@ -92,7 +92,7 @@
                                                 <view class="cr-base single-text">{{ item.title }}</view>
                                                 <view class="margin-top-xs sales-price">{{ currency_symbol }}{{ item.price }}</view>
                                                 <view class="cr-grey margin-top-xs text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</view>
-                                                <text class="br-green cr-green text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="popup_goods_choice_event">{{$t('buy.buy.inyxpx')}}</text>
+                                                <text class="br-green cr-green text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="popup_goods_choice_event">{{$t('common.select')}}</text>
                                             </view>
                                         </view>
                                     </block>

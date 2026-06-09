@@ -242,7 +242,7 @@
             cancel_event(e) {
                 var self = this;
                 wx.showActionSheet({
-                    itemList: [self.$t('cart.cart.87rfg3')],
+                    itemList: [self.$t('common.cancel_favor')],
                     success (res) {
                         // 参数
                         var id = e.currentTarget.dataset.value;

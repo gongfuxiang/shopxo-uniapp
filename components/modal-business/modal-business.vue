@@ -20,8 +20,8 @@
                     </view>
                 </view>
                 <view class="buttom tc margin-top-xxxl padding-top-lg">
-                    <button type="default" size="mini" class="btn br-grey cr-base bg-white text-size-sm round margin-right-xxxl" @tap="exit_event">{{$t('agreement.agreement.062co8')}}</button>
-                    <button type="default" size="mini" class="btn br-main cr-white bg-main text-size-sm round margin-left-xxxl" open-type="agreePrivacyAuthorization" @agreeprivacyauthorization="agree_privacy_auth_event">{{$t('agreement.agreement.60t34e')}}</button>
+                    <button type="default" size="mini" class="btn br-grey cr-base bg-white text-size-sm round margin-right-xxxl" @tap="exit_event">{{$t('common.disagree')}}</button>
+                    <button type="default" size="mini" class="btn br-main cr-white bg-main text-size-sm round margin-left-xxxl" open-type="agreePrivacyAuthorization" @agreeprivacyauthorization="agree_privacy_auth_event">{{$t('common.agree')}}</button>
                 </view>
             </view>
         </view>

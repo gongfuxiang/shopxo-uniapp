@@ -30,7 +30,7 @@
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-cash" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>{{$t('user.user.8752a4')}}</view>
+                            <view>{{$t('common.withdraw')}}</view>
                         </view>
                         <view class="tc text-size-xs" data-value="/pages/plugins/coin/detail/detail" data-method="true" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">

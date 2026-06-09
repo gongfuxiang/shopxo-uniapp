@@ -220,7 +220,7 @@
                 shop_navigation_two_data: [],
                 popup_nav_two_category_status: false,
                 shop_favor_info: {
-                    "text": this.$t('goods-detail.goods-detail.dco1sc'),
+                    "text": this.$t('common.favor'),
                     "status": 0,
                     "count": 0
                 },
@@ -262,7 +262,7 @@
                     upd_data['shop_favor_info'] = {
                         count: this.propShop.shop_favor_count || 0,
                         status: status,
-                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc')
+                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('common.favor')
                     };
                 }
                 this.setData(upd_data);

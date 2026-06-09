@@ -11,7 +11,7 @@
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
                         <view class="cr-base">{{$t('user-order-detail.user-order-detail.yxwu8n')}}</view>
-                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('paytips.paytips.679rxu') : $t('paytips.paytips.6y488i')+pay_fail_msg }}</view>
+                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('common.pay_success') : $t('paytips.paytips.6y488i')+pay_fail_msg }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
                         <view class="cr-base">{{$t('user-order-detail.user-order-detail.n18sd2')}}</view>

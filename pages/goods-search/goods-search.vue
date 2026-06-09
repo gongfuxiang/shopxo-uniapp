@@ -71,7 +71,7 @@
                     <view v-if="((search_map_list.brand_list || null) != null && search_map_list.brand_list.length > 0) || ((search_map_info.brand || null) != null)"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
-                            <text>{{$t('goods-search.goods-search.6n8316')}}</text>
+                            <text>{{$t('common.brand')}}</text>
                             <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">{{$t('common.more')}}</text>
                         </view>
                         <view v-if="(search_map_info.brand || null) != null && (params.brand || null) != null" class="map-content brand-info oh margin-top-lg">
@@ -127,7 +127,7 @@
                     <view v-if="(search_map_list.goods_produce_region_list || null) != null && search_map_list.goods_produce_region_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
-                            <text>{{$t('goods-search.goods-search.4eerty')}}</text>
+                            <text>{{$t('common.origin')}}</text>
                             <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_produce_region_list.length > 3" @tap="more_event" data-value="goods_produce_region_list">{{$t('common.more')}}</text>
                         </view>
                         <view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_produce_region_list.height + ';'">
@@ -142,7 +142,7 @@
                     <view v-if="(search_map_list.goods_params_list || null) != null && search_map_list.goods_params_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
-                            <text>{{$t('goods-search.goods-search.v6e5b7')}}</text>
+                            <text>{{$t('common.attribute')}}</text>
                             <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">{{$t('common.more')}}</text>
                         </view>
                         <view class="map-content map-text-item goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">

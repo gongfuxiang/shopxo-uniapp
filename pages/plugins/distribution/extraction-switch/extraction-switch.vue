@@ -26,7 +26,7 @@
                             <text class="cr-grey">{{ item.distance_unit }}</text>
                         </view>
                         <view class="item-operation fr oh">
-                            <button v-if="(item.is_default || 0) == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">{{$t('buy.buy.inyxpx')}}</button>
+                            <button v-if="(item.is_default || 0) == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">{{$t('common.select')}}</button>
                             <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('buy.buy.o7722q')}}</button>
                         </view>
                     </view>

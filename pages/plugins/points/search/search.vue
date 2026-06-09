@@ -31,11 +31,11 @@
             <!-- 结果摘要 -->
             <view class="padding-horizontal-main padding-top-sm padding-bottom-sm bg-white search-summary cr-grey text-size-sm flex-row jc-sb align-c">
                 <view class="summary-text">
-                    <text v-if="(search_keywords_value || null) != null && search_keywords_value != ''">{{ $t('points.search.keywords_label') }}「</text>
+                    <text v-if="(search_keywords_value || null) != null && search_keywords_value != ''">{{ $t('common.keywords') }}「</text>
                     <text v-if="(search_keywords_value || null) != null && search_keywords_value != ''" class="cr-main">{{ search_keywords_value }}</text>
                     <text v-if="(search_keywords_value || null) != null && search_keywords_value != ''">」</text>
                     <text v-else>{{ $t('points.search.all_goods') }}</text>
-                    <text>，{{ $t('common.total') }}{{ data_total }}{{ $t('points.search.goods_unit') }}</text>
+                    <text>，{{ $t('common.total') }}{{ data_total }}{{ $t('common.goods_unit') }}</text>
                 </view>
                 <text v-if="(search_keywords_value || null) != null && search_keywords_value != ''" class="clear-search cr-grey-9 text-size-xs cp" @tap="clear_search_event">{{ $t('points.search.clear_where') }}</text>
             </view>

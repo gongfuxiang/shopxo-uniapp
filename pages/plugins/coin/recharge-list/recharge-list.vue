@@ -3,7 +3,7 @@
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('cash-list.cash-list.n74r94') }}</view>
+                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('common.account') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_recharge_status_open_event">
@@ -11,7 +11,7 @@
                     <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_network_open_event">
-                    <view>{{ network_name !== null && network_name !== $t('common.all') ? network_name : $t('cash-list.cash-list.2g251t') }}</view>
+                    <view>{{ network_name !== null && network_name !== $t('common.all') ? network_name : $t('common.network') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
