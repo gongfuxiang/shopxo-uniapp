@@ -38,8 +38,8 @@
 
                             <!-- 按数量拆分选择 -->
                             <view v-for="(unit, uindex) in get_goods_units(goods)" :key="uindex"
-                                :class="'unit-booking-block ' + (get_goods_stock(goods) > 1 && uindex > 0 ? 'unit-booking-block-multi margin-top padding-top br-t-dashed' : 'margin-top-sm')">
-                                <view v-if="get_goods_stock(goods) > 1" class="unit-label text-size-xs cr-base margin-bottom-sm">数量{{ uindex + 1 }}</view>
+                                :class="'unit-booking-block ' + (get_goods_units(goods).length > 1 && uindex > 0 ? 'unit-booking-block-multi margin-top padding-top br-t-dashed' : 'margin-top-sm')">
+                                <view v-if="get_goods_units(goods).length > 1" class="unit-label text-size-xs cr-base margin-bottom-sm">数量{{ uindex + 1 }}</view>
 
                                 <!-- 服务人员横向滑动 -->
                                 <scroll-view scroll-x="true" class="staff-scroll" :show-scrollbar="false" enable-flex="true">
@@ -136,56 +136,54 @@
             componentNoData,
         },
         methods: {
+            /**
+             * 打开弹窗并初始化预约数据
+             * @param {Object} params cart_list-购物车商品 popup_title-标题 realstore_id-门店ID
+             */
             init(params) {
                 params = params || {};
                 var cart_list = params.cart_list || null;
                 var popup_title = params.popup_title || '选择服务人员时段';
                 var realstore_id = params.realstore_id || 0;
+                var booking_form = {};
+                if(cart_list != null) {
+                    for(var gi in cart_list) {
+                        var stock = parseInt(cart_list[gi].stock) || 1;
+                        booking_form[gi] = [];
+                        for(var ui = 0; ui < stock; ui++) {
+                            booking_form[gi].push({
+                                cart_id: cart_list[gi].id,
+                                goods_id: cart_list[gi].goods_id,
+                                unit_index: ui,
+                                staff_id: 0,
+                                staff_alias: '',
+                                staff_avatar: '',
+                                booking_periods_id: 0,
+                                period_text: '',
+                                ymd: 0,
+                            });
+                        }
+                    }
+                }
                 this.setData({
                     popup_status: true,
                     popup_title: popup_title,
                     realstore_id: realstore_id,
                     cart_list: cart_list,
-                    booking_form: {},
+                    booking_form: booking_form,
                     unit_periods: {},
                     unit_periods_loading: {},
                     init_loading_status: 1,
                     init_loading_msg: '',
                 });
-
-                if(cart_list != null) {
-                    this.setData({
-                        booking_form: this.init_booking_form(cart_list),
-                    });
-                }
-
                 this.load_init_data();
             },
 
-            init_booking_form(cart_list) {
-                var form = {};
-                for(var gi in cart_list) {
-                    var stock = parseInt(cart_list[gi].stock) || 1;
-                    form[gi] = [];
-                    for(var ui = 0; ui < stock; ui++) {
-                        form[gi].push({
-                            cart_id: cart_list[gi].id,
-                            goods_id: cart_list[gi].goods_id,
-                            unit_index: ui,
-                            staff_id: 0,
-                            staff_alias: '',
-                            staff_avatar: '',
-                            booking_periods_id: 0,
-                            period_text: '',
-                            ymd: 0,
-                        });
-                    }
-                }
-                return form;
-            },
-
+            /**
+             * 按商品购买数量返回序号数组，用于 v-for 拆分每个数量的预约块
+             */
             get_goods_units(goods) {
-                var stock = this.get_goods_stock(goods);
+                var stock = parseInt(goods.stock) || 1;
                 var units = [];
                 for(var i = 0; i < stock; i++) {
                     units.push(i);
@@ -193,40 +191,41 @@
                 return units;
             },
 
-            get_goods_stock(goods) {
-                return parseInt(goods.stock) || 1;
-            },
-
+            /**
+             * 获取某个商品某个数量单元的预约表单数据
+             */
             get_booking_unit(gindex, uindex) {
                 var units = this.booking_form[gindex] || [];
                 return units[uindex] || {};
             },
 
+            /**
+             * 判断服务人员是否已被当前单元选中
+             */
             is_staff_selected(gindex, uindex, staff_id) {
                 var item = this.get_booking_unit(gindex, uindex);
                 return (item.staff_id || 0) == staff_id;
             },
 
-            clone_booking_form() {
-                return JSON.parse(JSON.stringify(this.booking_form || {}));
-            },
-
-            get_unit_key(gindex, uindex) {
-                return String(gindex) + '_' + String(uindex);
-            },
-
+            /**
+             * 获取某个单元已加载的时段列表
+             */
             get_unit_periods(gindex, uindex) {
-                return this.unit_periods[this.get_unit_key(gindex, uindex)] || [];
+                var unit_key = String(gindex) + '_' + String(uindex);
+                return this.unit_periods[unit_key] || [];
             },
 
-            is_unit_periods_loading(gindex, uindex) {
-                return (this.unit_periods_loading[this.get_unit_key(gindex, uindex)] || 0) == 1;
-            },
-
+            /**
+             * 时段是否正在加载且尚无数据（模板展示“加载中...”）
+             */
             is_unit_periods_empty_loading(gindex, uindex) {
-                return this.is_unit_periods_loading(gindex, uindex) && this.get_unit_periods(gindex, uindex).length <= 0;
+                var unit_key = String(gindex) + '_' + String(uindex);
+                return (this.unit_periods_loading[unit_key] || 0) == 1 && this.get_unit_periods(gindex, uindex).length <= 0;
             },
 
+            /**
+             * 加载可选日期、服务人员等初始化数据
+             */
             load_init_data() {
                 this.setData({
                     init_loading_status: 1,
@@ -245,8 +244,26 @@
                         if(res.data.code == 0) {
                             var result = res.data.data;
                             var form = this.booking_form;
+                            // 兜底：若表单未初始化则按购物车重建
                             if((this.cart_list || null) != null && Object.keys(form).length <= 0) {
-                                form = this.init_booking_form(this.cart_list);
+                                form = {};
+                                for(var gi in this.cart_list) {
+                                    var stock = parseInt(this.cart_list[gi].stock) || 1;
+                                    form[gi] = [];
+                                    for(var ui = 0; ui < stock; ui++) {
+                                        form[gi].push({
+                                            cart_id: this.cart_list[gi].id,
+                                            goods_id: this.cart_list[gi].goods_id,
+                                            unit_index: ui,
+                                            staff_id: 0,
+                                            staff_alias: '',
+                                            staff_avatar: '',
+                                            booking_periods_id: 0,
+                                            period_text: '',
+                                            ymd: 0,
+                                        });
+                                    }
+                                }
                             }
                             set_data.ymd_list = result.ymd_list || [];
                             set_data.staff_list = result.staff_list || [];
@@ -267,8 +284,11 @@
                 });
             },
 
+            /**
+             * 加载指定单元（员工+日期）的可用时段，并校验已选时段是否仍有效
+             */
             load_unit_periods(gindex, uindex, staff_id, ymd) {
-                var unit_key = this.get_unit_key(gindex, uindex);
+                var unit_key = String(gindex) + '_' + String(uindex);
                 var loading_map = JSON.parse(JSON.stringify(this.unit_periods_loading || {}));
                 loading_map[unit_key] = 1;
                 this.setData({ unit_periods_loading: loading_map });
@@ -286,6 +306,7 @@
                     success: (res) => {
                         var periods_map = JSON.parse(JSON.stringify(this.unit_periods || {}));
                         var loading_map_done = JSON.parse(JSON.stringify(this.unit_periods_loading || {}));
+                        var form = JSON.parse(JSON.stringify(this.booking_form || {}));
                         loading_map_done[unit_key] = 0;
                         if(res.data.code == 0) {
                             var staff_list = res.data.data.staff_list || [];
@@ -297,7 +318,24 @@
                                 }
                             }
                             periods_map[unit_key] = periods;
-                            this.sync_unit_period_selection(gindex, uindex, periods);
+                            // 若之前已选时段，刷新后不可用则清空并提示
+                            var item = form[gindex][uindex];
+                            if((item.booking_periods_id || 0) > 0) {
+                                var matched = null;
+                                for(var pi in periods) {
+                                    if(parseInt(periods[pi]['id']) == parseInt(item.booking_periods_id)) {
+                                        matched = periods[pi];
+                                        break;
+                                    }
+                                }
+                                if(matched == null || parseInt(matched.is_available || 0) == 0) {
+                                    item.booking_periods_id = 0;
+                                    item.period_text = '';
+                                    if(matched != null) {
+                                        app.globalData.showToast('该时段已被占用，请重新选择');
+                                    }
+                                }
+                            }
                         } else {
                             periods_map[unit_key] = [];
                             app.globalData.showToast(res.data.msg);
@@ -305,6 +343,7 @@
                         this.setData({
                             unit_periods: periods_map,
                             unit_periods_loading: loading_map_done,
+                            booking_form: form,
                         });
                     },
                     fail: () => {
@@ -321,8 +360,11 @@
                 });
             },
 
+            /**
+             * 清空某个单元的时段缓存（切换员工/日期时调用）
+             */
             clear_unit_periods(gindex, uindex) {
-                var unit_key = this.get_unit_key(gindex, uindex);
+                var unit_key = String(gindex) + '_' + String(uindex);
                 var periods_map = JSON.parse(JSON.stringify(this.unit_periods || {}));
                 var loading_map = JSON.parse(JSON.stringify(this.unit_periods_loading || {}));
                 delete periods_map[unit_key];
@@ -333,67 +375,50 @@
                 });
             },
 
-            // 本单内是否与其他商品选了同一员工同一时段
-            is_period_local_occupied(gindex, uindex, staff_id, period_id) {
+            /**
+             * 判断时段是否可选（接口可用 + 本单内未被其他商品占用）
+             */
+            is_period_available(gindex, uindex, staff_id, period) {
+                if(parseInt(period.is_available || 0) == 0) {
+                    return false;
+                }
                 var current_ymd = this.get_booking_unit(gindex, uindex).ymd || 0;
                 for(var gi in this.booking_form) {
                     for(var ui in (this.booking_form[gi] || [])) {
                         if(String(gi) == String(gindex) && String(ui) == String(uindex)) {
                             continue;
                         }
-                        var item = this.booking_form[gi][ui];
-                        if((item.staff_id || 0) == staff_id && (item.booking_periods_id || 0) == period_id && (item.ymd || 0) == current_ymd && current_ymd > 0) {
-                            return true;
+                        var other = this.booking_form[gi][ui];
+                        if((other.staff_id || 0) == staff_id && (other.booking_periods_id || 0) == period.id && (other.ymd || 0) == current_ymd && current_ymd > 0) {
+                            return false;
                         }
                     }
                 }
-                return false;
+                return true;
             },
 
-            sync_unit_period_selection(gindex, uindex, periods) {
-                var form = this.clone_booking_form();
-                var item = form[gindex][uindex];
-                if((item.booking_periods_id || 0) <= 0) {
-                    return;
-                }
-                var matched = null;
-                for(var i in periods) {
-                    if(parseInt(periods[i]['id']) == parseInt(item.booking_periods_id)) {
-                        matched = periods[i];
-                        break;
-                    }
-                }
-                if(matched == null || parseInt(matched.is_available || 0) == 0) {
-                    item.booking_periods_id = 0;
-                    item.period_text = '';
-                    this.setData({ booking_form: form });
-                    if(matched != null) {
-                        app.globalData.showToast('该时段已被占用，请重新选择');
-                    }
-                }
-            },
-
-            is_period_available(gindex, uindex, staff_id, period) {
-                if(parseInt(period.is_available || 0) == 0) {
-                    return false;
-                }
-                return !this.is_period_local_occupied(gindex, uindex, staff_id, period.id);
-            },
-
+            /**
+             * 时段标签样式：选中 / 不可用 / 可选
+             */
             get_period_class(gindex, uindex, staff_id, period) {
                 var item = this.get_booking_unit(gindex, uindex);
-                if(this.is_unit_periods_loading(gindex, uindex)) {
+                var unit_key = String(gindex) + '_' + String(uindex);
+                if((this.unit_periods_loading[unit_key] || 0) == 1) {
                     return 'bg-grey-disabled cr-grey';
                 }
-                if((item.booking_periods_id || 0) == period.id && this.is_period_available(gindex, uindex, staff_id, period)) {
+                var available = this.is_period_available(gindex, uindex, staff_id, period);
+                if((item.booking_periods_id || 0) == period.id && available) {
                     return 'br-main bg-main-light cr-main cp';
                 }
-                if(!this.is_period_available(gindex, uindex, staff_id, period)) {
+                if(!available) {
                     return 'bg-grey-disabled cr-grey';
                 }
                 return 'bg-white br-grey cr-base cp';
             },
 
+            /**
+             * 选择/取消选择日期
+             */
             goods_ymd_event(e) {
                 if(parseInt(e.currentTarget.dataset.disabled || 0) == 1) {
                     app.globalData.showToast('该日期不可选');
@@ -402,7 +427,7 @@
                 var gindex = e.currentTarget.dataset.gindex;
                 var uindex = e.currentTarget.dataset.uindex;
                 var ymd = parseInt(e.currentTarget.dataset.ymd);
-                var form = this.clone_booking_form();
+                var form = JSON.parse(JSON.stringify(this.booking_form || {}));
                 var item = form[gindex][uindex];
                 if((item.staff_id || 0) == 0) {
                     app.globalData.showToast('请先选择服务人员');
@@ -423,6 +448,9 @@
                 this.load_unit_periods(gindex, uindex, item.staff_id, ymd);
             },
 
+            /**
+             * 获取当前商品可服务的员工列表（按商品绑定关系过滤）
+             */
             get_unit_staff_list(gindex, uindex) {
                 var list = this.staff_list || [];
                 var goods = (this.cart_list || [])[gindex];
@@ -455,6 +483,9 @@
                 return result;
             },
 
+            /**
+             * 选择/取消选择服务人员
+             */
             goods_staff_event(e) {
                 var gindex = e.currentTarget.dataset.gindex;
                 var uindex = e.currentTarget.dataset.uindex;
@@ -462,7 +493,7 @@
                 if((staff || null) == null) {
                     return false;
                 }
-                var form = this.clone_booking_form();
+                var form = JSON.parse(JSON.stringify(this.booking_form || {}));
                 if((form[gindex] || null) == null) {
                     return false;
                 }
@@ -471,30 +502,30 @@
                     item.staff_id = 0;
                     item.staff_alias = '';
                     item.staff_avatar = '';
-                    item.ymd = 0;
-                    item.booking_periods_id = 0;
-                    item.period_text = '';
-                    this.clear_unit_periods(gindex, uindex);
                 } else {
                     item.staff_id = staff.id;
                     item.staff_alias = staff.alias;
                     item.staff_avatar = staff.avatar || '';
-                    item.ymd = 0;
-                    item.booking_periods_id = 0;
-                    item.period_text = '';
-                    this.clear_unit_periods(gindex, uindex);
                 }
+                item.ymd = 0;
+                item.booking_periods_id = 0;
+                item.period_text = '';
+                this.clear_unit_periods(gindex, uindex);
                 this.setData({ booking_form: form });
             },
 
+            /**
+             * 选择/取消选择时段
+             */
             goods_period_event(e) {
                 var gindex = e.currentTarget.dataset.gindex;
                 var uindex = e.currentTarget.dataset.uindex;
-                if(this.is_unit_periods_loading(gindex, uindex)) {
+                var unit_key = String(gindex) + '_' + String(uindex);
+                if((this.unit_periods_loading[unit_key] || 0) == 1) {
                     return false;
                 }
                 var pindex = e.currentTarget.dataset.pindex;
-                var form = this.clone_booking_form();
+                var form = JSON.parse(JSON.stringify(this.booking_form || {}));
                 var item = form[gindex][uindex];
                 if((item.staff_id || 0) == 0) {
                     app.globalData.showToast('请先选择服务人员');
@@ -524,15 +555,22 @@
                 this.setData({ booking_form: form });
             },
 
-            // 收集提交数据并校验（选完人员/日期/时段 + 时段仍可用）
-            build_submit_data() {
+            /**
+             * 校验并提交预约数据，成功后关闭弹窗并回调
+             */
+            submit_event() {
+                if((this.cart_list || null) == null || this.cart_list.length <= 0) {
+                    app.globalData.showToast('购物车商品为空');
+                    return false;
+                }
                 var booking_data = [];
                 for(var gi in this.cart_list) {
                     var units = this.booking_form[gi] || [];
                     for(var ui in units) {
                         var item = units[ui];
                         if((item.staff_id || 0) == 0 || (item.ymd || 0) == 0 || (item.booking_periods_id || 0) == 0) {
-                            return { ok: false, msg: '请为每个数量选择服务人员、日期和时段' };
+                            app.globalData.showToast('请为每个数量选择服务人员、日期和时段');
+                            return false;
                         }
                         var periods = this.get_unit_periods(gi, ui);
                         var matched = null;
@@ -543,7 +581,8 @@
                             }
                         }
                         if(matched == null || !this.is_period_available(gi, ui, item.staff_id, matched)) {
-                            return { ok: false, msg: '所选时段已被占用，请重新选择' };
+                            app.globalData.showToast('所选时段已被占用，请重新选择');
+                            return false;
                         }
                         booking_data.push({
                             cart_id: item.cart_id,
@@ -557,28 +596,18 @@
                         });
                     }
                 }
-                return { ok: true, data: booking_data };
-            },
-
-            submit_event() {
-                if((this.cart_list || null) == null || this.cart_list.length <= 0) {
-                    app.globalData.showToast('购物车商品为空');
-                    return false;
-                }
-                var ret = this.build_submit_data();
-                if(!ret.ok) {
-                    app.globalData.showToast(ret.msg);
-                    return false;
-                }
 
                 this.setData({ popup_status: false, submit_loading: false });
                 if((app.globalData.data.staff_booking_pending || null) != null) {
-                    app.globalData.staff_booking_success(ret.data);
+                    app.globalData.staff_booking_success(booking_data);
                 } else {
-                    this.$emit('BookingSuccessEvent', ret.data);
+                    this.$emit('BookingSuccessEvent', booking_data);
                 }
             },
 
+            /**
+             * 关闭弹窗
+             */
             close_event() {
                 this.setData({ popup_status: false });
             },
