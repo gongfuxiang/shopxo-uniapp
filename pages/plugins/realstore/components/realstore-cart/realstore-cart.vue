@@ -134,6 +134,9 @@
             <!-- 购物车抛物线 -->
             <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
         </view>
+
+        <!-- 员工预定 -->
+        <component-realstore-staff-booking ref="staff_booking" v-on:BookingSuccessEvent="staff_booking_success_event"></component-realstore-staff-booking>
     </view>
 </template>
 <script>
@@ -144,6 +147,7 @@
     import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
     import componentBadge from '@/components/badge/badge';
     import componentNoData from '@/components/no-data/no-data';
+    import componentRealstoreStaffBooking from '@/components/realstore-staff-booking/realstore-staff-booking';
 
     var static_url = app.globalData.get_static_url('realstore', true);
     export default {
@@ -181,7 +185,9 @@
                 realstore_goods_data_cart_value: null,
                 realstore_goods_data_cart_text: this.$t('realstore-cart.realstore-cart.50lf68'),
                 // 样式
-                realstore_cart_content_style: ''
+                realstore_cart_content_style: '',
+                // 员工预定
+                is_staff_booking: 0,
             };
         },
 
@@ -190,7 +196,10 @@
             componentGoodsBuy,
             componentCartParaCurve,
             componentBadge,
-            componentNoData
+            componentNoData,
+            
+            componentRealstoreStaffBooking,
+            
         },
         props: {
             propCurrencySymbol: {
@@ -229,13 +238,21 @@
                             base: params.base || null,
                             source: params.source,
                             realstore_cart_content_style: 'bottom: '+tabbar_height+'rpx',
+                            is_staff_booking: parseInt((params.base || {}).is_buy_staff_booking || 0),
                         });
 
                         // 商品来源
                         var type_data = this.buy_use_type_data();
                         if(this.source == 'goods' && (params.realstore_id || null) == null) {
+                            var back_data = {
+                                buy_use_type_active_index: type_data.active_index,
+                                buy_use_type_data_index: type_data.data_index,
+                                realstore_id: this.info.id,
+                            };
+                            // 缓存事件数据
+                            uni.setStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.refresh_loading_event, back_data);
                             // 调用父级需要重新加载数据
-                            this.$emit('RefreshLoadingEvent', {buy_use_type_active_index: type_data.active_index, buy_use_type_data_index: type_data.data_index, realstore_id: this.info.id});
+                            this.$emit('RefreshLoadingEvent', back_data);
                         } else {
                             // 非系统购物车来源
                             if(this.source != 'system-cart') {
@@ -350,6 +367,8 @@
                                 is_first: 0,
                             });
 
+                            // 缓存事件数据
+                            uni.setStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.cart_data_back, this.cart);
                             // 购物车获取成功回调
                             this.$emit('CartDataBackEvent', this.cart);
                         } else {
@@ -473,17 +492,54 @@
                 // 起步价
                 var msg = this.starting_price_handle();
                 if(msg !== null) {
-                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2dc65q'));
+                    app.globalData.showToast(msg);
                     return false;
                 }
 
-                // 进入订单确认页面
+                this.buy_open_handle();
+            },
+
+            // 跳转订单确认
+            buy_open_handle() {
+                var ids = [];
+                if((this.cart || null) != null) {
+                    var temp_data = this.cart.data || [];
+                    for (var i in temp_data) {
+                        ids.push(temp_data[i]['id']);
+                    }
+                }
                 var data = this.request_params_merge(
                     {
                         buy_type: 'cart',
                         ids: ids.join(','),
                     }, 'buy');
-                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
+                data['staff_booking_cart_list'] = (this.cart || null) != null ? (this.cart.data || []) : [];
+                app.globalData.to_buy_handle(data, '/pages/buy/buy', this);
+            },
+
+            // 员工预定成功回调
+            staff_booking_success_event(booking_data) {
+                if((app.globalData.data.staff_booking_pending || null) != null) {
+                    app.globalData.staff_booking_success(booking_data);
+                    return true;
+                }
+                var ids = [];
+                if((this.cart || null) != null) {
+                    var temp_data = this.cart.data || [];
+                    for (var i in temp_data) {
+                        ids.push(temp_data[i]['id']);
+                    }
+                }
+                var data = this.request_params_merge(
+                    {
+                        buy_type: 'cart',
+                        ids: ids.join(','),
+                    }, 'buy');
+                data['staff_booking_cart_list'] = (this.cart || null) != null ? (this.cart.data || []) : [];
+                if((booking_data || null) != null) {
+                    data['staff_booking_data'] = booking_data;
+                }
+                app.globalData.to_buy_handle_finish(data);
             },
 
             // 门店状态判断
@@ -837,6 +893,8 @@
                 // 获取购物车数据
                 this.get_cart_data();
 
+                // 缓存事件数据
+                uni.setStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.cart_opt_success_back, params);
                 // 调用父级
                 this.$emit('CartSuccessEvent', params);
 
@@ -891,7 +949,15 @@
 
                 // 下单类型切换回调
                 var type_data = this.buy_use_type_data();
-                self.$emit('BuyTypeSwitchEvent', {buy_use_type_active_index: type_data.active_index, buy_use_type_data_index: type_data.data_index, realstore_id: this.info.id});
+                var back_data = {
+                    buy_use_type_active_index: type_data.active_index,
+                    buy_use_type_data_index: type_data.data_index,
+                    realstore_id: this.info.id,
+                };
+                // 缓存事件数据
+                uni.setStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.buy_type_switch_event, back_data);
+                // 回调事件
+                self.$emit('BuyTypeSwitchEvent', back_data);
             },
 
             // 下单类型弹窗关闭

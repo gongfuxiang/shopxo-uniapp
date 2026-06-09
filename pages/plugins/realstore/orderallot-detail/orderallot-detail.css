@@ -42,6 +42,30 @@
     width: 160rpx;
     height: 160rpx;
 }
+
+/*
+* 预约数据
+*/
+.staff-booking-item:last-child {
+    border-bottom: 0 !important;
+}
+.staff-booking-goods-image {
+    width: 120rpx;
+    height: 120rpx;
+    flex-shrink: 0;
+    margin-right: 20rpx;
+}
+.staff-booking-goods-base {
+    min-width: 0;
+}
+.staff-booking-staff-avatar {
+    width: 36rpx;
+    height: 36rpx;
+    vertical-align: middle;
+}
+.staff-booking-info-row {
+    line-height: 1.6;
+}
 .orderaftersale-btn-text {
     right: 0;
     bottom: 0;

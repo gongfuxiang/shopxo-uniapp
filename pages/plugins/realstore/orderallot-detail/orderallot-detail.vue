@@ -57,6 +57,40 @@
                     </view>
                 </view>
 
+                <!-- 预约数据 -->
+                <view v-if="(detail.staff_booking_data || null) != null && detail.staff_booking_data.length > 0" class="staff-booking bg-white padding-main border-radius-main spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">预约数据</view>
+                    <view v-for="(group, gindex) in detail.staff_booking_data" :key="gindex" :class="'staff-booking-item oh ' + (gindex + 1 >= detail.staff_booking_data.length ? 'padding-main padding-bottom-0' : 'br-b-dashed padding-main')">
+                        <view class="flex-row">
+                            <view v-if="(group.goods_url || null) != null && group.goods_url != ''" :data-value="group.goods_url" @tap="url_event" class="cp">
+                                <image v-if="(group.goods_images || null) != null" class="staff-booking-goods-image radius br" :src="group.goods_images" mode="aspectFill"></image>
+                            </view>
+                            <image v-else-if="(group.goods_images || null) != null" class="staff-booking-goods-image radius br" :src="group.goods_images" mode="aspectFill"></image>
+                            <view class="staff-booking-goods-base flex-1 flex-width">
+                                <view v-if="(group.goods_url || null) != null && group.goods_url != ''" :data-value="group.goods_url" @tap="url_event" class="multi-text cp">{{ group.goods_title || '' }}</view>
+                                <view v-else class="multi-text">{{ group.goods_title || '' }}</view>
+                                <view v-if="(group.goods_price || null) != null && group.goods_price != '' || (group.spec_text || null) != null && group.spec_text != ''" class="margin-top-xs">
+                                    <text v-if="(group.goods_price || null) != null && group.goods_price != ''" class="sales-price">{{ detail.currency_data.currency_symbol }}{{ group.goods_price }}</text>
+                                    <text v-if="(group.goods_price || null) != null && group.goods_price != ''" class="margin-left-sm">x{{ group.buy_number }}</text>
+                                    <text v-if="(group.spec_text || null) != null && group.spec_text != ''" class="cr-grey margin-left">{{ group.spec_text }}</text>
+                                </view>
+                            </view>
+                        </view>
+                        <view v-for="(booking, bindex) in group.bookings" :key="bindex" :class="bindex > 0 ? 'staff-booking-unit margin-top-sm padding-top-sm br-t-dashed' : 'margin-top-sm'">
+                            <view v-if="(booking.staff_alias || null) != null && booking.staff_alias != ''" class="staff-booking-info-row">
+                                <text class="cr-grey">服务人员：</text>
+                                <image v-if="(booking.staff_avatar || null) != null" class="staff-booking-staff-avatar radius margin-right-xs" :src="booking.staff_avatar" mode="aspectFill"></image>
+                                <text>{{ booking.staff_alias }}</text>
+                            </view>
+                            <view v-if="((booking.period_text || null) != null && booking.period_text != '') || ((booking.ymd_text || null) != null && booking.ymd_text != '')" class="staff-booking-info-row margin-top-xs">
+                                <text class="cr-grey">预约时间：</text>
+                                <text v-if="(booking.ymd_text || null) != null && booking.ymd_text != ''">{{ booking.ymd_text }}</text>
+                                <text v-if="(booking.period_text || null) != null && booking.period_text != ''" :class="(booking.ymd_text || null) != null && booking.ymd_text != '' ? 'margin-left' : ''">{{ booking.period_text }}</text>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
                 <!-- 虚拟销售数据 -->
                 <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || item.fictitious_goods_title }}</view>
@@ -197,25 +231,32 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            this.setData({
-                                detail: data.data,
-                                detail_list: [
-                                    { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || '', is_copy: 1 },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
-                                    { name: this.$t('common.add_time'), value: data.data.add_time || '' },
-                                    { name: this.$t('common.receive_time'), value: data.data.receive_time || '' },
-                                    { name: this.$t('common.service_time'), value: data.data.service_time || '' },
-                                    { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || '' },
-                                ],
-                                site_fictitious: data.site_fictitious || null,
-                                data_list_loding_status: 3,
-                                data_bottom_line_status: true,
-                                data_list_loding_msg: '',
-                            });
+                            if((data.data || null) != null) {
+                                this.setData({
+                                    detail: data.data,
+                                    detail_list: [
+                                        { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || '' },
+                                        { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || '', is_copy: 1 },
+                                        { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
+                                        { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || '' },
+                                        { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
+                                        { name: this.$t('common.add_time'), value: data.data.add_time || '' },
+                                        { name: this.$t('common.receive_time'), value: data.data.receive_time || '' },
+                                        { name: this.$t('common.service_time'), value: data.data.service_time || '' },
+                                        { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || '' },
+                                        { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || '' },
+                                    ],
+                                    site_fictitious: data.site_fictitious || null,
+                                    data_list_loding_status: 3,
+                                    data_bottom_line_status: true,
+                                    data_list_loding_msg: '',
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_bottom_line_status: false,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
@@ -263,7 +304,8 @@
                 if((e.currentTarget.dataset.value || null) != null) {
                     app.globalData.text_copy_event(e);
                 }
-            }
+            },
+
         },
     };
 </script>

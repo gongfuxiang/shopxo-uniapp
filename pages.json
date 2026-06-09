@@ -73,7 +73,13 @@
                 "enablePullDownRefresh": false,
                 // 禁止页面下拉
                 "disableScroll": true,
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "",
+                "usingComponents": {
+                    "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
+                },
+                "componentPlaceholder": {
+                    "component-realstore-cart": "view"
+                }
             }
         },
         {
@@ -195,6 +201,7 @@
                             "component-goods-comments": "/pages/goods-detail/components/goods-comments/goods-comments",
                             "component-binding-detail-list": "/pages/plugins/binding/components/binding-detail-list/binding-detail-list",
                             "component-realstore-list": "/pages/plugins/realstore/components/realstore-list/realstore-list",
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart",
                             "component-shop-list": "/pages/plugins/shop/components/shop-list/shop-list",
                             "component-ask-comments-goods": "/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods",
                             "component-coupon-card": "/pages/plugins/coupon/components/coupon-card/coupon-card",
@@ -205,6 +212,7 @@
                             "component-goods-comments": "view",
                             "component-binding-detail-list": "view",
                             "component-realstore-list": "view",
+                            "component-realstore-cart": "view",
                             "component-shop-list": "view",
                             "component-ask-comments-goods": "view",
                             "component-coupon-card": "view",
@@ -245,7 +253,13 @@
                         "enablePullDownRefresh": false,
                         // 禁止页面下拉
                         "disableScroll": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
+                        },
+                        "componentPlaceholder": {
+                            "component-realstore-cart": "view"
+                        }
                     }
                 }
             ]
@@ -1534,7 +1548,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
+                        },
+                        "componentPlaceholder": {
+                            "component-realstore-cart": "view"
+                        }
                     }
                 },
                 {

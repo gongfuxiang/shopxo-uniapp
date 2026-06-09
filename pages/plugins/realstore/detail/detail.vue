@@ -302,7 +302,7 @@
     import componentSearch from '@/components/search/search';
     import componentBadge from '@/components/badge/badge';
     import componentPopup from '@/components/popup/popup';
-    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
+    import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentSharePopup from '@/components/share-popup/share-popup';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -420,7 +420,7 @@
             componentBadge,
             componentPopup,
             componentRealstoreCart,
-            componentSharePopup
+            componentSharePopup,
         },
 
         onLoad(params) {
@@ -845,12 +845,14 @@
 
             // 购物车操作成功回调
             goods_opt_cart_back_event(params) {
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.cart_opt_success_back);
                 // 更新列表数据处理
                 this.cart_data_list_handle(params);
             },
 
             // 购物车数据获取成功回调
             cart_data_back_event(params) {
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.cart_data_back);
                 var temp_data_list = this.data_list;
                 if (temp_data_list.length > 0) {
                     for (var i in temp_data_list) {
@@ -1048,6 +1050,7 @@
 
             // 下单类型切换事件回调
             buy_type_switch_event(params) {
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.buy_type_switch_event);
                 this.setData({
                     buy_use_type_active_index: params.buy_use_type_active_index,
                     data_page: 1,

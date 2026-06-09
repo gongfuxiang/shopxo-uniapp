@@ -69,12 +69,12 @@
                     </block>
 
                     <view class="team-members flex-row flex-wrap jc-c margin-top-main">
-                        <view v-for="(item, index) in members" :key="'m-' + index" class="member-item tc">
+                        <view v-for="(item, index) in members" :key="item.user_id" class="member-item tc">
                             <image :src="item.avatar" mode="aspectFill" class="member-avatar radius"></image>
                             <view v-if="item.is_team_leader == 1" class="leader-badge bg-main cr-white text-size-xss radius padding-horizontal-xs">团长</view>
                             <view class="text-size-xs cr-grey margin-top-xs single-text">{{ item.user_name_view }}</view>
                         </view>
-                        <view v-for="(item, index) in empty_slots" :key="'e-' + index" class="member-item tc">
+                        <view v-for="(item, index) in empty_slots" :key="item.slot_key" class="member-item tc">
                             <view class="member-avatar member-empty bg-grey-f5 cr-grey-c radius">?</view>
                         </view>
                     </view>
@@ -206,12 +206,17 @@
                             var share_title = groupbuy.title || goods.title || '邀请你参团';
                             var share_desc = '还差' + (team.remain_number || 0) + '人成团，快来一起拼团吧';
                             var countdown_time = this.parse_countdown_time(team);
+                            var empty_slots_raw = result.empty_slots || [];
+                            var empty_slots = [];
+                            for (var ei = 0; ei < empty_slots_raw.length; ei++) {
+                                empty_slots.push({ slot_key: 'empty-' + ei });
+                            }
                             this.setData({
                                 team: team,
                                 groupbuy: groupbuy,
                                 goods: goods,
                                 members: result.members || [],
-                                empty_slots: result.empty_slots || [],
+                                empty_slots: empty_slots,
                                 groupbuy_config: result.groupbuy_config || {},
                                 play_side_nav: result.play_side_nav || [],
                                 user: user,

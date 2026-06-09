@@ -845,6 +845,11 @@
                 // 虚拟币
                 data['plugins_coin_payment_id'] = this.plugins_coin_payment_id;
 
+                // 门店员工预定（uni-app POST 需 JSON 字符串）
+                if((data.staff_booking_data || null) != null && typeof data.staff_booking_data == 'object') {
+                    data.staff_booking_data = JSON.stringify(data.staff_booking_data);
+                }
+
                 return data;
             },
 

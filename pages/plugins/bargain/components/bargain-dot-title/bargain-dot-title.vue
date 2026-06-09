@@ -1,11 +1,11 @@
 <template>
     <view class="bargain-dot-title" :class="propClass">
         <view class="title-dot-deco title-dot-deco-left" aria-hidden="true">
-            <view v-for="(item, index) in dot_list" :key="'l' + index" class="title-dot"></view>
+            <view v-for="(item, index) in dot_list" :key="item" class="title-dot"></view>
         </view>
         <text class="title-text" :class="propTextClass">{{ propTitle }}</text>
         <view class="title-dot-deco title-dot-deco-right" aria-hidden="true">
-            <view v-for="(item, index) in dot_list" :key="'r' + index" class="title-dot"></view>
+            <view v-for="(item, index) in dot_list" :key="item" class="title-dot"></view>
         </view>
     </view>
 </template>

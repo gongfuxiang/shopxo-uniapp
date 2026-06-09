@@ -841,7 +841,7 @@
     import componentSharePopup from '@/components/share-popup/share-popup';
     import componentGoodsComments from '@/pages/goods-detail/components/goods-comments/goods-comments';
     import componentCategorylimitWarmTips from '@/pages/goods-detail/components/categorylimit-warm-tips/categorylimit-warm-tips';
-    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
+    import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
     import componentAskCommentsGoods from '@/pages/plugins/ask/components/ask-comments-goods/ask-comments-goods';

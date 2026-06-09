@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url:'https://d1.shopxo.vip/',
+                request_url:'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url:'https://d1.shopxo.vip/',
+                static_url:'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -100,6 +100,9 @@
 
                 // 商品分类页面开启购物车导航（0否, 1是）
                 category_goods_is_show_cart_nav: 1,
+
+                // 员工预定待结算数据
+                staff_booking_pending: null,
 
                 // 用户中心菜单默认展示模式（0 九宫格, 1 列表）
                 user_center_nav_show_model_type: 0,
@@ -240,6 +243,14 @@
 
                 // 门店选择详情缓存
                 cache_realstore_detail_choice_key: 'cache_realstore_detail_choice_key',
+
+                // 门店购物车缓存keys
+                cache_plugins_realstore_cart_keys: {
+                    cart_opt_success_back: 'cache_plugins_realstore_cart_opt_success_back',
+                    cart_data_back: 'cache_plugins_realstore_cart_data_back',
+                    refresh_loading_event: 'cache_plugins_realstore_cart_refresh_loading_event',
+                    buy_type_switch_event: 'cache_plugins_realstore_cart_buy_type_switch_event',
+                },
 
                 // 互联网医院就诊人选择数据
                 cache_hospital_patient_choice_value_key: 'cache_hospital_patient_choice_value_key',
@@ -2549,9 +2560,110 @@
                 };
             },
 
+            // 是否需要进行门店员工预定
+            is_staff_booking_required(buy_data) {
+                buy_data = buy_data || {};
+                if((buy_data.staff_booking_data || null) != null) {
+                    return false;
+                }
+                if((buy_data.realstore_id || 0) <= 0) {
+                    return false;
+                }
+                if((buy_data.buy_type || '') != 'cart') {
+                    return false;
+                }
+                if((buy_data.staff_booking_cart_list || null) == null || buy_data.staff_booking_cart_list.length <= 0) {
+                    return false;
+                }
+                var base = this.get_config('plugins_base.realstore.data', {}) || {};
+                return parseInt(base.is_buy_staff_booking || 0) == 1;
+            },
+
+            // 获取当前页面员工预定组件
+            get_staff_booking_ref(context_vm) {
+                if((context_vm || null) != null) {
+                    if((context_vm.$refs.staff_booking || null) != null) {
+                        return context_vm.$refs.staff_booking;
+                    }
+                    if((context_vm.$refs.realstore_cart || null) != null && (context_vm.$refs.realstore_cart.$refs.staff_booking || null) != null) {
+                        return context_vm.$refs.realstore_cart.$refs.staff_booking;
+                    }
+                }
+                var page = this.get_page_object();
+                var vm = (page || null) != null ? page.$vm : null;
+                if(vm == null) {
+                    return null;
+                }
+                if((vm.$refs.cart || null) != null && (vm.$refs.cart.$refs.realstore_cart || null) != null && (vm.$refs.cart.$refs.realstore_cart.$refs.staff_booking || null) != null) {
+                    return vm.$refs.cart.$refs.realstore_cart.$refs.staff_booking;
+                }
+                if((vm.$refs.realstore_cart || null) != null && (vm.$refs.realstore_cart.$refs.staff_booking || null) != null) {
+                    return vm.$refs.realstore_cart.$refs.staff_booking;
+                }
+                return null;
+            },
+
+            // 打开员工预定弹窗
+            trigger_staff_booking(buy_data, pages, context_vm, callback) {
+                var staff_booking_ref = this.get_staff_booking_ref(context_vm);
+                if(staff_booking_ref != null && typeof staff_booking_ref.init == 'function') {
+                    this.data.staff_booking_pending = {
+                        buy_data: buy_data,
+                        pages: pages,
+                    };
+                    var base = this.get_config('plugins_base.realstore.data', {}) || {};
+                    staff_booking_ref.init({
+                        realstore_id: buy_data.realstore_id,
+                        cart_list: buy_data.staff_booking_cart_list,
+                        popup_title: base.staff_booking_popup_title || '选择服务人员时段',
+                    });
+                    if(typeof callback === 'function') {
+                        callback(true);
+                    }
+                    return true;
+                }
+                if(typeof callback === 'function') {
+                    callback(false);
+                }
+                return false;
+            },
+
+            // 员工预定成功回调
+            staff_booking_success(booking_data) {
+                var pending = this.data.staff_booking_pending || null;
+                if(pending == null) {
+                    return false;
+                }
+                var buy_data = pending.buy_data || {};
+                if((booking_data || null) != null) {
+                    buy_data['staff_booking_data'] = booking_data;
+                }
+                this.data.staff_booking_pending = null;
+                this.to_buy_handle_finish(buy_data, pending.pages || '/pages/buy/buy');
+                return true;
+            },
+
+            // 进入购买页面
+            to_buy_handle_finish(buy_data, pages = '/pages/buy/buy') {
+                var data = JSON.parse(JSON.stringify(buy_data || {}));
+                delete data.staff_booking_cart_list;
+                this.url_open(pages+'?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
+            },
+
             // 进入购买
-            to_buy_handle(buy_data, pages = '/pages/buy/buy') {
-                this.url_open(pages+'?data=' + encodeURIComponent(base64.encode(JSON.stringify(buy_data))));
+            to_buy_handle(buy_data, pages = '/pages/buy/buy', context_vm = null) {
+                buy_data = buy_data || {};
+                if(this.is_staff_booking_required(buy_data)) {
+                    var self = this;
+                    this.trigger_staff_booking(buy_data, pages, context_vm, function(success) {
+                        if(!success) {
+                            self.showToast('员工预定加载失败，请稍后重试');
+                        }
+                    });
+                    return true;
+                }
+                this.to_buy_handle_finish(buy_data, pages);
+                return true;
             },
 
             // 位置权限校验

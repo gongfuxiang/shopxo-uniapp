@@ -1,0 +1,247 @@
+/**
+* 商品列表
+*/
+.scroll-box {
+    height: 100vh;
+}
+.scroll-box .content {
+    padding-bottom: 60rpx;
+}
+.scroll-box.cart .content {
+    padding-bottom: calc(210rpx + env(safe-area-inset-bottom));
+}
+.cart-goods-title {
+    line-height: 44rpx;
+    min-height: 86rpx;
+}
+.cart-goods-image {
+    width: 156rpx;
+    height: 156rpx;
+}
+.cart-goods-image.cover-tall {
+    height: 190rpx;
+}
+.cart-goods-base {
+    width: calc(100% - 170rpx);
+}
+.cart-goods-item .selected {
+    margin-top: 60rpx;
+}
+
+/**
+ * 错误提示
+ */
+.cart-goods-item .error-msg {
+    left: 80rpx;
+    top: 78rpx;
+    width: 160rpx;
+    filter: blur(0.3px);
+}
+.cart-goods-item .error-msg text {
+    padding: 2rpx 10rpx;
+    box-shadow: 0 2px 10px rgb(181 181 181 / 95%);
+}
+
+/**
+ * 底部
+ */
+.cart-goods-item .goods-bottom {
+    height: 58rpx;
+}
+
+/**
+* 数量操作
+*/
+.cart-number-content {
+    right: 0;
+    top: 0;
+}
+.cart-number-content .number-submit {
+    width: 60rpx;
+    font-weight: bold;
+}
+.cart-number-content .number-input {
+    width: 30px;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #efefef;
+}
+.cart-number-content .number-submit,
+.cart-number-content .number-input {
+    padding: 0;
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+/**
+* 空购物车
+*/
+.cart-no-data-box {
+    padding: 140rpx 0 80rpx 0;
+}
+.cart-no-data-box .image {
+    width: 160rpx;
+}
+
+/**
+* 操作导航
+*/
+.bottom-fixed-content {
+    height: 106rpx;
+}
+.cart-nav-base {
+    width: calc(75% - 20rpx);
+}
+.cart-nav-submit {
+    padding-right: 16rpx;
+    white-space: nowrap;
+}
+.cart-nav-submit .nav-btn {
+    font-size: 32rpx;
+    padding: 0 32rpx;
+    height: 70rpx;
+    line-height: 70rpx;
+    border-radius: 0;
+}
+.bottom-fixed .price {
+    width: calc(100% - 170rpx);
+    padding: 16rpx 0 16rpx 16rpx;
+}
+.bottom-fixed .sales-price {
+    max-width: calc(100% - 80rpx);
+}
+.bottom-fixed .price .discount-details {
+    height: 32rpx;
+    background: #f2f2f2;
+    padding: 0 12rpx;
+    border-radius: 16rpx;
+    margin-left: 18rpx;
+}
+.cart-nav-remove-submit {
+    padding: 0rpx 12rpx;
+}
+
+/*
+* 展示型
+*/
+.cart-exhibition-mode .exhibition-btn {
+    line-height: 80rpx;
+}
+.cart-exhibition-mode-data .items {
+    padding-left: 0;
+}
+.cart-exhibition-mode-data .error-msg {
+    left: 26rpx;
+}
+
+/**
+ * 猜你喜欢
+ */
+.guess-like {
+    position: relative;
+    text-align: center;
+    display: inline-block;
+}
+.guess-like::before,
+.guess-like::after {
+    content: '';
+    width: 76px;
+    height: 1px;
+    background: #dddddd;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.guess-like::before {
+    left: calc(100% + 20rpx);
+}
+.guess-like::after {
+    right: calc(100% + 20rpx);
+}
+
+/**
+ * 顶部导航
+ */
+.cart-right-title {
+    padding-right: 40rpx;
+}
+.cart-top-nav {
+    width: 260rpx;
+}
+.cart-top-nav .item {
+    width: 50%;
+    height: 54rpx;
+    line-height: 54rpx;
+}
+.realstore-nav {
+    height: 92rpx;
+    background: linear-gradient(180deg, #fffaf1 0%, #ffffff 100%);
+}
+
+/**
+ * 门店弹窗选择
+ */
+.plugins-realstore-choice-container {
+    max-height: 60vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 20rpx;
+}
+
+/**
+ * 查看明细弹窗
+ */
+.discount_detail-popup-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: #f6f6f6;
+    top: 0;
+    z-index: 2;
+    padding: 24rpx;
+}
+.discount_detail-popup-goods-list {
+    margin-top: 84rpx;
+}
+.discount-detail-popup-z-index {
+    z-index: 1002 !important;
+}
+.discount_detail-popup {
+    margin-bottom: 140rpx;
+    height: calc(70vh - 122rpx);
+    overflow-y: auto;
+}
+.scroll-box-popup {
+    height: 480rpx;
+}
+.scroll-box-popup.close {
+    transition: all 0.3s ease;
+    height: 234rpx;
+}
+.scroll-box-popup.close.cover-tall {
+    height: 274rpx;
+}
+.scroll-box-popup .content {
+    padding-bottom: 0 !important;
+}
+.scroll-box-popup .content .item {
+    width: 25%;
+}
+.scroll-box-popup .content .item .cart-goods-image {
+    width: 100%;
+}
+.scroll-box-popup .cart-selected {
+    background-color: #fff;
+    height: 46rpx;
+    border-radius: 50%;
+    padding: 0 4rpx;
+}
+.scroll-box-popup .alias {
+    margin-left: 20rpx;
+    padding: 0 12rpx;
+    line-height: 40rpx;
+    height: 40rpx;
+    font-size: 20rpx;
+    background: #eee;
+    border-radius: 20rpx;
+}
