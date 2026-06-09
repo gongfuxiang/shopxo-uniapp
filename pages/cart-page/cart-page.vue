@@ -126,7 +126,7 @@
                     </view>
 
                     <!-- 猜你喜欢 -->
-                    <view v-if="goods_list.length > 0" class="padding-horizontal-main margin-top-xxxl">
+                    <view v-if="(goods_list || null) != null && goods_list.length > 0" class="padding-horizontal-main margin-top-xxxl">
                         <view class="tc spacing-mb">
                             <view class="guess-like fw-b text-size-md">{{ $t('goods-detail.goods-detail.v2974w') }}</view>
                         </view>
@@ -1256,9 +1256,6 @@
 
             // 猜你喜欢加入购物车回调
             cart_success_event(params) {
-                console.log(params, 1)
-                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.cart_opt_success_back);
-                console.log(params, 2);
                 // 更新猜你喜欢列表数据
                 this.setData({
                     goods_list: params.goods_list,

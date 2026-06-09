@@ -136,7 +136,105 @@
         </view>
 
         <!-- 员工预定 -->
-        <component-realstore-staff-booking ref="staff_booking" v-on:BookingSuccessEvent="staff_booking_success_event"></component-realstore-staff-booking>
+        <component-popup :propShow="staff_booking_popup_status" propPosition="bottom" @onclose="staff_booking_close_event">
+            <view class="padding-top-main bg-white plugins-realstore-staff-booking-popup">
+                <view class="padding-horizontal-main margin-bottom pr">
+                    <view class="plugins-realstore-staff-booking-title fw-b text-size tc">{{ staff_booking_popup_title }}</view>
+                    <view class="plugins-realstore-staff-booking-close pa" @tap.stop="staff_booking_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+
+                <scroll-view scroll-y="true" class="plugins-realstore-staff-booking-scroll-content">
+                    <view class="plugins-realstore-staff-booking-scroll-inner padding-horizontal-main">
+                        <view v-if="staff_booking_init_loading_status != 3" class="plugins-realstore-staff-booking-init-loading">
+                            <component-no-data :propStatus="staff_booking_init_loading_status" :propMsg="staff_booking_init_loading_msg" :propBackBtn="false" propLoadingLogoTop="20%"></component-no-data>
+                        </view>
+                        <block v-if="staff_booking_init_loading_status == 3 && (staff_booking_cart_list || null) != null && staff_booking_cart_list.length > 0">
+                            <view v-for="(goods, gindex) in staff_booking_cart_list" :key="gindex" :class="'plugins-realstore-staff-booking-goods-item ' + (gindex + 1 >= staff_booking_cart_list.length ? '' : 'br-b padding-bottom-xxxxl margin-bottom-xxxxl')">
+                                <view class="flex-row jc-sb">
+                                    <image :src="goods.images" mode="widthFix" class="plugins-realstore-staff-booking-goods-img radius br"></image>
+                                    <view class="plugins-realstore-staff-booking-goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                        <view class="plugins-realstore-staff-booking-goods-base-content">
+                                            <view class="plugins-realstore-staff-booking-goods-title text-size-sm single-text">{{ goods.title }}</view>
+                                            <view v-if="(goods.spec || null) != null && goods.spec.length > 0" class="text-size-xs cr-grey margin-top-sm single-text">
+                                                <block v-for="(sv, si) in goods.spec" :key="si">
+                                                    <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
+                                                    <text>{{ sv.value }}</text>
+                                                </block>
+                                            </view>
+                                        </view>
+                                        <view>
+                                            <view class="sales-price text-size-sm single-text">{{ propCurrencySymbol }}{{ goods.price }}</view>
+                                        </view>
+                                    </view>
+                                </view>
+
+                                <view v-for="(unit, uindex) in staff_booking_get_goods_units(goods)" :key="uindex"
+                                    :class="'plugins-realstore-staff-booking-unit-block ' + (staff_booking_get_goods_units(goods).length > 1 && uindex > 0 ? 'plugins-realstore-staff-booking-unit-block-multi margin-top padding-top br-t-dashed' : 'margin-top-sm')">
+                                    <view v-if="staff_booking_get_goods_units(goods).length > 1" class="plugins-realstore-staff-booking-unit-label text-size-xs cr-base margin-bottom-sm">数量{{ uindex + 1 }}</view>
+
+                                    <scroll-view scroll-x="true" class="plugins-realstore-staff-booking-staff-scroll" :show-scrollbar="false" enable-flex="true">
+                                        <view class="plugins-realstore-staff-booking-staff-scroll-inner">
+                                            <view v-for="(staff, sindex) in staff_booking_get_unit_staff_list(gindex, uindex)" :key="sindex"
+                                                :class="'plugins-realstore-staff-booking-staff-card dis-inline-block tc margin-right-sm br ' + (staff_booking_is_staff_selected(gindex, uindex, staff.id) ? 'br-main bg-main-light cr-main' : 'bg-white br-grey cp')"
+                                                :data-gindex="gindex"
+                                                :data-uindex="uindex"
+                                                :data-sindex="sindex"
+                                                @tap="staff_booking_goods_staff_event">
+                                                <image :src="staff.avatar" mode="aspectFill" class="plugins-realstore-staff-booking-staff-avatar-sm radius margin-bottom-xs"></image>
+                                                <view class="plugins-realstore-staff-booking-staff-name text-size-xss single-text">{{ staff.alias }}</view>
+                                            </view>
+                                        </view>
+                                    </scroll-view>
+
+                                    <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0" class="margin-top-sm">
+                                        <view class="cr-grey text-size-xss margin-bottom-xs">选择日期</view>
+                                        <scroll-view scroll-x="true" class="scroll-view-horizontal plugins-realstore-staff-booking-unit-date-scroll" :show-scrollbar="false">
+                                            <view v-for="(date_item, date_index) in staff_booking_ymd_list" :key="date_index"
+                                                :class="'plugins-realstore-staff-booking-date-item margin-right-sm radius text-size-sm br ' + ((date_item.day_label || '') != '' ? 'plugins-realstore-staff-booking-date-item-with-label ' : 'plugins-realstore-staff-booking-date-item-no-label ') + (staff_booking_get_booking_unit(gindex, uindex).ymd == date_item.ymd ? 'br-main bg-main-light cr-main' : (date_item.disabled == 1 ? 'bg-grey-disabled cr-grey' : 'bg-white br-grey cr-base cp'))"
+                                                :data-gindex="gindex"
+                                                :data-uindex="uindex"
+                                                :data-ymd="date_item.ymd"
+                                                :data-disabled="date_item.disabled"
+                                                @tap="staff_booking_goods_ymd_event">
+                                                <view v-if="(date_item.day_label || '') != ''" class="plugins-realstore-staff-booking-date-main-wrap">
+                                                    <view class="plugins-realstore-staff-booking-date-main">{{ date_item.date_text }}</view>
+                                                </view>
+                                                <view v-else class="plugins-realstore-staff-booking-date-main">{{ date_item.date_text }}</view>
+                                                <view v-if="(date_item.day_label || '') != ''" class="plugins-realstore-staff-booking-date-day-label text-size-xss">{{ date_item.day_label }}</view>
+                                            </view>
+                                        </scroll-view>
+                                    </view>
+
+                                    <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0 && staff_booking_get_booking_unit(gindex, uindex).ymd > 0" class="plugins-realstore-staff-booking-period-list margin-top-sm">
+                                        <view class="cr-grey text-size-xss margin-bottom-xs">选择时段</view>
+                                        <view v-if="staff_booking_is_unit_periods_empty_loading(gindex, uindex)" class="cr-grey text-size-xs">加载中...</view>
+                                        <view v-else-if="staff_booking_get_unit_periods(gindex, uindex).length <= 0" class="cr-grey text-size-xs">该日期暂无可用时段</view>
+                                        <view v-else class="plugins-realstore-staff-booking-period-wrap">
+                                            <view v-for="(period, pindex) in staff_booking_get_unit_periods(gindex, uindex)" :key="pindex"
+                                                :class="'plugins-realstore-staff-booking-period-tag dis-inline-block margin-right-sm margin-bottom-sm padding-horizontal-sm padding-vertical-xs radius text-size-xs br ' + staff_booking_get_period_class(gindex, uindex, staff_booking_get_booking_unit(gindex, uindex).staff_id, period)"
+                                                :data-gindex="gindex"
+                                                :data-uindex="uindex"
+                                                :data-pindex="pindex"
+                                                @tap="staff_booking_goods_period_event">
+                                                {{ period.name || '' }}<text v-if="parseInt(period.is_available || 0) == 0" class="cr-grey">({{ parseInt(period.occupied_flag || 0) == 1 ? '已约' : '被约' }})</text>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                </scroll-view>
+
+                <view class="padding-main">
+                    <button type="default" hover-class="none" :loading="staff_booking_submit_loading" :disabled="staff_booking_submit_loading || staff_booking_init_loading_status != 3" class="radius bg-main cr-white text-size-md wh-auto" @tap="staff_booking_submit_event">
+                        确认并去结算
+                    </button>
+                </view>
+            </view>
+        </component-popup>
     </view>
 </template>
 <script>
@@ -147,7 +245,6 @@
     import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
     import componentBadge from '@/components/badge/badge';
     import componentNoData from '@/components/no-data/no-data';
-    import componentRealstoreStaffBooking from '@/components/realstore-staff-booking/realstore-staff-booking';
 
     var static_url = app.globalData.get_static_url('realstore', true);
     export default {
@@ -188,6 +285,18 @@
                 realstore_cart_content_style: '',
                 // 员工预定
                 is_staff_booking: 0,
+                staff_booking_popup_status: false,
+                staff_booking_popup_title: '选择服务人员时段',
+                staff_booking_realstore_id: 0,
+                staff_booking_ymd_list: [],
+                staff_booking_staff_list: [],
+                staff_booking_cart_list: null,
+                staff_booking_form: {},
+                staff_booking_unit_periods: {},
+                staff_booking_unit_periods_loading: {},
+                staff_booking_init_loading_status: 3,
+                staff_booking_init_loading_msg: '',
+                staff_booking_submit_loading: false,
             };
         },
 
@@ -197,9 +306,6 @@
             componentCartParaCurve,
             componentBadge,
             componentNoData,
-            
-            componentRealstoreStaffBooking,
-            
         },
         props: {
             propCurrencySymbol: {
@@ -1080,7 +1186,446 @@
                     var url = '/pages/goods-detail/goods-detail?id=' + goods.id + '&is_opt_back=1&buy_use_type_data_index=' + type_data.data_index + '&realstore_id=' + this.info.id;
                     app.globalData.url_open(url);
                 }
-            }
+            },
+
+            // 打开员工预定弹窗并初始化
+            staff_booking_init(params) {
+                params = params || {};
+                var cart_list = params.cart_list || null;
+                var popup_title = params.popup_title || '选择服务人员时段';
+                var realstore_id = params.realstore_id || 0;
+                var booking_form = {};
+                if(cart_list != null) {
+                    for(var gi in cart_list) {
+                        var stock = parseInt(cart_list[gi].stock) || 1;
+                        booking_form[gi] = [];
+                        for(var ui = 0; ui < stock; ui++) {
+                            booking_form[gi].push({
+                                cart_id: cart_list[gi].id,
+                                goods_id: cart_list[gi].goods_id,
+                                unit_index: ui,
+                                staff_id: 0,
+                                staff_alias: '',
+                                staff_avatar: '',
+                                booking_periods_id: 0,
+                                period_text: '',
+                                ymd: 0,
+                            });
+                        }
+                    }
+                }
+                this.setData({
+                    staff_booking_popup_status: true,
+                    staff_booking_popup_title: popup_title,
+                    staff_booking_realstore_id: realstore_id,
+                    staff_booking_cart_list: cart_list,
+                    staff_booking_form: booking_form,
+                    staff_booking_unit_periods: {},
+                    staff_booking_unit_periods_loading: {},
+                    staff_booking_init_loading_status: 1,
+                    staff_booking_init_loading_msg: '',
+                });
+                this.staff_booking_load_init_data();
+            },
+
+            // 按商品购买数量返回序号数组
+            staff_booking_get_goods_units(goods) {
+                var stock = parseInt(goods.stock) || 1;
+                var units = [];
+                for(var i = 0; i < stock; i++) {
+                    units.push(i);
+                }
+                return units;
+            },
+
+            // 获取某个商品某个数量单元的预约表单数据
+            staff_booking_get_booking_unit(gindex, uindex) {
+                var units = this.staff_booking_form[gindex] || [];
+                return units[uindex] || {};
+            },
+
+            // 判断服务人员是否已被当前单元选中
+            staff_booking_is_staff_selected(gindex, uindex, staff_id) {
+                var item = this.staff_booking_get_booking_unit(gindex, uindex);
+                return (item.staff_id || 0) == staff_id;
+            },
+
+            // 获取某个单元已加载的时段列表
+            staff_booking_get_unit_periods(gindex, uindex) {
+                var unit_key = String(gindex) + '_' + String(uindex);
+                return this.staff_booking_unit_periods[unit_key] || [];
+            },
+
+            // 时段是否正在加载且尚无数据
+            staff_booking_is_unit_periods_empty_loading(gindex, uindex) {
+                var unit_key = String(gindex) + '_' + String(uindex);
+                return (this.staff_booking_unit_periods_loading[unit_key] || 0) == 1 && this.staff_booking_get_unit_periods(gindex, uindex).length <= 0;
+            },
+
+            // 加载可选日期、服务人员等初始化数据
+            staff_booking_load_init_data() {
+                this.setData({
+                    staff_booking_init_loading_status: 1,
+                    staff_booking_init_loading_msg: '',
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('available', 'staffbooking', 'realstore'),
+                    method: 'POST',
+                    data: { realstore_id: this.staff_booking_realstore_id },
+                    dataType: 'json',
+                    success: (res) => {
+                        var set_data = {
+                            staff_booking_init_loading_status: 0,
+                            staff_booking_init_loading_msg: '',
+                        };
+                        if(res.data.code == 0) {
+                            var result = res.data.data;
+                            var form = this.staff_booking_form;
+                            if((this.staff_booking_cart_list || null) != null && Object.keys(form).length <= 0) {
+                                form = {};
+                                for(var gi in this.staff_booking_cart_list) {
+                                    var stock = parseInt(this.staff_booking_cart_list[gi].stock) || 1;
+                                    form[gi] = [];
+                                    for(var ui = 0; ui < stock; ui++) {
+                                        form[gi].push({
+                                            cart_id: this.staff_booking_cart_list[gi].id,
+                                            goods_id: this.staff_booking_cart_list[gi].goods_id,
+                                            unit_index: ui,
+                                            staff_id: 0,
+                                            staff_alias: '',
+                                            staff_avatar: '',
+                                            booking_periods_id: 0,
+                                            period_text: '',
+                                            ymd: 0,
+                                        });
+                                    }
+                                }
+                            }
+                            set_data.staff_booking_ymd_list = result.ymd_list || [];
+                            set_data.staff_booking_staff_list = result.staff_list || [];
+                            set_data.staff_booking_form = form;
+                            set_data.staff_booking_popup_title = result.popup_title || this.staff_booking_popup_title || '选择服务人员时段';
+                            set_data.staff_booking_init_loading_status = 3;
+                        } else {
+                            set_data.staff_booking_init_loading_msg = res.data.msg;
+                        }
+                        this.setData(set_data);
+                    },
+                    fail: () => {
+                        this.setData({
+                            staff_booking_init_loading_status: 0,
+                            staff_booking_init_loading_msg: this.$t('common.internet_error_tips'),
+                        });
+                    },
+                });
+            },
+
+            // 加载指定单元的可用时段
+            staff_booking_load_unit_periods(gindex, uindex, staff_id, ymd) {
+                var unit_key = String(gindex) + '_' + String(uindex);
+                var loading_map = JSON.parse(JSON.stringify(this.staff_booking_unit_periods_loading || {}));
+                loading_map[unit_key] = 1;
+                this.setData({ staff_booking_unit_periods_loading: loading_map });
+
+                uni.request({
+                    url: app.globalData.get_request_url('available', 'staffbooking', 'realstore'),
+                    method: 'POST',
+                    data: {
+                        realstore_id: this.staff_booking_realstore_id,
+                        staff_id: staff_id,
+                        ymd: ymd,
+                        goods_id: (this.staff_booking_cart_list || [])[gindex] ? (this.staff_booking_cart_list[gindex].goods_id || 0) : 0,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        var periods_map = JSON.parse(JSON.stringify(this.staff_booking_unit_periods || {}));
+                        var loading_map_done = JSON.parse(JSON.stringify(this.staff_booking_unit_periods_loading || {}));
+                        var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
+                        loading_map_done[unit_key] = 0;
+                        if(res.data.code == 0) {
+                            var staff_list = res.data.data.staff_list || [];
+                            var periods = [];
+                            for(var i in staff_list) {
+                                if(parseInt(staff_list[i]['id']) == parseInt(staff_id)) {
+                                    periods = staff_list[i]['periods'] || [];
+                                    break;
+                                }
+                            }
+                            periods_map[unit_key] = periods;
+                            var item = form[gindex][uindex];
+                            if((item.booking_periods_id || 0) > 0) {
+                                var matched = null;
+                                for(var pi in periods) {
+                                    if(parseInt(periods[pi]['id']) == parseInt(item.booking_periods_id)) {
+                                        matched = periods[pi];
+                                        break;
+                                    }
+                                }
+                                if(matched == null || parseInt(matched.is_available || 0) == 0) {
+                                    item.booking_periods_id = 0;
+                                    item.period_text = '';
+                                    if(matched != null) {
+                                        app.globalData.showToast('该时段已被占用，请重新选择');
+                                    }
+                                }
+                            }
+                        } else {
+                            periods_map[unit_key] = [];
+                            app.globalData.showToast(res.data.msg);
+                        }
+                        this.setData({
+                            staff_booking_unit_periods: periods_map,
+                            staff_booking_unit_periods_loading: loading_map_done,
+                            staff_booking_form: form,
+                        });
+                    },
+                    fail: () => {
+                        var periods_map = JSON.parse(JSON.stringify(this.staff_booking_unit_periods || {}));
+                        var loading_map_done = JSON.parse(JSON.stringify(this.staff_booking_unit_periods_loading || {}));
+                        periods_map[unit_key] = [];
+                        loading_map_done[unit_key] = 0;
+                        this.setData({
+                            staff_booking_unit_periods: periods_map,
+                            staff_booking_unit_periods_loading: loading_map_done,
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 清空某个单元的时段缓存
+            staff_booking_clear_unit_periods(gindex, uindex) {
+                var unit_key = String(gindex) + '_' + String(uindex);
+                var periods_map = JSON.parse(JSON.stringify(this.staff_booking_unit_periods || {}));
+                var loading_map = JSON.parse(JSON.stringify(this.staff_booking_unit_periods_loading || {}));
+                delete periods_map[unit_key];
+                delete loading_map[unit_key];
+                this.setData({
+                    staff_booking_unit_periods: periods_map,
+                    staff_booking_unit_periods_loading: loading_map,
+                });
+            },
+
+            // 判断时段是否可选
+            staff_booking_is_period_available(gindex, uindex, staff_id, period) {
+                if(parseInt(period.is_available || 0) == 0) {
+                    return false;
+                }
+                var current_ymd = this.staff_booking_get_booking_unit(gindex, uindex).ymd || 0;
+                for(var gi in this.staff_booking_form) {
+                    for(var ui in (this.staff_booking_form[gi] || [])) {
+                        if(String(gi) == String(gindex) && String(ui) == String(uindex)) {
+                            continue;
+                        }
+                        var other = this.staff_booking_form[gi][ui];
+                        if((other.staff_id || 0) == staff_id && (other.booking_periods_id || 0) == period.id && (other.ymd || 0) == current_ymd && current_ymd > 0) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            },
+
+            // 时段标签样式
+            staff_booking_get_period_class(gindex, uindex, staff_id, period) {
+                var item = this.staff_booking_get_booking_unit(gindex, uindex);
+                var unit_key = String(gindex) + '_' + String(uindex);
+                if((this.staff_booking_unit_periods_loading[unit_key] || 0) == 1) {
+                    return 'bg-grey-disabled cr-grey';
+                }
+                var available = this.staff_booking_is_period_available(gindex, uindex, staff_id, period);
+                if((item.booking_periods_id || 0) == period.id && available) {
+                    return 'br-main bg-main-light cr-main cp';
+                }
+                if(!available) {
+                    return 'bg-grey-disabled cr-grey';
+                }
+                return 'bg-white br-grey cr-base cp';
+            },
+
+            // 选择/取消选择日期
+            staff_booking_goods_ymd_event(e) {
+                if(parseInt(e.currentTarget.dataset.disabled || 0) == 1) {
+                    app.globalData.showToast('该日期不可选');
+                    return false;
+                }
+                var gindex = e.currentTarget.dataset.gindex;
+                var uindex = e.currentTarget.dataset.uindex;
+                var ymd = parseInt(e.currentTarget.dataset.ymd);
+                var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
+                var item = form[gindex][uindex];
+                if((item.staff_id || 0) == 0) {
+                    app.globalData.showToast('请先选择服务人员');
+                    return false;
+                }
+                if((item.ymd || 0) == ymd) {
+                    item.ymd = 0;
+                    item.booking_periods_id = 0;
+                    item.period_text = '';
+                    this.staff_booking_clear_unit_periods(gindex, uindex);
+                    this.setData({ staff_booking_form: form });
+                    return true;
+                }
+                item.ymd = ymd;
+                item.booking_periods_id = 0;
+                item.period_text = '';
+                this.setData({ staff_booking_form: form });
+                this.staff_booking_load_unit_periods(gindex, uindex, item.staff_id, ymd);
+            },
+
+            // 获取当前商品可服务的员工列表
+            staff_booking_get_unit_staff_list(gindex, uindex) {
+                var list = this.staff_booking_staff_list || [];
+                var goods = (this.staff_booking_cart_list || [])[gindex];
+                if((goods || null) == null) {
+                    return list;
+                }
+                var goods_id = parseInt(goods.goods_id) || 0;
+                if(goods_id <= 0) {
+                    return list;
+                }
+                var result = [];
+                for(var i in list) {
+                    var staff = list[i];
+                    var ids = staff.goods_ids || [];
+                    if(!ids || ids.length <= 0) {
+                        result.push(staff);
+                        continue;
+                    }
+                    var matched = false;
+                    for(var j in ids) {
+                        if(parseInt(ids[j]) == goods_id) {
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if(matched) {
+                        result.push(staff);
+                    }
+                }
+                return result;
+            },
+
+            // 选择/取消选择服务人员
+            staff_booking_goods_staff_event(e) {
+                var gindex = e.currentTarget.dataset.gindex;
+                var uindex = e.currentTarget.dataset.uindex;
+                var staff = this.staff_booking_get_unit_staff_list(gindex, uindex)[e.currentTarget.dataset.sindex];
+                if((staff || null) == null) {
+                    return false;
+                }
+                var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
+                if((form[gindex] || null) == null) {
+                    return false;
+                }
+                var item = form[gindex][uindex];
+                if((item.staff_id || 0) == staff.id) {
+                    item.staff_id = 0;
+                    item.staff_alias = '';
+                    item.staff_avatar = '';
+                } else {
+                    item.staff_id = staff.id;
+                    item.staff_alias = staff.alias;
+                    item.staff_avatar = staff.avatar || '';
+                }
+                item.ymd = 0;
+                item.booking_periods_id = 0;
+                item.period_text = '';
+                this.staff_booking_clear_unit_periods(gindex, uindex);
+                this.setData({ staff_booking_form: form });
+            },
+
+            // 选择/取消选择时段
+            staff_booking_goods_period_event(e) {
+                var gindex = e.currentTarget.dataset.gindex;
+                var uindex = e.currentTarget.dataset.uindex;
+                var unit_key = String(gindex) + '_' + String(uindex);
+                if((this.staff_booking_unit_periods_loading[unit_key] || 0) == 1) {
+                    return false;
+                }
+                var pindex = e.currentTarget.dataset.pindex;
+                var form = JSON.parse(JSON.stringify(this.staff_booking_form || {}));
+                var item = form[gindex][uindex];
+                if((item.staff_id || 0) == 0) {
+                    app.globalData.showToast('请先选择服务人员');
+                    return false;
+                }
+                if((item.ymd || 0) == 0) {
+                    app.globalData.showToast('请先选择日期');
+                    return false;
+                }
+                var periods = this.staff_booking_get_unit_periods(gindex, uindex);
+                var period = periods[pindex];
+                if((period || null) == null) {
+                    return false;
+                }
+                if((item.booking_periods_id || 0) == period.id) {
+                    item.booking_periods_id = 0;
+                    item.period_text = '';
+                    this.setData({ staff_booking_form: form });
+                    return true;
+                }
+                if(!this.staff_booking_is_period_available(gindex, uindex, item.staff_id, period)) {
+                    app.globalData.showToast('该时段已被占用');
+                    return false;
+                }
+                item.booking_periods_id = period.id;
+                item.period_text = period.name || '';
+                this.setData({ staff_booking_form: form });
+            },
+
+            // 校验并提交员工预定
+            staff_booking_submit_event() {
+                if((this.staff_booking_cart_list || null) == null || this.staff_booking_cart_list.length <= 0) {
+                    app.globalData.showToast('购物车商品为空');
+                    return false;
+                }
+                var booking_data = [];
+                for(var gi in this.staff_booking_cart_list) {
+                    var units = this.staff_booking_form[gi] || [];
+                    for(var ui in units) {
+                        var item = units[ui];
+                        if((item.staff_id || 0) == 0 || (item.ymd || 0) == 0 || (item.booking_periods_id || 0) == 0) {
+                            app.globalData.showToast('请为每个数量选择服务人员、日期和时段');
+                            return false;
+                        }
+                        var periods = this.staff_booking_get_unit_periods(gi, ui);
+                        var matched = null;
+                        for(var pi in periods) {
+                            if(parseInt(periods[pi]['id']) == parseInt(item.booking_periods_id)) {
+                                matched = periods[pi];
+                                break;
+                            }
+                        }
+                        if(matched == null || !this.staff_booking_is_period_available(gi, ui, item.staff_id, matched)) {
+                            app.globalData.showToast('所选时段已被占用，请重新选择');
+                            return false;
+                        }
+                        booking_data.push({
+                            cart_id: item.cart_id,
+                            goods_id: item.goods_id,
+                            unit_index: item.unit_index,
+                            staff_id: item.staff_id,
+                            staff_alias: item.staff_alias || '',
+                            booking_periods_id: item.booking_periods_id,
+                            period_text: item.period_text || '',
+                            ymd: item.ymd,
+                        });
+                    }
+                }
+
+                this.setData({ staff_booking_popup_status: false, staff_booking_submit_loading: false });
+                if((app.globalData.data.staff_booking_pending || null) != null) {
+                    app.globalData.staff_booking_success(booking_data);
+                } else {
+                    this.staff_booking_success_event(booking_data);
+                }
+            },
+
+            // 关闭员工预定弹窗
+            staff_booking_close_event() {
+                this.setData({ staff_booking_popup_status: false });
+            },
         }
     };
 </script>
@@ -1193,4 +1738,153 @@
         width: 120rpx;
     }
     /* #endif */
+
+    /**
+     * 员工预定弹窗
+     */
+    .plugins-realstore-staff-booking-popup {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .plugins-realstore-staff-booking-title {
+        line-height: 44rpx;
+        padding: 0 48rpx;
+    }
+    .plugins-realstore-staff-booking-close {
+        top: 0;
+        right: 24rpx;
+        height: 44rpx;
+        display: flex;
+        align-items: center;
+        padding: 0 8rpx;
+        z-index: 1;
+    }
+    .plugins-realstore-staff-booking-scroll-content {
+        max-height: 58vh;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .plugins-realstore-staff-booking-scroll-inner {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        padding-bottom: 10rpx;
+    }
+    .plugins-realstore-staff-booking-init-loading {
+        min-height: 40vh;
+    }
+    .plugins-realstore-staff-booking-date-item {
+        min-width: 120rpx;
+        height: 88rpx;
+        padding: 8rpx 32rpx;
+        box-sizing: border-box;
+        vertical-align: top;
+        display: inline-flex !important;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .plugins-realstore-staff-booking-date-item-no-label {
+        justify-content: center;
+    }
+    .plugins-realstore-staff-booking-date-item-with-label {
+        justify-content: space-between;
+    }
+    .plugins-realstore-staff-booking-date-main-wrap {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 0;
+    }
+    .plugins-realstore-staff-booking-date-main {
+        line-height: 1.4;
+    }
+    .plugins-realstore-staff-booking-date-day-label {
+        flex-shrink: 0;
+        height: 24rpx;
+        line-height: 24rpx;
+        opacity: 0.75;
+    }
+    .plugins-realstore-staff-booking-date-item.bg-main-light .plugins-realstore-staff-booking-date-day-label {
+        opacity: 0.9;
+    }
+    .plugins-realstore-staff-booking-date-item.br-grey .plugins-realstore-staff-booking-date-day-label {
+        color: #999;
+    }
+    .plugins-realstore-staff-booking-goods-item {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .plugins-realstore-staff-booking-goods-item .plugins-realstore-staff-booking-goods-img {
+        width: 120rpx;
+        height: 120rpx !important;
+        flex-shrink: 0;
+    }
+    .plugins-realstore-staff-booking-goods-item .plugins-realstore-staff-booking-goods-base {
+        min-width: 0;
+    }
+    .plugins-realstore-staff-booking-goods-item .plugins-realstore-staff-booking-goods-base-content {
+        min-height: 60rpx;
+    }
+    .plugins-realstore-staff-booking-unit-block {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .plugins-realstore-staff-booking-staff-scroll {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .plugins-realstore-staff-booking-staff-scroll-inner {
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding-right: 4rpx;
+    }
+    .plugins-realstore-staff-booking-staff-card {
+        width: 120rpx;
+        flex-shrink: 0;
+        vertical-align: top;
+        padding: 12rpx 8rpx;
+        border-radius: 10rpx;
+        box-sizing: border-box;
+    }
+    .plugins-realstore-staff-booking-staff-avatar-sm {
+        width: 72rpx;
+        height: 72rpx;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .plugins-realstore-staff-booking-staff-name {
+        max-width: 104rpx;
+        margin: 0 auto;
+        line-height: 1.4;
+    }
+    .plugins-realstore-staff-booking-period-wrap {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .plugins-realstore-staff-booking-unit-label {
+        line-height: 1.4;
+    }
+    .plugins-realstore-staff-booking-unit-date-scroll {
+        width: 100%;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+    .plugins-realstore-staff-booking-period-tag {
+        line-height: 1.6;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 </style>

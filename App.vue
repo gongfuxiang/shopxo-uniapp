@@ -2582,11 +2582,8 @@
             // 获取当前页面员工预定组件
             get_staff_booking_ref(context_vm) {
                 if((context_vm || null) != null) {
-                    if((context_vm.$refs.staff_booking || null) != null) {
-                        return context_vm.$refs.staff_booking;
-                    }
-                    if((context_vm.$refs.realstore_cart || null) != null && (context_vm.$refs.realstore_cart.$refs.staff_booking || null) != null) {
-                        return context_vm.$refs.realstore_cart.$refs.staff_booking;
+                    if((context_vm.$refs.realstore_cart || null) != null && typeof context_vm.$refs.realstore_cart.staff_booking_init == 'function') {
+                        return context_vm.$refs.realstore_cart;
                     }
                 }
                 var page = this.get_page_object();
@@ -2594,11 +2591,11 @@
                 if(vm == null) {
                     return null;
                 }
-                if((vm.$refs.cart || null) != null && (vm.$refs.cart.$refs.realstore_cart || null) != null && (vm.$refs.cart.$refs.realstore_cart.$refs.staff_booking || null) != null) {
-                    return vm.$refs.cart.$refs.realstore_cart.$refs.staff_booking;
+                if((vm.$refs.cart || null) != null && (vm.$refs.cart.$refs.realstore_cart || null) != null && typeof vm.$refs.cart.$refs.realstore_cart.staff_booking_init == 'function') {
+                    return vm.$refs.cart.$refs.realstore_cart;
                 }
-                if((vm.$refs.realstore_cart || null) != null && (vm.$refs.realstore_cart.$refs.staff_booking || null) != null) {
-                    return vm.$refs.realstore_cart.$refs.staff_booking;
+                if((vm.$refs.realstore_cart || null) != null && typeof vm.$refs.realstore_cart.staff_booking_init == 'function') {
+                    return vm.$refs.realstore_cart;
                 }
                 return null;
             },
@@ -2606,13 +2603,13 @@
             // 打开员工预定弹窗
             trigger_staff_booking(buy_data, pages, context_vm, callback) {
                 var staff_booking_ref = this.get_staff_booking_ref(context_vm);
-                if(staff_booking_ref != null && typeof staff_booking_ref.init == 'function') {
+                if(staff_booking_ref != null && typeof staff_booking_ref.staff_booking_init == 'function') {
                     this.data.staff_booking_pending = {
                         buy_data: buy_data,
                         pages: pages,
                     };
                     var base = this.get_config('plugins_base.realstore.data', {}) || {};
-                    staff_booking_ref.init({
+                    staff_booking_ref.staff_booking_init({
                         realstore_id: buy_data.realstore_id,
                         cart_list: buy_data.staff_booking_cart_list,
                         popup_title: base.staff_booking_popup_title || '选择服务人员时段',
