@@ -465,7 +465,9 @@
 		font-size: 32rpx;
 		font-weight: bold;
 		z-index: 10000;
+		/* #ifndef APP-NVUE */
 		text-wrap: nowrap;
+		/* #endif */
 	}
 	
 	/* #ifndef APP-NVUE */

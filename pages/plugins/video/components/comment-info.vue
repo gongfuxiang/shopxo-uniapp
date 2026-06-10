@@ -200,7 +200,9 @@
 }
 .comment-info {
     flex: 1;
+    /* #ifndef APP-NVUE */
     gap: 6rpx;
+    /* #endif */
 }
 .comment-user {
     font-size: 24rpx;
@@ -212,10 +214,11 @@
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
-    // 换行
+    /* #ifndef APP-NVUE */
     word-break: break-all;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    /* #endif */
 }
 
 .comment-time {
@@ -253,7 +256,9 @@
     border-radius: 8rpx;
     box-shadow: 0 6rpx 16rpx 0 rgba(0, 0, 0, 0.15);
     border: 1rpx solid #e5e5e5;
+    /* #ifndef APP-NVUE */
     min-width: 160rpx;
+    /* #endif */
     z-index: 9999;
     top: 100%;
     margin-top: 8rpx;
@@ -262,8 +267,10 @@
 
 .dropdown-item {
     padding: 20rpx 30rpx;
+    /* #ifndef APP-NVUE */
     cursor: pointer;
     transition: all 0.2s ease;
+    /* #endif */
     position: relative;
     /* #ifndef APP-NVUE */
     &:not(.dropdown-item-divided):active {

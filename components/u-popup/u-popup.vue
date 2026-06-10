@@ -621,11 +621,10 @@
 <style lang="scss" scoped>
     .uni-popup {
         position: fixed;
+        /* #ifndef APP-NVUE */
         max-width: 1600rpx;
         margin: 0 auto;
-        /* #ifndef APP-NVUE */
         z-index: 99;
-
         /* #endif */
         &.top,
         &.left,
@@ -640,7 +639,16 @@
 
         &.top {
             .popup-close {
+                /* #ifndef APP-NVUE */
                 display: none;
+                /* #endif */
+                /* #ifdef APP-NVUE */
+                height: 0;
+                width: 0;
+                overflow: hidden;
+                opacity: 0;
+                padding: 0;
+                /* #endif */
             }
         }
         &.center,
@@ -662,9 +670,9 @@
         .uni-popup__wrapper {
             /* #ifndef APP-NVUE */
             display: block;
+            overflow-y: auto;
             /* #endif */
             position: relative;
-            overflow-y: auto;
 
             /* iphonex 等安全区设置，底部安全区适配 */
             /* #ifndef APP-NVUE */

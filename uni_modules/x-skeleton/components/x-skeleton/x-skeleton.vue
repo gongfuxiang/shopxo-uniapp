@@ -264,14 +264,18 @@
 </script>
 
 <style lang="scss" scoped>
+	/* #ifndef APP-NVUE */
 	@mixin background {
 		background: linear-gradient(90deg, var(--propBgColor) 25%, var(--propHighlightBgColor) 37%, var(--propBgColor) 50%);
 		background-size: 400% 100%;
 	}
+	/* #endif */
 	
 	.x-skeleton {
 		width: 100%;
+		/* #ifndef APP-NVUE */
 		box-sizing: border-box;
+		/* #endif */
 
 		.x-skeleton__wrapper {
 			display: flex;
@@ -291,18 +295,29 @@
 
 			&__head {
 				width: 100%;
+				/* #ifndef APP-NVUE */
 				@include background;
+				/* #endif */
+				/* #ifdef APP-NVUE */
+				background-color: #EAEDF5;
+				/* #endif */
 			}
 			
 			&__text {
 				flex: 1;
 				width: 100%;
 				&__row {
+					/* #ifndef APP-NVUE */
 					@include background;
+					/* #endif */
+					/* #ifdef APP-NVUE */
+					background-color: #EAEDF5;
+					/* #endif */
 				}
 			}
 		}
 		
+		/* #ifndef APP-NVUE */
 		.fade-out {
 			opacity: 0;
 			animation: propFadeOutAnim var(--propFadeOutTime);
@@ -330,5 +345,6 @@
 				background-position: 0 50%;
 			}
 		}
+		/* #endif */
 	}
 </style>

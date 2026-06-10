@@ -46,6 +46,8 @@ export default {
     font-size: 24rpx;
     color: #999999;
     line-height: 34rpx;
+    /* #ifndef APP-NVUE */
     white-space: nowrap;
+    /* #endif */
 }
 </style>

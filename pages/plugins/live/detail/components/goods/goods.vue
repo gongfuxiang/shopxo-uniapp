@@ -590,7 +590,9 @@ export default {
 }
 .scroll-type {
     padding: 124rpx 10px;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
 }
 .checkbox {
     transform: scale(0.85);

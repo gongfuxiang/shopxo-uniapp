@@ -36,6 +36,7 @@
 </script>
 
 <style scoped>
+    /* #ifndef APP-NVUE */
     /* iconfont.css全局注册需要将src切换成绝对路径 */
     /* @/static/icon/ */
     @import url('@/static/icon/iconfont.css');
@@ -50,4 +51,11 @@
         /* 定义元素的颜色，currentColor是一个变量，这个变量的值就表示当前元素的color值，如果当前元素未设置color值，则从父元素继承 */
         fill: currentcolor;
     }
+    /* #endif */
+    /* #ifdef APP-NVUE */
+    .iconfont {
+        display: flex;
+        overflow: hidden;
+    }
+    /* #endif */
 </style>

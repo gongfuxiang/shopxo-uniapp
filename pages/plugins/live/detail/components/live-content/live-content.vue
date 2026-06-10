@@ -161,7 +161,12 @@
                             </view>
                         </view>
                     </view>
+                    <!-- #ifndef APP-NVUE -->
                     <view class="explain-goods-content mt-10" style="padding: 8rpx;box-sizing: border-box;">
+                    <!-- #endif -->
+                    <!-- #ifdef APP-NVUE -->
+                    <view class="explain-goods-content mt-10" style="padding: 8rpx;">
+                    <!-- #endif -->
                         <text class="explain-goods-name text-line-2 size-12">{{ explain_goods.title }}</text>
                         <text class="explain-goods-price cr-red mt-10 size-12">{{ currency_symbol }}{{ explain_goods.price }}</text>
                     </view>
@@ -1072,7 +1077,9 @@
 }
 
 .nickname {
+    /* #ifndef APP-NVUE */
     max-width: 200rpx;
+    /* #endif */
     font-size: 28rpx;
     color: #fff;
     font-weight: bold;
@@ -1122,8 +1129,10 @@
 }
 
 .bulletin-area {
+    /* #ifndef APP-NVUE */
     max-height: 600rpx;
     height: auto;
+    /* #endif */
 }
 
 .cr-blue {
@@ -1147,26 +1156,32 @@
 }
 
 .content-container {
+    /* #ifndef APP-NVUE */
     display: inline-block;
     line-height: 30rpx;
     vertical-align: top;
-    width: calc(100% - 40rpx); /* 减去头像宽度和间距 */
+    width: calc(100% - 40rpx);
+    /* #endif */
 }
 
 .user-name {
     font-size: 28rpx;
     margin-right: 10rpx;
+    /* #ifndef APP-NVUE */
     display: inline;
+    /* #endif */
 }
 
 .bulletin-text {
     font-size: 28rpx;
     color: #fff;
     line-height: 30rpx;
+    /* #ifndef APP-NVUE */
     white-space: pre-line;
     word-break: break-all;
     overflow-wrap: break-word;
     display: inline;
+    /* #endif */
 }
 
 .input-field {
@@ -1187,16 +1202,20 @@
 .bottom-actions-input {
     padding: 16rpx 22rpx;
     border-radius: 50rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
     color: #fff;
     background: rgba(40,40,40,0.45);
 }
+/* #ifndef APP-NVUE */
 .bottom-actions-input input {
     color: #fff;
 }
 .bottom-actions-input input::placeholder {
     color: #fff;
 }
+/* #endif */
 .bottom-actions-button {
     border-radius: 50rpx;
     background: rgba(40,40,40,0.45);
@@ -1212,13 +1231,17 @@
     margin-left: 20rpx;
 }
 .bottom-actions-icon-placeholder {
+    /* #ifndef APP-NVUE */
     visibility: hidden;
     pointer-events: none;
+    /* #endif */
 }
 .bottom-actions-input-placeholder {
+    /* #ifndef APP-NVUE */
     min-height: 72rpx;
     visibility: hidden;
     pointer-events: none;
+    /* #endif */
 }
 .keyboard-input {
     position: fixed;
@@ -1226,7 +1249,9 @@
     z-index: 99;
     background: #fff;
     padding: 20rpx 16rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
 }
 
 .keyboard-input-input { 
@@ -1249,7 +1274,9 @@
 }
 
 .user-comes {
+    /* #ifndef APP-NVUE */
     min-width: 100rpx;
+    /* #endif */
     padding: 6rpx 10rpx 6rpx 20rpx;
     background-color: rgba(40,40,40,0.45);
     border-radius: 200rpx;
@@ -1270,8 +1297,11 @@
 }
 
 .countdown-animation {
+    /* #ifndef APP-NVUE */
     animation: zoomOut 1s ease-in-out forwards;
+    /* #endif */
 }
+/* #ifndef APP-NVUE */
 @keyframes zoomOut {
     0% {
         transform: scale(1);
@@ -1282,12 +1312,15 @@
         opacity: 0;
     }
 }
+/* #endif */
 /* 讲解商品信息 */
 .explain-goods {
     width: 200rpx;
     background: #fff;
     padding: 4rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
     position: absolute;
     right: 0;
     bottom: 100rpx;
@@ -1311,6 +1344,7 @@
         }
     }
 }
+/* #ifndef APP-NVUE */
 /* #ifdef MP-WEIXIN | APP-PLUS */
     .bulletin-area {
         ::v-deep ::-webkit-scrollbar
@@ -1321,19 +1355,24 @@
         }
     }
 /* #endif */
+/* #endif */
 
 /* 顶部返回和搜索栏样式 */
 .header-top {
     padding: 0 20rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
     z-index: 3;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
 }
+/* #ifndef APP-NVUE */
 .header-top ::v-deep .search-bar {
     background: rgba(255,255,255,0.5);
     border-color: transparent;
 }
+/* #endif */
 </style>

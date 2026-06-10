@@ -107,6 +107,7 @@ export default {
     padding: 16rpx 30rpx;
     padding-right: 20rpx;
 }
+/* #ifndef APP-NVUE */
 input {
     flex: 1;
     height: 76rpx;
@@ -114,12 +115,15 @@ input {
     box-sizing: border-box;
     background: transparent;
 }
+/* #endif */
 .search-line {
     width: 2rpx;
     height: 44rpx;
     margin: 16rpx 0;
     margin-left: 20rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
     background-color: #666;
 }
 .search-button { 

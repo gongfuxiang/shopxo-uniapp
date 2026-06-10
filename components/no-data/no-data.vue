@@ -309,6 +309,7 @@
     /**
      * 名称加载
      */
+    /* #ifndef APP-NVUE */
     .loading-title-animation,
     .network-type-tips {
         padding-top: 25%;
@@ -339,6 +340,7 @@
             background-position: 100% 100%;
         }
     }
+    /* #endif */
 
     /**
      * logo加载
@@ -360,30 +362,34 @@
         margin-top: 50%;
     }
     .loading-logo-content .loading-logo {
+        /* #ifndef APP-NVUE */
         content: '';
         display: block;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        /* #endif */
         position: absolute;
         left: 30rpx;
         top: 30rpx;
         width: 80rpx;
         height: 80rpx;
         opacity: 0.8;
+    }
+    .loading-logo-content .loading-border {
+        /* #ifndef APP-NVUE */
+        content: '';
+        display: block;
         background-size: contain;
         background-position: center center;
         background-repeat: no-repeat;
-    }
-    .loading-logo-content .loading-border {
-        content: '';
-        display: block;
+        /* #endif */
         position: absolute;
         width: 168rpx;
         height: 168rpx;
         left: -14rpx;
         top: -14rpx;
         opacity: 0.8;
-        background-size: contain;
-        background-position: center center;
-        background-repeat: no-repeat;
     }
     
     /**

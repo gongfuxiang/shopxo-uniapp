@@ -318,14 +318,18 @@
     }
     .share-items {
         padding: 30rpx 0;
+        /* #ifndef APP-NVUE */
         min-height: 85rpx;
+        /* #endif */
         display: flex;
         flex-direction: row;
         align-items: center;
     }
+    /* #ifndef APP-NVUE */
     .share-items:not(:first-child) {
         border-top: 1px solid #f0f0f0;
     }
+    /* #endif */
     .share-items .btn {
         background: transparent;
         padding: 0;

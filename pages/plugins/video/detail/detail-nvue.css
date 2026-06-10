@@ -96,7 +96,9 @@
     background: rgba(40, 40, 40, 0.45);
     border-radius: 88rpx;
     border: 2rpx solid rgba(151, 151, 151, 0.53);
+    /* #ifndef APP-NVUE */
     cursor: pointer;
+    /* #endif */
 }
 
 .author {
@@ -116,7 +118,9 @@
 
 .video-bg-image {
     transform: scale(3);
+    /* #ifndef APP-NVUE */
     filter: blur(100rpx);
+    /* #endif */
     opacity: 0.7;
 }
 
@@ -133,7 +137,9 @@
 .video-content {
     font-size: 30rpx;
     margin-top: 16rpx;
+    /* #ifndef APP-NVUE */
     max-width: 70%;
+    /* #endif */
 }
 
 .progress-bar-container {
@@ -155,7 +161,9 @@
 .time-display {
     color: #fff;
     font-size: 24rpx;
+    /* #ifndef APP-NVUE */
     text-shadow: 2rpx 2rpx 2rpx rgba(0, 0, 0, 0.6);
+    /* #endif */
     width: 180rpx;
     text-align: right;
 }
@@ -184,7 +192,9 @@
 
 .comment-header {
     padding: 30rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
     border-bottom: 2rpx solid #eee;
     display: flex;
     flex-direction: row;
@@ -209,7 +219,9 @@
 
 .comment-scroll {
     padding: 30rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
 }
 
 .comment-item {
@@ -221,7 +233,9 @@
 }
 
 .sub-comment-list {
+    /* #ifndef APP-NVUE */
     gap: 40rpx;
+    /* #endif */
 }
 .comment-input-container {
     display: flex;
@@ -235,7 +249,9 @@
     height: 40rpx;
     font-size: 28rpx;
     margin: 16rpx;
+    /* #ifndef APP-NVUE */
     max-height: 400rpx;
+    /* #endif */
 }
 
 .comment-input-content {
@@ -312,7 +328,9 @@
 /* 新的举报弹窗样式 */
 .report-content {
     width: 750rpx;
+    /* #ifndef APP-NVUE */
     max-width: 750rpx;
+    /* #endif */
     background-color: #fff;
     border-radius: 20rpx;
 }
@@ -367,12 +385,16 @@
 .report-required {
     color: #e74c3c;
     font-size: 30rpx;
+    /* #ifndef APP-NVUE */
     vertical-align: middle;
+    /* #endif */
 }
 /* 搜索 */
 .header-top {
     padding-left: 24rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
     position: absolute;
     top: 0;
     left: 0;
@@ -405,7 +427,9 @@
     z-index: 99;
     background: #fff;
     padding: 20rpx;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
 }
 .keyboard-input-border {
     border: 2rpx solid #ddd;
@@ -419,5 +443,7 @@
     padding: 10rpx;
     border-radius: 16rpx;
     color: #fff;
+    /* #ifndef APP-NVUE */
     box-sizing: border-box;
+    /* #endif */
 }
