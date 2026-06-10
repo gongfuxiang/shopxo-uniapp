@@ -1176,24 +1176,27 @@
                             }
 
                             // 基础数据
-                            var upd_data = {
+                            this.setData({
                                 random_value: Math.random(),
                                 data_loading_status: 1,
                                 goods_bottom_nav_status: true,
                                 goods_bottom_opt_nav_status: true,
-                                guess_you_like: data.guess_you_like || [],
-                                nav_more_list: data.nav_more_list || [],
                                 buy_button: data.buy_button || null,
                                 buy_left_nav: data.buy_left_nav || [],
-                                top_nav_title_data: data.middle_tabs_nav || [],
                                 countdown_data: countdown_data,
                                 countdown_is_valid: countdown_is_valid,
+                            });
+                            // 其他数据
+                            this.setData({
+                                top_nav_title_data: data.middle_tabs_nav || [],
+                                nav_more_list: data.nav_more_list || [],
+                                guess_you_like: data.guess_you_like || [],
+                                quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
                                 plugins_fullreduce_data: data.plugins_fullreduce_data || null,
                                 plugins_fullgive_data: data.plugins_fullgive_data || null,
                                 plugins_npiecendis_data: data.plugins_npiecendis_data || null,
                                 plugins_newpersongift_data: data.plugins_newpersongift_data || null,
-                                quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_wholesale_data: (data.plugins_wholesale_data || null) == null ? null : data.plugins_wholesale_data,
@@ -1208,8 +1211,7 @@
                                 plugins_ordergoodsform_data: data.plugins_ordergoodsform_data || null,
                                 plugins_vip_goods_detail_open_tips_data: data.plugins_vip_goods_detail_open_tips_data || null,
                                 plugins_distribution_goods_detail_profit_tips_data: data.plugins_distribution_goods_detail_profit_tips_data || null,
-                            };
-                            this.setData(upd_data);
+                            });
 
                             // 如果已默认开启购买弹窗，库存为0则不开启
                             if (this.popup_buy_status && parseInt(goods.inventory) > 0) {
