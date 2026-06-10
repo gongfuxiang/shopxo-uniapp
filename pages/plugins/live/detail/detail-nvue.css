@@ -1,3 +1,5 @@
+@import '../../../../common/css/nvue-util.css';
+
 .live-bg {
     background-image: linear-gradient(to bottom,#ba623c,#14766a);
 }
@@ -34,4 +36,10 @@
 .live-ended-button {
     border-radius: 6px;
     border-color: #fff;
+}
+.live-ended-button-text {
+    font-size: 12px;
+    line-height: 18px;
+    color: #fff;
+    padding: 10rpx;
 }

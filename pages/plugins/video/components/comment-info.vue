@@ -16,7 +16,7 @@
                     <!-- #ifndef APP-NVUE -->
                     <view v-if="drop_down_visible && dropdownOptions && Array.isArray(dropdownOptions)" class="dropdown-menu" @tap.stop>
                     <!-- #endif -->
-                        <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="index" class="dropdown-item" :data-value="item" @tap.stop="handle_dropdown_item_click">
+                        <view v-for="(item, index) in dropdownOptions.filter(item => (propComment.is_can_delete == 1 && item.type == 'delete') || (propComment.is_can_report == 1 && item.type == 'report'))" :key="item.type" class="dropdown-item" :data-value="item" @tap.stop="handle_dropdown_item_click">
                             <text style="font-size: 28rpx;color: #666;">{{ item.label }}</text>
                         </view>
                     </view>
@@ -82,6 +82,7 @@
         },
         data() {
            return {
+                _is_destroyed: false,
                 // 下拉菜单选项数据
                 dropdownOptions: [],
                 // 下拉菜单位置信息
@@ -101,6 +102,18 @@
             dropdownMenuStyle() {
                return `top: ${this.dropdownMenuTop}px;`;
             }
+        },
+        watch: {
+            drop_down_visible(val) {
+                if (val) {
+                    this.$nextTick(() => {
+                        this.getDropdownPosition();
+                    });
+                }
+            },
+        },
+        beforeDestroy() {
+            this._is_destroyed = true;
         },
        methods: {
             isEmpty,
@@ -145,30 +158,28 @@
             },
             // 切换下拉菜单
             toggle_dropdown(e) {
-                // 获取 comment-option 的位置信息
-                this.getDropdownPosition();
-                
                 // 通知父组件切换当前组件的下拉菜单状态
                 this.$emit('toggle_dropdown', this.propId);
-                
                 e.stopPropagation();
             },
             
             // 获取下拉菜单位置
             getDropdownPosition() {
+                if (this._is_destroyed) {
+                    return;
+                }
                 try {
                     // #ifdef APP-NVUE
-                    // nvue 环境使用 dom 模块的 getComponentRect 方法
                     const commentOptionEl = this.$refs.commentOption;
-                    if (commentOptionEl) {
-                        dom.getComponentRect(commentOptionEl, (res) => {
-                            if (res && res.size) {
-                                const { top, left, width } = res.size;
-                                // 计算菜单位置：在触发元素下方，右侧对齐
-                                this.dropdownMenuTop = top + 20;
-                            }
-                        });
+                    if (!commentOptionEl) {
+                        return;
                     }
+                    dom.getComponentRect(commentOptionEl, (res) => {
+                        if (this._is_destroyed || !res || res.result === false || !res.size) {
+                            return;
+                        }
+                        this.dropdownMenuTop = res.size.top + 20;
+                    });
                     // #endif
                 } catch (error) {
                     console.error('获取下拉菜单位置失败:', error);
@@ -288,6 +299,7 @@
     }
     /* #endif */
     
+    /* #ifndef APP-NVUE */
     &:first-child {
         border-radius: 8rpx 8rpx 0 0;
     }
@@ -299,6 +311,7 @@
     &:first-child:last-child {
         border-radius: 8rpx;
     }
+    /* #endif */
 }
 .comment-reply-text {
     color: #ccc;

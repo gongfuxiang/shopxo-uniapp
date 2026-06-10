@@ -571,6 +571,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/common/css/nvue-util.css';
+
 .tip-title {
     font-size: 44rpx;
     font-weight: bold;
@@ -682,7 +684,7 @@ export default {
     transform-origin: bottom; /* 以底部为变换中心 */
 }
 
-// #ifndef APP-NVUE
+/* #ifndef APP-NVUE */
 .bar1 {
     animation: beat1 1.1s infinite ease-in-out;
 }
@@ -772,5 +774,5 @@ export default {
         transform: scaleY(1);
     }
 }
-// #endif
+/* #endif */
 </style>

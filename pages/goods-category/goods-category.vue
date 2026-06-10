@@ -46,7 +46,7 @@
                                 <block v-if="category_show_level == 0">
                                     <!-- 一级导航 -->
                                     <view class="top-nav wh-auto pa scroll-view-horizontal bottom-0">
-                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll">
+                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="nav_active_index >= 0 && category_list.length > 0 ? ('one-nav-item-' + nav_active_index) : ''" class="top-nav-scroll">
                                             <block v-for="(item, index) in category_list" :key="index">
                                                 <view class="item tc cp dis-inline-block text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                                     <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
@@ -105,7 +105,7 @@
                                                     </view>
                                                     <!-- 三级导航 -->
                                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
-                                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
+                                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="nav_active_item_three_index >= 0 ? ('three-nav-item-' + nav_active_item_three_index) : ''">
                                                             <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
                                                             <block v-for="(item, index) in data_three_content.items" :key="index">
                                                                 <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
@@ -484,7 +484,10 @@
                 footer_height_value: 0,
                 // 互联网医院问诊数据
                 plugins_hospital_prescription_data: null,
-                plugins_hospital_prescription_status: false
+                plugins_hospital_prescription_status: false,
+                _page_alive: true,
+                _page_showing: false,
+                search_height_timer: null,
             };
         },
 
@@ -510,6 +513,7 @@
         },
 
         onShow() {
+            this._page_showing = true;
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
@@ -541,7 +545,24 @@
             }
         },
 
+        onHide() {
+            this._page_showing = false;
+            this.clear_search_height_timer();
+        },
+
+        onUnload() {
+            this._page_alive = false;
+            this._page_showing = false;
+            this.clear_search_height_timer();
+        },
+
         methods: {
+            clear_search_height_timer() {
+                if (this.search_height_timer != null) {
+                    clearInterval(this.search_height_timer);
+                    this.search_height_timer = null;
+                }
+            },
             // 资源设置
             set_resources_data() {
                 var search_nav_sort_list = [
@@ -671,12 +692,15 @@
                             // 计算更多分类弹窗的高度、由于页面元素渲染异步问题，这里加延时执行
                             if (this.is_first == 1) {
                                 var self = this;
-                                var timer = setInterval(function () {
-                                    if (self.search_height == 0) {
-                                        self.search_height_computer();
-                                    } else {
-                                        clearInterval(timer);
+                                var retry_count = 0;
+                                self.clear_search_height_timer();
+                                self.search_height_timer = setInterval(function () {
+                                    if (!self._page_alive || !self._page_showing || self.search_height > 0 || retry_count >= 20) {
+                                        self.clear_search_height_timer();
+                                        return;
                                     }
+                                    retry_count++;
+                                    self.search_height_computer();
                                 }, 500);
                             }
 
@@ -1058,9 +1082,13 @@
                     if ((this.$refs.cart_para_curve || null) != null) {
                         var self = this;
                         uni.createSelectorQuery()
+                            .in(self)
                             .select('.botton-nav .cart')
                             .boundingClientRect()
                             .exec(function (res) {
+                                if (!self._page_alive || (res || null) == null || (res[0] || null) == null || (self.$refs.cart_para_curve || null) == null) {
+                                    return;
+                                }
                                 self.$refs.cart_para_curve.init(res, self.temp_opt_data.pos, self.temp_opt_data.goods.images);
                             });
                     }
@@ -1429,17 +1457,21 @@
 
             // 计算搜索框的高度
             search_height_computer() {
-                const query = uni.createSelectorQuery();
+                if (!this._page_alive || !this._page_showing || this.is_single_page == 1) {
+                    return;
+                }
+                const query = uni.createSelectorQuery().in(this);
                 query
                     .select('.nav-search')
                     .boundingClientRect((res) => {
-                        if ((res || null) != null) {
-                            // 获取搜索框高度
-                            this.setData({
-                                search_height: res.height,
-                            });
-                            this.content_actual_size_handle();
+                        if (!this._page_alive || (res || null) == null || !res.height) {
+                            return;
                         }
+                        this.setData({
+                            search_height: res.height,
+                        });
+                        this.content_actual_size_handle();
+                        this.clear_search_height_timer();
                     })
                     .exec();
             },

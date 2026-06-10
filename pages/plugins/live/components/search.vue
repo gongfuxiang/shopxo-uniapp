@@ -137,12 +137,12 @@ input {
     position: absolute;
     top: 0;
     left: 0;
-    //#ifdef APP-NVUE
+    /* #ifdef APP-NVUE */
     width: 750rpx;
-    //#endif
-    //#ifndef APP-NVUE
+    /* #endif */
+    /* #ifndef APP-NVUE */
     width: 100%;
-    //#endif
+    /* #endif */
     height: 80rpx;
     z-index: 99;
 }

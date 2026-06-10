@@ -38,6 +38,7 @@ export default {
             live_id: '',
             /** 直播功能配置已加载（拿到 config 后为 true） */
             live_feature_ready: false,
+            _page_alive: true,
             is_live_chat_on: false,
             is_live_goods_buy_on: false,
             is_live_like_on: false,
@@ -62,6 +63,7 @@ export default {
      * 页面显示时执行
      */
     onShow() {
+        this._page_alive = true;
         // 调用公共事件方法
         app.globalData.page_event_onshow_handle();
 
@@ -92,6 +94,25 @@ export default {
         if (this.liveContentTimer) {
             clearInterval(this.liveContentTimer);
             this.liveContentTimer = null;
+        }
+    },
+    onUnload() {
+        this._page_alive = false;
+        if (this.liveContentTimer) {
+            clearInterval(this.liveContentTimer);
+            this.liveContentTimer = null;
+        }
+        if (this.load_timer) {
+            clearTimeout(this.load_timer);
+            this.load_timer = null;
+        }
+        if (this.ended_timer) {
+            clearTimeout(this.ended_timer);
+            this.ended_timer = null;
+        }
+        if (this.live_like_click_timer) {
+            clearTimeout(this.live_like_click_timer);
+            this.live_like_click_timer = null;
         }
     },
     /**
@@ -185,18 +206,15 @@ export default {
                     
                     // 确保每次重新显示都触发组件中的初始化方法
                     this.liveContentTimer = setInterval(() => {
-                        if (this.$refs.liveContent) {
-                            const content = this.$refs.liveContent;
-                            // 初始化头部信息
-                            content.init_window_info();
-                            // 滚动到消息底部
-                            content.scroll_to_lower();
-                            // 绑定键盘事件
-                            content.bind_keyboard_listener();
-                            // 执行成功后取消定时任务
-                            clearInterval(this.liveContentTimer);
-                            this.liveContentTimer = null;
+                        if (!this._page_alive || !this.$refs.liveContent) {
+                            return;
                         }
+                        const content = this.$refs.liveContent;
+                        content.init_window_info();
+                        content.scroll_to_lower();
+                        content.bind_keyboard_listener();
+                        clearInterval(this.liveContentTimer);
+                        this.liveContentTimer = null;
                     }, 200);
                 },
                 fail: (err) => {

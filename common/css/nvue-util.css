@@ -1,0 +1,215 @@
+/**
+ * nvue 页面工具类（App.vue 全局样式在 APP-NVUE 下不引入，nvue 页需单独引入本文件）
+ */
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+.flex-1 {
+    flex: 1;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.jc-sb {
+    justify-content: space-between;
+}
+.jc-c {
+    justify-content: center;
+}
+.jc-sa {
+    justify-content: space-around;
+}
+.jc-e {
+    justify-content: flex-end;
+}
+.align-c {
+    align-items: center;
+}
+.align-s {
+    align-items: flex-start;
+}
+.align-e {
+    align-items: flex-end;
+}
+/* #ifndef APP-NVUE */
+.align-b {
+    align-items: baseline;
+}
+/* #endif */
+
+.oh {
+    overflow: hidden;
+}
+.pr {
+    position: relative;
+}
+.pa {
+    position: absolute;
+}
+.pf {
+    position: fixed;
+}
+.z-i {
+    z-index: 1;
+}
+
+.text-line-1 {
+    lines: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.size-12 {
+    font-size: 24rpx;
+}
+.size-14 {
+    font-size: 28rpx;
+}
+.size-16 {
+    font-size: 32rpx;
+}
+
+.cr-f {
+    color: #fff;
+}
+.cr-black {
+    color: #333;
+}
+.cr-grey {
+    color: #999;
+}
+.cr-9 {
+    color: #999;
+}
+
+.mr-10 {
+    margin-right: 20rpx;
+}
+.ml-10 {
+    margin-left: 20rpx;
+}
+.mt-10 {
+    margin-top: 20rpx;
+}
+.mb-10 {
+    margin-bottom: 20rpx;
+}
+.mt-20 {
+    margin-top: 40rpx;
+}
+.pr-16 {
+    padding-right: 16rpx;
+}
+.pt-4 {
+    padding-top: 8rpx;
+}
+.pt-8 {
+    padding-top: 16rpx;
+}
+.pt-10 {
+    padding-top: 20rpx;
+}
+
+.margin-0 {
+    margin: 0;
+}
+
+.cp {
+    width: 60rpx;
+    height: 80rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pa-5 {
+    padding: 10rpx;
+}
+.pa-10 {
+    padding: 20rpx;
+}
+.pa-20 {
+    padding: 40rpx;
+}
+.ml-5 {
+    margin-left: 10rpx;
+}
+.mr-5 {
+    margin-right: 10rpx;
+}
+.mb-3 {
+    margin-bottom: 6rpx;
+}
+.mb-5 {
+    margin-bottom: 10rpx;
+}
+.mt-5 {
+    margin-top: 10rpx;
+}
+
+.size-10 {
+    font-size: 20rpx;
+}
+
+.text-size {
+    font-size: 32rpx;
+}
+.text-size-sm {
+    font-size: 26rpx;
+}
+
+.text-line-2 {
+    lines: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.wh-auto {
+    width: 750rpx;
+}
+.ht-auto {
+    flex: 1;
+}
+
+.cr-white {
+    color: #fff;
+}
+.cr-red {
+    color: #E22C08;
+}
+.cr-blue {
+    color: #9DE3F7;
+}
+.cr-d {
+    color: #ddd;
+}
+.cr-price {
+    color: #E22C08;
+}
+.cr-main {
+    color: #ff0036;
+}
+
+.bg-f9 {
+    background-color: #f9f9f9;
+}
+.bg-main {
+    background-color: #ff0036;
+}
+.bg-red-light {
+    background-color: #ffecec;
+}
+
+.padding-top-sm {
+    padding-top: 12rpx;
+}
+
+.bottom-line-exclude-bottom {
+    padding-bottom: 20rpx;
+}

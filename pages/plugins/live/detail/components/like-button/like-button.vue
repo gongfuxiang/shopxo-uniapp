@@ -158,10 +158,18 @@
                 elId: 0, // 元素渲染ID计数器
                 oldTime: 0, // 上次点击时间戳，用于节流
                 timer: null, // 定时器引用
-                waitDeleteIndex: 0 // 等待删除的元素索引计数
+                waitDeleteIndex: 0, // 等待删除的元素索引计数
+                _is_destroyed: false,
             }
         },
         watch: {},
+        beforeDestroy() {
+            this._is_destroyed = true;
+            if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = null;
+            }
+        },
         methods: {
             /**
              * 处理点击事件，创建并播放点赞动画
@@ -231,8 +239,14 @@
                         _item.animation = _item.animation.export()
                         // #endif
                         // #ifdef APP-NVUE
-                        // NVUE环境下的动画实现
-                        let el = this.$refs[_item.elId][0];
+                        const refList = this.$refs[_item.elId];
+                        if (this._is_destroyed || !refList) {
+                            return;
+                        }
+                        let el = Array.isArray(refList) ? refList[0] : refList;
+                        if (!el) {
+                            return;
+                        }
                         clearTimeout(this.timer)
                         _item.animation.transition(el, {
                             styles: {
@@ -244,6 +258,9 @@
                             timingFunction: 'ease-out',
                             delay: 0 // ms
                         }, () => {
+                            if (this._is_destroyed) {
+                                return;
+                            }
                             // 完成后事件回调
                             this.$emit('finished')
                             // 根据propAlone属性决定逐个删除还是一起删除

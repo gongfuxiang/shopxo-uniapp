@@ -22,6 +22,7 @@ export default {
 			distance:0,
 			distanceX:0,
 			scroll:false,
+			_page_alive: true,
 		}
 	},
 	created(){
@@ -33,7 +34,28 @@ export default {
         this.windowHeight = data.windowHeight;
 		this.width = `${this.windowWidth}px` 
 	},
+	onHide() {
+		this.unbind_page_bindings();
+	},
+	onUnload() {
+		this.unbind_page_bindings();
+	},
 	methods:{
+		unbind_page_bindings() {
+			this._page_alive = false;
+			try {
+				if (this.gesToken != 0) {
+					BindingX.unbind({
+						eventType: 'pan',
+						token: this.gesToken
+					});
+					this.gesToken = 0;
+				}
+				BindingX.unbindAll();
+			} catch (e) {}
+			this.scroll = false;
+			this.touchType = null;
+		},
 		getEl: function(el) {
 		    if (typeof el === 'string' || typeof el === 'number') return el;
 			if (WXEnvironment) {
@@ -99,7 +121,10 @@ export default {
 					y+${this.distance} : ${this.distance}`;
 				// 找到元素 
 				let swiperRef = this.getEl(this.$refs.swiper);
-                
+				if (!swiperRef) {
+					this.touchType = null;
+					return;
+				}
 				let gesTokenObj = BindingX.bind({
 					anchor:swiperRef,
 					eventType:'pan',

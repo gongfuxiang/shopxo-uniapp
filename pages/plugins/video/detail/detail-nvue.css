@@ -1,3 +1,5 @@
+@import '../../../../common/css/nvue-util.css';
+
 .content {
     background: #000;
 }
@@ -65,8 +67,11 @@
 }
 
 .product-card-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     background: #DDDDDD;
-    padding: 16rpx;
+    padding: 16rpx 12rpx 16rpx 16rpx;
     border-radius: 8rpx;
 }
 .product-name {
@@ -82,7 +87,19 @@
     line-height: 44rpx;
 }
 .product-close {
-    margin-left: 20rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 12rpx;
+    padding-right: 8rpx;
+}
+
+.product-button-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
 }
 
 .product-button {

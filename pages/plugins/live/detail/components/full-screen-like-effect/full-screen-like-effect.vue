@@ -122,7 +122,24 @@
 				/**
 				 * 上次点击时间，用于防抖处理
 				 */
-				last_click_time: 0 // 防止双击添加多个图标
+				last_click_time: 0, // 防止双击添加多个图标
+				_like_timers: [],
+				_is_destroyed: false,
+			}
+		},
+		beforeDestroy() {
+			this._is_destroyed = true;
+			if (this.reset_timer) {
+				clearTimeout(this.reset_timer);
+				this.reset_timer = null;
+			}
+			if (this.like_count_timer) {
+				clearTimeout(this.like_count_timer);
+				this.like_count_timer = null;
+			}
+			if (this._like_timers.length > 0) {
+				this._like_timers.forEach((timer) => clearTimeout(timer));
+				this._like_timers = [];
 			}
 		},
 		computed: {
@@ -229,15 +246,19 @@
 				// 添加到列表
 				this.like_list.push(new_like);
 				// #ifdef APP-NVUE
-				// 执行点赞动画
-                setTimeout(() => {
-                    this.animate_like_item(new_like.id);
-                }, 0);
+				const animateTimer = setTimeout(() => {
+					if (!this._is_destroyed) {
+						this.animate_like_item(new_like.id);
+					}
+				}, 0);
+				this._like_timers.push(animateTimer);
 				// #endif	
-				// 2秒后移除
-				setTimeout(() => {
-					this.remove_like(new_like.id);
+				const removeTimer = setTimeout(() => {
+					if (!this._is_destroyed) {
+						this.remove_like(new_like.id);
+					}
 				}, 2000);
+				this._like_timers.push(removeTimer);
 				
 				// 处理连续点赞数量提示
 				this.handle_like_count(x, y, color);
@@ -351,6 +372,9 @@
 			 * @param {Number|String} id - 点赞元素ID
 			 */
 			animate_like_item(id) {
+				if (this._is_destroyed) {
+					return;
+				}
 				// #ifdef APP-NVUE
 				const ref = this.$refs['likeItem' + id];
 				if (ref) {
@@ -373,6 +397,9 @@
 							duration: 1000,
 							timingFunction: 'ease-out'
 						}, () => {
+							if (this._is_destroyed) {
+								return;
+							}
 							// 动画完成后执行淡出效果
 							animation.transition(el, {
 								styles: {

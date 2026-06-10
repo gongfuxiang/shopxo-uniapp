@@ -35,7 +35,7 @@
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
                     <view class="flex-row align-c pr" style="direction: rtl;">
-                        <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                        <view v-for="(item, index) in online_user" :key="item.user_id || item.id || ('viewer-' + index)" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                             <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                         </view>
                     </view>
@@ -58,7 +58,7 @@
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
                     <view class="flex-row align-c pr" style="direction: rtl;">
-                        <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                        <view v-for="(item, index) in online_user" :key="item.user_id || item.id || ('viewer-' + index)" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                             <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                         </view>
                     </view>
@@ -116,8 +116,8 @@
                                     <view class="flex-1 flex-row align-c flex-wrap">
                                         <image :src="item.user_avatar != null ? item.user_avatar : userAvatar" class="bulletin-item-avatar mb-3" mode="aspectFill"></image>
                                         <text class="user-name cr-blue mb-3">{{ item.user_name }}:</text>
-                                        <view v-for="item in split_text(item.text)" :key="index" class="mb-3">
-                                            <text class="bulletin-text">{{ item }}</text>
+                                        <view v-for="(char, charIndex) in split_text(item.text)" :key="item.id + '-' + charIndex" class="mb-3">
+                                            <text class="bulletin-text">{{ char }}</text>
                                         </view>
                                     </view>
                                 </template>
@@ -311,6 +311,9 @@
                 
                 //#region 评论区
                 bulletins: [],
+                bulletin_seq: 0,
+                scroll_timeouts: [],
+                _is_destroyed: false,
                 scroll_top: 0,
                 // 滚动条的高度
                 scoll_height: 600,
@@ -438,10 +441,9 @@
          * 组件销毁前清理资源
          */
         beforeDestroy() {
-            // 清理socket连接
-            this.clear_interval_task();
+            this._is_destroyed = true;
+            this.clear_all_timers();
             this.unbind_keyboard_listener();
-            // 关闭socket连接
             this.socket_close();
         },
         methods: {
@@ -529,20 +531,76 @@
              * 滚动到评论区最底部
              */
             scroll_to_lower() {
+                if (this._is_destroyed) {
+                    return;
+                }
                 this.$nextTick(() => {
+                    if (this._is_destroyed) {
+                        return;
+                    }
                     const num = Math.random() + 20;
                     //#ifndef APP-NVUE
                     this.scroll_top = this.scoll_height + num;
                     //#endif
                     //#ifdef APP-NVUE
-                    if (this.$refs.bulletin_index && this.$refs.bulletin_index.length > 0) {
-                        this.domModule.scrollToElement((this.$refs.bulletin_index[this.bulletins.length - 1]), {
-                            offset: this.scoll_height + num,  // 偏移量，可根据需要调整
-                            animated: true  // 是否带动画
+                    const refs = this.$refs.bulletin_index;
+                    const lastRef = Array.isArray(refs) ? refs[refs.length - 1] : refs;
+                    if (lastRef && this.domModule) {
+                        this.domModule.scrollToElement(lastRef, {
+                            offset: this.scoll_height + num,
+                            animated: true
                         });
                     }
                     //#endif
                 })
+            },
+            /**
+             * 生成弹幕唯一ID
+             */
+            next_bulletin_id() {
+                this.bulletin_seq++;
+                return 'bulletin-' + this.bulletin_seq;
+            },
+            /**
+             * 延迟滚动并可在销毁时取消
+             */
+            schedule_scroll_to_lower(delay = 300) {
+                const timer = setTimeout(() => {
+                    if (this._is_destroyed) {
+                        return;
+                    }
+                    if (this.is_scroll_to_lower) {
+                        this.scroll_to_lower();
+                    }
+                }, delay);
+                this.scroll_timeouts.push(timer);
+            },
+            /**
+             * 清理组件内所有定时器
+             */
+            clear_all_timers() {
+                this.clear_interval_task();
+                this.clear_socket_reconnect_timer();
+                if (this.pull_live_info_timer != null) {
+                    clearInterval(this.pull_live_info_timer);
+                    this.pull_live_info_timer = null;
+                }
+                if (this.like_timer != null) {
+                    clearTimeout(this.like_timer);
+                    this.like_timer = null;
+                }
+                if (this.explain_goods_timer != null) {
+                    clearTimeout(this.explain_goods_timer);
+                    this.explain_goods_timer = null;
+                }
+                if (this.goods_hide_timer != null) {
+                    clearTimeout(this.goods_hide_timer);
+                    this.goods_hide_timer = null;
+                }
+                if (this.scroll_timeouts && this.scroll_timeouts.length > 0) {
+                    this.scroll_timeouts.forEach((timer) => clearTimeout(timer));
+                    this.scroll_timeouts = [];
+                }
             },
             /**
              * 将文本拆分为字符数组（用于NVUE环境）
@@ -765,20 +823,14 @@
                             this.bulletins[this.bulletins.length - 1].user_name = data.content;
                         } else {
                             this.bulletins.push({
-                                id: Math.random(),
+                                id: this.next_bulletin_id(),
                                 type: 'go',
                                 user_avatar: '',
                                 user_name: data.content,
                                 text: '',
                             });
-                        }                
-                        // 加入直播间提示之后，需要等待300毫秒，确保消息添加到数组中
-                        setTimeout(() => {
-                            // 添加内容之后，如果当前是在最后的需要滚动到最后
-                            if (this.is_scroll_to_lower) {
-                                this.scroll_to_lower();
-                            }
-                        }, 300);
+                        }
+                        this.schedule_scroll_to_lower();
                         break;
                     // 消息
                     case 'message':
@@ -790,21 +842,23 @@
                             this.bulletins.splice(this.bulletins.length - 1, 1);
                         }
                         this.bulletins.push({
-                            id: Math.random(),
+                            id: this.next_bulletin_id(),
                             type: 'user',
                             user_avatar: data.data.user.avatar,
                             user_name: data.data.user.nickname,
                             text: data.content,
                         });
-                        // 加入直播间提示之后，需要等待300毫秒，确保消息添加到数组中
-                        setTimeout(() => {
-                            // 添加内容之后，如果当前是在最后的需要滚动到最后
+                        const scrollTimer = setTimeout(() => {
+                            if (this._is_destroyed) {
+                                return;
+                            }
                             if (this.is_scroll_to_lower) {
                                 this.scroll_to_lower();
                             } else {
                                 this.message_num++;
                             }
                         }, 300);
+                        this.scroll_timeouts.push(scrollTimer);
                         break;
                     case 'live-info': // 获取直播间数据
                         // this.$emit('liveStatus', data.content);
@@ -1058,6 +1112,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '@/common/css/nvue-util.css';
+
 .top-header {
     padding: 10rpx 30rpx 10rpx 20rpx;
     border-radius: 100rpx;
@@ -1104,8 +1160,6 @@
     border: 3rpx solid #ffffff; /* 添加白色边框使其更清晰 */
 }
 .viewer-back {
-    // width: 70rpx;
-    // height: 70rpx;
     border-radius: 30rpx;
 }
 
@@ -1226,6 +1280,7 @@
     height: 80rpx;
     border-radius: 40rpx;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     margin-left: 20rpx;
@@ -1288,12 +1343,12 @@
     border-radius: 50px;
     z-index: 999;
     background: rgba(40,40,40,0.45);
-    .countdown-text {
-        color: #fff;
-        font-size: 50px;
-        text-align: center;
-        font-weight: bold;
-    }
+}
+.countdown-text {
+    color: #fff;
+    font-size: 50px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .countdown-animation {
@@ -1318,34 +1373,31 @@
     width: 200rpx;
     background: #fff;
     padding: 4rpx;
-    /* #ifndef APP-NVUE */
-    box-sizing: border-box;
-    /* #endif */
     position: absolute;
     right: 0;
     bottom: 100rpx;
     border-radius: 20rpx;
     overflow: hidden;
-    .explain-subscript {
-        position: absolute;
-        left: 5rpx;
-        top: 5rpx;
-        right: 5rpx;
-        .explain-progress {
-            padding: 0rpx 8rpx;
-            background: rgba(40,40,40,0.45);
-            border-radius: 10rpx;
-        }
-        .explain-close {
-            margin-right: 5rpx;
-            padding: 6rpx;
-            background: rgba(40,40,40,0.45);
-            border-radius: 50rpx;
-        }
-    }
+}
+.explain-subscript {
+    position: absolute;
+    left: 5rpx;
+    top: 5rpx;
+    right: 5rpx;
+}
+.explain-progress {
+    padding: 0rpx 8rpx;
+    background: rgba(40,40,40,0.45);
+    border-radius: 10rpx;
+}
+.explain-close {
+    margin-right: 5rpx;
+    padding: 6rpx;
+    background: rgba(40,40,40,0.45);
+    border-radius: 50rpx;
 }
 /* #ifndef APP-NVUE */
-/* #ifdef MP-WEIXIN | APP-PLUS */
+/* #ifdef MP-WEIXIN || APP-PLUS */
     .bulletin-area {
         ::v-deep ::-webkit-scrollbar
         {

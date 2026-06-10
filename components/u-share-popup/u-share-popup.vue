@@ -1,13 +1,8 @@
 <template>
     <view :class="theme_view">
         <u-popup ref="popupShareRef" mode="bottom" title="" :closeable="false">
-            <view class="share-popup bg-white flex-row">
-                <view class="close oh pa top-0 right-0 z-i-deep">
-                    <view class="fr padding-top padding-right padding-left-sm padding-bottom-sm" @tap.stop="popup_close_event">
-                        <u-icon name="close-line" size="28rpx" color="#999"></u-icon>
-                    </view>
-                </view>
-                <view class="flex-1 share-popup-content">
+            <view class="share-popup bg-white" style="position: relative;">
+                <view class="share-popup-content">
                     <!-- #ifdef MP-ALIPAY -->
                     <view class="share-items oh cp" @tap="share_base_event">
                         <image class="image" :src="common_static_url + 'share-user-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
@@ -26,34 +21,37 @@
                     <block v-if="is_app_weixin">
                         <view class="share-items oh cp" data-scene="WXSceneSession" data-provider="weixin" @tap="share_app_event">
                             <image class="image" :src="common_static_url + 'share-user-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.rhs2c5') }}</text>
+                            <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.rhs2c5') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneTimeline" data-provider="weixin" @tap="share_app_event">
                             <image class="image" :src="common_static_url + 'share-friend-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.mv9l10') }}</text>
+                            <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.mv9l10') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneFavorite" data-provider="weixin" @tap="share_app_event">
                             <image class="image" :src="common_static_url + 'share-favor-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.f08y38') }}</text>
+                            <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.f08y38') }}</text>
                         </view>
                     </block>
                     <block v-if="is_app_qq">
                         <view class="share-items oh cp" data-provider="qq" @tap="share_app_event">
                             <image class="image":src="common_static_url + 'share-qq-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.1242w9') }}</text>
+                            <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.1242w9') }}</text>
                         </view>
                     </block>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <view class="share-items oh cp" :style="{ 'width': single_text_width }" @tap="share_url_copy_event">
                         <image class="image" :src="common_static_url + 'share-url-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                        <text class="flex-1 cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.1oh013') }}</text>
+                        <text class="flex-1 cr-grey text-size-xs single-text" :style="share_text_style">{{ $t('share-popup.share-popup.1oh013') }}</text>
                     </view>
                     <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
                         <image class="image" :src="common_static_url + 'share-poster-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.dcp2qu') }}</text>
+                        <text class="cr-grey text-size-xs single-text" :style="share_text_style">{{ $t('share-popup.share-popup.dcp2qu') }}</text>
                     </view>
+                </view>
+                <view class="share-popup-close" :style="share_close_style" @tap.stop="popup_close_event">
+                    <u-icon propName="close-line" propSize="28rpx" propColor="#999999"></u-icon>
                 </view>
             </view>
         </u-popup>
@@ -96,10 +94,38 @@
             componentUserBase,
         },
 
+        computed: {
+            share_close_style() {
+                return {
+                    position: 'absolute',
+                    top: '4px',
+                    right: '4px',
+                    zIndex: 99,
+                    width: '44px',
+                    height: '44px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                };
+            },
+            share_text_style() {
+                var style = {
+                    color: '#999',
+                    width: this.single_text_width,
+                };
+                // #ifdef APP
+                style.fontSize = '12px';
+                style.lineHeight = '18px';
+                // #endif
+                return style;
+            },
+        },
+
         created: function () {
             const data = uni.getWindowInfo();
             const del_width = app.globalData.rpx_to_px(100);
-            this.single_text_width = (data.windowWidth - del_width) + 'px;';
+            this.single_text_width = (data.windowWidth - del_width) + 'px';
         },
 
         methods: {
@@ -311,10 +337,28 @@
     .share-popup {
         padding: 20rpx 10rpx 0 10rpx;
         position: relative;
+        /* #ifdef APP */
+        padding: 28rpx 10rpx 8rpx 10rpx;
+        /* #endif */
+    }
+    .share-popup-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 10;
+        padding: 16rpx 20rpx;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
     .share-popup-content {
         padding: 0 20rpx;
         text-align: left;
+        /* #ifdef APP */
+        padding-top: 16rpx;
+        padding-right: 56rpx;
+        /* #endif */
     }
     .share-items {
         padding: 30rpx 0;
@@ -324,7 +368,18 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        /* #ifdef APP */
+        padding: 14rpx 0;
+        /* #endif */
     }
+    /* #ifndef APP-NVUE */
+    .share-items text {
+        color: #999;
+        /* #ifndef APP */
+        font-size: 24rpx;
+        /* #endif */
+    }
+    /* #endif */
     /* #ifndef APP-NVUE */
     .share-items:not(:first-child) {
         border-top: 1px solid #f0f0f0;
@@ -339,6 +394,8 @@
     }
     .single-text {
         /* width: calc(100% - 100rpx); */
+        /* #ifndef APP-NVUE */
         line-height: 85rpx;
+        /* #endif */
     }
 </style>
