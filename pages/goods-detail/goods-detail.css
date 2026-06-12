@@ -93,6 +93,62 @@
 /**
  * 购买操作导航
  */
+.goods-buy-nav-loading {
+    position: relative;
+    overflow: hidden;
+    background: #ececec;
+    padding-right: 16rpx;
+    padding: 20rpx 18rpx 20rpx 10rpx;
+}
+.goods-buy-nav-loading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #f5f5f5 0%, #ffffff 88%, rgba(255, 255, 255, 0.35) 100%);
+    animation: goods-buy-nav-loading-fill 0.85s ease-in-out infinite;
+}
+.goods-buy-nav-loading-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-width: 0;
+}
+.goods-buy-nav-loading-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.goods-buy-nav-loading-icon {
+    width: 40rpx;
+    height: 40rpx;
+    margin-top: 10rpx;
+    border-radius: 8rpx;
+    background: rgba(0, 0, 0, 0.06);
+}
+.goods-buy-nav-loading-line {
+    width: 36rpx;
+    height: 14rpx;
+    margin-top: 8rpx;
+    border-radius: 4rpx;
+    background: rgba(0, 0, 0, 0.06);
+}
+.goods-buy-nav-loading-btn {
+    height: 70rpx;
+    border-radius: 35rpx;
+    background: rgba(0, 0, 0, 0.06);
+}
+@keyframes goods-buy-nav-loading-fill {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
 .goods-buy-nav .btn-items .btn {
     height: 70rpx;
     line-height: 70rpx;
@@ -385,9 +441,38 @@
 /*
 * 优惠劵 - 插件
 */
+.goods-discount-aggregate {
+    width: 100%;
+    box-sizing: border-box;
+}
+.goods-discount-aggregate-row {
+    width: 100%;
+    min-width: 0;
+}
+.goods-discount-tags-scroll {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.goods-discount-tags-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+.goods-discount-tags-scroll .discount-tag-item,
+.goods-discount-tags-scroll .mini-coupon {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.goods-discount-aggregate-more {
+    flex-shrink: 0;
+}
 .mini-coupon {
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     height: 40rpx;
     line-height: 40rpx;
     border-radius: 4rpx;

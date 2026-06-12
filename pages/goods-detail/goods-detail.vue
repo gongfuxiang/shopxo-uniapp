@@ -165,22 +165,22 @@
                     </view>
                 </view>
 
-                <!-- 聚合优惠信数据 -->
+                <!-- 聚合优惠数据 -->
                 <view v-if="
                     ((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0) ||
                     ((plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null) ||
                     ((plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null && plugins_fullgive_data.data.length > 0) ||
                     ((plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null && plugins_npiecendis_data.data.length > 0) ||
                     ((plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null && plugins_newpersongift_data.data.length > 0)
-                " class="padding-main bg-white text-size-xs flex-row jc-sb align-c br-t-f9">
-                    <view class="flex-row align-c flex-1 flex-width" @tap="popup_discount_event">
-                        <view class="margin-right-main cp flex-1 flex-width flex-row text-srcoll">
+                " class="goods-discount-aggregate padding-main bg-white text-size-xs br-t-f9">
+                    <view class="goods-discount-aggregate-row flex-row align-c" @tap="popup_discount_event">
+                        <view class="goods-discount-tags-scroll flex-row flex-nowrap margin-right-main cp">
                             <!-- 优惠券 -->
                             <block v-if="((plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0)">
                                 <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                    <view class="item mini-coupon flex-row flex-nowrap margin-right-sm" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
-                                        <text>{{ item.desc || item.name }}</text>
-                                        <text class="margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
+                                    <view class="discount-tag-item mini-coupon flex-row flex-nowrap margin-right-sm" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
+                                        <text class="nowrap">{{ item.desc || item.name }}</text>
+                                        <text class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" :data-index="index" :data-value="item.id" @tap.stop="coupon_receive_event">{{ item.status_operable_name }}</text>
                                     </view>
                                 </block>
                             </block>
@@ -188,7 +188,7 @@
                             <block v-if="(plugins_fullreduce_data || null) != null && (plugins_fullreduce_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_fullreduce_data.data" :key="index">
                                     <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
                             </block>
@@ -196,7 +196,7 @@
                             <block v-if="(plugins_fullgive_data || null) != null && (plugins_fullgive_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_fullgive_data.data" :key="index">
                                     <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
                             </block>
@@ -204,7 +204,7 @@
                             <block v-if="(plugins_npiecendis_data || null) != null && (plugins_npiecendis_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_npiecendis_data.data" :key="index">
                                     <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
                             </block>
@@ -212,12 +212,12 @@
                             <block v-if="(plugins_newpersongift_data || null) != null && (plugins_newpersongift_data.data || null) != null">
                                 <block v-for="(item, index) in plugins_newpersongift_data.data" :key="index">
                                     <block v-for="(item2, index2) in item.rule_lines" :key="index2">
-                                        <view class="item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
+                                        <view class="discount-tag-item br-main cr-main bg-white radius padding-vertical-xss padding-horizontal-sm margin-right-sm">{{item2}}</view>
                                     </block>
                                 </block>
                             </block>
                         </view>
-                        <view>
+                        <view class="goods-discount-aggregate-more flex-shrink">
                             <text class="text-size-xs cr-grey-9">{{$t('common.view_text')}}</text>
                             <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                         </view>
@@ -506,8 +506,27 @@
             <block v-if="goods_bottom_nav_status">
                 <view v-if="plugins_realstore_cart_nav_status || data_loading_status == 0" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <view class="item goods-buy-nav oh round bg-white flex-row jc-sb align-c padding-vertical-sm padding-horizontal-xs">
-                            <button class="bg-white br-white round tc text-size-md wh-auto margin-horizontal-main cr-grey" type="default" :loading="true">{{ $t('common.loading_in_text') }}</button>
+                        <view class="item goods-buy-nav goods-buy-nav-loading oh round flex-row jc-sb align-c">
+                            <view class="goods-buy-nav-loading-content flex-row jc-sb align-c flex-1">
+                                <view class="flex-row jc-sa align-c flex-width-half padding-right-sm">
+                                    <view class="goods-buy-nav-loading-item">
+                                        <view class="goods-buy-nav-loading-icon"></view>
+                                        <view class="goods-buy-nav-loading-line"></view>
+                                    </view>
+                                    <view class="goods-buy-nav-loading-item">
+                                        <view class="goods-buy-nav-loading-icon"></view>
+                                        <view class="goods-buy-nav-loading-line"></view>
+                                    </view>
+                                    <view class="goods-buy-nav-loading-item">
+                                        <view class="goods-buy-nav-loading-icon"></view>
+                                        <view class="goods-buy-nav-loading-line"></view>
+                                    </view>
+                                </view>
+                                <view class="flex-row jc-sa align-c flex-width-half">
+                                    <view class="goods-buy-nav-loading-btn flex-1 margin-right-sm"></view>
+                                    <view class="goods-buy-nav-loading-btn flex-1"></view>
+                                </view>
+                            </view>
                         </view>
                     </view>
                 </view>
