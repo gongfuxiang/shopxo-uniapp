@@ -506,7 +506,7 @@
             <block v-if="goods_bottom_nav_status">
                 <view v-if="plugins_realstore_cart_nav_status || data_loading_status == 0" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
-                        <view class="item goods-buy-nav goods-buy-nav-loading oh round flex-row jc-sb align-c">
+                        <view class="item goods-buy-nav goods-buy-nav-loading oh round bg-white flex-row jc-sb align-c">
                             <view class="goods-buy-nav-loading-content flex-row jc-sb align-c flex-1">
                                 <view class="flex-row jc-sa align-c flex-width-half padding-right-sm">
                                     <view class="goods-buy-nav-loading-item">
