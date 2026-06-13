@@ -14,7 +14,7 @@
 .progress {
     overflow: hidden;
     height: 40rpx;
-    background-color: #eee;
+    background-color: #f3f3f3;
     margin-left: 24rpx;
 }
 .progress .cr-grey {
@@ -22,26 +22,16 @@
     line-height: 40rpx;
 }
 .progress-bar {
-    float: left;
-    width: 0;
     height: 100%;
     font-size: 24rpx;
     line-height: 40rpx;
-    color: #fff;
     text-align: center;
-    background-color: #0e90d2;
+    flex-shrink: 0;
+    min-width: 0;
+    transition: width 0.3s ease;
 }
-.progress-bar-danger {
-    background-color: #dd514c;
-}
-.progress-bar-warning {
-    background-color: #F37B1D;
-}
-.progress-bar-secondary {
-    background-color: #3bb4f2;
-}
-.progress-bar-success {
-    background-color: #5eb95e;
+.progress-bar-text-light {
+    color: #fff;
 }
 
 /*

@@ -12,10 +12,10 @@
                         <view class="cr-base">{{$t('goods-comment.goods-comment.dfmjxd')}}</view>
                         <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
                     </view>
-                    <view class="progress tc border-radius-main flex-1 flex-width">
+                    <view class="progress tc border-radius-main flex-1 flex-width flex-row">
                         <block v-if="goods_score.avg > 0">
                             <block v-for="(item, index) in goods_score.rating" :key="index">
-                                <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
+                                <view v-if="item.portion > 0" :class="item.bar_class" :style="item.bar_style">{{ item.name }}</view>
                             </block>
                         </block>
                         <text v-else class="cr-grey">{{$t('goods-comment.goods-comment.1qh8s8')}}</text>
@@ -60,7 +60,7 @@
                 data_page: 1,
                 goods_score: null,
                 params: null,
-                progress_class: ["progress-bar-danger", "progress-bar-warning", "progress-bar-secondary", "", "progress-bar-success"],
+                theme_color: app.globalData.get_theme_color(),
             };
         },
         components: {
@@ -105,6 +105,50 @@
         },
 
         methods: {
+            // 格式化评分数据（小程序模板不支持直接调用 methods）
+            format_goods_score(data) {
+                if (data == null || (data.rating || null) == null) {
+                    return data;
+                }
+                var color = this.theme_color || '#ff0036';
+                var intensities = [0.22, 0.38, 0.54, 0.72, 0.9];
+                var rating = [];
+                for (var i = 0; i < data.rating.length; i++) {
+                    var item = data.rating[i];
+                    var intensity = intensities[i] || 0.5;
+                    var start = this.color_rgba(color, intensity * 0.72);
+                    var end = this.color_rgba(color, Math.min(intensity * 1.18, 1));
+                    var text_class = i >= 3 ? 'progress-bar-text-light' : 'cr-main';
+                    rating.push({
+                        rating: item.rating,
+                        name: item.name,
+                        count: item.count,
+                        portion: item.portion,
+                        bar_class: 'progress-bar ' + text_class,
+                        bar_style: 'width:' + item.portion + '%;background:linear-gradient(90deg,' + start + ',' + end + ');',
+                    });
+                }
+                return {
+                    avg: data.avg,
+                    rate: data.rate,
+                    rating: rating,
+                };
+            },
+
+            // 颜色转 rgba
+            color_rgba(color, alpha) {
+                var hex = (color || '#ff0036').replace('#', '');
+                if (hex.length === 3) {
+                    hex = hex.split('').map(function(c) {
+                        return c + c;
+                    }).join('');
+                }
+                var r = parseInt(hex.substring(0, 2), 16);
+                var g = parseInt(hex.substring(2, 4), 16);
+                var b = parseInt(hex.substring(4, 6), 16);
+                return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+            },
+
             // 初始化
             init() {
                 // 获取数据
@@ -124,7 +168,7 @@
                     success: (res) => {
                         if (res.data.code == 0) {
                             this.setData({
-                                goods_score: res.data.data || null,
+                                goods_score: this.format_goods_score(res.data.data || null),
                             });
                         } else {
                             if (res.data.code != -400) {
