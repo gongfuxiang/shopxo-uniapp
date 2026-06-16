@@ -1,5 +1,5 @@
 <template>
-    <view class="oh" :style="style_container">
+    <view v-if="!isEmpty(list)" class="oh" :style="style_container">
         <view :style="style_img_container">
             <view class="oh flex-col" :style="'gap:' + new_style.data_content_outer_spacing * 2 + 'rpx;'">
                 <view v-for="(match_item, match_index) in list" :key="match_index" :data-value="match_item.url" @tap.stop="url_event">

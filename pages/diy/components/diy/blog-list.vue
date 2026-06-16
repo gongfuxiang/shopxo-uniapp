@@ -1,6 +1,6 @@
 <template>
     <!-- 博客列表 -->
-    <view class="oh" :style="style_container">
+    <view v-if="!isEmpty(data_list)" class="oh" :style="style_container">
         <view class="oh" :style="style_img_container">
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(blog_theme)" class="flex-wrap" :class="blog_theme_class" :style="blog_theme !== '3' ? blog_spacing : ''">

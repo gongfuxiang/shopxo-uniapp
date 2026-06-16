@@ -1,6 +1,6 @@
 <template>
     <!-- 文章列表 -->
-    <view class="oh" :style="style_container">
+    <view v-if="!isEmpty(data_list)" class="oh" :style="style_container">
         <view class="oh" :style="style_img_container">
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(article_theme)" class="flex-wrap" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">

@@ -1,6 +1,6 @@
 <template>
     <!-- 优惠券 -->
-    <view class="coupon-theme-container" :style="style_container">
+    <view v-if="!isEmpty(data_list)" class="coupon-theme-container" :style="style_container">
         <view class="pr" :style="style_img_container">
             <view class="hide-scrollbar">
                 <template v-if="theme == '1'">
@@ -210,6 +210,7 @@
             this.init();
         },
         methods: {
+            isEmpty,
             // 初始化数据
             init() {
                 const new_content = this.propValue.content || {};
