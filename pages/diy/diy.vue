@@ -142,7 +142,7 @@
                                         title: this.data.name,
                                         desc: this.data.describe,
                                         path: '/pages/diy/diy',
-                                        query: 'id=' + this.data.id,
+                                        query: app.globalData.params_to_url_string(this.params),
                                         img: this.data.logo,
                                     },
                                 });
