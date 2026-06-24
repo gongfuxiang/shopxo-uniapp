@@ -335,6 +335,3 @@
         },
     };
 </script>
-<style scoped>
-    @import './business.css';
-</style>
