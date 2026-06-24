@@ -48,8 +48,13 @@
 
         <!-- 开票类型选择 -->
         <component-popup :propShow="invoice_business_popup_status" propPosition="bottom" @onclose="invoice_business_popup_close_event">
-            <view class="invoice-business-popup padding-main">
-                <view class="text-size-lg fw-b margin-bottom-main">{{$t('invoice.invoice.m9n4p2')}}</view>
+            <view class="invoice-business-popup padding-main bg-white">
+                <view class="close oh margin-bottom-main">
+                    <text class="text-size-lg fw-b">{{$t('invoice.invoice.m9n4p2')}}</text>
+                    <view class="fr" @tap.stop="invoice_business_popup_close_event">
+                        <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
                 <view v-for="(item, index) in invoice_business_list" :key="index" class="invoice-business-item padding-vertical-main cr-base" :data-index="index" @tap="invoice_business_select_event">{{ item.name }}</view>
             </view>
         </component-popup>
