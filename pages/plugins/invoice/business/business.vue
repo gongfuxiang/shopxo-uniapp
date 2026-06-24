@@ -5,7 +5,7 @@
                 <view class="padding-horizontal-main padding-top-main" :class="select_ids.length > 0 ? 'page-bottom-fixed' : ''">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main">
-                            <view class="dis-inline-block va-m" data-type="node":data-value="item.id" @tap="selected_event">
+                            <view class="dis-inline-block va-m" data-type="node" :data-value="item.id" @tap="selected_event">
                                 <iconfont
                                     propClass="margin-right-sm pr top-xs"
                                     :name="select_ids.indexOf(item.id) != -1 ? 'icon-selected-solid' : 'icon-not-selected'"
@@ -13,11 +13,11 @@
                                     :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
                                 ></iconfont>
                             </view>
-                            <text class="va-m">{{ item.recharge_no }}</text>
-                            <text class="fr">{{ item.pay_money }}</text>
+                            <text class="va-m">{{ item[business_no_field] }}</text>
+                            <text class="fr">{{ item[business_price_field] }}</text>
                         </view>
-                        <view :data-value="'/pages/plugins/wallet/user-recharge-detail/user-recharge-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
-                            <component-panel-content :propData="item" :propDataField="field_list" propExcludeField="recharge_no,pay_money" :propIsTerse="true"></component-panel-content>
+                        <view :class="'content margin-top ' + ((business_detail_page || null) != null && business_detail_page != '' ? 'cp' : '')" :data-value="((business_detail_page || null) != null && business_detail_page != '') ? (business_detail_page + item.id) : ''" @tap="content_event">
+                            <component-panel-content :propData="item" :propDataField="field_list" :propExcludeField="business_exclude_field" :propIsTerse="true"></component-panel-content>
                         </view>
                         <view class="item-operation tr margin-top-main">
                             <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoice-saveinfo.89815t')}}</button>
@@ -66,6 +66,12 @@
                 bottom_fixed_style: '',
                 params: null,
                 select_ids: [],
+                business_type: 0,
+                business_control: '',
+                business_no_field: 'order_no',
+                business_price_field: 'pay_price',
+                business_detail_page: '',
+                business_exclude_field: 'order_no,pay_price',
             };
         },
 
@@ -80,10 +86,22 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
+            // 业务类型
+            var business_type = parseInt(params.type || 0);
+            if(isNaN(business_type) || business_type <= 0) {
+                app.globalData.showToast(this.$t('common.data_error'));
+                setTimeout(function() {
+                    app.globalData.page_back_prev_event();
+                }, 1500);
+                return false;
+            }
+
             // 设置参数
             this.setData({
                 params: params,
+                business_type: business_type,
             });
+            this.init_business_config(business_type);
         },
 
         onShow() {
@@ -111,6 +129,44 @@
         },
 
         methods: {
+            // 初始化业务配置
+            init_business_config(business_type) {
+                var temp = null;
+                var list = app.globalData.invoice_business_list || [];
+                if(list.length > 0) {
+                    for(var i in list) {
+                        if(parseInt(list[i]['type']) == business_type) {
+                            temp = list[i];
+                            break;
+                        }
+                    }
+                }
+                if(temp == null) {
+                    var type_map = {
+                        1: { control: 'recharge', no_field: 'recharge_no', price_field: 'pay_money', detail_page: '/pages/plugins/wallet/user-recharge-detail/user-recharge-detail?id=', name: this.$t('invoice.invoice.bh8yt3') },
+                        2: { control: 'givegift', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: '送礼开票' },
+                        3: { control: 'presale', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: '预售开票' },
+                        4: { control: 'vip', no_field: 'payment_user_order_no', price_field: 'pay_price', detail_page: '', name: '超级会员开票' },
+                        5: { control: 'scanpay', no_field: 'order_no', price_field: 'pay_price', detail_page: '', name: '扫码收款开票' },
+                    };
+                    temp = type_map[business_type] || null;
+                }
+                if(temp == null) {
+                    app.globalData.showToast(this.$t('common.no_data'));
+                    return false;
+                }
+                this.setData({
+                    business_control: temp.control || '',
+                    business_no_field: temp.no_field || 'order_no',
+                    business_price_field: temp.price_field || 'pay_price',
+                    business_detail_page: temp.detail_page || '',
+                    business_exclude_field: (temp.no_field || 'order_no') + ',' + (temp.price_field || 'pay_price'),
+                });
+                uni.setNavigationBarTitle({
+                    title: temp.name || this.$t('invoice-saveinfo.invoice-saveinfo.89815t'),
+                });
+            },
+
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
@@ -125,6 +181,10 @@
 
             // 获取数据
             get_data_list(is_mandatory) {
+                if((this.business_control || null) == null || this.business_control == '') {
+                    return false;
+                }
+
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
@@ -151,7 +211,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'recharge', 'invoice'),
+                    url: app.globalData.get_request_url('index', this.business_control, 'invoice'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
@@ -257,7 +317,15 @@
                         return false;
                     }
                 }
-                app.globalData.url_open('/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?ids=' + ids + '&type=1&is_redirect=1');
+                app.globalData.url_open('/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?ids=' + ids + '&type=' + this.business_type + '&is_redirect=1');
+            },
+
+            // 内容点击
+            content_event(e) {
+                if((this.business_detail_page || null) == null || this.business_detail_page == '') {
+                    return false;
+                }
+                app.globalData.url_event(e);
             },
 
             // url事件
@@ -268,5 +336,5 @@
     };
 </script>
 <style scoped>
-    @import './recharge.css';
+    @import './business.css';
 </style>

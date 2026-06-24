@@ -20,6 +20,29 @@
                     <text v-if="(error_msg || null) != null" class="cr-red">{{error_msg}}</text>
                     <text v-if="(success_msg || null) != null" class="cr-green">{{success_msg}}</text>
                 </view>
+                <!-- 核验成功订单信息 -->
+                <view v-if="(success_order_data || null) != null" class="margin-top-xl border-radius-main bg-white padding-main spacing-mb">
+                    <view class="fw-b text-size margin-bottom-main">{{$t('user-order-detail.user-order-detail.0f26j2')}}</view>
+                    <view class="cr-base text-size-sm">
+                        <view class="padding-vertical-xs">{{$t('common.order_id_label')}}{{success_order_data.id}}</view>
+                        <view class="padding-vertical-xs">{{$t('user-order-detail.user-order-detail.n18sd2')}}：{{success_order_data.order_allot_no}}</view>
+                        <view class="padding-vertical-xs">{{$t('order-detail.order-detail.9153qn')}}：{{success_order_data.add_time}}</view>
+                        <view class="padding-vertical-xs">{{$t('user-order-detail.user-order-detail.2y7l13')}}：<text class="cr-price fw-b">{{currency_symbol}}{{success_order_data.total_price}}</text></view>
+                    </view>
+                    <view v-if="(success_order_data.items || null) != null && success_order_data.items.length > 0" class="margin-top-main">
+                        <view class="fw-b text-size margin-bottom-main">{{$t('user-order-detail.user-order-detail.yghjkf')}}</view>
+                        <view v-for="(item, index) in success_order_data.items" :key="index" class="oh margin-top flex-row gap-10">
+                            <image :src="item.images" mode="aspectFill" class="br-f5 radius goods-cover"></image>
+                            <view class="goods-base flex-1 flex-width">
+                                <view class="multi-text">{{item.title}}</view>
+                                <view class="margin-top-xs cr-grey text-size-sm">
+                                    <text>{{currency_symbol}}{{item.price}} x{{item.buy_number}}</text>
+                                    <text class="fr cr-price">{{currency_symbol}}{{item.total_price}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
             </form>
         </view>
 
@@ -34,10 +57,12 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                currency_symbol: app.globalData.currency_symbol(),
                 form_submit_loading: false,
                 check_value: '',
                 error_msg: '',
-                success_msg: ''
+                success_msg: '',
+                success_order_data: null
             };
         },
         components: {
@@ -94,7 +119,8 @@
             form_submit() {
                 this.setData({
                     error_msg: '',
-                    success_msg: ''
+                    success_msg: '',
+                    success_order_data: null
                 });
                 var form_data = {
                     extraction_code: this.check_value
@@ -123,6 +149,7 @@
                                     check_value: '',
                                     error_msg: '',
                                     success_msg: res.data.msg+'（'+temp_code+'）',
+                                    success_order_data: res.data.data || null,
                                 });
                             } else {
                                 if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
@@ -130,6 +157,7 @@
                                         form_submit_loading: false,
                                         error_msg: res.data.msg+'（'+temp_code+'）',
                                         success_msg: '',
+                                        success_order_data: null,
                                     });
                                 }
                             }
@@ -140,6 +168,7 @@
                                 form_submit_loading: false,
                                 error_msg: this.$t('common.internet_error_tips')+'（'+temp_code+'）',
                                 success_msg: '',
+                                success_order_data: null,
                             });
                         },
                     });
@@ -153,5 +182,10 @@
         height: 100rpx;
         line-height: 100rpx;
         font-size: 44rpx;
+    }
+    .goods-cover {
+        width: 140rpx;
+        height: 140rpx;
+        flex-shrink: 0;
     }
 </style>

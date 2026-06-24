@@ -1,5 +1,5 @@
 <template>
-    <view v-if="!isEmpty(list)" class="oh" :style="style_container">
+    <view class="oh" :style="style_container">
         <view :style="style_img_container">
             <view :class="outer_class" :style="outer_style">
                 <template v-if="!['3'].includes(theme)">

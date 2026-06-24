@@ -1,6 +1,6 @@
 <template>
     <!-- 直播列表 -->
-    <view v-if="!isEmpty(data_list)" class="oh" :style="style_container">
+    <view class="oh" :style="style_container">
         <view class="oh" :style="style_img_container">
             <view class="pr oh" :style="style">
                 <view v-if="!['4'].includes(plugins_live_theme)" class="flex-wrap" :class="plugins_live_theme_class" :style="plugins_live_theme !== '3' ? plugins_live_spacing : ''">

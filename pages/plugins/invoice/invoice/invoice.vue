@@ -38,14 +38,21 @@
                 </view>
 
                 <!-- 添加发票 -->
-                <view v-if="(data_base || null) != null && ((data_base.is_invoice_order || 0) == 1 || (data_base.is_invoice_recharge || 0) == 1)" class="bottom-fixed" :style="bottom_fixed_style">
+                <view v-if="(invoice_business_list || null) != null && invoice_business_list.length > 0" class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude flex-row gap-10">
-                        <button v-if="(data_base.is_invoice_order || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/order/order" @tap="url_event">{{$t('invoice.invoice.p3dmd2')}}</button>
-                        <button v-if="(data_base.is_invoice_recharge || 0) == 1" class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" data-value="/pages/plugins/invoice/recharge/recharge" @tap="url_event">{{$t('invoice.invoice.bh8yt3')}}</button>
+                        <button class="item round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none" @tap="invoice_open_event">{{$t('invoice.invoice.k8f2m1')}}</button>
                     </view>
                 </view>
             </view>
         </scroll-view>
+
+        <!-- 开票类型选择 -->
+        <component-popup :propShow="invoice_business_popup_status" propPosition="bottom" @onclose="invoice_business_popup_close_event">
+            <view class="invoice-business-popup padding-main">
+                <view class="text-size-lg fw-b margin-bottom-main">{{$t('invoice.invoice.m9n4p2')}}</view>
+                <view v-for="(item, index) in invoice_business_list" :key="index" class="invoice-business-item padding-vertical-main cr-base" :data-index="index" @tap="invoice_business_select_event">{{ item.name }}</view>
+            </view>
+        </component-popup>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
@@ -57,6 +64,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import componentPopup from '@/components/popup/popup';
 
     export default {
         data() {
@@ -76,6 +84,8 @@
                 params: null,
                 nav_status_list: [],
                 nav_status_index: 0,
+                invoice_business_list: [],
+                invoice_business_popup_status: false,
             };
         },
 
@@ -83,7 +93,8 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
-            componentPanelContent
+            componentPanelContent,
+            componentPopup,
         },
 
         onLoad(params) {
@@ -149,9 +160,12 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var invoice_business_list = data.invoice_business_list || [];
+                            app.globalData.invoice_business_list = invoice_business_list;
                             this.setData({
                                 data_base: data.base || null,
                                 nav_status_list: data.nav || [],
+                                invoice_business_list: invoice_business_list,
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
                                 data_page: 1,
@@ -349,7 +363,42 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
+
+            // 去开票
+            invoice_open_event() {
+                var list = this.invoice_business_list || [];
+                if (list.length <= 0) {
+                    app.globalData.showToast(this.$t('common.no_data'));
+                    return false;
+                }
+                if (list.length == 1) {
+                    app.globalData.url_open(list[0]['page']);
+                    return false;
+                }
+                this.setData({
+                    invoice_business_popup_status: true,
+                });
+            },
+
+            // 开票类型选择
+            invoice_business_select_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var item = this.invoice_business_list[index] || null;
+                this.setData({
+                    invoice_business_popup_status: false,
+                });
+                if ((item || null) != null && (item.page || null) != null) {
+                    app.globalData.url_open(item.page);
+                }
+            },
+
+            // 开票类型弹窗关闭
+            invoice_business_popup_close_event() {
+                this.setData({
+                    invoice_business_popup_status: false,
+                });
+            },
         },
     };
 </script>

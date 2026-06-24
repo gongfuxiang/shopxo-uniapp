@@ -443,7 +443,7 @@
 		"plugins-invoice-invoice-detail": "发票详情",
 		"plugins-invoice-invoice-saveinfo": "开票编辑",
 		"plugins-invoice-order": "订单开票",
-		"plugins-invoice-recharge": "充值开票",
+		"plugins-invoice-business": "业务开票",
 		"plugins-signin-user": "签到",
 		"plugins-signin-detail": "签到",
 		"plugins-signin-user-qrcode-detail": "签到码详情",
@@ -1387,6 +1387,8 @@
 		"invoice": {
 			"p3dmd2": "订单开票",
 			"bh8yt3": "充值开票",
+			"k8f2m1": "去开票",
+			"m9n4p2": "选择开票类型",
 			"l3832z": "业务类型",
 			"hoenw8": "申请类型",
 			"j04kjc": "发票类型",

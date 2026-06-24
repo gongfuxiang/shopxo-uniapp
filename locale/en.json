@@ -441,7 +441,7 @@
 		"plugins-invoice-invoice-detail": "Invoice details",
 		"plugins-invoice-invoice-saveinfo": "Invoice editing",
 		"plugins-invoice-order": "Order invoicing",
-		"plugins-invoice-recharge": "Recharge invoice",
+		"plugins-invoice-business": "Business invoice",
 		"plugins-signin-user": "Sign in",
 		"plugins-signin-detail": "Sign in",
 		"plugins-signin-user-qrcode-detail": "Sign in code details",
@@ -1399,6 +1399,8 @@
 		"invoice": {
 			"p3dmd2": "Order invoicing",
 			"bh8yt3": "Recharge invoice",
+			"k8f2m1": "Apply invoice",
+			"m9n4p2": "Select invoice type",
 			"l3832z": "Business type",
 			"hoenw8": "Application type",
 			"j04kjc": "Invoice type",
