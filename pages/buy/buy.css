@@ -81,6 +81,9 @@
     font-size: 20rpx;
     background: #D8D8D8 linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
 }
+.payment-list-toggle {
+    line-height: 60rpx;
+}
 
 /**
 * 扩展数据
@@ -140,9 +143,16 @@
 }
 .buy-data-item .right-value {
     width: calc(100% - 260rpx);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
 }
 .buy-data-item .right-value .right-value-content {
-    width: calc(100% - 32rpx);
+    flex: 1;
+    min-width: 0;
+    width: auto;
 }
 
 /*

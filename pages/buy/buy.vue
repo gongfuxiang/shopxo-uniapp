@@ -209,24 +209,6 @@
                             <view v-if="(plugins_points_data.not_msg_tips || null) != null" class="desc tr">{{ plugins_points_data.not_msg_tips }}</view>
                         </block>
                     </view>
-
-                    <!-- 留言 -->
-                    <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
-                        <view class="content">
-                            <textarea v-if="user_note_status" class="textarea" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="230" :placeholder="$t('common.leave_message')"></textarea>
-                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view ' + ((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || $t('common.leave_message') }}</view>
-                        </view>
-                        <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.note_fast_data || null) != null" class="plugins-intellectstools-data-note-fast margin-top-sm">
-                            <text class="cr-grey margin-right-sm va-m text-size-xs">{{ $t('buy.buy.q7jq76') }}</text>
-                            <view class="note-fast-data-list scroll-view-horizontal dis-inline-block va-m">
-                                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true">
-                                    <block v-for="(item, index) in plugins_intellectstools_data.note_fast_data" :key="index">
-                                        <view :class="'dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right br-grey-f5 cr-base cp ' + (index > 0 ? 'margin-left-sm' : '')" :data-value="item" @tap="note_fast_event">{{ item }}</view>
-                                    </block>
-                                </scroll-view>
-                            </view>
-                        </view>
-                    </view>
                     
                     <!-- 支付选择 -->
                     <view v-if="total_price > 0 && ((common_order_is_booking != 1 && payment_list.length > 0) || plugins_coin_is_valid)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
@@ -252,7 +234,7 @@
                         </block>
                         <!-- 支付方式 -->
                         <view v-if="common_order_is_booking != 1 && payment_list.length > 0" :class="(plugins_coin_is_valid ? 'br-t-f9' : '')">
-                            <view v-for="(item, index) in payment_list" :key="index">
+                            <view v-for="(item, index) in payment_list_visible()" :key="item.id">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" :data-index="index" @tap="payment_event">
                                     <view class="item-content pr flex-1 flex-width">
                                         <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m radius" :src="item.logo" mode="widthFix"></image>
@@ -264,7 +246,45 @@
                                     </view>
                                 </view>
                             </view>
+                            <view v-if="payment_list_expand_visible()" class="payment-list-toggle tc padding-top-sm cp" @tap="payment_list_expand_event">
+                                <text class="cr-grey text-size-xs va-m">{{ payment_list_expand_status ? $t('buy.buy.payment_collapse') : $t('buy.buy.payment_expand_all') }}</text>
+                                <view class="dis-inline-block margin-left-xs va-m">
+                                    <iconfont :name="payment_list_expand_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="28rpx" propClass="cr-grey"></iconfont>
+                                </view>
+                            </view>
                         </view>
+                    </view>
+
+                    <!-- 留言 -->
+                    <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
+                        <view class="content">
+                            <textarea v-if="user_note_status" class="textarea" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="230" :placeholder="$t('common.leave_message')"></textarea>
+                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view ' + ((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || $t('common.leave_message') }}</view>
+                        </view>
+                        <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.note_fast_data || null) != null" class="plugins-intellectstools-data-note-fast margin-top-sm">
+                            <text class="cr-grey margin-right-sm va-m text-size-xs">{{ $t('buy.buy.q7jq76') }}</text>
+                            <view class="note-fast-data-list scroll-view-horizontal dis-inline-block va-m">
+                                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true">
+                                    <block v-for="(item, index) in plugins_intellectstools_data.note_fast_data" :key="index">
+                                        <view :class="'dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right br-grey-f5 cr-base cp ' + (index > 0 ? 'margin-left-sm' : '')" :data-value="item" @tap="note_fast_event">{{ item }}</view>
+                                    </block>
+                                </scroll-view>
+                            </view>
+                        </view>
+                    </view>
+
+                    <!-- 发票信息 -->
+                    <view v-if="plugins_invoice_buy_data != null && total_price > 0" class="padding-horizontal-main border-radius-main bg-white spacing-mb">
+                        <view class="buy-data-item oh" @tap="plugins_invoice_open_event">
+                            <text class="cr-base">{{ $t('buy.buy.k8inv1') }}</text>
+                            <view class="right-value fr cp tr">
+                                <text :class="'right-value-content single-text va-m ' + (plugins_invoice_summary_grey ? 'cr-grey' : 'cr-base')">{{ plugins_invoice_summary_text }}</text>
+                                <view class="dis-inline-block va-m lh-xs">
+                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                                </view>
+                            </view>
+                        </view>
+                        <view v-if="plugins_invoice_wallet_payment" class="cr-grey text-size-xs padding-bottom-sm">{{ $t('buy.buy.k8inv6') }}</view>
                     </view>
 
                     <!-- 底部说明 - 智能工具箱插件 -->
@@ -365,6 +385,16 @@
                 </view>
             </component-popup>
 
+            <!-- 发票选择 -->
+            <component-invoice-buy-popup
+                :propShow="popup_plugins_invoice_status"
+                :propConfig="plugins_invoice_buy_data"
+                :propCacheData="plugins_invoice_cache_data"
+                :propCurrencySymbol="currency_symbol"
+                @onclose="plugins_invoice_close_event"
+                @onconfirm="plugins_invoice_confirm_event"
+            ></component-invoice-buy-popup>
+
             <!-- 支付组件 -->
             <component-payment ref="payment" :propIsRedirectTo="true" :propPayUrl="pay_url" :propQrcodeUrl="qrcode_url" :propToAppointPage="to_appoint_page" propPayDataKey="ids" :propPaymentList="payment_list" :propToPageBack="to_page_back" :propToFailPage="to_fail_page"></component-payment>
         </block>
@@ -382,8 +412,10 @@
     import componentTimeSelect from '@/pages/common/components/time-select/time-select';
     import componentPayment from '@/components/payment/payment';
     import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
+    import componentInvoiceBuyPopup from '@/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup';
 
     var common_static_url = app.globalData.get_static_url('common');
+    var plugins_invoice_buy_cache_key = 'plugins-invoice-buy-data';
     export default {
         data() {
             return {
@@ -396,6 +428,7 @@
                 bottom_fixed_style: '',
                 params: null,
                 payment_list: [],
+                payment_list_expand_status: false,
                 payment_index: -1,
                 payment_id: 0,
                 goods_list: [],
@@ -448,6 +481,14 @@
                 plugins_coin_is_valid: false,
                 plugins_coin_payment_id: 0,
 
+                // 发票
+                plugins_invoice_buy_data: null,
+                plugins_invoice_cache_data: {},
+                plugins_invoice_summary_text: '',
+                plugins_invoice_summary_grey: true,
+                plugins_invoice_wallet_payment: false,
+                popup_plugins_invoice_status: false,
+
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
@@ -469,7 +510,8 @@
             componentNoData,
             componentTimeSelect,
             componentPayment,
-            componentFormInputBase
+            componentFormInputBase,
+            componentInvoiceBuyPopup
         },
 
         onLoad(params) {
@@ -727,7 +769,11 @@
                                     plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                                     plugins_coin_data: plugins_coin_data,
                                     plugins_coin_is_valid:  plugins_coin_data != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0,
+                                    plugins_invoice_buy_data: data.plugins_invoice_buy_data || null,
                                 });
+
+                                // 发票数据处理
+                                this.plugins_invoice_init_handle(data.plugins_invoice_buy_data || null);
 
                                 // 非门店模式则赋值指定的类型模式
                                 if(this.is_first == 1) {
@@ -850,7 +896,141 @@
                     data.staff_booking_data = JSON.stringify(data.staff_booking_data);
                 }
 
+                // 发票
+                data['buy_invoice_data'] = this.plugins_invoice_data_encode();
+
                 return data;
+            },
+
+            // 发票缓存读取
+            plugins_invoice_cache_get() {
+                var cache = uni.getStorageSync(plugins_invoice_buy_cache_key);
+                return (cache || null) != null && typeof cache == 'object' ? cache : null;
+            },
+
+            // 发票缓存写入
+            plugins_invoice_cache_set(data) {
+                if ((data || null) == null) {
+                    uni.removeStorageSync(plugins_invoice_buy_cache_key);
+                    return;
+                }
+                uni.setStorageSync(plugins_invoice_buy_cache_key, data);
+            },
+
+            // 发票数据编码
+            plugins_invoice_data_encode(source) {
+                var data = this.plugins_invoice_data_build(source);
+                if (this.plugins_invoice_wallet_payment) {
+                    data = { is_buy_invoice: 0 };
+                }
+                try {
+                    return base64.encode(JSON.stringify(data));
+                } catch (e) {
+                    return '';
+                }
+            },
+
+            // 发票数据构建
+            plugins_invoice_data_build(source) {
+                if ((source || null) == null) {
+                    source = this.plugins_invoice_cache_get() || {};
+                }
+                var is_buy_invoice = parseInt(source.is_buy_invoice || 0);
+                var result = { is_buy_invoice: is_buy_invoice };
+                if (is_buy_invoice == 1) {
+                    var fields = ['invoice_type', 'apply_type', 'invoice_content', 'invoice_title', 'invoice_code', 'invoice_bank', 'invoice_account', 'invoice_tel', 'invoice_address', 'name', 'tel', 'address', 'email', 'user_note'];
+                    for (var i in fields) {
+                        result[fields[i]] = source[fields[i]] || '';
+                    }
+                }
+                return result;
+            },
+
+            // 发票摘要文本
+            plugins_invoice_summary_text_build(data) {
+                data = data || {};
+                if (this.plugins_invoice_wallet_payment) {
+                    return this.$t('buy.buy.k8inv5');
+                }
+                if (parseInt(data.is_buy_invoice || 0) != 1) {
+                    return this.$t('buy.buy.k8inv2');
+                }
+                var config = this.plugins_invoice_buy_data || {};
+                var type_map = config.invoice_type_map || {};
+                var apply_map = config.apply_type_map || {};
+                var type_name = type_map[parseInt(data.invoice_type || 0)] || '';
+                var apply_name = apply_map[parseInt(data.apply_type || 0)] || '';
+                var invoice_title = (data.invoice_title || '').trim();
+                if (invoice_title) {
+                    var inner = apply_name ? (apply_name + '-' + invoice_title) : invoice_title;
+                    return type_name ? (type_name + '(' + inner + ')') : ('(' + inner + ')');
+                }
+                return type_name || this.$t('buy.buy.k8inv8');
+            },
+
+            // 发票摘要更新
+            plugins_invoice_summary_update(source) {
+                var data = this.plugins_invoice_data_build(source);
+                if (this.plugins_invoice_wallet_payment) {
+                    data = { is_buy_invoice: 0 };
+                }
+                this.setData({
+                    plugins_invoice_cache_data: data,
+                    plugins_invoice_summary_text: this.plugins_invoice_summary_text_build(data),
+                    plugins_invoice_summary_grey: parseInt(data.is_buy_invoice || 0) != 1 || this.plugins_invoice_wallet_payment,
+                });
+                this.plugins_invoice_cache_set(data);
+            },
+
+            // 发票初始化
+            plugins_invoice_init_handle(invoice_data) {
+                if ((invoice_data || null) == null) {
+                    this.setData({
+                        plugins_invoice_buy_data: null,
+                        plugins_invoice_wallet_payment: false,
+                    });
+                    return;
+                }
+                var is_wallet = parseInt(invoice_data.is_wallet_payment || 0) == 1;
+                this.setData({
+                    plugins_invoice_wallet_payment: is_wallet,
+                });
+                if (is_wallet) {
+                    this.plugins_invoice_summary_update({ is_buy_invoice: 0 });
+                    return;
+                }
+                var cache = this.plugins_invoice_cache_get();
+                if (cache != null) {
+                    this.plugins_invoice_summary_update(cache);
+                } else {
+                    this.plugins_invoice_summary_update({ is_buy_invoice: 0 });
+                }
+            },
+
+            // 发票弹窗打开
+            plugins_invoice_open_event() {
+                if (this.plugins_invoice_wallet_payment) {
+                    app.globalData.showToast(this.$t('buy.buy.k8inv5'));
+                    return;
+                }
+                this.setData({
+                    popup_plugins_invoice_status: true,
+                });
+            },
+
+            // 发票弹窗关闭
+            plugins_invoice_close_event() {
+                this.setData({
+                    popup_plugins_invoice_status: false,
+                });
+            },
+
+            // 发票确认
+            plugins_invoice_confirm_event(data) {
+                this.plugins_invoice_summary_update(data);
+                this.setData({
+                    popup_plugins_invoice_status: false,
+                });
             },
 
             // 扩展数据最大显示状态事件
@@ -1061,6 +1241,46 @@
                     plugins_coin_payment_id: 0,
                 });
                 this.init();
+            },
+
+            // 可见支付方式列表
+            payment_list_visible() {
+                var list = this.payment_list || [];
+                if (list.length <= 3 || this.payment_list_expand_status) {
+                    return list;
+                }
+                var visible = list.slice(0, 3);
+                var selected_id = parseInt(this.payment_id || 0);
+                if (selected_id > 0) {
+                    var selected_in_visible = false;
+                    for (var i in visible) {
+                        if (parseInt(visible[i]['id']) == selected_id) {
+                            selected_in_visible = true;
+                            break;
+                        }
+                    }
+                    if (!selected_in_visible) {
+                        for (var j = 3; j < list.length; j++) {
+                            if (parseInt(list[j]['id']) == selected_id) {
+                                visible[2] = list[j];
+                                break;
+                            }
+                        }
+                    }
+                }
+                return visible;
+            },
+
+            // 是否显示支付方式展开按钮
+            payment_list_expand_visible() {
+                return (this.payment_list || []).length > 3;
+            },
+
+            // 支付方式展开/收起
+            payment_list_expand_event() {
+                this.setData({
+                    payment_list_expand_status: !this.payment_list_expand_status,
+                });
             },
 
             // 虚拟币支付方式选择

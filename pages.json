@@ -273,10 +273,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base"
+                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
+                            "component-invoice-buy-popup": "/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup"
                         },
                         "componentPlaceholder": {
-                            "component-form-input-base": "view"
+                            "component-form-input-base": "view",
+                            "component-invoice-buy-popup": "view"
                         }
                     }
                 }
