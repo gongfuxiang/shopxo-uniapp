@@ -126,6 +126,7 @@
         },
 
         methods: {
+            // 初始化表单数据
             init_form() {
                 var config = this.propConfig || {};
                 var cache = this.propCacheData || {};
@@ -141,6 +142,7 @@
                 });
             },
 
+            // 是否开发票选择
             buy_invoice_choice_event(e) {
                 this.is_buy_invoice = parseInt(e.detail.value || 0);
                 if (this.is_buy_invoice == 1) {
@@ -148,6 +150,7 @@
                 }
             },
 
+            // 表单提交
             form_submit(e) {
                 var data = e.detail.value || {};
                 var result = {
@@ -167,6 +170,7 @@
                 this.$emit('onconfirm', result);
             },
 
+            // 关闭弹窗
             close_event() {
                 this.$emit('onclose');
             },

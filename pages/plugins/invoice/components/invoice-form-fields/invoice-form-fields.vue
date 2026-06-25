@@ -139,12 +139,17 @@
             },
         },
         methods: {
+            // 发票类型选择
             invoice_type_event(e) {
                 this.$emit('invoice-type-change', e);
             },
+
+            // 申请类型选择
             apply_type_event(e) {
                 this.$emit('apply-type-change', e);
             },
+
+            // 发票内容选择
             invoice_content_event(e) {
                 this.$emit('invoice-content-change', e);
             },

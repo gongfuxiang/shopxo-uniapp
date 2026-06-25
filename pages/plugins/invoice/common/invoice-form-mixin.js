@@ -16,6 +16,7 @@ const invoice_form_field_list = [
 
 export default {
     methods: {
+        // 表单数据赋值
         invoice_form_assign(data) {
             if (typeof this.setData === 'function') {
                 this.setData(data);
@@ -26,6 +27,7 @@ export default {
             }
         },
 
+        // 获取列表索引
         get_list_index(list, id) {
             if ((list || null) == null || list.length == 0) {
                 return 0;
@@ -41,6 +43,7 @@ export default {
             return parseInt(id) < list.length ? parseInt(id) : 0;
         },
 
+        // 发票类型事件
         form_invoice_type_event(e) {
             this.invoice_form_assign({
                 form_invoice_type_index: e.detail.value,
@@ -48,6 +51,7 @@ export default {
             this.invoice_container_handle();
         },
 
+        // 申请类型事件
         form_apply_type_event(e) {
             this.invoice_form_assign({
                 form_apply_type_index: e.detail.value,
@@ -55,12 +59,14 @@ export default {
             this.invoice_container_handle();
         },
 
+        // 发票内容事件
         form_invoice_content_event(e) {
             this.invoice_form_assign({
                 form_invoice_content_index: e.detail.value,
             });
         },
 
+        // 表单容器显隐处理
         invoice_container_handle() {
             if ((this.can_invoice_type_list || []).length == 0) {
                 return;
@@ -106,6 +112,7 @@ export default {
             this.invoice_form_assign(upd_data);
         },
 
+        // 构建表单校验规则
         invoice_form_build_validation(invoice_type, apply_type) {
             var validation = [
                 { fields: 'invoice_title', msg: this.$t('invoice-saveinfo.invoice-saveinfo.r13p43') },
@@ -127,6 +134,7 @@ export default {
             return validation;
         },
 
+        // 收集表单提交数据
         invoice_form_collect_result(data, invoice_type, apply_type) {
             var result = {
                 invoice_type: invoice_type,
@@ -142,6 +150,7 @@ export default {
             return result;
         },
 
+        // 初始化表单状态
         invoice_form_init_state(source, default_data, lists) {
             source = source || {};
             default_data = default_data || {};
@@ -175,6 +184,7 @@ export default {
             this.invoice_container_handle();
         },
 
+        // 表单数据校验
         invoice_form_validate(data) {
             var invoice_type = this.can_invoice_type_list[this.form_invoice_type_index]['id'];
             var apply_type = this.apply_type_list[this.form_apply_type_index]['id'];
