@@ -981,10 +981,10 @@ button[disabled].bg-grey {
 /**
  * 公共操作栏按钮样式
  */
-.item-operation button:not(:first-child) {
+.item-operation > button:not(:first-child) {
     margin-left: 20rpx;
 }
-.item-operation button {
+.item-operation > button {
     padding: 0 35rpx;
     height: 58rpx;
     line-height: 58rpx;

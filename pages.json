@@ -384,10 +384,12 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "",
                         "usingComponents": {
-                            "component-hospital-order-detail": "/pages/plugins/hospital/components/order-detail/order-detail"
+                            "component-hospital-order-detail": "/pages/plugins/hospital/components/order-detail/order-detail",
+                            "component-order-operate-more": "/pages/user-order/components/order-operate-more/order-operate-more"
                         },
                         "componentPlaceholder": {
-                            "component-hospital-order-detail": "view"
+                            "component-hospital-order-detail": "view",
+                            "component-order-operate-more": "view"
                         }
                     }
                 }
