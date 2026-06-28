@@ -55,7 +55,7 @@
                         <block v-if="(buy_extraction_contact_info || null) != null && (buy_extraction_contact_info.is_write || false) == true">
                             <view class="form-gorup row padding-horizontal-0 padding-top-0">
                                 <view class="form-gorup-title margin-right">{{$t('buy.buy.df3raf')}}</view>
-                                <input type="text" name="extraction_contact_name" :value="buy_extraction_contact_info.name" data-value="name" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('user-address-save.user-address-save.65507o')" />
+                                <input type="text" name="extraction_contact_name" :value="buy_extraction_contact_info.name" data-value="name" @input="extraction_contact_event" maxlength="30" placeholder-class="cr-grey-9" class="cr-base br-b-f9" :placeholder="$t('user-address-save.user-address-save.5yhgps')" />
                             </view>
                             <view class="form-gorup row padding-horizontal-0 padding-top-0">
                                 <view class="form-gorup-title margin-right">{{$t('buy.buy.hjwerf')}}</view>
