@@ -88,14 +88,14 @@
             this.setData({
                 params: app.globalData.launch_params_handle(params),
             });
+
+            // 数据加载
+            this.get_data();
         },
 
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
-            // 数据加载
-            this.get_data();
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
