@@ -21,7 +21,7 @@
                 @blur="search_input_blur_event"
                 :style="'color:' + propTextColor + ';'"
             />
-            <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_submit_confirm_event">{{$t('common.search')}}</button>
+            <button v-if="propIsBtn" :class="'search-btn pa '+propBtnClass"  size="mini" type="default" @tap="search_submit_confirm_event">{{$t('common.search')}}</button>
             <slot name="right"></slot>
         </view>
     </view>
@@ -116,6 +116,10 @@
             propIsBtn: {
                 type: Boolean,
                 default: false,
+            },
+            propBtnClass: {
+                type: String,
+                default: 'bg-main cr-white text-size-md',
             },
             propSize: {
                 type: String,
@@ -266,10 +270,8 @@
         width: 106rpx;
         height: 46rpx;
         line-height: 46rpx;
-        font-size: 28rpx;
         border-radius: 30rpx;
         padding: 0;
-        color: #fff;
         right: 6rpx;
         top: 50%;
         transform: translateY(-50%);

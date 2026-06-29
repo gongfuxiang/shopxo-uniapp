@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="propData.length > 0" class="spacing-mb" :class="(propLeft ? 'swiper-left ' : '') + (propRight ? 'swiper-right ' : '')">
+        <view v-if="propData.length > 0" :class="(propIsSpacingMb ? 'spacing-mb ' : '') + (propLeft ? 'swiper-left ' : '') + (propRight ? 'swiper-right ' : '')">
             <uni-swiper-dot class="uni-swiper-dot-box" :mode="propMode" :dots-styles="dotsStyles" @clickItem="click_item" :info="propData" :current="current">
                 <swiper class="banner oh" :class="' banner-' + (propSize || 'default') + ' ' + propRadius" :autoplay="propData.length > 0" :duration="duration" :circular="circular" @change="swiper_change" :current="swiperDotIndex">
                     <swiper-item v-for="(item, i) in propData" :key="i">
@@ -89,6 +89,10 @@
             propSelectedBorder: {
                 type: String,
                 default: '0',
+            },
+            propIsSpacingMb: {
+                type: Boolean,
+                default: true,
             },
         },
         beforeMount() {

@@ -174,19 +174,21 @@
                                     :class="'plugins-realstore-staff-booking-unit-block ' + (staff_booking_get_goods_units(goods).length > 1 && uindex > 0 ? 'plugins-realstore-staff-booking-unit-block-multi margin-top padding-top br-t-dashed' : 'margin-top-sm')">
                                     <view v-if="staff_booking_get_goods_units(goods).length > 1" class="plugins-realstore-staff-booking-unit-label text-size-xs cr-base margin-bottom-sm">{{$t('common.num')}}{{ uindex + 1 }}</view>
 
-                                    <scroll-view scroll-x="true" class="plugins-realstore-staff-booking-staff-scroll" :show-scrollbar="false" enable-flex="true">
-                                        <view class="plugins-realstore-staff-booking-staff-scroll-inner">
-                                            <view v-for="(staff, sindex) in staff_booking_get_unit_staff_list(gindex, uindex)" :key="sindex"
-                                                :class="'plugins-realstore-staff-booking-staff-card dis-inline-block tc margin-right-sm br ' + (staff_booking_is_staff_selected(gindex, uindex, staff.id) ? 'br-main bg-main-light cr-main' : 'bg-white br-grey cp')"
-                                                :data-gindex="gindex"
-                                                :data-uindex="uindex"
-                                                :data-sindex="sindex"
-                                                @tap="staff_booking_goods_staff_event">
-                                                <image :src="staff.avatar" mode="aspectFill" class="plugins-realstore-staff-booking-staff-avatar-sm radius margin-bottom-xs"></image>
-                                                <view class="plugins-realstore-staff-booking-staff-name text-size-xss single-text">{{ staff.alias }}</view>
+                                    <view v-if="staff_booking_prefer_mode != 1" class="margin-top-sm">
+                                        <scroll-view scroll-x="true" class="plugins-realstore-staff-booking-staff-scroll" :show-scrollbar="false" enable-flex="true">
+                                            <view class="plugins-realstore-staff-booking-staff-scroll-inner">
+                                                <view v-for="(staff, sindex) in staff_booking_get_unit_staff_list(gindex, uindex)" :key="sindex"
+                                                    :class="'plugins-realstore-staff-booking-staff-card dis-inline-block tc margin-right-sm br ' + (staff_booking_is_staff_selected(gindex, uindex, staff.id) ? 'br-main bg-main-light cr-main' : 'bg-white br-grey cp')"
+                                                    :data-gindex="gindex"
+                                                    :data-uindex="uindex"
+                                                    :data-sindex="sindex"
+                                                    @tap="staff_booking_goods_staff_event">
+                                                    <image :src="staff.avatar" mode="aspectFill" class="plugins-realstore-staff-booking-staff-avatar-sm radius margin-bottom-xs"></image>
+                                                    <view class="plugins-realstore-staff-booking-staff-name text-size-xss single-text">{{ staff.alias }}</view>
+                                                </view>
                                             </view>
-                                        </view>
-                                    </scroll-view>
+                                        </scroll-view>
+                                    </view>
 
                                     <view v-if="staff_booking_get_booking_unit(gindex, uindex).staff_id > 0" class="margin-top-sm">
                                         <view class="cr-grey text-size-xss margin-bottom-xs">{{$t('realstore-cart.realstore-cart.8r2w5t')}}</view>
@@ -286,7 +288,7 @@
                 // 员工预定
                 is_staff_booking: 0,
                 staff_booking_popup_status: false,
-                staff_booking_popup_title: this.$t('realstore-cart.realstore-cart.3k8m2p'),
+                staff_booking_popup_title: '',
                 staff_booking_realstore_id: 0,
                 staff_booking_ymd_list: [],
                 staff_booking_staff_list: [],
@@ -297,6 +299,10 @@
                 staff_booking_init_loading_status: 3,
                 staff_booking_init_loading_msg: '',
                 staff_booking_submit_loading: false,
+                staff_booking_prefer_mode: 0,
+                staff_booking_prefer_staff_id: 0,
+                staff_booking_prefer_staff_alias: '',
+                staff_booking_prefer_staff_avatar: '',
             };
         },
 
@@ -323,6 +329,10 @@
             propIndex: {
                 type: Number,
                 default: 100
+            },
+            propStaffBookingPopupTitle: {
+                type: String,
+                default: '',
             }
         },
 
@@ -1188,12 +1198,23 @@
                 }
             },
 
+            // 员工预定弹窗标题
+            staff_booking_resolve_popup_title(api_title) {
+                if((this.propStaffBookingPopupTitle || '') != '') {
+                    return this.propStaffBookingPopupTitle;
+                }
+                return api_title || this.$t('realstore-cart.realstore-cart.3k8m2p');
+            },
+
             // 打开员工预定弹窗并初始化
             staff_booking_init(params) {
                 params = params || {};
                 var cart_list = params.cart_list || null;
-                var popup_title = params.popup_title || this.$t('realstore-cart.realstore-cart.3k8m2p');
                 var realstore_id = params.realstore_id || 0;
+                var prefer_staff_id = parseInt(params.prefer_staff_id || 0);
+                var prefer_staff_alias = params.prefer_staff_alias || '';
+                var prefer_staff_avatar = params.prefer_staff_avatar || '';
+                var prefer_mode = prefer_staff_id > 0 ? 1 : 0;
                 var booking_form = {};
                 if(cart_list != null) {
                     for(var gi in cart_list) {
@@ -1204,9 +1225,9 @@
                                 cart_id: cart_list[gi].id,
                                 goods_id: cart_list[gi].goods_id,
                                 unit_index: ui,
-                                staff_id: 0,
-                                staff_alias: '',
-                                staff_avatar: '',
+                                staff_id: prefer_mode == 1 ? prefer_staff_id : 0,
+                                staff_alias: prefer_mode == 1 ? prefer_staff_alias : '',
+                                staff_avatar: prefer_mode == 1 ? prefer_staff_avatar : '',
                                 booking_periods_id: 0,
                                 period_text: '',
                                 ymd: 0,
@@ -1216,7 +1237,7 @@
                 }
                 this.setData({
                     staff_booking_popup_status: true,
-                    staff_booking_popup_title: popup_title,
+                    staff_booking_popup_title: this.propStaffBookingPopupTitle || '',
                     staff_booking_realstore_id: realstore_id,
                     staff_booking_cart_list: cart_list,
                     staff_booking_form: booking_form,
@@ -1224,6 +1245,10 @@
                     staff_booking_unit_periods_loading: {},
                     staff_booking_init_loading_status: 1,
                     staff_booking_init_loading_msg: '',
+                    staff_booking_prefer_mode: prefer_mode,
+                    staff_booking_prefer_staff_id: prefer_staff_id,
+                    staff_booking_prefer_staff_alias: prefer_staff_alias,
+                    staff_booking_prefer_staff_avatar: prefer_staff_avatar,
                 });
                 this.staff_booking_load_init_data();
             },
@@ -1268,10 +1293,15 @@
                     staff_booking_init_loading_status: 1,
                     staff_booking_init_loading_msg: '',
                 });
+                var post_data = { realstore_id: this.staff_booking_realstore_id };
+                var cart_list = this.staff_booking_cart_list || [];
+                if(cart_list.length == 1 && parseInt(cart_list[0].goods_id || 0) > 0) {
+                    post_data.goods_id = parseInt(cart_list[0].goods_id);
+                }
                 uni.request({
                     url: app.globalData.get_request_url('available', 'staffbooking', 'realstore'),
                     method: 'POST',
-                    data: { realstore_id: this.staff_booking_realstore_id },
+                    data: post_data,
                     dataType: 'json',
                     success: (res) => {
                         var set_data = {
@@ -1304,7 +1334,7 @@
                             set_data.staff_booking_ymd_list = result.ymd_list || [];
                             set_data.staff_booking_staff_list = result.staff_list || [];
                             set_data.staff_booking_form = form;
-                            set_data.staff_booking_popup_title = result.popup_title || this.staff_booking_popup_title || this.$t('realstore-cart.realstore-cart.3k8m2p');
+                            set_data.staff_booking_popup_title = this.staff_booking_resolve_popup_title(result.popup_title || '');
                             set_data.staff_booking_init_loading_status = 3;
                         } else {
                             set_data.staff_booking_init_loading_msg = res.data.msg;

@@ -1,0 +1,70 @@
+.staff-avatar-large {
+    width: 120rpx;
+    height: 120rpx;
+    flex-shrink: 0;
+}
+.staff-avatar-large.staff-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+}
+.staff-header {
+    position: relative;
+}
+.staff-booking-count {
+    position: absolute;
+    top: 24rpx;
+    right: 24rpx;
+    z-index: 1;
+}
+.staff-info-content {
+    padding-right: 120rpx;
+}
+.staff-info-name {
+    margin-right: 12rpx;
+}
+.staff-name-row {
+    padding-right: 0;
+}
+.staff-position-tag {
+    line-height: 36rpx;
+    padding: 0 12rpx;
+    max-width: 180rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.staff-photo-banner {
+    width: 100%;
+}
+.staff-photo-banner /deep/ .banner-max,
+.staff-photo-banner /deep/ .banner-max .image {
+    height: 750rpx !important;
+}
+.staff-photo-banner /deep/ .banner .image {
+    width: 100%;
+}
+.goods-image {
+    width: 140rpx;
+    height: 140rpx;
+    flex-shrink: 0;
+}
+.goods-item-content {
+    min-height: 140rpx;
+}
+.goods-item-bottom {
+    width: 100%;
+}
+.goods-select-btn {
+    flex-shrink: 0;
+    margin: 0;
+    line-height: 50rpx;
+}
+.category-tab {
+    margin-right: 20rpx;
+    line-height: 1.4;
+}
+.category-tab:last-child {
+    margin-right: 0;
+}

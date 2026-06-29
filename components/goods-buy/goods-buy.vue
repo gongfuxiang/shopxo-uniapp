@@ -107,6 +107,7 @@
                 // 选中规格临时定时变量
                 spec_selected_timer: null,
                 spec_selected_timerout: null,
+                spec_auto_select_match_callback: null,
                 // 智能工具插件
                 plugins_intellectstools_config: app.globalData.get_config('plugins_base.intellectstools.data'),
             };
@@ -181,6 +182,26 @@
                 return app.globalData.get_request_url(action, 'goods');
             },
 
+            // 初始化规格数据（深拷贝并清除上次选择状态，避免关闭弹窗后残留选中效果）
+            goods_spec_choose_init(goods) {
+                var choose = (goods.specifications || null) != null ? goods.specifications.choose || [] : [];
+                if(choose.length <= 0) {
+                    return [];
+                }
+                var temp_spec = JSON.parse(JSON.stringify(choose));
+                for(var i in temp_spec) {
+                    if((temp_spec[i]['value'] || null) == null) {
+                        continue;
+                    }
+                    for(var k in temp_spec[i]['value']) {
+                        temp_spec[i]['value'][k]['is_active'] = '';
+                        temp_spec[i]['value'][k]['is_dont'] = '';
+                        temp_spec[i]['value'][k]['is_disabled'] = '';
+                    }
+                }
+                return temp_spec;
+            },
+
             // 初始化
             init(goods = {}, params = {}, back_data = null) {
                 if (!app.globalData.is_single_page_check()) {
@@ -194,7 +215,7 @@
                 // 状态默认开启弹窗
                 var status = true;
                 // 商品可选规格
-                var goods_spec_choose = (goods.specifications || null) != null ? goods.specifications.choose || [] : [];
+                var goods_spec_choose = this.goods_spec_choose_init(goods);
                 // 是否存在多规格
                 var is_exist_many_spec = parseInt(goods.is_exist_many_spec || 0) == 1 && goods_spec_choose.length > 0;
                 // 无规格是否直接操作
@@ -259,14 +280,9 @@
                     is_success_tips: is_success_tips,
                     goods_cover_class: (goods_cover_size_type == 1) ? 'cover-tall' : '',
                     is_exist_many_spec: is_exist_many_spec,
-                    spec_confirm_btn_disabled_status: is_exist_many_spec
+                    spec_confirm_btn_disabled_status: is_exist_many_spec,
+                    goods_spec_base_images: goods.images,
                 });
-                // 封面仅首次初始化
-                if((this.goods_spec_base_images || null) == null) {
-                    this.setData({
-                        goods_spec_base_images: goods.images,
-                    });
-                }
 
                 // 初始化不能选择规格处理
                 var is_init = (init_params.is_init === undefined || parseInt(init_params.is_init) == 1);
@@ -319,6 +335,7 @@
                 this.setData({
                     spec_selected_timer: null,
                     spec_selected_timerout: null,
+                    spec_auto_select_match_callback: null,
                 });
             },
 
@@ -360,41 +377,29 @@
                 this.$emit('BackReleaseEvent');
             },
 
+            // 已选规格层数
+            goods_spec_selected_count() {
+                var count = 0;
+                var temp_spec = this.goods_spec_choose || [];
+                for (var i in temp_spec) {
+                    for (var k in temp_spec[i]['value']) {
+                        if ((temp_spec[i]['value'][k]['is_active'] || '') != '') {
+                            count++;
+                            break;
+                        }
+                    }
+                }
+                return count;
+            },
+
             // 自动选中下一层规格（无法继续时停止并恢复默认展示）
             auto_select_spec_interval_handle(spec_choose, sku_count, match_name_callback) {
                 var self = this;
                 self.clear_spec_selected_timer();
-                var num = 0;
+                self.spec_auto_select_match_callback = match_name_callback;
                 var timer = setInterval(function () {
-                    for (var i in spec_choose) {
-                        var active =
-                            spec_choose[i]['value']
-                                .map(function (v) {
-                                    return v.is_active;
-                                })
-                                .join('') || null;
-                        if (active == null) {
-                            self.spec_handle_dont(i);
-                            var status = false;
-                            for (var k in spec_choose[i]['value']) {
-                                if (!status && (spec_choose[i]['value'][k]['is_disabled'] || null) == null && (spec_choose[i]['value'][k]['is_dont'] || null) == null && match_name_callback(spec_choose, i, k)) {
-                                    self.goods_spec_choice_handle(i, k);
-                                    status = true;
-                                    num++;
-                                }
-                            }
-                            if (!status) {
-                                self.clear_spec_selected_timer();
-                                self.restore_default_spec_display();
-                                return;
-                            }
-                            break;
-                        }
-                    }
-                    if (num >= sku_count) {
-                        self.clear_spec_selected_timer();
-                    }
-                }, 100);
+                    self.spec_auto_select_try_next();
+                }, 150);
                 var timerout = setTimeout(function () {
                     self.clear_spec_selected_timer();
                     self.restore_default_spec_display();
@@ -403,6 +408,55 @@
                     spec_selected_timer: timer,
                     spec_selected_timerout: timerout,
                 });
+                self.spec_auto_select_try_next();
+            },
+
+            // 尝试自动选中下一层规格
+            spec_auto_select_try_next() {
+                if((this.spec_selected_timer || null) == null) {
+                    return false;
+                }
+                var match_name_callback = this.spec_auto_select_match_callback;
+                if(typeof match_name_callback !== 'function') {
+                    return false;
+                }
+                var temp_spec = this.goods_spec_choose || [];
+                var sku_count = app.globalData.get_length(temp_spec);
+                if(sku_count <= 0) {
+                    this.clear_spec_selected_timer();
+                    return false;
+                }
+                if(this.goods_spec_selected_count() >= sku_count) {
+                    this.clear_spec_selected_timer();
+                    return true;
+                }
+                for (var i in temp_spec) {
+                    var active =
+                        temp_spec[i]['value']
+                            .map(function (v) {
+                                return v.is_active;
+                            })
+                            .join('') || null;
+                    if (active == null) {
+                        this.spec_handle_dont(i);
+                        var status = false;
+                        for (var k in temp_spec[i]['value']) {
+                            if (!status && (temp_spec[i]['value'][k]['is_disabled'] || null) == null && (temp_spec[i]['value'][k]['is_dont'] || null) == null && match_name_callback(temp_spec, i, k)) {
+                                this.goods_spec_choice_handle(i, k);
+                                status = true;
+                            }
+                        }
+                        // 下一层规格可能还在异步加载，继续等待
+                        if (!status) {
+                            return false;
+                        }
+                        break;
+                    }
+                }
+                if(this.goods_spec_selected_count() >= sku_count) {
+                    this.clear_spec_selected_timer();
+                }
+                return true;
             },
 
             // 指定规格初始化
@@ -429,6 +483,7 @@
 
             // 弹层关闭
             popup_close_event(e) {
+                this.clear_spec_selected_timer();
                 this.setData({
                     popup_status: false,
                 });
@@ -540,6 +595,9 @@
                                 this.setData({
                                     goods_spec_choose: temp_spec,
                                 });
+                                if((this.spec_selected_timer || null) != null) {
+                                    this.spec_auto_select_try_next();
+                                }
                                 // 下一层无可选规格时，保持弹窗顶部默认价格库存
                                 var selected_spec = this.goods_selected_spec();
                                 if (selected_spec.length > 0 && selected_spec.length < sku_count && spec_type.length <= 0) {
@@ -887,6 +945,7 @@
                                 goods_spec_choose: this.goods_spec_choose,
                                 back_data: this.back_data,
                             });
+                            this.popup_close_event();
                             break;
 
                         default:

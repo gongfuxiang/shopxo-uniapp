@@ -481,6 +481,8 @@
 		"plugins-realstore-frequencycard-list": "次卡",
 		"plugins-realstore-frequencycard-used": "次卡使用记录",
 		"plugins-realstore-check": "订单核销",
+		"plugins-realstore-staff-list": "服务人员",
+		"plugins-realstore-staff-detail": "预约服务",
 		"plugins-binding-index": "组合搭配",
 		"plugins-binding-detail": "组合搭配详情",
 		"plugins-delivery-order": "配送订单",
@@ -1892,6 +1894,24 @@
 			"sdfs31": "是否已完成支付？"
 		}
 	},
+	"realstore-staff": {
+		"realstore-staff": {
+			"1a7b2c": "预约服务人员",
+			"1b8c3d": "门店：",
+			"8i9j0k": "职位：",
+			"2a8b1c": "全部门店可预约服务人员",
+			"2c9d4e": "选择",
+			"3b9c2d": "已预约",
+			"4c0d3e": "去预约",
+			"5d1e4f": "参数有误",
+			"6e2f5g": "工号：",
+			"7f3g6h": "联系电话：",
+			"8g4h7i": "可预约服务",
+			"9h5i8j": "已选择",
+			"0i6j9k": "暂无可预约服务",
+			"a2b3c4": "搜索服务人员姓名"
+		}
+	},
 	"realstore-cart": {
 		"realstore-cart": {
 			"v437n6": "没有已加购的商品？",
@@ -1906,6 +1926,7 @@
 			"76rfgh": "选择其他门店",
 			"r67uyg": "进入门店",
 			"3k8m2p": "选择服务人员时段",
+			"8s3t6u": "请选择时段",
 			"8r2w5t": "选择日期",
 			"1h6y9u": "选择时段",
 			"4f3x7v": "该日期暂无可用时段",

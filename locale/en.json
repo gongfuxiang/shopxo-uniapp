@@ -478,6 +478,8 @@
 		"plugins-realstore-frequencycard-list": "Secondary card",
 		"plugins-realstore-frequencycard-used": "Secondary Card Usage Record",
 		"plugins-realstore-check": "Order verification",
+		"plugins-realstore-staff-list": "Service Staff",
+		"plugins-realstore-staff-detail": "Book Service",
 		"plugins-binding-index": "Combination and matching",
 		"plugins-binding-detail": "Combination and matching details",
 		"plugins-delivery-order": "Delivery order",
@@ -1898,6 +1900,24 @@
 			"sdfs31": "Has the payment been completed?"
 		}
 	},
+	"realstore-staff": {
+		"realstore-staff": {
+			"1a7b2c": "Book Service Staff",
+			"1b8c3d": "Store: ",
+			"8i9j0k": "Position: ",
+			"2a8b1c": "Bookable staff across all stores",
+			"2c9d4e": "Select",
+			"3b9c2d": "Booked",
+			"4c0d3e": "Book",
+			"5d1e4f": "Invalid parameters",
+			"6e2f5g": "ID: ",
+			"7f3g6h": "Phone: ",
+			"8g4h7i": "Bookable Services",
+			"9h5i8j": "Selected",
+			"0i6j9k": "No bookable services",
+			"a2b3c4": "Search staff name"
+		}
+	},
 	"realstore-cart": {
 		"realstore-cart": {
 			"v437n6": "Do you have any purchased items?",
@@ -1912,6 +1932,7 @@
 			"76rfgh": "Choose another store",
 			"r67uyg": "Enter store",
 			"3k8m2p": "Select staff and time slot",
+			"8s3t6u": "Please select time slot",
 			"8r2w5t": "Select date",
 			"1h6y9u": "Select time slot",
 			"4f3x7v": "No available time slots for this date",

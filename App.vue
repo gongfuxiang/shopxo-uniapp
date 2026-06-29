@@ -2576,7 +2576,7 @@
                 if((buy_data.realstore_id || 0) <= 0) {
                     return false;
                 }
-                if((buy_data.buy_type || '') != 'cart') {
+                if((buy_data.buy_type || '') != 'cart' && (buy_data.buy_type || '') != 'goods') {
                     return false;
                 }
                 if((buy_data.staff_booking_cart_list || null) == null || buy_data.staff_booking_cart_list.length <= 0) {
@@ -2592,6 +2592,9 @@
                     if((context_vm.$refs.realstore_cart || null) != null && typeof context_vm.$refs.realstore_cart.staff_booking_init == 'function') {
                         return context_vm.$refs.realstore_cart;
                     }
+                    if((context_vm.$refs.staff_booking_cart || null) != null && typeof context_vm.$refs.staff_booking_cart.staff_booking_init == 'function') {
+                        return context_vm.$refs.staff_booking_cart;
+                    }
                 }
                 var page = this.get_page_object();
                 var vm = (page || null) != null ? page.$vm : null;
@@ -2604,6 +2607,9 @@
                 if((vm.$refs.realstore_cart || null) != null && typeof vm.$refs.realstore_cart.staff_booking_init == 'function') {
                     return vm.$refs.realstore_cart;
                 }
+                if((vm.$refs.staff_booking_cart || null) != null && typeof vm.$refs.staff_booking_cart.staff_booking_init == 'function') {
+                    return vm.$refs.staff_booking_cart;
+                }
                 return null;
             },
 
@@ -2615,11 +2621,12 @@
                         buy_data: buy_data,
                         pages: pages,
                     };
-                    var base = this.get_config('plugins_base.realstore.data', {}) || {};
                     staff_booking_ref.staff_booking_init({
                         realstore_id: buy_data.realstore_id,
                         cart_list: buy_data.staff_booking_cart_list,
-                        popup_title: base.staff_booking_popup_title || i18n.t('realstore-cart.realstore-cart.3k8m2p'),
+                        prefer_staff_id: parseInt(buy_data.staff_booking_prefer_staff_id || 0),
+                        prefer_staff_alias: buy_data.staff_booking_prefer_staff_alias || '',
+                        prefer_staff_avatar: buy_data.staff_booking_prefer_staff_avatar || '',
                     });
                     if(typeof callback === 'function') {
                         callback(true);

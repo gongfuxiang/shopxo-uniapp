@@ -1616,6 +1616,26 @@
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "staff-list/staff-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "staff-detail/staff-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-realstore-cart": "/pages/plugins/realstore/components/realstore-cart/realstore-cart"
+                        },
+                        "componentPlaceholder": {
+                            "component-realstore-cart": "view"
+                        }
+                    }
                 }
             ]
         },

@@ -1,0 +1,51 @@
+.staff-title {
+    max-width: 180rpx;
+}
+.staff-search {
+    min-width: 0;
+}
+.staff-avatar-large {
+    width: 120rpx;
+    height: 120rpx;
+    flex-shrink: 0;
+}
+.staff-avatar-large.staff-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+}
+.staff-item-content {
+    position: relative;
+    min-height: 120rpx;
+}
+.staff-booking-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+.staff-info-name {
+    margin-right: 12rpx;
+}
+.staff-name-row {
+    padding-right: 120rpx;
+}
+.staff-position-tag {
+    line-height: 36rpx;
+    padding: 0 12rpx;
+    max-width: 180rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.staff-book-btn {
+    flex-shrink: 0;
+    margin: 0;
+    line-height: 50rpx;
+}
+.staff-book-btn-br {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
