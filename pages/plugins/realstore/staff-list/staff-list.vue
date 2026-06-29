@@ -109,6 +109,7 @@
                 data_page: 1,
                 data_list: [],
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data_bottom_line_status: false,
             });
             this.get_data();
@@ -142,6 +143,7 @@
                                 data_page: 1,
                                 data_list: [],
                                 data_list_loding_status: 1,
+                                data_list_loding_msg: '',
                                 data_bottom_line_status: false,
                             });
                             this.get_data_list(1);
@@ -159,9 +161,7 @@
                             app.globalData.page_share_handle(this.share_info);
                         } else {
                             uni.stopPullDownRefresh();
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            app.globalData.is_login_check(res.data);
                             this.setData({
                                 index_loding_status: 0,
                                 index_loding_msg: res.data.msg,
@@ -199,6 +199,11 @@
                 this.setData({
                     data_is_loading: 1,
                 });
+                if (this.data_page <= 1 || (is_mandatory || 0) == 1) {
+                    this.setData({
+                        data_list_loding_msg: '',
+                    });
+                }
 
                 uni.request({
                     url: app.globalData.get_request_url('datalist', 'staff', 'realstore'),
@@ -237,6 +242,7 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
+                                    data_list_loding_msg: '',
                                     data_is_loading: 0,
                                 });
                                 if (this.data_page <= 1) {
@@ -249,19 +255,31 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg || this.$t('common.no_relevant_data_tips'),
                                 data_is_loading: 0,
                             });
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
+                            if (this.data_page <= 1) {
+                                this.setData({
+                                    data_list: [],
+                                    data_bottom_line_status: false,
+                                });
                             }
+                            app.globalData.is_login_check(res.data);
                         }
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
+                        if (this.data_page <= 1) {
+                            this.setData({
+                                data_list: [],
+                                data_bottom_line_status: false,
+                            });
+                        }
                     },
                 });
             },
@@ -272,6 +290,7 @@
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
+                    data_list_loding_msg: '',
                     data_bottom_line_status: false,
                 });
                 this.get_data_list(1);

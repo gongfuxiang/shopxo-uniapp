@@ -238,9 +238,7 @@
                             this.get_goods_list(1);
                         } else {
                             uni.stopPullDownRefresh();
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            app.globalData.is_login_check(res.data);
                             this.setData({
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
