@@ -46,6 +46,25 @@
 }
 
 /**
+* 商品预约人员时段
+*/
+.goods-item-staff-booking-unit-no {
+    top: 5rpx;
+    right: 0;
+    z-index: 1;
+}
+.goods-item-staff-booking-row {
+    line-height: 1.6;
+}
+.goods-item-staff-booking-unit-multi .goods-item-staff-booking-row {
+    padding-right: 56rpx;
+}
+.goods-item-staff-booking-avatar {
+    width: 36rpx;
+    height: 36rpx;
+}
+
+/**
 * 导航
 */
 .bottom-fixed .nav-base {

@@ -105,6 +105,22 @@
                                         </view>
                                     </view>
                                 </view>
+                                <!-- 预约人员时段 -->
+                                <view v-if="(item.plugins_realstore_staff_booking_data || null) != null && item.plugins_realstore_staff_booking_data.length > 0" class="goods-item-staff-booking margin-top-sm padding-top-sm br-t-dashed">
+                                    <view v-for="(booking, bindex) in item.plugins_realstore_staff_booking_data" :key="bindex" :class="'goods-item-staff-booking-unit pr oh ' + (item.plugins_realstore_staff_booking_data.length > 1 ? 'goods-item-staff-booking-unit-multi ' : '') + (bindex > 0 ? 'margin-top-xs padding-top-xs br-t-dashed' : '')">
+                                        <text v-if="item.plugins_realstore_staff_booking_data.length > 1" class="goods-item-staff-booking-unit-no pa text-size-xs cr-grey">{{ $t('common.num') }}{{ parseInt(booking.unit_index || 0) + 1 }}</text>
+                                        <view v-if="(booking.staff_alias || null) != null && booking.staff_alias != ''" class="goods-item-staff-booking-row text-size-xs">
+                                            <text class="cr-grey va-m">{{ $t('orderallot-detail.orderallot-detail.0f4g8h') }}</text>
+                                            <image v-if="(booking.staff_avatar || null) != null && booking.staff_avatar != ''" class="goods-item-staff-booking-avatar radius margin-right-xs dis-inline-block va-m" :src="booking.staff_avatar" mode="aspectFill"></image>
+                                            <text class="va-m">{{ booking.staff_alias }}</text>
+                                        </view>
+                                        <view v-if="((booking.ymd_text || null) != null && booking.ymd_text != '') || ((booking.period_text || null) != null && booking.period_text != '')" class="goods-item-staff-booking-row text-size-xs margin-top-xss">
+                                            <text class="cr-grey">{{ $t('orderallot-detail.orderallot-detail.1i5j9k') }}</text>
+                                            <text v-if="(booking.ymd_text || null) != null && booking.ymd_text != ''">{{ booking.ymd_text }}</text>
+                                            <text v-if="(booking.period_text || null) != null && booking.period_text != ''" :class="(booking.ymd_text || null) != null && booking.ymd_text != '' ? 'margin-left-xs' : ''">{{ booking.period_text }}</text>
+                                        </view>
+                                    </view>
+                                </view>
                                 <!-- 订单商品表单 -->
                                 <view v-if="(item.plugins_ordergoodsform_data || null) != null" class="goods-item-ordergoodsform">
                                     <component-form-input-base ref="form_input_base" :propConfig="item.plugins_ordergoodsform_data.config" :propBackData="item.goods_id" :propFormInputId="item.plugins_ordergoodsform_data.id"></component-form-input-base>
