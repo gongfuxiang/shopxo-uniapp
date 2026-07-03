@@ -151,7 +151,10 @@
                     });
                     return;
                 }
-                this.setData({ data_list_loding_status: 1 });
+                this.setData({
+                    data_list_loding_status: 1,
+                    data_list_loding_msg: '',
+                });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'pay', 'friendpay'),
                     method: 'POST',
@@ -175,16 +178,28 @@
                             });
                             uni.setNavigationBarTitle({ title: this.pageTitle });
                         } else {
+                            if (res.data.code == -400) {
+                                app.globalData.is_login_check(res.data, this, 'get_data');
+                                return;
+                            }
                             this.setData({
+                                friendpay: null,
+                                order_data: null,
+                                payment_list: [],
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg,
+                                data_list_loding_msg: res.data.msg || '',
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        this.setData({ data_list_loding_status: 2 });
+                        this.setData({
+                            friendpay: null,
+                            order_data: null,
+                            payment_list: [],
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
                     },
                 });
             },

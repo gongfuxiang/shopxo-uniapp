@@ -69,6 +69,9 @@
                     list_type: 'payer',
                 });
             }
+
+            // 数据加载
+            this.init();
         },
         onShow() {
             // 调用公共事件方法
@@ -81,9 +84,6 @@
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
-
-            // 初始化
-            this.init();
         },
         // 下拉刷新
         onPullDownRefresh() {
@@ -118,6 +118,8 @@
                     list_type: type,
                     data_page: 1,
                     data_list: [],
+                    data_list_loding_status: 1,
+                    data_list_loding_msg: '',
                     data_bottom_line_status: false,
                 });
                 this.get_data_list(1);
@@ -138,6 +140,7 @@
                 this.setData({
                     data_is_loading: 1,
                     data_list_loding_status: 1,
+                    data_list_loding_msg: '',
                 });
 
                 // 加载loding
@@ -181,14 +184,23 @@
                                 data_total: data.data_total || 0,
                                 data_page_total: data.data_page_total || 0,
                                 data_list_loding_status: merge_list.length > 0 ? 3 : 0,
+                                data_list_loding_msg: '',
                                 data_page: this.data_page + 1,
                                 data_bottom_line_status: merge_list.length > 0 && this.data_page > 1 && this.data_page > (data.data_page_total || 0),
                             });
                         } else {
-                            this.setData({
-                                data_list_loding_status: 0,
-                            });
-                            if (app.globalData.is_login_check(res.data, this, 'init')) {
+                            if (res.data.code == -400) {
+                                app.globalData.is_login_check(res.data, this, 'init');
+                                return;
+                            }
+                            if (this.data_page <= 1) {
+                                this.setData({
+                                    data_list: [],
+                                    data_list_loding_status: 0,
+                                    data_list_loding_msg: res.data.msg || '',
+                                    data_bottom_line_status: false,
+                                });
+                            } else if (app.globalData.is_login_check(res.data, this, 'init')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
@@ -198,10 +210,20 @@
                             uni.hideLoading();
                         }
                         uni.stopPullDownRefresh();
-                        this.setData({
-                            data_is_loading: 0,
-                            data_list_loding_status: 2,
-                        });
+                        if (this.data_page <= 1) {
+                            this.setData({
+                                data_list: [],
+                                data_is_loading: 0,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: this.$t('common.internet_error_tips'),
+                                data_bottom_line_status: false,
+                            });
+                        } else {
+                            this.setData({
+                                data_is_loading: 0,
+                            });
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        }
                     },
                 });
             },

@@ -111,14 +111,16 @@
                                 data_list_loding_msg: '',
                             });
                         } else {
-                            this.setData({
-                                data_list_loding_status: 2,
-                                data_bottom_line_status: false,
-                                data_list_loding_msg: res.data.msg,
-                            });
-                            if (app.globalData.is_login_check(res.data, this, 'init')) {
-                                app.globalData.showToast(res.data.msg);
+                            if (res.data.code == -400) {
+                                app.globalData.is_login_check(res.data, this, 'init');
+                                return;
                             }
+                            this.setData({
+                                detail: null,
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg || '',
+                            });
                         }
                     },
                     fail: () => {
@@ -128,7 +130,6 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

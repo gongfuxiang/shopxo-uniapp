@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="padding-main">
+        <view v-if="data_list_loding_status == 3" class="padding-main">
             <view class="bg-white border-radius-main padding-xl tc">
                 <iconfont name="icon-selected-solid" size="80rpx" color="#52c41a"></iconfont>
                 <view class="fw-b text-size-lg margin-top-main">{{ $t('friendpay.friendpay.pay_success_title') }}</view>
@@ -11,20 +11,29 @@
                 </view>
             </view>
         </view>
+        <view v-else>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </view>
         <component-common ref="common"></component-common>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentCommon from '@/components/common/common';
+    import componentNoData from '@/components/no-data/no-data';
     export default {
-        components: { componentCommon },
+        components: {
+            componentCommon,
+            componentNoData,
+        },
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 id: '',
                 page_text: {},
                 record_list_url: '/pages/plugins/friendpay/share/list?type=payer',
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
             };
         },
         computed: {
@@ -40,7 +49,7 @@
             // 参数处理
             params = app.globalData.launch_params_handle(params);
             this.setData({
-                id: params.id || '',
+                id: params.id || params.i || '',
             });
         },
         onShow() {
@@ -58,6 +67,17 @@
         methods: {
             // 获取数据
             get_data() {
+                if ((this.id || '') == '') {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_list_loding_msg: this.$t('friendpay.friendpay.link_error'),
+                    });
+                    return;
+                }
+                this.setData({
+                    data_list_loding_status: 1,
+                    data_list_loding_msg: '',
+                });
                 uni.request({
                     url: app.globalData.get_request_url('success', 'pay', 'friendpay'),
                     method: 'POST',
@@ -69,8 +89,25 @@
                             this.setData({
                                 page_text: data.page_text || {},
                                 record_list_url: data.record_list_url || '/pages/plugins/friendpay/share/list?type=payer',
+                                data_list_loding_status: 3,
+                                data_list_loding_msg: '',
+                            });
+                        } else {
+                            if (res.data.code == -400) {
+                                app.globalData.is_login_check(res.data, this, 'get_data');
+                                return;
+                            }
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg || '',
                             });
                         }
+                    },
+                    fail: () => {
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
                     },
                 });
             },

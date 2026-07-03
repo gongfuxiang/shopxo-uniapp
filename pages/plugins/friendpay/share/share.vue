@@ -182,13 +182,15 @@
                             uni.setNavigationBarTitle({ title: this.pageTitle });
                             app.globalData.page_share_handle(share_info);
                         } else {
-                            this.setData({
-                                data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg,
-                            });
-                            if (app.globalData.is_login_check(res.data, this, 'init')) {
-                                app.globalData.showToast(res.data.msg);
+                            if (res.data.code == -400) {
+                                app.globalData.is_login_check(res.data, this, 'init');
+                                return;
                             }
+                            this.setData({
+                                friendpay: null,
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg || '',
+                            });
                         }
                     },
                     fail: () => {
