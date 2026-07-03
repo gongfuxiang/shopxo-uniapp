@@ -38,13 +38,6 @@
 .staff-photo-banner {
     width: 100%;
 }
-.staff-photo-banner /deep/ .banner-max,
-.staff-photo-banner /deep/ .banner-max .image {
-    height: 750rpx !important;
-}
-.staff-photo-banner /deep/ .banner .image {
-    width: 100%;
-}
 .goods-image {
     width: 140rpx;
     height: 140rpx;

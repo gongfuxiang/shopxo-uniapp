@@ -83,6 +83,18 @@
             </view>
         </view>
 
+        <!-- 朋友代付支付弹窗 -->
+        <component-friendpay-order-pay-popup
+            :propShow="is_show_friendpay_order_popup"
+            :propPluginsData="plugins_friendpay_data"
+            :propPayPrice="pay_price"
+            :propOrderIds="temp_pay_value"
+            :propPaymentList="original_payment_list"
+            :propDefaultPaymentId="default_payment_id"
+            @close="friendpay_order_popup_close_event"
+            @self-pay="friendpay_self_pay_event"
+        ></component-friendpay-order-pay-popup>
+
         <!-- 支付组件 -->
         <component-payment
             ref="payment"
@@ -115,6 +127,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPayment from '@/components/payment/payment';
+    import componentFriendpayOrderPayPopup from '@/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup';
 
     var common_static_url = app.globalData.get_static_url('common');
     // 状态栏高度
@@ -173,6 +186,8 @@
                 // 智能工具箱（限定仅可选择下单支付方式）
                 is_order_pay_only_can_buy_payment: 0,
                 original_payment_list: [],
+                plugins_friendpay_data: null,
+                is_show_friendpay_order_popup: false,
             };
         },
 
@@ -185,6 +200,7 @@
             componentBottomLine,
             componentPayment,
             componentOrderOperateMore,
+            componentFriendpayOrderPayPopup,
         },
 
         onLoad(params) {
@@ -328,17 +344,21 @@
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
-                                this.setData({
-                                    original_payment_list: data.payment_list || [],
-                                    payment_list: data.payment_list || [],
-                                    default_payment_id: data.default_payment_id || 0,
+                                var update_data = {
                                     data_list: temp_data_list,
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,
-                                });
+                                };
+                                if (this.data_page <= 1) {
+                                    update_data.original_payment_list = data.payment_list || [];
+                                    update_data.payment_list = data.payment_list || [];
+                                    update_data.default_payment_id = data.default_payment_id || 0;
+                                    update_data.plugins_friendpay_data = data.plugins_friendpay_data || null;
+                                }
+                                this.setData(update_data);
 
                                 // 是否还有数据
                                 this.setData({
@@ -414,8 +434,8 @@
                 }
 
                 // 设置支付参数
+                var show_friendpay = (this.plugins_friendpay_data || null) != null && this.plugins_friendpay_data.is_enable == 1;
                 this.setData({
-                    is_show_payment_popup: true,
                     payment_list: payment_list,
                     payment_currency_symbol: e.currentTarget.dataset.currencySymbol,
                     temp_pay_value: e.currentTarget.dataset.value,
@@ -423,6 +443,23 @@
                     payment_id: payment_id,
                     pay_price: e.currentTarget.dataset.price,
                     order_select_ids: [],
+                    is_show_friendpay_order_popup: show_friendpay,
+                    is_show_payment_popup: !show_friendpay,
+                });
+            },
+
+            // 朋友代付弹窗关闭
+            friendpay_order_popup_close_event() {
+                this.setData({ is_show_friendpay_order_popup: false });
+            },
+
+            // 朋友代付-自己支付
+            friendpay_self_pay_event(e) {
+                this.setData({
+                    is_show_friendpay_order_popup: false,
+                    is_show_payment_popup: true,
+                    payment_list: e.payment_list || this.original_payment_list,
+                    payment_id: e.payment_id || this.default_payment_id,
                 });
             },
 
@@ -714,11 +751,14 @@
                         return Number(old) + Number(now);
                     }, 0);
                 }
+                // 朋友代付与单笔支付一致
+                var show_friendpay = (this.plugins_friendpay_data || null) != null && this.plugins_friendpay_data.is_enable == 1;
                 this.setData({
-                    is_show_payment_popup: true,
                     temp_pay_value: this.order_select_ids.join(','),
                     pay_price: Math.round(parseFloat(num) * 100) / 100,
                     payment_id: this.order_select_ids.length > 1 ? this.default_payment_id : this.mult_payment_id_list[0],
+                    is_show_friendpay_order_popup: show_friendpay,
+                    is_show_payment_popup: !show_friendpay,
                 });
             },
 

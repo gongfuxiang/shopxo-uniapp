@@ -274,11 +274,13 @@
                         "navigationBarTitleText": "",
                         "usingComponents": {
                             "component-form-input-base": "/pages/form-input/components/form-input/form-input-base",
-                            "component-invoice-buy-popup": "/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup"
+                            "component-invoice-buy-popup": "/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup",
+                            "component-friendpay-mode-switch": "/pages/plugins/friendpay/components/pay-mode-switch/pay-mode-switch"
                         },
                         "componentPlaceholder": {
                             "component-form-input-base": "view",
-                            "component-invoice-buy-popup": "view"
+                            "component-invoice-buy-popup": "view",
+                            "component-friendpay-mode-switch": "view"
                         }
                     }
                 }
@@ -1948,6 +1950,46 @@
             "pages": [
                 {
                     "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/friendpay",
+            "pages": [
+                {
+                    "path": "share/share",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "share/list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "share/detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "pay/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "pay/success",
                     "style": {
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""

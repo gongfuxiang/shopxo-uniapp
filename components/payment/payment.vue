@@ -24,9 +24,9 @@
         <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
             <view class="poupon-title padding-main tc text-size-md pr">{{$t('payment.payment.iu792d')}}<iconfont name="icon-close-line" propClass="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
             </view>
-            <view class="payment-price tc padding-top-sm padding-bottom-sm br-b">
-                <text class="text-size-md">{{ propCurrencySymbol }}</text>
-                {{ propPayPrice }}
+            <view class="tc padding-top-sm padding-bottom-sm br-b lh-il">
+                <text class="text-size-md cr-price">{{ propCurrencySymbol }}</text>
+                <text class="text-size-xxl cr-price fw-b">{{ propPayPrice }}</text>
             </view>
             <view v-if="payment_list.length > 0" class="oh">
                 <view class="payment-list">
@@ -141,6 +141,16 @@
             propPayDataKey: {
                 type: String,
                 default: 'id',
+            },
+            // 扫码轮询参数名，默认为order_no
+            propQrcodeDataKey: {
+                type: String,
+                default: 'order_no',
+            },
+            // 扫码轮询参数值，未传则使用支付返回的order_no
+            propQrcodePayValue: {
+                type: [String, Number],
+                default: '',
             },
             // 订单下标  ---- 用于处理支付成功后前端修改成功状态
             propTempPayIndex: {
@@ -788,12 +798,14 @@
                 // 先清除已存在的定时
                 clearInterval(self.pay_statuc_check_timer);
                 // 定时校验支付状态
+                var qrcode_key = self.propQrcodeDataKey || 'order_no';
+                var qrcode_value = (self.propQrcodePayValue || '') !== '' ? self.propQrcodePayValue : data.data.order_no;
                 var timer = setInterval(function () {
                     uni.request({
                         url: self.propQrcodeUrl,
                         method: 'POST',
                         data: {
-                            order_no: data.data.order_no,
+                            [qrcode_key]: qrcode_value,
                         },
                         dataType: 'json',
                         success: (res) => {
@@ -959,9 +971,6 @@
     /**
     * 支付方式
     */
-    .payment-price {
-        font-size: 80rpx;
-    }
     .payment-list .scroll-y {
         max-height: 430rpx;
     }

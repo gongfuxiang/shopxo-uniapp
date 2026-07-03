@@ -100,6 +100,7 @@
 		"ok_text": "OK",
 		"receive_payment": "Receive payment",
 		"pay_success": "Payment successful",
+		"back": "Back",
 		"back_home": "Back to home",
 		"freeze": "Frozen",
 		"give": "Give",
@@ -524,6 +525,10 @@
 		"plugins-givegift-gift": "My gift",
 		"plugins-givegift-gift-detail": "gift details",
 		"plugins-givegift-code": "Gift Link",
+		"plugins-friendpay-share": "Friend Pay Invite",
+		"plugins-friendpay-list": "Friend Pay Records",
+		"plugins-friendpay-pay": "Friend Pay",
+		"plugins-friendpay-success": "Pay Success",
 		"plugins-lottery-grid": "Lucky Draw",
 		"plugins-lottery-turn": "Wheel Lottery",
 		"plugins-lottery-egg": "Golden Egg",
@@ -2407,6 +2412,36 @@
 	"givegift": {
 		"givegift": {
 			"my_gift": "My gifts"
+		}
+	},
+	"friendpay": {
+		"friendpay": {
+			"pay_mode_title": "Invite friend to pay",
+			"create_link": "Create pay link",
+			"share_page_title": "Invite friend to pay",
+			"pay_page_title": "Friend pay",
+			"share_amount": "Amount",
+			"pay_amount": "Pay amount",
+			"select_payment": "Select payment method",
+			"invite_fallback_pay": "${name} asks you to pay for this order",
+			"share_link": "Pay link",
+			"share_qrcode": "Share QR code",
+			"invite_qrcode": "Invite QR code",
+			"invite_fallback": "Your friend ${name} asks you to pay",
+			"expire_tips": "Valid until: ",
+			"refresh_link": "Refresh link",
+			"refresh_confirm": "Refreshing will invalidate the old link. Continue?",
+			"refresh_success": "Refreshed",
+			"list_owner": "I initiated",
+			"list_payer": "I paid for",
+			"go_share": "Share",
+			"login_to_pay": "Login to pay",
+			"confirm_pay": "Confirm pay",
+			"link_error": "Invalid pay link",
+			"order_id_error": "Invalid order id",
+			"pay_success_title": "Pay success",
+			"pay_success_tips": "Thank you, the order has been paid",
+			"view_records": "View records"
 		}
 	}
 }

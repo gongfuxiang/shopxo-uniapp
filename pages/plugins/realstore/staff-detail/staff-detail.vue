@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(staff || null) != null">
             <view v-if="photo_list.length > 0" class="staff-photo-banner">
-                <component-banner :propData="photo_list" propSize="max" propRadius="" :propIsSpacingMb="false"></component-banner>
+                <component-banner :propData="photo_list" propSize="max" propRadius="" :propIsSpacingMb="false" :propHeight="photo_height" propImageMode="aspectFill"></component-banner>
             </view>
             <view class="staff-header padding-main bg-white spacing-mb">
                 <view v-if="(staff.booking_count || 0) > 0" class="staff-booking-count cr-grey text-size-xs">{{ $t('realstore-staff.realstore-staff.3b9c2d') }}{{ staff.booking_count }}</view>
@@ -69,7 +69,6 @@
     </view>
 </template>
 <script>
-    const app = getApp();
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
@@ -77,6 +76,11 @@
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentRealstoreCart from '@/pages/plugins/realstore/components/realstore-cart/realstore-cart';
     import componentBanner from '@/components/slider/slider';
+
+    const app = getApp();
+    var system_info = app.globalData.get_system_info() || {};
+    var win_width = parseInt(system_info.windowWidth || system_info.screenWidth || 0);
+    var photo_height = (win_width <= 0) ? '55vh' : app.globalData.window_width_handle(win_width) + 'px';
 
     export default {
         data() {
@@ -87,6 +91,7 @@
                 realstore: null,
                 staff: null,
                 photo_list: [],
+                photo_height: photo_height,
                 goods_category: [],
                 goods_list: [],
                 category_active_id: 0,

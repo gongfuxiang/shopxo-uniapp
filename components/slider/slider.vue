@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view v-if="propData.length > 0" :class="(propIsSpacingMb ? 'spacing-mb ' : '') + (propLeft ? 'swiper-left ' : '') + (propRight ? 'swiper-right ' : '')">
             <uni-swiper-dot class="uni-swiper-dot-box" :mode="propMode" :dots-styles="dotsStyles" @clickItem="click_item" :info="propData" :current="current">
-                <swiper class="banner oh" :class="' banner-' + (propSize || 'default') + ' ' + propRadius" :autoplay="propData.length > 0" :duration="duration" :circular="circular" @change="swiper_change" :current="swiperDotIndex">
+                <swiper class="banner oh" :class="banner_class" :style="banner_height_style" :autoplay="propData.length > 0" :duration="duration" :circular="circular" @change="swiper_change" :current="swiperDotIndex">
                     <swiper-item v-for="(item, i) in propData" :key="i">
-                        <image class="image" :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"> </image>
+                        <image class="image" :src="item.images_url" :mode="propImageMode" :style="banner_height_style" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"> </image>
                     </swiper-item>
                 </swiper>
             </uni-swiper-dot>
@@ -94,6 +94,29 @@
                 type: Boolean,
                 default: true,
             },
+            // 自定义高度（如商品详情正方形相册）
+            propHeight: {
+                type: String,
+                default: '',
+            },
+            // 图片裁剪模式
+            propImageMode: {
+                type: String,
+                default: 'widthFix',
+            },
+        },
+        computed: {
+            banner_class() {
+                var size = this.propSize || 'default';
+                var custom = (this.propHeight || '') != '' ? ' banner-custom-height' : '';
+                return 'banner-' + size + custom + ' ' + (this.propRadius || '');
+            },
+            banner_height_style() {
+                if ((this.propHeight || '') == '') {
+                    return '';
+                }
+                return 'height: ' + this.propHeight + ' !important;';
+            },
         },
         beforeMount() {
             this.dotsStyles = {
@@ -132,19 +155,23 @@
         min-width: 100%;
     }
 
-    .banner-mini,
-    .banner-mini .image {
+    .banner-mini:not(.banner-custom-height),
+    .banner-mini:not(.banner-custom-height) .image {
         height: 200rpx !important;
     }
 
-    .banner-default,
-    .banner-default .image {
+    .banner-default:not(.banner-custom-height),
+    .banner-default:not(.banner-custom-height) .image {
         height: 280rpx !important;
     }
 
-    .banner-max,
-    .banner-max .image {
+    .banner-max:not(.banner-custom-height),
+    .banner-max:not(.banner-custom-height) .image {
         height: 420rpx !important;
+    }
+
+    .banner-custom-height .image {
+        width: 100%;
     }
 
     /**

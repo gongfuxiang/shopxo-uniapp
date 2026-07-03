@@ -228,6 +228,13 @@
                     
                     <!-- 支付选择 -->
                     <view v-if="total_price > 0 && ((common_order_is_booking != 1 && payment_list.length > 0) || plugins_coin_is_valid)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
+                        <!-- 朋友代付 -->
+                        <component-friendpay-mode-switch
+                            v-if="plugins_friendpay_data != null && plugins_friendpay_data.is_enable == 1 && common_order_is_booking != 1"
+                            :propPluginsData="plugins_friendpay_data"
+                            :propIsFriendPay="is_friend_pay_mode"
+                            @change="friendpay_mode_change_event"
+                        ></component-friendpay-mode-switch>
                         <!-- 虚拟币支付 -->
                         <block v-if="plugins_coin_is_valid">
                             <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
@@ -320,7 +327,7 @@
                                 <text class="sales-price">{{ currency_symbol }}{{ total_price }}</text>
                             </view>
                             <view class="nav-submit padding-horizontal-main fr">
-                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ $t('buy.buy.4884hk') }}</button>
+                                <button class="btn bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">{{ is_friend_pay_mode == 1 ? $t('friendpay.friendpay.create_link') : $t('buy.buy.4884hk') }}</button>
                             </view>
                         </view>
                     </view>
@@ -429,6 +436,7 @@
     import componentPayment from '@/components/payment/payment';
     import componentFormInputBase from '@/pages/form-input/components/form-input/form-input-base';
     import componentInvoiceBuyPopup from '@/pages/plugins/invoice/components/invoice-buy-popup/invoice-buy-popup';
+    import componentFriendpayModeSwitch from '@/pages/plugins/friendpay/components/pay-mode-switch/pay-mode-switch';
 
     var common_static_url = app.globalData.get_static_url('common');
     var plugins_invoice_buy_cache_key = 'plugins-invoice-buy-data';
@@ -505,6 +513,10 @@
                 plugins_invoice_wallet_payment: false,
                 popup_plugins_invoice_status: false,
 
+                // 朋友代付
+                plugins_friendpay_data: null,
+                is_friend_pay_mode: 0,
+
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
@@ -527,7 +539,8 @@
             componentTimeSelect,
             componentPayment,
             componentFormInputBase,
-            componentInvoiceBuyPopup
+            componentInvoiceBuyPopup,
+            componentFriendpayModeSwitch
         },
 
         onLoad(params) {
@@ -548,6 +561,7 @@
             this.setData({
                 params: params,
                 is_realstore_model: (params.realstore_id || null) != null,
+                is_friend_pay_mode: parseInt(params.is_friend_pay || 0) === 1 ? 1 : 0,
                 plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1,
                 pay_url: app.globalData.get_request_url('pay', 'order'),
                 qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
@@ -786,6 +800,7 @@
                                     plugins_coin_data: plugins_coin_data,
                                     plugins_coin_is_valid:  plugins_coin_data != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0,
                                     plugins_invoice_buy_data: data.plugins_invoice_buy_data || null,
+                                    plugins_friendpay_data: data.plugins_friendpay_data || null,
                                 });
 
                                 // 发票数据处理
@@ -915,7 +930,29 @@
                 // 发票
                 data['buy_invoice_data'] = this.plugins_invoice_data_encode();
 
+                // 朋友代付
+                data['is_friend_pay'] = parseInt(this.is_friend_pay_mode || 0) === 1 ? 1 : 0;
+
                 return data;
+            },
+
+            // 朋友代付模式切换
+            friendpay_mode_change_event(value) {
+                var is_friend_pay = parseInt(value || 0) === 1 ? 1 : 0;
+                var params = this.params || {};
+                params['is_friend_pay'] = is_friend_pay;
+                if (is_friend_pay == 1) {
+                    params['payment_id'] = 0;
+                    this.setData({
+                        payment_id: 0,
+                        plugins_coin_payment_id: 0,
+                    });
+                }
+                this.setData({
+                    is_friend_pay_mode: is_friend_pay,
+                    params: params,
+                });
+                this.init();
             },
 
             // 发票缓存读取
@@ -1179,7 +1216,7 @@
                 }
 
                 // 是否需要选择支付方式、并且未选择虚拟币支付方式
-                if (this.total_price > 0 && this.common_order_is_booking != 1 && (this.plugins_coin_payment_id || null) == null) {
+                if (this.total_price > 0 && this.common_order_is_booking != 1 && parseInt(this.is_friend_pay_mode || 0) != 1 && (this.plugins_coin_payment_id || null) == null) {
                     if ((data.payment_id || null) == null) {
                         app.globalData.showToast(this.$t('buy.buy.71kidy'));
                         return false;
@@ -1240,6 +1277,9 @@
                     // 线下支付（开启线下订单正常进入流程）
                     app.globalData.url_open(this.to_appoint_page, true);
                     
+                } else if((res.data.jump_url || null) != null && res.data.jump_url != '') {
+                    // 朋友代付跳转分享页
+                    app.globalData.url_open(res.data.jump_url);
                 } else {
                     // 调起支付
                     this.$refs.payment.pay_handle(res.data.order_ids.join(','), res.data.payment_id, this.payment_list);
@@ -1252,6 +1292,14 @@
             // 支付方式选择
             payment_event(e) {
                 var value = e.currentTarget.dataset.value;
+                var params = this.params || {};
+                if (parseInt(this.is_friend_pay_mode || 0) === 1) {
+                    params['is_friend_pay'] = 0;
+                    this.setData({
+                        is_friend_pay_mode: 0,
+                        params: params,
+                    });
+                }
                 this.setData({
                     payment_id: (this.payment_id == value) ? 0 : value,
                     plugins_coin_payment_id: 0,
@@ -1302,6 +1350,14 @@
             // 虚拟币支付方式选择
             plugins_coin_payment_event(e) {
                 var value = e.currentTarget.dataset.value;
+                var params = this.params || {};
+                if (parseInt(this.is_friend_pay_mode || 0) === 1) {
+                    params['is_friend_pay'] = 0;
+                    this.setData({
+                        is_friend_pay_mode: 0,
+                        params: params,
+                    });
+                }
                 this.setData({
                     plugins_coin_payment_id: (this.plugins_coin_payment_id == value) ? 0 : value,
                     payment_id: 0,

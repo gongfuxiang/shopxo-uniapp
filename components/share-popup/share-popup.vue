@@ -142,7 +142,8 @@
 
             // url链接地址复制分享
             share_url_copy_event() {
-                var url = app.globalData.get_page_url();
+                var share = app.globalData.share_content_handle(this.share_info || {});
+                var url = (share.url || null) != null && share.url != '' ? share.url : app.globalData.get_page_url();
                 // 增加分享标识
                 if(url.indexOf('referrer') == -1) {
                     var uid = app.globalData.get_user_cache_info('id') || null;

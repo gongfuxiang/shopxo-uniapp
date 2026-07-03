@@ -2323,10 +2323,10 @@
                     query: this.share_query_handle(data.query || ''),
                     img: data.img || share_config.pic || this.get_application_logo_square(),
                 };
-                result['url'] = this.get_page_url();
+                result['url'] = (data.url || null) != null ? data.url : this.get_page_url();
                 // #ifdef H5 || APP
                 // 是有效的url地址则通过#号分割处理参数
-                if(this.is_url(result['url'])) {
+                if((data.url || null) == null && this.is_url(result['url'])) {
                     result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + ((result.path || null) != null && result.path.substr(0, 1) == '/' ? '' : '/') + (result.path || '') + (result.query || ''));
                 }
                 // #endif

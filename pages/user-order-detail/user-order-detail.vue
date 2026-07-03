@@ -419,6 +419,18 @@
             </view>
         </component-popup>
 
+        <!-- 朋友代付支付弹窗 -->
+        <component-friendpay-order-pay-popup
+            :propShow="is_show_friendpay_order_popup"
+            :propPluginsData="plugins_friendpay_data"
+            :propPayPrice="pay_price"
+            :propOrderIds="pay_value"
+            :propPaymentList="original_payment_list"
+            :propDefaultPaymentId="default_payment_id"
+            @close="friendpay_order_popup_close_event"
+            @self-pay="friendpay_self_pay_event"
+        ></component-friendpay-order-pay-popup>
+
         <!-- 支付组件 -->
         <component-payment
             ref="payment"
@@ -451,6 +463,7 @@
     import componentPayment from '@/components/payment/payment';
     import componentHospitalOrderDetail from '@/pages/plugins/hospital/components/order-detail/order-detail';
     import componentOrderOperateMore from '@/pages/user-order/components/order-operate-more/order-operate-more';
+    import componentFriendpayOrderPayPopup from '@/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
@@ -492,6 +505,8 @@
                 // 订单是否展示商品快照（与站点配置 common_is_order_show_goods_snapshot 一致）
                 common_is_order_show_goods_snapshot: 0,
                 original_payment_list: [],
+                plugins_friendpay_data: null,
+                is_show_friendpay_order_popup: false,
             };
         },
 
@@ -503,6 +518,7 @@
             componentPayment,
             componentHospitalOrderDetail,
             componentOrderOperateMore,
+            componentFriendpayOrderPayPopup,
         },
 
         onLoad(params) {
@@ -600,6 +616,7 @@
                                 original_payment_list: data.payment_list || [],
                                 payment_list: data.payment_list || [],
                                 default_payment_id: data.default_payment_id || 0,
+                                plugins_friendpay_data: data.plugins_friendpay_data || null,
                                 payment_id: (detail == null) ? 0 : detail.payment_id,
                                 pay_url: app.globalData.get_request_url('pay', 'order'),
                                 qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
@@ -701,9 +718,26 @@
                 }
 
                 // 设置支付参数
+                var show_friendpay = (this.plugins_friendpay_data || null) != null && this.plugins_friendpay_data.is_enable == 1;
                 this.setData({
-                    is_show_payment_popup: true,
                     payment_list: payment_list,
+                    is_show_friendpay_order_popup: show_friendpay,
+                    is_show_payment_popup: !show_friendpay,
+                });
+            },
+
+            // 朋友代付弹窗关闭
+            friendpay_order_popup_close_event() {
+                this.setData({ is_show_friendpay_order_popup: false });
+            },
+
+            // 朋友代付-自己支付
+            friendpay_self_pay_event(e) {
+                this.setData({
+                    is_show_friendpay_order_popup: false,
+                    is_show_payment_popup: true,
+                    payment_list: e.payment_list || this.original_payment_list,
+                    payment_id: e.payment_id || this.default_payment_id,
                 });
             },
 
