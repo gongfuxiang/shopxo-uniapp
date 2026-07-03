@@ -5,15 +5,15 @@
                 <!-- 基础信息 + 商品 -->
                 <view class="bg-white border-radius-main padding-main spacing-mb">
                     <view class="tc fw-b text-size">{{ pageTitle }}</view>
-                    <view v-if="(order_data || {}).buyer_name" class="flex-row align-c jc-c margin-top-main cr-grey text-size-sm">
+                    <view v-if="has_buyer_name" class="flex-row align-c jc-c margin-top-main cr-grey text-size-sm">
                         <image :src="buyer_avatar" mode="aspectFill" class="buyer-avatar circle margin-right-sm"></image>
                         <view>{{ invite_text_plain || buyer_invite_fallback }}</view>
                     </view>
                     <view class="tc margin-top-sm">
                         <text class="cr-grey">{{ $t('friendpay.friendpay.pay_amount') }}</text>
-                        <text class="sales-price text-size-xl margin-left-sm">{{ currency_symbol }}{{ (order_data || {}).total_price }}</text>
+                        <text class="sales-price text-size-xl margin-left-sm">{{ currency_symbol }}{{ order_total_price }}</text>
                     </view>
-                    <component-friendpay-goods-list :propGoodsList="(order_data || {}).goods_list || []"></component-friendpay-goods-list>
+                    <component-friendpay-goods-list :propGoodsList="order_goods_list"></component-friendpay-goods-list>
                 </view>
                 <!-- 支付方式 -->
                 <view v-if="payment_list.length > 0" class="bg-white border-radius-main padding-main spacing-mb">
@@ -110,6 +110,21 @@
             buyer_invite_fallback() {
                 var name = (this.order_data || {}).buyer_name || '';
                 return this.$t('friendpay.friendpay.invite_fallback_pay').replace('${name}', name);
+            },
+            // 是否展示下单人信息
+            has_buyer_name() {
+                var order_data = this.order_data;
+                return order_data != null && (order_data.buyer_name || '') != '';
+            },
+            // 代付金额
+            order_total_price() {
+                var order_data = this.order_data;
+                return order_data != null ? (order_data.total_price || '') : '';
+            },
+            // 商品列表
+            order_goods_list() {
+                var order_data = this.order_data;
+                return order_data != null ? (order_data.goods_list || []) : [];
             },
         },
         onLoad(params) {

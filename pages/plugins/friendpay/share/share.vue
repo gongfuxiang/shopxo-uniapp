@@ -5,7 +5,7 @@
             <view class="bg-white border-radius-main padding-main spacing-mb">
                 <view class="tc fw-b text-size">{{ pageTitle }}</view>
                 <view v-if="(status_tips || null) != null" class="tc margin-top-sm text-size-sm" :class="status_tips_class">{{ status_tips.msg }}</view>
-                <view v-if="(order_data || {}).buyer_name" class="flex-row align-c jc-c margin-top-main cr-grey text-size-sm">
+                <view v-if="has_buyer_name" class="flex-row align-c jc-c margin-top-main cr-grey text-size-sm">
                     <image :src="buyer_avatar" mode="aspectFill" class="buyer-avatar circle margin-right-sm"></image>
                     <view>{{ invite_text_plain || buyer_invite_fallback }}</view>
                 </view>
@@ -13,7 +13,7 @@
                     <text class="cr-grey">{{ $t('friendpay.friendpay.share_amount') }}</text>
                     <text class="sales-price text-size-xl margin-left-sm">{{ currency_symbol }}{{ friendpay.total_price }}</text>
                 </view>
-                <component-friendpay-goods-list :propGoodsList="(order_data || {}).goods_list || []"></component-friendpay-goods-list>
+                <component-friendpay-goods-list :propGoodsList="order_goods_list"></component-friendpay-goods-list>
             </view>
 
             <block v-if="friendpay.status == 0">
@@ -107,6 +107,16 @@
             buyer_invite_fallback() {
                 var name = (this.order_data || {}).buyer_name || '';
                 return this.$t('friendpay.friendpay.invite_fallback').replace('${name}', name);
+            },
+            // 是否展示下单人信息
+            has_buyer_name() {
+                var order_data = this.order_data;
+                return order_data != null && (order_data.buyer_name || '') != '';
+            },
+            // 商品列表
+            order_goods_list() {
+                var order_data = this.order_data;
+                return order_data != null ? (order_data.goods_list || []) : [];
             },
             // 状态提示样式
             status_tips_class() {
