@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <view class="page-bottom-fixed">
-            <form v-if="check_status == 1" @submit="form_submit" class="form-container">
+            <form v-if="check_status == 1 && is_cash_available && user_cash_type_list.length > 0" @submit="form_submit" class="form-container">
                 <view class="padding-main oh">
                     <view class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.qg404q')}}<text class="form-group-tips-must">*</text></view>
@@ -73,6 +73,16 @@
                 </view>
             </form>
 
+            <!-- 不可提现 -->
+            <view v-else-if="check_status == 1 && !is_cash_available && cash_apply_available != null" class="padding-main">
+                <component-cash-unavailable :propCashApplyAvailable="cash_apply_available"></component-cash-unavailable>
+            </view>
+
+            <!-- 未配置提现方式 -->
+            <view v-else-if="check_status == 1 && is_cash_available && user_cash_type_list.length == 0" class="padding-main">
+                <component-no-data propStatus="0" :propMsg="$t('cash-create.cash-create.9k2m4x')"></component-no-data>
+            </view>
+
             <!-- 已过期 -->
             <view v-else-if="check_status === 0" class="overdue tc">
                 <view class="padding-main">
@@ -80,7 +90,7 @@
                     <button class="round bg-main cr-white cr-white text-size margin-top-xl" size="mini" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" data-redirect="1" @tap="url_event">{{$t('cash-create.cash-create.ke15x5')}}</button>
                 </view>
             </view>
-            <view v-else>
+            <view v-else-if="data_list_loding_status != 3">
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
@@ -94,6 +104,8 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import componentCashUnavailable from '@/pages/plugins/wallet/components/cash-unavailable/cash-unavailable';
+    import { BuildCashApplyAvailable, IsCashApplyAvailable } from '@/pages/plugins/wallet/common/cash-apply-available';
 
     export default {
         data() {
@@ -114,13 +126,15 @@
                 cash_commission_value: 0.00,
                 user_cash_type_list: [],
                 cash_type_0_status: false,
-                cash_type_2_status: false
+                cash_type_2_status: false,
+                cash_apply_available: null,
             };
         },
 
         components: {
             componentCommon,
             componentNoData,
+            componentCashUnavailable,
         },
 
         computed: {
@@ -170,6 +184,9 @@
                     return val;
                 }
                 return parseFloat(this.can_cash_max_money) || 0;
+            },
+            is_cash_available() {
+                return IsCashApplyAvailable(this.cash_apply_available);
             },
         },
 
@@ -231,13 +248,15 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data || null;
+                            var cash_apply_available = (data.cash_apply_available || null) || BuildCashApplyAvailable(data.user_wallet, data.base, app.globalData.currency_symbol());
                             this.setData({
                                 data_list_loding_status: 3,
                                 data_base: data.base || null,
                                 check_status: data.check_status || 0,
+                                cash_apply_available: cash_apply_available,
                                 default_data: data.default_data || {},
                                 user_wallet: data.user_wallet || {},
-                                can_cash_max_money: parseFloat(data.can_cash_max_money) || 0.0,
+                                can_cash_max_money: parseFloat(data.can_cash_max_money) || (cash_apply_available ? parseFloat(cash_apply_available.can_cash_max_money) : 0) || 0.0,
                                 cash_input_max_money: parseFloat(data.cash_input_max_money) || 0.0,
                                 user_cash_type_list: data.user_cash_type_list || []
                             });

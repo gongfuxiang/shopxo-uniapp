@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <view v-if="data_base != null" class="padding-main">
-            <view v-if="is_can_cash == 1">
+            <view v-if="is_cash_available">
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
                     <view class="form-gorup margin-bottom radius-md">
                         <view class="form-gorup-title">{{$t('cash-auth.cash-auth.b39a25')}}<text class="form-group-tips-must">*</text></view>
@@ -45,17 +45,11 @@
                     <button data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event" class="bg-main br-main cr-white text-size round margin-top-xl" type="default">{{$t('login.login.d2ng16')}}</button>
                 </view>
             </view>
-            <view v-else>
-                <view class="margin-top-lg">
-                    <view>
-                        <text>{{$t('cash-auth.cash-auth.l2i4s8')}}</text>
-                        <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
-                    </view>
-                    <view class="margin-top-sm">
-                        <text>{{$t('cash-auth.cash-auth.27b4w5')}}</text>
-                        <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
-                    </view>
-                </view>
+            <view v-else-if="cash_apply_available != null">
+                <component-cash-unavailable :propCashApplyAvailable="cash_apply_available"></component-cash-unavailable>
+            </view>
+            <view v-else class="padding-top-xxxl">
+                <component-no-data propStatus="0" :propMsg="$t('common.no_relevant_data_tips')"></component-no-data>
             </view>
         </view>
         <block v-else>
@@ -71,6 +65,8 @@
     const app = getApp();
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import componentCashUnavailable from '@/pages/plugins/wallet/components/cash-unavailable/cash-unavailable';
+    import { BuildCashApplyAvailable, IsCashApplyAvailable } from '@/pages/plugins/wallet/common/cash-apply-available';
 
     export default {
         data() {
@@ -90,13 +86,20 @@
                 temp_clear_time: null,
                 check_account_value: null,
                 form_submit_disabled_status: false,
-                is_can_cash: 0,
+                cash_apply_available: null,
             };
         },
 
         components: {
             componentCommon,
             componentNoData,
+            componentCashUnavailable,
+        },
+
+        computed: {
+            is_cash_available() {
+                return IsCashApplyAvailable(this.cash_apply_available);
+            },
         },
 
         onLoad(params) {
@@ -154,10 +157,8 @@
                                 data_base: data.base || null,
                                 user_wallet: data.user_wallet || null,
                                 check_account_list: data.check_account_list || [],
+                                cash_apply_available: data.cash_apply_available || BuildCashApplyAvailable(data.user_wallet, data.base, app.globalData.currency_symbol()),
                             };
-                            if ((upd_data.data_base != null && upd_data.user_wallet != null && (upd_data.data_base.cash_minimum_amount || 0) <= 0) || parseFloat(upd_data.user_wallet.normal_money) >= parseFloat(upd_data.data_base.cash_minimum_amount)) {
-                                upd_data['is_can_cash'] = 1;
-                            }
                             this.setData(upd_data);
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {
