@@ -127,6 +127,9 @@
             componentPayment
         },
         onLoad(params) {
+            // 参数处理
+            params = app.globalData.launch_params_handle(params);
+
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 

@@ -69,11 +69,11 @@
             componentNoData
         },
         onLoad(params) {
+            // 设置参数
+            params = app.globalData.launch_params_handle(params);
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
-            // 设置参数
-            params = app.globalData.launch_params_handle(params);
             var scene = app.globalData.get_scene_data();
             this.setData({
                 params: params,

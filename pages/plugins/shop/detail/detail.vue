@@ -154,11 +154,11 @@
             componentDiy
         },
         onLoad(params) {
+            // 设置参数
+            params = app.globalData.launch_params_handle(params);
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
-            // 设置参数
-            params = app.globalData.launch_params_handle(params);
             // 是否指定店铺id
             var shop_id = app.globalData.data.plugins_shop_id || null;
             if(shop_id != null) {

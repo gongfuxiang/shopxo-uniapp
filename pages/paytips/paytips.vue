@@ -41,6 +41,9 @@
          */
         onLoad(params) {
             // 参数处理
+            params = app.globalData.launch_params_handle(params);
+
+            // 参数处理
             if((params || null) != null) {
                 params = JSON.parse(base64.decode(decodeURIComponent(params.params)));
             }
