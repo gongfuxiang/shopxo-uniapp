@@ -12,7 +12,7 @@
                             <view class="goods-top-search-bg pa top-0 left-0 right-0 bottom-0 wh-auto oh">
                                 <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
                             </view>
-                            <block v-if="category_goods_is_search_alone == 1">
+                            <block v-if="goods_category_is_search_alone == 1">
                                 <component-search :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                             </block>
                             <block v-else>
@@ -31,7 +31,7 @@
                                             <view class="content-item cp" :data-value="item.id" @tap="category_event">
                                                 <view class="padding-sm">
                                                     <view class="content bg-white border-radius-main">
-                                                        <image v-if="(item[category_goods_model_icon_field] || null) != null" :src="item[category_goods_model_icon_field]" mode="aspectFit" class="icon circle"></image>
+                                                        <image v-if="(item[goods_category_model_icon_field] || null) != null" :src="item[goods_category_model_icon_field]" mode="aspectFit" class="icon circle"></image>
                                                         <view class="text single-text margin-top-sm" :class="'text-random-' + (Math.floor(Math.random() * 9) + 1)">{{ item.name }}</view>
                                                         <view class="desc multi-text margin-top-xs padding-top-xss cr-grey-9 text-size-xss">{{ item.describe }}</view>
                                                     </view>
@@ -46,11 +46,11 @@
                                 <block v-if="category_show_level == 0">
                                     <!-- 一级导航 -->
                                     <view class="top-nav wh-auto pa scroll-view-horizontal bottom-0">
-                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="nav_active_index >= 0 && category_list.length > 0 ? ('one-nav-item-' + nav_active_index) : ''" class="top-nav-scroll">
+                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll">
                                             <block v-for="(item, index) in category_list" :key="index">
                                                 <view class="item tc cp dis-inline-block text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                                     <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
-                                                        <image :src="(item[category_goods_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[category_goods_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+                                                        <image :src="(item[goods_category_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[goods_category_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
                                                     </view>
                                                     <view class="padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">{{ item.name }} </view>
                                                 </view>
@@ -62,7 +62,7 @@
                                                     <block v-for="(item, index) in category_list" :key="index">
                                                         <view class="item tc cr-base cp text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                                             <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
-                                                                <image :src="(item[category_goods_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[category_goods_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+                                                                <image :src="(item[goods_category_model_icon_field] || null) == null ? common_static_url + 'images.png' : item[goods_category_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
                                                             </view>
                                                             <view class="dis-inline-block padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">
                                                                 {{ item.name }}
@@ -105,7 +105,7 @@
                                                     </view>
                                                     <!-- 三级导航 -->
                                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
-                                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="nav_active_item_three_index >= 0 ? ('three-nav-item-' + nav_active_item_three_index) : ''">
+                                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
                                                             <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
                                                             <block v-for="(item, index) in data_three_content.items" :key="index">
                                                                 <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
@@ -270,7 +270,7 @@
                         </view>
 
                         <!-- 仅商品模式展示购物车和规格选择 -->
-                        <block v-if="category_goods_is_show_cart_nav == 1 && common_site_type != 4 && category_show_level == 0">
+                        <block v-if="goods_category_is_show_cart_nav == 1 && common_site_type != 4 && category_show_level == 0">
                             <!-- 购物车列表 -->
                             <block v-if="cart_status">
                                 <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
@@ -411,7 +411,6 @@
     bar_height = 0;
     // #endif
 
-    var icon_type = app.globalData.data.category_goods_model_icon_type;
     export default {
         data() {
             return {
@@ -447,7 +446,7 @@
                 cart_status: false,
                 goods_choose_data: {},
                 category_one_subset_count: 0,
-                // 基础配置
+                // 分类显示层级
                 category_show_level: 0,
                 // 排序导航
                 search_nav_sort_index: 0,
@@ -457,11 +456,11 @@
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 商品列表模式一级分类图标类型
-                category_goods_model_icon_field: icon_type == 0 ? 'realistic_images' : icon_type == 1 ? 'icon' : 'big_images',
+                goods_category_model_icon_field: 'realistic_images',
                 // 商品分类页面搜索进入独立搜索页面
-                category_goods_is_search_alone: app.globalData.data.category_goods_is_search_alone,
+                goods_category_is_search_alone: 0,
                 // 商品分类页面开启购物车导航
-                category_goods_is_show_cart_nav: app.globalData.data.category_goods_is_show_cart_nav,
+                goods_category_is_show_cart_nav: 0,
                 // 临时操作数据
                 temp_opt_data: null,
                 // 标签插件
@@ -484,10 +483,7 @@
                 footer_height_value: 0,
                 // 互联网医院问诊数据
                 plugins_hospital_prescription_data: null,
-                plugins_hospital_prescription_status: false,
-                _page_alive: true,
-                _page_showing: false,
-                search_height_timer: null,
+                plugins_hospital_prescription_status: false
             };
         },
 
@@ -516,7 +512,6 @@
         },
 
         onShow() {
-            this._page_showing = true;
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
@@ -548,24 +543,7 @@
             }
         },
 
-        onHide() {
-            this._page_showing = false;
-            this.clear_search_height_timer();
-        },
-
-        onUnload() {
-            this._page_alive = false;
-            this._page_showing = false;
-            this.clear_search_height_timer();
-        },
-
         methods: {
-            clear_search_height_timer() {
-                if (this.search_height_timer != null) {
-                    clearInterval(this.search_height_timer);
-                    this.search_height_timer = null;
-                }
-            },
             // 资源设置
             set_resources_data() {
                 var search_nav_sort_list = [
@@ -607,10 +585,14 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    var icon_type = parseInt(app.globalData.get_config('config.common_goods_category_model_icon_type', 0));
                     this.setData({
-                        common_site_type: app.globalData.get_config('config.common_site_type'),
                         currency_symbol: app.globalData.get_config('currency_symbol'),
-                        category_show_level: app.globalData.get_config('config.category_show_level'),
+                        common_site_type: app.globalData.get_config('config.common_site_type'),
+                        category_show_level: parseInt(app.globalData.get_config('config.common_show_goods_category_level', 0)),
+                        goods_category_model_icon_field: icon_type == 0 ? 'realistic_images' : icon_type == 1 ? 'icon' : 'big_images',
+                        goods_category_is_search_alone: parseInt(app.globalData.get_config('config.common_goods_category_is_search_alone', 0)),
+                        goods_category_is_show_cart_nav: parseInt(app.globalData.get_config('config.common_goods_category_is_show_cart_nav', 0)),
                     });
                 }
             },
@@ -695,15 +677,12 @@
                             // 计算更多分类弹窗的高度、由于页面元素渲染异步问题，这里加延时执行
                             if (this.is_first == 1) {
                                 var self = this;
-                                var retry_count = 0;
-                                self.clear_search_height_timer();
-                                self.search_height_timer = setInterval(function () {
-                                    if (!self._page_alive || !self._page_showing || self.search_height > 0 || retry_count >= 20) {
-                                        self.clear_search_height_timer();
-                                        return;
+                                var timer = setInterval(function () {
+                                    if (self.search_height == 0) {
+                                        self.search_height_computer();
+                                    } else {
+                                        clearInterval(timer);
                                     }
-                                    retry_count++;
-                                    self.search_height_computer();
                                 }, 500);
                             }
 
@@ -750,12 +729,12 @@
                 var bottom_style_value = 20;
                 // 左侧
                 var left_style = '';
-                if(this.category_goods_is_show_cart_nav == 1) {
+                if(this.goods_category_is_show_cart_nav == 1) {
                     left_style = 'height: calc(100% - 120rpx - '+bottom_style_value+'rpx);';
                 }
                 // 右侧
                 var right_style = '';
-                if(this.category_goods_is_show_cart_nav == 1 && this.common_site_type != 4) {
+                if(this.goods_category_is_show_cart_nav == 1 && this.common_site_type != 4) {
                     right_style = 'padding-bottom: calc(120rpx + '+bottom_style_value+'rpx);';
                 }
                 // 底部导航高度
@@ -1085,13 +1064,9 @@
                     if ((this.$refs.cart_para_curve || null) != null) {
                         var self = this;
                         uni.createSelectorQuery()
-                            .in(self)
                             .select('.botton-nav .cart')
                             .boundingClientRect()
                             .exec(function (res) {
-                                if (!self._page_alive || (res || null) == null || (res[0] || null) == null || (self.$refs.cart_para_curve || null) == null) {
-                                    return;
-                                }
                                 self.$refs.cart_para_curve.init(res, self.temp_opt_data.pos, self.temp_opt_data.goods.images);
                             });
                     }
@@ -1460,21 +1435,17 @@
 
             // 计算搜索框的高度
             search_height_computer() {
-                if (!this._page_alive || !this._page_showing || this.is_single_page == 1) {
-                    return;
-                }
-                const query = uni.createSelectorQuery().in(this);
+                const query = uni.createSelectorQuery();
                 query
                     .select('.nav-search')
                     .boundingClientRect((res) => {
-                        if (!this._page_alive || (res || null) == null || !res.height) {
-                            return;
+                        if ((res || null) != null) {
+                            // 获取搜索框高度
+                            this.setData({
+                                search_height: res.height,
+                            });
+                            this.content_actual_size_handle();
                         }
-                        this.setData({
-                            search_height: res.height,
-                        });
-                        this.content_actual_size_handle();
-                        this.clear_search_height_timer();
                     })
                     .exec();
             },

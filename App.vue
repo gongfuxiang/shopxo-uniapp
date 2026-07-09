@@ -77,11 +77,14 @@
                 // 购物车页面顶部导航强制关闭门店（0否, 1是）
                 is_cart_header_close_realstore: 0,
 
-                // 商品详情页底部导航是否开启购物车功能（0否, 1是）
-                is_goods_bottom_opt_cart: 1,
-
                 // 商品详情页底部导航存在指定返回参数[is_opt_back=1]展示返回按钮（0否, 1是）
                 is_goods_bottom_opt_back: 1,
+                
+                // 商品详情页底部导航是否开启购物车功能（0否, 1是）
+                is_goods_bottom_opt_cart: 1,
+                
+                // 商品列表是否展示购物车（0否, 1是）
+                is_goods_list_show_cart_opt: 1,
 
                 // 全站阻止打开商品详情页面（0否, 1是）
                 is_forbid_to_goods_detail: 0,
@@ -92,23 +95,11 @@
                 // 开启浮动客服、前提是后台需要开启客服功能（0否, 1是）
                 is_online_service_fixed: 1,
 
-                // 分类页面商品列表模式一级分类使用图标类型（0 实景图, 1 icon图标, 2 大图片）
-                category_goods_model_icon_type: 0,
-
-                // 商品分类页面搜索进入独立搜索页面（0否, 1是）
-                category_goods_is_search_alone: 0,
-
-                // 商品分类页面开启购物车导航（0否, 1是）
-                category_goods_is_show_cart_nav: 1,
-
                 // 员工预定待结算数据
                 staff_booking_pending: null,
 
                 // 用户中心菜单默认展示模式（0 九宫格, 1 列表）
                 user_center_nav_show_model_type: 0,
-
-                // 商品列表是否展示购物车（0否, 1是）
-                is_goods_list_show_cart_opt: 1,
 
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,
