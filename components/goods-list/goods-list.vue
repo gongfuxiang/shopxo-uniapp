@@ -296,7 +296,7 @@
         // 页面被展示
         created: function () {
             var is_app_mourning = app.globalData.is_app_mourning();
-            var is_show_cart = app.globalData.data.is_goods_list_show_cart_opt == 1 ? (is_app_mourning && this.propSource == 'index' ? false : true) : false;
+            var is_show_cart = parseInt(app.globalData.get_config('config.common_goods_list_show_cart_opt', 0)) == 1 ? (is_app_mourning && this.propSource == 'index' ? false : true) : false;
             this.setData({
                 data: this.propData,
                 is_show_cart: is_show_cart,

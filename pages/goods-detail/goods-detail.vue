@@ -1061,7 +1061,7 @@
                 // 是否底部导航展示返回按钮
                 is_opt_back: parseInt(params.is_opt_back || 0) == 1 && (app.globalData.data.is_goods_bottom_opt_back || 0) == 1 ? 1 : 0,
                 // 是否自定义购物车状态
-                is_opt_cart: params.is_opt_cart === undefined ? app.globalData.data.is_goods_bottom_opt_cart || 0 : parseInt(params.is_opt_cart || 0),
+                is_opt_cart: params.is_opt_cart === undefined ? parseInt(app.globalData.get_config('config.common_goods_detail_bottom_opt_cart', 0)) : parseInt(params.is_opt_cart || 0),
             });
         },
 
@@ -1155,6 +1155,9 @@
                     var goods_cover_size_type = app.globalData.get_config('config.common_goods_cover_size_type', 0);
                     if(goods_cover_size_type == 1) {
                         upd_data['photo_height'] = parseInt(win_height*0.7)+'px';
+                    }
+                    if((this.params || null) != null && this.params.is_opt_cart === undefined) {
+                        upd_data['is_opt_cart'] = parseInt(app.globalData.get_config('config.common_goods_detail_bottom_opt_cart', 0));
                     }
                     this.setData(upd_data);
                 } else {

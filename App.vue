@@ -79,12 +79,6 @@
 
                 // 商品详情页底部导航存在指定返回参数[is_opt_back=1]展示返回按钮（0否, 1是）
                 is_goods_bottom_opt_back: 1,
-                
-                // 商品详情页底部导航是否开启购物车功能（0否, 1是）
-                is_goods_bottom_opt_cart: 1,
-                
-                // 商品列表是否展示购物车（0否, 1是）
-                is_goods_list_show_cart_opt: 1,
 
                 // 全站阻止打开商品详情页面（0否, 1是）
                 is_forbid_to_goods_detail: 0,
