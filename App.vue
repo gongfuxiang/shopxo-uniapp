@@ -83,17 +83,11 @@
                 // 全站阻止打开商品详情页面（0否, 1是）
                 is_forbid_to_goods_detail: 0,
 
-                // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
-                is_share_use_image: 1,
-
                 // 开启浮动客服、前提是后台需要开启客服功能（0否, 1是）
                 is_online_service_fixed: 1,
 
                 // 员工预定待结算数据
                 staff_booking_pending: null,
-
-                // 用户中心菜单默认展示模式（0 九宫格, 1 列表）
-                user_center_nav_show_model_type: 0,
 
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,

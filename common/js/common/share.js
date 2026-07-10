@@ -25,7 +25,7 @@ export default {
             desc: share.desc,
             path: share.path + share.query
         }
-        if(app.globalData.data.is_share_use_image == 1) {
+        if(parseInt(app.globalData.get_config('config.common_is_share_use_image', 0)) == 1) {
             data['imageUrl'] = share.img;
         }
         return data;
@@ -39,7 +39,7 @@ export default {
             title: share.title,
             query: ((share.query || null) != null && share.query.substr(0, 1) == '?') ? share.query.slice(1) : share.query
         };
-        if(app.globalData.data.is_share_use_image == 1) {
+        if(parseInt(app.globalData.get_config('config.common_is_share_use_image', 0)) == 1) {
             data['imageUrl'] = share.img;
         }
         return data;

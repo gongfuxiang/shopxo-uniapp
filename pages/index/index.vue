@@ -396,7 +396,6 @@
                 common_shop_notice: null,
                 common_app_is_enable_search: 0,
                 common_app_is_header_nav_fixed: 0,
-                common_app_is_online_service: 0,
                 // 顶部导航、名称、logo、定位
                 application_title: app.globalData.data.application_title,
                 application_logo: app.globalData.data.application_logo,
@@ -538,7 +537,6 @@
                         common_shop_notice: app.globalData.get_config('config.common_shop_notice'),
                         common_app_is_enable_search: app.globalData.get_config('config.common_app_is_enable_search'),
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
-                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
                     });
