@@ -96,20 +96,21 @@
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
+                            var result = res.data.data || {};
+                            var detail = result.data || null;
                             this.setData({
-                                detail: data.data,
+                                detail: detail,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
-                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || "" },
-                                    { name: this.$t('profit.profit.utg512'), value: data.data.profit_price || "" },
-                                    { name: this.$t('profit.profit.6a7t71'), value: data.data.level_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.status_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.order_status_name || "" },
-                                    { name: this.$t('profit-detail.profit-detail.x28rw5'), value: data.data.order_pay_status_name || "" },
-                                    { name: this.$t('order.order.330m76'), value: data.data.order_client_type_name || "" },
-                                    { name: this.$t('common.add_time'), value: data.data.add_time || "" },
-                                    { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
+                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: detail.total_price || "" },
+                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: detail.refund_price || "" },
+                                    { name: this.$t('profit.profit.utg512'), value: detail.profit_price || "" },
+                                    { name: this.$t('profit.profit.6a7t71'), value: detail.level_name || "" },
+                                    { name: this.$t('profit-detail.profit-detail.kn8yye'), value: detail.status_name || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: detail.order_status_name || "" },
+                                    { name: this.$t('profit-detail.profit-detail.x28rw5'), value: detail.order_pay_status_name || "" },
+                                    { name: this.$t('order.order.330m76'), value: detail.order_client_type_name || "" },
+                                    { name: this.$t('common.add_time'), value: detail.add_time || "" },
+                                    { name: this.$t('common.upd_time'), value: detail.upd_time || "" },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

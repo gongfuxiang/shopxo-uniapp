@@ -17,6 +17,38 @@
                     <label> <checkbox value="1" :checked="nav_search_value.team_search_user_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
                 </checkbox-group>
             </view>
+            <block v-if="is_invite_bind_period == 1">
+                <view class="margin-top oh">
+                    <view class="fl margin-top">{{$t('team.team.x7p2k9')}}</view>
+                    <view class="multiple-picker fl tc">
+                        <view class="item br dis-inline-block pr radius tl fl">
+                            <uni-datetime-picker v-model="nav_search_value.team_search_expire_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                        </view>
+                        <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
+                        <view class="item br dis-inline-block pr radius tl fr">
+                            <uni-datetime-picker v-model="nav_search_value.team_search_expire_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                        </view>
+                    </view>
+                    <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_expire_time_reverse" @change="search_cholce_event">
+                        <label> <checkbox value="1" :checked="nav_search_value.team_search_expire_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
+                    </checkbox-group>
+                </view>
+                <view class="margin-top oh">
+                    <view class="fl margin-top">{{$t('team.team.q4m8n1')}}</view>
+                    <view class="multiple-picker fl tc">
+                        <view class="item br dis-inline-block pr radius tl fl">
+                            <uni-datetime-picker v-model="nav_search_value.team_search_release_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
+                        </view>
+                        <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
+                        <view class="item br dis-inline-block pr radius tl fr">
+                            <uni-datetime-picker v-model="nav_search_value.team_search_release_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
+                        </view>
+                    </view>
+                    <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_release_time_reverse" @change="search_cholce_event">
+                        <label> <checkbox value="1" :checked="nav_search_value.team_search_release_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
+                    </checkbox-group>
+                </view>
+            </block>
             <view class="margin-top oh">
                 <view class="fl margin-top">{{$t('team.team.2ny6k1')}}</view>
                 <view class="multiple-picker fl tc">
@@ -46,27 +78,26 @@
         </view>
 
         <!-- 数据列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box' + (is_invite_bind_period == 1 ? ' scroll-box-invite' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
                         <image class="avatar dis-block fl circle" :src="item.avatar" mode="widthFix" @tap="avatar_event" :data-value="item.avatar"></image>
                         <text class="cr-base margin-left-sm">{{ item.user_name_view || "" }}</text>
-                        <text class="cr-base fr">{{ item.add_time }}</text>
+                        <text class="cr-base fr">{{ item.bind_time || item.add_time || "" }}</text>
                     </view>
                     <view class="content margin-top">
-                        <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view class="single-text margin-top-xs">
-                                <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
-                                <text class="cr-base" :data-event="fv.event" :data-value="item[fv.field]" @tap="text_event">{{ item[fv.field] || fv.default }}</text>
-                                <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                            </view>
-                        </block>
+                        <component-panel-content
+                            :propData="item"
+                            :propDataField="field_list"
+                            propIsItemShowMax="10"
+                            :propIsTerse="true"
+                        ></component-panel-content>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('login.login.p54kf1')}}</button>
                         <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('promotion-user.promotion-user.62c8m1')}}</button>
-                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">{{$t('promotion-user.promotion-user.i2rf31')}}</button>
+                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.number_code">{{$t('promotion-user.promotion-user.i2rf31')}}</button>
                     </view>
                 </view>
             </view>
@@ -88,12 +119,14 @@
     import componentCommon from '@/components/common/common';
     import componentNoData from "@/components/no-data/no-data";
     import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentPanelContent from '@/components/panel-content/panel-content';
 
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
+                field_list: [],
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
@@ -101,15 +134,7 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
-                content_list: [
-                    { name: this.$t('promotion-user.promotion-user.2g7enc'), field: "order_count", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.32bf15'), field: "order_total", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.76748p'), field: "order_last_time", default: "" },
-                    { name: this.$t('promotion-user.promotion-user.u43380'), field: "find_order_count", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.8n4tr3'), field: "find_order_total", unit: "", default: 0 },
-                    { name: this.$t('promotion-user.promotion-user.1gc3ny'), field: "find_order_last_time", default: "" },
-                    { name: this.$t('promotion-user.promotion-user.3l1187'), field: "referrer_count", unit: "", default: 0 },
-                ],
+                is_invite_bind_period: 0,
                 nav_search_buy_type_list: [
                     { value: -1, name: this.$t('common.all') },
                     { value: 0, name: this.$t('promotion-user.promotion-user.g5332w') },
@@ -119,6 +144,12 @@
                     team_search_user_time_start: "",
                     team_search_user_time_end: "",
                     team_search_user_time_reverse: [],
+                    team_search_expire_time_start: "",
+                    team_search_expire_time_end: "",
+                    team_search_expire_time_reverse: [],
+                    team_search_release_time_start: "",
+                    team_search_release_time_end: "",
+                    team_search_release_time_reverse: [],
                     team_search_order_time_start: "",
                     team_search_order_time_end: "",
                     team_search_order_time_reverse: [],
@@ -131,6 +162,7 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
+            componentPanelContent,
         },
 
         onLoad(params) {
@@ -214,16 +246,40 @@
                     page: this.data_page,
                 };
 
-                // 搜索注册时间
+                // 搜索绑定时间
                 if ((this.nav_search_value.team_search_user_time_start || null) != null) {
                     data["team_search_user_time_start"] = this.nav_search_value.team_search_user_time_start;
                 }
                 if ((this.nav_search_value.team_search_user_time_end || null) != null) {
                     data["team_search_user_time_end"] = this.nav_search_value.team_search_user_time_end;
                 }
-                // 用户反向
+                // 绑定反向
                 if (this.nav_search_value.team_search_user_time_reverse.length > 0) {
                     data["team_search_user_time_reverse"] = 1;
+                }
+
+                // 搜索过期时间
+                if (this.is_invite_bind_period == 1) {
+                    if ((this.nav_search_value.team_search_expire_time_start || null) != null) {
+                        data["team_search_expire_time_start"] = this.nav_search_value.team_search_expire_time_start;
+                    }
+                    if ((this.nav_search_value.team_search_expire_time_end || null) != null) {
+                        data["team_search_expire_time_end"] = this.nav_search_value.team_search_expire_time_end;
+                    }
+                    if (this.nav_search_value.team_search_expire_time_reverse.length > 0) {
+                        data["team_search_expire_time_reverse"] = 1;
+                    }
+
+                    // 搜索解除时间
+                    if ((this.nav_search_value.team_search_release_time_start || null) != null) {
+                        data["team_search_release_time_start"] = this.nav_search_value.team_search_release_time_start;
+                    }
+                    if ((this.nav_search_value.team_search_release_time_end || null) != null) {
+                        data["team_search_release_time_end"] = this.nav_search_value.team_search_release_time_end;
+                    }
+                    if (this.nav_search_value.team_search_release_time_reverse.length > 0) {
+                        data["team_search_release_time_reverse"] = 1;
+                    }
                 }
 
                 // 搜索下单时间
@@ -255,42 +311,37 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            if (data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-
-                                this.setData({
-                                    data_list: temp_data_list,
-                                    data_total: data.total,
-                                    data_page_total: data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0,
-                                });
-
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            var result = res.data.data || {};
+                            var rows = result.data_list || result.data || [];
+                            var page_total = result.page_total != null ? result.page_total : 0;
+                            var total = result.data_total != null ? result.data_total : result.total != null ? result.total : 0;
+                            var temp_data_list = [];
+                            if (this.data_page <= 1) {
+                                temp_data_list = rows;
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
-                                if (this.data_page <= 1) {
-                                    this.setData({
-                                        data_list: [],
-                                        data_bottom_line_status: false,
-                                    });
+                                temp_data_list = this.data_list || [];
+                                for (var i in rows) {
+                                    temp_data_list.push(rows[i]);
                                 }
+                            }
+                            this.setData({
+                                data_list: temp_data_list,
+                                field_list: result.field_list || this.field_list || [],
+                                is_invite_bind_period: result.is_invite_bind_period != null ? result.is_invite_bind_period : this.is_invite_bind_period,
+                                data_total: total,
+                                data_page_total: page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+                            this.setData({
+                                data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
+                            if (this.data_page <= 1 && temp_data_list.length == 0) {
+                                this.setData({
+                                    data_list: [],
+                                    data_bottom_line_status: false,
+                                });
                             }
                         } else {
                             this.setData({
@@ -337,7 +388,7 @@
             // 用户订单事件
             user_order_event(e) {
                 var value = e.currentTarget.dataset.value;
-                app.globalData.url_open('/pages/plugins/distribution/order/order?uid=' + value);
+                app.globalData.url_open('/pages/plugins/distribution/order/order?user=' + value);
             },
 
             // 搜索条件事件
@@ -353,7 +404,7 @@
             // 搜索重置事件
             search_reset_event(e) {
                 var temp_data = this.nav_search_value;
-                var arr_field = ["team_search_buy_type", "team_search_order_time_reverse", "team_search_user_time_reverse"];
+                var arr_field = ["team_search_buy_type", "team_search_order_time_reverse", "team_search_user_time_reverse", "team_search_expire_time_reverse", "team_search_release_time_reverse"];
                 for (var i in temp_data) {
                     temp_data[i] = arr_field.indexOf(i) == -1 ? "" : [];
                 }

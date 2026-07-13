@@ -207,7 +207,7 @@
             // 获取数据
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url('savedata', 'recommend', 'distribution'),
+                    url: app.globalData.get_request_url('saveinfo', 'recommend', 'distribution'),
                     method: 'POST',
                     data: {...this.params, ...{lang_can_key: 'goods_category_list'}},
                     dataType: 'json',

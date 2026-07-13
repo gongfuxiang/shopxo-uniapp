@@ -59,9 +59,9 @@
                 data_is_loading: 0,
                 params: null,
                 nav_status_list: [
-                    { name: this.$t('common.all'), value: "-1" },
+                    { name: this.$t('common.all'), value: "" },
                     { name: this.$t('order.order.pjb15r'), value: "1" },
-                    { name: this.$t('order.order.s8g966'), value: "2" },
+                    { name: this.$t('user.user.66714e'), value: "2" },
                     { name: this.$t('order.order.q820hx'), value: "3" },
                     { name: this.$t('order.order.15lr5l'), value: "4" },
                     { name: this.$t('detail.detail.32171c'), value: "5,6" },
@@ -168,7 +168,7 @@
                 }
 
                 // 参数
-                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
+                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? '' : this.nav_status_list[this.nav_status_index]["value"];
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "order", "distribution"),
@@ -176,7 +176,7 @@
                     data: {
                         page: this.data_page,
                         status: order_status,
-                        uid: this.params.uid || 0,
+                        user: this.params.user || '',
                         is_more: 1,
                     },
                     dataType: "json",
@@ -186,41 +186,35 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            if (data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data_list: temp_data_list,
-                                    data_total: data.total,
-                                    data_page_total: data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0,
-                                });
-
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            var result = res.data.data || {};
+                            var rows = result.data_list || result.data || [];
+                            var page_total = result.page_total != null ? result.page_total : 0;
+                            var total = result.data_total != null ? result.data_total : result.total != null ? result.total : 0;
+                            var temp_data_list = [];
+                            if (this.data_page <= 1) {
+                                temp_data_list = rows;
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
-                                if (this.data_page <= 1) {
-                                    this.setData({
-                                        data_list: [],
-                                        data_bottom_line_status: false,
-                                    });
+                                temp_data_list = this.data_list || [];
+                                for (var i in rows) {
+                                    temp_data_list.push(rows[i]);
                                 }
+                            }
+                            this.setData({
+                                data_list: temp_data_list,
+                                data_total: total,
+                                data_page_total: page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+                            this.setData({
+                                data_bottom_line_status: this.data_list.length > 0 && this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
+                            if (this.data_page <= 1 && temp_data_list.length == 0) {
+                                this.setData({
+                                    data_list: [],
+                                    data_bottom_line_status: false,
+                                });
                             }
                         } else {
                             this.setData({

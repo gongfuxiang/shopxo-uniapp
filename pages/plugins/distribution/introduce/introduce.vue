@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="data_base != null">
+        <view v-if="data_base != null && level_list.length > 0">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 等级信息 -->
                 <view v-if="level_list.length > 0" class="panel-item spacing-mb">

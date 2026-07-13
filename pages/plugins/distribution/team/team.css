@@ -24,7 +24,10 @@
 * 列表
 */
 .scroll-box {
-    height: calc(100vh - 228rpx);
+    height: calc(100vh - 296rpx);
+}
+.scroll-box-invite {
+    height: calc(100vh - 492rpx);
 }
 .data-list .item .base .avatar {
     width: 40rpx;

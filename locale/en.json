@@ -1367,7 +1367,9 @@
 	},
 	"team": {
 		"team": {
-			"784249": "Registration time:",
+			"784249": "Binding time:",
+			"x7p2k9": "Expiration time:",
+			"q4m8n1": "Release time:",
 			"i040fg": "reverse",
 			"2ny6k1": "Order placement time:",
 			"2i4k79": "Whether to place an order:",

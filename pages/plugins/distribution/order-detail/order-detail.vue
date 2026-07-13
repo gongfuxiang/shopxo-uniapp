@@ -133,19 +133,20 @@
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
+                            var result = res.data.data || {};
+                            var detail = result.data || null;
                             this.setData({
-                                detail: data.data,
+                                detail: detail,
                                 detail_list: [
-                                    { name: this.$t('order-detail.order-detail.2d766e'), value: data.data.user_name_view || "" },
-                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.order_no || "" },
-                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
-                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.order_status_name || "" },
-                                    { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: data.data.order_pay_status_name || "" },
-                                    { name: this.$t('order.order.330m76'), value: data.data.order_client_type_name || "" },
-                                    { name: this.$t('order-detail.order-detail.8n1f72'), value: data.data.buy_number_count || "" },
-                                    { name: this.$t('order-detail.order-detail.w78rgm'), value: data.data.add_time || "" },
+                                    { name: this.$t('order-detail.order-detail.2d766e'), value: detail.user_name_view || "" },
+                                    { name: this.$t('order-detail.order-detail.36op8f'), value: detail.order_no || "" },
+                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: detail.total_price || "" },
+                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: detail.refund_price || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: detail.order_status_name || "" },
+                                    { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: detail.order_pay_status_name || "" },
+                                    { name: this.$t('order.order.330m76'), value: detail.order_client_type_name || "" },
+                                    { name: this.$t('order-detail.order-detail.8n1f72'), value: detail.buy_number_count || "" },
+                                    { name: this.$t('order-detail.order-detail.w78rgm'), value: detail.add_time || "" },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

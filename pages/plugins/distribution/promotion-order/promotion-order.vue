@@ -165,7 +165,7 @@
                 }
 
                 // 请求参数
-                var type = (this.nav_type_list[this.nav_type_index] || null) == null ? -1 : this.nav_type_list[this.nav_type_index]["value"];
+                var type = (this.nav_type_list[this.nav_type_index] || null) == null ? '' : this.nav_type_list[this.nav_type_index]["value"];
                 var data = this.params;
                 data['page'] = this.data_page;
                 data['type'] = type;
