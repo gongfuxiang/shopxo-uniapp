@@ -85,7 +85,7 @@
                             var data = res.data.data || {};
                             // 已有分销权限，回申请详情
                             if ((data.is_has_distribution_level || 0) == 1) {
-                                app.globalData.url_open('/pages/plugins/distribution/apply/apply', true);
+                                this.back_to_apply_event();
                                 return;
                             }
                             var apply_data = data.apply_data || null;
@@ -152,7 +152,7 @@
                             // 成功保持禁用，避免重复点击；提示后返回
                             app.globalData.showToast(res.data.msg, 'success');
                             setTimeout(() => {
-                                app.globalData.url_open('/pages/plugins/distribution/apply/apply', true);
+                                this.back_to_apply_event();
                             }, 1000);
                         } else {
                             this.setData({
@@ -170,6 +170,15 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+            // 上级是申请页则返回，否则进入申请页
+            back_to_apply_event() {
+                var prev = app.globalData.prev_page() || '';
+                if (prev.indexOf('pages/plugins/distribution/apply/apply') != -1) {
+                    uni.navigateBack();
+                } else {
+                    app.globalData.url_open('/pages/plugins/distribution/apply/apply', true);
+                }
             },
         },
     };

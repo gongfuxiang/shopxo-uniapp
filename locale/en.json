@@ -1252,9 +1252,10 @@
 			"w6ait": "Your distribution application is under review. Please wait patiently.",
 			"f7ail": "The previous application was not approved",
 			"r8etry": "You can modify the info and submit again",
-			"g9uide": "Please fill in the application info and submit for review",
+			"g9uide": "Please tap \"Go fill in\" to fill in the application info and submit for review",
 			"g0ofill": "Go fill in",
-			"r1eapp": "Reapply"
+			"r1eapp": "Reapply",
+			"c1nfirm": "Fill in the application form now?"
 		}
 	},
 	"apply-form": {

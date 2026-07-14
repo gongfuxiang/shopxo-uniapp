@@ -7,7 +7,7 @@
 }
 
 .head-bottom {
-    height: 48rpx;
+    height: 60rpx;
 }
 
 .head-item .level-item {
@@ -24,6 +24,7 @@
 
 .head-base {
     right: 0;
+    bottom: 0;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;

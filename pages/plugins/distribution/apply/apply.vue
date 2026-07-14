@@ -49,7 +49,7 @@
 
             <!-- 无申请记录：引导去填写 -->
             <view v-else class="padding-main">
-                <view class="padding-vertical-main border-radius-main bg-grey-f5 cr-grey">{{$t('apply.apply.g9uide')}}</view>
+                <component-no-data propStatus="0" :propMsg="$t('apply.apply.g9uide')"></component-no-data>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
                         <button class="item bg-main br-main cr-white round text-size" type="default" hover-class="none" data-value="/pages/plugins/distribution/apply-form/apply-form" @tap="url_event">{{$t('apply.apply.g0ofill')}}</button>
@@ -79,6 +79,8 @@
                 bottom_fixed_style: '',
                 is_has_distribution_level: 0,
                 apply_data: null,
+                // 无申请记录时确认弹窗只弹一次，避免返回死循环
+                is_apply_form_confirm_done: false,
             };
         },
         components: {
@@ -132,9 +134,22 @@
                             uni.setNavigationBarTitle({
                                 title: this.$t('pages.plugins-distribution-apply'),
                             });
-                            // 无记录直接进入填写页
-                            if (is_has_distribution_level != 1 && (apply_data || null) == null) {
-                                app.globalData.url_open('/pages/plugins/distribution/apply-form/apply-form');
+                            // 无申请记录：确认是否进入填写页（取消则留在本页，避免返回死循环）
+                            if (is_has_distribution_level != 1 && (apply_data || null) == null && !this.is_apply_form_confirm_done) {
+                                this.setData({
+                                    is_apply_form_confirm_done: true,
+                                });
+                                uni.showModal({
+                                    title: this.$t('common.tips'),
+                                    content: this.$t('apply.apply.c1nfirm'),
+                                    confirmText: this.$t('common.confirm'),
+                                    cancelText: this.$t('common.cancel'),
+                                    success: (result) => {
+                                        if (result.confirm) {
+                                            app.globalData.url_open('/pages/plugins/distribution/apply-form/apply-form');
+                                        }
+                                    },
+                                });
                             }
                         } else {
                             this.setData({
