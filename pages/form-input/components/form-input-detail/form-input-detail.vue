@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <block v-if="(propData || null) != null" >
-            <component-panel-content :propTitle="$t('common.form_input_data_text')">
+            <component-panel-content :propTitle="(propTitle || null) != null && propTitle !== '' ? propTitle : $t('common.form_input_data_text')">
                 <block v-for="(item, index) in propData" :key="index">
                     <view class="item br-b-f5 oh padding-vertical-main">
                         <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -104,6 +104,10 @@
             propData: {
             	type: [String,Object],
             	default: ''
+            },
+            propTitle: {
+                type: String,
+                default: ''
             }
         },
         methods: {

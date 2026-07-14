@@ -422,6 +422,8 @@
 		"plugins-distribution-promotion-order": "Promote orders",
 		"plugins-distribution-visit-list": "Customer visits",
 		"plugins-distribution-visit-form": "Customer visit addition/editing",
+		"plugins-distribution-apply": "Apply for distribution",
+		"plugins-distribution-apply-form": "Fill in application",
 		"plugins-wallet-user": "My wallet",
 		"plugins-wallet-recharge": "Recharge",
 		"plugins-wallet-cash-auth": "Withdrawal of balance",
@@ -1115,7 +1117,8 @@
 			"9u8e61": "Pay",
 			"66714e": "Shipping",
 			"aa1ri3": "Sales",
-			"67p34x": "balance"
+			"67p34x": "balance",
+			"a8dapply": "Apply for distribution"
 		}
 	},
 	"logistics": {
@@ -1237,6 +1240,29 @@
 			"pt8436": "Please select a district or county",
 			"v1g617": "Please provide detailed address",
 			"rm14pu": "The data needs to be re reviewed before it can take effect"
+		}
+	},
+	"apply": {
+		"apply": {
+			"p8ssed": "Your distribution application has been approved",
+			"l3vnel": ", level: ",
+			"a9time": "Review time: ",
+			"a4time": "Application time: ",
+			"i5nfo": "Application info",
+			"w6ait": "Your distribution application is under review. Please wait patiently.",
+			"f7ail": "The previous application was not approved",
+			"r8etry": "You can modify the info and submit again",
+			"g9uide": "Please fill in the application info and submit for review",
+			"g0ofill": "Go fill in",
+			"r1eapp": "Reapply"
+		}
+	},
+	"apply-form": {
+		"apply-form": {
+			"e2dit": "Modifications will be resubmitted for review. Please confirm the info is correct.",
+			"e3mpty": "The application form is not configured yet. Please contact the administrator",
+			"s4ubmit": "Submit application",
+			"s5ave": "Save changes"
 		}
 	},
 	"extraction-order": {

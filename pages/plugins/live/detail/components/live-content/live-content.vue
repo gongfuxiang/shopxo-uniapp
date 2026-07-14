@@ -40,7 +40,7 @@
                         </view>
                     </view>
                     <view class="ml-5 people-number flex-row align-c jc-c">
-                        <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
+                        <text class="cr-white size-10">{{ live_data.online_count || 0 }}</text>
                     </view>
                 </view>
             </view>
@@ -63,7 +63,7 @@
                         </view>
                     </view>
                     <view class="ml-5 people-number flex-row align-c jc-c">
-                        <text class="cr-f size-10">{{ live_data.online_count || 0 }}</text>
+                        <text class="cr-white size-10">{{ live_data.online_count || 0 }}</text>
                     </view>
                     <!-- <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
                         <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
@@ -102,7 +102,7 @@
                                 </template>
                                 <template v-else-if="item.type == 'go'">
                                     <text class="user-name cr-blue">{{ item.user_name }}</text>
-                                    <text class="user-name cr-d">{{ $t('common.came') }}</text>
+                                    <text class="user-name cr-grey-d">{{ $t('common.came') }}</text>
                                 </template>
                                 <template v-else>
                                     <text class="flex-1 cr-blue text-line-100 size-14">{{ item.text }}</text>
@@ -123,7 +123,7 @@
                                 </template>
                                 <template v-else-if="item.type == 'go'">
                                     <text class="user-name cr-blue mb-3">{{ item.user_name }}</text>
-                                    <text class="user-name mb-3 cr-d">{{ $t('common.came') }}</text>
+                                    <text class="user-name mb-3 cr-grey-d">{{ $t('common.came') }}</text>
                                 </template>
                                 <template v-else>
                                     <text class="flex-1 cr-blue text-line-100 mb-3 size-14">{{ item.text }}</text>
@@ -154,7 +154,7 @@
                         <image :src="explain_goods.images" style="width: 196rpx;height: 196rpx;border-top-left-radius: 20rpx;border-top-right-radius: 20rpx;" mode="aspectFill"></image>
                         <view class="explain-subscript flex-row align-c jc-sb">
                             <view class="explain-progress">
-                                <text class="size-12 cr-f">{{ $t('common.explaining') }}</text>
+                                <text class="size-12 cr-white">{{ $t('common.explaining') }}</text>
                             </view>
                             <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
                                 <u-icon propName="close-line" propSize="18rpx" propColor="#fff"></u-icon>
@@ -184,7 +184,7 @@
                                 <!-- #endif -->
                             </view>
                             <view v-else-if="!is_socket_success" class="flex-1">
-                                <button class="bottom-actions-button cr-f size-14" type="primary" style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
+                                <button class="bottom-actions-button cr-white size-14" type="primary" style="border-radius: 50rpx;background: rgba(40,40,40,0.45);border: 1rpx solid rgba(40,40,40,0.45);" :hover-class="is_socket_error ? 'none' : 'button-hover'" @tap="socket_connect_manual">{{ socket_error_content }}</button>
                             </view>
                             <view v-else class="bottom-actions-input-placeholder"></view>
                         </view>

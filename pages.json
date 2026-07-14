@@ -903,6 +903,32 @@
                     }
                 },
                 {
+                    "path": "apply/apply",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-form-input-detail": "/pages/form-input/components/form-input-detail/form-input-detail"
+                        },
+                        "componentPlaceholder": {
+                            "component-form-input-detail": "view"
+                        }
+                    }
+                },
+                {
+                    "path": "apply-form/apply-form",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-form-input-base": "/pages/form-input/components/form-input/form-input-base"
+                        },
+                        "componentPlaceholder": {
+                            "component-form-input-base": "view"
+                        }
+                    }
+                },
+                {
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,

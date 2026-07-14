@@ -13,14 +13,14 @@
                 <view class="flex-col align-c">
                     <text class="live-ended-text">{{ $t('live.live.ended') }}</text>
                     <button plain size="mini" class="mt-10 live-ended-button" @tap.stop="live_back">
-                        <text class="cr-f pa-5">{{ $t('live.live.exit_room') }}</text>
+                        <text class="cr-white pa-5">{{ $t('live.live.exit_room') }}</text>
                     </button>
                 </view>
             </view>
             <!-- 静音提示 -->
             <view v-if="!is_live_ended && is_muted_auto_play_success && !live_be_right_back_error" class="live-muted flex-row align-c jc-c pointer-events-none">
                 <view class="live-muted-tips pointer-events-auto">
-                    {{ $t('live.live.browser_mute_prefix') }}<text class="ml-5 cr-f live-muted-text" @tap="muted_tap">{{ $t('live.live.click_unmute') }}</text>
+                    {{ $t('live.live.browser_mute_prefix') }}<text class="ml-5 cr-white live-muted-text" @tap="muted_tap">{{ $t('live.live.click_unmute') }}</text>
                 </view>
             </view>
             <!-- 视频播放提示 -->

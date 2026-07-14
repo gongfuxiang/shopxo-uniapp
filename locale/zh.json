@@ -424,6 +424,8 @@
 		"plugins-distribution-promotion-order": "推广订单",
 		"plugins-distribution-visit-list": "客户拜访",
 		"plugins-distribution-visit-form": "客户拜访新增/编辑",
+		"plugins-distribution-apply": "申请分销",
+		"plugins-distribution-apply-form": "填写申请",
 		"plugins-wallet-user": "我的钱包",
 		"plugins-wallet-recharge": "充值",
 		"plugins-wallet-cash-auth": "余额提现",
@@ -1115,7 +1117,8 @@
 			"9u8e61": "待付款",
 			"66714e": "待发货",
 			"aa1ri3": "退款/售后",
-			"67p34x": "余额"
+			"67p34x": "余额",
+			"a8dapply": "申请分销"
 		}
 	},
 	"logistics": {
@@ -1236,6 +1239,29 @@
 			"pt8436": "请选择区县",
 			"v1g617": "请填写详细地址",
 			"rm14pu": "数据需重新审核后方可生效"
+		}
+	},
+	"apply": {
+		"apply": {
+			"p8ssed": "您的分销申请已通过",
+			"l3vnel": "，等级：",
+			"a9time": "审核时间：",
+			"a4time": "申请时间：",
+			"i5nfo": "申请信息",
+			"w6ait": "您的分销申请正在审核中，请耐心等待。",
+			"f7ail": "上次申请未通过",
+			"r8etry": "可修改信息后重新提交申请",
+			"g9uide": "请填写申请信息后提交审核",
+			"g0ofill": "去填写",
+			"r1eapp": "重新申请"
+		}
+	},
+	"apply-form": {
+		"apply-form": {
+			"e2dit": "修改后将重新提交审核，请确认信息无误。",
+			"e3mpty": "申请表单暂未配置，请联系管理员",
+			"s4ubmit": "提交申请",
+			"s5ave": "保存修改"
 		}
 	},
 	"extraction-order": {

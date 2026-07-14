@@ -1,16 +1,16 @@
 <template>
-    <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh bg-f9" :style="good_style">
+    <view v-if="!is_loading" class="flex-row align-c jc-c pa-20 box-border-box oh bg-grey-f9" :style="good_style">
         <block v-if="good_list.length > 0">
             <!-- 固定在顶部的商品操作栏 -->
             <view class="goods-header-fixed" :style="'width:' + propWindowWidth + 'px;'">
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
                         <u-icon propName="list-setup" propSize="36rpx" propColor="#999"></u-icon>
-                        <text class="mt-5 size-12 cr-9">{{ $t('common.order') }}</text>
+                        <text class="mt-5 size-12 cr-grey-9">{{ $t('common.order') }}</text>
                     </view>
                     <view class="flex-col ml-10" @tap="goods_cart">
                         <u-icon propName="cart-solid" propSize="36rpx" propColor="#999"></u-icon>
-                        <text class="mt-5 size-12 cr-9">{{ $t('common.cart') }}</text>
+                        <text class="mt-5 size-12 cr-grey-9">{{ $t('common.cart') }}</text>
                     </view>
                 </view>
             </view>
@@ -53,7 +53,7 @@
                                             <view :ref="(el) => { if(item.id == explanation_id) bar3Ref[index] = el }" class="music-bar nvue-bar"></view>
                                         </view>
                                         <!-- #endif -->
-                                        <text class="size-12 cr-f">{{ $t('common.explaining') }}</text>
+                                        <text class="size-12 cr-white">{{ $t('common.explaining') }}</text>
                                     </view>
                                 </view>
                                 <!-- 商品信息区域 -->
@@ -62,18 +62,18 @@
                                     <view class="flex-1 mt-10 flex-col jc-sb">
                                         <view class="flex-1 flex-row align-c jc-sb">
                                             <view class="flex-row align-c">
-                                                <text class="mr-5 size-14 cr-9">{{ item.show_price_symbol}}</text>
+                                                <text class="mr-5 size-14 cr-grey-9">{{ item.show_price_symbol}}</text>
                                                 <text class="goods-item-price size-14 cr-price">{{ item.price }}</text>
-                                                <text class="ml-5 size-14 cr-9">{{ item.show_price_unit }}</text>
+                                                <text class="ml-5 size-14 cr-grey-9">{{ item.show_price_unit }}</text>
                                             </view>
                                         </view>
                                         <view class="flex-row align-c mt-10 jc-sb">
                                             <view class="flex-row align-c">
-                                                <text class="mr-5 size-14 cr-9">{{ $t('common.stock') }}</text>
-                                                <text class="goods-item-inventory size-14 cr-9">{{ item.inventory }}</text>
+                                                <text class="mr-5 size-14 cr-grey-9">{{ $t('common.stock') }}</text>
+                                                <text class="goods-item-inventory size-14 cr-grey-9">{{ item.inventory }}</text>
                                             </view>
                                             <!-- 购买按钮 -->
-                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" :data-url="item.goods_url" @tap="goods_detail"><text class="size-14 cr-f">{{ $t('common.buy') }}</text></button>
+                                            <button type="primary" class="btn-block cr-main bg-main mr-0 ml-0 flex-row align-c jc-c pa-5" style="width: 100rpx;height:48rpx;border-radius: 10rpx" :data-id="item.id" :data-url="item.goods_url" @tap="goods_detail"><text class="size-14 cr-white">{{ $t('common.buy') }}</text></button>
                                         </view>
                                     </view>
                                 </view>

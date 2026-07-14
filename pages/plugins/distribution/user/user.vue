@@ -33,9 +33,18 @@
                                                 <text v-if="(user_level.name || null) != null" class="cr-white text-size-xs">{{ user_level.name }}</text>
                                             </view>
                                             <view class="head-base pa">
-                                                <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
+                                                <!-- 取货点 -->
+                                                <block v-if="(data_base.is_enable_self_extraction || 0) == 1">
                                                     <button data-value="/pages/plugins/distribution/extraction/extraction" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                                        {{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}<iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
+                                                        <text class="margin-right-xs">{{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}</text>
+                                                        <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
+                                                    </button>
+                                                </block>
+                                                <!-- 无分销等级：申请分销 -->
+                                                <block v-if="(user_level || null) == null && (data_base.is_enable_distribution_apply || 0) == 1">
+                                                    <button data-value="/pages/plugins/distribution/apply/apply" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
+                                                        <text class="margin-right-xs">{{$t('user.user.a8dapply')}}</text>
+                                                        <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
                                                     </button>
                                                 </block>
                                             </view>
@@ -49,6 +58,13 @@
                         <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
                             <view :class="(superior || null) != null ? 'padding-horizontal-main margin-horizontal-xs' : ''">
                                 <uni-notice-bar show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
+                            </view>
+                        </view>
+                        
+                        <!-- 不符合分销条件描述 -->
+                        <view v-if="(user_level || null) == null && (data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main">
+                            <view :class="(superior || null) != null ? 'padding-horizontal-main margin-horizontal-xs' : ''">
+                                <uni-notice-bar show-icon scrollable :text="data_base.non_conformity_desc.join('')" background-color="transparent" color="#fff" />
                             </view>
                         </view>
 
@@ -150,11 +166,6 @@
                             </block>
                         </view>
 
-                        <!-- 不符合分销条件描述 -->
-                        <view v-if="(user_level || null) == null && (data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main">
-                            <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.non_conformity_desc.join" background-color="transparent" color="#fff" />
-                        </view>
-
                         <!-- 阶梯返佣提示 -->
                         <view v-if="(profit_ladder || null) != null" class="bg-white pf pa-w bottom-0 left-0 right-0 wh-auto">
                             <view class="padding-main">
@@ -224,7 +235,7 @@
                                                     :propIsOnEvent="true"
                                                     :propIsRequired="false"
                                                     :propPlaceholder="$t('user.user.nk3cpq')"
-                                                    propClass="br"
+                                                    propBrColor="#eee"
                                                     propSize="md"
                                                     :propIsBtn="true"
                                                     :propDefaultValue="modify_superior_search_input_keywords_value"

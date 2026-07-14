@@ -21,7 +21,7 @@
 					<text class="size-14 cr-6">{{$t('common.history_record')}}</text>
 					<view class="flex-row algin-c gap-5" @tap="clear_history">
 						<iconfont name="icon-delete" size="28rpx" color="#999"></iconfont>
-						<text class="size-12 cr-9">{{$t('common.clear_record')}}</text>
+						<text class="size-12 cr-grey-9">{{$t('common.clear_record')}}</text>
 					</view>
 				</view>
 				<view v-for="(history, index) in show_search_history" :key="index" class="wh-auto history-item flex-row align-c jc-sb">

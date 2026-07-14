@@ -64,7 +64,7 @@
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c gap-10">
                                             <iconfont name="icon-cart-have" color="#F5C366" size="30rpx"></iconfont>
-                                            <text class="size-14 cr-f">{{$t('common.buy')}}{{$t('common.goods')}}</text>
+                                            <text class="size-14 cr-white">{{$t('common.buy')}}{{$t('common.goods')}}</text>
                                         </view>
                                         <iconfont name="icon-angle-right" color="#fff" size="30rpx"></iconfont>
                                     </view>
@@ -142,7 +142,7 @@
                 <view v-if="base_config_data && base_config_data.is_video_comments_add && base_config_data.is_video_comments_add == 1" class="comment-input-container">
                     <view class="flex-col align-c gap-4">
                         <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10 wh-auto">
-                            <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
+                            <text class="size-12 cr-white text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                             <view data-type="image" @tap="comment_data_delete">
                                 <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
                             </view>
@@ -230,7 +230,7 @@
             <view class="flex-col gap-10">
                 <view class="comment-input-content flex-col jc-c">
                     <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb gap-10">
-                        <text class="size-12 cr-f text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
+                        <text class="size-12 cr-white text-line-1">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                         <view data-type="image" @tap="comment_data_delete">
                             <iconfont name="icon-close-line" size="24rpx" color="#fff"></iconfont>
                         </view>
