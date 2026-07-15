@@ -11,7 +11,7 @@
                     <view v-if="(apply_data.add_time || null) != null" class="margin-top-xs">{{$t('apply.apply.a4time')}}{{ apply_data.add_time }}</view>
                 </view>
                 <view v-if="(apply_data || null) != null && !isEmpty(apply_data.form_data)" class="bg-white border-radius-main">
-                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="form_data_list(apply_data.form_data)"></component-form-input-detail>
+                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="apply_data.form_data"></component-form-input-detail>
                 </view>
             </view>
 
@@ -22,7 +22,7 @@
                 </view>
                 <view v-if="(apply_data.add_time || null) != null" class="cr-grey text-size-sm margin-top-sm margin-bottom-sm">{{$t('apply.apply.a4time')}}{{ apply_data.add_time }}</view>
                 <view v-if="!isEmpty(apply_data.form_data)" class="bg-white border-radius-main spacing-mb">
-                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="form_data_list(apply_data.form_data)"></component-form-input-detail>
+                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="apply_data.form_data"></component-form-input-detail>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
@@ -38,7 +38,7 @@
                     <view class="margin-top-xs">{{$t('apply.apply.r8etry')}}</view>
                 </view>
                 <view v-if="!isEmpty(apply_data.form_data)" class="bg-white border-radius-main spacing-mb">
-                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="form_data_list(apply_data.form_data)"></component-form-input-detail>
+                    <component-form-input-detail :propTitle="$t('apply.apply.i5nfo')" :propData="apply_data.form_data"></component-form-input-detail>
                 </view>
                 <view class="bottom-fixed" :style="bottom_fixed_style">
                     <view class="bottom-line-exclude">
@@ -174,7 +174,6 @@
             url_event(e) {
                 app.globalData.url_event(e);
             },
-            // form_data 按字段名存储，需转成列表供详情组件渲染
             isEmpty(value) {
                 if ((value || null) == null) {
                     return true;
@@ -186,15 +185,6 @@
                     return Object.keys(value).length == 0;
                 }
                 return false;
-            },
-            form_data_list(value) {
-                if ((value || null) == null) {
-                    return [];
-                }
-                if (Array.isArray(value)) {
-                    return value;
-                }
-                return Object.keys(value).map((k) => value[k]);
             },
         },
     };

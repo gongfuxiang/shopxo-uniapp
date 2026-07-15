@@ -102,7 +102,7 @@
         },
         props: {
             propData: {
-            	type: [String,Object],
+            	type: [String, Object, Array],
             	default: ''
             },
             propTitle: {
