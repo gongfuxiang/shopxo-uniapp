@@ -59,9 +59,9 @@
                 data_is_loading: 0,
                 params: null,
                 nav_status_list: [
-                    { name: this.$t('common.all'), value: "" },
+                    { name: this.$t('common.all'), value: "-1" },
                     { name: this.$t('order.order.pjb15r'), value: "1" },
-                    { name: this.$t('user.user.66714e'), value: "2" },
+                    { name: this.$t('order.order.s8g966'), value: "2" },
                     { name: this.$t('order.order.q820hx'), value: "3" },
                     { name: this.$t('order.order.15lr5l'), value: "4" },
                     { name: this.$t('detail.detail.32171c'), value: "5,6" },
@@ -168,7 +168,7 @@
                 }
 
                 // 参数
-                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? '' : this.nav_status_list[this.nav_status_index]["value"];
+                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "order", "distribution"),
@@ -176,7 +176,7 @@
                     data: {
                         page: this.data_page,
                         status: order_status,
-                        user: this.params.user || '',
+                        uid: this.params.uid || 0,
                         is_more: 1,
                     },
                     dataType: "json",

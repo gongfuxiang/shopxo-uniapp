@@ -91,6 +91,7 @@
                             :propData="item"
                             :propDataField="field_list"
                             propIsItemShowMax="10"
+                            propExcludeField="bind_time"
                             :propIsTerse="true"
                         ></component-panel-content>
                     </view>

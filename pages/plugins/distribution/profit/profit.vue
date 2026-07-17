@@ -58,7 +58,7 @@
                 data_is_loading: 0,
                 params: null,
                 nav_status_list: [
-                    { name: this.$t('common.all'), value: "" },
+                    { name: this.$t('common.all'), value: "-1" },
                     { name: this.$t('profit.profit.3c7zmg'), value: "0" },
                     { name: this.$t('profit.profit.67o785'), value: "1" },
                     { name: this.$t('profit.profit.l5knxu'), value: "2" },
@@ -165,7 +165,7 @@
                 }
 
                 // 获取数据
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? '' : this.nav_status_list[this.nav_status_index]["value"];
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
                 uni.request({
                     url: app.globalData.get_request_url("index", "profit", "distribution"),
                     method: "POST",

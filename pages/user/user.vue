@@ -232,6 +232,7 @@
                 // 基础配置
                 common_app_customer_service_tel: null,
                 common_user_center_notice: null,
+                common_app_is_online_service: 0,
                 common_app_is_head_vice_nav: 0,
                 // 会员码地址
                 vip_page_url: null,
@@ -347,6 +348,7 @@
                     this.setData({
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         common_user_center_notice: app.globalData.get_config('config.common_user_center_notice'),
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_is_head_vice_nav: parseInt(app.globalData.get_config('config.common_app_is_head_vice_nav', 0)),
                         nav_show_model_type: parseInt(app.globalData.get_config('config.common_user_center_nav_show_model_type', 0)),
                         vip_page_url: vip_page_url,

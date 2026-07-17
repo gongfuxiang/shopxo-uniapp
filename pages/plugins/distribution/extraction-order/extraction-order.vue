@@ -107,7 +107,7 @@ const app = getApp();
                 data_is_loading: 0,
                 params: null,
                 nav_status_list: [
-                    { name: this.$t('common.all'), value: "" },
+                    { name: this.$t('common.all'), value: "-1" },
                     { name: this.$t('extraction.extraction.53h4fj'), value: "0" },
                     { name: this.$t('extraction.extraction.wq25fk'), value: "1" },
                 ],
@@ -217,7 +217,7 @@ const app = getApp();
                 }
 
                 // 参数
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? '' : this.nav_status_list[this.nav_status_index]["value"];
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
 
                 // 获取数据
                 uni.request({
@@ -225,7 +225,7 @@ const app = getApp();
                     method: "POST",
                     data: {
                         page: this.data_page,
-                        status: status,
+                        status: status || 0,
                         keywords: this.search_keywords_value || "",
                     },
                     dataType: "json",
