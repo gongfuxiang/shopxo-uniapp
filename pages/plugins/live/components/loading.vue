@@ -13,7 +13,7 @@
     //#ifdef APP-NVUE
     import i18n from '@/locale/index.js';
     //#endif
-    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+    import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
     export default {
         //#ifdef APP-NVUE
         i18n,

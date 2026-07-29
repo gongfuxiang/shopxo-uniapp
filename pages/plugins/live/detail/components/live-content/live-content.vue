@@ -228,9 +228,9 @@
     import componentGoods from "@/pages/plugins/live/detail/components/goods/goods.vue";
     import componentLikeButton from "@/pages/plugins/live/detail/components/like-button/like-button.vue";
     import componentSearch from "@/pages/plugins/live/components/search.vue";
-    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
-    import componentUPopup from '@/pages/common/components/u-popup/u-popup';
-    import componentUSharePopup from '@/pages/common/components/u-share-popup/u-share-popup';
+    import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
+    import componentUPopup from '@/pages/plugins/live/components/u-popup/u-popup';
+    import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';
     import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
     // 状态栏高度

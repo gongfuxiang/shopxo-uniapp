@@ -45,7 +45,7 @@
     import componentFullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
-    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+    import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
     const app = getApp();
     export default {
         components: {

@@ -2,7 +2,12 @@
     <view class="search-bar pr" :style="search_width_style">
         <view class="flex-1 search-bar-w">
             <view class="search-iconfont-container">
+                <!-- #ifdef APP-NVUE -->
                 <component-u-icon propName="search-fine"></component-u-icon>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <iconfont name="icon-search-fine" size="28rpx"></iconfont>
+                <!-- #endif -->
             </view>
             <!-- #ifndef APP-NVUE-->
             <input class="flex-1" type="text" v-model="search_keywords" :adjust-position="false" placeholder-style="font-size:28rpx" :placeholder="$t('search.search.ic9b89')" @input="handle_search" @confirm="perform_search" />
@@ -22,13 +27,17 @@
 //#ifdef APP-NVUE
 import i18n from '@/locale/index.js';
 //#endif
-import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+// #ifdef APP-NVUE
+import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
+// #endif
 export default {
     //#ifdef APP-NVUE
     i18n,
     //#endif
     components: {
+        // #ifdef APP-NVUE
         componentUIcon,
+        // #endif
     },
     props: {
         propSearchQuery: {

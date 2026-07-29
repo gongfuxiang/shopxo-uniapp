@@ -269,7 +269,7 @@
     import componentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import componentSearch from '@/pages/plugins/video/components/search.vue';
-    import componentUSharePopup from '@/pages/common/components/u-share-popup/u-share-popup';
+    import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';

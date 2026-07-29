@@ -104,7 +104,7 @@
 
 <script>
 import componentBottomLine from '@/components/bottom-line/bottom-line.vue';
-import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
 const app = getApp();
 
 /**

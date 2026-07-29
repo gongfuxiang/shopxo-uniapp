@@ -2,7 +2,12 @@
     <view class="flex-row align-c jc-c">
         <view class="more-history-btn cp flex-row align-c">
             <view class="more-history-btn-icon margin-right-xs">
+                <!-- #ifdef APP-NVUE -->
                 <component-u-icon propName="reset" propSize="28rpx" propColor="#999"></component-u-icon>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <iconfont name="icon-reset" size="28rpx" color="#999"></iconfont>
+                <!-- #endif -->
             </view>
             <text style="font-size: 28rpx;color: #999999;line-height: 40rpx;">{{ propContent || $t('common.loading_in_text') }}</text>
         </view>
@@ -13,13 +18,17 @@
     //#ifdef APP-NVUE
     import i18n from '@/locale/index.js';
     //#endif
-    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+    // #ifdef APP-NVUE
+    import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
+    // #endif
     export default {
         //#ifdef APP-NVUE
         i18n,
         //#endif
         components: {
+            // #ifdef APP-NVUE
             componentUIcon,
+            // #endif
         },
         props: {
             propContent: {

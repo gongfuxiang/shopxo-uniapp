@@ -276,9 +276,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentUpload from '@/components/upload/upload';
-    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
-    import componentUPopup from '@/pages/common/components/u-popup/u-popup';
-    import componentUSharePopup from '@/pages/common/components/u-share-popup/u-share-popup';
+    import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
+    import componentUPopup from '@/pages/plugins/live/components/u-popup/u-popup';
+    import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';
     import scrollMixins from './scrollMixins';
     // 多语言
     //#ifdef APP-NVUE
