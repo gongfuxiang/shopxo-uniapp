@@ -1,60 +1,62 @@
 <template>
     <view :class="theme_view">
-        <u-popup ref="popupShareRef" mode="bottom" title="" :closeable="false">
-            <view class="share-popup bg-white" style="position: relative;">
+        <component-u-popup ref="popupShareRef" propType="bottom" :propCloseable="false">
+            <view class="share-popup bg-white">
                 <view class="share-popup-content">
                     <!-- #ifdef MP-ALIPAY -->
                     <view class="share-items oh cp" @tap="share_base_event">
-                        <image class="image" :src="common_static_url + 'share-user-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                        <image class="image" :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
                         <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.h04xiy') }}</text>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU -->
                     <view class="share-items oh cp">
-                        <button class="btn dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_close_event">
-                            <image class="image" :src="common_static_url + 'share-user-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.h04xiy') }}</text>
+                        <button class="btn br-0" type="default" size="default" open-type="share" hover-class="none" @tap="popup_close_event">
+                            <view class="share-item-inner">
+                                <image class="image" :src="common_static_url + 'share-user-icon.png'" mode="aspectFit"></image>
+                                <text class="cr-grey text-size-xs single-text" :style="{ 'width': single_text_width }">{{ $t('share-popup.share-popup.h04xiy') }}</text>
+                            </view>
                         </button>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef APP -->
                     <block v-if="is_app_weixin">
                         <view class="share-items oh cp" data-scene="WXSceneSession" data-provider="weixin" @tap="share_app_event">
-                            <image class="image" :src="common_static_url + 'share-user-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                            <image class="image" :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
                             <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.rhs2c5') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneTimeline" data-provider="weixin" @tap="share_app_event">
-                            <image class="image" :src="common_static_url + 'share-friend-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                            <image class="image" :src="common_static_url + 'share-friend-icon.png'" mode="scaleToFill"></image>
                             <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.mv9l10') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneFavorite" data-provider="weixin" @tap="share_app_event">
-                            <image class="image" :src="common_static_url + 'share-favor-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                            <image class="image" :src="common_static_url + 'share-favor-icon.png'" mode="scaleToFill"></image>
                             <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.f08y38') }}</text>
                         </view>
                     </block>
                     <block v-if="is_app_qq">
                         <view class="share-items oh cp" data-provider="qq" @tap="share_app_event">
-                            <image class="image":src="common_static_url + 'share-qq-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                            <image class="image" :src="common_static_url + 'share-qq-icon.png'" mode="scaleToFill"></image>
                             <text class="single-text" :style="share_text_style">{{ $t('share-popup.share-popup.1242w9') }}</text>
                         </view>
                     </block>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <view class="share-items oh cp" :style="{ 'width': single_text_width }" @tap="share_url_copy_event">
-                        <image class="image" :src="common_static_url + 'share-url-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                        <image class="image" :src="common_static_url + 'share-url-icon.png'" mode="scaleToFill"></image>
                         <text class="flex-1 cr-grey text-size-xs single-text" :style="share_text_style">{{ $t('share-popup.share-popup.1oh013') }}</text>
                     </view>
                     <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
-                        <image class="image" :src="common_static_url + 'share-poster-icon.png'" style="width: 80rpx;height: 80rpx;margin-right: 20rpx;" mode="scaleToFill"></image>
+                        <image class="image" :src="common_static_url + 'share-poster-icon.png'" mode="scaleToFill"></image>
                         <text class="cr-grey text-size-xs single-text" :style="share_text_style">{{ $t('share-popup.share-popup.dcp2qu') }}</text>
                     </view>
                 </view>
-                <view class="share-popup-close" :style="share_close_style" @tap.stop="popup_close_event">
-                    <u-icon propName="close-line" propSize="28rpx" propColor="#999999"></u-icon>
+                <view class="share-popup-close" @tap.stop="popup_close_event">
+                    <component-u-icon propName="close-line" propSize="28rpx" propColor="#999999"></component-u-icon>
                 </view>
             </view>
-        </u-popup>
+        </component-u-popup>
         <!-- #ifndef APP-NVUE -->
         <!-- 用户基础 -->
         <component-user-base ref="user_base"></component-user-base>
@@ -68,6 +70,8 @@
     //#endif
     var common_static_url = app.globalData.get_static_url('common');
     import componentUserBase from '@/components/user-base/user-base';
+    import componentUPopup from '@/pages/common/components/u-popup/u-popup';
+    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
     export default {
         //#ifdef APP-NVUE  
         i18n,
@@ -92,23 +96,11 @@
 
         components: {
             componentUserBase,
+            componentUPopup,
+            componentUIcon,
         },
 
         computed: {
-            share_close_style() {
-                return {
-                    position: 'absolute',
-                    top: '4px',
-                    right: '4px',
-                    zIndex: 99,
-                    width: '44px',
-                    height: '44px',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                };
-            },
             share_text_style() {
                 var style = {
                     color: '#999',
@@ -214,7 +206,8 @@
              * 复制链接分享
              */
             share_url_copy_event() {
-                var url = app.globalData.get_page_url();
+                var share = app.globalData.share_content_handle(this.share_info || {});
+                var url = (share.url || null) != null && share.url != '' ? share.url : app.globalData.get_page_url();
                 // 增加分享标识
                 if(url.indexOf('referrer') == -1) {
                     var uid = app.globalData.get_user_cache_info('id') || null;
@@ -335,10 +328,10 @@
 </script>
 <style lang="scss" scoped>
     .share-popup {
-        padding: 20rpx 10rpx 0 10rpx;
+        padding: 20rpx 10rpx;
         position: relative;
         /* #ifdef APP */
-        padding: 28rpx 10rpx 8rpx 10rpx;
+        padding: 28rpx 10rpx 20rpx 10rpx;
         /* #endif */
     }
     .share-popup-close {
@@ -346,7 +339,8 @@
         top: 0;
         right: 0;
         z-index: 10;
-        padding: 16rpx 20rpx;
+        width: 72rpx;
+        height: 72rpx;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -354,14 +348,14 @@
     }
     .share-popup-content {
         padding: 0 20rpx;
+        padding-right: 72rpx;
         text-align: left;
         /* #ifdef APP */
         padding-top: 16rpx;
-        padding-right: 56rpx;
         /* #endif */
     }
     .share-items {
-        padding: 30rpx 0;
+        padding: 24rpx 0;
         /* #ifndef APP-NVUE */
         min-height: 85rpx;
         /* #endif */
@@ -372,11 +366,25 @@
         padding: 14rpx 0;
         /* #endif */
     }
+    .share-item-inner {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .share-items .image {
+        width: 80rpx;
+        height: 80rpx;
+        margin-right: 20rpx;
+        flex-shrink: 0;
+        vertical-align: middle;
+    }
     /* #ifndef APP-NVUE */
     .share-items text {
         color: #999;
         /* #ifndef APP */
         font-size: 24rpx;
+        line-height: 80rpx;
         /* #endif */
     }
     /* #endif */
@@ -386,16 +394,27 @@
     }
     /* #endif */
     .share-items .btn {
-        background: transparent;
-        padding: 0;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
         width: 100%;
+        height: auto !important;
+        min-height: 0 !important;
+        line-height: normal !important;
         text-align: left;
-        margin: 0;
+        font-size: inherit;
+        display: block;
+        box-sizing: border-box;
     }
+    /* #ifdef MP */
+    .share-items .btn::after {
+        border: none;
+    }
+    /* #endif */
     .single-text {
-        /* width: calc(100% - 100rpx); */
         /* #ifndef APP-NVUE */
-        line-height: 85rpx;
+        line-height: 80rpx;
         /* #endif */
     }
 </style>

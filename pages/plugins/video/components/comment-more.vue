@@ -2,7 +2,7 @@
     <view class="more-title flex-row align-c overlay-content" @tap="comment_more_event">
         <text class="more-title">{{ propText || $t('common.expand') }}</text>
         <view class="ml-5">
-            <u-icon :propName="propIconName" propColor="#999" propSize="20rpx"></u-icon>
+            <component-u-icon :propName="propIconName" propColor="#999" propSize="20rpx"></component-u-icon>
         </view>
     </view>
 </template>
@@ -11,10 +11,14 @@
 //#ifdef APP-NVUE
 import i18n from '@/locale/index.js';
 //#endif
+import componentUIcon from '@/pages/common/components/u-icon/u-icon';
 export default {
     //#ifdef APP-NVUE
     i18n,
     //#endif
+    components: {
+        componentUIcon,
+    },
     props: {
         propId: {
             type: [String, Number],

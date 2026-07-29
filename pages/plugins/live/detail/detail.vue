@@ -25,12 +25,12 @@
             </view>
             <!-- 视频播放提示 -->
             <view v-if="!is_live_ended && is_muted_auto_play_error && !live_be_right_back_error" class="live-play flex-row align-c jc-c pointer-events-none">
-                <u-icon propName="bofang" class="component-icon-play" propSize="200rpx" propColor="#fff" @click="muted_tap"></u-icon>
+                <component-u-icon propName="bofang" class="component-icon-play" propSize="200rpx" propColor="#fff" @click="muted_tap"></component-u-icon>
             </view>
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c pointer-events-none">
                 <view class="flex-1 flex-col align-c jc-c">
-                    <u-icon propName="coffee" propSize="100rpx" propColor="#fff"></u-icon>
+                    <component-u-icon propName="coffee" propSize="100rpx" propColor="#fff"></component-u-icon>
                     <text class="text-size mt-5 cr-white">{{ $t('live.live.host_away') }}</text>
                     <text class="text-size-sm mt-5 cr-white">{{ $t('live.live.host_away_tips') }}</text>
                 </view>
@@ -45,12 +45,14 @@
     import componentFullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
+    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
     const app = getApp();
     export default {
         components: {
             componentLiveVideo,
             componentLiveContent,
-            componentFullScreenLikeEffect
+            componentFullScreenLikeEffect,
+            componentUIcon,
         },
         mixins: [mixins],
         data() {

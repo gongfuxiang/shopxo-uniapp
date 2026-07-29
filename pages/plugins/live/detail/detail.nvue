@@ -9,7 +9,7 @@
             <!-- 主播暂时离开的提示信息-->
             <view v-if="live_be_right_back_error" class="live-pause flex-row align-c jc-c" :style="'width:' + windowWidth + 'px;height:' + windowHeight + 'px;'">
                 <view class="flex-1 flex-col align-c jc-c">
-                    <u-icon propName="smallbell" propSize="100rpx" propColor="#fff"></u-icon>
+                    <component-u-icon propName="smallbell" propSize="100rpx" propColor="#fff"></component-u-icon>
                     <text class="pointer-events-auto text-size mb-5 cr-white">主播暂时离开</text>
                     <text class="pointer-events-auto text-size-sm cr-white">休息片刻，更多精彩马上到来</text>
                 </view>
@@ -37,12 +37,14 @@
     import componentFullScreenLikeEffect from './components/full-screen-like-effect/full-screen-like-effect.vue';
     // 引入混入公共逻辑，避免nvue和vue使用同一套逻辑出现问题
     import mixins from './mixins/mixins.js';
+    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
     const app = getApp();
     export default {
         components: {
             componentLiveVideo,
             componentLiveContent,
-            componentFullScreenLikeEffect
+            componentFullScreenLikeEffect,
+            componentUIcon,
         },
         mixins: [mixins],
         data() {

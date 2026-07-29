@@ -17,7 +17,7 @@
                             <view class="flex-1 pr flex-row align-c jc-c">
                                 <view class="play-icon-bg"></view>
                                 <view class="pa z-i">
-                                    <u-icon propName="bofang" propSize="120rpx" propColor="#4F3E35"></u-icon>
+                                    <component-u-icon propName="bofang" propSize="120rpx" propColor="#4F3E35"></component-u-icon>
                                 </view>
                             </view>
                         </view>
@@ -25,15 +25,15 @@
                             <!-- Right Action Bar -->
                             <view class="right-actions">
                                 <view v-if="base_config_data && base_config_data.is_video_give_thumbs && base_config_data.is_video_give_thumbs == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_like">
-                                    <u-icon propName="givealike" propSize="60rpx" :propColor="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'"></u-icon>
+                                    <component-u-icon propName="givealike" propSize="60rpx" :propColor="video_item.is_give_thumbs == 0 ? '#fff' : '#F4B73F'"></component-u-icon>
                                     <text class="action-text">{{ video_item.give_thumbs_count }}</text>
                                 </view>
                                 <view v-if="base_config_data && base_config_data.is_video_comments_show && base_config_data.is_video_comments_show == 1" class="action-item" :data-id="video_item.id" @tap.stop="handle_comment">
-                                    <u-icon propName="comment" propSize="60rpx" propColor="#fff"></u-icon>
+                                    <component-u-icon propName="comment" propSize="60rpx" propColor="#fff"></component-u-icon>
                                     <text class="action-text">{{ video_item.comments_count }}</text>
                                 </view>
                                 <view class="action-item" @tap.stop="handle_share">
-                                    <u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></u-icon>
+                                    <component-u-icon propName="share-solid" propSize="60rpx" propColor="#fff"></component-u-icon>
                                     <text class="action-text">{{$t('common.share')}}</text>
                                 </view>
                             </view>
@@ -48,15 +48,15 @@
                                             <text class="product-price">¥{{ video_item.goods.price }}</text>
                                         </view>
                                         <view class="product-close" :data-id="video_item.id" @tap.stop="product_close_event">
-                                            <u-icon propName="close" propSize="40rpx" propColor="#999"></u-icon>
+                                            <component-u-icon propName="close" propSize="40rpx" propColor="#999"></component-u-icon>
                                         </view>
                                     </view>
                                     <view class="product-button" :data-id="video_item.id" @tap.stop="handle_product_button">
                                         <view class="product-button-left flex-row align-c">
-                                            <u-icon propName="cart-have" propSize="30rpx" propColor="#F5C366"></u-icon>
+                                            <component-u-icon propName="cart-have" propSize="30rpx" propColor="#F5C366"></component-u-icon>
                                             <text class="size-14 cr-f ml-10">{{$t('common.buy')}}{{$t('common.goods')}}</text>
                                         </view>
-                                        <u-icon propName="angle-right" propSize="30rpx" propColor="#fff"></u-icon>
+                                        <component-u-icon propName="angle-right" propSize="30rpx" propColor="#fff"></component-u-icon>
                                     </view>
                                 </view>
                             </view>
@@ -76,7 +76,7 @@
                     <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                     <!-- #ifndef MP-ALIPAY -->
                     <view class="cp" @tap="handle_back">
-                        <u-icon propName="arrow-left" propSize="36rpx" propColor="#bbb" class="mr-10"></u-icon>
+                        <component-u-icon propName="arrow-left" propSize="36rpx" propColor="#bbb" class="mr-10"></component-u-icon>
                     </view>
                     <!-- #endif -->
                     <view class="flex-1" :style="header_padding_left">
@@ -160,7 +160,7 @@
                         <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb" :style="window_more_style">
                             <text class="size-12 cr-f text-line-1 mr-10">@{{ isEmpty(comments_reply_data.user) ? '' : comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                             <view data-type="image" @tap="comment_data_delete">
-                                <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
+                                <component-u-icon propName="close-line" propSize="24rpx" propColor="#fff"></component-u-icon>
                             </view>
                         </view>
                         <view class="flex-row align-s pt-4" :style="window_more_style">
@@ -169,7 +169,7 @@
                                     <text :class="'flex-1 comment-input text-line-1 ' + (isEmpty(comment_input_value) ? 'cr-grey' : 'cr-black')">{{ isEmpty(comment_input_value) ? $t('video-detail.video-detail.98yyuf') : comment_input_value }}</text>
                                     <view class="pt-8" @tap="upload_tap">
                                         <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo @callBack="upload_images_event">
-                                            <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
+                                            <component-u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></component-u-icon>
                                         </component-upload>
                                     </view>
                                 </view>
@@ -177,7 +177,7 @@
                                     <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
                                         <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="comment-input-img"></image>
                                         <view class="form-img-icon flex-row align-c jc-c" @tap="comment_input_img_close">
-                                            <u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></u-icon>
+                                            <component-u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></component-u-icon>
                                         </view>
                                     </view>
                                 </view>
@@ -192,7 +192,7 @@
         </view>
 
         <!-- 举报弹窗 -->
-        <u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
+        <component-u-popup ref="popupReportRef" propMode="bottom" propCloseType="text" :propWidth="'width:' +  windowWidth + 'px;'" propTitleBorder class="pointer-events-auto" :propTitle="$t('video-detail.video-detail.rfsdfg')" :propCloseable="true" @close="popup_report_close_event" @callBack="submit_report">
             <view class="report-content">
                 <!-- 主要内容区域 -->
                 <view class="report-body">
@@ -227,7 +227,7 @@
                     </view>
                 </view>
             </view>
-        </u-popup>
+        </component-u-popup>
         <!-- 添加评论弹出框 -->
         <view v-if="is_add_comment" class="keyboard-input br-top-shadow" :style="'width:'+ windowWidth +'px;bottom:' + listener_height + 'px;'">
             <view class="flex-1 flex-col">
@@ -235,7 +235,7 @@
                     <view v-if="!isEmpty(comments_reply_data)" class="comment-reply-content flex-row align-c jc-sb">
                         <text class="size-12 cr-f text-line-1 mr-10">@{{ comments_reply_data.user.user_name_view }}:{{ comments_reply_data.content }}</text>
                         <view data-type="image" @tap="comment_data_delete">
-                            <u-icon propName="close-line" propSize="24rpx" propColor="#fff"></u-icon>
+                            <component-u-icon propName="close-line" propSize="24rpx" propColor="#fff"></component-u-icon>
                         </view>
                     </view>
                     <view class="flex-row align-c pr-16 box-border-box">
@@ -245,7 +245,7 @@
                         <view v-for="(item, index) in form_images_list" :key="index" class="comment-input-img pr">
                            <image :src="item.url" :data-index="index" @tap="upload_show_event" mode="aspectFill" class="comment-input-img"></image>
                            <view class="form-img-icon flex-row align-c jc-c" @tap="comment_input_img_close">
-                               <u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></u-icon>
+                               <component-u-icon propName="close" propSize="30rpx" propColor="#000" class="flex-row align-c jc-c" :data-index="index"></component-u-icon>
                            </view>
                         </view>
                     </view>
@@ -253,7 +253,7 @@
                 
                 <view class="flex-row align-c jc-sb pt-10">
                     <component-upload :propMaxNum="propMaxNum" :propPathType="editor_path_type" propSlot propSingleCall propIsAllInfo propChooseFocus propFailChooseFocus @call-back="upload_images_event" @chooseFocus="upload_event">
-                        <u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></u-icon>
+                        <component-u-icon propName="layout-module-single-images" propSize="40rpx" propColor="#999"></component-u-icon>
                     </component-upload>
                 
                     <button :disabled="isEmpty(comment_input_value)" size="mini" type="default" :class="'margin-0 bg-main border-0 ' + (isEmpty(comment_input_value) ? 'disabled' : '')" @tap="send_comment"><text class="comment-send-button text">{{$t('common.send')}}</text></button>
@@ -261,7 +261,7 @@
             </view>
         </view>
         <!-- 分享弹窗 -->
-        <u-share-popup ref="share" class="pointer-events-auto"></u-share-popup>
+        <component-u-share-popup ref="share" class="pointer-events-auto"></component-u-share-popup>
 
     </view>
 </template>
@@ -276,6 +276,9 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentUpload from '@/components/upload/upload';
+    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+    import componentUPopup from '@/pages/common/components/u-popup/u-popup';
+    import componentUSharePopup from '@/pages/common/components/u-share-popup/u-share-popup';
     import scrollMixins from './scrollMixins';
     // 多语言
     //#ifdef APP-NVUE
@@ -361,7 +364,10 @@
             componentNoData,
             componentBottomLine,
             componentLoading,
-            componentUpload
+            componentUpload,
+            componentUIcon,
+            componentUPopup,
+            componentUSharePopup,
         },
         watch: {
             // 监听路由变化

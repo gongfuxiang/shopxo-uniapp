@@ -1,15 +1,15 @@
 <template>
     <view v-if="showPopup" class="uni-popup" :class="popupstyle + (isDesktop ? ' fixforpc-z-index' : '')">
         <view @touchstart="touchstart">
-            <u-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
-            <u-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
+            <component-u-transition key="1" v-if="maskShow" propName="mask" propMode="fade" :propCustomStyle="maskClass" :propDuration="duration" :propShow="showTrans" @click="onTap" />
+            <component-u-transition key="2" :propMode="ani" propName="content" :propCustomStyle="transClass" :propDuration="duration" :propShow="showTrans">
                 <view class="pr" :style="'border-radius:' + propRound + 'px'">
                     <view v-if="propCloseType == 'icon' && propCloseable" class="popup-close pa-14 box-border-box" :class="propCloseIconPos" :style="closeIconStyle" @tap="close">
-                        <u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></u-icon>
+                        <component-u-icon :propName="propCloseIcon" :propType="propCloseIconType" :propSize="propCloseIconSize + 'rpx'"></component-u-icon>
                     </view>
-                    <view v-if="propTitle != ''" class="pr">
+                    <view v-if="propTitle && propTitle !== true" class="pr">
                         <view class="popup-close pa-14 box-border-box flex-row" :class="propTitleBorder ? 'br-b-e' : ''">
-                            <view v-if="propTitle != ''" class="flex-1 title">
+                            <view class="flex-1 title">
                                 <text class="fw tc">{{ propTitle }}</text>
                             </view>
                         </view>
@@ -25,7 +25,7 @@
                         <slot />
                     </view>
                 </view>
-            </u-transition>
+            </component-u-transition>
         </view>
         <!-- #ifdef H5 -->
         <keypress v-if="maskShow" @esc="onTap" />
@@ -35,6 +35,8 @@
 
 <script>
     const app = getApp();
+    import componentUIcon from '@/pages/common/components/u-icon/u-icon';
+    import componentUTransition from '@/pages/common/components/u-transition/u-transition';
     // #ifdef H5
     import keypress from './keypress.js';
     // #endif
@@ -84,6 +86,8 @@
     export default {
         name: 'uniPopup',
         components: {
+            componentUIcon,
+            componentUTransition,
             // #ifdef H5
             keypress,
             // #endif
@@ -350,7 +354,7 @@
                         style['right'] = '0rpx';
                         break;
                     default:
-                        if (this.propTitle != '') {
+                        if (this.propTitle && this.propTitle !== true) {
                             style['position'] = 'absolute';
                             style['top'] = '0rpx';
                             style['right'] = '0rpx';

@@ -7,7 +7,7 @@
                 <view class="pr" style="margin-left: 20rpx;">
                     <!-- 直接实现下拉菜单 -->
                     <view ref="commentOption" class="comment-option overlay-content" @tap.stop="toggle_dropdown">
-                        <u-icon propName="ellipsis" propColor="#999" propSize="28rpx"></u-icon>
+                        <component-u-icon propName="ellipsis" propColor="#999" propSize="28rpx"></component-u-icon>
                     </view>
                     <!-- 下拉菜单 -->
                     <!-- #ifdef APP-NVUE -->
@@ -35,7 +35,7 @@
                     <text class="comment-reply flex-row align-c gap-5" style="margin-left: 20rpx;">{{ propReplyContent || $t('common.reply') }}({{ propComment.comments_count }})</text>
                 </view>
                 <view class="comment-operation-right flex-row align-c overlay-content" style="margin-left: 20rpx;" @tap.stop="comment_like">
-                    <u-icon propName="givealike-o-fine" :propColor="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" propSize="28rpx"></u-icon>
+                    <component-u-icon propName="givealike-o-fine" :propColor="propComment.is_give_thumbs == 0 ? '#000' : '#F4B73F'" propSize="28rpx"></component-u-icon>
                     <text class="comment-like-num" style="margin-left: 10rpx;">{{ propComment.give_thumbs_count || 0 }}</text>
                 </view>
             </view>
@@ -55,10 +55,14 @@
     const { t } = initVueI18n(indexNvue)
     //#endif
    import { isEmpty } from '@/common/js/common/common.js';
+   import componentUIcon from '@/pages/common/components/u-icon/u-icon';
    export default {
         //#ifdef APP-NVUE
        i18n,
         //#endif
+        components: {
+            componentUIcon,
+        },
         props: {
             propComment: {
                 type: Object,
