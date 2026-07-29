@@ -12,7 +12,7 @@
                 <!-- 支付宝小程序自带返回按钮，这里就不给返回按钮了，这里给留出一点空间就行 -->
                 <!-- #ifndef MP-ALIPAY -->
                 <view class="cp pointer-events-auto" @tap="handle_back">
-                    <u-icon propName="arrow-left" propSize="36rpx" propColor="#bbb" class="mr-10"></u-icon>
+                    <component-u-icon propName="arrow-left" propSize="36rpx" propColor="#bbb" class="mr-10"></component-u-icon>
                 </view>
                 <!-- #endif -->
                 <!-- #ifndef APP-NVUE -->
@@ -35,7 +35,7 @@
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
                     <view class="flex-row align-c pr" style="direction: rtl;">
-                        <view v-for="(item, index) in online_user" :key="item.user_id || item.id || ('viewer-' + index)" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                        <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                             <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                         </view>
                     </view>
@@ -58,7 +58,7 @@
                 </view>
                 <view class="flex-row align-c pointer-events-auto">
                     <view class="flex-row align-c pr" style="direction: rtl;">
-                        <view v-for="(item, index) in online_user" :key="item.user_id || item.id || ('viewer-' + index)" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
+                        <view v-for="(item, index) in online_user" :key="index" class="viewer-wrapper" :style="'z-index:' + (index + 1) + ';' + (index == 0 ? 'margin-right: 0;' : '')">
                             <image :src="item.avatar" class="viewer-avatar"  mode="aspectFill"></image>
                         </view>
                     </view>
@@ -66,7 +66,7 @@
                         <text class="cr-white size-10">{{ live_data.online_count || 0 }}</text>
                     </view>
                     <!-- <view class="viewer-back ml-5 flex-row align-c jc-c " @tap="live_back">
-                        <u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></u-icon>
+                        <component-u-icon propName="close-fillup" class="viewer-back-icon" propSize="50rpx" propColor="#fff"></component-u-icon>
                     </view> -->
                 </view>
             </view>
@@ -116,7 +116,7 @@
                                     <view class="flex-1 flex-row align-c flex-wrap">
                                         <image :src="item.user_avatar != null ? item.user_avatar : userAvatar" class="bulletin-item-avatar mb-3" mode="aspectFill"></image>
                                         <text class="user-name cr-blue mb-3">{{ item.user_name }}:</text>
-                                        <view v-for="(char, charIndex) in split_text(item.text)" :key="item.id + '-' + charIndex" class="mb-3">
+                                        <view v-for="(char, charIndex) in split_text(item.text)" :key="charIndex" class="mb-3">
                                             <text class="bulletin-text">{{ char }}</text>
                                         </view>
                                     </view>
@@ -157,7 +157,7 @@
                                 <text class="size-12 cr-white">{{ $t('common.explaining') }}</text>
                             </view>
                             <view class="explain-close flex-row align-c" @tap.stop="explain_goods_close">
-                                <u-icon propName="close-line" propSize="18rpx" propColor="#fff"></u-icon>
+                                <component-u-icon propName="close-line" propSize="18rpx" propColor="#fff"></component-u-icon>
                             </view>
                         </view>
                     </view>
@@ -189,17 +189,17 @@
                             <view v-else class="bottom-actions-input-placeholder"></view>
                         </view>
                         <view class="bottom-actions-icon" :class="!is_live_goods_buy_on ? 'bottom-actions-icon-placeholder' : ''" @tap="add_goods">
-                            <u-icon v-if="is_live_goods_buy_on" propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></u-icon>
+                            <component-u-icon v-if="is_live_goods_buy_on" propName="shopping-cart-tall" propColor="#fff" propSize="32rpx"></component-u-icon>
                         </view>
                         <component-like-button v-if="is_live_like_on" ref="likeButton" :propShowImgs="propLiveShowImgs" @handleClick="like_button_click">
                             <view class="bottom-actions-icon">
-                                <u-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></u-icon>
+                                <component-u-icon propName="givealike-o" propColor="#fff" propSize="32rpx"></component-u-icon>
                             </view>
                         </component-like-button>
                         <view v-else class="bottom-actions-icon bottom-actions-icon-placeholder"></view>
                     </template>
                     <view class="bottom-actions-icon" @tap="share_event">
-                        <u-icon propName="share-solid" propColor="#fff" propSize="32rpx"></u-icon>
+                        <component-u-icon propName="share-solid" propColor="#fff" propSize="32rpx"></component-u-icon>
                     </view>
                 </view>
             </view>
@@ -216,11 +216,11 @@
             </view>
         </view>
         <!-- 商品弹出框 -->
-        <u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('live.live.buy_goods')" :propCloseable="true">
+        <component-u-popup v-if="live_feature_ready && is_live_goods_buy_on" ref="popupGoodsRef" propMode="bottom" class="pointer-events-auto" :propTitle="$t('live.live.buy_goods')" :propCloseable="true">
            <component-goods propIsGoodsPopup :propWindowWidth="propWindowWidth" :propWindowHeight="propWindowHeight" :propLiveId="live_data.id"></component-goods>
-        </u-popup>
+        </component-u-popup>
         <!-- 分享弹窗 -->
-        <u-share-popup ref="share" class="pointer-events-auto"></u-share-popup>
+        <component-u-share-popup ref="share" class="pointer-events-auto"></component-u-share-popup>
     </view>
 </template>
 
@@ -228,6 +228,9 @@
     import componentGoods from "@/pages/plugins/live/detail/components/goods/goods.vue";
     import componentLikeButton from "@/pages/plugins/live/detail/components/like-button/like-button.vue";
     import componentSearch from "@/pages/plugins/live/components/search.vue";
+    import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
+    import componentUPopup from '@/pages/plugins/live/components/u-popup/u-popup';
+    import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';
     import { isEmpty } from '@/common/js/common/common.js';
     const app = getApp();
     // 状态栏高度
@@ -241,6 +244,9 @@
             componentGoods,
             componentLikeButton,
             componentSearch,
+            componentUIcon,
+            componentUPopup,
+            componentUSharePopup,
         },
         /**
          * 直播内容组件属性
@@ -698,12 +704,27 @@
              * 建立WebSocket连接
              * @param {Boolean} is_manual - 是否手动连接
              */
+            /**
+             * 安全关闭 SocketTask，避免未建立/已关闭时 closeSocket:fail task not found
+             */
+            safe_socket_task_close(task) {
+                if (task == null || typeof task.close != 'function') {
+                    return;
+                }
+                try {
+                    task.close({
+                        fail: () => {},
+                        complete: () => {},
+                    });
+                } catch (e) {}
+            },
             socket_connect(is_manual = false) {
                 this.clear_socket_reconnect_timer();
                 if (this.task != null) {
                     this.is_socket_closing = true;
-                    this.task.close();
+                    const old_task = this.task;
                     this.task = null;
+                    this.safe_socket_task_close(old_task);
                 }
                 if (is_manual) {
                     this.reconnect_count = 0;
@@ -717,24 +738,41 @@
                     this.socket_error_content = this.$t('live.live.socket_reconnecting_nth', [this.reconnect_count + 1]);
                 }
 
-                this.task = uni.connectSocket({
+                const task = uni.connectSocket({
                     url: this.live_websocket_url,
                     header: {
                         "content-type": "application/json",
                     },
                     complete: () => {}
                 });
-            
-                this.task.onOpen((res) => {
+                this.task = task;
+                if (task == null || typeof task.onOpen != 'function') {
+                    this.schedule_socket_reconnect();
+                    return;
+                }
+
+                task.onOpen((res) => {
+                    if (this.task !== task) {
+                        return;
+                    }
                     this.reconnect_count = 0;
                     this.is_socket_success = true;
                     this.is_socket_error = false;
                 });
                 
-                this.task.onMessage((res) => {
+                task.onMessage((res) => {
+                    if (this.task !== task) {
+                        return;
+                    }
                     this.socket_message_back_handle(res);
                 });
-                this.task.onClose((res) => {
+                task.onClose((res) => {
+                    if (this.task !== task && !this.is_socket_closing) {
+                        return;
+                    }
+                    if (this.task === task) {
+                        this.task = null;
+                    }
                     if (this.is_socket_closing) {
                         this.is_socket_closing = false;
                         return;
@@ -742,7 +780,10 @@
                     this.is_socket_success = false;
                     this.schedule_socket_reconnect();
                 });
-                this.task.onError((res) => {
+                task.onError((res) => {
+                    if (this.task !== task && !this.is_socket_closing) {
+                        return;
+                    }
                     this.is_socket_success = false;
                     if ((this.reconnect_count + 1) >= 30) {
                         this.is_socket_error = false;
@@ -764,8 +805,9 @@
                 this.clear_socket_reconnect_timer();
                 if (this.task != null) {
                     this.is_socket_closing = true;
-                    this.task.close();
+                    const task = this.task;
                     this.task = null;
+                    this.safe_socket_task_close(task);
                 }
             },
             
@@ -1057,7 +1099,6 @@
              */
             share_event() {
                 // 分享菜单处理
-                app.globalData.page_share_handle();
                 const share_info = {
                     title: this.live_data.title,
                     desc: this.live_data.describe,
@@ -1065,9 +1106,11 @@
                     query: "id=" + this.live_data.id,
                     img: this.live_data.icon || "",
                 };
+                app.globalData.page_share_handle(share_info);
                 // 调取分享弹窗
                 if ((this.$refs.share || null) != null) {
                     this.$refs.share.init({
+                        status: true,
                         share_info: share_info
                     });
                 }

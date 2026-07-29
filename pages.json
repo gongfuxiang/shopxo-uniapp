@@ -2216,7 +2216,19 @@
                         "enablePullDownRefresh": false,
                         // 禁止页面下拉
                         "disableScroll": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-u-icon": "/pages/plugins/live/components/u-icon/u-icon",
+                            "component-u-popup": "/pages/plugins/live/components/u-popup/u-popup",
+                            "component-u-transition": "/pages/plugins/live/components/u-transition/u-transition",
+                            "component-u-share-popup": "/pages/plugins/live/components/u-share-popup/u-share-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-u-icon": "view",
+                            "component-u-popup": "view",
+                            "component-u-transition": "view",
+                            "component-u-share-popup": "view"
+                        }
                     }
                 },
                 {
@@ -2514,6 +2526,14 @@
         "pages/index/index": {
             "network": "all",
             "packages": ["pages/goods-detail"]
+        },
+        "pages/plugins/video/index/index": {
+            "network": "all",
+            "packages": ["pages/plugins/live"]
+        },
+        "pages/plugins/video/detail/detail": {
+            "network": "all",
+            "packages": ["pages/plugins/live"]
         }
     },
     "globalStyle": {

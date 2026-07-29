@@ -5,11 +5,11 @@
             <view class="goods-header-fixed" :style="'width:' + propWindowWidth + 'px;'">
                 <view class="flex-row align-c jc-e pa-10">
                     <view class="flex-col" @tap="goods_order">
-                        <u-icon propName="list-setup" propSize="36rpx" propColor="#999"></u-icon>
+                        <component-u-icon propName="list-setup" propSize="36rpx" propColor="#999"></component-u-icon>
                         <text class="mt-5 size-12 cr-grey-9">{{ $t('common.order') }}</text>
                     </view>
                     <view class="flex-col ml-10" @tap="goods_cart">
-                        <u-icon propName="cart-solid" propSize="36rpx" propColor="#999"></u-icon>
+                        <component-u-icon propName="cart-solid" propSize="36rpx" propColor="#999"></component-u-icon>
                         <text class="mt-5 size-12 cr-grey-9">{{ $t('common.cart') }}</text>
                     </view>
                 </view>
@@ -104,6 +104,7 @@
 
 <script>
 import componentBottomLine from '@/components/bottom-line/bottom-line.vue';
+import componentUIcon from '@/pages/plugins/live/components/u-icon/u-icon';
 const app = getApp();
 
 /**
@@ -113,7 +114,8 @@ const app = getApp();
 export default {
     name: 'Goods',
     components: {
-        componentBottomLine
+        componentBottomLine,
+        componentUIcon,
     },
     props: {
         /**

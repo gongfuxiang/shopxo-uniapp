@@ -255,7 +255,7 @@
             </view>
         </view>
         <!-- 分享弹窗 -->
-        <component-share-popup ref="share"></component-share-popup>
+        <component-u-share-popup ref="share"></component-u-share-popup>
 
         <!-- 公共 -->
         <component-common ref="common"></component-common>
@@ -269,7 +269,7 @@
     import componentLoading from '@/pages/plugins/video/components/loading.vue';
     import commentMoreComponent from '@/pages/plugins/video/components/comment-more.vue';
     import componentSearch from '@/pages/plugins/video/components/search.vue';
-    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentUSharePopup from '@/pages/plugins/live/components/u-share-popup/u-share-popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
@@ -356,7 +356,7 @@
             commentInfoComponent,
             commentMoreComponent,
             componentSearch,
-            componentSharePopup,
+            componentUSharePopup,
             componentNoData,
             componentBottomLine,
             componentPopup,
