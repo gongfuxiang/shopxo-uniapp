@@ -14,7 +14,12 @@
                             <text class="fw-b">共 {{ page_data.order_count || 0 }} 笔</text>
                         </view>
                         <view v-for="(ov, oi) in page_data.order_list || []" :key="oi" class="flex-row jc-sb align-c padding-vertical-sm br-b">
-                            <text class="cr-base text-size-sm">{{ ov.order_no || ('#' + ov.id) }}</text>
+                            <view class="flex-row align-c flex-1" :data-value="ov.order_no || ''" @tap="text_copy_event">
+                                <text class="cr-base text-size-sm">{{ ov.order_no || ('#' + ov.id) }}</text>
+                                <view v-if="(ov.order_no || null) != null" class="dis-inline-block margin-left-sm">
+                                    <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
+                                </view>
+                            </view>
                             <text class="cr-red fw-b">{{ ov.price }}</text>
                         </view>
                         <view class="margin-top-sm flex-row jc-sb">
@@ -23,9 +28,14 @@
                         </view>
                     </block>
                     <block v-else>
-                        <view class="margin-bottom-sm flex-row">
+                        <view class="margin-bottom-sm flex-row align-c">
                             <text class="cr-grey-9 title">订单编号</text>
-                            <text class="fw-b">{{ (page_data.order && page_data.order.order_no) || '' }}</text>
+                            <view class="flex-row align-c" :data-value="(page_data.order && page_data.order.order_no) || ''" @tap="text_copy_event">
+                                <text class="fw-b">{{ (page_data.order && page_data.order.order_no) || '' }}</text>
+                                <view v-if="(page_data.order && page_data.order.order_no) || ''" class="dis-inline-block margin-left-sm">
+                                    <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
+                                </view>
+                            </view>
                         </view>
                         <view class="margin-bottom-sm flex-row">
                             <text class="cr-grey-9 title">应付金额</text>
@@ -108,6 +118,10 @@
             componentNoData,
             componentUpload,
         },
+
+        /**
+         * 页面加载
+         */
         onLoad(params) {
             params = app.globalData.launch_params_handle(params);
             app.globalData.page_event_onload_handle(params);
@@ -116,6 +130,10 @@
             });
             this.init();
         },
+
+        /**
+         * 页面显示
+         */
         onShow() {
             app.globalData.page_event_onshow_handle();
             if ((this.$refs.common || null) != null) {
@@ -123,16 +141,28 @@
             }
             app.globalData.page_share_handle();
         },
+
+        /**
+         * 下拉刷新
+         */
         onPullDownRefresh() {
             this.get_data();
         },
+
         methods: {
+            /**
+             * 初始化（校验登录后拉取表单数据）
+             */
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
                     this.get_data();
                 }
             },
+
+            /**
+             * 获取上传页数据
+             */
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url('saveinfo', 'order', 'payvoucher'),
@@ -150,9 +180,6 @@
                                 data_list_loding_status: 3,
                                 data_list_loding_msg: '',
                             });
-                            if ((data.back_url || null) != null) {
-                                // back_url 为 PC 地址，uniapp 用页面返回即可
-                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -173,11 +200,28 @@
                     },
                 });
             },
+
+            /**
+             * 上传组件回调（同步凭证图片列表）
+             */
             return_image_event(data) {
                 this.setData({
                     image_list: data,
                 });
             },
+
+            /**
+             * 复制订单编号
+             */
+            text_copy_event(e) {
+                if ((e.currentTarget.dataset.value || null) != null) {
+                    app.globalData.text_copy_event(e);
+                }
+            },
+
+            /**
+             * 预览收款账户图片
+             */
             preview_account_image() {
                 if ((this.page_data.account || null) != null && this.page_data.account.images_url) {
                     uni.previewImage({
@@ -185,6 +229,10 @@
                     });
                 }
             },
+
+            /**
+             * 预览已上传的支付凭证图片
+             */
             preview_voucher_image(e) {
                 var index = e.currentTarget.dataset.index || 0;
                 uni.previewImage({
@@ -192,9 +240,17 @@
                     urls: this.image_list,
                 });
             },
+
+            /**
+             * 取消/返回上一页
+             */
             cancel_event() {
                 app.globalData.page_back_prev_event();
             },
+
+            /**
+             * 提交支付凭证
+             */
             submit_event() {
                 if (this.form_submit_loading) {
                     return;
@@ -254,5 +310,5 @@
     };
 </script>
 <style>
-    @import './saveinfo.css';
+    @import './form.css';
 </style>

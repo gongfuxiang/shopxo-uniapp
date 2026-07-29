@@ -401,7 +401,7 @@
             payvoucher_event(e) {
                 var page = e.currentTarget.dataset.page || '';
                 var id = e.currentTarget.dataset.value;
-                var url = page || ('/pages/plugins/payvoucher/order/saveinfo/saveinfo?oid=' + id + '&stype=givegift&from=list');
+                var url = page || ('/pages/plugins/payvoucher/form/form?oid=' + id + '&stype=givegift&from=list');
                 app.globalData.url_open(url);
             },
 

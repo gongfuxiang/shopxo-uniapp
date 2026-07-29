@@ -372,7 +372,13 @@
                         "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
+                        "navigationBarTitleText": "",
+                        "usingComponents": {
+                            "component-friendpay-order-pay-popup": "/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup"
+                        },
+                        "componentPlaceholder": {
+                            "component-friendpay-order-pay-popup": "view"
+                        }
                     }
                 }
             ]
@@ -387,11 +393,13 @@
                         "navigationBarTitleText": "",
                         "usingComponents": {
                             "component-hospital-order-detail": "/pages/plugins/hospital/components/order-detail/order-detail",
-                            "component-order-operate-more": "/pages/user-order/components/order-operate-more/order-operate-more"
+                            "component-order-operate-more": "/pages/user-order/components/order-operate-more/order-operate-more",
+                            "component-friendpay-order-pay-popup": "/pages/plugins/friendpay/components/order-pay-popup/order-pay-popup"
                         },
                         "componentPlaceholder": {
                             "component-hospital-order-detail": "view",
-                            "component-order-operate-more": "view"
+                            "component-order-operate-more": "view",
+                            "component-friendpay-order-pay-popup": "view"
                         }
                     }
                 }
@@ -2458,7 +2466,7 @@
             "root": "pages/plugins/payvoucher",
             "pages": [
                 {
-                    "path": "order/saveinfo/saveinfo",
+                    "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

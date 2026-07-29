@@ -558,7 +558,7 @@
 		"plugins-presale-index": "Presale",
 		"plugins-presale-buy": "Order Confirmation",
 		"plugins-presale-order": "Presale order",
-		"plugins-payvoucher-order-saveinfo": "Upload payment voucher",
+		"plugins-payvoucher-form": "Upload payment voucher",
 		"plugins-bargain-index": "Bargain",
 		"plugins-bargain-detail": "Bargain details",
 		"plugins-bargain-team": "Help cut",

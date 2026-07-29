@@ -230,7 +230,7 @@
             // 上传支付凭证
             payvoucher_event() {
                 var d = this.propOrder.plugins_payvoucher_data || null;
-                var url = (d && d.page) || ('/pages/plugins/payvoucher/order/saveinfo/saveinfo?oid=' + this.propOrder.id + '&stype=system_order&from=' + (this.propSource || 'list'));
+                var url = (d && d.page) || ('/pages/plugins/payvoucher/form/form?oid=' + this.propOrder.id + '&stype=system_order&from=' + (this.propSource || 'list'));
                 app.globalData.url_open(url);
             },
 
