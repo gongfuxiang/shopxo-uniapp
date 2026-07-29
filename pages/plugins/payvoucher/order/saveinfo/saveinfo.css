@@ -1,0 +1,31 @@
+.title {
+    min-width: 140rpx;
+}
+
+.account-content {
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.6;
+}
+
+.account-images {
+    max-width: 100%;
+}
+
+.voucher-view-img {
+    width: 160rpx;
+    height: 160rpx;
+}
+
+.cancel-btn,
+.submit-btn {
+    width: 50%;
+    height: 88rpx;
+    line-height: 88rpx;
+    font-size: 32rpx;
+}
+
+.cancel-btn:active,
+.submit-btn:active {
+    opacity: 0.7;
+}

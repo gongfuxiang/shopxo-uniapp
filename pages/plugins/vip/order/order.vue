@@ -26,6 +26,7 @@
                     </view>
                     <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
                         <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
+                        <button v-if="item.status == 0 && (item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
                         <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
@@ -50,6 +51,7 @@
             :propDefaultPaymentId="default_payment_id"
             :propPayPrice="pay_price"
             :propIsShowPayment="is_show_payment_popup"
+            :propToAppointPage="'/pages/plugins/vip/order/order'"
             @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
             :propNavDtatusIndex="nav_status_index"
@@ -327,6 +329,14 @@
                     pay_price: e.currentTarget.dataset.price,
                     payment_id: e.currentTarget.dataset.payment || '',
                 });
+            },
+
+            // 上传支付凭证（仅后端注入 plugins_payvoucher_data 时展示）
+            payvoucher_event(e) {
+                var page = e.currentTarget.dataset.page || '';
+                var id = e.currentTarget.dataset.value;
+                var url = page || ('/pages/plugins/payvoucher/order/saveinfo/saveinfo?oid=' + id + '&stype=vip&from=list');
+                app.globalData.url_open(url);
             },
 
             // 支付弹窗关闭

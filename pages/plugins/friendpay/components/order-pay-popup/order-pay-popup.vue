@@ -55,7 +55,7 @@
                 default: 0,
             },
             propOrderIds: {
-                type: String,
+                type: [String, Number],
                 default: '',
             },
             propPaymentList: {

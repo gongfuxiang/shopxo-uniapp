@@ -556,6 +556,7 @@
 		"plugins-presale-index": "预售",
 		"plugins-presale-buy": "订单确认",
 		"plugins-presale-order": "预售订单",
+		"plugins-payvoucher-order-saveinfo": "上传支付凭证",
 		"plugins-bargain-index": "砍价",
 		"plugins-bargain-detail": "砍价详情",
 		"plugins-bargain-team": "帮砍",

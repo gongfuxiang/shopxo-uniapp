@@ -2,6 +2,7 @@
     <view v-if="operate_bar_show" :class="propClass">
         <button v-if="propOrder.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" hover-class="none">{{ $t('common.cancel') }}</button>
         <button v-if="propOrder.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" hover-class="none">{{ $t('common.pay') }}</button>
+        <button v-if="payvoucher_show" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="payvoucher_event" hover-class="none">{{ payvoucher_name }}</button>
         <button v-if="propOrder.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" hover-class="none">{{ $t('orderallot-list.orderallot-list.w2w2w4') }}</button>
         <button v-if="propOrder.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" hover-class="none">{{ $t('common.comment') }}</button>
         <button v-if="more_actions_count > 0" class="round bg-white cr-base br-base margin-bottom-main" type="default" size="mini" @tap="more_open_event" hover-class="none">{{ $t('common.more') }}</button>
@@ -63,7 +64,16 @@
                     return false;
                 }
                 var od = this.propOrder.operate_data;
-                return od.is_cancel == 1 || od.is_pay == 1 || od.is_collect == 1 || od.is_comments == 1 || this.more_actions_count > 0;
+                return od.is_cancel == 1 || od.is_pay == 1 || od.is_collect == 1 || od.is_comments == 1 || this.more_actions_count > 0 || this.payvoucher_show;
+            },
+            // 支付凭证入口
+            payvoucher_show() {
+                var d = (this.propOrder && this.propOrder.plugins_payvoucher_data) || null;
+                return d != null && (d.is_show || 0) == 1;
+            },
+            payvoucher_name() {
+                var d = (this.propOrder && this.propOrder.plugins_payvoucher_data) || null;
+                return (d && d.name) || '凭证';
             },
             // 更多操作列表
             more_actions() {
@@ -215,6 +225,13 @@
                     payment: this.propOrder.payment_id,
                     currencySymbol: this.propOrder.currency_data.currency_symbol,
                 });
+            },
+
+            // 上传支付凭证
+            payvoucher_event() {
+                var d = this.propOrder.plugins_payvoucher_data || null;
+                var url = (d && d.page) || ('/pages/plugins/payvoucher/order/saveinfo/saveinfo?oid=' + this.propOrder.id + '&stype=system_order&from=' + (this.propSource || 'list'));
+                app.globalData.url_open(url);
             },
 
             // 确认收货

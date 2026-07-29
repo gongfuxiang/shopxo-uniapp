@@ -109,6 +109,7 @@
             :propDefaultPaymentId="default_payment_id"
             :propPayPrice="pay_price"
             :propIsShowPayment="is_show_payment_popup"
+            :propToAppointPage="'/pages/user-order/user-order'"
             @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
         ></component-payment>
@@ -453,14 +454,20 @@
                 this.setData({ is_show_friendpay_order_popup: false });
             },
 
-            // 朋友代付-自己支付
+            // 朋友代付-自己支付（已在代付弹窗选好支付方式，直接发起支付，不再二次打开支付弹窗）
             friendpay_self_pay_event(e) {
+                var payment_list = e.payment_list || this.original_payment_list;
+                var payment_id = e.payment_id || this.default_payment_id;
+                var order_ids = e.order_ids || this.temp_pay_value;
                 this.setData({
                     is_show_friendpay_order_popup: false,
-                    is_show_payment_popup: true,
-                    payment_list: e.payment_list || this.original_payment_list,
-                    payment_id: e.payment_id || this.default_payment_id,
+                    is_show_payment_popup: false,
+                    payment_list: payment_list,
+                    payment_id: payment_id,
                 });
+                if ((this.$refs.payment || null) != null && (order_ids || null) != null && payment_id > 0) {
+                    this.$refs.payment.pay_handle(order_ids, payment_id, payment_list);
+                }
             },
 
             // 支付弹窗关闭

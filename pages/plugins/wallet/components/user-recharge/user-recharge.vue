@@ -27,7 +27,8 @@
                 </view>
                 <view v-if="item.status == 0" class="item-operation tr margin-top-main">
                     <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
-                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('user-recharge.user-recharge.8y9dki')}}</button>
+                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
+                    <button v-if="(item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="round bg-white cr-blue br-blue text-size-md" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
                 </view>
             </view>
         </view>
@@ -305,6 +306,14 @@
                     pay_price: e.currentTarget.dataset.price,
                     payment_id: e.currentTarget.dataset.payment || 0,
                 });
+            },
+
+            // 上传支付凭证（仅后端注入 plugins_payvoucher_data 时展示，插件未启用不会有入口）
+            payvoucher_event(e) {
+                var page = e.currentTarget.dataset.page || '';
+                var id = e.currentTarget.dataset.value;
+                var url = page || ('/pages/plugins/payvoucher/order/saveinfo/saveinfo?oid=' + id + '&stype=wallet&from=list');
+                app.globalData.url_open(url);
             },
 
             // 支付弹窗关闭

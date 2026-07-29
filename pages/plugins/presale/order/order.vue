@@ -33,9 +33,11 @@
                     </block>
                     <component-panel-content :propData="item" :propDataField="field_list" propIsItemShowMax="6" propExcludeField="add_time,status_name" :propIsTerse="true"></component-panel-content>
                     <!-- 订单状态（0待支付，1付定金，2付尾款，3已取消，4已关闭） -->
-                    <view v-if="item.is_buy == 1 || item.is_aftersale == 1 || item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
-                        <button v-if="item.is_buy == 1" class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.last_pay')}}</button>
+                    <view v-if="item.is_buy == 1 || item.is_aftersale == 1 || item.status == 0 || item.status == 3 || item.status == 4 || ((item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1)" class="item-operation tr margin-top-main">
+                        <button v-if="item.status == 0" class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="deposit_pay_event" :data-value="item.id" :data-price="item.total_deposit_price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('common.pay')}}</button>
+                        <button v-if="item.is_buy == 1" class="btn round br-green cr-green bg-white text-size-md" type="default" size="mini" @tap="last_pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.last_pay')}}</button>
                         <button v-if="item.is_aftersale == 1" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="aftersale_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.refund')}}</button>
+                        <button v-if="item.status == 0 && (item.plugins_payvoucher_data || null) != null && (item.plugins_payvoucher_data.is_show || 0) == 1" class="btn round br-blue cr-blue bg-white text-size-md" type="default" size="mini" @tap="payvoucher_event" :data-value="item.id" :data-page="(item.plugins_payvoucher_data.page || '')" hover-class="none">{{ item.plugins_payvoucher_data.name || '凭证' }}</button>
                         <button v-if="item.status == 0" class="btn round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         <button v-if="item.status == 3 || item.status == 4" class="btn round br-red cr-red bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
@@ -50,6 +52,24 @@
             </view>
         </scroll-view>
 
+        <!-- 定金支付组件 -->
+        <component-payment
+            ref="payment"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            propPayDataKey="ids"
+            :propPaymentList="payment_list"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPaymentId="payment_id"
+            :propDefaultPaymentId="default_payment_id"
+            :propPayPrice="pay_price"
+            :propIsShowPayment="is_show_payment_popup"
+            :propToAppointPage="'/pages/plugins/presale/order/order'"
+            @close-payment-popup="payment_popup_event_close"
+            @pay-success="order_item_pay_success_handle"
+        ></component-payment>
+
         <!-- 公共 -->
         <component-common ref="common"></component-common>
     </view>
@@ -60,6 +80,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPanelContent from "@/components/panel-content/panel-content";
+    import componentPayment from '@/components/payment/payment';
 
     export default {
         data() {
@@ -81,6 +102,16 @@
                 bottom_fixed_style: '',
                 nav_status_list: [],
                 nav_status_index: 0,
+                // 定金支付
+                pay_url: app.globalData.get_request_url('pay', 'buy', 'presale'),
+                qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'presale'),
+                payment_list: [],
+                default_payment_id: 0,
+                temp_pay_value: '',
+                temp_pay_index: 0,
+                payment_id: 0,
+                pay_price: 0,
+                is_show_payment_popup: false,
             };
         },
 
@@ -88,7 +119,8 @@
             componentCommon,
             componentNoData,
             componentBottomLine,
-            componentPanelContent
+            componentPanelContent,
+            componentPayment,
         },
 
         onLoad(params) {
@@ -171,6 +203,8 @@
                                 data_base: data.base || null,
                                 presale_config: data.presale_config || {},
                                 nav_status_list: data.nav_list || [],
+                                payment_list: data.payment_list || [],
+                                default_payment_id: data.default_payment_id || 0,
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
                                 data_page: 1,
@@ -295,8 +329,42 @@
                 });
             },
 
-            // 支付
-            pay_event(e) {
+            // 待支付定金
+            deposit_pay_event(e) {
+                this.setData({
+                    is_show_payment_popup: true,
+                    temp_pay_value: e.currentTarget.dataset.value,
+                    temp_pay_index: e.currentTarget.dataset.index,
+                    pay_price: e.currentTarget.dataset.price,
+                    payment_id: e.currentTarget.dataset.payment || this.default_payment_id || 0,
+                });
+            },
+
+            // 支付弹窗关闭
+            payment_popup_event_close() {
+                this.setData({
+                    is_show_payment_popup: false,
+                });
+            },
+
+            // 定金支付成功
+            order_item_pay_success_handle(data) {
+                var order_ids_arr = (data.order_id || this.temp_pay_value || '').toString().split(',');
+                var temp_data_list = this.data_list;
+                for (var i in temp_data_list) {
+                    if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
+                        temp_data_list[i]['status'] = 1;
+                        temp_data_list[i]['status_name'] = this.$t('order.order.s8g966');
+                    }
+                }
+                this.setData({
+                    data_list: temp_data_list,
+                    is_show_payment_popup: false,
+                });
+            },
+
+            // 支付尾款
+            last_pay_event(e) {
                 uni.showLoading({
                     title: this.$t('common.processing_in_text'),
                 });
@@ -323,7 +391,15 @@
                 });
             },
 
-            // 取消
+            // 上传支付凭证（仅后端注入 plugins_payvoucher_data 时展示）
+            payvoucher_event(e) {
+                var page = e.currentTarget.dataset.page || '';
+                var id = e.currentTarget.dataset.value;
+                var url = page || ('/pages/plugins/payvoucher/order/saveinfo/saveinfo?oid=' + id + '&stype=presale&from=list');
+                app.globalData.url_open(url);
+            },
+
+            // 售后
             aftersale_event(e) {
                 uni.showModal({
                     title: this.$t('common.warm_tips'),
