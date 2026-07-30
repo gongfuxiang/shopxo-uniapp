@@ -12,10 +12,14 @@
 
 <script>
     import { isEmpty } from '@/common/js/common/common.js';
-    import VideoPlayer from '@/components/video-player/video-player.vue';
+    // #ifdef APP
+    import VideoPlayer from '@/pages/diy/components/video-player/video-player.vue';
+    // #endif
     export default {
         components: {
+            // #ifdef APP
             VideoPlayer,
+            // #endif
         },
         props: {
             propValue: {

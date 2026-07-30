@@ -56,12 +56,8 @@
     var common_static_url = app.globalData.get_static_url('common');
     var system = app.globalData.get_system_info(null, null, true);
     var sys_width = app.globalData.window_width_handle(system.windowWidth);
-    import VideoPlayer from '@/components/video-player/video-player.vue';
     import { isEmpty } from '@/common/js/common/common.js';
     export default {
-        components: {
-            VideoPlayer,
-        },
         props: {
             propType: {
                 type: String,
