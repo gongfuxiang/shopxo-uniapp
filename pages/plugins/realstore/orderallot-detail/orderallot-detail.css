@@ -112,7 +112,6 @@
 .extraction-take-goods-title {
     flex: 1;
     min-width: 0;
-    line-height: 1.4;
     text-align: left;
 }
 .extraction-take-code {

@@ -13,7 +13,7 @@
                             <view class="extraction-take-body">
                                 <view v-if="(detail.extraction_data.items[extraction_take_index].goods_url || null) != null && detail.extraction_data.items[extraction_take_index].goods_url != ''" class="extraction-take-goods cp" :data-value="detail.extraction_data.items[extraction_take_index].goods_url" @tap="url_event">
                                     <image v-if="(detail.extraction_data.items[extraction_take_index].goods_images || null) != null" class="extraction-take-goods-images br radius" :src="detail.extraction_data.items[extraction_take_index].goods_images" mode="aspectFill"></image>
-                                    <view class="extraction-take-goods-title text-size-sm multi-text cr-blue">{{ detail.extraction_data.items[extraction_take_index].goods_title || '' }}</view>
+                                    <view class="extraction-take-goods-title text-size-sm multi-text">{{ detail.extraction_data.items[extraction_take_index].goods_title || '' }}</view>
                                 </view>
                                 <view v-else class="extraction-take-goods">
                                     <image v-if="(detail.extraction_data.items[extraction_take_index].goods_images || null) != null" class="extraction-take-goods-images br radius" :src="detail.extraction_data.items[extraction_take_index].goods_images" mode="aspectFill"></image>
