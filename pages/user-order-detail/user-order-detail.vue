@@ -53,15 +53,60 @@
                     ></component-order-operate-more>
                 </view>
 
-                <!-- 自提信息 -->
-                <view v-if="(detail.extraction_data || null) != null" class="site-extraction padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.o38952')}}</view>
-                    <view class="panel-content oh tc padding-top-main">
-                        <view :data-value="detail.extraction_data.code" @tap="text_copy_event">
-                            <text class="fw-b cr-black text-size-xl va-m">{{ detail.extraction_data.code || $t("user-order-detail.user-order-detail.hpq62x") }}</text>
-                            <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left">{{$t('common.copy')}}</text>
+                <!-- 取货信息 -->
+                <view v-if="(detail.extraction_data || null) != null" class="extraction-take padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.take_info_title')}}</view>
+                    <view class="padding-top-main">
+                        <view v-if="(detail.extraction_data.items || null) != null && detail.extraction_data.items.length > 0" class="extraction-take-switch">
+                            <view v-if="detail.extraction_data.items.length > 1" class="extraction-take-arrow extraction-take-prev" @tap="extraction_take_prev_event">
+                                <iconfont name="icon-angle-left" size="36rpx" color="#666"></iconfont>
+                            </view>
+                            <view class="extraction-take-body">
+                                <view v-if="(detail.extraction_data.items[extraction_take_index].goods_url || null) != null && detail.extraction_data.items[extraction_take_index].goods_url != ''" class="extraction-take-goods cp" :data-value="detail.extraction_data.items[extraction_take_index].goods_url" @tap="url_event">
+                                    <image v-if="(detail.extraction_data.items[extraction_take_index].goods_images || null) != null" class="extraction-take-goods-images br radius" :src="detail.extraction_data.items[extraction_take_index].goods_images" mode="aspectFill"></image>
+                                    <view class="extraction-take-goods-title text-size-sm multi-text cr-blue">{{ detail.extraction_data.items[extraction_take_index].goods_title || '' }}</view>
+                                </view>
+                                <view v-else class="extraction-take-goods">
+                                    <image v-if="(detail.extraction_data.items[extraction_take_index].goods_images || null) != null" class="extraction-take-goods-images br radius" :src="detail.extraction_data.items[extraction_take_index].goods_images" mode="aspectFill"></image>
+                                    <view class="extraction-take-goods-title text-size-sm multi-text">{{ detail.extraction_data.items[extraction_take_index].goods_title || '' }}</view>
+                                </view>
+                                <view class="extraction-take-code tc">
+                                    <image v-if="(detail.extraction_data.items[extraction_take_index].images || null) != null" class="qrcode br radius" :src="detail.extraction_data.items[extraction_take_index].images" mode="aspectFill"></image>
+                                    <view class="extraction-take-meta margin-top-sm">
+                                        <text class="extraction-take-meta-label cr-grey">{{$t('user-order-detail.user-order-detail.take_code_label')}}</text>
+                                        <view class="extraction-take-meta-value">
+                                            <block v-if="(detail.extraction_data.items[extraction_take_index].code || null) == null || detail.extraction_data.items[extraction_take_index].code == ''">
+                                                <text class="cr-red">{{$t('user-order-detail.user-order-detail.hpq62x')}}</text>
+                                            </block>
+                                            <block v-else>
+                                                <view class="dis-inline-block" :data-value="detail.extraction_data.items[extraction_take_index].code" @tap="text_copy_event">
+                                                    <text class="fw-b cr-blue text-size">{{ detail.extraction_data.items[extraction_take_index].code }}</text>
+                                                    <text class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left-sm">{{$t('common.copy')}}</text>
+                                                </view>
+                                            </block>
+                                        </view>
+                                    </view>
+                                    <view class="extraction-take-meta margin-top-xs">
+                                        <text class="extraction-take-meta-label cr-grey">{{$t('user-order-detail.user-order-detail.take_verify_label')}}</text>
+                                        <view class="extraction-take-meta-value">
+                                            <text class="cr-green">{{ detail.extraction_data.items[extraction_take_index].verify_number || 0 }}</text>
+                                            <text class="cr-grey">/</text>
+                                            <text>{{ detail.extraction_data.items[extraction_take_index].total_number || 1 }}</text>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view v-if="detail.extraction_data.items.length > 1" class="extraction-take-arrow extraction-take-next" @tap="extraction_take_next_event">
+                                <iconfont name="icon-angle-right" size="36rpx" color="#666"></iconfont>
+                            </view>
                         </view>
-                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-xs" :src="detail.extraction_data.images" mode="aspectFill"></image>
+                        <view v-else class="extraction-take-code tc">
+                            <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius" :src="detail.extraction_data.images" mode="aspectFill"></image>
+                            <view class="margin-top-sm" :data-value="detail.extraction_data.code" @tap="text_copy_event">
+                                <text class="fw-b cr-blue text-size-xl va-m">{{ detail.extraction_data.code || $t('user-order-detail.user-order-detail.hpq62x') }}</text>
+                                <text v-if="(detail.extraction_data.code || null) != null" class="bg-white br-green cr-green round padding-horizontal-sm text-size-xs va-m margin-left">{{$t('common.copy')}}</text>
+                            </view>
+                        </view>
                     </view>
                 </view>
 
@@ -480,6 +525,7 @@
                 site_fictitious: null,
                 status_tips: null,
                 goods_use_guide_data_active_index: 0,
+                extraction_take_index: 0,
                 // 商品服务插件
                 order_item_goods_info_data: null,
                 popup_order_item_goods_info_status: false,
@@ -588,6 +634,7 @@
                             var detail = data.data || null;
                             this.setData({
                                 detail: data.data,
+                                extraction_take_index: 0,
                                 detail_list: [
                                     { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '', is_copy: 1 },
                                     { name: this.$t('user-order-detail.user-order-detail.346376'), value: data.data.warehouse_name || '' },
@@ -944,6 +991,32 @@
                 if((e.currentTarget.dataset.value || null) != null) {
                     app.globalData.text_copy_event(e);
                 }
+            },
+
+            // 取货码上一页
+            extraction_take_prev_event() {
+                var list = (((this.detail || null) == null) ? null : this.detail.extraction_data) || null;
+                var items = ((list || null) == null) ? [] : (list.items || []);
+                if (items.length <= 1) {
+                    return;
+                }
+                var index = this.extraction_take_index || 0;
+                this.setData({
+                    extraction_take_index: index <= 0 ? items.length - 1 : index - 1,
+                });
+            },
+
+            // 取货码下一页
+            extraction_take_next_event() {
+                var list = (((this.detail || null) == null) ? null : this.detail.extraction_data) || null;
+                var items = ((list || null) == null) ? [] : (list.items || []);
+                if (items.length <= 1) {
+                    return;
+                }
+                var index = this.extraction_take_index || 0;
+                this.setData({
+                    extraction_take_index: index >= items.length - 1 ? 0 : index + 1,
+                });
             }
         },
     };

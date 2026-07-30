@@ -75,9 +75,77 @@
 /*
 * 自提信息
 */
-.site-extraction .panel-content .qrcode {
-    width: 340rpx;
-    height: 340rpx;
+.extraction-take-switch {
+    position: relative;
+}
+.extraction-take-body {
+    width: 100%;
+}
+.extraction-take-goods {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 16rpx;
+    margin-bottom: 24rpx;
+}
+.extraction-take-goods-images {
+    width: 96rpx;
+    height: 96rpx;
+    flex-shrink: 0;
+}
+.extraction-take-goods-title {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.4;
+    text-align: left;
+}
+.extraction-take-code {
+    padding: 0 88rpx;
+}
+.extraction-take-code .qrcode {
+    width: 280rpx;
+    height: 280rpx;
+    margin: 0 auto;
+    display: block;
+}
+.extraction-take-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 420rpx;
+    text-align: left;
+}
+.extraction-take-meta-label {
+    width: 5em;
+    flex-shrink: 0;
+    text-align: right;
+}
+.extraction-take-meta-value {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+}
+.extraction-take-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+.extraction-take-prev {
+    left: 0;
+}
+.extraction-take-next {
+    right: 0;
 }
 
 /*
