@@ -1367,6 +1367,7 @@
 
             // 下单类型切换事件回调
             realstore_buy_type_switch_back_event(params) {
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.buy_type_switch_event) || {};
                 this.setData({
                     data_list_loding_status: 1,
                     plugins_realstore_buy_use_type_active_index: params.buy_use_type_active_index,

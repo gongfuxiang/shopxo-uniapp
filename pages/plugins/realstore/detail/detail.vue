@@ -1050,7 +1050,7 @@
 
             // 下单类型切换事件回调
             buy_type_switch_event(params) {
-                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.buy_type_switch_event);
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.buy_type_switch_event) || {};
                 this.setData({
                     buy_use_type_active_index: params.buy_use_type_active_index,
                     data_page: 1,

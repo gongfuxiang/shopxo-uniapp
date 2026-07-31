@@ -826,7 +826,7 @@
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
 
         <!-- 门店购物车 -->
-        <component-realstore-cart ref="realstore_cart" :propStatus="plugins_realstore_cart_nav_status" v-on:BuyTypeSwitchEvent="refresh_loading_event" v-on:RefreshLoadingEvent="refresh_loading_event" :propCurrencySymbol="currency_symbol"></component-realstore-cart>
+        <component-realstore-cart ref="realstore_cart" :propStatus="plugins_realstore_cart_nav_status" v-on:BuyTypeSwitchEvent="buy_type_switch_event" v-on:RefreshLoadingEvent="refresh_loading_event" :propCurrencySymbol="currency_symbol"></component-realstore-cart>
 
         <!-- 品类限制温馨提示 -->
         <block v-if="(plugins_categorylimit_data || null) != null">
@@ -894,6 +894,7 @@
                 params: null,
                 system_info: system_info,
                 photo_height: photo_height,
+                is_ready: 0,
                 goods: null,
                 guess_you_like: [],
                 goods_photo: [],
@@ -1078,12 +1079,24 @@
             // 初始化配置
             this.init_config();
 
-            // 数据加载
-            this.init();
+            // 数据加载、首次$refs可能没加载完成，首次采用onReady加载数据
+            if(this.is_ready == 1) {
+                this.init();
+            }
 
             // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
+            }
+        },
+        
+        onReady() {
+            // 首次采用onReady加载数据
+            if(this.is_ready == 0) {
+                this.setData({
+                    is_ready: 1,
+                });
+                this.init();
             }
         },
 
@@ -1826,8 +1839,16 @@
                 this.goods_cart_count_handle(e.cart_number);
             },
 
-            // 下单类型切换事件、数据刷新事件
+            // 下单类型切换事件
+            buy_type_switch_event(params) {
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.buy_type_switch_event) || {};
+                this.setData({params: {...this.params, ...params}});
+                this.init();
+            },
+
+            // 数据刷新事件
             refresh_loading_event(params) {
+                params = uni.getStorageSync(app.globalData.data.cache_plugins_realstore_cart_keys.refresh_loading_event) || {};
                 this.setData({params: {...this.params, ...params}});
                 this.init();
             },
