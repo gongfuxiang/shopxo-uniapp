@@ -3395,7 +3395,7 @@
                     if(temp !== undefined && this.is_tabbar_pages()) {
                         obj.$vm.setData(
                         {
-                            bottom_fixed_style: 'bottom:'+(((this.app_system_tabbar_height_value()-8)*2)+20)+'rpx'
+                            bottom_fixed_style: 'bottom:'+(((this.app_system_tabbar_height_value()-8)*2)+20)+'rpx;'
                         });
                     }
                 }

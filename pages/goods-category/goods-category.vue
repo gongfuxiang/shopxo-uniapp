@@ -753,8 +753,8 @@
                     category_content_style: 'height:calc(100vh - ' + (this.search_height + this.window_bottom_height)+'px - '+footer_height+footer_height_unit+');',
                     left_content_actual_style: left_style,
                     right_content_actual_style: right_style,
-                    botton_nav_style: 'bottom: calc(40rpx);',
-                    cart_content_style: 'bottom: calc(150rpx);',
+                    botton_nav_style: 'bottom: 20rpx;',
+                    cart_content_style: 'bottom: 150rpx;',
                 });
             },
 
