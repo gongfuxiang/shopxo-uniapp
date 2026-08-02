@@ -137,7 +137,7 @@
 
                     <!-- 操作导航 -->
                     <block v-if="data_list.length > 0">
-                        <view class="bottom-fixed z-i" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="bottom_fixed_style">
+                        <view class="bottom-fixed z-i" :class="(discount_detail_status ? ' discount-detail-popup-z-index' : '')" :style="botton_nav_style">
                             <view>
                                 <!-- 展示 -->
                                 <view v-if="common_site_type == 4" class="cart-exhibition-mode">
@@ -435,7 +435,7 @@
                 is_cart_show_discount: 0,
                 scroll_style: '',
                 // 底部购买导航样式
-                bottom_fixed_style: '',
+                botton_nav_style: '',
                 // 互联网医院问诊数据
                 plugins_hospital_prescription_data: null,
                 plugins_hospital_prescription_status: false
@@ -1409,6 +1409,7 @@
             // 页面样式处理
             page_style_handle() {
                 var value = 0;
+                var value_unit = 'px';
                 if(app.globalData.data.is_use_native_tabbar == 1) {
                     // #ifdef H5
                     value += uni.getWindowInfo().windowBottom || 50;
@@ -1420,11 +1421,13 @@
                         var system = app.globalData.get_system_info(null, null, true);
                         if(system.windowWidth <= 960) {
                             value *= 2;
+                            value_unit = 'rpx';
                         }
                     }
                     // #endif
                 }
                 this.setData({
+                    botton_nav_style: 'bottom:'+value+value_unit,
                     scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 200 : 70)-(this.load_status == 0 ? 100 : 0))+'rpx)',
                 });
             },
@@ -1434,6 +1437,8 @@
                 this.setData({
                     footer_height_value: value
                 });
+                // 页面样式处理
+                this.page_style_handle();
             }
         }
     };
