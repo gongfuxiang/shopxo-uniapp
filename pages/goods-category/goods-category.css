@@ -268,7 +268,7 @@
 .botton-nav {
     width: calc(100% - 60rpx);
     left: auto;
-    bottom: 20rpx;
+    bottom: 40rpx;
     z-index: 2;
     margin-left: 20rpx;
     box-shadow: 0rpx 4rpx 8rpx 0px rgba(0, 0, 0, 0.16);

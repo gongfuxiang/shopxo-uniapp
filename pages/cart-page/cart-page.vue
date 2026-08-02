@@ -1409,7 +1409,6 @@
             // 页面样式处理
             page_style_handle() {
                 var value = 0;
-                var value_unit = 'px';
                 if(app.globalData.data.is_use_native_tabbar == 1) {
                     // #ifdef H5
                     value += uni.getWindowInfo().windowBottom || 50;
@@ -1421,13 +1420,11 @@
                         var system = app.globalData.get_system_info(null, null, true);
                         if(system.windowWidth <= 960) {
                             value *= 2;
-                            value_unit = 'rpx';
                         }
                     }
                     // #endif
                 }
                 this.setData({
-                    bottom_fixed_style: 'bottom:'+value+value_unit,
                     scroll_style: 'height: calc(100vh - ' + (value+(this.cart_type_value == 'realstore' ? 200 : 70)-(this.load_status == 0 ? 100 : 0))+'rpx)',
                 });
             },

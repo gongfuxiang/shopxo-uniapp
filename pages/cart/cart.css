@@ -5,7 +5,7 @@
     height: 100vh;
 }
 .scroll-box .content {
-    padding-bottom: 60rpx;
+    padding-bottom: 140rpx;
 }
 .scroll-box.cart .content {
     padding-bottom: calc(210rpx + env(safe-area-inset-bottom));
