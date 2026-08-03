@@ -16,7 +16,7 @@
                                 <component-search :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                             </block>
                             <block v-else>
-                                <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
+                                <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                             </block>
                         </view>
                     </block>
@@ -926,6 +926,13 @@
             // 分类事件
             category_event(e) {
                 app.globalData.url_open('/pages/goods-search/goods-search?category_id=' + e.currentTarget.dataset.value);
+            },
+
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords_value: e || ''
+                });
             },
 
             // 搜索事件
