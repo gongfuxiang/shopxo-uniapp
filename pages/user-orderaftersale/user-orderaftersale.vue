@@ -4,7 +4,7 @@
         <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
-                    <component-search @onsearch="search_button_event" :propDefaultValue="search_keywords" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propDefaultValue="search_keywords" :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
             </template>
         </component-nav-back>
@@ -383,6 +383,13 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords: e
+                });
             },
 
             // 关键字搜索

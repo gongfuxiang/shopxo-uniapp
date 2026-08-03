@@ -9,7 +9,7 @@
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search" :class="show_type_mode == 1 ? 'map' : ''">
-                    <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
                 <view v-if="is_search_map == 1" class="dis-inline-block margin-left" @tap="show_event">
                     <iconfont :name="show_type_mode == 1 ? 'icon-list-dot' : 'icon-map-location'" color="#666" size="38rpx"></iconfont>
@@ -384,10 +384,17 @@
                 this.get_data_list(1);
             },
 
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords_value: e
+                });
+            },
+
             // 搜索事件
             search_button_event(e) {
                 this.setData({
-                    search_keywords_value: e || "",
+                    search_keywords_value: e,
                     data_page: 1,
                 });
                 this.get_data_list(1);

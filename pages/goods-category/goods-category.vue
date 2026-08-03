@@ -931,7 +931,7 @@
             // 搜索输入事件
             search_input_event(e) {
                 this.setData({
-                    search_keywords_value: e || ''
+                    search_keywords_value: e
                 });
             },
 
@@ -940,7 +940,7 @@
                 // 商品列表模式
                 if (this.category_show_level == 0) {
                     this.setData({
-                        search_keywords_value: e || '',
+                        search_keywords_value: e,
                         data_page: 1,
                         data_list: [],
                         data_list_loding_status: 1,

@@ -10,12 +10,14 @@
                         <template slot="right" :class="is_top_search_width ? 'top-search-width' : 'flex-1 flex-width'">
                             <view v-if="is_base_mode != 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
                                 <block v-if="client_type == 'h5'">
-                                    <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
+                                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
                                 </block>
                                 <block v-else>
                                     <component-search
+                                        @oninput="search_input_event"
                                         @onsearch="search_button_event"
                                         @onicon="search_icon_event"
+                                        :propIsOnInputEvent="true"
                                         :propIsIconOnEvent="is_realstore_top_search_scan == 1"
                                         :propIsOnEvent="true"
                                         :propIsRequired="false"
@@ -910,10 +912,17 @@
                 }
             },
 
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords_value: e
+                });
+            },
+
             // 搜索事件
             search_button_event(e) {
                 this.setData({
-                    search_keywords_value: e || '',
+                    search_keywords_value: e,
                     data_page: 1,
                 });
                 this.source_goods_remove();

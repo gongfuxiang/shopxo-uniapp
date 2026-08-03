@@ -15,7 +15,9 @@
                     </view>
                 </view>
                 <component-search
+                    @oninput="search_input_event"
                     @onsearch="search_button_event"
+                    :propIsOnInputEvent="true"
                     :propIsOnEvent="true"
                     :propIsRequired="false"
                     :propIsBtn="true"
@@ -302,10 +304,17 @@
                 this.get_data_list();
             },
 
-            // 搜索确认
-            search_button_event(value) {
+            // 搜索输入事件
+            search_input_event(e) {
                 this.setData({
-                    search_keywords_value: value || '',
+                    search_keywords_value: e
+                });
+            },
+
+            // 搜索确认
+            search_button_event(e) {
+                this.setData({
+                    search_keywords_value: e,
                     data_page: 1,
                     data_list: [],
                     data_bottom_line_status: false,

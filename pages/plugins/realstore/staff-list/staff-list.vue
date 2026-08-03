@@ -8,7 +8,7 @@
             <view class="staff-header-row flex-row align-c padding-horizontal-main padding-top-main padding-bottom-main bg-white spacing-mb">
                 <view class="fw-b text-size staff-title flex-shrink-0">{{ $t('pages.plugins-realstore-staff-list') }}</view>
                 <view class="flex-1 flex-width margin-left-main staff-search">
-                    <component-search @onsearch="search_button_event" :propDefaultValue="search_keywords_value" :propIsOnEvent="true" :propIsRequired="false" :propIsBtn="true" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBrColor="#eee" propBtnClass="bg-black cr-white text-size-xs" :propPlaceholder="$t('realstore-staff.realstore-staff.a2b3c4')"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propDefaultValue="search_keywords_value" :propIsRequired="false" :propIsBtn="true" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBrColor="#eee" propBtnClass="bg-black cr-white text-size-xs" :propPlaceholder="$t('realstore-staff.realstore-staff.a2b3c4')"></component-search>
                 </view>
             </view>
 
@@ -182,6 +182,7 @@
                 });
             },
 
+            // 获取数据
             get_data_list(is_mandatory) {
                 if (!this.is_index_init) {
                     uni.stopPullDownRefresh();
@@ -286,9 +287,17 @@
                 });
             },
 
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords_value: e
+                });
+            },
+
+            // 搜索事件
             search_button_event(e) {
                 this.setData({
-                    search_keywords_value: e || '',
+                    search_keywords_value: e,
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
@@ -298,6 +307,7 @@
                 this.get_data_list(1);
             },
 
+            // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },

@@ -364,7 +364,7 @@
 
             // 搜索事件
             search_button_event(e) {
-                var params = (e || null) == null ? '' : '?keywords=' + e;
+                var params = (e === '') ? '' : '?keywords=' + e;
                 app.globalData.url_open('/pages/plugins/realstore/search/search' + params);
             },
 

@@ -5,8 +5,10 @@
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                     <component-search
+                        @oninput="search_input_event"
                         @onsearch="search_button_event"
                         :propDefaultValue="search_keywords"
+                        :propIsOnInputEvent="true"
                         :propIsOnEvent="true"
                         :propIsRequired="false"
                         :propPlaceholder="$t('plugins-bargain-order.order.gbo001')"
@@ -558,6 +560,14 @@
                 }
                 return list;
             },
+
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_keywords: e
+                });
+            },
+
             // 关键字搜索
             search_button_event(e) {
                 this.setData({

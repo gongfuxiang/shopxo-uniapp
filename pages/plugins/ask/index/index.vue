@@ -3,7 +3,7 @@
         <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + status_bar_height + 'px;'">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
-                    <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                    <component-search @oninput="search_input_event" :propIsOnInputEvent="true" @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
             </template>
         </component-nav-back>
@@ -286,10 +286,17 @@
                 this.get_data_list();
             },
 
+            // 搜索输入事件
+            search_input_event(e) {
+                this.setData({
+                    search_bwg: e
+                });
+            },
+
             // 查询
             search_button_event(e) {
                 this.setData({
-                    search_bwg: e || '',
+                    search_bwg: e,
                     data_page: 1,
                     data_list: []
                 });
