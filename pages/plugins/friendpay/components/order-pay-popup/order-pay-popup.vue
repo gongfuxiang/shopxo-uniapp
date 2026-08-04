@@ -5,7 +5,7 @@
             <iconfont name="icon-close-line" propClass="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="close_event"></iconfont>
         </view>
         <view class="padding-horizontal-main">
-            <component-friendpay-mode-switch :propPluginsData="propPluginsData" :propIsFriendPay="is_friend_pay" @change="friendpay_mode_change_event"></component-friendpay-mode-switch>
+            <component-friendpay-mode-switch :propPluginsData="propPluginsData" :propIsFriendPay="is_friend_pay" @modeChange="friendpay_mode_change_event"></component-friendpay-mode-switch>
         </view>
         <view class="tc padding-top-sm padding-bottom-sm br-b lh-il">
             <text class="text-size-md cr-price">{{ currency_symbol }}</text>
@@ -97,10 +97,16 @@
                 this.$emit('close');
             },
 
-            // 代付模式切换
-            friendpay_mode_change_event(value) {
-                var is_friend_pay = parseInt(value || 0);
-                this.is_friend_pay = is_friend_pay;
+            // 代付模式切换（兼容 H5 直接传值 / 小程序 e.detail）
+            friendpay_mode_change_event(e) {
+                var value = e;
+                if (typeof e === 'object' && e !== null && Object.prototype.hasOwnProperty.call(e, 'detail')) {
+                    value = Array.isArray(e.detail) ? e.detail[0] : e.detail;
+                    if (typeof value === 'object' && value !== null && Array.isArray(value.__args__)) {
+                        value = value.__args__[0];
+                    }
+                }
+                this.is_friend_pay = parseInt(value || 0) === 1 ? 1 : 0;
             },
 
             // 支付方式选择

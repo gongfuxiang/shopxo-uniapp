@@ -233,7 +233,7 @@
                             v-if="plugins_friendpay_data != null && plugins_friendpay_data.is_enable == 1 && common_order_is_booking != 1"
                             :propPluginsData="plugins_friendpay_data"
                             :propIsFriendPay="is_friend_pay_mode"
-                            @change="friendpay_mode_change_event"
+                            @modeChange="friendpay_mode_change_event"
                         ></component-friendpay-mode-switch>
                         <!-- 虚拟币支付 -->
                         <block v-if="plugins_coin_is_valid">
@@ -939,8 +939,15 @@
                 return data;
             },
 
-            // 朋友代付模式切换
-            friendpay_mode_change_event(value) {
+            // 朋友代付模式切换（兼容 H5 直接传值 / 小程序 e.detail）
+            friendpay_mode_change_event(e) {
+                var value = e;
+                if (typeof e === 'object' && e !== null && Object.prototype.hasOwnProperty.call(e, 'detail')) {
+                    value = Array.isArray(e.detail) ? e.detail[0] : e.detail;
+                    if (typeof value === 'object' && value !== null && Array.isArray(value.__args__)) {
+                        value = value.__args__[0];
+                    }
+                }
                 var is_friend_pay = parseInt(value || 0) === 1 ? 1 : 0;
                 var params = this.params || {};
                 params['is_friend_pay'] = is_friend_pay;
@@ -1279,9 +1286,8 @@
                 } else if(res.data.order_status == 2) {
                     // 线下支付（开启线下订单正常进入流程）
                     app.globalData.url_open(this.to_appoint_page, true);
-                    
-                } else if((res.data.jump_url || null) != null && res.data.jump_url != '') {
-                    // 朋友代付跳转分享页
+                } else if((res.data.jump_url || null) != null) {
+                    // url支付方式
                     app.globalData.url_open(res.data.jump_url);
                 } else {
                     // 调起支付

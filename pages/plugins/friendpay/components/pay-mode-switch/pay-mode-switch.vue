@@ -2,10 +2,15 @@
     <view v-if="(pluginsData || null) != null && pluginsData.is_enable == 1" class="friendpay-mode-switch">
         <view class="friendpay-mode-card border-radius-main bg-white padding-main cp" :class="isFriendPay ? 'friendpay-mode-card-selected' : ''" @tap="toggle_event">
             <view class="flex-row align-c">
-                <iconfont name="icon-share" size="32rpx" color="#999" propClass="margin-right-sm"></iconfont>
+                <!-- pointer-events:none 避免小程序里自定义组件拦截点击导致无法冒泡到外层 -->
+                <view class="friendpay-mode-icon-wrap margin-right-sm">
+                    <iconfont name="icon-share" size="32rpx" color="#999"></iconfont>
+                </view>
                 <text class="fw-b text-size">{{ titleText }}</text>
                 <view class="flex-1"></view>
-                <iconfont :name="isFriendPay ? 'icon-selected-solid' : 'icon-not-selected'" size="40rpx" :color="isFriendPay ? theme_color : '#ccc'"></iconfont>
+                <view class="friendpay-mode-icon-wrap">
+                    <iconfont :name="isFriendPay ? 'icon-selected-solid' : 'icon-not-selected'" size="40rpx" :color="isFriendPay ? theme_color : '#ccc'"></iconfont>
+                </view>
             </view>
             <view v-if="contentLines.length > 0" class="margin-top-sm">
                 <view v-for="(line, index) in contentLines" :key="index" class="cr-grey text-size-xs" :class="index > 0 ? 'margin-top-xs' : ''">{{ line }}</view>
@@ -57,9 +62,10 @@
         },
         methods: {
             // 切换代付模式
+            // 不用原生事件名 change，避免小程序端自定义事件与原生事件冲突
             toggle_event() {
                 var value = this.isFriendPay ? 0 : 1;
-                this.$emit('change', value);
+                this.$emit('modeChange', value);
             },
         },
     };
@@ -71,5 +77,8 @@
     .friendpay-mode-card-selected {
         border-color: #E22C08;
         background: #fff9f7;
+    }
+    .friendpay-mode-icon-wrap {
+        pointer-events: none;
     }
 </style>
