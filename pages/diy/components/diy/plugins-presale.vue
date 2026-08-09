@@ -33,7 +33,7 @@
                                                 <!-- 角标 -->
                                                 <subscriptIndex :propValue="propValue"></subscriptIndex>
                                                 <!-- 预售标签 -->
-                                                <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || this.$t('diy.diy.presale') }}</view>
+                                                <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || $t('diy.diy.presale') }}</view>
                                             </view>
                                         </template>
                                         <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'" class="flex-col gap-10 wh-auto flex-1 jc-sb oh" :style="content_style">
@@ -101,7 +101,7 @@
                                                             <!-- 角标 -->
                                                             <subscriptIndex :propValue="propValue"></subscriptIndex>
                                                             <!-- 预售标签 -->
-                                                            <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || this.$t('diy.diy.presale') }}</view>
+                                                            <view v-if="form.is_presale_tag == '1'" class="presale-tag" :style="presale_tag_style">{{ form.presale_tag_text || $t('diy.diy.presale') }}</view>
                                                         </view>
                                                     </template>
                                                     <view v-if="is_show('title') || is_show('simple_desc') || is_show('price') || is_show('original_price') || form.is_shop_show == '1'"  class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">

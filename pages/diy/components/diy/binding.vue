@@ -143,7 +143,7 @@
                                  <!-- 底部展开收起按钮区域 -->
                                 <view :style="bottom_button_style" :data-index="match_index" @tap.stop="item_more_goods_event">
                                     <view class="flex-row align-c jc-sb" :style="bottom_button_img_style">
-                                        <view :style="button_style">{{ match_item.is_home_show_goods ? this.$t('common.retract') : this.$t('common.expand') }}{{ match_item.type_name }}{{ $t('common.goods') }}</view>
+                                        <view :style="button_style">{{ match_item.is_home_show_goods ? $t('common.retract') : $t('common.expand') }}{{ match_item.type_name }}{{ $t('common.goods') }}</view>
                                         <iconfont :name="match_item.is_home_show_goods ? 'icon-arrow-top' : 'icon-arrow-bottom'" :color="new_style.bottom_button_icon_color" :size="new_style.bottom_button_icon_size + ''"></iconfont>
                                     </view>
                                 </view>

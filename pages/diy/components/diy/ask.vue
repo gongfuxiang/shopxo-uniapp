@@ -14,7 +14,7 @@
                                     <view class="flex-row">
                                         <view v-if="is_show('reply_status')" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
                                             <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                {{ item.is_reply == 0 ? this.$t('diy.diy.not_reply') : this.$t('diy.diy.replied')}}
+                                                {{ item.is_reply == 0 ? $t('diy.diy.not_reply') : $t('diy.diy.replied')}}
                                             </view>
                                         </view>
                                     </view>
@@ -33,7 +33,7 @@
                                     <view class="flex-row">
                                         <view v-if="is_show('reply_status')" class="flex-row" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
                                             <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                {{ item.is_reply == 0 ? this.$t('diy.diy.not_reply') : this.$t('diy.diy.replied')}}
+                                                {{ item.is_reply == 0 ? $t('diy.diy.not_reply') : $t('diy.diy.replied')}}
                                             </view>
                                         </view>
                                     </view>
@@ -57,7 +57,7 @@
                                                 <view class="flex-row">
                                                     <view v-if="is_show('reply_status')" class="flex-row" :style="item.is_reply == 0 ? not_replied_yet_style : returned_style">
                                                         <view :style="item.is_reply == 0 ? not_replied_yet_img_style : returned_img_style">
-                                                            {{ item.is_reply == 0 ? this.$t('diy.diy.not_reply') : this.$t('diy.diy.replied')}}
+                                                            {{ item.is_reply == 0 ? $t('diy.diy.not_reply') : $t('diy.diy.replied')}}
                                                         </view>
                                                     </view>
                                                 </view>
