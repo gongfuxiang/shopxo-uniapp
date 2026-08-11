@@ -138,33 +138,37 @@
                         </view>
                     </view>
 
-                    <!-- 属性 -->
+                    <!-- 属性（模板分组，同组单选） -->
                     <view v-if="(search_map_list.goods_params_list || null) != null && search_map_list.goods_params_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>{{$t('common.attribute')}}</text>
-                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">{{$t('common.more')}}</text>
                         </view>
-                        <view class="map-content map-text-item goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">
-                            <block v-for="(item, index) in search_map_list.goods_params_list" :key="index">
-                                <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_params_list">
-                                    {{item.value}}</view>
-                            </block>
+                        <view v-for="(group, gi) in search_map_list.goods_params_list" :key="'params-'+gi" class="map-group margin-top-lg">
+                            <view class="map-group-title cr-grey text-size-xs">{{group.name}}</view>
+                            <view class="map-content map-text-item goods-params-container oh margin-top-sm">
+                                <block v-for="(item, index) in group.options" :key="'params-'+gi+'-'+index">
+                                    <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" :data-group="gi" data-field="goods_params_list">
+                                        {{item.value}}</view>
+                                </block>
+                            </view>
                         </view>
                     </view>
 
-                    <!-- 规格 -->
+                    <!-- 规格（模板分组，同组单选） -->
                     <view v-if="(search_map_list.goods_spec_list || null) != null && search_map_list.goods_spec_list.length > 0"
                         class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>{{$t('goods-detail.goods-detail.u401fi')}}</text>
-                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">{{$t('common.more')}}</text>
                         </view>
-                        <view class="map-content map-text-item goods-spec-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_spec_list.height + ';'">
-                            <block v-for="(item, index) in search_map_list.goods_spec_list" :key="index">
-                                <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_spec_list">
-                                    {{item.value}}</view>
-                            </block>
+                        <view v-for="(group, gi) in search_map_list.goods_spec_list" :key="'spec-'+gi" class="map-group margin-top-lg">
+                            <view class="map-group-title cr-grey text-size-xs">{{group.name}}</view>
+                            <view class="map-content map-text-item goods-spec-container oh margin-top-sm">
+                                <block v-for="(item, index) in group.options" :key="'spec-'+gi+'-'+index">
+                                    <view :class="'item fl cr-base radius cp margin-right-sm ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" :data-group="gi" data-field="goods_spec_list">
+                                        {{item.value}}</view>
+                                </block>
+                            </view>
                         </view>
                     </view>
 
@@ -288,14 +292,16 @@
                         form_key: "produce_region_ids"
                     },
                     goods_params_list: {
-                        height: "82rpx",
-                        default: "82rpx",
-                        form_key: "goods_params_values"
+                        height: "auto",
+                        default: "auto",
+                        form_key: "psid",
+                        is_group: true
                     },
                     goods_spec_list: {
-                        height: "82rpx",
-                        default: "82rpx",
-                        form_key: "goods_spec_values"
+                        height: "auto",
+                        default: "auto",
+                        form_key: "scid",
+                        is_group: true
                     }
                 },
                 // 标签插件
@@ -393,8 +399,8 @@
                                     category_list: data.category_list || [],
                                     screening_price_list: data.screening_price_list || [],
                                     goods_produce_region_list: data.goods_produce_region_list || [],
-                                    goods_params_list: data.goods_params_list || [],
-                                    goods_spec_list: data.goods_spec_list || []
+                                    goods_params_list: this.params_spec_list_handle(data.goods_params_list || []),
+                                    goods_spec_list: this.params_spec_list_handle(data.goods_spec_list || [])
                                 },
                                 load_status: 1,
                                 top_right_cart_total: data.cart_total.buy_number || 0,
@@ -539,6 +545,26 @@
                 });
             },
 
+            // 参数/规格模板列表处理（接口 is_active -> 页面 active）
+            params_spec_list_handle(list) {
+                if (!list || list.length == 0) {
+                    return [];
+                }
+                return list.map(function(group) {
+                    var options = (group.options || []).map(function(opt) {
+                        return {
+                            value: opt.value,
+                            id: opt.id || '',
+                            active: parseInt(opt.is_active || opt.active || 0)
+                        };
+                    });
+                    return {
+                        name: group.name || '',
+                        options: options
+                    };
+                });
+            },
+
             // 搜索条件处理
             request_map_handle() {
                 var params = this.params;
@@ -548,35 +574,48 @@
                 // 指定分类、品牌
                 post_data['category_id'] = params['category_id'] || 0;
                 post_data['brand'] = params['brand'] || 0;
+                // 参数/规格默认清空，避免残留上次选中
+                post_data['psid'] = '';
+                post_data['scid'] = '';
 
                 // 搜索条件
                 var temp_field = this.map_fields_list;
                 var temp_list = this.search_map_list;
                 for (var i in temp_field) {
-                    if (temp_list[i] != null != null && temp_list[i].length > 0) {
-                        var temp = {};
-                        var index = 0;
-                        for (var k in temp_list[i]) {
-                            if ((temp_list[i][k]['active'] || 0) == 1) {
-                                switch (i) {
-                                    // 价格
-                                    case 'screening_price_list':
-                                        temp[index] = temp_list[i][k]['min_price'] + '-' + temp_list[i][k]['max_price'];
-                                        break;
-                                        // 属性、规格
-                                    case 'goods_params_list':
-                                    case 'goods_spec_list':
-                                        temp[index] = temp_list[i][k]['value'];
-                                        break;
-                                        // 默认取值id
-                                    default:
-                                        temp[index] = temp_list[i][k]['id'];
+                    if ((temp_list[i] || null) == null || temp_list[i].length <= 0) {
+                        continue;
+                    }
+                    // 参数/规格：分组模板，提交 ascii id（psid/scid）
+                    if (temp_field[i]['is_group']) {
+                        var selected_ids = [];
+                        for (var gi in temp_list[i]) {
+                            var options = temp_list[i][gi].options || [];
+                            for (var oi in options) {
+                                if ((options[oi]['active'] || 0) == 1) {
+                                    selected_ids.push(options[oi]['id'] || options[oi]['value']);
                                 }
-                                index++;
                             }
                         }
-                        post_data[temp_field[i]['form_key']] = app.globalData.get_length(temp) > 0 ? JSON.stringify(temp) : '';
+                        post_data[temp_field[i]['form_key']] = selected_ids.length > 0 ? selected_ids.join(',') : '';
+                        continue;
                     }
+                    var temp = {};
+                    var index = 0;
+                    for (var k in temp_list[i]) {
+                        if ((temp_list[i][k]['active'] || 0) == 1) {
+                            switch (i) {
+                                // 价格
+                                case 'screening_price_list':
+                                    temp[index] = temp_list[i][k]['min_price'] + '-' + temp_list[i][k]['max_price'];
+                                    break;
+                                    // 默认取值id
+                                default:
+                                    temp[index] = temp_list[i][k]['id'];
+                            }
+                            index++;
+                        }
+                    }
+                    post_data[temp_field[i]['form_key']] = app.globalData.get_length(temp) > 0 ? JSON.stringify(temp) : '';
                 }
 
                 // 排序
@@ -677,33 +716,96 @@
                 }
             },
 
-            // 条件-选择事件
+            // 条件-选择事件（参数/规格：同组单选，跨组可多选）
             map_item_event(e) {
                 var index = e.currentTarget.dataset.index;
                 var field = e.currentTarget.dataset.field;
+                var group = e.currentTarget.dataset.group;
                 var temp_list = this.search_map_list;
-                if ((temp_list[field] || null) != null && (temp_list[field][index] || null) != null) {
+                var field_conf = this.map_fields_list[field] || {};
+                if ((temp_list[field] || null) == null) {
+                    return;
+                }
+                // 分组模板
+                if (field_conf.is_group) {
+                    var group_item = temp_list[field][group] || null;
+                    if (group_item == null || !(group_item.options || null) || (group_item.options[index] || null) == null) {
+                        return;
+                    }
+                    for (var oi in group_item.options) {
+                        if (parseInt(oi) === parseInt(index)) {
+                            group_item.options[oi]['active'] = (group_item.options[oi]['active'] || 0) == 0 ? 1 : 0;
+                        } else {
+                            group_item.options[oi]['active'] = 0;
+                        }
+                    }
+                    this.setData({
+                        search_map_list: temp_list
+                    });
+                    return;
+                }
+                if ((temp_list[field][index] || null) != null) {
                     temp_list[field][index]['active'] = (temp_list[field][index]['active'] || 0) == 0 ? 1 : 0;
                     this.setData({
                         search_map_list: temp_list
                     });
+                    // 切换分类后刷新参数/规格模板
+                    if (field == 'category_list') {
+                        this.refresh_params_spec_map();
+                    }
                 }
+            },
+
+            // 根据当前已选分类刷新参数/规格筛选项（与 PC MapFilter 一致）
+            refresh_params_spec_map() {
+                var post_data = this.request_map_handle();
+                // 用弹层当前分类覆盖；切换分类时清空已选参数/规格
+                post_data['psid'] = '';
+                post_data['scid'] = '';
+                uni.request({
+                    url: app.globalData.get_request_url("mapfilter", "search"),
+                    method: 'POST',
+                    data: post_data,
+                    dataType: 'json',
+                    success: res => {
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var temp_search_map_list = this.search_map_list;
+                            temp_search_map_list.goods_params_list = this.params_spec_list_handle(data.goods_params_list || []);
+                            temp_search_map_list.goods_spec_list = this.params_spec_list_handle(data.goods_spec_list || []);
+                            this.setData({
+                                search_map_list: temp_search_map_list
+                            });
+                        }
+                    }
+                });
             },
 
             // 条件-清空
             map_remove_event(e) {
                 var temp_list = this.search_map_list;
                 var temp_post = this.post_data;
+                var temp_field = this.map_fields_list;
 
                 // 关键字
                 temp_post['wd'] = '';
 
                 // 品牌、分类、价格、属性、规格
                 for (var i in temp_list) {
-                    if ((temp_list[i] || null) != null && temp_list[i].length > 0) {
-                        for (var k in temp_list[i]) {
-                            temp_list[i][k]['active'] = 0;
+                    if ((temp_list[i] || null) == null || temp_list[i].length <= 0) {
+                        continue;
+                    }
+                    if ((temp_field[i] || null) != null && temp_field[i]['is_group']) {
+                        for (var gi in temp_list[i]) {
+                            var options = temp_list[i][gi].options || [];
+                            for (var oi in options) {
+                                options[oi]['active'] = 0;
+                            }
                         }
+                        continue;
+                    }
+                    for (var k in temp_list[i]) {
+                        temp_list[i][k]['active'] = 0;
                     }
                 }
 
