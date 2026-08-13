@@ -1357,6 +1357,18 @@
             ]
         },
         {
+            "root": "pages/plugins/imagesearch",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/shop",
             "pages": [
                 {

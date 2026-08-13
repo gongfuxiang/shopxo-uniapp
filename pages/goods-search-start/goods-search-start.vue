@@ -4,13 +4,30 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 搜索 -->
                 <view class="margin-bottom-xxxl">
-                    <view class="flex-row jc-sb">
+                    <view class="flex-row jc-sb align-c">
                         <view v-if="is_search_shop == 1" class="search-switch lh-xxl" @tap="search_switch_type_event">
                             <text class="margin-right-xs">{{search_switch_type_value == 'shop' ? $t('common.shop') : $t('common.goods')}}</text>
                             <iconfont name="icon-arrow-down" color="#666" size="24rpx" class="lh-sm"></iconfont>
                         </view>
                         <view :class="'search-container '+(is_search_shop == 1 ? 'switch-shop' : 'wh-auto')">
-                            <component-search ref="search" :propIsIcon="is_search_shop != 1" :propIsBtn="true" :propIsOnEvent="true" propSize="sm" @onsearch="search_history_handle" :propPlaceholderValue="search_placeholder_keywords_value" :propPlaceholder="search_keywords_value" :propDefaultValue="search_keywords_value" propBrColor="#eee" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                            <component-search
+                                ref="search"
+                                :propIsIcon="is_search_shop != 1"
+                                :propIsBtn="true"
+                                :propIsOnEvent="true"
+                                propSize="sm"
+                                @onsearch="search_history_handle"
+                                :propPlaceholderValue="search_placeholder_keywords_value"
+                                :propPlaceholder="search_keywords_value"
+                                :propDefaultValue="search_keywords_value"
+                                propBrColor="#eee"
+                                propPlaceholderClass="cr-grey-c"
+                                propIconColor="#999"
+                                propBgColor="#fff"
+                                :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
+                                propRightIconColor="#999"
+                                @onrighticon="imagesearch_event"
+                            ></component-search>
                         </view>
                     </view>
                 </view>
@@ -96,6 +113,7 @@
                 search_keywords_value: '',
                 search_switch_type_value: 'goods',
                 is_search_shop: 0,
+                is_imagesearch: 0,
             };
         },
 
@@ -147,8 +165,10 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    var imagesearch = app.globalData.get_config('plugins_base.imagesearch.data') || {};
                     this.setData({
-                        is_search_shop: parseInt(app.globalData.get_config('plugins_base.shop.data.is_main_search_shop', 0))
+                        is_search_shop: parseInt(app.globalData.get_config('plugins_base.shop.data.is_main_search_shop', 0)),
+                        is_imagesearch: (parseInt(imagesearch.is_enable || 0) == 1 && parseInt(imagesearch.is_show_app_search || 0) == 1) ? 1 : 0,
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -235,6 +255,15 @@
                         });
                     }
                 });
+            },
+
+            // 以图搜款入口
+            imagesearch_event() {
+                if (this.is_imagesearch != 1) {
+                    app.globalData.showToast(this.$t('imagesearch.imagesearch.not_enable'));
+                    return;
+                }
+                app.globalData.url_open('/pages/plugins/imagesearch/index/index');
             },
 
             // 打开url

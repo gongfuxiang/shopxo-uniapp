@@ -457,6 +457,7 @@
 		"plugins-points-search": "兑换商品搜索",
 		"plugins-points-scan": "扫码领积分",
 		"plugins-brand-index": "品牌",
+		"plugins-imagesearch-index": "以图搜款",
 		"plugins-shop-index": "所有店铺",
 		"plugins-shop-detail": "店铺首页",
 		"plugins-shop-search": "店铺商品搜索",
@@ -2469,6 +2470,27 @@
 			"pay_success_title": "代付成功",
 			"pay_success_tips": "感谢您的帮助，订单已支付完成",
 			"view_records": "查看代付记录"
+		}
+	},
+	"imagesearch": {
+		"imagesearch": {
+			"upload_image": "上传图片",
+			"change_image": "换图",
+			"similar_goods": "相似商品",
+			"total_prefix": "共 ",
+			"total_suffix": " 件",
+			"boot_title": "上传图片，找同款商品",
+			"boot_desc": "支持商品主图、实拍图，智能识别后匹配相似商品",
+			"upload_search": "上传图片搜同款",
+			"boot_step1": "上传图片",
+			"boot_step2": "智能识图",
+			"boot_step3": "匹配同款",
+			"empty_tips": "暂无相似商品，请换一张图试试",
+			"image_fail": "图片处理失败，请重试",
+			"not_enable": "以图搜款未启用",
+			"confirm_title": "确定搜索这张图片吗？",
+			"recognizing_title": "智能识图中",
+			"recognizing_btn": "正在识别图片..."
 		}
 	}
 }

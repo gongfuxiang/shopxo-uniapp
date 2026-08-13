@@ -455,6 +455,7 @@
 		"plugins-points-search": "Exchange goods search",
 		"plugins-points-scan": "Scan the QR code to claim points",
 		"plugins-brand-index": "brand",
+		"plugins-imagesearch-index": "Image Search",
 		"plugins-shop-index": "All stores",
 		"plugins-shop-detail": "Store homepage",
 		"plugins-shop-search": "Store Product Search",
@@ -2476,6 +2477,27 @@
 			"pay_success_title": "Pay success",
 			"pay_success_tips": "Thank you, the order has been paid",
 			"view_records": "View records"
+		}
+	},
+	"imagesearch": {
+		"imagesearch": {
+			"upload_image": "Upload image",
+			"change_image": "Change",
+			"similar_goods": "Similar goods",
+			"total_prefix": "",
+			"total_suffix": " items",
+			"boot_title": "Upload a photo to find similar items",
+			"boot_desc": "Product or real photos work. We match similar goods for you.",
+			"upload_search": "Search by image",
+			"boot_step1": "Upload",
+			"boot_step2": "Recognize",
+			"boot_step3": "Match",
+			"empty_tips": "No similar goods found. Try another image.",
+			"image_fail": "Failed to process image",
+			"not_enable": "Image search is not enabled",
+			"confirm_title": "Search with this image?",
+			"recognizing_title": "Recognizing",
+			"recognizing_btn": "Recognizing image..."
 		}
 	}
 }

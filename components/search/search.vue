@@ -1,16 +1,16 @@
 <template>
     <view :class="theme_view">
-        <view :class="'search-content pr round '+propSize" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')">
+        <view :class="'search-content pr round '+propSize+(propRightIcon ? ' has-right-icon' : '')+(propIsBtn ? ' has-search-btn' : '')" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')">
             <slot name="left"></slot>
             <view v-if="propIsIcon" class="search-icon dis-inline-block pa" :style="'padding:' + propPadding" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
-            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')">{{propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5')}}</view>
+            <view v-if="propIsEnterSearchStart" @tap="seat_input_event" :class="'input '+propClass+' '+propPlaceholderClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')">{{propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5')}}</view>
             <input
                 v-else
                 type="text"
                 confirm-type="search"
-                :class="'input round dis-block '+propClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')"
+                :class="'input round dis-block '+propClass+' '+(propIsIcon ? ' input-left-icon' : '')+' '+(propIsBtn ? ' input-search-btn' : '')+(propRightIcon ? ' input-right-icon' : '')"
                 :placeholder="(propPlaceholder || propPlaceholderValue || this.$t('search.search.660us5'))"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
@@ -21,6 +21,9 @@
                 @blur="search_input_blur_event"
                 :style="'color:' + propTextColor + ';'"
             />
+            <view v-if="propRightIcon" class="search-right-icon pa flex-row align-c jc-c" @tap.stop="search_right_icon_event">
+                <iconfont :name="propRightIcon" :color="propRightIconColor" :size="propRightIconSize"></iconfont>
+            </view>
             <button v-if="propIsBtn" :class="'search-btn pa '+propBtnClass"  size="mini" type="default" @tap="search_submit_confirm_event">{{$t('common.search')}}</button>
             <slot name="right"></slot>
         </view>
@@ -112,6 +115,23 @@
             propIsIconOnEvent: {
                 type: Boolean,
                 default: false,
+            },
+            // 右侧自定义图标（如以图搜款相机）
+            propRightIcon: {
+                type: String,
+                default: '',
+            },
+            propRightIconColor: {
+                type: String,
+                default: '#999',
+            },
+            propRightIconSize: {
+                type: String,
+                default: '32rpx',
+            },
+            propIsRightIconOnEvent: {
+                type: Boolean,
+                default: true,
             },
             propIsBtn: {
                 type: Boolean,
@@ -227,6 +247,13 @@
                 }
             },
 
+            // 右侧图标事件
+            search_right_icon_event() {
+                if (this.propIsRightIconOnEvent) {
+                    this.$emit('onrighticon', {});
+                }
+            },
+
             // 占位搜索事件
             seat_input_event(e) {
                 app.globalData.url_open('/pages/goods-search-start/goods-search-start');
@@ -265,6 +292,29 @@
     .search-content .input:not(.input-left-icon):not(.input-search-btn) {
         width: calc(100% - 40rpx);
         margin-left: 20rpx;
+    }
+    /* 有右侧图标时，为图标预留空间 */
+    .search-content.has-right-icon.has-search-btn .input.input-left-icon.input-search-btn {
+        width: calc(100% - 248rpx);
+    }
+    .search-content.has-right-icon.has-search-btn .input:not(.input-left-icon).input-search-btn {
+        width: calc(100% - 200rpx);
+    }
+    .search-content.has-right-icon:not(.has-search-btn) .input.input-left-icon {
+        width: calc(100% - 132rpx);
+    }
+    .search-content.has-right-icon:not(.has-search-btn) .input:not(.input-left-icon) {
+        width: calc(100% - 88rpx);
+    }
+    .search-content .search-right-icon {
+        width: 56rpx;
+        height: 100%;
+        top: 0;
+        right: 6rpx;
+        z-index: 2;
+    }
+    .search-content.has-search-btn .search-right-icon {
+        right: 118rpx;
     }
     .search-content .search-btn {
         width: 106rpx;

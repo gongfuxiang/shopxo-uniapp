@@ -79,13 +79,20 @@
                                     <!-- 是否开启搜索框前面icon扫一扫 -->
                                     <block v-if="is_home_search_scan == 1">
                                         <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                            :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
+                                            :propRightIconColor="'#999'"
+                                            @onrighticon="imagesearch_event"
                                             <!-- #ifndef H5 -->
                                             @onicon="search_icon_event" propIcon="icon-scan" :propIsIconOnEvent="true"
                                             <!-- #endif -->
                                         ></component-search>
                                     </block>
                                     <block v-else>
-                                        <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                                        <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                            :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
+                                            :propRightIconColor="'#999'"
+                                            @onrighticon="imagesearch_event"
+                                        ></component-search>
                                     </block>
                                 </view>
                             </view>
@@ -381,6 +388,7 @@
                 load_status: 0,
                 currency_symbol: app.globalData.currency_symbol(),
                 is_home_search_scan: app.globalData.data.is_home_search_scan,
+                is_imagesearch: 0,
                 data_list: [],
                 banner_list: [],
                 navigation: [],
@@ -530,6 +538,7 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    var imagesearch = app.globalData.get_config('plugins_base.imagesearch.data') || {};
                     this.setData({
                         page_load_status: 1,
                         currency_symbol: app.globalData.get_config('currency_symbol'),
@@ -539,6 +548,7 @@
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
+                        is_imagesearch: (parseInt(imagesearch.is_enable || 0) == 1 && parseInt(imagesearch.is_show_app_search || 0) == 1) ? 1 : 0,
                     });
                 }
             },
@@ -731,6 +741,14 @@
             // 搜索icon扫码事件
             search_icon_event(e) {
                 app.globalData.scan_handle();
+            },
+
+            // 以图搜款入口
+            imagesearch_event() {
+                if (this.is_imagesearch != 1) {
+                    return;
+                }
+                app.globalData.url_open('/pages/plugins/imagesearch/index/index');
             }
         },
     };
