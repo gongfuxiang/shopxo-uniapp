@@ -123,7 +123,6 @@
 
 <script>
     const app = getApp();
-    const IMAGE_CACHE_KEY = 'plugins_imagesearch_query_image';
     const RECOGNIZE_MIN_MS = 1200;
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
@@ -213,16 +212,6 @@
 
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
-
-            // 设置导航标题
-            uni.setNavigationBarTitle({
-                title: this.$t('pages.plugins-imagesearch-index'),
-            });
-
-            // 清理旧版落盘的查询图缓存（base64 / 上传 URL）
-            try {
-                uni.removeStorageSync(IMAGE_CACHE_KEY);
-            } catch (e) {}
         },
 
         onShow() {
