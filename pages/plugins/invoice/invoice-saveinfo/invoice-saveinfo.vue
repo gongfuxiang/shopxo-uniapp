@@ -188,12 +188,27 @@
 
             // 表单提交
             form_submit(e) {
-                var data = e.detail.value;
+                var data = e.detail.value || {};
                 if ((this.data || null) == null || (this.data.id || null) == null) {
                     data['ids'] = this.params.ids || '';
                     data['type'] = this.params.type || '';
                 } else {
                     data['id'] = this.data.id;
+                }
+
+                // picker 在子组件内，form 的 detail.value 往往带不上；先用本地索引回填（含类型 id=0 电子发票）
+                if ((this.can_invoice_type_list || [])[this.form_invoice_type_index] == undefined) {
+                    app.globalData.showToast(this.$t('invoice-saveinfo.invoice-saveinfo.t3i3e3'));
+                    return;
+                }
+                if ((this.apply_type_list || [])[this.form_apply_type_index] == undefined) {
+                    app.globalData.showToast(this.$t('invoice-saveinfo.invoice-saveinfo.k31t2s'));
+                    return;
+                }
+                data['invoice_type'] = this.can_invoice_type_list[this.form_invoice_type_index]['id'];
+                data['apply_type'] = this.apply_type_list[this.form_apply_type_index]['id'];
+                if (this.invoice_content_list.length > 0 && this.invoice_content_list[this.form_invoice_content_index] != undefined) {
+                    data['invoice_content'] = this.invoice_content_list[this.form_invoice_content_index];
                 }
 
                 var validation = [
@@ -204,11 +219,6 @@
                 if (app.globalData.fields_check(data, validation)) {
                     if (!this.invoice_form_validate(data)) {
                         return;
-                    }
-                    data['invoice_type'] = this.can_invoice_type_list[this.form_invoice_type_index]['id'];
-                    data['apply_type'] = this.apply_type_list[this.form_apply_type_index]['id'];
-                    if (this.invoice_content_list.length > 0 && this.invoice_content_list[this.form_invoice_content_index] != undefined) {
-                        data['invoice_content'] = this.invoice_content_list[this.form_invoice_content_index];
                     }
                     uni.showLoading({
                         title: this.$t('common.submit_in_text'),

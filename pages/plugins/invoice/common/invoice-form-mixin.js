@@ -46,7 +46,7 @@ export default {
         // 发票类型事件
         form_invoice_type_event(e) {
             this.invoice_form_assign({
-                form_invoice_type_index: e.detail.value,
+                form_invoice_type_index: parseInt((e.detail && e.detail.value) || 0),
             });
             this.invoice_container_handle();
         },
@@ -54,7 +54,7 @@ export default {
         // 申请类型事件
         form_apply_type_event(e) {
             this.invoice_form_assign({
-                form_apply_type_index: e.detail.value,
+                form_apply_type_index: parseInt((e.detail && e.detail.value) || 0),
             });
             this.invoice_container_handle();
         },
@@ -62,7 +62,7 @@ export default {
         // 发票内容事件
         form_invoice_content_event(e) {
             this.invoice_form_assign({
-                form_invoice_content_index: e.detail.value,
+                form_invoice_content_index: parseInt((e.detail && e.detail.value) || 0),
             });
         },
 
