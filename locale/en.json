@@ -2495,7 +2495,6 @@
 			"boot_step3": "Match",
 			"empty_tips": "No similar goods found. Try another image.",
 			"image_fail": "Failed to process image",
-			"not_enable": "Image search is not enabled",
 			"confirm_title": "Search with this image?",
 			"recognizing_title": "Recognizing",
 			"recognizing_btn": "Recognizing image..."

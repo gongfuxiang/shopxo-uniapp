@@ -155,3 +155,14 @@
 .plugins-homemiddleadv .item {
     flex: 1 1 calc(50% - 20rpx);
 }
+
+/**
+ * AI智能客服 - 搜索旁入口
+ */
+.plugins-aichat-search-entry {
+    margin-left: 16rpx;
+    height: 64rpx;
+    line-height: 64rpx;
+    padding: 0 18rpx;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+}

@@ -488,9 +488,9 @@
 }
 .aichat-input-wrap {
     background: #fff;
-    border: 1rpx solid #dde3ec;
+    border: 1rpx solid #c4b5fd;
     border-radius: 24rpx;
-    box-shadow: 0 4rpx 20rpx rgba(31, 35, 41, 0.06);
+    box-shadow: 0 4rpx 20rpx rgba(124, 58, 237, 0.12);
     padding: 18rpx 20rpx 14rpx;
 }
 .aichat-input {

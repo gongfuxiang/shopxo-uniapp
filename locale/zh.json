@@ -2488,7 +2488,6 @@
 			"boot_step3": "匹配同款",
 			"empty_tips": "暂无相似商品，请换一张图试试",
 			"image_fail": "图片处理失败，请重试",
-			"not_enable": "以图搜款未启用",
 			"confirm_title": "确定搜索这张图片吗？",
 			"recognizing_title": "智能识图中",
 			"recognizing_btn": "正在识别图片..."

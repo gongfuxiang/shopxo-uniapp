@@ -4,12 +4,12 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 搜索 -->
                 <view class="margin-bottom-xxxl">
-                    <view class="flex-row jc-sb align-c">
+                    <view class="flex-row jc-sb align-c gap-10">
                         <view v-if="is_search_shop == 1" class="search-switch lh-xxl" @tap="search_switch_type_event">
                             <text class="margin-right-xs">{{search_switch_type_value == 'shop' ? $t('common.shop') : $t('common.goods')}}</text>
                             <iconfont name="icon-arrow-down" color="#666" size="24rpx" class="lh-sm"></iconfont>
                         </view>
-                        <view :class="'search-container '+(is_search_shop == 1 ? 'switch-shop' : 'wh-auto')">
+                        <view class="search-container">
                             <component-search
                                 ref="search"
                                 :propIsIcon="is_search_shop != 1"
@@ -29,6 +29,7 @@
                                 @onrighticon="imagesearch_event"
                             ></component-search>
                         </view>
+                        <view v-if="is_aichat_search == 1" class="plugins-aichat-search-entry round fw-b nowrap text-size-xs cr-white flex-shrink" @tap="aichat_search_event">{{ aichat_search_name }}</view>
                     </view>
                 </view>
                 <!-- 历史搜索关键字 -->
@@ -112,8 +113,13 @@
                 search_placeholder_keywords_value: '',
                 search_keywords_value: '',
                 search_switch_type_value: 'goods',
+                // 多商户搜索
                 is_search_shop: 0,
+                // 以图搜款
                 is_imagesearch: 0,
+                // 智能客服
+                is_aichat_search: 0,
+                aichat_search_name: '问AI',
             };
         },
 
@@ -166,9 +172,13 @@
             init_config(status) {
                 if ((status || false) == true) {
                     var imagesearch = app.globalData.get_config('plugins_base.imagesearch.data') || {};
+                    var aichat = app.globalData.get_config('plugins_base.aichat.data') || {};
+                    var aichat_name = String(aichat.search_entry_name || '').trim();
                     this.setData({
                         is_search_shop: parseInt(app.globalData.get_config('plugins_base.shop.data.is_main_search_shop', 0)),
                         is_imagesearch: (parseInt(imagesearch.is_enable || 0) == 1 && parseInt(imagesearch.is_show_app_search || 0) == 1) ? 1 : 0,
+                        is_aichat_search: ((aichat.is_consult === undefined || parseInt(aichat.is_consult || 1) == 1) && parseInt(aichat.is_search_entry || 0) == 1) ? 1 : 0,
+                        aichat_search_name: aichat_name || '问AI'
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -259,11 +269,16 @@
 
             // 以图搜款入口
             imagesearch_event() {
-                if (this.is_imagesearch != 1) {
-                    app.globalData.showToast(this.$t('imagesearch.imagesearch.not_enable'));
-                    return;
+                if (this.is_imagesearch == 1) {
+                    app.globalData.url_open('/pages/plugins/imagesearch/index/index');
                 }
-                app.globalData.url_open('/pages/plugins/imagesearch/index/index');
+            },
+
+            // AI智能客服搜索旁入口
+            aichat_search_event() {
+                if (this.is_aichat_search == 1) {
+                    app.globalData.url_open('/pages/plugins/aichat/index/index');
+                }
             },
 
             // 打开url

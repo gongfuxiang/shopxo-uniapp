@@ -75,25 +75,28 @@
                                     </view>
                                     <!-- #endif -->
                                 </view>
-                                <view v-if="common_app_is_enable_search == 1" class="search-content-input padding-horizontal-main">
-                                    <!-- 是否开启搜索框前面icon扫一扫 -->
-                                    <block v-if="is_home_search_scan == 1">
-                                        <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
-                                            :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
-                                            :propRightIconColor="'#999'"
-                                            @onrighticon="imagesearch_event"
-                                            <!-- #ifndef H5 -->
-                                            @onicon="search_icon_event" propIcon="icon-scan" :propIsIconOnEvent="true"
-                                            <!-- #endif -->
-                                        ></component-search>
-                                    </block>
-                                    <block v-else>
-                                        <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
-                                            :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
-                                            :propRightIconColor="'#999'"
-                                            @onrighticon="imagesearch_event"
-                                        ></component-search>
-                                    </block>
+                                <view v-if="common_app_is_enable_search == 1" class="search-content-input padding-horizontal-main flex-row align-c">
+                                    <view class="flex-1">
+                                        <!-- 是否开启搜索框前面icon扫一扫 -->
+                                        <block v-if="is_home_search_scan == 1">
+                                            <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                                :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
+                                                :propRightIconColor="'#999'"
+                                                @onrighticon="imagesearch_event"
+                                                <!-- #ifndef H5 -->
+                                                @onicon="search_icon_event" propIcon="icon-scan" :propIsIconOnEvent="true"
+                                                <!-- #endif -->
+                                            ></component-search>
+                                        </block>
+                                        <block v-else>
+                                            <component-search :propIsEnterSearchStart="true" :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                                :propRightIcon="is_imagesearch == 1 ? 'icon-camera' : ''"
+                                                :propRightIconColor="'#999'"
+                                                @onrighticon="imagesearch_event"
+                                            ></component-search>
+                                        </block>
+                                    </view>
+                                    <view v-if="is_aichat_search == 1" class="plugins-aichat-search-entry round fw-b nowrap text-size-xs cr-white flex-shrink" @tap="aichat_search_event">{{ aichat_search_name }}</view>
                                 </view>
                             </view>
                         </view>
@@ -387,8 +390,13 @@
                 page_load_status: 0,
                 load_status: 0,
                 currency_symbol: app.globalData.currency_symbol(),
+                // 搜索扫码
                 is_home_search_scan: app.globalData.data.is_home_search_scan,
+                // 以图搜款
                 is_imagesearch: 0,
+                // 智能客服
+                is_aichat_search: 0,
+                aichat_search_name: '问AI',
                 data_list: [],
                 banner_list: [],
                 navigation: [],
@@ -539,6 +547,8 @@
             init_config(status) {
                 if ((status || false) == true) {
                     var imagesearch = app.globalData.get_config('plugins_base.imagesearch.data') || {};
+                    var aichat = app.globalData.get_config('plugins_base.aichat.data') || {};
+                    var aichat_name = String(aichat.search_entry_name || '').trim();
                     this.setData({
                         page_load_status: 1,
                         currency_symbol: app.globalData.get_config('currency_symbol'),
@@ -549,6 +559,8 @@
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
                         is_imagesearch: (parseInt(imagesearch.is_enable || 0) == 1 && parseInt(imagesearch.is_show_app_search || 0) == 1) ? 1 : 0,
+                        is_aichat_search: ((aichat.is_consult === undefined || parseInt(aichat.is_consult || 1) == 1) && parseInt(aichat.is_search_entry || 0) == 1) ? 1 : 0,
+                        aichat_search_name: aichat_name || '问AI',
                     });
                 }
             },
@@ -746,9 +758,15 @@
             // 以图搜款入口
             imagesearch_event() {
                 if (this.is_imagesearch != 1) {
-                    return;
+                    app.globalData.url_open('/pages/plugins/imagesearch/index/index');
                 }
-                app.globalData.url_open('/pages/plugins/imagesearch/index/index');
+            },
+
+            // AI智能客服搜索旁入口
+            aichat_search_event() {
+                if (this.is_aichat_search == 1) {
+                    app.globalData.url_open('/pages/plugins/aichat/index/index');
+                }
             }
         },
     };

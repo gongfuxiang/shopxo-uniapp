@@ -14,6 +14,18 @@
 .ranking-list .goods-list .icon {
     width: 38rpx;
 }
-.search-container.switch-shop {
-    width: calc(100% - 124rpx);
+.search-container {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+}
+
+/**
+ * AI智能客服 - 搜索旁入口
+ */
+.plugins-aichat-search-entry {
+    height: 64rpx;
+    line-height: 64rpx;
+    padding: 0 18rpx;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
 }

@@ -1158,9 +1158,6 @@
 .flex-shrink {
     flex-shrink: 0;
 }
-.flex-shrink-1 {
-    flex-shrink: 0;
-}
 .flex-width {
     width: 0;
 }
