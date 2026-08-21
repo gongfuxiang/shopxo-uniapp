@@ -1,0 +1,1422 @@
+<template>
+    <view :class="theme_view + ' aichat-page' + (is_chatting ? ' is-chatting' : '') + (sidebar_open ? ' is-sidebar-open' : '') + (sidebar_closing ? ' is-sidebar-closing' : '')">
+        <view v-if="page_loading" class="aichat-boot">
+            <component-no-data propStatus="1"></component-no-data>
+        </view>
+
+        <view v-else-if="!is_enabled" class="aichat-disabled padding-main">
+            <view class="aichat-disabled-card bg-white border-radius-main padding-xl tc">
+                <view class="text-size-lg fw-b">智能客服咨询功能未开启</view>
+                <view class="cr-grey text-size-sm margin-top-sm">请在后台【AI智能客服 → 基础配置】中开启「用户咨询页」</view>
+            </view>
+            <component-common ref="common" :propIsFooterSeat="false"></component-common>
+        </view>
+
+        <block v-else>
+            <!-- 历史侧栏 -->
+            <view class="aichat-sidebar-mask" v-if="sidebar_open" @tap="close_sidebar"></view>
+            <view class="aichat-sidebar">
+                <view class="aichat-sidebar-hd">
+                    <view class="aichat-brand flex-row align-c">
+                        <image v-if="logo" class="aichat-brand-logo" :src="logo" mode="aspectFill"></image>
+                        <text class="aichat-brand-name">{{ application_name }}</text>
+                    </view>
+                    <view class="aichat-new-chat flex-row align-c jc-c" @tap="start_new_chat">
+                        <iconfont name="icon-add" size="28rpx" color="#fff"></iconfont>
+                        <text class="margin-left-sm">开启新对话</text>
+                    </view>
+                </view>
+                <view class="aichat-sidebar-section-title flex-row align-c">
+                    <iconfont name="icon-timing-time" size="26rpx" color="#8a919f"></iconfont>
+                    <text class="margin-left-sm">对话历史</text>
+                </view>
+                <view class="aichat-history-scroll">
+                    <view v-if="sessions.length === 0" class="aichat-history-empty">暂无历史对话</view>
+                    <view
+                        v-for="(item, index) in sessions"
+                        :key="index"
+                        :class="'aichat-history-item flex-row align-c' + (same_id(item.id, current_id) ? ' is-active' : '')"
+                        :data-id="item.id"
+                        @tap="open_session_event"
+                    >
+                        <text class="aichat-history-title flex-1">{{ truncate_title(item.title, 18) }}</text>
+                        <view class="aichat-history-del" :data-id="item.id" @tap.stop="delete_session_event">
+                            <iconfont name="icon-delete" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <!-- 主区域：开场态与 PC 一致，欢迎语+输入框垂直居中 -->
+            <view class="aichat-main">
+                <view class="aichat-main-bar flex-row align-c">
+                    <view class="aichat-bar-btn" @tap="open_sidebar">
+                        <iconfont name="icon-log-list" size="36rpx" color="#333"></iconfont>
+                    </view>
+                    <view class="aichat-bar-btn" @tap="start_new_chat">
+                        <iconfont name="icon-add" size="34rpx" color="#333"></iconfont>
+                    </view>
+                    <text class="aichat-main-title flex-1">{{ main_title }}</text>
+                </view>
+
+                <!-- 开场：欢迎语+输入框作为一组垂直居中（对齐 PC） -->
+                <view v-if="!is_chatting" class="aichat-welcome-panel">
+                    <view class="aichat-flex-spacer"></view>
+                    <view class="aichat-welcome">
+                        <view class="aichat-welcome-title">{{ welcome_title }}</view>
+                        <view class="aichat-welcome-desc">{{ desc }}</view>
+                    </view>
+                <view class="aichat-composer">
+                    <view v-if="quick_questions.length" class="aichat-quick-wrap">
+                        <view
+                            v-for="(q, qi) in quick_questions"
+                            :key="qi"
+                            class="aichat-quick-btn"
+                            :data-question="q"
+                            @tap="quick_ask_event"
+                        >{{ q }}</view>
+                    </view>
+                    <view class="aichat-input-wrap">
+                        <textarea
+                            class="aichat-input"
+                            :value="input_value"
+                            :maxlength="1000"
+                            :auto-height="true"
+                            :show-confirm-bar="false"
+                            :adjust-position="true"
+                            placeholder="有什么问题尽管问我"
+                            placeholder-class="cr-grey-9"
+                            @input="input_event"
+                            @confirm="send_event"
+                        ></textarea>
+                        <view class="aichat-input-toolbar flex-row align-c jc-e">
+                            <view
+                                :class="'aichat-send-btn' + (can_send ? ' is-ready' : '')"
+                                @tap="send_event"
+                            >
+                                <iconfont name="icon-sending-surface" size="34rpx" color="#fff"></iconfont>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                    <view class="aichat-flex-spacer"></view>
+                </view>
+
+                <!-- 会话中：消息列表置顶滚动，输入框贴底 -->
+                <block v-else>
+                    <view class="aichat-chat-body">
+                    <view class="aichat-stage-wrap">
+                    <scroll-view
+                        scroll-y
+                        class="aichat-stage"
+                        :scroll-into-view="scroll_into"
+                        :scroll-top="scroll_top"
+                        :scroll-with-animation="scroll_animate"
+                    >
+                        <view class="aichat-messages">
+                        <view v-if="session_loading" class="aichat-session-loading">
+                            <view class="aichat-session-loading-spinner"></view>
+                            <text class="cr-grey text-size-sm">{{ session_loading_text }}</text>
+                        </view>
+                        <block v-for="(msg, idx) in messages" :key="idx">
+                            <view v-if="msg.role === 'loading'" class="aichat-msg is-bot is-loading" :id="'msg-' + idx">
+                                <view class="aichat-msg-bubble">
+                                    <view class="aichat-thinking">
+                                        <view class="aichat-thinking-label">
+                                            <text
+                                                v-for="(ch, ci) in thinking_chars"
+                                                :key="ci"
+                                                class="aichat-thinking-char"
+                                                :style="'animation-delay:' + (ci * 0.08) + 's'"
+                                            >{{ ch }}</text>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view v-else :class="'aichat-msg is-' + msg.role" :id="'msg-' + idx">
+                                <view class="aichat-msg-bubble">
+                                    <view v-if="msg.role === 'user'" class="aichat-msg-text">{{ msg.text }}</view>
+                                    <block v-else>
+                                        <view v-if="msg.typing" class="aichat-msg-text aichat-msg-typing">{{ msg.display_text }}</view>
+                                        <mp-html v-else class="aichat-msg-text" :content="format_message_html(msg.text)"></mp-html>
+                                    </block>
+
+                                    <view v-if="msg.role === 'bot' && !msg.typing && msg.goods && msg.goods.length" class="aichat-goods-list">
+                                        <view
+                                            v-for="(g, gi) in msg.goods"
+                                            :key="gi"
+                                            class="aichat-goods-card flex-row"
+                                            :data-value="goods_detail_url(g)"
+                                            @tap="url_event"
+                                        >
+                                            <image v-if="g.images" class="aichat-goods-img" :src="g.images" mode="aspectFill"></image>
+                                            <view v-else class="aichat-goods-img aichat-goods-img-empty"></view>
+                                            <view class="aichat-goods-meta flex-1">
+                                                <view class="aichat-goods-title">{{ g.title || '商品' }}</view>
+                                                <view v-if="g.price !== '' && g.price !== null && g.price !== undefined" class="aichat-goods-price">
+                                                    {{ g.show_price_symbol || '￥' }}{{ g.price }}
+                                                </view>
+                                            </view>
+                                        </view>
+                                    </view>
+
+                                    <view v-if="msg.role === 'user'" class="aichat-msg-actions flex-row">
+                                        <view class="aichat-msg-action" :data-index="idx" data-act="copy" @tap="msg_action_event">
+                                            <iconfont name="icon-copy" size="28rpx" color="#8a919f"></iconfont>
+                                        </view>
+                                        <view class="aichat-msg-action" :data-index="idx" data-act="edit" @tap="msg_action_event">
+                                            <iconfont name="icon-edit-two" size="28rpx" color="#8a919f"></iconfont>
+                                        </view>
+                                    </view>
+                                    <view v-else-if="msg.role === 'bot' && !msg.typing" class="aichat-msg-actions flex-row">
+                                        <view class="aichat-msg-action" :data-index="idx" data-act="copy" @tap="msg_action_event">
+                                            <iconfont name="icon-copy" size="28rpx" color="#8a919f"></iconfont>
+                                        </view>
+                                        <view
+                                            :class="'aichat-msg-action' + (msg.feedback === 1 ? ' is-on' : '')"
+                                            :data-index="idx"
+                                            data-act="like"
+                                            @tap="msg_action_event"
+                                        >
+                                            <iconfont name="icon-givealike-o" size="28rpx" :color="msg.feedback === 1 ? '#7c3aed' : '#8a919f'"></iconfont>
+                                        </view>
+                                        <view
+                                            :class="'aichat-msg-action is-dislike' + (msg.feedback === 2 ? ' is-on' : '')"
+                                            :data-index="idx"
+                                            data-act="dislike"
+                                            @tap="msg_action_event"
+                                        >
+                                            <iconfont name="icon-givealike-o" size="28rpx" :color="msg.feedback === 2 ? '#7c3aed' : '#8a919f'"></iconfont>
+                                        </view>
+                                    </view>
+
+                                    <view
+                                        v-if="msg.role === 'bot' && !msg.typing && msg.suggests && msg.suggests.length && idx === last_bot_index"
+                                        class="aichat-msg-suggests"
+                                    >
+                                        <view
+                                            v-for="(sq, si) in msg.suggests"
+                                            :key="si"
+                                            class="aichat-msg-suggest"
+                                            :data-question="sq"
+                                            @tap="quick_ask_event"
+                                        >{{ sq }} →</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </block>
+                        <view id="aichat-bottom-anchor"></view>
+                        <!-- #ifdef MP -->
+                        <view class="aichat-stage-fade-sticky"></view>
+                        <!-- #endif -->
+                    </view>
+                    </scroll-view>
+                    <!-- #ifndef MP -->
+                    <view class="aichat-stage-fade"></view>
+                    <!-- #endif -->
+                    </view>
+                <view class="aichat-composer">
+                    <scroll-view v-if="!is_chatting && quick_questions.length" scroll-x class="aichat-quick-scroll">
+                        <view class="aichat-quick-list flex-row">
+                            <view
+                                v-for="(q, qi) in quick_questions"
+                                :key="qi"
+                                class="aichat-quick-btn"
+                                :data-question="q"
+                                @tap="quick_ask_event"
+                            >{{ q }}</view>
+                        </view>
+                    </scroll-view>
+                    <view class="aichat-input-wrap">
+                        <textarea
+                            class="aichat-input"
+                            :value="input_value"
+                            :maxlength="1000"
+                            :auto-height="true"
+                            :show-confirm-bar="false"
+                            :adjust-position="true"
+                            placeholder="有什么问题尽管问我"
+                            placeholder-class="cr-grey-9"
+                            @input="input_event"
+                            @confirm="send_event"
+                        ></textarea>
+                        <view class="aichat-input-toolbar flex-row align-c jc-e">
+                            <view
+                                :class="'aichat-send-btn' + (can_send ? ' is-ready' : '')"
+                                @tap="send_event"
+                            >
+                                <iconfont name="icon-sending-surface" size="34rpx" color="#fff"></iconfont>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                </view>
+                </block>
+            </view>
+
+            <component-common ref="common" :propIsFooterSeat="false"></component-common>
+        </block>
+    </view>
+</template>
+
+<script>
+    const app = getApp();
+    import base64 from '@/common/js/lib/base64.js';
+    import componentCommon from '@/components/common/common';
+    import componentNoData from '@/components/no-data/no-data';
+
+    const STORAGE_KEY = 'plugins_aichat_consult_sessions_v1';
+
+    export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                page_loading: true,
+                is_enabled: 0,
+                is_login: 0,
+                application_name: '智能客服助手',
+                logo: '',
+                welcome: '',
+                desc: '',
+                quick_questions: [],
+                welcome_title: '',
+                thinking_text: '正在思考，请稍候...',
+                session_loading_text: '正在加载对话...',
+                main_title: '新对话',
+                sidebar_open: false,
+                sidebar_closing: false,
+                is_chatting: false,
+                session_loading: false,
+                asking: false,
+                is_typing: false,
+                input_value: '',
+                current_id: '',
+                sessions: [],
+                messages: [],
+                goods_context_keywords: '',
+                scroll_into: '',
+                scroll_top: 0,
+                scroll_animate: false,
+                detail_req_seq: 0,
+                params: {},
+            };
+        },
+        components: {
+            componentCommon,
+            componentNoData,
+        },
+        computed: {
+            can_send() {
+                // 仅请求中禁用发送；打字动画中可继续提问
+                return !this.asking && String(this.input_value || '').trim() !== '';
+            },
+            thinking_chars() {
+                var text = String(this.thinking_text || '正在思考，请稍候...');
+                return text.split('');
+            },
+            last_bot_index() {
+                for (var i = this.messages.length - 1; i >= 0; i--) {
+                    if (this.messages[i] && this.messages[i].role === 'bot') {
+                        return i;
+                    }
+                }
+                return -1;
+            },
+        },
+        onLoad(params) {
+            params = app.globalData.launch_params_handle(params);
+            app.globalData.page_event_onload_handle(params);
+            var url_id = (params && params.id) ? String(params.id) : '';
+            // #ifdef H5
+            if (!url_id) {
+                url_id = this.read_url_consult_id();
+            }
+            // #endif
+            this.setData({
+                params: params || {},
+                current_id: url_id,
+            });
+            this.save_chain = Promise.resolve();
+            this.init_page();
+        },
+        onShow() {
+            app.globalData.page_event_onshow_handle();
+            if ((this.$refs.common || null) != null) {
+                this.$refs.common.on_show();
+            }
+        },
+        onUnload() {
+            this.stop_typewrite();
+        },
+        methods: {
+            same_id(a, b) {
+                return String(a || '') === String(b || '');
+            },
+            // H5：与 PC 一致，用 ?id= 同步当前历史会话
+            read_url_consult_id() {
+                // #ifdef H5
+                try {
+                    var href = window.location.href || '';
+                    var hash_idx = href.indexOf('#');
+                    if (hash_idx >= 0) {
+                        var hash = href.slice(hash_idx + 1);
+                        var q_idx = hash.indexOf('?');
+                        if (q_idx < 0) {
+                            return '';
+                        }
+                        return String(new URLSearchParams(hash.slice(q_idx + 1)).get('id') || '').trim();
+                    }
+                    return String(new URLSearchParams(window.location.search || '').get('id') || '').trim();
+                } catch (e) {
+                    return '';
+                }
+                // #endif
+                // #ifndef H5
+                return '';
+                // #endif
+            },
+            set_url_consult_id(id) {
+                // #ifdef H5
+                try {
+                    id = id === undefined || id === null ? '' : String(id);
+                    var href = window.location.href || '';
+                    var hash_idx = href.indexOf('#');
+                    var next = href;
+                    if (hash_idx >= 0) {
+                        var base = href.slice(0, hash_idx);
+                        var hash = href.slice(hash_idx + 1);
+                        var q_idx = hash.indexOf('?');
+                        var path = q_idx >= 0 ? hash.slice(0, q_idx) : hash;
+                        var query = q_idx >= 0 ? hash.slice(q_idx + 1) : '';
+                        var params = new URLSearchParams(query);
+                        if (id === '') {
+                            params.delete('id');
+                        } else {
+                            params.set('id', id);
+                        }
+                        var qs = params.toString();
+                        next = base + '#' + path + (qs ? '?' + qs : '');
+                    } else {
+                        var url = new URL(href);
+                        if (id === '') {
+                            url.searchParams.delete('id');
+                        } else {
+                            url.searchParams.set('id', id);
+                        }
+                        next = url.pathname + url.search + url.hash;
+                    }
+                    if (next !== href) {
+                        window.history.replaceState(null, '', next);
+                    }
+                } catch (e) {}
+                // #endif
+            },
+            truncate_title(text, max) {
+                text = String(text || '').trim() || '新对话';
+                max = max || 18;
+                return text.length > max ? text.slice(0, max) + '...' : text;
+            },
+
+            escape_html(text) {
+                return String(text || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            },
+            format_message_html(text) {
+                var html = this.escape_html(text);
+                html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+                html = html.replace(/(^|[^\*])\*([^\*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
+                html = html.replace(/`([^`\n]+?)`/g, '<code>$1</code>');
+                html = html.replace(/\n/g, '<br/>');
+                return html;
+            },
+            goods_detail_url(g) {
+                var id = parseInt((g && g.id) || 0, 10) || 0;
+                return id > 0 ? '/pages/goods-detail/goods-detail?id=' + id : '';
+            },
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+            uid() {
+                return 's_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+            },
+            msg_uid() {
+                return 'm_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+            },
+            load_local_sessions() {
+                try {
+                    var raw = uni.getStorageSync(STORAGE_KEY);
+                    var list = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : [];
+                    return Array.isArray(list) ? list : [];
+                } catch (e) {
+                    return [];
+                }
+            },
+            save_local_sessions_list(list) {
+                try {
+                    uni.setStorageSync(STORAGE_KEY, (list || []).slice(0, 50));
+                } catch (e) {}
+            },
+            clear_local_sessions() {
+                try {
+                    uni.removeStorageSync(STORAGE_KEY);
+                } catch (e) {}
+            },
+            find_session(id) {
+                for (var i = 0; i < this.sessions.length; i++) {
+                    if (this.same_id(this.sessions[i].id, id)) {
+                        return this.sessions[i];
+                    }
+                }
+                return null;
+            },
+            derive_title(msgs) {
+                for (var i = 0; i < (msgs || []).length; i++) {
+                    if (msgs[i].role === 'user' && String(msgs[i].text || '').trim()) {
+                        return this.truncate_title(msgs[i].text, 30);
+                    }
+                }
+                return '新对话';
+            },
+            scroll_bottom(opts) {
+                opts = opts || {};
+                var self = this;
+                var delays = Array.isArray(opts.delays) ? opts.delays : [0, 80, 220, 480];
+                var animate = opts.animate === true;
+                if (this._scroll_bottom_timers && this._scroll_bottom_timers.length) {
+                    this._scroll_bottom_timers.forEach(function (t) {
+                        clearTimeout(t);
+                    });
+                }
+                this._scroll_bottom_timers = [];
+                var run = function () {
+                    // scroll-into-view 同值不生效，需先清空再设
+                    self.setData({ scroll_into: '', scroll_animate: animate });
+                    self.$nextTick(function () {
+                        self._scroll_top_seed = (self._scroll_top_seed || 0) + 1;
+                        self.setData({
+                            scroll_into: 'aichat-bottom-anchor',
+                            // scroll-top 变更才能强制滚到底（兼容部分端 scroll-into-view 失效）
+                            scroll_top: 99999 + self._scroll_top_seed,
+                            scroll_animate: animate,
+                        });
+                    });
+                };
+                delays.forEach(function (ms) {
+                    if (!ms) {
+                        run();
+                    } else {
+                        self._scroll_bottom_timers.push(setTimeout(run, ms));
+                    }
+                });
+            },
+            stop_typewrite(complete) {
+                if (this._type_timer) {
+                    clearTimeout(this._type_timer);
+                    this._type_timer = null;
+                }
+                this._typing_active = false;
+                var ctx = this._typewrite_ctx;
+                this._typewrite_ctx = null;
+                if (complete && ctx) {
+                    var list = this.messages.slice();
+                    var idx = ctx.msg_index;
+                    var text = ctx.text;
+                    var extras = ctx.extras || {};
+                    if (list[idx] && list[idx].role === 'bot') {
+                        list[idx] = Object.assign({}, list[idx], {
+                            text: text,
+                            display_text: text,
+                            typing: false,
+                            mid: extras.mid || list[idx].mid || '',
+                            goods: extras.goods || [],
+                            suggests: extras.suggests || [],
+                        });
+                    }
+                    this.setData({
+                        messages: list,
+                        asking: false,
+                        is_typing: false,
+                    });
+                    if (typeof extras.onDone === 'function') {
+                        extras.onDone();
+                    }
+                    this.scroll_bottom();
+                    return;
+                }
+                if (this.is_typing) {
+                    this.setData({ is_typing: false });
+                }
+            },
+            typewrite_bot_answer(msg_index, full_text, extras) {
+                extras = extras || {};
+                this.stop_typewrite(false);
+                var text = String(full_text || '');
+                this._typewrite_ctx = { msg_index: msg_index, text: text, extras: extras };
+                this._typing_active = true;
+                // 接口已返回：解除发送锁定，打字动画不阻塞下一条提问
+                this.setData({ is_typing: true, asking: false });
+                var i = 0;
+                var total = text.length;
+                var step = total > 400 ? 4 : (total > 180 ? 2 : 1);
+                var delay = total > 400 ? 12 : (total > 180 ? 16 : 22);
+                var self = this;
+                var tick_count = 0;
+
+                function finish() {
+                    self._type_timer = null;
+                    self._typing_active = false;
+                    self._typewrite_ctx = null;
+                    var list = self.messages.slice();
+                    if (list[msg_index] && list[msg_index].role === 'bot') {
+                        list[msg_index] = Object.assign({}, list[msg_index], {
+                            text: text,
+                            display_text: text,
+                            typing: false,
+                            mid: extras.mid || list[msg_index].mid || '',
+                            goods: extras.goods || [],
+                            suggests: extras.suggests || [],
+                        });
+                    }
+                    self.setData({
+                        messages: list,
+                        asking: false,
+                        is_typing: false,
+                    });
+                    if (typeof extras.onDone === 'function') {
+                        extras.onDone();
+                    }
+                    self.scroll_bottom();
+                }
+
+                function tick() {
+                    if (!self._typing_active) {
+                        return;
+                    }
+                    i = Math.min(total, i + step);
+                    tick_count++;
+                    var list = self.messages.slice();
+                    if (!list[msg_index] || list[msg_index].role !== 'bot') {
+                        self._typing_active = false;
+                        self._typewrite_ctx = null;
+                        self.setData({ is_typing: false, asking: false });
+                        return;
+                    }
+                    list[msg_index] = Object.assign({}, list[msg_index], {
+                        display_text: text.slice(0, i),
+                        typing: true,
+                    });
+                    self.setData({ messages: list });
+                    if (tick_count % 3 === 0 || i >= total) {
+                        self.scroll_bottom();
+                    }
+                    if (i >= total) {
+                        finish();
+                        return;
+                    }
+                    self._type_timer = setTimeout(tick, delay);
+                }
+
+                if (total === 0) {
+                    finish();
+                    return;
+                }
+                tick();
+            },
+            open_sidebar() {
+                if (this._sidebar_close_timer) {
+                    clearTimeout(this._sidebar_close_timer);
+                    this._sidebar_close_timer = null;
+                }
+                this.setData({ sidebar_closing: false, sidebar_open: true });
+            },
+            close_sidebar() {
+                if (!this.sidebar_open) {
+                    this.setData({ sidebar_closing: false });
+                    return;
+                }
+                if (this._sidebar_close_timer) {
+                    clearTimeout(this._sidebar_close_timer);
+                    this._sidebar_close_timer = null;
+                }
+                this.setData({ sidebar_open: false, sidebar_closing: true });
+                this._sidebar_close_timer = setTimeout(() => {
+                    this.setData({ sidebar_closing: false });
+                    this._sidebar_close_timer = null;
+                }, 240);
+            },
+            input_event(e) {
+                this.setData({ input_value: e.detail.value });
+            },
+            quick_ask_event(e) {
+                var q = (e.currentTarget.dataset.question || '').trim();
+                if (q) {
+                    this.send_question(q);
+                }
+            },
+            send_event() {
+                this.send_question(this.input_value);
+            },
+            init_page() {
+                var self = this;
+                var boot_id = this.current_id || this.read_url_consult_id() || '';
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'index', 'aichat'),
+                    method: 'POST',
+                    data: boot_id ? { id: boot_id, consult_id: boot_id } : {},
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0 && res.data.data) {
+                            var d = res.data.data;
+                            var is_login = parseInt(d.is_login || 0) === 1 ? 1 : 0;
+                            var sessions_need_refresh = false;
+                            // 以本地登录态为准，避免 token 场景下服务端未识别
+                            if (!is_login && (app.globalData.get_user_cache_info() || null) != null) {
+                                is_login = 1;
+                                // 服务端未识别登录时 sessions 为空，启动后再拉一次列表
+                                sessions_need_refresh = true;
+                            }
+                            self._sessions_need_refresh = sessions_need_refresh;
+                            var sessions = [];
+                            if (is_login && Array.isArray(d.sessions)) {
+                                sessions = d.sessions.map((row) => ({
+                                    id: row.id,
+                                    title: row.title || '新对话',
+                                    updated_at: row.updated_at || row.upd_time || 0,
+                                    messages: null,
+                                }));
+                            }
+                            // 初始化已带详情：写入缓存，进页免再拉 consultdetail
+                            if (d.session_detail && d.session_detail.consult) {
+                                var did = d.session_detail.consult.id;
+                                var dtitle = d.session_detail.consult.title || '新对话';
+                                var dmsgs = Array.isArray(d.session_detail.messages) ? d.session_detail.messages : [];
+                                var hit = false;
+                                sessions = sessions.map((s) => {
+                                    if (String(s.id) === String(did)) {
+                                        hit = true;
+                                        return Object.assign({}, s, { title: dtitle, messages: dmsgs });
+                                    }
+                                    return s;
+                                });
+                                if (!hit) {
+                                    sessions.unshift({ id: did, title: dtitle, updated_at: Date.now(), messages: dmsgs });
+                                }
+                                self._boot_session_detail_id = String(did);
+                            } else {
+                                self._boot_session_detail_id = '';
+                            }
+                            self.setData({
+                                page_loading: false,
+                                is_enabled: parseInt(d.is_enabled || 0),
+                                is_login: is_login,
+                                application_name: d.application_name || '智能客服助手',
+                                logo: d.logo || '',
+                                welcome: d.welcome || '',
+                                welcome_title: d.welcome_title || '',
+                                thinking_text: d.thinking_text || '正在思考，请稍候...',
+                                session_loading_text: d.session_loading_text || '正在加载对话...',
+                                desc: d.desc || '',
+                                quick_questions: Array.isArray(d.quick_questions) ? d.quick_questions : [],
+                                sessions: is_login ? sessions : self.sessions,
+                            });
+                            uni.setNavigationBarTitle({ title: d.application_name || self.$t('pages.plugins-aichat-index') });
+                            if (parseInt(d.is_enabled || 0) === 1) {
+                                self.boot_sessions();
+                            }
+                        } else {
+                            self.setData({ page_loading: false, is_enabled: 0 });
+                            if (app.globalData.is_login_check(res.data, self, 'init_page')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        self.setData({ page_loading: false, is_enabled: 0 });
+                        app.globalData.showToast(self.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+            boot_sessions() {
+                var self = this;
+                if (this.is_login) {
+                    if (this.current_id) {
+                        this.setData({
+                            is_chatting: true,
+                            session_loading: true,
+                            main_title: '加载中...',
+                            messages: [],
+                        });
+                    }
+                    this.migrate_guest_sessions((migrated) => {
+                        var finish = () => {
+                            var id = self.current_id || self.read_url_consult_id();
+                            if (id) {
+                                self.open_session(id);
+                            } else {
+                                self.set_url_consult_id('');
+                                self.setData({ is_chatting: false, session_loading: false, main_title: '新对话' });
+                            }
+                        };
+                        if (migrated || self._sessions_need_refresh) {
+                            self._sessions_need_refresh = false;
+                            self.refresh_remote_list(finish);
+                        } else {
+                            finish();
+                        }
+                    });
+                } else {
+                    var sessions = this.load_local_sessions();
+                    this.setData({ sessions: sessions });
+                    var id = this.current_id || this.read_url_consult_id();
+                    if (id && this.find_session(id)) {
+                        this.open_session(id);
+                    } else {
+                        if (id) {
+                            this.set_url_consult_id('');
+                        }
+                        this.setData({ current_id: '', is_chatting: false, main_title: '新对话' });
+                    }
+                }
+            },
+            migrate_guest_sessions(done) {
+                var self = this;
+                var local_list = this.load_local_sessions();
+                var to_migrate = [];
+                for (var i = 0; i < local_list.length; i++) {
+                    var item = local_list[i];
+                    if (item && Array.isArray(item.messages) && item.messages.length > 0) {
+                        to_migrate.push(item);
+                    }
+                }
+                if (!to_migrate.length) {
+                    typeof done === 'function' && done(false);
+                    return;
+                }
+                to_migrate.reverse();
+                var remain = local_list.slice();
+                var chain = Promise.resolve();
+                to_migrate.forEach((guest) => {
+                    chain = chain.then(() => {
+                        return new Promise((resolve) => {
+                            uni.request({
+                                url: app.globalData.get_request_url('consultsave', 'index', 'aichat'),
+                                method: 'POST',
+                                data: {
+                                    consult_id: 0,
+                                    title: guest.title || self.derive_title(guest.messages),
+                                    messages_b64: base64.encode(JSON.stringify(guest.messages || [])),
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    if (res.data.code == 0) {
+                                        remain = remain.filter((s) => !(s && self.same_id(s.id, guest.id)));
+                                        self.save_local_sessions_list(remain);
+                                    }
+                                },
+                                complete: () => resolve(),
+                            });
+                        });
+                    });
+                });
+                chain.then(() => {
+                    if (!remain.length || !remain.some((s) => s && Array.isArray(s.messages) && s.messages.length > 0)) {
+                        self.clear_local_sessions();
+                    }
+                    typeof done === 'function' && done(true);
+                });
+            },
+            refresh_remote_list(done) {
+                var self = this;
+                uni.request({
+                    url: app.globalData.get_request_url('consultlist', 'index', 'aichat'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code == 0 && res.data.data && Array.isArray(res.data.data.list)) {
+                            self.setData({
+                                sessions: res.data.data.list.map((row) => ({
+                                    id: row.id,
+                                    title: row.title || '新对话',
+                                    updated_at: row.updated_at || 0,
+                                    messages: null,
+                                })),
+                            });
+                        } else if (res.data.code == -400) {
+                            self.setData({
+                                is_login: 0,
+                                sessions: self.load_local_sessions(),
+                            });
+                        }
+                    },
+                    complete: () => {
+                        typeof done === 'function' && done();
+                    },
+                });
+            },
+            start_new_chat() {
+                this.stop_typewrite();
+                this.set_url_consult_id('');
+                this.setData({
+                    current_id: '',
+                    messages: [],
+                    is_chatting: false,
+                    session_loading: false,
+                    asking: false,
+                    goods_context_keywords: '',
+                    input_value: '',
+                    main_title: '新对话',
+                    welcome_title: this.welcome_title || '',
+                    sidebar_open: false,
+                    scroll_into: '',
+                });
+            },
+            open_session_event(e) {
+                var id = e.currentTarget.dataset.id;
+                this.open_session(id);
+            },
+            open_session(id) {
+                id = id === undefined || id === null ? '' : String(id);
+                if (!id) return;
+                this.stop_typewrite();
+                this.close_sidebar();
+                this.set_url_consult_id(id);
+                this.setData({ asking: false, goods_context_keywords: '' });
+
+                if (!this.is_login) {
+                    var session = this.find_session(id);
+                    if (!session) return;
+                    this.setData({
+                        current_id: id,
+                        messages: this.normalize_messages(session.messages || []),
+                        is_chatting: true,
+                        session_loading: false,
+                        main_title: session.title || '新对话',
+                    });
+                    this.restore_goods_context();
+                    this.scroll_bottom({ delays: [50, 160, 360, 700] });
+                    return;
+                }
+
+                var exist = this.find_session(id);
+                this.setData({ current_id: id, main_title: (exist && exist.title) || '加载中...' });
+                if (exist && Array.isArray(exist.messages)) {
+                    this.setData({
+                        messages: this.normalize_messages(exist.messages),
+                        is_chatting: true,
+                        session_loading: false,
+                    });
+                    this.restore_goods_context();
+                    this.scroll_bottom({ delays: [50, 160, 360, 700] });
+                    if (String(this._boot_session_detail_id || '') === String(id)) {
+                        this._boot_session_detail_id = '';
+                    } else {
+                        this.fetch_session_detail(id, true);
+                    }
+                    return;
+                }
+                this.setData({
+                    messages: [],
+                    is_chatting: true,
+                    session_loading: true,
+                });
+                this.fetch_session_detail(id, false);
+            },
+            normalize_messages(list) {
+                return (list || []).map((m) => ({
+                    role: m.role === 'user' ? 'user' : 'bot',
+                    text: m.text || '',
+                    mid: m.mid || '',
+                    feedback: parseInt(m.feedback || 0, 10) || 0,
+                    goods: Array.isArray(m.goods) ? m.goods : [],
+                    suggests: Array.isArray(m.suggests) ? m.suggests : [],
+                }));
+            },
+            fetch_session_detail(id, silent) {
+                var self = this;
+                var req_id = ++this.detail_req_seq;
+                uni.request({
+                    url: app.globalData.get_request_url('consultdetail', 'index', 'aichat'),
+                    method: 'POST',
+                    data: { consult_id: id },
+                    dataType: 'json',
+                    success: (res) => {
+                        if (req_id !== self.detail_req_seq) return;
+                        if (!(res.data.code == 0 && res.data.data)) {
+                            if (!silent) {
+                                app.globalData.showToast((res.data && res.data.msg) || '加载对话失败');
+                                if (self.same_id(self.current_id, id)) {
+                                    self.start_new_chat();
+                                }
+                            }
+                            return;
+                        }
+                        var detail = {
+                            id: res.data.data.consult ? res.data.data.consult.id : id,
+                            title: (res.data.data.consult && res.data.data.consult.title) ? res.data.data.consult.title : '新对话',
+                            messages: self.normalize_messages(res.data.data.messages || []),
+                        };
+                        var exist = self.find_session(detail.id);
+                        var sessions = self.sessions.slice();
+                        if (exist) {
+                            // 仅刷新标题/消息，不调整历史顺序（选中不等于置顶）
+                            exist.title = detail.title;
+                            exist.messages = detail.messages;
+                        } else if (self.same_id(self.current_id, id) || self.same_id(self.current_id, detail.id)) {
+                            sessions.push({
+                                id: detail.id,
+                                title: detail.title,
+                                messages: detail.messages,
+                                updated_at: Date.now(),
+                            });
+                        }
+                        if (!self.same_id(self.current_id, id) && !self.same_id(self.current_id, detail.id)) {
+                            self.setData({ sessions: sessions });
+                            return;
+                        }
+                        self.set_url_consult_id(detail.id);
+                        self.setData({
+                            sessions: sessions,
+                            current_id: detail.id,
+                            messages: detail.messages,
+                            is_chatting: true,
+                            session_loading: false,
+                            main_title: detail.title,
+                        });
+                        self.restore_goods_context();
+                        self.scroll_bottom({ delays: [50, 160, 360, 700] });
+                    },
+                    fail: () => {
+                        if (req_id !== self.detail_req_seq || silent) return;
+                        app.globalData.showToast('加载对话失败，请稍后重试');
+                        if (self.same_id(self.current_id, id)) {
+                            self.start_new_chat();
+                        }
+                    },
+                });
+            },
+            delete_session_event(e) {
+                var id = e.currentTarget.dataset.id;
+                var self = this;
+                uni.showModal({
+                    title: '提示',
+                    content: '确定删除该对话吗？',
+                    success: (ret) => {
+                        if (ret.confirm) {
+                            self.delete_session(id);
+                        }
+                    },
+                });
+            },
+            delete_session(id) {
+                var self = this;
+                if (!this.is_login) {
+                    var sessions = this.sessions.filter((s) => !this.same_id(s.id, id));
+                    this.save_local_sessions_list(sessions);
+                    this.setData({ sessions: sessions });
+                    if (this.same_id(this.current_id, id)) {
+                        this.start_new_chat();
+                    }
+                    return;
+                }
+                uni.request({
+                    url: app.globalData.get_request_url('consultdelete', 'index', 'aichat'),
+                    method: 'POST',
+                    data: { consult_id: id },
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code != 0) {
+                            app.globalData.showToast((res.data && res.data.msg) || '删除失败');
+                            return;
+                        }
+                        self.setData({
+                            sessions: self.sessions.filter((s) => !self.same_id(s.id, id)),
+                        });
+                        if (self.same_id(self.current_id, id)) {
+                            self.start_new_chat();
+                        }
+                    },
+                });
+            },
+            ensure_session() {
+                if (this.current_id && this.find_session(this.current_id)) {
+                    return this.find_session(this.current_id);
+                }
+                if (this.is_login) {
+                    this.setData({ current_id: '' });
+                    return { id: '', title: '新对话', messages: [] };
+                }
+                var session = {
+                    id: this.uid(),
+                    title: '新对话',
+                    messages: [],
+                    updated_at: Date.now(),
+                };
+                var sessions = this.sessions.slice();
+                sessions.unshift(session);
+                this.save_local_sessions_list(sessions);
+                this.setData({
+                    sessions: sessions,
+                    current_id: session.id,
+                });
+                return session;
+            },
+            collect_persist_messages() {
+                return (this.messages || [])
+                    .filter((m) => m.role === 'user' || m.role === 'bot')
+                    .map((m) => ({
+                        role: m.role,
+                        text: m.text || '',
+                        mid: m.mid || '',
+                        feedback: parseInt(m.feedback || 0, 10) || 0,
+                        goods: Array.isArray(m.goods) ? m.goods : [],
+                    }));
+            },
+            persist_current_messages(done) {
+                var self = this;
+                var msgs = this.collect_persist_messages();
+                var title = this.derive_title(msgs);
+                if (!this.is_login) {
+                    if (!this.current_id) {
+                        typeof done === 'function' && done();
+                        return;
+                    }
+                    var session = this.find_session(this.current_id);
+                    if (!session) {
+                        typeof done === 'function' && done();
+                        return;
+                    }
+                    session.messages = msgs;
+                    session.updated_at = Date.now();
+                    session.title = title;
+                    var sessions = this.sessions.filter((s) => !this.same_id(s.id, this.current_id));
+                    sessions.unshift(session);
+                    this.save_local_sessions_list(sessions);
+                    this.setData({ sessions: sessions, main_title: session.title || '新对话' });
+                    typeof done === 'function' && done();
+                    return;
+                }
+                this.save_chain = this.save_chain.then(() => {
+                    return new Promise((resolve) => {
+                        uni.request({
+                            url: app.globalData.get_request_url('consultsave', 'index', 'aichat'),
+                            method: 'POST',
+                            data: {
+                                consult_id: self.current_id || 0,
+                                title: title,
+                                messages_b64: base64.encode(JSON.stringify(msgs || [])),
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                if (res.data.code == 0 && res.data.data) {
+                                    var cid = res.data.data.id;
+                                    var exist = self.find_session(cid);
+                                    var sessions = self.sessions.slice();
+                                    if (exist) {
+                                        exist.title = res.data.data.title || title;
+                                        exist.messages = msgs;
+                                        exist.updated_at = Date.now();
+                                        sessions = sessions.filter((s) => !self.same_id(s.id, cid));
+                                        sessions.unshift(exist);
+                                    } else {
+                                        sessions.unshift({
+                                            id: cid,
+                                            title: res.data.data.title || title,
+                                            messages: msgs,
+                                            updated_at: Date.now(),
+                                        });
+                                    }
+                                    self.set_url_consult_id(cid);
+                                    self.setData({
+                                        current_id: cid,
+                                        sessions: sessions,
+                                        main_title: res.data.data.title || title,
+                                    });
+                                }
+                            },
+                            complete: () => {
+                                resolve();
+                                typeof done === 'function' && done();
+                            },
+                        });
+                    });
+                });
+            },
+            get_history_questions() {
+                var qs = [];
+                var msgs = this.collect_persist_messages();
+                for (var i = 0; i < msgs.length; i++) {
+                    if (msgs[i].role === 'user' && String(msgs[i].text || '').trim()) {
+                        qs.push(String(msgs[i].text).trim());
+                    }
+                }
+                if (qs.length > 0) qs.pop();
+                return qs.slice(-4);
+            },
+            restore_goods_context() {
+                var msgs = this.collect_persist_messages();
+                var keywords = '';
+                for (var i = msgs.length - 1; i >= 0; i--) {
+                    var m = msgs[i];
+                    if (m.role === 'bot' && Array.isArray(m.goods) && m.goods.length) {
+                        for (var j = i - 1; j >= 0; j--) {
+                            if (msgs[j].role === 'user' && String(msgs[j].text || '').trim()) {
+                                keywords = String(msgs[j].text).trim();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                this.setData({ goods_context_keywords: keywords });
+            },
+            send_question(question) {
+                question = String(question || '').trim();
+                if (!question || this.asking) return;
+                // 打字中可继续发：先补全当前回复
+                if (this.is_typing) {
+                    this.stop_typewrite(true);
+                } else {
+                    this.stop_typewrite(false);
+                }
+                this.ensure_session();
+                var user_mid = this.is_login ? '' : this.msg_uid();
+                var messages = this.messages.filter((m) => m.role !== 'loading');
+                // 新提问时清掉旧追问
+                messages = messages.map((m) => {
+                    if (m.role === 'bot') {
+                        return Object.assign({}, m, { suggests: [] });
+                    }
+                    return m;
+                });
+                messages.push({
+                    role: 'user',
+                    text: question,
+                    mid: user_mid,
+                    feedback: 0,
+                    goods: [],
+                    suggests: [],
+                });
+                messages.push({ role: 'loading', text: '', mid: '', feedback: 0, goods: [], suggests: [] });
+                this.setData({
+                    asking: true,
+                    is_chatting: true,
+                    input_value: '',
+                    messages: messages,
+                    sidebar_open: false,
+                });
+                if (!this.is_login) {
+                    this.persist_current_messages();
+                }
+                this.scroll_bottom();
+
+                var history_questions = this.get_history_questions();
+                var self = this;
+                uni.request({
+                    url: app.globalData.get_request_url('ask', 'index', 'aichat'),
+                    method: 'POST',
+                    data: {
+                        question: question,
+                        consult_id: this.current_id || 0,
+                        history_questions: history_questions.join('\n'),
+                        goods_context_keywords: this.goods_context_keywords || '',
+                    },
+                    dataType: 'json',
+                    timeout: 120000,
+                    success: (res) => {
+                        var answer = '';
+                        var bot_mid = '';
+                        var suggests = [];
+                        var goods = [];
+                        var list = self.messages.filter((m) => m.role !== 'loading');
+                        // 找到刚追加的用户消息
+                        var user_idx = -1;
+                        for (var i = list.length - 1; i >= 0; i--) {
+                            if (list[i].role === 'user' && list[i].text === question) {
+                                user_idx = i;
+                                break;
+                            }
+                        }
+                        if (res.data.code == 0 && res.data.data) {
+                            answer = res.data.data.answer || '暂时无法回答，请稍后再试。';
+                            suggests = Array.isArray(res.data.data.suggests) ? res.data.data.suggests : [];
+                            goods = Array.isArray(res.data.data.goods) ? res.data.data.goods : [];
+                            if (self.is_login) {
+                                if (res.data.data.user_message_id && user_idx >= 0) {
+                                    list[user_idx].mid = res.data.data.user_message_id;
+                                }
+                                if (res.data.data.bot_message_id) {
+                                    bot_mid = res.data.data.bot_message_id;
+                                }
+                                if (res.data.data.consult_id) {
+                                    var cid = res.data.data.consult_id;
+                                    var title = res.data.data.consult_title || self.derive_title([{ role: 'user', text: question }]);
+                                    var exist = self.find_session(cid);
+                                    var sessions = self.sessions.slice();
+                                    if (exist) {
+                                        exist.title = title;
+                                        exist.updated_at = Date.now();
+                                        sessions = sessions.filter((s) => !self.same_id(s.id, cid));
+                                        sessions.unshift(exist);
+                                    } else {
+                                        sessions.unshift({
+                                            id: cid,
+                                            title: title,
+                                            messages: null,
+                                            updated_at: Date.now(),
+                                        });
+                                    }
+                                    self.set_url_consult_id(cid);
+                                    self.setData({
+                                        current_id: cid,
+                                        sessions: sessions,
+                                        main_title: title,
+                                    });
+                                }
+                            } else {
+                                bot_mid = self.msg_uid();
+                            }
+                            if (res.data.data.goods_keywords) {
+                                self.setData({ goods_context_keywords: String(res.data.data.goods_keywords || '') });
+                            } else if (goods.length) {
+                                self.setData({
+                                    goods_context_keywords: question || (history_questions.length ? history_questions[history_questions.length - 1] : self.goods_context_keywords),
+                                });
+                            }
+                        } else {
+                            answer = (res.data && res.data.msg) ? res.data.msg : '请求失败，请稍后再试。';
+                            if (!self.is_login) bot_mid = self.msg_uid();
+                        }
+                        list.push({
+                            role: 'bot',
+                            text: answer,
+                            display_text: '',
+                            typing: true,
+                            mid: bot_mid,
+                            feedback: 0,
+                            goods: [],
+                            suggests: [],
+                        });
+                        self.setData({ messages: list });
+                        var bot_idx = list.length - 1;
+                        self.typewrite_bot_answer(bot_idx, answer, {
+                            mid: bot_mid,
+                            goods: goods,
+                            suggests: suggests,
+                            onDone: function () {
+                                if (self.is_login) {
+                                    var s = self.find_session(self.current_id);
+                                    if (s) {
+                                        s.messages = self.collect_persist_messages();
+                                    }
+                                } else {
+                                    self.persist_current_messages();
+                                }
+                            },
+                        });
+                    },
+                    fail: () => {
+                        var list = self.messages.filter((m) => m.role !== 'loading');
+                        var fail_text = '网络异常，请检查网络后重试。';
+                        var fail_mid = self.is_login ? '' : self.msg_uid();
+                        list.push({
+                            role: 'bot',
+                            text: fail_text,
+                            display_text: '',
+                            typing: true,
+                            mid: fail_mid,
+                            feedback: 0,
+                            goods: [],
+                            suggests: [],
+                        });
+                        self.setData({ messages: list });
+                        self.typewrite_bot_answer(list.length - 1, fail_text, {
+                            mid: fail_mid,
+                            goods: [],
+                            suggests: [],
+                            onDone: function () {
+                                if (!self.is_login) {
+                                    self.persist_current_messages();
+                                }
+                            },
+                        });
+                    },
+                });
+            },
+            msg_action_event(e) {
+                var idx = parseInt(e.currentTarget.dataset.index, 10);
+                var act = e.currentTarget.dataset.act;
+                var msg = this.messages[idx];
+                if (!msg) return;
+                if (act === 'copy') {
+                    uni.setClipboardData({
+                        data: String(msg.text || ''),
+                        success: () => app.globalData.showToast('已复制', 'success'),
+                    });
+                    return;
+                }
+                if (act === 'edit') {
+                    this.setData({ input_value: msg.text || '' });
+                    return;
+                }
+                if (act === 'like' || act === 'dislike') {
+                    var cur = parseInt(msg.feedback || 0, 10) || 0;
+                    var next = 0;
+                    if (act === 'like') next = cur === 1 ? 0 : 1;
+                    else next = cur === 2 ? 0 : 2;
+                    this.submit_feedback(idx, next);
+                }
+            },
+            submit_feedback(idx, next_feedback) {
+                var msg = this.messages[idx];
+                if (!msg) return;
+                var mid = String(msg.mid || '');
+                var list = this.messages.slice();
+                list[idx] = Object.assign({}, msg, { feedback: next_feedback });
+                this.setData({ messages: list });
+
+                if (!this.is_login) {
+                    this.persist_current_messages();
+                    return;
+                }
+                if (!/^\d+$/.test(mid) || parseInt(mid, 10) <= 0) {
+                    return;
+                }
+                var self = this;
+                uni.request({
+                    url: app.globalData.get_request_url('feedback', 'index', 'aichat'),
+                    method: 'POST',
+                    data: {
+                        message_id: mid,
+                        feedback: next_feedback,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        if (res.data.code != 0) {
+                            // 回滚
+                            var rollback = self.messages.slice();
+                            if (rollback[idx]) {
+                                rollback[idx] = Object.assign({}, rollback[idx], { feedback: msg.feedback || 0 });
+                                self.setData({ messages: rollback });
+                            }
+                            app.globalData.showToast((res.data && res.data.msg) || '操作失败');
+                        } else {
+                            var s = self.find_session(self.current_id);
+                            if (s) {
+                                s.messages = self.collect_persist_messages();
+                            }
+                        }
+                    },
+                });
+            },
+        },
+    };
+</script>
+<style>
+    @import './index.css';
+</style>

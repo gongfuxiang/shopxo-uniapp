@@ -1733,6 +1733,19 @@
             ]
         },
         {
+            "root": "pages/plugins/aichat",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "",
+                        "disableScroll": true
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/ask",
             "pages": [
                 {
