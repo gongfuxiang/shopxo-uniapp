@@ -91,7 +91,7 @@
                         ></textarea>
                         <view class="aichat-input-toolbar flex-row align-c jc-e">
                             <view
-                                :class="'aichat-send-btn' + (can_send ? ' is-ready' : '')"
+                                :class="'aichat-send-btn' + (can_send ? '' : ' is-disabled')"
                                 @tap="send_event"
                             >
                                 <iconfont name="icon-sending-surface" size="34rpx" color="#fff"></iconfont>
@@ -242,7 +242,7 @@
                         ></textarea>
                         <view class="aichat-input-toolbar flex-row align-c jc-e">
                             <view
-                                :class="'aichat-send-btn' + (can_send ? ' is-ready' : '')"
+                                :class="'aichat-send-btn' + (can_send ? '' : ' is-disabled')"
                                 @tap="send_event"
                             >
                                 <iconfont name="icon-sending-surface" size="34rpx" color="#fff"></iconfont>
@@ -310,10 +310,12 @@
                 // 仅请求中禁用发送；打字动画中可继续提问
                 return !this.asking && String(this.input_value || '').trim() !== '';
             },
+            // 思考中文案拆成单字（渐变动画）
             thinking_chars() {
                 var text = String(this.thinking_text || '正在思考，请稍候...');
                 return text.split('');
             },
+            // 最后一条机器人消息下标（用于追问展示）
             last_bot_index() {
                 for (var i = this.messages.length - 1; i >= 0; i--) {
                     if (this.messages[i] && this.messages[i].role === 'bot') {
@@ -324,35 +326,54 @@
             },
         },
         onLoad(params) {
+            // 参数处理
             params = app.globalData.launch_params_handle(params);
+
+            // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 读取入口会话 id（路由参数；H5 还可从地址栏 ?id= 同步）
             var url_id = (params && params.id) ? String(params.id) : '';
             // #ifdef H5
             if (!url_id) {
                 url_id = this.read_url_consult_id();
             }
             // #endif
+
+            // 设置参数
             this.setData({
                 params: params || {},
                 current_id: url_id,
             });
+
+            // 登录态会话保存串行链
             this.save_chain = Promise.resolve();
+
+            // 初始化页面数据
             this.init_page();
         },
+
         onShow() {
+            // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // 公共onshow事件
             if ((this.$refs.common || null) != null) {
                 this.$refs.common.on_show();
             }
         },
+
+        // 页面卸载
         onUnload() {
             this.stop_typewrite();
         },
+
         methods: {
+            // 会话 id 是否相同（统一转字符串比较）
             same_id(a, b) {
                 return String(a || '') === String(b || '');
             },
-            // H5：与 PC 一致，用 ?id= 同步当前历史会话
+            // H5：从地址栏读取当前历史会话 id（与 PC ?id= 一致）
             read_url_consult_id() {
                 // #ifdef H5
                 try {
@@ -375,6 +396,7 @@
                 return '';
                 // #endif
             },
+            // H5：将当前会话 id 写入地址栏（replaceState，不产生历史记录）
             set_url_consult_id(id) {
                 // #ifdef H5
                 try {
@@ -411,12 +433,14 @@
                 } catch (e) {}
                 // #endif
             },
+            // 标题截断
             truncate_title(text, max) {
                 text = String(text || '').trim() || '新对话';
                 max = max || 18;
                 return text.length > max ? text.slice(0, max) + '...' : text;
             },
 
+            // HTML 转义
             escape_html(text) {
                 return String(text || '')
                     .replace(/&/g, '&amp;')
@@ -425,6 +449,7 @@
                     .replace(/"/g, '&quot;')
                     .replace(/'/g, '&#39;');
             },
+            // 简易 Markdown 转 HTML（加粗/斜体/代码/换行）
             format_message_html(text) {
                 var html = this.escape_html(text);
                 html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
@@ -434,19 +459,24 @@
                 html = html.replace(/\n/g, '<br/>');
                 return html;
             },
+            // 商品详情跳转地址
             goods_detail_url(g) {
                 var id = parseInt((g && g.id) || 0, 10) || 0;
                 return id > 0 ? '/pages/goods-detail/goods-detail?id=' + id : '';
             },
+            // 统一 url 跳转事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
+            // 生成游客会话 id
             uid() {
                 return 's_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
             },
+            // 生成游客消息 id
             msg_uid() {
                 return 'm_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
             },
+            // 读取本地游客会话列表
             load_local_sessions() {
                 try {
                     var raw = uni.getStorageSync(STORAGE_KEY);
@@ -456,16 +486,19 @@
                     return [];
                 }
             },
+            // 保存本地游客会话列表（最多 50 条）
             save_local_sessions_list(list) {
                 try {
                     uni.setStorageSync(STORAGE_KEY, (list || []).slice(0, 50));
                 } catch (e) {}
             },
+            // 清空本地游客会话
             clear_local_sessions() {
                 try {
                     uni.removeStorageSync(STORAGE_KEY);
                 } catch (e) {}
             },
+            // 按 id 查找当前列表中的会话
             find_session(id) {
                 for (var i = 0; i < this.sessions.length; i++) {
                     if (this.same_id(this.sessions[i].id, id)) {
@@ -474,6 +507,7 @@
                 }
                 return null;
             },
+            // 根据首条用户消息推导会话标题
             derive_title(msgs) {
                 for (var i = 0; i < (msgs || []).length; i++) {
                     if (msgs[i].role === 'user' && String(msgs[i].text || '').trim()) {
@@ -482,6 +516,7 @@
                 }
                 return '新对话';
             },
+            // 滚动到消息列表底部
             scroll_bottom(opts) {
                 opts = opts || {};
                 var self = this;
@@ -514,6 +549,7 @@
                     }
                 });
             },
+            // 停止打字机动画；complete=true 时立即补全当前回复
             stop_typewrite(complete) {
                 if (this._type_timer) {
                     clearTimeout(this._type_timer);
@@ -555,6 +591,7 @@
                     this.setData({ is_typing: false });
                 }
             },
+            // 机器人回复打字机效果
             typewrite_bot_answer(msg_index, full_text, extras) {
                 extras = extras || {};
                 this.stop_typewrite(false);
@@ -635,6 +672,7 @@
                 }
                 tick();
             },
+            // 打开历史侧栏
             open_sidebar() {
                 if (this._sidebar_close_timer) {
                     clearTimeout(this._sidebar_close_timer);
@@ -642,6 +680,7 @@
                 }
                 this.setData({ sidebar_closing: false, sidebar_open: true });
             },
+            // 关闭历史侧栏（带动画）
             close_sidebar() {
                 if (!this.sidebar_open) {
                     this.setData({ sidebar_closing: false });
@@ -657,18 +696,22 @@
                     this._sidebar_close_timer = null;
                 }, 240);
             },
+            // 输入框内容变化
             input_event(e) {
                 this.setData({ input_value: e.detail.value });
             },
+            // 快捷问题点击
             quick_ask_event(e) {
                 var q = (e.currentTarget.dataset.question || '').trim();
                 if (q) {
                     this.send_question(q);
                 }
             },
+            // 发送按钮 / 键盘确认
             send_event() {
                 this.send_question(this.input_value);
             },
+            // 初始化页面（咨询配置、会话列表、入口详情）
             init_page() {
                 var self = this;
                 var boot_id = this.current_id || this.read_url_consult_id() || '';
@@ -749,6 +792,7 @@
                     },
                 });
             },
+            // 启动会话：登录迁移游客数据 / 打开入口会话 / 进入新对话
             boot_sessions() {
                 var self = this;
                 if (this.is_login) {
@@ -791,6 +835,7 @@
                     }
                 }
             },
+            // 登录后将本地游客会话迁移到服务端
             migrate_guest_sessions(done) {
                 var self = this;
                 var local_list = this.load_local_sessions();
@@ -838,6 +883,7 @@
                     typeof done === 'function' && done(true);
                 });
             },
+            // 刷新服务端会话列表
             refresh_remote_list(done) {
                 var self = this;
                 uni.request({
@@ -867,6 +913,7 @@
                     },
                 });
             },
+            // 开启新对话
             start_new_chat() {
                 this.stop_typewrite();
                 this.set_url_consult_id('');
@@ -884,10 +931,12 @@
                     scroll_into: '',
                 });
             },
+            // 历史列表点击打开会话
             open_session_event(e) {
                 var id = e.currentTarget.dataset.id;
                 this.open_session(id);
             },
+            // 打开指定会话（游客读本地；登录优先缓存再拉详情）
             open_session(id) {
                 id = id === undefined || id === null ? '' : String(id);
                 if (!id) return;
@@ -935,6 +984,7 @@
                 });
                 this.fetch_session_detail(id, false);
             },
+            // 规范化消息结构（接口字段为 id，前端统一用 mid）
             normalize_messages(list) {
                 // 与 PC 一致：接口字段是 id，页面统一用 mid（刷新后才能继续点赞入库）
                 return (list || []).map((m) => {
@@ -958,6 +1008,7 @@
                     };
                 });
             },
+            // 拉取会话详情；silent=true 时失败不打断当前展示
             fetch_session_detail(id, silent) {
                 var self = this;
                 var req_id = ++this.detail_req_seq;
@@ -1021,6 +1072,7 @@
                     },
                 });
             },
+            // 删除会话确认弹窗
             delete_session_event(e) {
                 var id = e.currentTarget.dataset.id;
                 var self = this;
@@ -1034,6 +1086,7 @@
                     },
                 });
             },
+            // 删除会话（游客本地 / 登录走接口）
             delete_session(id) {
                 var self = this;
                 if (!this.is_login) {
@@ -1064,6 +1117,7 @@
                     },
                 });
             },
+            // 确保存在当前会话（游客自动创建本地会话）
             ensure_session() {
                 if (this.current_id && this.find_session(this.current_id)) {
                     return this.find_session(this.current_id);
@@ -1087,6 +1141,7 @@
                 });
                 return session;
             },
+            // 收集可持久化的用户/机器人消息
             collect_persist_messages() {
                 return (this.messages || [])
                     .filter((m) => m.role === 'user' || m.role === 'bot')
@@ -1110,6 +1165,7 @@
                         };
                     });
             },
+            // 持久化当前会话消息（游客本地 / 登录串行保存到服务端）
             persist_current_messages(done) {
                 var self = this;
                 var msgs = this.collect_persist_messages();
@@ -1180,6 +1236,7 @@
                     });
                 });
             },
+            // 取历史提问（不含当前刚发的那条，最多 4 条）
             get_history_questions() {
                 var qs = [];
                 var msgs = this.collect_persist_messages();
@@ -1191,6 +1248,7 @@
                 if (qs.length > 0) qs.pop();
                 return qs.slice(-4);
             },
+            // 从最近一次商品推荐恢复商品上下文关键词
             restore_goods_context() {
                 var msgs = this.collect_persist_messages();
                 var keywords = '';
@@ -1208,6 +1266,7 @@
                 }
                 this.setData({ goods_context_keywords: keywords });
             },
+            // 发送提问并请求回答
             send_question(question) {
                 question = String(question || '').trim();
                 if (!question || this.asking) return;
@@ -1381,6 +1440,7 @@
                     },
                 });
             },
+            // 消息操作：复制 / 编辑 / 赞踩
             msg_action_event(e) {
                 var idx = parseInt(e.currentTarget.dataset.index, 10);
                 var act = e.currentTarget.dataset.act;
@@ -1405,6 +1465,7 @@
                     this.submit_feedback(idx, next);
                 }
             },
+            // 提交消息反馈（赞/踩）；登录走接口，游客仅本地
             submit_feedback(idx, next_feedback) {
                 var msg = this.messages[idx];
                 if (!msg) return;

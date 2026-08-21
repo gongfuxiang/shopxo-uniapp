@@ -510,13 +510,15 @@
     width: 68rpx;
     height: 68rpx;
     border-radius: 50%;
-    background: #c4c9d4;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    box-shadow: 0 4rpx 16rpx rgba(124, 58, 237, 0.28);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.15s;
 }
-.aichat-send-btn.is-ready {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
+.aichat-send-btn.is-disabled {
+    opacity: 0.45;
 }
 
 .aichat-quick-wrap {
