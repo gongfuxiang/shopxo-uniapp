@@ -29,60 +29,60 @@
 
         <view class="form-gorup">
             <view class="form-gorup-title">{{ $t('invoice.invoice.y724c7') }}<text class="form-group-tips-must">*</text></view>
-            <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.x461e0')" maxlength="200" :value="form_data.invoice_title || ''" />
+            <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.x461e0')" maxlength="200" :value="form_data.invoice_title || ''"  data-field="invoice_title" @input="input_event" />
         </view>
 
         <view v-if="company_container">
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-saveinfo.invoice-saveinfo.x8hhiv') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.924cag')" maxlength="160" :value="form_data.invoice_code || ''" />
+                <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.924cag')" maxlength="160" :value="form_data.invoice_code || ''"  data-field="invoice_code" @input="input_event" />
             </view>
         </view>
 
         <view v-if="company_special_container">
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.41qbu6') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.ymvw6b')" maxlength="200" :value="form_data.invoice_bank || ''" />
+                <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.ymvw6b')" maxlength="200" :value="form_data.invoice_bank || ''"  data-field="invoice_bank" @input="input_event" />
             </view>
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.3a9459') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.664qc7')" maxlength="160" :value="form_data.invoice_account || ''" />
+                <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.664qc7')" maxlength="160" :value="form_data.invoice_account || ''"  data-field="invoice_account" @input="input_event" />
             </view>
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.2g7t23') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bbseo1')" maxlength="15" :value="form_data.invoice_tel || ''" />
+                <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bbseo1')" maxlength="15" :value="form_data.invoice_tel || ''"  data-field="invoice_tel" @input="input_event" />
             </view>
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.6k6sov') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.85735j')" maxlength="230" :value="form_data.invoice_address || ''" />
+                <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.85735j')" maxlength="230" :value="form_data.invoice_address || ''"  data-field="invoice_address" @input="input_event" />
             </view>
         </view>
 
         <view v-if="addressee_container">
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.7159m0') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.gsc7dy')" maxlength="30" :value="form_data.name || ''" />
+                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.gsc7dy')" maxlength="30" :value="form_data.name || ''"  data-field="name" @input="input_event" />
             </view>
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.f2222p') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bp8822')" maxlength="15" :value="form_data.tel || ''" />
+                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bp8822')" maxlength="15" :value="form_data.tel || ''"  data-field="tel" @input="input_event" />
             </view>
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('invoice-detail.invoice-detail.q8l3zj') }}<text class="form-group-tips-must">*</text></view>
-                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.u7h724')" maxlength="230" :value="form_data.address || ''" />
+                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.u7h724')" maxlength="230" :value="form_data.address || ''"  data-field="address" @input="input_event" />
             </view>
         </view>
 
         <view v-if="email_container">
             <view class="form-gorup">
                 <view class="form-gorup-title">{{ $t('login.login.db1rf4') }}</view>
-                <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.d3qbe1')" maxlength="60" :value="form_data.email || ''" />
+                <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.d3qbe1')" maxlength="60" :value="form_data.email || ''"  data-field="email" @input="input_event" />
             </view>
         </view>
 
         <view class="form-gorup">
             <view class="form-gorup-title">{{ $t('common.note') }}</view>
-            <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="form_data.user_note || ''" />
+            <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="form_data.user_note || ''"  data-field="user_note" @input="input_event" />
         </view>
     </view>
 </template>
@@ -139,6 +139,18 @@
             },
         },
         methods: {
+            // 文本输入（小程序 form 无法收集自定义组件内 input，需回传父级）
+            input_event(e) {
+                var field = (e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.field) || '';
+                if (!field) {
+                    return;
+                }
+                this.$emit('field-input', {
+                    field: field,
+                    value: (e.detail && e.detail.value != null) ? e.detail.value : '',
+                });
+            },
+
             // 发票类型选择
             invoice_type_event(e) {
                 this.$emit('invoice-type-change', e);

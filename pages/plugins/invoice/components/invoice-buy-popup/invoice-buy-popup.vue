@@ -48,6 +48,7 @@
                                 @invoice-type-change="form_invoice_type_event"
                                 @apply-type-change="form_apply_type_event"
                                 @invoice-content-change="form_invoice_content_event"
+                                @field-input="form_field_input_event"
                             ></component-invoice-form-fields>
                         </block>
                     </view>
@@ -152,7 +153,7 @@
 
             // 表单提交
             form_submit(e) {
-                var data = e.detail.value || {};
+                var data = this.invoice_form_merge_detail(e.detail.value || {});
                 var result = {
                     is_buy_invoice: this.is_buy_invoice,
                 };

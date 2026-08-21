@@ -29,6 +29,7 @@
                             @invoice-type-change="form_invoice_type_event"
                             @apply-type-change="form_apply_type_event"
                             @invoice-content-change="form_invoice_content_event"
+                            @field-input="form_field_input_event"
                         ></component-invoice-form-fields>
 
                         <view class="bottom-fixed" :style="bottom_fixed_style">
@@ -188,7 +189,8 @@
 
             // 表单提交
             form_submit(e) {
-                var data = e.detail.value || {};
+                // 小程序无法收集自定义组件内 input，需与本地回写合并；H5 仍以 detail 为准
+                var data = this.invoice_form_merge_detail(e.detail.value || {});
                 if ((this.data || null) == null || (this.data.id || null) == null) {
                     data['ids'] = this.params.ids || '';
                     data['type'] = this.params.type || '';

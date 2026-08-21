@@ -66,6 +66,46 @@ export default {
             });
         },
 
+        // 子组件文本框输入回写（兼容微信小程序 form 不收集组件内 input）
+        form_field_input_event(e) {
+            var field = (e && e.field) || '';
+            if (!field) {
+                return;
+            }
+            var value = e.value != null ? e.value : '';
+            var upd = {};
+            if (this.data !== undefined) {
+                var data = Object.assign({}, this.data || {});
+                data[field] = value;
+                upd.data = data;
+            }
+            if (this.form_data !== undefined) {
+                var form_data = Object.assign({}, this.form_data || {});
+                form_data[field] = value;
+                upd.form_data = form_data;
+            }
+            if (Object.keys(upd).length > 0) {
+                this.invoice_form_assign(upd);
+            }
+        },
+
+        // 合并 form.detail 与本地已回写字段
+        invoice_form_merge_detail(form_value) {
+            form_value = form_value || {};
+            var local = Object.assign({}, this.form_data || {}, this.data || {});
+            var data = Object.assign({}, form_value);
+            for (var i in invoice_form_field_list) {
+                var field = invoice_form_field_list[i];
+                var from_form = form_value[field];
+                if (from_form === undefined || from_form === null || String(from_form) === '') {
+                    if (local[field] !== undefined && local[field] !== null) {
+                        data[field] = local[field];
+                    }
+                }
+            }
+            return data;
+        },
+
         // 表单容器显隐处理
         invoice_container_handle() {
             if ((this.can_invoice_type_list || []).length == 0) {
