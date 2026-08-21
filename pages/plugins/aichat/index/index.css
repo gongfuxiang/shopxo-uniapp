@@ -17,8 +17,9 @@
     margin-top: 160rpx;
 }
 
+/* absolute 相对 .aichat-page：H5 在 PC 有 max-width 居中时，贴页面左边而非视口左边 */
 .aichat-sidebar-mask {
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     right: 0;
@@ -27,7 +28,7 @@
     background: rgba(15, 23, 42, 0.35);
 }
 .aichat-sidebar {
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
