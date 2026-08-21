@@ -527,14 +527,17 @@
                     var idx = ctx.msg_index;
                     var text = ctx.text;
                     var extras = ctx.extras || {};
-                    if (list[idx] && list[idx].role === 'bot') {
-                        list[idx] = Object.assign({}, list[idx], {
+                    // 以当前消息为底，避免打字结束覆盖用户刚点的赞/踩
+                    var cur = (this.messages[idx] && this.messages[idx].role === 'bot') ? this.messages[idx] : null;
+                    if (cur) {
+                        list[idx] = Object.assign({}, cur, {
                             text: text,
                             display_text: text,
                             typing: false,
-                            mid: extras.mid || list[idx].mid || '',
-                            goods: extras.goods || [],
-                            suggests: extras.suggests || [],
+                            mid: extras.mid || cur.mid || '',
+                            feedback: parseInt(cur.feedback || 0, 10) || 0,
+                            goods: extras.goods || cur.goods || [],
+                            suggests: extras.suggests || cur.suggests || [],
                         });
                     }
                     this.setData({
@@ -572,14 +575,17 @@
                     self._typing_active = false;
                     self._typewrite_ctx = null;
                     var list = self.messages.slice();
-                    if (list[msg_index] && list[msg_index].role === 'bot') {
-                        list[msg_index] = Object.assign({}, list[msg_index], {
+                    // 以最新消息为底，保留点赞（避免与点赞 setData 竞态被覆盖）
+                    var cur = (self.messages[msg_index] && self.messages[msg_index].role === 'bot') ? self.messages[msg_index] : null;
+                    if (cur) {
+                        list[msg_index] = Object.assign({}, cur, {
                             text: text,
                             display_text: text,
                             typing: false,
-                            mid: extras.mid || list[msg_index].mid || '',
-                            goods: extras.goods || [],
-                            suggests: extras.suggests || [],
+                            mid: extras.mid || cur.mid || '',
+                            feedback: parseInt(cur.feedback || 0, 10) || 0,
+                            goods: extras.goods || cur.goods || [],
+                            suggests: extras.suggests || cur.suggests || [],
                         });
                     }
                     self.setData({
@@ -599,16 +605,18 @@
                     }
                     i = Math.min(total, i + step);
                     tick_count++;
-                    var list = self.messages.slice();
-                    if (!list[msg_index] || list[msg_index].role !== 'bot') {
+                    var cur = self.messages[msg_index];
+                    if (!cur || cur.role !== 'bot') {
                         self._typing_active = false;
                         self._typewrite_ctx = null;
                         self.setData({ is_typing: false, asking: false });
                         return;
                     }
-                    list[msg_index] = Object.assign({}, list[msg_index], {
+                    var list = self.messages.slice();
+                    list[msg_index] = Object.assign({}, cur, {
                         display_text: text.slice(0, i),
                         typing: true,
+                        feedback: parseInt(cur.feedback || 0, 10) || 0,
                     });
                     self.setData({ messages: list });
                     if (tick_count % 3 === 0 || i >= total) {
@@ -928,14 +936,27 @@
                 this.fetch_session_detail(id, false);
             },
             normalize_messages(list) {
-                return (list || []).map((m) => ({
-                    role: m.role === 'user' ? 'user' : 'bot',
-                    text: m.text || '',
-                    mid: m.mid || '',
-                    feedback: parseInt(m.feedback || 0, 10) || 0,
-                    goods: Array.isArray(m.goods) ? m.goods : [],
-                    suggests: Array.isArray(m.suggests) ? m.suggests : [],
-                }));
+                // 与 PC 一致：接口字段是 id，页面统一用 mid（刷新后才能继续点赞入库）
+                return (list || []).map((m) => {
+                    var mid = '';
+                    if (m.mid !== undefined && m.mid !== null && String(m.mid) !== '') {
+                        mid = String(m.mid);
+                    } else if (m.id !== undefined && m.id !== null && String(m.id) !== '') {
+                        mid = String(m.id);
+                    }
+                    var feedback = parseInt(m.feedback || 0, 10) || 0;
+                    if (feedback !== 1 && feedback !== 2) {
+                        feedback = 0;
+                    }
+                    return {
+                        role: m.role === 'user' ? 'user' : 'bot',
+                        text: m.text || '',
+                        mid: mid,
+                        feedback: feedback,
+                        goods: Array.isArray(m.goods) ? m.goods : [],
+                        suggests: Array.isArray(m.suggests) ? m.suggests : [],
+                    };
+                });
             },
             fetch_session_detail(id, silent) {
                 var self = this;
@@ -1069,13 +1090,25 @@
             collect_persist_messages() {
                 return (this.messages || [])
                     .filter((m) => m.role === 'user' || m.role === 'bot')
-                    .map((m) => ({
-                        role: m.role,
-                        text: m.text || '',
-                        mid: m.mid || '',
-                        feedback: parseInt(m.feedback || 0, 10) || 0,
-                        goods: Array.isArray(m.goods) ? m.goods : [],
-                    }));
+                    .map((m) => {
+                        var mid = '';
+                        if (m.mid !== undefined && m.mid !== null && String(m.mid) !== '') {
+                            mid = String(m.mid);
+                        } else if (m.id !== undefined && m.id !== null && String(m.id) !== '') {
+                            mid = String(m.id);
+                        }
+                        var feedback = parseInt(m.feedback || 0, 10) || 0;
+                        if (feedback !== 1 && feedback !== 2) {
+                            feedback = 0;
+                        }
+                        return {
+                            role: m.role,
+                            text: m.text || '',
+                            mid: mid,
+                            feedback: feedback,
+                            goods: Array.isArray(m.goods) ? m.goods : [],
+                        };
+                    });
             },
             persist_current_messages(done) {
                 var self = this;
@@ -1375,9 +1408,10 @@
             submit_feedback(idx, next_feedback) {
                 var msg = this.messages[idx];
                 if (!msg) return;
-                var mid = String(msg.mid || '');
+                // 兼容接口 id 与页面 mid
+                var mid = String(msg.mid || msg.id || '');
                 var list = this.messages.slice();
-                list[idx] = Object.assign({}, msg, { feedback: next_feedback });
+                list[idx] = Object.assign({}, msg, { mid: mid, feedback: next_feedback });
                 this.setData({ messages: list });
 
                 if (!this.is_login) {
