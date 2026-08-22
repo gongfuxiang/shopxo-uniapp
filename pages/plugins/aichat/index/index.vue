@@ -372,6 +372,7 @@
     import componentPopup from '@/components/popup/popup';
 
     const STORAGE_KEY = 'plugins_aichat_consult_sessions_v1';
+    const GUEST_TOKEN_KEY = 'plugins_aichat_guest_token';
 
     export default {
         data() {
@@ -380,6 +381,7 @@
                 page_loading: true,
                 is_enabled: 0,
                 is_login: 0,
+                use_remote: true,
                 application_name: '智能客服助手',
                 logo: '',
                 welcome: '',
@@ -449,7 +451,7 @@
             },
             // 历史侧栏当前展示的会话
             displayed_sessions() {
-                if (this.is_login) {
+                if (this.use_remote) {
                     return this.sessions || [];
                 }
                 var n = (this.page_size || 20) * (this.history_page || 1);
@@ -457,7 +459,7 @@
             },
             // 历史侧栏是否还可加载更多
             history_can_more() {
-                if (this.is_login) {
+                if (this.use_remote) {
                     return !!this.history_has_more;
                 }
                 var n = (this.page_size || 20) * (this.history_page || 1);
@@ -511,6 +513,33 @@
             // 会话 id 是否相同（统一转字符串比较）
             same_id(a, b) {
                 return String(a || '') === String(b || '');
+            },
+            // 游客身份令牌（小程序无 Cookie，需随请求带上）
+            guest_token() {
+                try {
+                    return String(uni.getStorageSync(GUEST_TOKEN_KEY) || '');
+                } catch (e) {
+                    return '';
+                }
+            },
+            // 保存服务端下发的游客令牌
+            save_guest_token(token) {
+                var t = String(token || '').trim();
+                if (!t) {
+                    return;
+                }
+                try {
+                    uni.setStorageSync(GUEST_TOKEN_KEY, t);
+                } catch (e) {}
+            },
+            // 请求体附带游客令牌（登录后也可带，服务端按 user_id 优先）
+            guest_payload(data) {
+                var out = data || {};
+                var t = this.guest_token();
+                if (t) {
+                    out.guest_token = t;
+                }
+                return out;
             },
             // H5：从地址栏读取当前历史会话 id（与 PC ?id= 一致）
             read_url_consult_id() {
@@ -1123,11 +1152,12 @@
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'aichat'),
                     method: 'POST',
-                    data: boot_id ? { id: boot_id, consult_id: boot_id } : {},
+                    data: this.guest_payload(boot_id ? { id: boot_id, consult_id: boot_id } : {}),
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0 && res.data.data) {
                             var d = res.data.data;
+                            self.save_guest_token(d.guest_token);
                             var is_login = parseInt(d.is_login || 0) === 1 ? 1 : 0;
                             var sessions_need_refresh = false;
                             // 以本地登录态为准，避免 token 场景下服务端未识别
@@ -1138,7 +1168,7 @@
                             }
                             self._sessions_need_refresh = sessions_need_refresh;
                             var sessions = [];
-                            if (is_login && Array.isArray(d.sessions)) {
+                            if (Array.isArray(d.sessions)) {
                                 sessions = d.sessions.map((row) => ({
                                     id: row.id,
                                     title: row.title || '新对话',
@@ -1182,7 +1212,7 @@
                                 history_page: 1,
                                 desc: d.desc || '',
                                 quick_questions: Array.isArray(d.quick_questions) ? d.quick_questions : [],
-                                sessions: is_login ? sessions : self.sessions,
+                                sessions: sessions,
                             });
                             uni.setNavigationBarTitle({ title: d.application_name || self.$t('pages.plugins-aichat-index') });
                             if (parseInt(d.is_enabled || 0) === 1) {
@@ -1201,48 +1231,34 @@
                     },
                 });
             },
-            // 启动会话：登录迁移游客数据 / 打开入口会话 / 进入新对话
+            // 启动会话：旧本地游客数据迁入服务端，再打开入口会话或新对话
             boot_sessions() {
                 var self = this;
-                if (this.is_login) {
-                    if (this.current_id) {
-                        this.setData({
-                            is_chatting: true,
-                            session_loading: true,
-                            main_title: '加载中...',
-                            messages: [],
-                        });
-                    }
-                    this.migrate_guest_sessions((migrated) => {
-                        var finish = () => {
-                            var id = self.current_id || self.read_url_consult_id();
-                            if (id) {
-                                self.open_session(id);
-                            } else {
-                                self.set_url_consult_id('');
-                                self.setData({ is_chatting: false, session_loading: false, main_title: '新对话' });
-                            }
-                        };
-                        if (migrated || self._sessions_need_refresh) {
-                            self._sessions_need_refresh = false;
-                            self.refresh_remote_list(finish);
-                        } else {
-                            finish();
-                        }
+                if (this.current_id) {
+                    this.setData({
+                        is_chatting: true,
+                        session_loading: true,
+                        main_title: '加载中...',
+                        messages: [],
                     });
-                } else {
-                    var sessions = this.load_local_sessions();
-                    this.setData({ sessions: sessions });
-                    var id = this.current_id || this.read_url_consult_id();
-                    if (id && this.find_session(id)) {
-                        this.open_session(id);
-                    } else {
-                        if (id) {
-                            this.set_url_consult_id('');
-                        }
-                        this.setData({ current_id: '', is_chatting: false, main_title: '新对话' });
-                    }
                 }
+                this.migrate_guest_sessions((migrated) => {
+                    var finish = () => {
+                        var id = self.current_id || self.read_url_consult_id();
+                        if (id) {
+                            self.open_session(id);
+                        } else {
+                            self.set_url_consult_id('');
+                            self.setData({ is_chatting: false, session_loading: false, main_title: '新对话' });
+                        }
+                    };
+                    if (migrated || self._sessions_need_refresh) {
+                        self._sessions_need_refresh = false;
+                        self.refresh_remote_list(finish);
+                    } else {
+                        finish();
+                    }
+                });
             },
             // 登录后将本地游客会话迁移到服务端
             migrate_guest_sessions(done) {
@@ -1268,11 +1284,11 @@
                             uni.request({
                                 url: app.globalData.get_request_url('consultsave', 'index', 'aichat'),
                                 method: 'POST',
-                                data: {
+                                data: self.guest_payload({
                                     consult_id: 0,
                                     title: guest.title || self.derive_title(guest.messages),
                                     messages_b64: base64.encode(JSON.stringify(guest.messages || [])),
-                                },
+                                }),
                                 dataType: 'json',
                                 success: (res) => {
                                     if (res.data.code == 0) {
@@ -1299,10 +1315,11 @@
                 uni.request({
                     url: app.globalData.get_request_url('consultlist', 'index', 'aichat'),
                     method: 'POST',
-                    data: { page: page },
+                    data: this.guest_payload({ page: page }),
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0 && res.data.data && Array.isArray(res.data.data.list)) {
+                            self.save_guest_token(res.data.data.guest_token);
                             var rows = res.data.data.list.map((row) => ({
                                 id: row.id,
                                 title: row.title || '新对话',
@@ -1329,7 +1346,6 @@
                         } else if (res.data.code == -400) {
                             self.setData({
                                 is_login: 0,
-                                sessions: self.load_local_sessions(),
                                 history_page: 1,
                             });
                         }
@@ -1382,7 +1398,7 @@
                     return;
                 }
                 var self = this;
-                if (!this.is_login) {
+                if (!this.use_remote) {
                     var session = this.find_session(this.current_id);
                     if (!session || !Array.isArray(session.messages) || this.msg_guest_start <= 0) {
                         this.setData({ msg_has_more: false, msg_more_show: false });
@@ -1420,7 +1436,7 @@
                 if (!this.history_can_more) {
                     return;
                 }
-                if (!this.is_login) {
+                if (!this.use_remote) {
                     this.setData({ history_page: this.history_page + 1 });
                     return;
                 }
@@ -1433,7 +1449,7 @@
                     self.setData({ history_loading_more: false });
                 }, true);
             },
-            // 打开指定会话（游客读本地；登录优先缓存再拉详情）
+            // 打开指定会话（优先缓存再拉详情）
             open_session(id) {
                 id = id === undefined || id === null ? '' : String(id);
                 if (!id) return;
@@ -1442,7 +1458,7 @@
                 this.set_url_consult_id(id);
                 this.setData({ asking: false, goods_context_keywords: '', msg_more_show: false });
 
-                if (!this.is_login) {
+                if (!this.use_remote) {
                     var session = this.find_session(id);
                     if (!session) return;
                     var sliced = this.slice_guest_messages(session.messages || []);
@@ -1531,7 +1547,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('consultdetail', 'index', 'aichat'),
                     method: 'POST',
-                    data: { consult_id: id, before_id: before_id },
+                    data: this.guest_payload({ consult_id: id, before_id: before_id }),
                     dataType: 'json',
                     success: (res) => {
                         if (req_id !== self.detail_req_seq) return;
@@ -1641,10 +1657,10 @@
                     },
                 });
             },
-            // 删除会话（游客本地 / 登录走接口）
+            // 删除会话
             delete_session(id) {
                 var self = this;
-                if (!this.is_login) {
+                if (!this.use_remote) {
                     var sessions = this.sessions.filter((s) => !this.same_id(s.id, id));
                     this.save_local_sessions_list(sessions);
                     this.setData({ sessions: sessions });
@@ -1656,7 +1672,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('consultdelete', 'index', 'aichat'),
                     method: 'POST',
-                    data: { consult_id: id },
+                    data: this.guest_payload({ consult_id: id }),
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code != 0) {
@@ -1672,12 +1688,12 @@
                     },
                 });
             },
-            // 确保存在当前会话（游客自动创建本地会话）
+            // 确保存在当前会话
             ensure_session() {
                 if (this.current_id && this.find_session(this.current_id)) {
                     return this.find_session(this.current_id);
                 }
-                if (this.is_login) {
+                if (this.use_remote) {
                     this.setData({ current_id: '' });
                     return { id: '', title: '新对话', messages: [] };
                 }
@@ -1726,13 +1742,13 @@
                         };
                     });
             },
-            // 持久化当前会话消息（游客本地 / 登录串行保存到服务端）
+            // 持久化当前会话消息（远程走接口；本地仅兼容旧数据）
             persist_current_messages(done) {
                 var self = this;
                 var visible = this.collect_persist_messages();
                 var msgs = visible;
                 var title = this.derive_title(visible);
-                if (!this.is_login) {
+                if (!this.use_remote) {
                     if (!this.current_id) {
                         typeof done === 'function' && done();
                         return;
@@ -1762,11 +1778,11 @@
                         uni.request({
                             url: app.globalData.get_request_url('consultsave', 'index', 'aichat'),
                             method: 'POST',
-                            data: {
+                            data: self.guest_payload({
                                 consult_id: self.current_id || 0,
                                 title: title,
                                 messages_b64: base64.encode(JSON.stringify(msgs || [])),
-                            },
+                            }),
                             dataType: 'json',
                             success: (res) => {
                                 if (res.data.code == 0 && res.data.data) {
@@ -1912,7 +1928,7 @@
                         revisions: revisions,
                     });
                 } else {
-                    var user_mid = this.is_login ? '' : this.msg_uid();
+                    var user_mid = this.use_remote ? '' : this.msg_uid();
                     messages.push({
                         role: 'user',
                         text: question,
@@ -1933,7 +1949,7 @@
                     messages: messages,
                     sidebar_open: false,
                 });
-                if (!this.is_login && replace_idx < 0) {
+                if (!this.use_remote && replace_idx < 0) {
                     this.persist_current_messages();
                 }
                 this.scroll_bottom();
@@ -1941,7 +1957,7 @@
                 var history_questions = this.get_history_questions(replace_idx >= 0 ? question : '');
                 var self = this;
                 var persist_after_bot = function () {
-                    if (self.is_login) {
+                    if (self.use_remote) {
                         var s = self.find_session(self.current_id);
                         if (s) {
                             s.messages = self.collect_persist_messages();
@@ -1954,14 +1970,14 @@
                 uni.request({
                     url: app.globalData.get_request_url('ask', 'index', 'aichat'),
                     method: 'POST',
-                    data: {
+                    data: this.guest_payload({
                         question: question,
                         consult_id: this.current_id || 0,
                         history_questions: history_questions.join('\n'),
                         goods_context_keywords: this.goods_context_keywords || '',
                         regenerate: replace_idx >= 0 ? 1 : 0,
-                        bot_message_id: (replace_idx >= 0 && this.is_login && /^\d+$/.test(exist_bot_mid)) ? exist_bot_mid : 0,
-                    },
+                        bot_message_id: (replace_idx >= 0 && this.use_remote && /^\d+$/.test(exist_bot_mid)) ? exist_bot_mid : 0,
+                    }),
                     dataType: 'json',
                     timeout: 120000,
                     success: (res) => {
@@ -1980,10 +1996,11 @@
                             }
                         }
                         if (res.data.code == 0 && res.data.data) {
+                            self.save_guest_token(res.data.data.guest_token);
                             answer = res.data.data.answer || '暂时无法回答，请稍后再试。';
                             suggests = Array.isArray(res.data.data.suggests) ? res.data.data.suggests : [];
                             goods = Array.isArray(res.data.data.goods) ? res.data.data.goods : [];
-                            if (self.is_login) {
+                            if (self.use_remote) {
                                 if (res.data.data.user_message_id && user_idx >= 0) {
                                     list[user_idx].mid = res.data.data.user_message_id;
                                 }
@@ -2027,7 +2044,7 @@
                             }
                         } else {
                             answer = (res.data && res.data.msg) ? res.data.msg : '请求失败，请稍后再试。';
-                            if (!self.is_login && replace_idx < 0) bot_mid = self.msg_uid();
+                            if (!self.use_remote && replace_idx < 0) bot_mid = self.msg_uid();
                         }
                         var bot_idx = list.length;
                         var revs = [];
@@ -2105,7 +2122,7 @@
                         }
                         var list = self.messages.filter((m) => m.role !== 'loading');
                         var fail_text = '网络异常，请检查网络后重试。';
-                        var fail_mid = self.is_login ? '' : self.msg_uid();
+                        var fail_mid = self.use_remote ? '' : self.msg_uid();
                         list.push({
                             role: 'bot',
                             text: fail_text,
@@ -2125,7 +2142,7 @@
                             suggests: [],
                             revisions: [],
                             onDone: function () {
-                                if (!self.is_login) {
+                                if (!self.use_remote) {
                                     self.persist_current_messages();
                                 }
                             },
@@ -2176,7 +2193,7 @@
                     this.submit_feedback(idx, next);
                 }
             },
-            // 提交消息反馈（赞/踩）；登录走接口，游客仅本地
+            // 提交消息反馈（赞/踩）
             submit_feedback(idx, next_feedback) {
                 var msg = this.messages[idx];
                 if (!msg) return;
@@ -2186,7 +2203,7 @@
                 list[idx] = Object.assign({}, msg, { mid: mid, feedback: next_feedback });
                 this.setData({ messages: list });
 
-                if (!this.is_login) {
+                if (!this.use_remote) {
                     this.persist_current_messages();
                     return;
                 }
@@ -2197,10 +2214,10 @@
                 uni.request({
                     url: app.globalData.get_request_url('feedback', 'index', 'aichat'),
                     method: 'POST',
-                    data: {
+                    data: this.guest_payload({
                         message_id: mid,
                         feedback: next_feedback,
-                    },
+                    }),
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code != 0) {
