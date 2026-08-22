@@ -1231,7 +1231,7 @@
                     },
                 });
             },
-            // 启动会话：旧本地游客数据迁入服务端，再打开入口会话或新对话
+            // 启动会话：打开入口会话或进入新对话
             boot_sessions() {
                 var self = this;
                 if (this.current_id) {
@@ -1242,71 +1242,21 @@
                         messages: [],
                     });
                 }
-                this.migrate_guest_sessions((migrated) => {
-                    var finish = () => {
-                        var id = self.current_id || self.read_url_consult_id();
-                        if (id) {
-                            self.open_session(id);
-                        } else {
-                            self.set_url_consult_id('');
-                            self.setData({ is_chatting: false, session_loading: false, main_title: '新对话' });
-                        }
-                    };
-                    if (migrated || self._sessions_need_refresh) {
-                        self._sessions_need_refresh = false;
-                        self.refresh_remote_list(finish);
+                var finish = () => {
+                    var id = self.current_id || self.read_url_consult_id();
+                    if (id) {
+                        self.open_session(id);
                     } else {
-                        finish();
+                        self.set_url_consult_id('');
+                        self.setData({ is_chatting: false, session_loading: false, main_title: '新对话' });
                     }
-                });
-            },
-            // 登录后将本地游客会话迁移到服务端
-            migrate_guest_sessions(done) {
-                var self = this;
-                var local_list = this.load_local_sessions();
-                var to_migrate = [];
-                for (var i = 0; i < local_list.length; i++) {
-                    var item = local_list[i];
-                    if (item && Array.isArray(item.messages) && item.messages.length > 0) {
-                        to_migrate.push(item);
-                    }
+                };
+                if (self._sessions_need_refresh) {
+                    self._sessions_need_refresh = false;
+                    self.refresh_remote_list(finish);
+                } else {
+                    finish();
                 }
-                if (!to_migrate.length) {
-                    typeof done === 'function' && done(false);
-                    return;
-                }
-                to_migrate.reverse();
-                var remain = local_list.slice();
-                var chain = Promise.resolve();
-                to_migrate.forEach((guest) => {
-                    chain = chain.then(() => {
-                        return new Promise((resolve) => {
-                            uni.request({
-                                url: app.globalData.get_request_url('consultsave', 'index', 'aichat'),
-                                method: 'POST',
-                                data: self.guest_payload({
-                                    consult_id: 0,
-                                    title: guest.title || self.derive_title(guest.messages),
-                                    messages_b64: base64.encode(JSON.stringify(guest.messages || [])),
-                                }),
-                                dataType: 'json',
-                                success: (res) => {
-                                    if (res.data.code == 0) {
-                                        remain = remain.filter((s) => !(s && self.same_id(s.id, guest.id)));
-                                        self.save_local_sessions_list(remain);
-                                    }
-                                },
-                                complete: () => resolve(),
-                            });
-                        });
-                    });
-                });
-                chain.then(() => {
-                    if (!remain.length || !remain.some((s) => s && Array.isArray(s.messages) && s.messages.length > 0)) {
-                        self.clear_local_sessions();
-                    }
-                    typeof done === 'function' && done(true);
-                });
             },
             // 刷新服务端会话列表
             refresh_remote_list(done, append) {
