@@ -321,6 +321,11 @@
     word-break: break-word;
     width: 100%;
 }
+.aichat-msg-text .aichat-msg-link {
+    color: #1677ff;
+    text-decoration: underline;
+    word-break: break-all;
+}
 .aichat-msg-text img,
 .aichat-msg-text ._img,
 .aichat-msg-revision-preview img,

@@ -618,7 +618,7 @@
                     .replace(/'/g, '&#39;');
             },
             // 仅允许 http(s) 图片地址
-            is_safe_image_url(url) {
+            is_safe_http_url(url) {
                 url = String(url || '');
                 if (!/^https?:\/\//i.test(url) || url.length > 2000) {
                     return false;
@@ -628,7 +628,14 @@
                 }
                 return true;
             },
-            // 简易 Markdown 转 HTML（图片 / 加粗 / 斜体 / 代码 / 换行）
+            // 仅允许 http(s) 图片地址
+            is_safe_image_url(url) {
+                return this.is_safe_http_url(url);
+            },
+            is_image_file_url(url) {
+                return /\.(?:png|jpe?g|gif|webp|bmp)(?:[?#]|$)/i.test(String(url || ''));
+            },
+            // 简易 Markdown 转 HTML（图片 / 链接 / 加粗 / 斜体 / 代码 / 换行）
             format_message_html(text) {
                 var raw = String(text || '');
                 var slots = [];
@@ -639,13 +646,31 @@
                         return '';
                     }
                     slots.push({
+                        type: 'img',
                         alt: alt ? String(alt) : '图片',
+                        url: url,
+                    });
+                    return '@@AICHATIMG' + (slots.length - 1) + '@@';
+                };
+                var push_link = function (label, url) {
+                    url = String(url || '').replace(/[)\\s.,;]+$/g, '');
+                    if (!self.is_safe_http_url(url)) {
+                        return '';
+                    }
+                    slots.push({
+                        type: 'link',
+                        text: label ? String(label) : url,
                         url: url,
                     });
                     return '@@AICHATIMG' + (slots.length - 1) + '@@';
                 };
                 raw = raw.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/gi, function (all, alt, url) {
                     var token = push_img(alt, url);
+                    return token || all;
+                });
+                // [标题](图片地址) 也按图片展示；其它 [标题](网址) 做成可点击链接
+                raw = raw.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/gi, function (all, label, url) {
+                    var token = self.is_image_file_url(url) ? push_img(label, url) : push_link(label, url);
                     return token || all;
                 });
                 raw = raw.replace(/(^|[\s])(https?:\/\/[^\s<>"']+\.(?:png|jpe?g|gif|webp|bmp)(?:\?[^\s<>"']*)?)/gi, function (all, pre, url) {
@@ -657,6 +682,9 @@
                     var item = slots[parseInt(idx, 10)];
                     if (!item) {
                         return '';
+                    }
+                    if (item.type === 'link') {
+                        return '<a class="aichat-msg-link" href="' + self.escape_html(item.url) + '">' + self.escape_html(item.text) + '</a>';
                     }
                     var src = self.escape_html(item.url);
                     var alt = self.escape_html(item.alt);
