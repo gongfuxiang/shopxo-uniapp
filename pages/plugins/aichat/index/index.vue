@@ -134,14 +134,66 @@
                                 </view>
                             </view>
                             <view v-else :class="'aichat-msg is-' + msg.role" :id="'msg-' + idx">
+                                <view v-if="msg.role === 'bot' && msg.revisions && msg.revisions.length" class="aichat-msg-revisions">
+                                    <view
+                                        v-for="(rev, ri) in msg.revisions"
+                                        :key="ri"
+                                        :class="'aichat-msg-revision' + (rev.open ? ' is-open' : '')"
+                                    >
+                                        <view class="aichat-msg-revision-hd">
+                                            <view class="aichat-msg-revision-meta">
+                                                <text class="aichat-msg-revision-tag">已重新回答</text>
+                                                <text class="aichat-msg-revision-ver">{{ revision_ver_text(rev, ri) }}</text>
+                                            </view>
+                                            <view class="aichat-msg-revision-ops">
+                                                <view class="aichat-msg-revision-btn" :data-msg-index="idx" :data-rev-index="ri" @tap="toggle_revision_event">{{ rev.open ? '收起' : '展开' }}</view>
+                                                <view class="aichat-msg-revision-btn" :data-msg-index="idx" :data-rev-index="ri" @tap="view_revision_event">{{$t('common.view_text')}}</view>
+                                            </view>
+                                        </view>
+                                        <view class="aichat-msg-revision-body">
+                                            <view v-if="!rev.open" class="aichat-msg-revision-preview">{{ revision_plain_text(rev.text) }}</view>
+                                            <block v-else>
+                                                <mp-html class="aichat-msg-revision-preview" :content="format_message_html(rev.text)" :set-title="false"></mp-html>
+                                                <view v-if="rev.goods && rev.goods.length" class="aichat-goods-list">
+                                                    <view
+                                                        v-for="(g, gi) in rev.goods"
+                                                        :key="gi"
+                                                        class="aichat-goods-card flex-row"
+                                                        :data-value="goods_detail_url(g)"
+                                                        @tap="url_event"
+                                                    >
+                                                        <image v-if="g.images" class="aichat-goods-img" :src="g.images" mode="aspectFill"></image>
+                                                        <view v-else class="aichat-goods-img aichat-goods-img-empty"></view>
+                                                        <view class="aichat-goods-meta flex-1">
+                                                            <view class="aichat-goods-title">{{ g.title || '商品' }}</view>
+                                                            <view v-if="g.price !== '' && g.price !== null && g.price !== undefined" class="aichat-goods-price">
+                                                                {{ g.show_price_symbol || '￥' }}{{ g.price }}
+                                                            </view>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </block>
+                                        </view>
+                                    </view>
+                                </view>
                                 <view class="aichat-msg-bubble">
                                     <view v-if="msg.role === 'user'" class="aichat-msg-text">{{ msg.text }}</view>
                                     <block v-else>
-                                        <view v-if="msg.typing" class="aichat-msg-text aichat-msg-typing">{{ msg.display_text }}</view>
-                                        <mp-html v-else class="aichat-msg-text" :content="format_message_html(msg.text)"></mp-html>
+                                        <view v-if="msg.regenerating" class="aichat-thinking">
+                                            <view class="aichat-thinking-label">
+                                                <text
+                                                    v-for="(ch, ci) in thinking_chars"
+                                                    :key="ci"
+                                                    class="aichat-thinking-char"
+                                                    :style="'animation-delay:' + (ci * 0.08) + 's'"
+                                                >{{ ch }}</text>
+                                            </view>
+                                        </view>
+                                        <view v-else-if="msg.typing" class="aichat-msg-text aichat-msg-typing">{{ msg.display_text }}</view>
+                                        <mp-html v-else class="aichat-msg-text" :content="format_message_html(msg.text)" :set-title="false"></mp-html>
                                     </block>
 
-                                    <view v-if="msg.role === 'bot' && !msg.typing && msg.goods && msg.goods.length" class="aichat-goods-list">
+                                    <view v-if="msg.role === 'bot' && !msg.typing && !msg.regenerating && msg.goods && msg.goods.length" class="aichat-goods-list">
                                         <view
                                             v-for="(g, gi) in msg.goods"
                                             :key="gi"
@@ -167,6 +219,7 @@
                                         <view class="aichat-msg-action" :data-index="idx" data-act="edit" @tap="msg_action_event">
                                             <iconfont name="icon-edit-two" size="28rpx" color="#8a919f"></iconfont>
                                         </view>
+                                        <text v-if="message_time_text(msg)" class="aichat-msg-time">{{ message_time_text(msg) }}</text>
                                     </view>
                                     <view v-else-if="msg.role === 'bot' && !msg.typing" class="aichat-msg-actions flex-row">
                                         <view class="aichat-msg-action" :data-index="idx" data-act="copy" @tap="msg_action_event">
@@ -188,10 +241,19 @@
                                         >
                                             <iconfont name="icon-givealike-o" size="28rpx" :color="msg.feedback === 2 ? '#7c3aed' : '#8a919f'"></iconfont>
                                         </view>
+                                        <view
+                                            :class="'aichat-msg-action' + (msg.regenerating ? ' is-spinning' : '')"
+                                            :data-index="idx"
+                                            data-act="regen"
+                                            @tap="msg_action_event"
+                                        >
+                                            <iconfont name="icon-refresh" size="28rpx" color="#8a919f"></iconfont>
+                                        </view>
+                                        <text v-if="message_time_text(msg)" class="aichat-msg-time">{{ message_time_text(msg) }}</text>
                                     </view>
 
                                     <view
-                                        v-if="msg.role === 'bot' && !msg.typing && msg.suggests && msg.suggests.length && idx === last_bot_index"
+                                        v-if="msg.role === 'bot' && !msg.typing && !msg.regenerating && msg.suggests && msg.suggests.length && idx === last_bot_index"
                                         class="aichat-msg-suggests"
                                     >
                                         <view
@@ -254,6 +316,40 @@
                 </block>
             </view>
 
+            <component-popup :propShow="revision_popup.show" propPosition="bottom" @onclose="close_revision_popup">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="oh padding-bottom-sm flex-row align-c">
+                        <text class="flex-1 text-size fw-b aichat-revision-popup-title">{{ revision_popup.title }}</text>
+                        <view class="margin-left-sm" @tap.stop="close_revision_popup">
+                            <iconfont name="icon-close-line" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <scroll-view :scroll-y="true" class="max-h-8h">
+                        <view class="aichat-revision-popup-content padding-bottom-main">
+                            <mp-html class="aichat-msg-text" :content="format_message_html(revision_popup.text)" :set-title="false"></mp-html>
+                            <view v-if="revision_popup.goods && revision_popup.goods.length" class="aichat-goods-list">
+                                <view
+                                    v-for="(g, gi) in revision_popup.goods"
+                                    :key="gi"
+                                    class="aichat-goods-card flex-row"
+                                    :data-value="goods_detail_url(g)"
+                                    @tap="url_event"
+                                >
+                                    <image v-if="g.images" class="aichat-goods-img" :src="g.images" mode="aspectFill"></image>
+                                    <view v-else class="aichat-goods-img aichat-goods-img-empty"></view>
+                                    <view class="aichat-goods-meta flex-1">
+                                        <view class="aichat-goods-title">{{ g.title || '商品' }}</view>
+                                        <view v-if="g.price !== '' && g.price !== null && g.price !== undefined" class="aichat-goods-price">
+                                            {{ g.show_price_symbol || '￥' }}{{ g.price }}
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </scroll-view>
+                </view>
+            </component-popup>
+
             <component-common ref="common" :propIsFooterSeat="false"></component-common>
         </block>
     </view>
@@ -264,6 +360,7 @@
     import base64 from '@/common/js/lib/base64.js';
     import componentCommon from '@/components/common/common';
     import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
 
     const STORAGE_KEY = 'plugins_aichat_consult_sessions_v1';
 
@@ -299,11 +396,18 @@
                 scroll_animate: false,
                 detail_req_seq: 0,
                 params: {},
+                revision_popup: {
+                    show: false,
+                    title: '',
+                    text: '',
+                    goods: [],
+                },
             };
         },
         components: {
             componentCommon,
             componentNoData,
+            componentPopup,
         },
         computed: {
             can_send() {
@@ -449,15 +553,181 @@
                     .replace(/"/g, '&quot;')
                     .replace(/'/g, '&#39;');
             },
-            // 简易 Markdown 转 HTML（加粗/斜体/代码/换行）
+            // 仅允许 http(s) 图片地址
+            is_safe_image_url(url) {
+                url = String(url || '');
+                if (!/^https?:\/\//i.test(url) || url.length > 2000) {
+                    return false;
+                }
+                if (/[\s<>"']/.test(url) || /^(javascript|data|vbscript):/i.test(url)) {
+                    return false;
+                }
+                return true;
+            },
+            // 简易 Markdown 转 HTML（图片 / 加粗 / 斜体 / 代码 / 换行）
             format_message_html(text) {
-                var html = this.escape_html(text);
+                var raw = String(text || '');
+                var slots = [];
+                var self = this;
+                var push_img = function (alt, url) {
+                    url = String(url || '').replace(/[)\\s.,;]+$/g, '');
+                    if (!self.is_safe_image_url(url)) {
+                        return '';
+                    }
+                    slots.push({
+                        alt: alt ? String(alt) : '图片',
+                        url: url,
+                    });
+                    return '@@AICHATIMG' + (slots.length - 1) + '@@';
+                };
+                raw = raw.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/gi, function (all, alt, url) {
+                    var token = push_img(alt, url);
+                    return token || all;
+                });
+                raw = raw.replace(/(^|[\s])(https?:\/\/[^\s<>"']+\.(?:png|jpe?g|gif|webp|bmp)(?:\?[^\s<>"']*)?)/gi, function (all, pre, url) {
+                    var token = push_img('图片', url);
+                    return token ? (pre + token) : all;
+                });
+                var html = this.escape_html(raw);
+                html = html.replace(/@@AICHATIMG(\d+)@@/g, function (_, idx) {
+                    var item = slots[parseInt(idx, 10)];
+                    if (!item) {
+                        return '';
+                    }
+                    var src = self.escape_html(item.url);
+                    var alt = self.escape_html(item.alt);
+                    return '<img class="aichat-msg-image" src="' + src + '" alt="' + alt + '" style="max-width:240px;max-height:240px;width:auto;height:auto;display:block;margin:8px 0;border-radius:10px;background:#f3f4f6;" />';
+                });
                 html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
                 html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
                 html = html.replace(/(^|[^\*])\*([^\*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
                 html = html.replace(/`([^`\n]+?)`/g, '<code>$1</code>');
                 html = html.replace(/\n/g, '<br/>');
                 return html;
+            },
+            // 规范化历史回答列表
+            clean_revisions(list) {
+                if (!Array.isArray(list)) {
+                    return [];
+                }
+                var out = [];
+                for (var i = 0; i < list.length; i++) {
+                    var item = list[i] || {};
+                    var text = String(item.text || '').trim();
+                    if (!text) {
+                        continue;
+                    }
+                    out.push({
+                        text: text,
+                        goods: Array.isArray(item.goods) ? item.goods : [],
+                        time: this.answer_time_of(item),
+                        open: !!item.open,
+                    });
+                    if (out.length >= 8) {
+                        break;
+                    }
+                }
+                return out;
+            },
+            // 回答产生时间（秒）
+            answer_time_of(m) {
+                var t = parseInt((m && m.time) || 0, 10) || 0;
+                if (t > 9999999999) {
+                    t = Math.floor(t / 1000);
+                }
+                return t > 0 ? t : 0;
+            },
+            // 历史回答一行摘要（去掉图片 markdown）
+            revision_plain_text(text) {
+                return String(text || '')
+                    .replace(/!\[[^\]]*\]\(https?:\/\/[^\s)]+\)/gi, ' ')
+                    .replace(/https?:\/\/[^\s<>"']+\.(?:png|jpe?g|gif|webp|bmp)(?:\?[^\s<>"']*)?/gi, ' ')
+                    .replace(/[*_`#]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            },
+            // 补零
+            pad_time(n) {
+                n = parseInt(n, 10) || 0;
+                return n < 10 ? ('0' + n) : String(n);
+            },
+            // 历史回答时间
+            format_revision_time(sec) {
+                sec = parseInt(sec, 10) || 0;
+                if (sec <= 0) {
+                    return '';
+                }
+                if (sec > 9999999999) {
+                    sec = Math.floor(sec / 1000);
+                }
+                var d = new Date(sec * 1000);
+                if (isNaN(d.getTime())) {
+                    return '';
+                }
+                return d.getFullYear() + '-' + this.pad_time(d.getMonth() + 1) + '-' + this.pad_time(d.getDate()) + ' ' +
+                    this.pad_time(d.getHours()) + ':' + this.pad_time(d.getMinutes()) + ':' + this.pad_time(d.getSeconds());
+            },
+            // 第 N 版 · 时间
+            revision_ver_text(rev, index) {
+                var time_text = this.format_revision_time(rev && rev.time);
+                return '第 ' + (index + 1) + ' 版' + (time_text ? (' · ' + time_text) : '');
+            },
+            // 当前消息时间
+            message_time_text(msg) {
+                return this.format_revision_time(msg && msg.time);
+            },
+            // 展开 / 收起历史回答
+            toggle_revision_event(e) {
+                var msg_idx = parseInt(e.currentTarget.dataset.msgIndex, 10);
+                var rev_idx = parseInt(e.currentTarget.dataset.revIndex, 10);
+                if (!this.messages[msg_idx] || !Array.isArray(this.messages[msg_idx].revisions) || !this.messages[msg_idx].revisions[rev_idx]) {
+                    return;
+                }
+                var list = this.messages.slice();
+                var msg = Object.assign({}, list[msg_idx]);
+                var revisions = msg.revisions.slice();
+                revisions[rev_idx] = Object.assign({}, revisions[rev_idx], { open: !revisions[rev_idx].open });
+                msg.revisions = revisions;
+                list[msg_idx] = msg;
+                this.setData({ messages: list });
+            },
+            // 查看全部历史回答
+            view_revision_event(e) {
+                var msg_idx = parseInt(e.currentTarget.dataset.msgIndex, 10);
+                var rev_idx = parseInt(e.currentTarget.dataset.revIndex, 10);
+                var msg = this.messages[msg_idx];
+                if (!msg || !Array.isArray(msg.revisions) || !msg.revisions[rev_idx]) {
+                    return;
+                }
+                var rev = msg.revisions[rev_idx];
+                this.setData({
+                    revision_popup: {
+                        show: true,
+                        title: this.revision_ver_text(rev, rev_idx),
+                        text: rev.text || '',
+                        goods: Array.isArray(rev.goods) ? rev.goods : [],
+                    },
+                });
+            },
+            // 关闭历史回答弹层
+            close_revision_popup() {
+                this.setData({
+                    revision_popup: {
+                        show: false,
+                        title: '',
+                        text: '',
+                        goods: [],
+                    },
+                });
+            },
+            // 找到机器人消息对应的用户问题
+            paired_user_question(bot_idx) {
+                for (var i = bot_idx - 1; i >= 0; i--) {
+                    if (this.messages[i] && this.messages[i].role === 'user' && String(this.messages[i].text || '').trim()) {
+                        return String(this.messages[i].text).trim();
+                    }
+                }
+                return '';
             },
             // 商品详情跳转地址
             goods_detail_url(g) {
@@ -570,10 +840,13 @@
                             text: text,
                             display_text: text,
                             typing: false,
+                            regenerating: false,
                             mid: extras.mid || cur.mid || '',
                             feedback: parseInt(cur.feedback || 0, 10) || 0,
                             goods: extras.goods || cur.goods || [],
                             suggests: extras.suggests || cur.suggests || [],
+                            revisions: extras.revisions !== undefined ? extras.revisions : (cur.revisions || []),
+                            time: extras.time || cur.time || Math.floor(Date.now() / 1000),
                         });
                     }
                     this.setData({
@@ -619,10 +892,13 @@
                             text: text,
                             display_text: text,
                             typing: false,
+                            regenerating: false,
                             mid: extras.mid || cur.mid || '',
                             feedback: parseInt(cur.feedback || 0, 10) || 0,
                             goods: extras.goods || cur.goods || [],
                             suggests: extras.suggests || cur.suggests || [],
+                            revisions: extras.revisions !== undefined ? extras.revisions : (cur.revisions || []),
+                            time: extras.time || cur.time || Math.floor(Date.now() / 1000),
                         });
                     }
                     self.setData({
@@ -1005,6 +1281,8 @@
                         feedback: feedback,
                         goods: Array.isArray(m.goods) ? m.goods : [],
                         suggests: Array.isArray(m.suggests) ? m.suggests : [],
+                        revisions: this.clean_revisions(m.revisions),
+                        time: this.answer_time_of(m),
                     };
                 });
             },
@@ -1162,6 +1440,12 @@
                             mid: mid,
                             feedback: feedback,
                             goods: Array.isArray(m.goods) ? m.goods : [],
+                            time: this.answer_time_of(m),
+                            revisions: this.clean_revisions(m.revisions).map((r) => ({
+                                text: r.text,
+                                goods: r.goods,
+                                time: r.time,
+                            })),
                         };
                     });
             },
@@ -1236,8 +1520,8 @@
                     });
                 });
             },
-            // 取历史提问（不含当前刚发的那条，最多 4 条）
-            get_history_questions() {
+            // 取历史提问（最多 4 条）；exclude_text 用于重新生成时去掉当前问题
+            get_history_questions(exclude_text) {
                 var qs = [];
                 var msgs = this.collect_persist_messages();
                 for (var i = 0; i < msgs.length; i++) {
@@ -1245,7 +1529,17 @@
                         qs.push(String(msgs[i].text).trim());
                     }
                 }
-                if (qs.length > 0) qs.pop();
+                exclude_text = String(exclude_text || '').trim();
+                if (exclude_text) {
+                    for (var j = qs.length - 1; j >= 0; j--) {
+                        if (qs[j] === exclude_text) {
+                            qs.splice(j, 1);
+                            break;
+                        }
+                    }
+                } else if (qs.length > 0) {
+                    qs.pop();
+                }
                 return qs.slice(-4);
             },
             // 从最近一次商品推荐恢复商品上下文关键词
@@ -1266,9 +1560,14 @@
                 }
                 this.setData({ goods_context_keywords: keywords });
             },
-            // 发送提问并请求回答
-            send_question(question) {
+            // 发送提问并请求回答；options.replace_index 为重新生成
+            send_question(question, options) {
                 question = String(question || '').trim();
+                options = options || {};
+                var origin_idx = parseInt(options.replace_index, 10);
+                if (isNaN(origin_idx) || origin_idx < 0 || !this.messages[origin_idx] || this.messages[origin_idx].role !== 'bot') {
+                    origin_idx = -1;
+                }
                 if (!question || this.asking) return;
                 // 打字中可继续发：先补全当前回复
                 if (this.is_typing) {
@@ -1277,38 +1576,97 @@
                     this.stop_typewrite(false);
                 }
                 this.ensure_session();
-                var user_mid = this.is_login ? '' : this.msg_uid();
-                var messages = this.messages.filter((m) => m.role !== 'loading');
-                // 新提问时清掉旧追问
-                messages = messages.map((m) => {
-                    if (m.role === 'bot') {
-                        return Object.assign({}, m, { suggests: [] });
+
+                var replace_idx = -1;
+                var snapshot = null;
+                var exist_bot_mid = '';
+                var messages = [];
+                for (var mi = 0; mi < this.messages.length; mi++) {
+                    if (this.messages[mi].role === 'loading') {
+                        continue;
                     }
-                    return m;
-                });
-                messages.push({
-                    role: 'user',
-                    text: question,
-                    mid: user_mid,
-                    feedback: 0,
-                    goods: [],
-                    suggests: [],
-                });
-                messages.push({ role: 'loading', text: '', mid: '', feedback: 0, goods: [], suggests: [] });
+                    var copied = Object.assign({}, this.messages[mi]);
+                    if (copied.role === 'bot') {
+                        copied.suggests = [];
+                    }
+                    if (origin_idx >= 0 && mi === origin_idx) {
+                        replace_idx = messages.length;
+                    }
+                    messages.push(copied);
+                }
+
+                if (replace_idx >= 0) {
+                    var cur = messages[replace_idx];
+                    exist_bot_mid = String(cur.mid || '');
+                    var old_revisions = this.clean_revisions(cur.revisions);
+                    snapshot = {
+                        text: cur.text || '',
+                        goods: Array.isArray(cur.goods) ? cur.goods.slice() : [],
+                        feedback: parseInt(cur.feedback || 0, 10) || 0,
+                        mid: exist_bot_mid,
+                        revisions: old_revisions,
+                        time: this.answer_time_of(cur) || Math.floor(Date.now() / 1000),
+                    };
+                    var revisions = old_revisions.slice();
+                    if (snapshot.text) {
+                        revisions.push({
+                            text: snapshot.text,
+                            goods: snapshot.goods,
+                            time: snapshot.time,
+                            open: false,
+                        });
+                        if (revisions.length > 8) {
+                            revisions = revisions.slice(-8);
+                        }
+                    }
+                    messages[replace_idx] = Object.assign({}, cur, {
+                        regenerating: true,
+                        typing: false,
+                        display_text: '',
+                        goods: [],
+                        suggests: [],
+                        feedback: 0,
+                        revisions: revisions,
+                    });
+                } else {
+                    var user_mid = this.is_login ? '' : this.msg_uid();
+                    messages.push({
+                        role: 'user',
+                        text: question,
+                        mid: user_mid,
+                        feedback: 0,
+                        goods: [],
+                        suggests: [],
+                        revisions: [],
+                        time: Math.floor(Date.now() / 1000),
+                    });
+                    messages.push({ role: 'loading', text: '', mid: '', feedback: 0, goods: [], suggests: [], revisions: [] });
+                }
+
                 this.setData({
                     asking: true,
                     is_chatting: true,
-                    input_value: '',
+                    input_value: replace_idx >= 0 ? this.input_value : '',
                     messages: messages,
                     sidebar_open: false,
                 });
-                if (!this.is_login) {
+                if (!this.is_login && replace_idx < 0) {
                     this.persist_current_messages();
                 }
                 this.scroll_bottom();
 
-                var history_questions = this.get_history_questions();
+                var history_questions = this.get_history_questions(replace_idx >= 0 ? question : '');
                 var self = this;
+                var persist_after_bot = function () {
+                    if (self.is_login) {
+                        var s = self.find_session(self.current_id);
+                        if (s) {
+                            s.messages = self.collect_persist_messages();
+                        }
+                    } else {
+                        self.persist_current_messages();
+                    }
+                };
                 uni.request({
                     url: app.globalData.get_request_url('ask', 'index', 'aichat'),
                     method: 'POST',
@@ -1317,21 +1675,24 @@
                         consult_id: this.current_id || 0,
                         history_questions: history_questions.join('\n'),
                         goods_context_keywords: this.goods_context_keywords || '',
+                        regenerate: replace_idx >= 0 ? 1 : 0,
+                        bot_message_id: (replace_idx >= 0 && this.is_login && /^\d+$/.test(exist_bot_mid)) ? exist_bot_mid : 0,
                     },
                     dataType: 'json',
                     timeout: 120000,
                     success: (res) => {
                         var answer = '';
-                        var bot_mid = '';
+                        var bot_mid = exist_bot_mid;
                         var suggests = [];
                         var goods = [];
                         var list = self.messages.filter((m) => m.role !== 'loading');
-                        // 找到刚追加的用户消息
                         var user_idx = -1;
-                        for (var i = list.length - 1; i >= 0; i--) {
-                            if (list[i].role === 'user' && list[i].text === question) {
-                                user_idx = i;
-                                break;
+                        if (replace_idx < 0) {
+                            for (var i = list.length - 1; i >= 0; i--) {
+                                if (list[i].role === 'user' && list[i].text === question) {
+                                    user_idx = i;
+                                    break;
+                                }
                             }
                         }
                         if (res.data.code == 0 && res.data.data) {
@@ -1370,7 +1731,7 @@
                                         main_title: title,
                                     });
                                 }
-                            } else {
+                            } else if (replace_idx < 0) {
                                 bot_mid = self.msg_uid();
                             }
                             if (res.data.data.goods_keywords) {
@@ -1382,37 +1743,82 @@
                             }
                         } else {
                             answer = (res.data && res.data.msg) ? res.data.msg : '请求失败，请稍后再试。';
-                            if (!self.is_login) bot_mid = self.msg_uid();
+                            if (!self.is_login && replace_idx < 0) bot_mid = self.msg_uid();
                         }
-                        list.push({
-                            role: 'bot',
-                            text: answer,
-                            display_text: '',
-                            typing: true,
-                            mid: bot_mid,
-                            feedback: 0,
-                            goods: [],
-                            suggests: [],
-                        });
+                        var bot_idx = list.length;
+                        var revs = [];
+                        var answer_time = Math.floor(Date.now() / 1000);
+                        if (res.data && res.data.code == 0 && res.data.data && res.data.data.answer_time) {
+                            answer_time = parseInt(res.data.data.answer_time, 10) || answer_time;
+                        }
+                        if (replace_idx >= 0 && list[replace_idx] && list[replace_idx].role === 'bot') {
+                            bot_idx = replace_idx;
+                            revs = list[replace_idx].revisions || [];
+                            if (res.data && res.data.code == 0 && res.data.data && Array.isArray(res.data.data.revisions)) {
+                                revs = self.clean_revisions(res.data.data.revisions);
+                            }
+                            list[replace_idx] = Object.assign({}, list[replace_idx], {
+                                role: 'bot',
+                                text: answer,
+                                display_text: '',
+                                typing: true,
+                                regenerating: false,
+                                mid: bot_mid,
+                                feedback: 0,
+                                goods: [],
+                                suggests: [],
+                                revisions: revs,
+                                time: answer_time,
+                            });
+                        } else {
+                            list.push({
+                                role: 'bot',
+                                text: answer,
+                                display_text: '',
+                                typing: true,
+                                regenerating: false,
+                                mid: bot_mid,
+                                feedback: 0,
+                                goods: [],
+                                suggests: [],
+                                revisions: [],
+                                time: answer_time,
+                            });
+                            bot_idx = list.length - 1;
+                        }
                         self.setData({ messages: list });
-                        var bot_idx = list.length - 1;
                         self.typewrite_bot_answer(bot_idx, answer, {
                             mid: bot_mid,
                             goods: goods,
                             suggests: suggests,
-                            onDone: function () {
-                                if (self.is_login) {
-                                    var s = self.find_session(self.current_id);
-                                    if (s) {
-                                        s.messages = self.collect_persist_messages();
-                                    }
-                                } else {
-                                    self.persist_current_messages();
-                                }
-                            },
+                            revisions: revs,
+                            time: answer_time,
+                            onDone: persist_after_bot,
                         });
                     },
                     fail: () => {
+                        if (replace_idx >= 0 && snapshot) {
+                            var restore = self.messages.filter((m) => m.role !== 'loading');
+                            if (restore[replace_idx] && restore[replace_idx].role === 'bot') {
+                                restore[replace_idx] = Object.assign({}, restore[replace_idx], {
+                                    regenerating: false,
+                                    typing: false,
+                                    text: snapshot.text,
+                                    display_text: snapshot.text,
+                                    goods: snapshot.goods,
+                                    feedback: snapshot.feedback,
+                                    mid: snapshot.mid,
+                                    revisions: snapshot.revisions,
+                                    suggests: [],
+                                    time: snapshot.time || 0,
+                                });
+                                self.setData({ messages: restore, asking: false });
+                            } else {
+                                self.setData({ asking: false });
+                            }
+                            app.globalData.showToast('网络异常，请检查网络后重试。');
+                            return;
+                        }
                         var list = self.messages.filter((m) => m.role !== 'loading');
                         var fail_text = '网络异常，请检查网络后重试。';
                         var fail_mid = self.is_login ? '' : self.msg_uid();
@@ -1421,16 +1827,19 @@
                             text: fail_text,
                             display_text: '',
                             typing: true,
+                            regenerating: false,
                             mid: fail_mid,
                             feedback: 0,
                             goods: [],
                             suggests: [],
+                            revisions: [],
                         });
                         self.setData({ messages: list });
                         self.typewrite_bot_answer(list.length - 1, fail_text, {
                             mid: fail_mid,
                             goods: [],
                             suggests: [],
+                            revisions: [],
                             onDone: function () {
                                 if (!self.is_login) {
                                     self.persist_current_messages();
@@ -1440,13 +1849,16 @@
                     },
                 });
             },
-            // 消息操作：复制 / 编辑 / 赞踩
+            // 消息操作：复制 / 编辑 / 赞踩 / 重新生成
             msg_action_event(e) {
                 var idx = parseInt(e.currentTarget.dataset.index, 10);
                 var act = e.currentTarget.dataset.act;
                 var msg = this.messages[idx];
                 if (!msg) return;
                 if (act === 'copy') {
+                    if (msg.regenerating) {
+                        return;
+                    }
                     uni.setClipboardData({
                         data: String(msg.text || ''),
                         success: () => app.globalData.showToast('已复制', 'success'),
@@ -1457,7 +1869,22 @@
                     this.setData({ input_value: msg.text || '' });
                     return;
                 }
+                if (act === 'regen') {
+                    if (this.asking || msg.regenerating) {
+                        return;
+                    }
+                    var q = this.paired_user_question(idx);
+                    if (!q) {
+                        app.globalData.showToast('没有找到对应的问题，无法重新生成');
+                        return;
+                    }
+                    this.send_question(q, { replace_index: idx });
+                    return;
+                }
                 if (act === 'like' || act === 'dislike') {
+                    if (msg.regenerating) {
+                        return;
+                    }
                     var cur = parseInt(msg.feedback || 0, 10) || 0;
                     var next = 0;
                     if (act === 'like') next = cur === 1 ? 0 : 1;
