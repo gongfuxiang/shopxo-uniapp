@@ -30,10 +30,10 @@
                     <iconfont name="icon-timing-time" size="26rpx" color="#8a919f"></iconfont>
                     <text class="margin-left-sm">对话历史</text>
                 </view>
-                <view class="aichat-history-scroll">
-                    <view v-if="sessions.length === 0" class="aichat-history-empty">暂无历史对话</view>
+                <scroll-view scroll-y class="aichat-history-scroll">
+                    <view v-if="displayed_sessions.length === 0" class="aichat-history-empty">暂无历史对话</view>
                     <view
-                        v-for="(item, index) in sessions"
+                        v-for="(item, index) in displayed_sessions"
                         :key="index"
                         :class="'aichat-history-item flex-row align-c' + (same_id(item.id, current_id) ? ' is-active' : '')"
                         :data-id="item.id"
@@ -44,7 +44,11 @@
                             <iconfont name="icon-delete" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
-                </view>
+                    <view v-if="history_can_more || history_loading_more" class="aichat-history-more flex-row align-c jc-c" @tap="load_history_more">
+                        <text>{{ history_loading_more ? $t('common.loading_in_text') : $t('common.view_more') }}</text>
+                        <iconfont v-if="!history_loading_more" name="icon-arrow-bottom" size="24rpx" color="#8a919f" propClass="margin-left-xs"></iconfont>
+                    </view>
+                </scroll-view>
             </view>
 
             <!-- 主区域：开场态与 PC 一致，欢迎语+输入框垂直居中 -->
@@ -112,14 +116,19 @@
                         :scroll-into-view="scroll_into"
                         :scroll-top="scroll_top"
                         :scroll-with-animation="scroll_animate"
+                        @scroll="on_msg_scroll"
                     >
                         <view class="aichat-messages">
+                        <view v-if="msg_has_more || msg_loading_more" class="aichat-msg-more flex-row align-c jc-c" @tap="load_more_messages">
+                            <text>{{ msg_loading_more ? $t('common.loading_in_text') : $t('common.view_more') }}</text>
+                            <iconfont v-if="!msg_loading_more" name="icon-arrow-top" size="24rpx" color="#8a919f" propClass="margin-left-xs"></iconfont>
+                        </view>
                         <view v-if="session_loading" class="aichat-session-loading">
                             <view class="aichat-session-loading-spinner"></view>
                             <text class="cr-grey text-size-sm">{{ session_loading_text }}</text>
                         </view>
                         <block v-for="(msg, idx) in messages" :key="idx">
-                            <view v-if="msg.role === 'loading'" class="aichat-msg is-bot is-loading" :id="'msg-' + idx">
+                            <view v-if="msg.role === 'loading'" class="aichat-msg is-bot is-loading" :id="idx === keep_msg_index ? 'aichat-keep-pos' : ('msg-' + idx)">
                                 <view class="aichat-msg-bubble">
                                     <view class="aichat-thinking">
                                         <view class="aichat-thinking-label">
@@ -133,7 +142,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <view v-else :class="'aichat-msg is-' + msg.role" :id="'msg-' + idx">
+                            <view v-else :class="'aichat-msg is-' + msg.role" :id="idx === keep_msg_index ? 'aichat-keep-pos' : ('msg-' + idx)">
                                 <view v-if="msg.role === 'bot' && msg.revisions && msg.revisions.length" class="aichat-msg-revisions">
                                     <view
                                         v-for="(rev, ri) in msg.revisions"
@@ -379,6 +388,15 @@
                 welcome_title: '',
                 thinking_text: '正在思考，请稍候...',
                 session_loading_text: '正在加载对话...',
+                page_size: 20,
+                history_page: 1,
+                history_has_more: false,
+                history_loading_more: false,
+                history_more_show: false,
+                msg_has_more: false,
+                msg_loading_more: false,
+                msg_more_show: false,
+                msg_guest_start: 0,
                 main_title: '新对话',
                 sidebar_open: false,
                 sidebar_closing: false,
@@ -394,6 +412,7 @@
                 scroll_into: '',
                 scroll_top: 0,
                 scroll_animate: false,
+                keep_msg_index: -1,
                 detail_req_seq: 0,
                 params: {},
                 revision_popup: {
@@ -427,6 +446,22 @@
                     }
                 }
                 return -1;
+            },
+            // 历史侧栏当前展示的会话
+            displayed_sessions() {
+                if (this.is_login) {
+                    return this.sessions || [];
+                }
+                var n = (this.page_size || 20) * (this.history_page || 1);
+                return (this.sessions || []).slice(0, n);
+            },
+            // 历史侧栏是否还可加载更多
+            history_can_more() {
+                if (this.is_login) {
+                    return !!this.history_has_more;
+                }
+                var n = (this.page_size || 20) * (this.history_page || 1);
+                return (this.sessions || []).length > n;
             },
         },
         onLoad(params) {
@@ -786,6 +821,100 @@
                 }
                 return '新对话';
             },
+            // 记录消息区当前滚动位置
+            on_msg_scroll(e) {
+                var top = e && e.detail ? Number(e.detail.scrollTop || 0) : 0;
+                if (!isNaN(top)) {
+                    this._msg_scroll_top = top;
+                }
+            },
+            // 测量消息区内容高度、滚动位置、「查看更多」行高
+            measure_msg_scroll(cb) {
+                uni.createSelectorQuery().in(this)
+                    .select('.aichat-stage')
+                    .scrollOffset()
+                    .select('.aichat-messages')
+                    .boundingClientRect()
+                    .select('.aichat-msg-more')
+                    .boundingClientRect()
+                    .exec((res) => {
+                        var stage = res && res[0] ? res[0] : {};
+                        var top = typeof stage.scrollTop === 'number' ? stage.scrollTop : (this._msg_scroll_top || 0);
+                        // 优先用滚动内容总高（含「查看更多」），boundingClientRect 往往只是可视高度
+                        var height = 0;
+                        if (typeof stage.scrollHeight === 'number' && stage.scrollHeight > 0) {
+                            height = stage.scrollHeight;
+                        } else if (res && res[1] && res[1].height) {
+                            height = res[1].height;
+                        }
+                        var more = res && res[2] && res[2].height ? res[2].height : 0;
+                        cb(height, top, more);
+                    });
+            },
+            // 仅测量消息区内容高度与「查看更多」行高
+            measure_msg_content(cb) {
+                this.measure_msg_scroll(function (height, top, more) {
+                    cb(height, more);
+                });
+            },
+            // 还原消息区滚动位置
+            restore_msg_scroll(keep) {
+                var self = this;
+                keep = Math.max(0, Number(keep) || 0);
+                // 同值不滚动，先微偏再设回目标
+                self.setData({
+                    scroll_into: '',
+                    scroll_animate: false,
+                    scroll_top: keep + 0.01,
+                });
+                self.$nextTick(function () {
+                    self.setData({
+                        scroll_top: keep,
+                        scroll_animate: false,
+                    });
+                    self._msg_scroll_top = keep;
+                });
+            },
+            // 前置更早消息后保持当前阅读位置
+            keep_msg_scroll_after_prepend(old_height, old_top, keep_index, old_more) {
+                var self = this;
+                this.$nextTick(function () {
+                    setTimeout(function () {
+                        self.measure_msg_scroll(function (new_height, new_top, new_more) {
+                            old_more = old_more || 0;
+                            new_more = new_more || 0;
+                            var grown = Math.max(0, (new_height || 0) - (old_height || 0));
+                            // 内容总高已含「查看更多」；按钮显隐/加载中变高时再补行高差
+                            var keep = (old_top || 0) + grown + (old_more - new_more);
+                            if (grown < 8 && keep_index >= 0) {
+                                self.setData({
+                                    keep_msg_index: keep_index,
+                                    scroll_into: '',
+                                    scroll_animate: false,
+                                });
+                                self.$nextTick(function () {
+                                    self.setData({
+                                        scroll_into: 'aichat-keep-pos',
+                                        scroll_animate: false,
+                                    });
+                                    self.$nextTick(function () {
+                                        setTimeout(function () {
+                                            self.measure_msg_scroll(function (h, top) {
+                                                self.setData({ scroll_into: '', keep_msg_index: -1 });
+                                                // into-view 会把旧首条顶到视口最上，需退回「查看更多」那一行的高度
+                                                self.restore_msg_scroll(Math.max(0, (top || 0) - old_more));
+                                            });
+                                        }, 30);
+                                    });
+                                });
+                                return;
+                            }
+                            self.setData({ keep_msg_index: -1 });
+                            self.restore_msg_scroll(keep);
+                        });
+                    }, 30);
+                });
+            },
             // 滚动到消息列表底部
             scroll_bottom(opts) {
                 opts = opts || {};
@@ -1022,16 +1151,17 @@
                                 var did = d.session_detail.consult.id;
                                 var dtitle = d.session_detail.consult.title || '新对话';
                                 var dmsgs = Array.isArray(d.session_detail.messages) ? d.session_detail.messages : [];
+                                var dmore = parseInt(d.session_detail.has_more || 0, 10) === 1;
                                 var hit = false;
                                 sessions = sessions.map((s) => {
                                     if (String(s.id) === String(did)) {
                                         hit = true;
-                                        return Object.assign({}, s, { title: dtitle, messages: dmsgs });
+                                        return Object.assign({}, s, { title: dtitle, messages: dmsgs, has_more: dmore });
                                     }
                                     return s;
                                 });
                                 if (!hit) {
-                                    sessions.unshift({ id: did, title: dtitle, updated_at: Date.now(), messages: dmsgs });
+                                    sessions.unshift({ id: did, title: dtitle, updated_at: Date.now(), messages: dmsgs, has_more: dmore });
                                 }
                                 self._boot_session_detail_id = String(did);
                             } else {
@@ -1047,6 +1177,9 @@
                                 welcome_title: d.welcome_title || '',
                                 thinking_text: d.thinking_text || '正在思考，请稍候...',
                                 session_loading_text: d.session_loading_text || '正在加载对话...',
+                                page_size: parseInt(d.page_size || 20, 10) || 20,
+                                history_has_more: parseInt(d.sessions_has_more || 0, 10) === 1,
+                                history_page: 1,
                                 desc: d.desc || '',
                                 quick_questions: Array.isArray(d.quick_questions) ? d.quick_questions : [],
                                 sessions: is_login ? sessions : self.sessions,
@@ -1160,27 +1293,44 @@
                 });
             },
             // 刷新服务端会话列表
-            refresh_remote_list(done) {
+            refresh_remote_list(done, append) {
                 var self = this;
+                var page = append ? (this.history_page + 1) : 1;
                 uni.request({
                     url: app.globalData.get_request_url('consultlist', 'index', 'aichat'),
                     method: 'POST',
-                    data: {},
+                    data: { page: page },
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0 && res.data.data && Array.isArray(res.data.data.list)) {
+                            var rows = res.data.data.list.map((row) => ({
+                                id: row.id,
+                                title: row.title || '新对话',
+                                updated_at: row.updated_at || 0,
+                                messages: null,
+                            }));
+                            var sessions = self.sessions.slice();
+                            if (append) {
+                                var exist_ids = {};
+                                sessions.forEach((s) => { exist_ids[String(s.id)] = true; });
+                                rows.forEach((row) => {
+                                    if (!exist_ids[String(row.id)]) {
+                                        sessions.push(row);
+                                    }
+                                });
+                            } else {
+                                sessions = rows;
+                            }
                             self.setData({
-                                sessions: res.data.data.list.map((row) => ({
-                                    id: row.id,
-                                    title: row.title || '新对话',
-                                    updated_at: row.updated_at || 0,
-                                    messages: null,
-                                })),
+                                sessions: sessions,
+                                history_page: append ? page : 1,
+                                history_has_more: parseInt(res.data.data.has_more || 0, 10) === 1,
                             });
                         } else if (res.data.code == -400) {
                             self.setData({
                                 is_login: 0,
                                 sessions: self.load_local_sessions(),
+                                history_page: 1,
                             });
                         }
                     },
@@ -1205,12 +1355,83 @@
                     welcome_title: this.welcome_title || '',
                     sidebar_open: false,
                     scroll_into: '',
+                    msg_has_more: false,
+                    msg_more_show: false,
+                    msg_guest_start: 0,
                 });
             },
             // 历史列表点击打开会话
             open_session_event(e) {
                 var id = e.currentTarget.dataset.id;
                 this.open_session(id);
+            },
+            // 游客消息按分页条数截取最近一页
+            slice_guest_messages(all) {
+                all = Array.isArray(all) ? all : [];
+                var size = this.page_size || 20;
+                var start = Math.max(0, all.length - size);
+                return {
+                    list: all.slice(start),
+                    has_more: start > 0,
+                    start: start,
+                };
+            },
+            // 消息区加载更早一页
+            load_more_messages() {
+                if (this.msg_loading_more || !this.msg_has_more) {
+                    return;
+                }
+                var self = this;
+                if (!this.is_login) {
+                    var session = this.find_session(this.current_id);
+                    if (!session || !Array.isArray(session.messages) || this.msg_guest_start <= 0) {
+                        this.setData({ msg_has_more: false, msg_more_show: false });
+                        return;
+                    }
+                    this.measure_msg_scroll(function (old_height, old_top, old_more) {
+                        var size = self.page_size || 20;
+                        var next_start = Math.max(0, self.msg_guest_start - size);
+                        var older = self.normalize_messages(session.messages.slice(next_start, self.msg_guest_start));
+                        self.setData({
+                            messages: older.concat(self.messages || []),
+                            msg_guest_start: next_start,
+                            msg_has_more: next_start > 0,
+                            msg_more_show: next_start > 0,
+                            keep_msg_index: older.length,
+                            scroll_into: '',
+                            scroll_animate: false,
+                        }, function () {
+                            self.keep_msg_scroll_after_prepend(old_height, old_top, older.length, old_more);
+                        });
+                    });
+                    return;
+                }
+                // 先量「查看更多」完整高度，再切到加载中，避免行高差把内容顶上去
+                this.measure_msg_scroll(function (old_height, old_top, old_more) {
+                    self._msg_keep_height = old_height;
+                    self._msg_keep_top = old_top;
+                    self._msg_keep_more = old_more;
+                    self.setData({ msg_loading_more: true, msg_more_show: false, scroll_into: '' });
+                    self.fetch_session_detail(self.current_id, true, true);
+                });
+            },
+            // 历史侧栏加载下一页
+            load_history_more() {
+                if (!this.history_can_more) {
+                    return;
+                }
+                if (!this.is_login) {
+                    this.setData({ history_page: this.history_page + 1 });
+                    return;
+                }
+                if (this.history_loading_more) {
+                    return;
+                }
+                this.setData({ history_loading_more: true });
+                var self = this;
+                this.refresh_remote_list(function () {
+                    self.setData({ history_loading_more: false });
+                }, true);
             },
             // 打开指定会话（游客读本地；登录优先缓存再拉详情）
             open_session(id) {
@@ -1219,14 +1440,17 @@
                 this.stop_typewrite();
                 this.close_sidebar();
                 this.set_url_consult_id(id);
-                this.setData({ asking: false, goods_context_keywords: '' });
+                this.setData({ asking: false, goods_context_keywords: '', msg_more_show: false });
 
                 if (!this.is_login) {
                     var session = this.find_session(id);
                     if (!session) return;
+                    var sliced = this.slice_guest_messages(session.messages || []);
                     this.setData({
                         current_id: id,
-                        messages: this.normalize_messages(session.messages || []),
+                        messages: this.normalize_messages(sliced.list),
+                        msg_has_more: sliced.has_more,
+                        msg_guest_start: sliced.start,
                         is_chatting: true,
                         session_loading: false,
                         main_title: session.title || '新对话',
@@ -1238,25 +1462,23 @@
 
                 var exist = this.find_session(id);
                 this.setData({ current_id: id, main_title: (exist && exist.title) || '加载中...' });
-                if (exist && Array.isArray(exist.messages)) {
+                if (exist && Array.isArray(exist.messages) && exist.messages.length) {
                     this.setData({
                         messages: this.normalize_messages(exist.messages),
+                        msg_has_more: !!exist.has_more,
                         is_chatting: true,
                         session_loading: false,
                     });
                     this.restore_goods_context();
                     this.scroll_bottom({ delays: [50, 160, 360, 700] });
-                    if (String(this._boot_session_detail_id || '') === String(id)) {
-                        this._boot_session_detail_id = '';
-                    } else {
-                        this.fetch_session_detail(id, true);
-                    }
+                    this._boot_session_detail_id = '';
                     return;
                 }
                 this.setData({
                     messages: [],
                     is_chatting: true,
                     session_loading: true,
+                    msg_has_more: false,
                 });
                 this.fetch_session_detail(id, false);
             },
@@ -1286,18 +1508,38 @@
                     };
                 });
             },
-            // 拉取会话详情；silent=true 时失败不打断当前展示
-            fetch_session_detail(id, silent) {
+            // 拉取会话详情
+            fetch_session_detail(id, silent, append) {
                 var self = this;
                 var req_id = ++this.detail_req_seq;
+                var before_id = 0;
+                if (append) {
+                    var first = null;
+                    var msgs = this.messages || [];
+                    for (var fi = 0; fi < msgs.length; fi++) {
+                        if (msgs[fi] && msgs[fi].role !== 'loading' && /^\d+$/.test(String(msgs[fi].mid || ''))) {
+                            first = msgs[fi];
+                            break;
+                        }
+                    }
+                    before_id = first ? parseInt(first.mid, 10) : 0;
+                    if (!before_id) {
+                        this.setData({ msg_has_more: false, msg_more_show: false, msg_loading_more: false });
+                        return;
+                    }
+                }
                 uni.request({
                     url: app.globalData.get_request_url('consultdetail', 'index', 'aichat'),
                     method: 'POST',
-                    data: { consult_id: id },
+                    data: { consult_id: id, before_id: before_id },
                     dataType: 'json',
                     success: (res) => {
                         if (req_id !== self.detail_req_seq) return;
                         if (!(res.data.code == 0 && res.data.data)) {
+                            if (append) {
+                                self.setData({ msg_loading_more: false });
+                                return;
+                            }
                             if (!silent) {
                                 app.globalData.showToast((res.data && res.data.msg) || '加载对话失败');
                                 if (self.same_id(self.current_id, id)) {
@@ -1306,34 +1548,65 @@
                             }
                             return;
                         }
+                        var more_flag = parseInt(res.data.data.has_more || 0, 10) === 1;
+                        var incoming = self.normalize_messages(res.data.data.messages || []);
+                        if (append) {
+                            if (!self.same_id(self.current_id, id)) {
+                                self.setData({ msg_loading_more: false });
+                                return;
+                            }
+                            var list = incoming.concat(self.messages || []);
+                            var exist_more = self.find_session(id);
+                            if (exist_more) {
+                                exist_more.messages = incoming.concat(exist_more.messages || []);
+                                exist_more.has_more = more_flag;
+                            }
+                            var old_height = self._msg_keep_height || 0;
+                            var old_top = self._msg_keep_top || 0;
+                            var old_more = self._msg_keep_more || 0;
+                            var keep_index = incoming.length;
+                            self.setData({
+                                messages: list,
+                                msg_has_more: more_flag,
+                                msg_loading_more: false,
+                                keep_msg_index: keep_index,
+                                scroll_into: '',
+                                scroll_animate: false,
+                            }, function () {
+                                self.keep_msg_scroll_after_prepend(old_height, old_top, keep_index, old_more);
+                            });
+                            return;
+                        }
                         var detail = {
                             id: res.data.data.consult ? res.data.data.consult.id : id,
                             title: (res.data.data.consult && res.data.data.consult.title) ? res.data.data.consult.title : '新对话',
-                            messages: self.normalize_messages(res.data.data.messages || []),
+                            messages: incoming,
+                            has_more: more_flag,
                         };
                         var exist = self.find_session(detail.id);
                         var sessions = self.sessions.slice();
                         if (exist) {
-                            // 仅刷新标题/消息，不调整历史顺序（选中不等于置顶）
                             exist.title = detail.title;
                             exist.messages = detail.messages;
+                            exist.has_more = more_flag;
                         } else if (self.same_id(self.current_id, id) || self.same_id(self.current_id, detail.id)) {
                             sessions.push({
                                 id: detail.id,
                                 title: detail.title,
                                 messages: detail.messages,
+                                has_more: more_flag,
                                 updated_at: Date.now(),
                             });
                         }
                         if (!self.same_id(self.current_id, id) && !self.same_id(self.current_id, detail.id)) {
-                            self.setData({ sessions: sessions });
                             return;
                         }
                         self.set_url_consult_id(detail.id);
                         self.setData({
-                            sessions: sessions,
                             current_id: detail.id,
+                            sessions: sessions,
                             messages: detail.messages,
+                            msg_has_more: more_flag,
                             is_chatting: true,
                             session_loading: false,
                             main_title: detail.title,
@@ -1342,6 +1615,10 @@
                         self.scroll_bottom({ delays: [50, 160, 360, 700] });
                     },
                     fail: () => {
+                        if (append) {
+                            self.setData({ msg_loading_more: false });
+                            return;
+                        }
                         if (req_id !== self.detail_req_seq || silent) return;
                         app.globalData.showToast('加载对话失败，请稍后重试');
                         if (self.same_id(self.current_id, id)) {
@@ -1452,8 +1729,9 @@
             // 持久化当前会话消息（游客本地 / 登录串行保存到服务端）
             persist_current_messages(done) {
                 var self = this;
-                var msgs = this.collect_persist_messages();
-                var title = this.derive_title(msgs);
+                var visible = this.collect_persist_messages();
+                var msgs = visible;
+                var title = this.derive_title(visible);
                 if (!this.is_login) {
                     if (!this.current_id) {
                         typeof done === 'function' && done();
@@ -1464,9 +1742,14 @@
                         typeof done === 'function' && done();
                         return;
                     }
+                    var msgs = visible;
+                    var start = this.msg_guest_start || 0;
+                    if (start > 0 && Array.isArray(session.messages) && session.messages.length > start) {
+                        msgs = session.messages.slice(0, start).concat(visible);
+                    }
                     session.messages = msgs;
                     session.updated_at = Date.now();
-                    session.title = title;
+                    session.title = this.derive_title(msgs);
                     var sessions = this.sessions.filter((s) => !this.same_id(s.id, this.current_id));
                     sessions.unshift(session);
                     this.save_local_sessions_list(sessions);
@@ -1662,6 +1945,7 @@
                         var s = self.find_session(self.current_id);
                         if (s) {
                             s.messages = self.collect_persist_messages();
+                            s.has_more = self.msg_has_more;
                         }
                     } else {
                         self.persist_current_messages();

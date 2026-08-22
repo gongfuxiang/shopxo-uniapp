@@ -106,6 +106,13 @@
     color: #8a919f;
     font-size: 26rpx;
 }
+.aichat-history-more,
+.aichat-msg-more {
+    text-align: center;
+    padding: 16rpx 0 24rpx;
+    color: #8a919f;
+    font-size: 26rpx;
+}
 .aichat-history-item {
     padding: 22rpx 20rpx;
     margin-bottom: 8rpx;
