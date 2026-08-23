@@ -112,7 +112,7 @@
                             <!-- 批发插件是否开启隐藏价格信息 -->
                             <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
                                 <!-- 售价 -->
-                                <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
+                                <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text" @tap="exhibition_price_chat_event">
                                     <!-- 图标 -->
                                     <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m margin-right-xs">{{ show_field_price_text }}</text>
                                     <!-- 售价 -->
@@ -904,6 +904,8 @@
                 buy_event_type: 'buy',
                 buy_button: {},
                 buy_left_nav: [],
+                is_exhibition_price_chat: 0,
+                exhibition_price_chat_url: '',
                 goods_spec_base_price: 0,
                 goods_spec_base_original_price: 0,
                 goods_spec_selected_text: this.$t('goods-detail.goods-detail.6brk57'),
@@ -1221,6 +1223,7 @@
                                 countdown_data: countdown_data,
                                 countdown_is_valid: countdown_is_valid,
                             });
+                            this.exhibition_price_chat_data_handle(goods, data.buy_button || null);
                             // 其他数据
                             this.setData({
                                 top_nav_title_data: data.middle_tabs_nav || [],
@@ -1347,6 +1350,7 @@
                     goods_show_price_unit: goods.show_price_unit,
                     goods_show_original_price_unit: goods.show_original_price_unit,
                 });
+                this.exhibition_price_chat_data_handle(goods, this.buy_button);
             },
 
             // 返回事件
@@ -1422,6 +1426,34 @@
                 app.globalData.url_open(value);
             },
 
+            // 展示模式价格占位客服数据
+            exhibition_price_chat_data_handle(goods, buy_button) {
+                var url = '';
+                var status = 0;
+                var list = ((buy_button || null) != null) ? (buy_button.data || []) : [];
+                if ((goods || null) != null && (goods.is_exhibition_hide_price || 0) == 1 && list.length > 0) {
+                    for (var i = 0; i < list.length; i++) {
+                        if ((list[i].type || null) == 'chat' && (list[i].value || null) != null && list[i].value != '') {
+                            url = list[i].value;
+                            status = 1;
+                            break;
+                        }
+                    }
+                }
+                this.setData({
+                    is_exhibition_price_chat: status,
+                    exhibition_price_chat_url: url,
+                });
+            },
+
+            // 点击价格占位文字打开客服
+            exhibition_price_chat_event() {
+                if ((this.is_exhibition_price_chat || 0) != 1 || (this.exhibition_price_chat_url || null) == null) {
+                    return false;
+                }
+                app.globalData.chat_entry_handle(this.exhibition_price_chat_url);
+            },
+
             // 导航购买按钮事件
             nav_buy_submit_event(e) {
                 if (!app.globalData.is_single_page_check()) {
@@ -1446,6 +1478,14 @@
                     case 'show':
                     case 'tel':
                         app.globalData.call_tel(value || this.common_app_customer_service_tel);
+                        break;
+                    // 在线客服
+                    case 'chat':
+                        if ((value || null) == null) {
+                            app.globalData.showToast(this.$t('goods-detail.goods-detail.tq1976'));
+                            return false;
+                        }
+                        app.globalData.chat_entry_handle(value);
                         break;
                     // 规格选择(展示模式)、购买、加入购物车
                     case 'spec-show':
