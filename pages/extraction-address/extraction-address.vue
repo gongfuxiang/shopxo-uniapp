@@ -4,16 +4,16 @@
             <view v-if="data_list.length > 0" class="padding-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main spacing-mb">
                     <view @tap="address_conent_event" :data-index="index" class="oh">
-                        <view v-if="(item.logo || null) != null" class="fl oh margin-right-lg">
+                        <view v-if="(item.logo || null) != null" class="fl oh margin-right">
                             <image class="dis-block address-logo radius" :src="item.logo" mode="widthFix"></image>
                         </view>
                         <view class="oh">
-                            <view class="base oh padding-bottom-main padding-top-xs">
+                            <view class="base oh padding-bottom-sm padding-top-xs">
                                 <text v-if="(item.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm">{{ item.alias }}</text>
                                 <text>{{ item.name }}</text>
                                 <text class="fr">{{ item.tel }}</text>
                             </view>
-                            <view class="address oh padding-top-sm">
+                            <view class="address oh">
                                 <image class="item-icon fl margin-top-xs" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                                 <view class="text fr"> {{ item.province_name || "" }}{{ item.city_name || "" }}{{ item.county_name || "" }}{{ item.address || "" }} </view>
                             </view>

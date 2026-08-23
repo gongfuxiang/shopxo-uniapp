@@ -27,36 +27,40 @@
                                 </view>
                             </view>
                             <scroll-view :scroll-y="true" class="cart-list goods-list">
-                                <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                    <view :data-index="index" @tap="goods_event">
-                                        <view class="flex-row jc-sb">
-                                            <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
-                                            <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
-                                                <view class="goods-base-content">
-                                                    <view class="goods-title text-size-sm single-text">{{ goods.title }}</view>
-                                                    <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-sm">
-                                                        <block v-for="(sv, si) in goods.spec" :key="si">
-                                                            <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
-                                                            <text>{{ sv.value }}</text>
-                                                        </block>
-                                                    </view>
-                                                </view>
-                                                <view class="margin-top-sm">
-                                                    <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
-                                                    <view class="tc fr flex-row align-c">
-                                                        <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
-                                                            <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
+                                <uni-swipe-action ref="swipe_action">
+                                    <view v-for="(goods, index) in cart.data" :key="goods.id || index" class="item oh">
+                                        <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
+                                            <view class="padding-main" :data-index="index" @tap="goods_event">
+                                                <view class="flex-row jc-sb">
+                                                    <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
+                                                    <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                                        <view class="goods-base-content">
+                                                            <view class="goods-title text-size-sm single-text">{{ goods.title }}</view>
+                                                            <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-sm">
+                                                                <block v-for="(sv, si) in goods.spec" :key="si">
+                                                                    <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
+                                                                    <text>{{ sv.value }}</text>
+                                                                </block>
+                                                            </view>
                                                         </view>
-                                                        <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
-                                                        <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
-                                                            <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
+                                                        <view class="margin-top-sm">
+                                                            <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
+                                                            <view class="tc fr flex-row align-c">
+                                                                <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
+                                                                    <iconfont name="icon-reduce" size="48rpx" :color="theme_color"></iconfont>
+                                                                </view>
+                                                                <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
+                                                                <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
+                                                                    <iconfont name="icon-add-solid" size="48rpx" :color="theme_color"></iconfont>
+                                                                </view>
+                                                            </view>
                                                         </view>
                                                     </view>
                                                 </view>
                                             </view>
-                                        </view>
+                                        </uni-swipe-action-item>
                                     </view>
-                                </view>
+                                </uni-swipe-action>
                             </scroll-view>
                         </block>
                         <block v-else>
@@ -303,6 +307,16 @@
                 staff_booking_prefer_staff_id: 0,
                 staff_booking_prefer_staff_alias: '',
                 staff_booking_prefer_staff_avatar: '',
+                // 左滑删除
+                swipe_item_index: null,
+                swipe_options: [
+                    {
+                        text: this.$t('common.del'),
+                        style: {
+                            backgroundColor: '#E64340',
+                        },
+                    },
+                ],
             };
         },
 
@@ -556,6 +570,7 @@
                 this.setData({
                     cart_status: !this.cart_status,
                 });
+                this.swipe_close_handle();
             },
 
             // 购物车状态设置
@@ -563,6 +578,38 @@
                 this.setData({
                     cart_status: status,
                 });
+                if(!status) {
+                    this.swipe_close_handle();
+                }
+            },
+
+            // 关闭所有滑动
+            swipe_close_handle() {
+                this.setData({
+                    swipe_item_index: null,
+                });
+                if((this.$refs.swipe_action || null) != null) {
+                    this.$refs.swipe_action.closeAll();
+                }
+            },
+
+            // 滑动事件
+            swipe_change(e, v) {
+                this.setData({
+                    swipe_item_index: e == 'none' ? null : v,
+                });
+            },
+
+            // 左滑删除
+            swipe_opt_event(e) {
+                var temp_data = ((this.cart || null) != null && (this.cart.data || null) != null) ? this.cart.data : [];
+                if(this.swipe_item_index === null || (temp_data[this.swipe_item_index] || null) == null) {
+                    app.globalData.showToast(this.$t('common.data_not_exist'));
+                    return false;
+                }
+                var goods = temp_data[this.swipe_item_index];
+                this.cart_delete(goods['id'], goods['goods_id']);
+                this.swipe_close_handle();
             },
 
             // 加入购物车
@@ -1679,6 +1726,9 @@
      */
     .plugins-realstore-cart-content .cart-list {
         max-height: 60vh;
+    }
+    .plugins-realstore-cart-content .cart-list .item {
+        width: 100%;
     }
     .plugins-realstore-cart-content .cart-list .goods-img {
         width: 120rpx;
