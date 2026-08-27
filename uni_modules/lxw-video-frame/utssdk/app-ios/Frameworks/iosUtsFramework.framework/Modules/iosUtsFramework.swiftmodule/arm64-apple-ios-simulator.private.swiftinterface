@@ -1,0 +1,20 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)
+// swift-module-flags: -target arm64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name iosUtsFramework
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import AVFoundation
+import Foundation
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+public class LxScreenTools {
+  public init()
+  open func testBack(handler: (_ str: Swift.String) -> Swift.Void)
+  open func getVideoThumbToBase64(path: Swift.String, type: Foundation.NSNumber, handler: @escaping (_ base64Text: Swift.String, _ tp: Swift.String) -> Swift.Void)
+  open func getThumbByTimeToBase64(seconde: Foundation.NSNumber, path: Swift.String, type: Foundation.NSNumber, handler: @escaping (_ base64Text: Swift.String, _ tp: Swift.String) -> Swift.Void)
+  open func pathToImageByTime(seconde: Swift.Float64, path: Swift.String, type: Swift.Int, handler: (_ img: UIKit.UIImage, _ type: Swift.String) -> Swift.Void)
+  open func pathToImageFirst(path: Swift.String, type: Swift.Int, handler: (_ img: UIKit.UIImage, _ tp: Swift.String) -> Swift.Void)
+  open func base64ToImage(base64String: Swift.String) -> UIKit.UIImage
+  @objc deinit
+}

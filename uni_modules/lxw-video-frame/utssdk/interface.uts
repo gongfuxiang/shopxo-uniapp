@@ -1,0 +1,45 @@
+export type OnVideoFrameObjct = {
+	/**
+		* 错误码
+		* 0:成功
+		* -1:permission denied
+		*/
+	code : number,
+	/**
+		* 调用API的名称
+		*/
+	msg ?: string | "",
+	/**
+		* 错误的详细信息
+		*/
+	path ?: string | "",
+	/**
+		* 截屏文件路径（仅Android返回）
+		*/
+	base64 ?: string | ""
+}
+
+
+export function lxwSuccess(path?:string,b6?:string): OnVideoFrameObjct{
+	const res:OnVideoFrameObjct = {
+		code: 0,
+		msg: "成功",
+		path: path,
+		base64: b6
+	}
+	return res;
+}
+
+export function lxwAfter(path?:string,b6?:string): OnVideoFrameObjct{
+	
+	return lxwReqAfter(path,b6,"检查文件格式或时长");
+}
+export function lxwReqAfter(path?:string,b6?:string,msg?:string): OnVideoFrameObjct{
+	const res :OnVideoFrameObjct = {
+		code: -1,
+		msg: msg,
+		path: path,
+		base64: b6
+	}
+	return res;
+}

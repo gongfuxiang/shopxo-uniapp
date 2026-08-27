@@ -1,0 +1,63 @@
+import { LxScreenTools } from 'iosUtsFramework';
+import { lxwSuccess, lxwAfter } from '../interface.uts';
+import { NSNumber,Bundle } from 'Foundation';
+
+export type inputData = {
+	path : string, //路径
+	type: number, //0 是网络  1是本地
+}
+
+
+
+export type GetBatteryInfoOptions = {
+	data : inputData;
+	success ?: (res : object) => void;
+	fail ?: (res : object) => void;
+	complete ?: (res : object) => void;
+}
+
+
+export function callVideoFrameInfo(options : GetBatteryInfoOptions) {
+
+
+	let qp = options.data.path;
+	
+	let qptype = options.data.type!;
+	
+	console.log(" run cvfi path : " + options.data.path)
+	
+	let lx = new LxScreenTools();
+	try {
+		
+			// let pt = Bundle.main.url(forResource= options.data.path, withExtension= "mp4")
+			// let filePath = pt?.path
+			// let filePath = qp
+			// if(qptype == 1 && qp.startsWith("file://")){
+			// 	qptype = 0
+			// }
+			
+			let b6 = lx.getVideoThumbToBase64(path = options.data.path
+			,type = qptype
+			,handler = (b6: String,tp: String): Void => {
+				if (tp == "0") {
+					var b64 = "data:image/jpeg;base64," + b6;
+					options.success?.(lxwSuccess(qp, b64))
+				} else {
+					options.fail?.(lxwAfter(qp, ""))
+				}
+			}
+			);
+
+	} catch (e) {
+
+		options.fail?.(lxwAfter(qp, ""))
+	}
+
+}
+
+/**
+ * 获取截图第一帧
+ */
+export function releaseVideoFrame() {
+	// MyScreenThumbnailUtils.release("")
+}

@@ -298,7 +298,19 @@
         },
         "devServer" : {
             "https" : false,
-            "port" : 8082
+            "port" : 8082,
+            "proxy" : {
+                "/api.php" : {
+                    "target" : "https://new.shopxo.vip",
+                    "changeOrigin" : true,
+                    "secure" : true
+                },
+                "/index.php" : {
+                    "target" : "https://new.shopxo.vip",
+                    "changeOrigin" : true,
+                    "secure" : true
+                }
+            }
         },
         "router" : {
             "mode" : "hash",

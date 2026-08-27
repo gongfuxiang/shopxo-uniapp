@@ -1,0 +1,4 @@
+framework module iosUtsFramework {
+  header "iosUtsFramework-Swift.h"
+  requires objc
+}

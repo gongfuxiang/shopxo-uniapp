@@ -1746,6 +1746,31 @@
             ]
         },
         {
+            "root": "pages/plugins/chat",
+            "pages": [
+                {
+                    "path": "list/list",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "在线客服",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black",
+                        "enablePullDownRefresh": false,
+                        "disableScroll": true
+                    }
+                },
+                {
+                    "path": "index/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "",
+                        "disableScroll": false
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/ask",
             "pages": [
                 {
