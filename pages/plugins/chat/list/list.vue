@@ -58,10 +58,10 @@
 						<view class="chat-list-body-main">
 							<view class="chat-list-row">
 								<text class="chat-list-name">{{ item.name || '在线客服' }}</text>
-								<text v-if="item.time_text" class="chat-list-time">{{ item.time_text }}</text>
+								<text class="chat-list-time">{{ item.time_text || '' }}</text>
 							</view>
-							<view class="chat-list-row">
-								<text class="chat-list-preview">{{ preview_text(item) }}</text>
+							<view class="chat-list-row chat-list-row-preview">
+								<text class="chat-list-preview">{{ preview_text(item) || ' ' }}</text>
 							</view>
 						</view>
 					</view>

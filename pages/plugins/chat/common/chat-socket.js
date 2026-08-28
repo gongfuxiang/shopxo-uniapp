@@ -1154,18 +1154,18 @@ export const is_session_end_continue_tip = (content) => {
 	}
 	const dt = (typeof content == 'object') ? String(content.data_type || '') : '';
 	const text = typeof content == 'object'
-		? String(content.content != null ? content.content : (content.text || ''))
+		? String(content.content != null ? content.content : (content.text || content.msg || ''))
 		: String(content);
 	if (text === '') {
 		return false;
 	}
-	if (/因长时间未互动|长时间未互动|对话已自动结束/.test(text)) {
+	if (/因长时间未互动|长时间未互动|对话已自动结束|感谢您的咨询|会话已关闭/.test(text)) {
 		return true;
 	}
 	if (dt && dt != 'mode_tip' && dt != 'system' && dt != 'agent_notice' && dt != 'visitor_notice') {
 		return false;
 	}
-	return /对话已结束|本次对话已结束|会话已结束|会话结束|结束对话|结束本次|恢复对话|已恢复对话|已恢复会话|继续聊天/.test(text);
+	return /对话已结束|本次对话已结束|会话已结束|会话结束|结束对话|结束本次|恢复对话|已恢复对话|已恢复会话|继续聊天|已切换为智能客服|切换为智能客服/.test(text);
 };
 
 export const is_recall_message = (content) => {
@@ -1294,7 +1294,7 @@ const flush_pending_send_after_continue = (contact_id) => {
 	if (vid > 0) {
 		delete continue_inflight[vid];
 		// 清 inflight 后仍忽略迟到 end，避免刚续聊/刚发出排队消息立刻弹窗
-		arm_continue_end_ignore(vid, 5000);
+		arm_continue_end_ignore(vid, 8000);
 	}
 	if (vid > 0 && parseInt(state.session_ended_map[vid] || 0) == 1) {
 		return;
@@ -1495,6 +1495,10 @@ const chat_user_infer_ai_mode = (contact_id = 0) => {
 		return;
 	}
 	const cached = state.ai_mode_map[cid] || {};
+	// 会话已结束待续聊时不推断；续聊成功后由 chat-continue 切回 AI
+	if (parseInt(state.session_ended_map[cid] || 0) == 1) {
+		return;
+	}
 	if (cached.mode == 'human') {
 		return;
 	}
@@ -1574,7 +1578,10 @@ const chat_apply_ai_mode = (ai = {}, tip_msg = '') => {
 		}
 	}
 	if (!isEmpty(tip_msg) && should_apply_ui) {
-		showToast(tip_msg);
+		// 结束/续聊类文案不 toast（进页自动续聊时服务端常顺带推这类提示）
+		if (!is_session_end_continue_tip(tip_msg) && !is_session_end_continue_tip({ data_type: 'mode_tip', content: tip_msg })) {
+			showToast(tip_msg);
+		}
 	}
 	emit_ai_and_list();
 };
@@ -2567,16 +2574,16 @@ const handle_message = (raw) => {
 			} else {
 				state.quick_message = [];
 			}
+			if (data.ai && typeof data.ai.is_enable != 'undefined') {
+				chat_apply_ai_mode({
+					is_enable: data.ai.is_enable,
+					bot_cuid: data.ai.bot_cuid,
+					bot_name: data.ai.bot_name,
+					bot_avatar: data.ai.bot_avatar,
+				}, '');
+			}
 			if (state.user_type == 'work') {
 				state.agent_online_others = parseInt((data.data && data.data.agent_online_others) || 0);
-				if (data.ai && typeof data.ai.is_enable != 'undefined') {
-					chat_apply_ai_mode({
-						is_enable: data.ai.is_enable,
-						bot_cuid: data.ai.bot_cuid,
-						bot_name: data.ai.bot_name,
-						bot_avatar: data.ai.bot_avatar,
-					}, '');
-				}
 			}
 			// 对齐 PC ChatApplyFeatures（chat_features 在 res.data 根上）
 			const feat = { ...(data.chat_features || (data.data && data.data.chat_features) || {}) };
@@ -2971,10 +2978,7 @@ const handle_message = (raw) => {
 			break;
 
 		case 'queue-status':
-			// 对齐 PC ChatQueueStatusApply：访客排队位次提示仅咨询端，工作台忽略
-			if (state.user_type == 'user') {
-				emit('queue_status', (data.data != null) ? data.data : data);
-			}
+			// 对齐 PC 咨询端：不展示访客排队位次提示；工作台本身忽略
 			break;
 
 		case 'user-history':
@@ -3174,9 +3178,12 @@ const handle_message = (raw) => {
 				}
 			}
 			if ((res.msg || data.msg || '') != '') {
-				const vid = parseInt((data.data && data.data.visitor_cuid) || 0);
-				if (state.user_type != 'work' || !vid || vid == active_contact_id()) {
-					showToast(res.msg || data.msg);
+				const tip = res.msg || data.msg;
+				if (!is_session_end_continue_tip(tip) && !is_session_end_continue_tip({ data_type: 'mode_tip', content: tip })) {
+					const vid = parseInt((data.data && data.data.visitor_cuid) || 0);
+					if (state.user_type != 'work' || !vid || vid == active_contact_id()) {
+						showToast(tip);
+					}
 				}
 			}
 			break;
@@ -3430,13 +3437,46 @@ const handle_message = (raw) => {
 				}
 			}
 			// 进页静默续聊无排队消息时也会清 inflight；先开忽略窗挡住迟到 chat-end
-			arm_continue_end_ignore(cont_vid, 5000);
+			arm_continue_end_ignore(cont_vid, 8000);
 			if (cont_list <= 0 || cont_active <= 0 || cont_list == cont_active) {
 				if (state.user_type == 'user') {
 					emit('chat_rating_close', { contact_id: cont_vid });
 				}
 			}
-			emit('ai_mode', get_chat_state());
+			// 咨询端续聊 = 新一轮会话：已开启智能客服时强制从 AI 开始（不延续上一轮人工）
+			if (state.user_type == 'user' && cont_vid > 0) {
+				const cont_ai = data.ai || (data.data && data.data.ai) || {};
+				const snap = active_ai_snapshot();
+				const enable = parseInt(
+					(cont_ai.is_enable != null ? cont_ai.is_enable : snap.is_enable) || 0
+				) == 1;
+				const prev_mode = String(snap.mode || state.ai_state.mode || cont_ai.mode || '');
+				if (enable) {
+					chat_apply_ai_mode({
+						...snap,
+						...cont_ai,
+						mode: 'ai',
+						is_enable: 1,
+						is_chat_ended: 0,
+						show_transfer: cont_ai.show_transfer != null ? cont_ai.show_transfer : 1,
+						visitor_cuid: cont_vid,
+					}, '');
+					state.ai_mode_map[cont_vid] = {
+						...(state.ai_mode_map[cont_vid] || {}),
+						mode: 'ai',
+						is_enable: 1,
+						is_chat_ended: 0,
+					};
+					// 上一轮是人工：通知服务端转智能客服，避免只改了本地 UI
+					if (prev_mode == 'human' && state.connect_status === 1 && state.receive_user && state.receive_user.id) {
+						chat_send('transfer-ai');
+					}
+				} else {
+					emit('ai_mode', get_chat_state());
+				}
+			} else {
+				emit('ai_mode', get_chat_state());
+			}
 			flush_pending_send_after_continue(cont_vid);
 			break;
 		}
@@ -4183,7 +4223,7 @@ export const chat_send_message = (content) => {
 		}
 		pending_send_after_continue = pending_send_after_continue.filter((item) => item.id !== queued.id);
 		if (parseInt(state.session_ended_map[vid] || 0) == 1) {
-			showToast('对话已结束');
+			// 结束态由页内「是否继续」弹窗处理，不重复 toast
 			return false;
 		}
 	}
@@ -4230,7 +4270,7 @@ export const chat_transfer_ai = () => {
 		return false;
 	}
 	if (!state.receive_user || !state.receive_user.id) {
-		showToast('请先选择要交回的用户');
+		showToast(state.user_type == 'user' ? '当前会话无效' : '请先选择要交回的用户');
 		return false;
 	}
 	if (state.ai_switching) {
@@ -4325,7 +4365,6 @@ export const chat_end_session = () => {
 	}
 	const vid = active_contact_id();
 	if (vid > 0 && parseInt(state.session_ended_map[vid] || 0) == 1) {
-		showToast('对话已结束');
 		return false;
 	}
 	if (vid > 0) {

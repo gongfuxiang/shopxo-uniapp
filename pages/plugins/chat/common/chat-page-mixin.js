@@ -195,7 +195,20 @@ const schedule_allow_ended_prompt = (ms = 5000) => {
 /** 结束态发消息进入排队续聊时，统一标记续聊中并屏蔽结束弹窗 */
 const mark_send_revive_queued = () => {
 	pending_session_revive = true;
-	arm_suppress_ended_choice(5000);
+	arm_suppress_ended_choice(8000);
+};
+
+/** 用户在本页真正开始聊天后，才允许超时结束弹窗 */
+const mark_session_page_engaged = () => {
+	if (session_page_engaged) {
+		return;
+	}
+	session_page_engaged = true;
+	pending_session_revive = false;
+	arm_suppress_ended_choice(2000);
+	if (record_init_done) {
+		schedule_allow_ended_prompt(2000);
+	}
 };
 
 let flash_record_timer = null;
@@ -493,7 +506,6 @@ export default {
 			ai_switching: false,
 			session_ended: false,
 			agent_online_others: 0,
-			queue_status_text: '',
 			agent_transfer_list: [],
 			agent_transfer_selected_id: '',
 			agent_transfer_ref: null,
@@ -632,9 +644,6 @@ export default {
 			{ key: 'aftersale', name: '售后', icon: 'after-sales', action: '', type: 'aftersale' },
 		];
 		consult_items.forEach((row) => rows.push(row));
-		if (this.consult_panel_has_source_tab) {
-			rows.push({ key: 'source', name: '轨迹', icon: 'location', action: '', type: 'source' });
-		}
 	}
 	return rows;
 },
@@ -682,6 +691,9 @@ export default {
 		}
 		return '智能客服接待中，可点击「转人工客服」';
 	}
+	if (this.ai_enabled && this.ai_mode == 'human' && !this.session_ended_for_ui) {
+		return '人工客服接待中，可点击「切回智能客服」';
+	}
 	if (this.connect_status !== 1) {
 		if (this.is_connecting || this.is_resume_hold || this.has_uploading_media) {
 			return '连接中...';
@@ -702,9 +714,8 @@ export default {
 },
 
 		consult_panel_has_source_tab() {
-			const ext = (this.friend_base && this.friend_base.ext) || {};
-			const raw = ext.consult_panel;
-			return !!(raw && raw.tabs && raw.tabs.source != null);
+			// 对齐 PC 咨询端：不加号「轨迹」
+			return false;
 		},
 
 		show_goods_panel_btn() {
@@ -729,8 +740,13 @@ export default {
 			return this.ai_enabled && this.ai_mode == 'ai' && !this.session_ended_for_ui;
 		},
 
+		/** 人工接待中：切回智能客服（对齐 PC 咨询端） */
+		show_back_ai_btn() {
+			return this.ai_enabled && this.ai_mode == 'human' && !this.session_ended_for_ui;
+		},
+
 		show_ai_bar() {
-			return this.show_end_btn || this.show_transfer_human_btn;
+			return this.show_end_btn || this.show_transfer_human_btn || this.show_back_ai_btn;
 		},
 
 		show_float_ai_bar() {
@@ -867,7 +883,6 @@ export default {
 				});
 			}
 		},
-		queue_status_text() { this.measure_chrome(); },
 		show_float_ai_bar() { this.measure_chrome(); },
 		panel_type() { this.measure_chrome(); },
 		quote_draft() { this.measure_chrome(); },
@@ -1035,24 +1050,20 @@ export default {
 				try {
 					uni.createSelectorQuery().in(this)
 						.select('.nav-wrap').boundingClientRect()
-						.select('.header-meta').boundingClientRect()
 						.select('.composer-fixed').boundingClientRect()
 						.exec((res) => {
 							if (!this.page_alive) {
 								return;
 							}
 							const nav = res && res[0];
-							const meta = res && res[1];
-							const composer = res && res[2];
+							const composer = res && res[1];
 							if (nav && nav.height > 0) {
 								const navH = Math.round(nav.height);
-								const metaH = Math.round((meta && meta.height) || 0);
-								const occupyH = navH + metaH;
 								if (Math.abs(navH - Number(this.nav_bar_h || 0)) >= 1) {
 									this.nav_bar_h = navH;
 								}
-								if (Math.abs(occupyH - Number(this.nav_occupy_h || 0)) >= 1) {
-									this.nav_occupy_h = occupyH;
+								if (Math.abs(navH - Number(this.nav_occupy_h || 0)) >= 1) {
+									this.nav_occupy_h = navH;
 								}
 							}
 							if (composer && composer.height > 0) {
@@ -1672,7 +1683,8 @@ export default {
 				if (!chat_site_logged_in()) {
 					return;
 				}
-				if (type == 'source' && !this.consult_panel_has_source_tab) {
+				// 对齐 PC：咨询端不提供轨迹面板
+				if (type == 'source') {
 					return;
 				}
 				this.consult_popup_type = type;
@@ -4377,12 +4389,12 @@ export default {
 					this.show_ended_choice_modal = false;
 					ended_choice_showing = false;
 					if (prev_ended) {
-						// 刚从结束态恢复（进页续聊 / 发消息续聊）：先别开弹窗权限
+						// 刚从结束态恢复：先解除结束态，但不立刻 engaged（避免迟到 chat-end 误弹）
 						pending_session_revive = false;
-						session_page_engaged = true;
-						arm_suppress_ended_choice(5000);
-						schedule_allow_ended_prompt(5000);
-					} else if (record_init_done && !pending_session_revive) {
+						arm_suppress_ended_choice(8000);
+						// engaged 仍为 false 时 schedule 也不会打开弹窗权限
+						schedule_allow_ended_prompt(8000);
+					} else if (record_init_done && !pending_session_revive && session_page_engaged) {
 						allow_ended_prompt = true;
 					}
 				} else if (
@@ -4582,23 +4594,6 @@ export default {
 
 		},
 
-		on_queue_status(payload) {
-			
-				if (!this.page_alive) {
-					return;
-				}
-				const data = payload || {};
-				const pos = parseInt(data.position || data.queue_position || 0) || 0;
-				const total = parseInt(data.total || data.queue_total || 0) || 0;
-				if (pos > 0) {
-					this.queue_status_text = total > 0 ? ('排队中，您前面还有 ' + Math.max(0, pos - 1) + ' 人') : ('排队中，当前第 ' + pos + ' 位');
-					return;
-				}
-				const tip = String(data.msg || data.content || data.tips || '').trim();
-				this.queue_status_text = tip;
-			
-		},
-
 		on_chat_rating_open() {
 			
 				if (!this.page_alive) {
@@ -4708,7 +4703,6 @@ export default {
 			on_chat_event('record_around', this.on_record_around);
 			on_chat_event('chat_rating', this.on_chat_rating);
 			on_chat_event('chat_rating_open', this.on_chat_rating_open);
-			on_chat_event('queue_status', this.on_queue_status);
 			on_chat_event('chat_pending_send_fail', this.on_chat_pending_send_fail);
 			on_chat_event('chat_pending_send_flush', this.on_chat_pending_send_flush);
 		},
@@ -4772,7 +4766,6 @@ export default {
 			off_chat_event('record_around', this.on_record_around);
 			off_chat_event('chat_rating', this.on_chat_rating);
 			off_chat_event('chat_rating_open', this.on_chat_rating_open);
-			off_chat_event('queue_status', this.on_queue_status);
 			off_chat_event('chat_pending_send_fail', this.on_chat_pending_send_fail);
 			off_chat_event('chat_pending_send_flush', this.on_chat_pending_send_flush);
 		},
@@ -5820,7 +5813,6 @@ export default {
 					return;
 				}
 				if (this.session_ended) {
-					showToast('对话已结束');
 					return;
 				}
 				uni.showModal({
@@ -5917,18 +5909,18 @@ export default {
 			if (!st.ai?.ended && !this.session_ended) {
 				const was_pending = pending_session_revive;
 				pending_session_revive = false;
-				session_page_engaged = true;
 				if (was_pending) {
-					// 进页以为已结束，但状态已恢复：同样延迟开弹窗权限
-					arm_suppress_ended_choice(5000);
-					schedule_allow_ended_prompt(5000);
+					// 进页以为已结束但已恢复：等用户发消息后再 engaged
+					arm_suppress_ended_choice(8000);
+					schedule_allow_ended_prompt(8000);
 				} else if (record_init_done) {
+					session_page_engaged = true;
 					allow_ended_prompt = true;
 				}
 				return false;
 			}
 			this.mark_enter_ended_session();
-			arm_suppress_ended_choice(5000);
+			arm_suppress_ended_choice(8000);
 			return chat_continue_session({ silent: true });
 		},
 
@@ -5949,6 +5941,7 @@ export default {
 
 		prompt_ended_session_choice() {
 			
+				// 仅本页聊天过程中超时/对方结束才弹；进页已结束走静默 chat-continue
 				if (!this.page_alive || this.skip_auto_continue || this.show_rating_modal) {
 					return;
 				}
@@ -5990,9 +5983,8 @@ export default {
 			ended_while_page_hidden = false;
 			ended_choice_showing = false;
 			this.show_ended_choice_modal = false;
-			// 走进页续聊路径：屏蔽弹窗并主动 chat-continue
 			this.mark_enter_ended_session();
-			arm_suppress_ended_choice(5000);
+			arm_suppress_ended_choice(8000);
 			chat_resume_connect();
 			this.sync_connect_ui();
 			this.$nextTick(() => {
@@ -6134,7 +6126,6 @@ export default {
 					return;
 				}
 				if (this.session_ended) {
-					showToast('对话已结束');
 					return;
 				}
 				this.agent_transfer_list = [];
@@ -7453,9 +7444,7 @@ export default {
 					return;
 				}
 				pending_session_revive = false;
-				session_page_engaged = true;
-				arm_suppress_ended_choice(5000);
-				schedule_allow_ended_prompt(5000);
+				mark_session_page_engaged();
 				this.message_list.forEach((row) => {
 					if (row && row.is_self && row.send_status == 'sending' && row.upload_status != 'uploading') {
 						this.schedule_mark_send_ok(row.key);
@@ -7504,6 +7493,7 @@ export default {
 					return;
 				}
 				if (ok !== 'queued') {
+					mark_session_page_engaged();
 					this.schedule_mark_send_ok(row.key);
 				}
 			

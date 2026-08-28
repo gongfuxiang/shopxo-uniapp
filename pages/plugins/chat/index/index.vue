@@ -19,9 +19,6 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="!isEmpty(queue_status_text)" class="header-meta queue-status-bar" :style="{ top: nav_bar_h + 'px' }">
-			<text class="header-meta-v">{{ queue_status_text }}</text>
-		</view>
 		<view class="chat-main" :style="chat_main_style" @tap="hide_panel_event">
 			<view v-if="history_loading" class="history-more">
 				<view class="history-more-spin"></view>
@@ -52,20 +49,26 @@
 					<text v-if="!isEmpty(input_status_msg)" class="input-status-msg">{{ input_status_msg }}</text>
 				</view>
 			</view>
-			<!-- 结束/接管：在消息区下方、输入栏上方，不叠在气泡旁边 -->
+			<!-- 对齐 PC 咨询端：转人工客服 / 切回智能客服 / 结束对话 -->
 			<view v-if="show_float_ai_bar" class="ai-float-wrap">
 				<view class="ai-float-bar">
-					<view
-						v-if="show_end_btn"
-						class="ai-bar-btn"
-						@tap="end_session_event"
-					><text class="ai-bar-btn-text">结束会话</text></view>
 					<view
 						v-if="show_transfer_human_btn"
 						class="ai-bar-btn"
 						:class="{ 'is-disabled': ai_switching }"
 						@tap="transfer_human_event"
 					><text class="ai-bar-btn-text">转人工客服</text></view>
+					<view
+						v-if="show_back_ai_btn"
+						class="ai-bar-btn"
+						:class="{ 'is-disabled': ai_switching }"
+						@tap="back_ai_event"
+					><text class="ai-bar-btn-text">切回智能客服</text></view>
+					<view
+						v-if="show_end_btn"
+						class="ai-bar-btn"
+						@tap="end_session_event"
+					><text class="ai-bar-btn-text">结束对话</text></view>
 				</view>
 			</view>
 
@@ -431,7 +434,7 @@
 			</view>
 		</view>
 
-		<!-- 加号：商品 / 购物车 / 订单 / 轨迹 / 售后 -->
+		<!-- 加号：商品 / 购物车 / 订单 / 售后 -->
 		<chat-u-popup
 			ref="consult_popup_ref"
 			propType="bottom"
@@ -445,10 +448,7 @@
 			@change="on_consult_popup_change"
 		>
 			<view class="consult-popup-content">
-				<view
-					v-if="!consult_is_trace_panel"
-					class="consult-search-bar"
-				>
+				<view class="consult-search-bar">
 					<view class="consult-search-keyword search-input">
 						<input
 							class="consult-search-input"
@@ -476,19 +476,6 @@
 						:propStatus="0"
 						propMsg="暂无数据"
 					></component-no-data>
-					<template v-else-if="consult_is_trace_panel">
-						<view
-							v-for="(item, idx) in consult_filtered_list"
-							:key="idx"
-							class="consult-source-row"
-							:data-idx="idx"
-							@tap="open_consult_track_event"
-						>
-							<text class="consult-source-url">{{ item.value }}</text>
-							<text class="consult-source-time">{{ item.time }}</text>
-						</view>
-						<view v-if="consult_filtered_list.length > 0" class="consult-source-tips">当前显示 {{ consult_filtered_list.length }} 条数据</view>
-					</template>
 					<view
 						v-else
 						v-for="(item, idx) in consult_filtered_list"
@@ -536,7 +523,7 @@
 			@end="voice_press_end"
 		/>
 
-		<!-- 对话已结束：页内弹窗（层级低于搜索记录，避免盖住搜索） -->
+		<!-- 超时结束：询问是否继续聊天（进页已结束仍静默 chat-continue，不走此弹窗） -->
 		<view
 			v-if="show_ended_choice_modal"
 			class="ended-choice-mask"

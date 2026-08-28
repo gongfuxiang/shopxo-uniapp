@@ -172,10 +172,12 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
+	min-height: 40rpx;
 }
 
 .chat-list-row + .chat-list-row {
 	margin-top: 8rpx;
+	min-height: 34rpx;
 }
 
 .chat-list-name {
@@ -184,6 +186,7 @@
 	font-weight: 500;
 	flex: 1;
 	min-width: 0;
+	line-height: 40rpx;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -194,12 +197,16 @@
 	color: #b2b2b2;
 	margin-left: 16rpx;
 	flex-shrink: 0;
+	line-height: 40rpx;
+	min-height: 40rpx;
 }
 
 .chat-list-preview {
 	flex: 1;
 	min-width: 0;
+	min-height: 34rpx;
 	font-size: 26rpx;
+	line-height: 34rpx;
 	color: #888;
 	overflow: hidden;
 	text-overflow: ellipsis;
